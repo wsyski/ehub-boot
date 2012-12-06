@@ -70,7 +70,7 @@ public class LoanBusinessController implements ILoanBusinessController {
                 }
 
                 final ContentProviderLoanMetadata contentProviderLoanMetadata = contentProviderLoan.getMetadata();
-                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, libraryCard, pin);
+                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.getExpirationDate(), libraryCard, pin);
                 EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
                 ehubLoan = ehubLoanRepository.save(ehubLoan);
                 final Long readyLoanId = ehubLoan.getId();

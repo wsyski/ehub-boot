@@ -8,6 +8,8 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 
+import java.util.Date;
+
 /**
  * Defines the PALMA methods used by the eHUB.
  */
@@ -32,10 +34,11 @@ public interface IPalmaDataAccessor {
      * 
      * @param ehubConsumer the {@link EhubConsumer} to be used
      * @param pendingLoan the {@link PendingLoan} containing media information
+     * @param expirationDate the loan expiration date
      * @param libraryCard the library card of the end-user who wants to checkout this media
      * @param pin the pin of the library card
      * @return an {@link LmsLoan}
      * @throws ForbiddenException
      */
-    LmsLoan checkout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, String libraryCard, String pin);
+    LmsLoan checkout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, String libraryCard, String pin);
 }

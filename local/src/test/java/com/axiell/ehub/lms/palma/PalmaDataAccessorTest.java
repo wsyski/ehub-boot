@@ -20,6 +20,7 @@ import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingIntercep
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,8 +50,9 @@ public class PalmaDataAccessorTest {
 
     @Test
     public void testCheckOutOnline() {
+        Date expirationDate=new Date();
         if (isOnline()) {
-            LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
+            LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
             assertNotNull(lmsLoan);
         }
     }
@@ -68,10 +70,11 @@ public class PalmaDataAccessorTest {
 
     @Test
     public void testCheckOut() {
+        Date expirationDate=new Date();
         MockWebServiceServer mockWebServiceServer = createMockWebServiceServer();
         mockWebServiceServer.expect(anything()).andRespond(SmockClient.withMessage("/com/axiell/arena/palma/CheckOutResponse.xml"));
         LmsLoan lmsLoan =
-                palmaDataAccessor.checkout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
+                palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(lmsLoan);
         assertEquals(DevelopmentData.LMS_LOAN_ID, lmsLoan.getId());
     }

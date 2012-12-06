@@ -25,8 +25,13 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,10 +99,10 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
     }
 
     /**
-     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, String, String)
+     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, java.util.Date, String, String)
      */
     @Override
-    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final String libraryCard, final String pin)
+    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final String libraryCard, final String pin)
             throws ForbiddenException {
         String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
         com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory requestObjectFactory =
@@ -105,6 +110,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         CheckOutRequest checkOutRequest = requestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
+        checkOutRequest.setExpirationDate(date2XMLGregorianCalendar(expirationDate));
         checkOutRequest.setUser(libraryCard);
         checkOutRequest.setPassword(pin);
         com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
@@ -202,6 +208,21 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER);
         Validate.notBlank(agencyMemberIdentifier, EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER + " can not be blank");
         return agencyMemberIdentifier;
+    }
+
+    private static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
+        if (date==null) {
+            return null;
+        }
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(date);
+        XMLGregorianCalendar xmlGregorianCalendar = null;
+        try {
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        } catch (DatatypeConfigurationException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return xmlGregorianCalendar;
     }
 
 }
