@@ -17,6 +17,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.PreCheckoutAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.util.XjcSupport;
 import org.apache.commons.lang3.Validate;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -110,7 +111,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         CheckOutRequest checkOutRequest = requestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
-        checkOutRequest.setExpirationDate(date2XMLGregorianCalendar(expirationDate));
+        checkOutRequest.setExpirationDate(XjcSupport.date2XMLGregorianCalendar(expirationDate));
         checkOutRequest.setUser(libraryCard);
         checkOutRequest.setPassword(pin);
         com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
@@ -209,20 +210,4 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         Validate.notBlank(agencyMemberIdentifier, EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER + " can not be blank");
         return agencyMemberIdentifier;
     }
-
-    private static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
-        if (date==null) {
-            return null;
-        }
-        GregorianCalendar c = new GregorianCalendar();
-        c.setTime(date);
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-        try {
-            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-        } catch (DatatypeConfigurationException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return xmlGregorianCalendar;
-    }
-
 }

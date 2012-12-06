@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.axiell.ehub.util.LoggingClientErrorInterceptor;
+import com.axiell.ehub.util.LoggingClientExecutionIterceptor;
 import junit.framework.Assert;
 
 import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientRequestFactory;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -32,7 +35,6 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
 import com.axiell.ehub.provider.record.format.Formats;
-import com.axiell.ehub.util.HttpClientErrorInterceptor;
 
 
 /**
@@ -48,9 +50,12 @@ public class ElibDataAccessorTest {
 
     @Before
     public void setUp() throws Exception {
-        ClientRequest.setDefaultExecutorClass("com.axiell.ehub.util.HttpClientExecutor");
+        /*
         ResteasyProviderFactory pf = ResteasyProviderFactory.getInstance();
-        pf.addClientErrorInterceptor(new HttpClientErrorInterceptor());
+        pf.addClientErrorInterceptor(new LoggingClientErrorInterceptor());
+        ClientRequestFactory clientRequestFactory=new ClientRequestFactory();
+        clientRequestFactory.getPrefixInterceptors().registerInterceptor(new LoggingClientExecutionIterceptor());
+        */
         elibDataAccessor = new ElibDataAccessor();
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, DevelopmentData.ELIB_PRODUCT_URL);

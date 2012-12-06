@@ -57,7 +57,6 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final ContentProviderName contentProviderName = pendingLoan.getContentProviderNameEnum();
                 final ContentProviderConsumer contentProviderConsumer = ehubConsumer.getContentProviderConsumer(contentProviderName);
                 final ContentProviderLoan contentProviderLoan;
-
                 switch (contentProviderName) {
                     case ELIB:
                         contentProviderLoan = elibDataAccessor.createLoan(contentProviderConsumer, libraryCard, pin, pendingLoan);

@@ -8,11 +8,11 @@
 
 	<import resource="business-controller-context.xml" />
 
-	<!-- List only the JAX-RS Providers here, e.g. exception mappers, interceptors, converters etc. -->	
-	<bean id="restEasyBadRequestExceptionMapper" class="com.axiell.ehub.util.RestEasyBadRequestExceptionMapper"/>
-	<bean id="ehubRuntimeExceptionMapper" class="com.axiell.ehub.util.EhubRuntimeExceptionMapper"/>
-	<bean id="authorizationHeaderInterceptor" class="com.axiell.ehub.security.AuthorizationHeaderInterceptor"/>
-	<bean id="authInfoConverter" class="com.axiell.ehub.security.AuthInfoConverter"/>
+	<!-- List only the JAX-RS Providers here, e.g. exception mappers, interceptors, converters etc. -->
+	<bean class="com.axiell.ehub.util.RestEasyBadRequestExceptionMapper"/>
+	<bean class="com.axiell.ehub.util.EhubRuntimeExceptionMapper"/>
+	<bean class="com.axiell.ehub.security.AuthorizationHeaderInterceptor"/>
+	<bean class="com.axiell.ehub.security.AuthInfoConverter"/>
 
 	<!-- List only the JAX-RS root resources here -->
 

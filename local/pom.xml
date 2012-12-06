@@ -14,6 +14,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-common</artifactId>
             <version>${project.version}</version>
