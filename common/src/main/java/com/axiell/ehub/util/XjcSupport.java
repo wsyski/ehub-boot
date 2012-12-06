@@ -1,30 +1,28 @@
 package com.axiell.ehub.util;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.jboss.resteasy.spi.InternalServerErrorException;
-
 import com.axiell.ehub.EhubError;
-import com.axiell.ehub.lms.record.ExportRecord;
 import com.axiell.ehub.lms.record.ExportRecords;
-import com.axiell.ehub.lms.record.IndexRecord;
 import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.apache.log4j.Logger;
+import org.jboss.resteasy.spi.InternalServerErrorException;
+
+import javax.xml.bind.*;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Provides the possibility to marshal and unmarshal XML documents.
  */
 public final class XjcSupport {
+    private static final Logger LOGGER = Logger.getLogger(XjcSupport.class);
 
     /**
      * Private constructor that prevents direct instantiation.
@@ -34,7 +32,7 @@ public final class XjcSupport {
 
     /**
      * Marshals the provided DTO object to an XML document.
-     * 
+     *
      * @param dto the DTO to marshal
      * @return an XML document as a String
      */
@@ -53,7 +51,7 @@ public final class XjcSupport {
 
     /**
      * Marshals the provided DTO object to an XML document.
-     * 
+     *
      * @param dto the DTO to marshal
      * @return an XML document as a String
      */
@@ -71,7 +69,7 @@ public final class XjcSupport {
 
     /**
      * Unmarshals the provided XML document.
-     * 
+     *
      * @param xml the XML document to unmarshal
      * @return the Java object
      * @throws JAXBException if an exception occurred when unmarshalling the XML document
@@ -85,8 +83,8 @@ public final class XjcSupport {
 
     /**
      * Unmarshals the provided XML document.
-     * 
-     * @param xml the XML document to unmarshal
+     *
+     * @param xml  the XML document to unmarshal
      * @param type the type of the Java object
      * @return the Java object of the specified type
      * @throws JAXBException if an exception occurred when unmarshalling the XML document
@@ -103,10 +101,9 @@ public final class XjcSupport {
      * This method together with the class {@link com.axiell.ehub.util.XjcSupport.JaxbContextHolder} exploits the
      * guarantee that the {@link javax.xml.bind.JAXBContext} will not be initialized until it is used.
      * </p>
-     * 
+     *
      * @return a {@link javax.xml.bind.JAXBContext}
-     * @throws com.axiell.ehub.util.XjcSupport.XjcSupportException if a {@link javax.xml.bind.JAXBContext} could not be
-     * created
+     *         created
      */
     private static JAXBContext getJaxbContext() {
         return JaxbContextHolder.JAXB_CONTEXT;
@@ -119,7 +116,8 @@ public final class XjcSupport {
         /**
          * The domain JAXB context path.
          */
-        private static final Class<?>[] CONTEXT_PATH = {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ExportRecords.class, IndexRecords.class};
+        private static final Class<?>[] CONTEXT_PATH =
+                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ExportRecords.class, IndexRecords.class};
 
         /**
          * The domain {@link javax.xml.bind.JAXBContext} singleton.
@@ -128,10 +126,9 @@ public final class XjcSupport {
 
         /**
          * Creates a new instance of {@link javax.xml.bind.JAXBContext}.
-         * 
+         *
          * @return a new instance of {@link javax.xml.bind.JAXBContext}
-         * @throws com.axiell.ehub.util.XjcSupport.XjcSupportException if a {@link javax.xml.bind.JAXBContext} could not
-         * be created
+         *         be created
          */
         private static JAXBContext createContext() {
             try {
@@ -140,5 +137,28 @@ public final class XjcSupport {
                 throw new InternalServerErrorException("Could not create a JAXB context for the context path '" + CONTEXT_PATH + "'", ex);
             }
         }
+    }
+
+    public static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(date);
+        XMLGregorianCalendar xmlGregorianCalendar = null;
+        try {
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        } catch (DatatypeConfigurationException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return xmlGregorianCalendar;
+    }
+
+    public static Date xmlGregorianCalendar2date(final XMLGregorianCalendar xmlGregorianCalendar) {
+        if (xmlGregorianCalendar == null) {
+            return null;
+        }
+        Date date = xmlGregorianCalendar.toGregorianCalendar().getTime();
+        return date;
     }
 }
