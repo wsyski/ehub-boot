@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../main/xsd/se/elib/library/CreateLoan.xsd">
+	<status>
+		<code>101</code>
+		<message>Info - Ok</message>
+	</status>
+	<data>
+		<downloadurl>https://www.elib.se/webservices/fulfillment/?datax=0%2fNgoJdQZh6iUxEBJw51mrjs9XgtOK71Ds8LB1%2bmaIfKlVdECtyUkUTutb95uhRs1ITy%2bDDWoWwVZk3wa3bnYyqE2kAz8Dm%2f</downloadurl>
+	</data>
+</response>

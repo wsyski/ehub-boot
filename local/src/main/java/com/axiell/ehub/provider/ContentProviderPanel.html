@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+        	<div>
+        		<form wicket:id="contentProviderForm">        			
+		        	<div wicket:id="properties">
+		        		<label wicket:for="property">
+       						<span wicket:id="propertyLabel"></span>
+       					</label>
+       					<input wicket:id="property" type="text"></input>
+		        	</div>
+		        	<div>
+        				<input wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
+        			</div>
+				</form>
+			</div>
+        	
+        	<a wicket:id="newFormatDecorationLink" wicket:message="title:lnkNewFormatDecoration.title">
+        		<wicket:message key="lnkNewFormatDecoration.label"/>
+        	</a>
+        	<div wicket:id="decorationFormPanel"></div>
+        	
+        	<div>
+        		<wicket:message key="txtFormatsHeader"/>
+        	</div>
+        	<div wicket:id="decorations">
+        		<table>
+        			<tr>
+        				<td>
+			        		<a wicket:id="decorationLink" wicket:message="title:lnkDecoration.title">
+			        			<span wicket:id="decorationLinkLabel"></span>
+			        		</a>
+			        	</td>
+			        	<td>
+							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+								<wicket:message key="lnkDelete.label"/>
+							</a>
+						</td>
+			        </tr>		
+        		</table>
+        	</div>
+        </wicket:panel>
+    </body>
+</html>

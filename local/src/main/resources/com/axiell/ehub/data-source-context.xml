@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		  http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <util:properties id="hibernateProperties" location="classpath:hibernate.properties" />
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="#{systemProperties['hibernate.show_sql']?: hibernateProperties['hibernate.show_sql']}"/>
+        <property name="generateDdl" value="false"/>
+        <property name="database" value="ORACLE"/>
+        <property name="databasePlatform" value="#{hibernateProperties['hibernate.dialect']}"/>
+    </bean>
+
+    <bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource">
+        <property name="URL" value="#{systemProperties['hibernate.connection.url']?: hibernateProperties['hibernate.connection.url']}"/>
+        <property name="user" value="#{systemProperties['hibernate.connection.username']?: hibernateProperties['hibernate.connection.username']}"/>
+        <property name="password" value="#{systemProperties['hibernate.connection.password']?: hibernateProperties['hibernate.connection.password']}"/>
+    </bean>
+</beans>

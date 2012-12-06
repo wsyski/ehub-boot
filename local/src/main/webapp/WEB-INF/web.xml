@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>Axiell eHUB</display-name>
+
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/com/axiell/ehub/application-context.xml</param-value>
+    </context-param>
+
+    <listener>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>    
+
+	<listener>
+		<listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
+	</listener>
+	
+    <filter>
+        <filter-name>RestEasy</filter-name>
+        <filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
+    </filter>
+    
+    <filter>
+        <filter-name>EhubAdminApplication</filter-name>
+        <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+        <init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>com.axiell.ehub.EhubAdminApplication</param-value>
+        </init-param>
+    </filter>
+ 
+    <filter-mapping>
+        <filter-name>RestEasy</filter-name>
+		<url-pattern>/v1/*</url-pattern>
+       	<url-pattern>/v2/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>EhubAdminApplication</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+</web-app>

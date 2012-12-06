@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>	        
+	        <form wicket:id="decorationForm">
+	        	<div wicket:enclosure="contentProviderFormatId">
+					<label wicket:for="contentProviderFormatId">
+						<wicket:message key="fldFormatId.label"/>
+					</label>
+					<input wicket:id="contentProviderFormatId" type="text" wicket:message="title:fldFormatId.title"></input>
+				</div>
+	        	<div>
+       				<label wicket:for="contentDisposition">
+       					<wicket:message key="fldContentDisposition.label"/>
+       				</label>
+       				<select wicket:id="contentDisposition" wicket:message="title:fldContentDisposition.title"></select>
+       			</div>
+       			<div wicket:id="playerContainer">
+       				<div>
+       					<label wicket:for="playerWidth">
+       						<wicket:message key="fldPlayerWidth.label"/>
+       					</label>
+       					<input wicket:id="playerWidth" type="text" wicket:message="title:fldPlayerWidth.title"></input>
+       				</div>
+       				<div>
+       					<label wicket:for="playerHeight">
+       						<wicket:message key="fldPlayerHeight.label"/>
+       					</label>
+       					<input wicket:id="playerHeight" type="text" wicket:message="title:fldPlayerHeight.title"></input>
+       				</div>
+       			</div>
+       			<div>
+       				<input wicket:id="submit" type="submit" wicket:message="value:btnSaveFormatDecoration.label,title:btnSaveFormatDecoration.title"></input>
+       			</div>
+	        </form>
+	        <a wicket:id="cancelLink" wicket:message="title:lnkCancel.title">
+       			<wicket:message key="lnkCancel.label"/>
+       		</a>
+        </wicket:panel>
+    </body>
+</html>

@@ -1,0 +1,11 @@
+<bindings version="2.1" xmlns="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <bindings schemaLocation="../../../../xsd/se/elib/library/GetLibraryUserOrderList.xsd" node="/xs:schema">
+        <bindings node="//xs:element[@name='book']/xs:complexType/xs:sequence/xs:element[@name='data']/xs:complexType">
+            <class name="BookData"/>
+        </bindings>
+        <bindings node="//xs:element[@name='book']/xs:complexType/xs:sequence/xs:element[@name='data']/xs:complexType/xs:sequence/xs:element[@name='data']/xs:complexType">
+            <class name="UrlData"/>
+        </bindings>
+    </bindings>
+</bindings>

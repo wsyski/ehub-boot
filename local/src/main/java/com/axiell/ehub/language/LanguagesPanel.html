@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+        	<div wicket:id="languages">
+        		<table>
+        			<tr>
+        				<td>
+        					<form>        			
+					        	<div>
+					        		<label wicket:for="language">
+			       						<wicket:message key="fldLanguage.label"/>
+			       					</label>
+			       					<input wicket:id="language" type="text" wicket:message="title:fldLanguage.title"></input>
+					        	</div>
+					        </form>	
+        				</td>
+        				<td>
+							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+								<wicket:message key="lnkDelete.label"/>
+							</a>
+						</td>	
+					</tr>		
+				</table>
+        	</div>
+        	
+        	<div>
+        		<div>
+        			<wicket:message key="txtNewLanguageHeader"/>
+        		</div>
+        		<form wicket:id="languageForm">        			
+		        	<div>
+		        		<label wicket:for="id">
+       						<wicket:message key="fldLanguage.label"/>
+       					</label>
+       					<input wicket:id="id" type="text" wicket:message="title:fldLanguage.title"></input>
+		        	</div>
+		        	<div>
+        				<input wicket:id="submit" type="submit" wicket:message="value:btnAdd.label,title:btnAdd.title"></input>
+        			</div>
+				</form>
+			</div>
+        </wicket:panel>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Wojciech Syski (Axiell Library Group) -->
+<xs:schema xmlns="https://www.elib.se/webservices/schema/getlibraryuserorderlist.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://www.elib.se/webservices/schema/getlibraryuserorderlist.xsd" elementFormDefault="unqualified"
+           attributeFormDefault="unqualified">
+    <xs:element name="response">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="status">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="code" type="xs:unsignedByte"/>
+                            <xs:element name="message" type="xs:string"/>
+                            <xs:element name="maxLoanperiod" type="xs:unsignedInt"/>
+                            <xs:element name="maxLoanpertime" type="xs:unsignedInt"/>
+                            <xs:element name="maxloanstotal" type="xs:unsignedInt"/>
+                            <xs:element name="maxloanpertimesound" type="xs:string"/>
+                            <xs:element name="maxloanstotalsound" type="xs:string"/>
+                            <xs:element name="maxtotalperiod" type="xs:string"/>
+                            <xs:element name="usertotalloans" type="xs:string"/>
+                            <xs:element name="userebookloansremain" type="xs:string"/>
+                            <xs:element name="usersoundloansremain" type="xs:string"/>
+                            <xs:element name="userebookloansnexttime" type="xs:string"/>
+                            <xs:element name="usersoundloansNexttime" type="xs:string"/>
+                            <xs:element name="usertotalebookloans" type="xs:string"/>
+                            <xs:element name="usertotalsoundloans" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="data">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="orderitem" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="retailerordernumber" type="xs:unsignedInt"/>
+                                        <xs:element name="orderstatus">
+                                            <xs:complexType>
+                                                <xs:attribute name="id" type="xs:unsignedByte" use="required"/>
+                                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="orderdate" type="xs:string"/>
+                                        <xs:element name="loanexpiredate" type="xs:string"/>
+                                        <xs:element name="book">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="title" type="xs:string"/>
+                                                    <xs:element name="authors">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="author" maxOccurs="unbounded">
+                                                                    <xs:complexType>
+                                                                        <xs:attribute name="name" type="xs:string" use="required"/>
+                                                                        <xs:attribute name="type" type="xs:string" use="required"/>
+                                                                        <xs:attribute name="idtype" type="xs:unsignedByte" use="required"/>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="publisher" type="xs:string"/>
+                                                    <xs:element name="format">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" type="xs:unsignedByte" use="required"/>
+                                                            <xs:attribute name="name" type="xs:string" use="required"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="data">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="data">
+                                                                    <xs:complexType mixed="true" xml:base="xs:string">
+                                                                        <xs:sequence>
+                                                                            <xs:element name="downloadurl" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:unsignedLong" use="required"/>
+                                                <xs:attribute name="idtype" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

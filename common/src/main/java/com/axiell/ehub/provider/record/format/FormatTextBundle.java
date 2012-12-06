@@ -1,0 +1,134 @@
+/*
+ * Copyright (c) 2012 Axiell Group AB.
+ */
+package com.axiell.ehub.provider.record.format;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.ForeignKey;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import com.axiell.ehub.provider.ContentProvider;
+
+/**
+ * Contains language specific texts related to a specific format at a {@link ContentProvider}.
+ */
+@Entity
+@Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE"}))
+@Access(AccessType.PROPERTY)
+public class FormatTextBundle extends AbstractPersistable<Long> {
+    private static final long serialVersionUID = 8478816548440529433L;
+    private FormatDecoration formatDecoration;
+    private String language;
+    private String name;
+    private String description;
+
+    /**
+     * Empty constructor required by JPA.
+     */
+    protected FormatTextBundle() {
+    }
+
+    /**
+     * Constructs a new {@link FormatTextBundle}.
+     * 
+     * @param formatDecoration the {@link FormatDecoration}
+     * @param language the language of the texts in this {@link FormatTextBundle} as an ISO 639 alpha-2
+     * or alpha-3 language code
+     * @param name the name of the format in the specified language
+     * @param description the description of the format in the specified language
+     */
+    public FormatTextBundle(FormatDecoration formatDecoration, String language, String name, String description) {
+        this.formatDecoration = formatDecoration;
+        this.language = language;
+        this.name = name;
+        this.description = description;
+    }
+
+    /**
+     * Returns the {@link FormatDecoration}.
+     * 
+     * @return the {@link FormatDecoration}
+     */
+    @ManyToOne
+    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
+    @ForeignKey(name = "CONTENT_P_F_T_CONTENT_P_F_D_FK")
+    public FormatDecoration getFormatDecoration() {
+        return formatDecoration;
+    }
+
+    /**
+     * Sets the {@link FormatDecoration}.
+     * 
+     * @param formatDecoration the {@link FormatDecoration} to set
+     */
+    protected void setFormatDecoration(FormatDecoration formatDecoration) {
+        this.formatDecoration = formatDecoration;
+    }
+
+    /**
+     * Returns the language of the texts in this {@link FormatTextBundle} as an ISO 639 alpha-2 or
+     * alpha-3 language code.
+     * 
+     * @return a language code
+     */
+    @Column(name = "LANGUAGE", nullable = false)
+    public String getLanguage() {
+        return language;
+    }
+
+    /**
+     * Sets the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3 language code.
+     * 
+     * @param language the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3
+     * language code to set
+     */
+    protected void setLanguage(String language) {
+        this.language = language;
+    }
+
+    /**
+     * Returns the name of the format in the specified language.
+     * 
+     * @return the name of the format in the specified language
+     */
+    @Column(name = "NAME", nullable = false)
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name of the format in the specified language.
+     * 
+     * @param name the name of the format in the specified language to set
+     */
+    protected void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Returns the description of the format in the specified language.
+     * 
+     * @return the description of the format in the specified language
+     */
+    @Column(name = "DESCRIPTION", nullable = false)
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the description of the format in the specified language.
+     * 
+     * @param description the description of the format in the specified language to set
+     */
+    protected void setDescription(String description) {
+        this.description = description;
+    }
+}

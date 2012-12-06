@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<Context>
+    <ResourceLink global="jdbc/ehub-db" name="jdbc/ehub-db" type="javax.sql.Datasource"/>
+</Context>

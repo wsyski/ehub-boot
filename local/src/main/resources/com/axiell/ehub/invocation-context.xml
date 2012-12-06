@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		 	
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="business-controller-context.xml" />
+
+	<!-- List only the JAX-RS Providers here, e.g. exception mappers, interceptors, converters etc. -->	
+	<bean id="restEasyBadRequestExceptionMapper" class="com.axiell.ehub.util.RestEasyBadRequestExceptionMapper"/>
+	<bean id="ehubRuntimeExceptionMapper" class="com.axiell.ehub.util.EhubRuntimeExceptionMapper"/>
+	<bean id="authorizationHeaderInterceptor" class="com.axiell.ehub.security.AuthorizationHeaderInterceptor"/>
+	<bean id="authInfoConverter" class="com.axiell.ehub.security.AuthInfoConverter"/>
+
+	<!-- List only the JAX-RS root resources here -->
+
+	<bean id="contentProvidersResource" class="com.axiell.ehub.provider.ContentProvidersResource">
+		<property name="formatBusinessController" ref="formatBusinessController" />		
+	</bean>
+
+	<bean id="lmsResource" class="com.axiell.ehub.lms.LmsResource">
+		<property name="recordBusinessController" ref="recordBusinessController"/>
+	</bean>
+
+	<bean id="loansResource" class="com.axiell.ehub.loan.LoansResource">
+		<property name="loanBusinessController" ref="loanBusinessController" />
+	</bean>
+</beans>

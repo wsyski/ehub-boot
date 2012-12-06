@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>        	
+        	<div>
+        		<form wicket:id="cpcForm">        			
+		        	<div wicket:id="properties">
+		        		<label wicket:for="property">
+       						<span wicket:id="propertyLabel"></span>
+       					</label>
+       					<input wicket:id="property" type="text"></input>
+		        	</div>
+		        	<div>
+        				<input wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
+        			</div>
+				</form>
+			</div>
+        </wicket:panel>
+    </body>
+</html>

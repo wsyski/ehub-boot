@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="httpClientErrorInterceptor" class="com.axiell.ehub.util.HttpClientErrorInterceptor"/>
+
+    <bean id="resteasyProviderFactory" class="org.jboss.resteasy.spi.ResteasyProviderFactory" factory-method="getInstance"/>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject">
+            <ref local="resteasyProviderFactory"/>
+        </property>
+        <property name="targetMethod" value="addClientErrorInterceptor"/>
+        <property name="arguments">
+            <list>
+                <ref bean="httpClientErrorInterceptor"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="sysProps" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="org.jboss.resteasy.client.ClientRequest"></property>
+        <property name="targetMethod" value="setDefaultExecutorClass"></property>
+        <property name="arguments">
+            <list>
+                <value>com.axiell.ehub.util.HttpClientExecutor</value>
+            </list>
+        </property>
+    </bean>
+</beans>

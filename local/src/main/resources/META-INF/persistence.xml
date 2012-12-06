@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="ehub-db">
+		<class>com.axiell.ehub.consumer.EhubConsumer</class>
+		<class>com.axiell.ehub.consumer.ContentProviderConsumer</class>
+		<class>com.axiell.ehub.language.Language</class>
+		<class>com.axiell.ehub.provider.ContentProvider</class>
+		<class>com.axiell.ehub.provider.record.format.FormatDecoration</class>
+		<class>com.axiell.ehub.provider.record.format.FormatTextBundle</class>
+		<class>com.axiell.ehub.loan.EhubLoan</class>
+		<class>com.axiell.ehub.loan.ContentProviderLoanMetadata</class>
+		<class>com.axiell.ehub.user.AdminUser</class>
+	</persistence-unit>
+</persistence>
