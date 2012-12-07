@@ -24,6 +24,7 @@ import java.util.Collection;
 
 public class ToString {
     private static final Logger LOGGER = Logger.getLogger(ToString.class);
+    private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE= new RecursiveToStringStyle();
     private static final String LF = System.getProperty("line.separator");
 
     public static String fromClientRequest(final ClientRequest clientRequest) {
@@ -54,7 +55,7 @@ public class ToString {
         if (body != null) {
             sb.append(LF);
             sb.append("Body: ");
-            sb.append(ToStringBuilder.reflectionToString(body, new RecursiveToStringStyle()));
+            sb.append(ToStringBuilder.reflectionToString(body, RECURSIVE_TO_STRING_STYLE));
         }
         return sb.toString();
     }
@@ -120,7 +121,7 @@ public class ToString {
         if (entity != null) {
             sb.append(LF);
             sb.append("Entity: ");
-            sb.append(ToStringBuilder.reflectionToString(entity, new RecursiveToStringStyle()));
+            sb.append(ToStringBuilder.reflectionToString(entity, RECURSIVE_TO_STRING_STYLE));
         }
         return sb.toString();
     }
@@ -155,7 +156,6 @@ public class ToString {
         public RecursiveToStringStyle(int maxDepth) {
             setUseShortClassName(true);
             setUseIdentityHashCode(false);
-
             this.maxDepth = maxDepth;
         }
 
