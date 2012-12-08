@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
-import org.hibernate.LazyInitializationException;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.BaseClientResponse;
@@ -164,14 +163,14 @@ public class ToString {
             if (value.getClass().getName().startsWith("java.lang.") || (maxDepth != INFINITE_DEPTH && depth >= maxDepth)) {
                 try {
                     buffer.append(value);
-                } catch (LazyInitializationException ex) {
+                } catch (RuntimeException ex) {
                     buffer.append(UNKNOWN_FIELD);
                 }
             } else {
                 depth++;
                 try {
                     buffer.append(ReflectionToStringBuilder.toString(value, this));
-                } catch (LazyInitializationException ex) {
+                } catch (RuntimeException ex) {
                     buffer.append(UNKNOWN_FIELD);
                 }
                 depth--;

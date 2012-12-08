@@ -102,6 +102,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
@@ -236,13 +241,6 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <archiveClasses>true</archiveClasses>
-                    <attachClasses>true</attachClasses>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -392,6 +390,7 @@
                             <bindingIncludes>
                                 <include>GetLibraryUserOrderList.xjb</include>
                             </bindingIncludes>
+                            <forceRegenerate>true</forceRegenerate>
                         </configuration>
                     </execution>
                     <execution>
@@ -404,6 +403,7 @@
                             <schemaIncludes>
                                 <include>GetProduct.xsd</include>
                             </schemaIncludes>
+                            <forceRegenerate>true</forceRegenerate>
                             <generatePackage>se.elib.library.product</generatePackage>
                             <generateDirectory>${project.build.directory}/generated-sources/xjc3</generateDirectory>
                         </configuration>
@@ -433,6 +433,13 @@
                 </executions>
                 <configuration>
                     <mainClass>com.axiell.ehub.util.JpaSchemaExport</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archiveClasses>false</archiveClasses>
+                    <attachClasses>false</attachClasses>
                 </configuration>
             </plugin>
             <plugin>

@@ -26,7 +26,7 @@ public abstract class AbstractEhubRepositoryTest<D extends DevelopmentData> exte
         developmentData.destroy();
     }
 
-    protected static void ignoreIfOffline() {
-        Assume.assumeNotNull(System.getProperty("online"));
+    protected static boolean isOnline() {
+        return System.getProperty("online") != null && Boolean.valueOf(System.getProperty("online"));
     }
 }

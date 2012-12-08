@@ -6,10 +6,10 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-    <!-- <import resource="common-context.xml" /> -->    
-    <util:properties id="remoteProperties" location="classpath:remote-client.properties" />
-    
+    <import resource="common-context.xml" />
     <aop:aspectj-autoproxy />
+
+    <util:properties id="remoteProperties" location="classpath:remote-client.properties" />
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
         <property name="ehubBaseUri" value="#{remoteProperties['remote.ehubBaseUri']}"/>

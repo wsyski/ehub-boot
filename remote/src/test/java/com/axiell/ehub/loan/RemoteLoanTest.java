@@ -9,7 +9,9 @@ import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import junit.framework.Assert;
 import org.junit.Test;
+import org.springframework.aop.framework.Advised;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import java.util.Locale;
@@ -21,20 +23,26 @@ import static org.junit.Assert.*;
  */
 public class RemoteLoanTest extends AbstractEhubClientTest<LoanDevelopmentData> {
 
-    /**
-     * @see com.axiell.ehub.AbstractEhubClientTest#initDevelopmentData(org.springframework.web.context.support.XmlWebApplicationContext,
-     *      com.axiell.ehub.provider.IContentProviderAdminController,
-     *      com.axiell.ehub.provider.record.format.IFormatAdminController, com.axiell.ehub.consumer.IConsumerAdminController)
-     */
-    @Override
-    protected LoanDevelopmentData initDevelopmentData(XmlWebApplicationContext applicationContext,
-                                                      IContentProviderAdminController contentProviderAdminController,
-                                                      IFormatAdminController formatAdminController,
-                                                      IConsumerAdminController consumerAdminController) {
-
-        IEhubLoanRepository ehubLoanRepository = applicationContext.getBean(IEhubLoanRepository.class);
-        assertNotNull(ehubLoanRepository);
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, ehubLoanRepository);
+    @Test
+    public void testGetFormatsException() {
+        EhubClient ehubClient = null;
+        if (ehubService instanceof EhubClient) {
+            ehubClient = (EhubClient) ehubService;
+        } else {
+            Advised advised = (Advised) ehubService;
+            try {
+                ehubClient = (EhubClient) advised.getTargetSource().getTarget();
+            } catch (Exception ex) {
+                fail("Can not retrieve EhubClient");
+            }
+        }
+        ehubClient.setEhubBaseUri("http://localhost:1111");
+        try {
+            ehubService.getFormats(authInfoNoCard, ContentProviderName.ELIB.toString(), DevelopmentData.ELIB_RECORD_0_ID, Locale.ENGLISH.getLanguage());
+        } catch (EhubException ex) {
+            // Expected
+            Assert.assertEquals(ex.getEhubError().getCause(), ErrorCause.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // TODO: mock the ContentProvider layer and fix this test
@@ -144,4 +152,19 @@ public class RemoteLoanTest extends AbstractEhubClientTest<LoanDevelopmentData> 
         }
     }
 
+    /**
+     * @see com.axiell.ehub.AbstractEhubClientTest#initDevelopmentData(org.springframework.web.context.support.XmlWebApplicationContext,
+     *      com.axiell.ehub.provider.IContentProviderAdminController,
+     *      com.axiell.ehub.provider.record.format.IFormatAdminController, com.axiell.ehub.consumer.IConsumerAdminController)
+     */
+    @Override
+    protected LoanDevelopmentData initDevelopmentData(XmlWebApplicationContext applicationContext,
+                                                      IContentProviderAdminController contentProviderAdminController,
+                                                      IFormatAdminController formatAdminController,
+                                                      IConsumerAdminController consumerAdminController) {
+
+        IEhubLoanRepository ehubLoanRepository = applicationContext.getBean(IEhubLoanRepository.class);
+        assertNotNull(ehubLoanRepository);
+        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, ehubLoanRepository);
+    }
 }
