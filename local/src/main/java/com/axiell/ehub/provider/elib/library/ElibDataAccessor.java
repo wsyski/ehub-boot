@@ -50,7 +50,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private static final String ENGLISH = Locale.ENGLISH.getLanguage();
     private static final String CREATE_LOAN_MOBI_POCKET_ID = "X";
     private static final int ELIB_STATUS_CODE_OK = 101;
-    private static final DateTimeFormatter ELIB_DATE_FORMAT = DateTimeFormat.forPattern("YYYY-MM-DD HH:mm:ss");
+    private static final DateTimeFormatter ELIB_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * @see com.axiell.ehub.provider.IContentProviderDataAccessor#getFormats(com.axiell.ehub.consumer.ContentProviderConsumer,

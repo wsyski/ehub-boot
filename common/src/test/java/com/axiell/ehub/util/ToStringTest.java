@@ -20,12 +20,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class ToStringTest {
 
-    /**
-     * Test method for {@link HashFunction#hmacSha1(byte[], byte[])}.
-     * @throws java.io.UnsupportedEncodingException
-     */
     @Test
-    public void testMapToString() throws UnsupportedEncodingException {
+    public void testToString() throws UnsupportedEncodingException {
         Map<String,String> map1=new LinkedHashMap<>();
         map1.put("oneKey","oneValue");
         map1.put("twoKey","twoValue");
@@ -58,6 +54,11 @@ public class ToStringTest {
                 "  field13=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
                 "  field22=[col1, col2, col3]], \n" +
                 "  field14=1970-01-01 01:00:00]", toString);
+        Map<String,TestBean2> map3=Collections.singletonMap("oneBean",testBean2);
+        toString=ToString.fromMap(map3);
+        System.out.println(toString);
+        Assert.assertEquals("{oneBean=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
+                "  field22=[col1, col2, col3]]}", toString);
     }
 
     private static class TestBean1 {

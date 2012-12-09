@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Map;
 
 public class ToString {
     private static final Logger LOGGER = Logger.getLogger(ToString.class);
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("YYYY-MM-DD HH:mm:ss");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE = new RecursiveToStringStyle();
     private static final String LF = SystemUtils.LINE_SEPARATOR;
 
@@ -59,7 +60,7 @@ public class ToString {
         if (body != null) {
             sb.append(LF);
             sb.append("Body: ");
-            sb.append(ToStringBuilder.reflectionToString(body, RECURSIVE_TO_STRING_STYLE));
+            sb.append(fromObject(body));
         }
         return sb.toString();
     }
@@ -125,7 +126,7 @@ public class ToString {
         if (entity != null) {
             sb.append(LF);
             sb.append("Entity: ");
-            sb.append(ToStringBuilder.reflectionToString(entity, RECURSIVE_TO_STRING_STYLE));
+            sb.append(fromObject(entity));
         }
         return sb.toString();
     }
@@ -185,15 +186,70 @@ public class ToString {
             }
         }
 
+        @Override
+        protected void appendDetail(StringBuffer buffer, String fieldName, Map<?, ?> map) {
+            Iterator<? extends Map.Entry<?, ?>> iterator = map.entrySet().iterator();
+            if (!iterator.hasNext()) {
+                buffer.append("{}");
+            } else {
+                buffer.append('{');
+                for (; ; ) {
+                    Map.Entry e = iterator.next();
+                    Object key = e.getKey();
+                    Object value = e.getValue();
+                    if (key == this) {
+                        buffer.append("(this Map)");
+                    } else {
+                        appendInternal(buffer, fieldName, key, true);
+                    }
+                    buffer.append('=');
+                    if (value == this) {
+                        buffer.append("(this Map)");
+                    } else {
+                        appendInternal(buffer, fieldName, value, true);
+                    }
+                    if (!iterator.hasNext()) {
+                        buffer.append('}');
+                        break;
+                    }
+                    buffer.append(',').append(' ');
+                }
+            }
+        }
+
+        @Override
+        protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
+            Iterator iterator = coll.iterator();
+            if (!iterator.hasNext()) {
+                buffer.append("[]");
+            } else {
+                buffer.append('[');
+                for (; ; ) {
+                    Object value = iterator.next();
+                    if (value == this) {
+                        buffer.append("(this Collection)");
+                    } else {
+                        appendInternal(buffer, fieldName, value, true);
+                    }
+                    if (!iterator.hasNext()) {
+                        buffer.append(']');
+                        break;
+                    }
+                    buffer.append(',').append(' ');
+                }
+            }
+        }
+
+
         public String toString(final Map<?, ?> map) {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(map);
+            appendDetail(buffer, null, map);
             return buffer.toString();
         }
 
         public String toString(Collection<?> collection) {
             StringBuffer buffer = new StringBuffer();
-            buffer.append(collection);
+            appendDetail(buffer, null, collection);
             return buffer.toString();
         }
     }
