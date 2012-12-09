@@ -1,8 +1,8 @@
 package com.axiell.ehub.util;
 
-import com.google.common.base.Joiner;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,10 +12,14 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.HttpRequest;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Converts objects to human readable strings. Useful with debugging.
@@ -23,8 +27,9 @@ import java.util.Collection;
 
 public class ToString {
     private static final Logger LOGGER = Logger.getLogger(ToString.class);
-    private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE= new RecursiveToStringStyle();
-    private static final String LF = System.getProperty("line.separator");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("YYYY-MM-DD HH:mm:ss");
+    private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE = new RecursiveToStringStyle();
+    private static final String LF = SystemUtils.LINE_SEPARATOR;
 
     public static String fromClientRequest(final ClientRequest clientRequest) {
         StringBuilder sb = new StringBuilder();
@@ -38,17 +43,17 @@ public class ToString {
         if (!clientRequest.getFormParameters().isEmpty()) {
             sb.append(LF);
             sb.append("Parameters: ");
-            getMapJoiner().appendTo(sb, clientRequest.getFormParameters());
+            sb.append(fromMap(clientRequest.getFormParameters()));
         }
         if (!clientRequest.getPathParameters().isEmpty()) {
             sb.append(LF);
             sb.append("Parameters: ");
-            getMapJoiner().appendTo(sb, clientRequest.getPathParameters());
+            sb.append(fromMap(clientRequest.getPathParameters()));
         }
         if (!clientRequest.getHeaders().isEmpty()) {
             sb.append(LF);
             sb.append("Headers: ");
-            getMapJoiner().appendTo(sb, clientRequest.getHeaders());
+            sb.append(fromMap(clientRequest.getHeaders()));
         }
         Object body = clientRequest.getBody();
         if (body != null) {
@@ -70,7 +75,7 @@ public class ToString {
         if (!clientResponse.getHeaders().isEmpty()) {
             sb.append(LF);
             sb.append("Headers: ");
-            getMapJoiner().appendTo(sb, clientResponse.getHeaders());
+            sb.append(fromMap(clientResponse.getHeaders()));
         }
         String body = null;
         try {
@@ -96,13 +101,13 @@ public class ToString {
         if (!httpRequest.getDecodedFormParameters().isEmpty()) {
             sb.append(LF);
             sb.append("Parameters: ");
-            getMapJoiner().appendTo(sb, httpRequest.getDecodedFormParameters());
+            sb.append(fromMap(httpRequest.getDecodedFormParameters()));
         }
         if (httpRequest.getHttpHeaders() != null && httpRequest.getHttpHeaders().getRequestHeaders() != null &&
                 !httpRequest.getHttpHeaders().getRequestHeaders().isEmpty()) {
             sb.append(LF);
             sb.append("Headers: ");
-            getMapJoiner().appendTo(sb, httpRequest.getHttpHeaders().getRequestHeaders());
+            sb.append(fromMap(httpRequest.getHttpHeaders().getRequestHeaders()));
         }
         return sb.toString();
     }
@@ -114,7 +119,7 @@ public class ToString {
         if (!serverResponse.getMetadata().isEmpty()) {
             sb.append(LF);
             sb.append("Metadata: ");
-            getMapJoiner().appendTo(sb, serverResponse.getMetadata());
+            sb.append(fromMap(serverResponse.getMetadata()));
         }
         Object entity = serverResponse.getEntity();
         if (entity != null) {
@@ -125,64 +130,71 @@ public class ToString {
         return sb.toString();
     }
 
-    private static Joiner.MapJoiner getMapJoiner() {
-        Joiner.MapJoiner joiner = Joiner.on(",").withKeyValueSeparator("->");
-        return joiner;
+    public static String fromDate(final Date date) {
+        return DATE_FORMAT.print(date.getTime());
+    }
+
+    public static String fromMap(final Map<?, ?> map) {
+        return RECURSIVE_TO_STRING_STYLE.toString(map);
+    }
+
+    public static String fromCollection(final Collection<?> collection) {
+        return RECURSIVE_TO_STRING_STYLE.toString(collection);
+    }
+
+    public static String fromObject(final Object object) {
+        return ToStringBuilder.reflectionToString(object, RECURSIVE_TO_STRING_STYLE);
     }
 
     public static String getLf() {
         return LF;
     }
 
-
     private static class RecursiveToStringStyle extends ToStringStyle {
         private static final String UNKNOWN_FIELD = "?";
-        private static final int INFINITE_DEPTH = -1;
 
-        /**
-         * Setting {@link #maxDepth} to 0 will have the same effect as using original {@link #ToStringStyle}: it will
-         * print all 1st level values without traversing into them. Setting to 1 will traverse up to 2nd level and so
-         * on.
-         */
-        private int maxDepth;
-
-        private int depth;
 
         public RecursiveToStringStyle() {
-            this(INFINITE_DEPTH);
-        }
-
-        public RecursiveToStringStyle(int maxDepth) {
+            setArrayContentDetail(true);
             setUseShortClassName(true);
+            setUseClassName(false);
             setUseIdentityHashCode(false);
-            this.maxDepth = maxDepth;
+            setFieldSeparator(", " + SystemUtils.LINE_SEPARATOR + "  ");
         }
 
         @Override
-        protected void appendDetail(StringBuffer buffer, String fieldName, Object value) {
-            if (value.getClass().getName().startsWith("java.lang.") || (maxDepth != INFINITE_DEPTH && depth >= maxDepth)) {
+        public void appendDetail(StringBuffer buffer, String fieldName, Object value) {
+            if (value instanceof Date) {
+                try {
+                    buffer.append(fromDate((Date) value));
+                } catch (RuntimeException ex) {
+                    buffer.append(UNKNOWN_FIELD);
+                }
+            } else if (value.getClass().getName().startsWith("java.")) {
                 try {
                     buffer.append(value);
                 } catch (RuntimeException ex) {
                     buffer.append(UNKNOWN_FIELD);
                 }
             } else {
-                depth++;
                 try {
                     buffer.append(ReflectionToStringBuilder.toString(value, this));
                 } catch (RuntimeException ex) {
                     buffer.append(UNKNOWN_FIELD);
                 }
-                depth--;
             }
         }
 
-        // another helpful method
-        @Override
-        protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
-            depth++;
-            buffer.append(ReflectionToStringBuilder.toString(coll.toArray(), this, true, true));
-            depth--;
+        public String toString(final Map<?, ?> map) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(map);
+            return buffer.toString();
+        }
+
+        public String toString(Collection<?> collection) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(collection);
+            return buffer.toString();
         }
     }
 }
