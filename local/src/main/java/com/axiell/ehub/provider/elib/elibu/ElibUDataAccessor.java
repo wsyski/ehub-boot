@@ -14,8 +14,9 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.axiell.ehub.BadRequestException;
@@ -44,7 +45,7 @@ import com.axiell.ehub.provider.record.format.Formats;
  */
 @Component
 public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = Logger.getLogger(ElibUDataAccessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElibUDataAccessor.class);
     private static final String ELIBU_LOAN_ID_PATTERN = "{0}|{1}";
     private static final String ELIBU_LOAN_ID_SPLIT_PATTERN = "\\|";
     private static final int ELIBU_LOAN_ID_PARTS = 2;

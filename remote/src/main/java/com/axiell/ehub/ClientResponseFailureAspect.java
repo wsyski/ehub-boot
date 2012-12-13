@@ -10,15 +10,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.JAXBException;
 
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
+import org.jboss.resteasy.client.exception.ResteasyClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.util.XjcSupport;
-import org.jboss.resteasy.client.exception.ResteasyClientException;
 
 /**
  * This Aspect converts {@link ClientResponseFailure}s thrown by the {@link EhubClient} to {@link EhubException}s and
@@ -26,7 +27,7 @@ import org.jboss.resteasy.client.exception.ResteasyClientException;
  */
 @Aspect
 public class ClientResponseFailureAspect {
-    private static final Logger LOGGER = Logger.getLogger(ClientResponseFailureAspect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientResponseFailureAspect.class);
 
     /**
      * Converts the {@link ClientResponseFailure} to an {@link EhubException}.

@@ -1,17 +1,18 @@
 package com.axiell.ehub.util;
 
-import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.ext.Provider;
+
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.ext.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Logging post process interceptor
@@ -19,7 +20,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @ServerInterceptor
 public final class LoggingPreProcessInterceptor implements PreProcessInterceptor {
-    private static final Logger LOGGER = Logger.getLogger(LoggingPreProcessInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingPreProcessInterceptor.class);
 
     @Context
     HttpServletRequest servletRequest;

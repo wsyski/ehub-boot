@@ -14,12 +14,12 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.After;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -34,7 +34,7 @@ import com.axiell.ehub.security.AuthInfo;
  * 
  */
 public abstract class AbstractEhubClientTest<D extends DevelopmentData> {
-    private static final Logger LOGGER = Logger.getLogger(AbstractEhubClientTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEhubClientTest.class);
     private static final int PORT_NO = 9080;
 
     @Resource(name = "ehubClient")

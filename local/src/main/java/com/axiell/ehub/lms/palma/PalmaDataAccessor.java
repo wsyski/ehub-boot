@@ -3,6 +3,19 @@
  */
 package com.axiell.ehub.lms.palma;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.Validate;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.springframework.stereotype.Component;
+
 import com.axiell.arena.services.palma.loans.CheckOut;
 import com.axiell.arena.services.palma.loans.CheckOutTest;
 import com.axiell.arena.services.palma.loans.Loans;
@@ -12,36 +25,22 @@ import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
 import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
 import com.axiell.arena.services.palma.util.status.Status;
-import com.axiell.ehub.*;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ForbiddenException;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.PreCheckoutAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.util.XjcSupport;
-import org.apache.commons.lang3.Validate;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Default implementation of the {@link IPalmaDataAccessor}.
  */
 @Component
 final class PalmaDataAccessor implements IPalmaDataAccessor {
-    private static final Logger LOGGER = Logger.getLogger(PalmaDataAccessor.class);
     private static final String STATUS_OK = "ok";
     private static final String STATUS_ERROR = "error";
     private static final String MESSAGE_BLOCKED_BORR_CARD = "blockedBorrCard";

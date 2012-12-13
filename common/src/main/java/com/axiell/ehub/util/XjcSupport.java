@@ -6,8 +6,9 @@ import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.spi.InternalServerErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.*;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -22,7 +23,7 @@ import java.util.GregorianCalendar;
  * Provides the possibility to marshal and unmarshal XML documents.
  */
 public final class XjcSupport {
-    private static final Logger LOGGER = Logger.getLogger(XjcSupport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XjcSupport.class);
 
     /**
      * Private constructor that prevents direct instantiation.

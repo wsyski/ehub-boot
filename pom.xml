@@ -182,10 +182,22 @@
             </dependency>
 
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-core</artifactId>
+		<version>1.0.7</version>
+	    </dependency>
+
+            <dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+		<version>1.0.7</version>
+	    </dependency>
+
+            <dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-access</artifactId>
+		<version>1.0.7</version>
+	    </dependency>
 
             <dependency>
                 <groupId>org.hibernate.javax.persistence</groupId>

@@ -1,20 +1,21 @@
 package com.axiell.ehub.util;
 
-import org.apache.log4j.Logger;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.ejb.Ejb3Configuration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+
+import org.hibernate.cfg.Configuration;
+import org.hibernate.ejb.Ejb3Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class that provides the possibility to export an database schema from the JPA annotated objects.
  */
 @SuppressWarnings("deprecation")
 public class JpaSchemaExport {
-    private static final Logger LOGGER = Logger.getLogger(JpaSchemaExport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JpaSchemaExport.class);
 
     /**
      * Main method.

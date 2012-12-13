@@ -1,11 +1,12 @@
 package com.axiell.ehub.util;
 
-import org.apache.log4j.Logger;
+import javax.ws.rs.ext.Provider;
+
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.ClientErrorInterceptor;
-
-import javax.ws.rs.ext.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Client Exception Interceptor.
@@ -13,7 +14,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @ClientInterceptor
 public class LoggingClientErrorInterceptor implements ClientErrorInterceptor {
-    private static final Logger LOGGER = Logger.getLogger(LoggingClientErrorInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingClientErrorInterceptor.class);
 
     /**
      * @see org.jboss.resteasy.client.core.ClientErrorInterceptor#handle(org.jboss.resteasy.client.ClientResponse)

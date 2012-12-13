@@ -3,6 +3,30 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
+import static com.axiell.ehub.util.HashFunction.md5;
+
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.xml.bind.JAXBElement;
+
+import org.jboss.resteasy.client.ProxyFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import se.elib.library.orderlist.Response.Data.Orderitem;
+import se.elib.library.orderlist.Response.Data.Orderitem.Book;
+import se.elib.library.product.Response.Data.Product;
+
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -20,33 +44,13 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.apache.log4j.Logger;
-import org.jboss.resteasy.client.ProxyFactory;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.springframework.stereotype.Component;
-import se.elib.library.orderlist.Response.Data.Orderitem;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book;
-import se.elib.library.product.Response.Data.Product;
-
-import javax.xml.bind.JAXBElement;
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
-import static com.axiell.ehub.util.HashFunction.md5;
 
 /**
  * The Elib integration.
  */
 @Component
 public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = Logger.getLogger(ElibDataAccessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElibDataAccessor.class);
     private static final String ENGLISH = Locale.ENGLISH.getLanguage();
     private static final String CREATE_LOAN_MOBI_POCKET_ID = "X";
     private static final int ELIB_STATUS_CODE_OK = 101;

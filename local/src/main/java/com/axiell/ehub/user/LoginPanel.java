@@ -3,7 +3,6 @@
  */
 package com.axiell.ehub.user;
 
-import org.apache.log4j.Logger;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -14,6 +13,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.EhubAdminPage;
 import com.axiell.ehub.EhubAdminSession;
@@ -24,7 +25,7 @@ import com.axiell.ehub.EhubAdminSession;
  */
 public final class LoginPanel extends Panel {
     private static final long serialVersionUID = -8387035246210184104L;
-    private static final Logger LOGGER = Logger.getLogger(LoginPanel.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginPanel.class);
 
     @SpringBean(name = "userAdminController")
     private IUserAdminController userAdminController;

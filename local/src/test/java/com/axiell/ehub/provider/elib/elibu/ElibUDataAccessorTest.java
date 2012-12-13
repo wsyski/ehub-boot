@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -40,7 +41,7 @@ import com.axiell.ehub.provider.record.format.Formats;
  * 
  */
 public class ElibUDataAccessorTest {
-    private static final Logger LOGGER = Logger.getLogger(ElibUDataAccessorTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElibUDataAccessorTest.class);
     private Mockery mockery = new JUnit4Mockery() {
         {
             setImposteriser(ClassImposteriser.INSTANCE);

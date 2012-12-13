@@ -1,11 +1,12 @@
 package com.axiell.ehub.util;
 
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.spi.interception.ClientExecutionContext;
 import org.jboss.resteasy.spi.interception.ClientExecutionInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.ext.Provider;
 
@@ -15,7 +16,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @ClientInterceptor
 public class LoggingClientExecutionIterceptor implements ClientExecutionInterceptor {
-    private static final Logger LOGGER = Logger.getLogger(LoggingClientExecutionIterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingClientExecutionIterceptor.class);
 
 
     @Override

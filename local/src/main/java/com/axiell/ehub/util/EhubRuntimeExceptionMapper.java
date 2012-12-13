@@ -7,7 +7,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.EhubRuntimeException;
 
@@ -16,7 +17,7 @@ import com.axiell.ehub.EhubRuntimeException;
  */
 @Provider
 public final class EhubRuntimeExceptionMapper<E extends EhubRuntimeException> implements ExceptionMapper<E> {
-    private static final Logger LOGGER = Logger.getLogger(EhubRuntimeExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EhubRuntimeExceptionMapper.class);
 
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)

@@ -1,13 +1,14 @@
 package com.axiell.ehub.util;
 
-import org.apache.log4j.Logger;
-import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-import org.jboss.resteasy.core.ServerResponse;
-import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
+
+import org.jboss.resteasy.annotations.interception.ServerInterceptor;
+import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Logging post process interceptor
@@ -15,7 +16,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @ServerInterceptor
 public final class LoggingPostProcessInterceptor implements PostProcessInterceptor {
-    private static final Logger LOGGER = Logger.getLogger(LoggingPostProcessInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingPostProcessInterceptor.class);
 
     @Context
     HttpServletRequest servletRequest;

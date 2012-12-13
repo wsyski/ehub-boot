@@ -9,8 +9,9 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.spi.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubRuntimeException;
@@ -24,7 +25,7 @@ import com.axiell.ehub.security.UnauthorizedException;
  */
 @Provider
 public final class RestEasyBadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
-    private static final Logger LOGGER = Logger.getLogger(RestEasyBadRequestExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestEasyBadRequestExceptionMapper.class);
 
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)

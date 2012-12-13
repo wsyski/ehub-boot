@@ -6,10 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -35,7 +36,7 @@ import com.axiell.ehub.util.XjcSupport;
 /**
  */
 public class JAXBTest {
-    private static final Logger LOGGER = Logger.getLogger(JAXBTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JAXBTest.class);
     private PendingLoan expPendingLoan;
     private ReadyLoan expReadyLoan;
     private Format expFormat1;

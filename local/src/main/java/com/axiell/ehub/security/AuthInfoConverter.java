@@ -17,8 +17,9 @@ import java.util.regex.Pattern;
 
 import javax.ws.rs.ext.Provider;
 
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.spi.StringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.axiell.ehub.ErrorCause;
@@ -32,7 +33,7 @@ import com.axiell.ehub.consumer.IConsumerBusinessController;
  */
 @Provider
 final class AuthInfoConverter implements StringConverter<AuthInfo> {
-    private static final Logger LOGGER = Logger.getLogger(AuthInfoConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthInfoConverter.class);
     private static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("\\s*(\\w*)\\s+(.*)");
     private static final Pattern NVP_PATTERN = Pattern.compile("(\\S*)\\s*\\=\\s*\"([^\"]*)\"");
     private static final int GROUP_NO_1 = 1;
