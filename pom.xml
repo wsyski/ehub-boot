@@ -519,8 +519,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- EXAMPLE FOR MYSQL -->
-                <sonar.jdbc.url>jdbc:derby://arenabuild.dmz:1527/sonar;create=true</sonar.jdbc.url>
+                <sonar.jdbc.url>jdbc:derby://localhost:1527/sonar;create=true</sonar.jdbc.url>
                 <sonar.jdbc.driverClassName>org.apache.derby.jdbc.ClientDriver</sonar.jdbc.driverClassName>
                 <sonar.jdbc.username>sonar</sonar.jdbc.username>
                 <sonar.jdbc.password>sonar</sonar.jdbc.password>
