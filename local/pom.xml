@@ -11,7 +11,6 @@
 	<artifactId>ehub-local</artifactId>
 	<name>${project.artifactId}</name>
 	<packaging>war</packaging>
-    <version>${parent.version}</version>
 
 	<dependencies>
 		<dependency>
@@ -147,6 +146,14 @@
 		</dependency>
 
 		<!-- Test dependencies -->
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-common</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
@@ -177,7 +184,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+        <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
@@ -198,7 +205,6 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>${jetty.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -415,44 +421,27 @@
 					</execution>
 				</executions>
 				<configuration>
+                    <classpathScope>test</classpathScope>
 					<mainClass>com.axiell.ehub.util.JpaSchemaExport</mainClass>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<archiveClasses>true</archiveClasses>
+					<archiveClasses>false</archiveClasses>
 					<attachClasses>true</attachClasses>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.2.4</version>
+				<!-- NOTE: You must have a Tomcat 7 up and running and configured accordingly 
+					to be able to use this plugin: - running on port 16518 - manager included 
+					- a user in /conf/tomcat-users.xml with role manager-gui, name admin and 
+					no password -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
-					<container>
-						<containerId>tomcat7x</containerId>
-						<type>remote</type>
-					</container>
-					<configuration>
-						<type>runtime</type>
-						<properties>
-							<cargo.remote.username>deploy</cargo.remote.username>
-							<cargo.remote.password>gogetit</cargo.remote.password>
-							<cargo.hostname>singer.dmz</cargo.hostname>
-							<cargo.servlet.port>16518</cargo.servlet.port>
-						</properties>
-					</configuration>
-					<deployables>
-						<deployable>
-							<groupId>com.axiell.ehub</groupId>
-							<artifactId>ehub-local</artifactId>
-							<type>war</type>
-							<properties>
-								<context>/</context>
-							</properties>
-						</deployable>
-					</deployables>
+					<url>http://localhost:16518/manager/html</url>
+					<path>/</path>
 				</configuration>
 			</plugin>
 		</plugins>

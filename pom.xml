@@ -144,6 +144,16 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
                 <version>${spring-data-jpa.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -191,19 +201,13 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.0.7</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.0.7</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-access</artifactId>
-                <version>1.0.7</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
@@ -257,13 +261,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4f.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4f.version}</version>
+                <version>${slf4j.version}</version>
             </dependency>
 
             <dependency>
@@ -442,8 +440,8 @@
         <maven-jaxb2-plugin.version>0.8.2</maven-jaxb2-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
         <resteasy.version>2.3.5.Final</resteasy.version>
-        <spring.version>3.1.3.RELEASE</spring.version>
-        <spring-ws-test.version>2.1.0.RELEASE</spring-ws-test.version>
+        <spring.version>3.2.0.RELEASE</spring.version>
+        <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
         <smock.version>0.7</smock.version>
         <jpa.version>2.0.0</jpa.version>
         <junit.version>4.10</junit.version>
@@ -452,8 +450,7 @@
         <hibernate.version>4.1.5.Final</hibernate.version>
         <hsqldb.version>2.2.8</hsqldb.version>
         <hibernate-jpa-2.0-api.version>1.0.0.Final</hibernate-jpa-2.0-api.version>
-        <log4j.version>1.2.17</log4j.version>
-        <spring-data-jpa.version>1.1.1.RELEASE</spring-data-jpa.version>
+        <spring-data-jpa.version>1.2.0.RELEASE</spring-data-jpa.version>
         <hamcrest-all.version>1.1</hamcrest-all.version>
         <jodatime.version>2.1</jodatime.version>
         <commons-lang.version>3.1</commons-lang.version>
@@ -461,7 +458,8 @@
         <commons.io.version>2.4</commons.io.version>
         <oracle.version>11.2.0.3</oracle.version>
         <jetty.version>8.1.7.v20120910</jetty.version>
-        <slf4f.version>1.6.6</slf4f.version>
+        <logback.version>1.0.7</logback.version>
+        <slf4j.version>1.7.2</slf4j.version>
         <wicket.core.version>1.4.21</wicket.core.version>
         <wicket.version>1.4.18</wicket.version>
         <aspectj.version>1.6.12</aspectj.version>
