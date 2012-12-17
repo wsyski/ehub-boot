@@ -441,8 +441,8 @@
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
                     <url>http://localhost:16518/manager/text</url>
-                    <username>admin</username>
-                    <password>aehubn</password>
+                    <username>deploy</username>
+                    <password>gogetit</password>
 					<path>/</path>
 				</configuration>
 			</plugin>
