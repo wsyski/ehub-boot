@@ -440,7 +440,9 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<configuration>
-					<url>http://localhost:16518/manager/html</url>
+                    <url>http://localhost:16518/manager/text</url>
+                    <username>admin</username>
+                    <password>aehubn</password>
 					<path>/</path>
 				</configuration>
 			</plugin>
