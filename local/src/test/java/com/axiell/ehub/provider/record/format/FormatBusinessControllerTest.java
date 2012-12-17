@@ -47,13 +47,12 @@ public class FormatBusinessControllerTest extends AbstractEhubRepositoryTest<Dev
     
     @Autowired
     private IFormatBusinessController formatBusinessController;
-    
     private Mockery mockery = new JUnit4Mockery() {
         {
             setImposteriser(ClassImposteriser.INSTANCE);
         }
     };
-    
+
     /**
      * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
      */

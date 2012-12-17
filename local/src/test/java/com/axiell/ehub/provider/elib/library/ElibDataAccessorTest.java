@@ -3,28 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import com.axiell.ehub.util.LoggingClientErrorInterceptor;
-import com.axiell.ehub.util.LoggingClientExecutionIterceptor;
-import junit.framework.Assert;
-
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientRequestFactory;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
-import org.jmock.lib.legacy.ClassImposteriser;
-import org.junit.Before;
-import org.junit.Test;
-
-import se.elib.library.orderlist.Response.Data.Orderitem;
-
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -35,6 +13,16 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
 import com.axiell.ehub.provider.record.format.Formats;
+import junit.framework.Assert;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
+import org.junit.Test;
+import se.elib.library.orderlist.Response.Data.Orderitem;
+
+import java.util.*;
 
 
 /**
@@ -65,7 +53,9 @@ public class ElibDataAccessorTest {
 
         Map<String, FormatDecoration> formatDecoration = new HashMap<>();
         FormatDecoration
-                formatDecoration0 = new FormatDecoration(contentProvider, DevelopmentData.ELIB_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE,DevelopmentData.ELIB_PLAYER_WIDTH,DevelopmentData.ELIB_PLAYER_HEIGHT);
+                formatDecoration0 =
+                new FormatDecoration(contentProvider, DevelopmentData.ELIB_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE, DevelopmentData.ELIB_PLAYER_WIDTH,
+                        DevelopmentData.ELIB_PLAYER_HEIGHT);
         formatDecoration.put(DevelopmentData.ELIB_FORMAT_0_ID, formatDecoration0);
 
         contentProvider.setFormatDecorations(formatDecoration);
@@ -101,11 +91,15 @@ public class ElibDataAccessorTest {
      */
     @Test
     public void testGetContent() {
-        FormatDecoration formatDecoration = new FormatDecoration(contentProvider, DevelopmentData.ELIB_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE,DevelopmentData.ELIB_PLAYER_WIDTH,DevelopmentData.ELIB_PLAYER_HEIGHT);
-        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata(DevelopmentData.ELIB_RETAIL_ORDER_NUMBER, contentProvider, new Date(), formatDecoration);
+        FormatDecoration formatDecoration =
+                new FormatDecoration(contentProvider, DevelopmentData.ELIB_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE, DevelopmentData.ELIB_PLAYER_WIDTH,
+                        DevelopmentData.ELIB_PLAYER_HEIGHT);
+        ContentProviderLoanMetadata contentProviderLoanMetadata =
+                new ContentProviderLoanMetadata(DevelopmentData.ELIB_RETAIL_ORDER_NUMBER, contentProvider, new Date(), formatDecoration);
 
         ElibDataAccessor elibDataAccessor = new ElibDataAccessor();
-        IContent content = elibDataAccessor.getContent(contentProviderConsumer, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN, contentProviderLoanMetadata);
+        IContent content = elibDataAccessor
+                .getContent(contentProviderConsumer, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN, contentProviderLoanMetadata);
         Assert.assertNotNull(content);
     }
 
