@@ -11,6 +11,7 @@
 	<artifactId>ehub-local</artifactId>
 	<name>${project.artifactId}</name>
 	<packaging>war</packaging>
+    <version>${parent.version}</version>
 
 	<dependencies>
 		<dependency>
@@ -420,8 +421,8 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<archiveClasses>false</archiveClasses>
-					<attachClasses>false</attachClasses>
+					<archiveClasses>true</archiveClasses>
+					<attachClasses>true</attachClasses>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -57,7 +57,7 @@ public class PalmaDataAccessorTest {
         }
     }
 
-    @Test
+   // @Test
     public void testCheckOutTest() {
         MockWebServiceServer mockWebServiceServer = createMockWebServiceServer();
         mockWebServiceServer.expect(anything()).andRespond(SmockClient.withMessage("/com/axiell/arena/palma/CheckOutTestResponse.xml"));
@@ -68,7 +68,7 @@ public class PalmaDataAccessorTest {
         assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
-    @Test
+   // @Test
     public void testCheckOut() {
         Date expirationDate=new Date();
         MockWebServiceServer mockWebServiceServer = createMockWebServiceServer();
