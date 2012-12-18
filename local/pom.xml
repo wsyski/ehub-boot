@@ -146,13 +146,13 @@
 		</dependency>
 
 		<!-- Test dependencies -->
-        <dependency>
-            <groupId>com.axiell.ehub</groupId>
-            <artifactId>ehub-common</artifactId>
-            <version>${project.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.axiell.ehub</groupId>
+			<artifactId>ehub-common</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -184,7 +184,7 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
@@ -421,7 +421,7 @@
 					</execution>
 				</executions>
 				<configuration>
-                    <classpathScope>test</classpathScope>
+					<classpathScope>test</classpathScope>
 					<mainClass>com.axiell.ehub.util.JpaSchemaExport</mainClass>
 				</configuration>
 			</plugin>
@@ -433,17 +433,33 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- NOTE: You must have a Tomcat 7 up and running and configured accordingly 
-					to be able to use this plugin: - running on port 16518 - manager included 
-					- a user in /conf/tomcat-users.xml with role manager-gui, name admin and 
-					no password -->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.2.4</version>
 				<configuration>
-                    <url>http://localhost:16518/manager/text</url>
-                    <username>deploy</username>
-                    <password>gogetit</password>
-					<path>/</path>
+					<container>
+						<containerId>tomcat7x</containerId>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<type>runtime</type>
+						<properties>
+							<cargo.remote.username>deploy</cargo.remote.username>
+							<cargo.remote.password>gogetit</cargo.remote.password>
+							<cargo.hostname>singer.dmz</cargo.hostname>
+							<cargo.servlet.port>16518</cargo.servlet.port>
+						</properties>
+					</configuration>
+					<deployables>
+						<deployable>
+							<groupId>com.axiell.ehub</groupId>
+							<artifactId>ehub-local</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/</context>
+							</properties>
+						</deployable>
+					</deployables>
 				</configuration>
 			</plugin>
 		</plugins>
