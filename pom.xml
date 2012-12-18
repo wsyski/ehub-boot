@@ -66,14 +66,22 @@
                     <artifactId>maven-jaxb2-plugin</artifactId>
                     <version>${maven-jaxb2-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
 
             </plugins>
         </pluginManagement>
         <plugins>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
             </plugin>
+
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -478,6 +486,40 @@
                                 <phase>process-resources</phase>
                                 <goals>
                                     <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jacoco</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.5.10.201208310627</version>
+                        <configuration>
+                            <destfile>${project.basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
+                            <datafile>${project.basedir}/target/coverage-reports/jacoco-unit.exec.data</datafile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>jacoco-initialize</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jacoco-site</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>report</goal>
                                 </goals>
                             </execution>
                         </executions>
