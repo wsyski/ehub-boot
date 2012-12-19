@@ -428,7 +428,7 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<archiveClasses>true</archiveClasses>
+					<archiveClasses>false</archiveClasses>
 					<attachClasses>true</attachClasses>
 				</configuration>
 			</plugin>
