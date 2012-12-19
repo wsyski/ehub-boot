@@ -3,30 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
-import static com.axiell.ehub.util.HashFunction.md5;
-
-import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.xml.bind.JAXBElement;
-
-import org.jboss.resteasy.client.ProxyFactory;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import se.elib.library.orderlist.Response.Data.Orderitem;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book;
-import se.elib.library.product.Response.Data.Product;
-
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -44,6 +20,27 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import se.elib.library.orderlist.Response.Data.Orderitem;
+import se.elib.library.orderlist.Response.Data.Orderitem.Book;
+import se.elib.library.product.Response.Data.Product;
+
+import javax.xml.bind.JAXBElement;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
+import static com.axiell.ehub.util.HashFunction.md5;
 
 /**
  * The Elib integration.
@@ -71,43 +68,47 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         final IElibProductResource elibProductResource = ProxyFactory.create(IElibProductResource.class, productUrl);
         final se.elib.library.product.Response elibResponse = elibProductResource.getProduct(retailerId, md5RetailerKeyCode, contentProviderRecordId, language);
         final se.elib.library.product.Response.Status elibStatus = elibResponse.getStatus();
-
+        String errorMessage = "Could not get formats";
         if (elibStatus.getCode() == ELIB_STATUS_CODE_OK) {
             final se.elib.library.product.Response.Data data = elibResponse.getData();
-            final Product product = data.getProduct();
-            final Product.Formats elibFormats = product.getFormats();
-            final Formats formats = new Formats();
+            if (data != null) {
+                final Product product = data.getProduct();
+                final Product.Formats elibFormats = product.getFormats();
+                final Formats formats = new Formats();
 
-            for (Product.Formats.Format elibFormat : elibFormats.getFormat()) {
-                final String formatId = String.valueOf(elibFormat.getFormatId());
+                for (Product.Formats.Format elibFormat : elibFormats.getFormat()) {
+                    final String formatId = String.valueOf(elibFormat.getFormatId());
                 /*
                  * First try to get the name and description from the eHUB database. If there exist no FormatTextBundle
                  * for this format in this language use the Elib translations instead.
                  */
-                final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-                final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
+                    final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+                    final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
 
-                final String name;
-                final String description;
+                    final String name;
+                    final String description;
 
-                if (textBundle == null) {
-                    name = elibFormat.getName();
-                    description = elibFormat.getDescription();
-                } else {
-                    name = textBundle.getName() == null ? elibFormat.getName() : textBundle.getName();
-                    description = textBundle.getDescription() == null ? elibFormat.getDescription() : textBundle.getDescription();
+                    if (textBundle == null) {
+                        name = elibFormat.getName();
+                        description = elibFormat.getDescription();
+                    } else {
+                        name = textBundle.getName() == null ? elibFormat.getName() : textBundle.getName();
+                        description = textBundle.getDescription() == null ? elibFormat.getDescription() : textBundle.getDescription();
+                    }
+
+                    final String iconUrl = elibFormat.getIcon();
+                    final Format format = new Format(formatId, name, description, iconUrl);
+                    formats.addFormat(format);
                 }
-
-                final String iconUrl = elibFormat.getIcon();
-                final Format format = new Format(formatId, name, description, iconUrl);
-                formats.addFormat(format);
+                return formats;
             }
-
-            return formats;
-        } else {
-            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
-            throw new InternalServerErrorException("Could not get formats", ErrorCause.CONTENT_PROVIDER_ERROR, argument);
+            else {
+                errorMessage = "Null data received from the response";
+            }
         }
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
+        throw new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 
     /**
@@ -183,9 +184,9 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
             }
         }
 
-        final ErrorCauseArgument argument1 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
-        final ErrorCauseArgument argument2 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
-        throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argument1, argument2);
+        final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
     }
 
     /**
