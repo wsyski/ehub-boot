@@ -143,8 +143,9 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
             final IContent content = createContent(contentUrl, formatDecoration);
             return new ContentProviderLoan(metadata, content);
         } else {
-            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
-            throw new InternalServerErrorException("Could not create loan", ErrorCause.CONTENT_PROVIDER_ERROR, argument);
+            final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+            final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
+            throw new InternalServerErrorException("Could not create loan", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
         }
     }
 
@@ -175,15 +176,15 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                 }
                 if (contentUrl == null && serializables.size() == 1) {
                     contentUrl = String.class.cast(serializables.get(0));
+                    final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
+                    return createContent(contentUrl, formatDecorations);
                 } else if (contentUrl == null) {
-                    // TODO Fix exception
-                    LOGGER.error("Can not determine the content url");
+                    final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+                    final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(ELIB_STATUS_CODE_OK));
+                    throw new InternalServerErrorException("Can not determine the content url", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
                 }
-                final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
-                return createContent(contentUrl, formatDecorations);
             }
         }
-
         final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
         final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
         throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
@@ -218,10 +219,10 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         if (elibStatus.getCode() == ELIB_STATUS_CODE_OK) {
             se.elib.library.orderlist.Response.Data data = elibResponse.getData();
             return data.getOrderitem();
-        } else {
-            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
-            throw new InternalServerErrorException("Could not get order items", ErrorCause.CONTENT_PROVIDER_ERROR, argument);
         }
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(ELIB_STATUS_CODE_OK));
+        throw new InternalServerErrorException("Could not get order items", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 
     /**
