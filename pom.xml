@@ -460,6 +460,7 @@
     </dependencyManagement>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <servlet-api.version>3.0.1</servlet-api.version>
         <cargo-maven2-plugin.version>1.2.4</cargo-maven2-plugin.version>
