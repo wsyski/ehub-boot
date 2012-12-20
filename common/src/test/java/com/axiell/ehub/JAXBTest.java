@@ -14,10 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.lms.record.ExportRecord;
-import com.axiell.ehub.lms.record.ExportRecords;
-import com.axiell.ehub.lms.record.IndexRecord;
-import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
@@ -125,38 +121,5 @@ public class JAXBTest {
         Assert.assertEquals(expEhubError.getMessage(), actEhubError.getMessage());
         Assert.assertNotNull(actEhubError.getArguments());        
         Assert.assertEquals(expEhubError.getArguments().size(), actEhubError.getArguments().size());
-    }
-    
-    @Test
-    public void testMarshalExportRecords() throws Exception {
-        ExportRecord expRecord1 = new ExportRecord("lmsRecordId1");
-        expRecord1.addExternalUrl(new URL("http://www.elib.se/1"));
-        expRecord1.addExternalUrl(new URL("http://www.elib.se/2"));
-        
-        ExportRecords expRecords = new ExportRecords();
-        expRecords.addExportRecord(expRecord1);
-        
-        String xml = XjcSupport.marshal(expRecords);
-        LOGGER.debug(xml);
-        
-        ExportRecords actRecords = XjcSupport.unmarshal(xml, ExportRecords.class);
-        Assert.assertEquals(expRecords.getExportRecords().size(), actRecords.getExportRecords().size());
-        ExportRecord actRecord1 = actRecords.getExportRecords().iterator().next();
-        Assert.assertEquals(expRecord1.getExternalUrls().iterator().next(), actRecord1.getExternalUrls().iterator().next());
-    }
-    
-    @Test
-    public void testMarshalIndexRecords() throws Exception {
-        IndexRecord expRecord1 = new IndexRecord("lmsRecordId1", "contentProviderRecordId1", "contentProviderName");
-        IndexRecord expRecord2 = new IndexRecord("lmsRecordId2", null, null);
-        IndexRecords expRecords = new IndexRecords();
-        expRecords.addIndexRecord(expRecord1);
-        expRecords.addIndexRecord(expRecord2);
-        
-        String xml = XjcSupport.marshal(expRecords);
-        LOGGER.debug(xml);
-        
-        IndexRecords actRecords = XjcSupport.unmarshal(xml, IndexRecords.class);
-        Assert.assertEquals(expRecords.getIndexRecords().size(), actRecords.getIndexRecords().size());                
     }
 }

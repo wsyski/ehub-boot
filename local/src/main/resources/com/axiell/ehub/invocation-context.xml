@@ -18,10 +18,6 @@
 		<property name="formatBusinessController" ref="formatBusinessController" />		
 	</bean>
 
-	<bean id="lmsResource" class="com.axiell.ehub.lms.LmsResource">
-		<property name="recordBusinessController" ref="recordBusinessController"/>
-	</bean>
-
 	<bean id="loansResource" class="com.axiell.ehub.loan.LoansResource">
 		<property name="loanBusinessController" ref="loanBusinessController" />
 	</bean>

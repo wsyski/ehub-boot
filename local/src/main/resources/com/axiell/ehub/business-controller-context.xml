@@ -7,7 +7,6 @@
 
 	<!-- List only the Business Controllers here -->
 	<bean id="consumerBusinessController" class="com.axiell.ehub.consumer.ConsumerBusinessController"/>
-	<bean id="recordBusinessController" class="com.axiell.ehub.lms.record.RecordBusinessController"/>
 	<bean id="formatBusinessController" class="com.axiell.ehub.provider.record.format.FormatBusinessController"/>
 	<bean id="loanBusinessController" class="com.axiell.ehub.loan.LoanBusinessController"/>
 </beans>

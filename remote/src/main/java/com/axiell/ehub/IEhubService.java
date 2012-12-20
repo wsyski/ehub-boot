@@ -3,9 +3,6 @@
  */
 package com.axiell.ehub;
 
-import com.axiell.ehub.lms.record.ExportRecord;
-import com.axiell.ehub.lms.record.ExportRecords;
-import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.provider.ContentProvider;
@@ -58,14 +55,4 @@ public interface IEhubService {
      * @throws EhubException if an exception occurred when trying to get a loan
      */
     ReadyLoan getReadyLoan(AuthInfo authInfo, String lmsLoanId) throws EhubException;
-    
-    /**
-     * Parses the provided {@link ExportRecord}s (wrapped in an {@link ExportRecords} instance) to identify potential
-     * {@link ContentProvider} records.
-     * 
-     * @param exportRecords the {@link ExportRecord}s to be parsed
-     * @return an instance of {@link IndexRecords}
-     * @throws EhubException if an exception occurred when trying to parse the {@link ExportRecords}
-     */
-    IndexRecords parseExportRecords(ExportRecords exportRecords) throws EhubException;
 }

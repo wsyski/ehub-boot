@@ -6,9 +6,6 @@ package com.axiell.ehub;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import com.axiell.ehub.lms.ILmsResource;
-import com.axiell.ehub.lms.record.ExportRecords;
-import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.ILoansResource;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
@@ -61,15 +58,6 @@ public final class EhubClient implements IEhubService {
         return loansResource.getLoan(authInfo, lmsLoanId);
     }
 
-    /**
-     * @see com.axiell.ehub.IEhubService#parseExportRecords(com.axiell.ehub.lms.record.ExportRecords)
-     */
-    @Override
-    public IndexRecords parseExportRecords(ExportRecords exportRecords) throws EhubException {
-        final ILmsResource lmsResource = ProxyFactory.create(ILmsResource.class, ehubBaseUri);
-        return lmsResource.parseExportRecords(exportRecords);
-    }
-    
     /**
      * Sets the base URI to the eHUB.
      * 
