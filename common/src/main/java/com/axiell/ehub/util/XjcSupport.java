@@ -1,8 +1,6 @@
 package com.axiell.ehub.util;
 
 import com.axiell.ehub.EhubError;
-import com.axiell.ehub.lms.record.ExportRecords;
-import com.axiell.ehub.lms.record.IndexRecords;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -118,7 +116,7 @@ public final class XjcSupport {
          * The domain JAXB context path.
          */
         private static final Class<?>[] CONTEXT_PATH =
-                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ExportRecords.class, IndexRecords.class};
+                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class};
 
         /**
          * The domain {@link javax.xml.bind.JAXBContext} singleton.

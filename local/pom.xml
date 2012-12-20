@@ -286,7 +286,6 @@
 						<include>**/ReadyLoan.java</include>
 						<include>**/EhubError.java</include>
 						<include>**/ExportRecords.java</include>
-						<include>**/IndexRecords.java</include>
 					</includes>
 					<schemas>
 						<schema>
