@@ -435,7 +435,6 @@
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>1.2.4</version>
 				<configuration>
 					<container>
 						<containerId>tomcat7x</containerId>
@@ -446,7 +445,7 @@
 						<properties>
 							<cargo.remote.username>deploy</cargo.remote.username>
 							<cargo.remote.password>gogetit</cargo.remote.password>
-							<cargo.hostname>singer.dmz</cargo.hostname>
+							<cargo.hostname>localhost</cargo.hostname>
 							<cargo.servlet.port>16518</cargo.servlet.port>
 						</properties>
 					</configuration>
