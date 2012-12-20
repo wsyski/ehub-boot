@@ -36,30 +36,27 @@ public class PalmaDataAccessorTest {
     @Autowired
     private IPalmaDataAccessor palmaDataAccessor;
 
+    private MockWebServiceServer mockWebServiceServer;
     private EhubConsumer ehubConsumer;
     private PendingLoan pendingLoan;
 
-    @Test
-    public void testCheckOutTestOnline() {
-        if (isOnline()) {
-            PreCheckoutAnalysis preCheckoutAnalysis = palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD,
-                    DevelopmentData.ELIB_LIBRARY_CARD_PIN);
-            assertNotNull(preCheckoutAnalysis);
-        }
+    @Before
+    public void setUp() throws MalformedURLException {
+        ehubConsumer = DevelopmentData.createEhubConsumer();
+        ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
+        pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
+                DevelopmentData.ELIB_FORMAT_0_ID);
+        URL arenaPalmaURL = (new File("src/main/wsdl/com/axiell/arena/palma")).toURI().toURL();
+        ehubConsumer.getProperties().put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, arenaPalmaURL.toString());
+        mockWebServiceServer = createMockWebServiceServer();
+    }
+
+    public void tearDown() {
+        mockWebServiceServer.verify();
     }
 
     @Test
-    public void testCheckOutOnline() {
-        Date expirationDate=new Date();
-        if (isOnline()) {
-            LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
-            assertNotNull(lmsLoan);
-        }
-    }
-
-   // @Test
     public void testCheckOutTest() {
-        MockWebServiceServer mockWebServiceServer = createMockWebServiceServer();
         mockWebServiceServer.expect(anything()).andRespond(SmockClient.withMessage("/com/axiell/arena/palma/CheckOutTestResponse.xml"));
         PreCheckoutAnalysis preCheckoutAnalysis =
                 palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
@@ -68,9 +65,9 @@ public class PalmaDataAccessorTest {
         assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
-   // @Test
+    @Test
     public void testCheckOut() {
-        Date expirationDate=new Date();
+        Date expirationDate = new Date();
         MockWebServiceServer mockWebServiceServer = createMockWebServiceServer();
         mockWebServiceServer.expect(anything()).andRespond(SmockClient.withMessage("/com/axiell/arena/palma/CheckOutResponse.xml"));
         LmsLoan lmsLoan =
@@ -79,23 +76,7 @@ public class PalmaDataAccessorTest {
         assertEquals(DevelopmentData.LMS_LOAN_ID, lmsLoan.getId());
     }
 
-    @Before
-    public void setUp() throws MalformedURLException {
-        ehubConsumer = DevelopmentData.createEhubConsumer();
-        ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
-        pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
-                DevelopmentData.ELIB_FORMAT_0_ID);
-        if (!isOnline()) {
-            URL arenaPalmaURL = (new File("src/main/wsdl/com/axiell/arena/palma")).toURI().toURL();
-            ehubConsumer.getProperties().put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, arenaPalmaURL.toString());
-        }
-    }
-
     private MockWebServiceServer createMockWebServiceServer() {
         return SmockClient.createServer(new EndpointInterceptor[]{new PayloadLoggingInterceptor()});
-    }
-
-    protected static boolean isOnline() {
-        return System.getProperty("online") != null && Boolean.valueOf(System.getProperty("online"));
     }
 }
