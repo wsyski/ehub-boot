@@ -1,23 +1,26 @@
 package com.axiell.ehub.lms.palma;
 
+import com.axiell.arena.services.palma.loans.*;
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.ContentProviderName;
-import net.javacrumbs.smock.common.client.CommonSmockClient;
-import net.javacrumbs.smock.extended.client.connection.MockWebServiceServer;
-import net.javacrumbs.smock.http.client.connection.SmockClient;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.ws.server.EndpointInterceptor;
-import org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor;
-import org.springframework.ws.test.client.RequestMatchers;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.ws.Endpoint;
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,46 +29,46 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
 public class PalmaDataAccessorTest {
-    /*
-    private static final ApplicationContext SPRING_CONTEXT = new ClassPathXmlApplicationContext(new String[]{
-            "classpath:/com/axiell/ehub/common-context.xml"});
-    */
-    //@Autowired
+    protected static Endpoint ENDPOINT;
+    protected static String ENDPOINT_ADDRESS;
+
+    @Autowired
     private IPalmaDataAccessor palmaDataAccessor;
 
     private EhubConsumer ehubConsumer;
     private PendingLoan pendingLoan;
 
-    private MockWebServiceServer mockServer;
+    @BeforeClass
+    public static void beforeClass() {
+        ENDPOINT_ADDRESS = "http://localhost:16521/arena.pa.palma/loans";
+        ENDPOINT = Endpoint.publish(ENDPOINT_ADDRESS, new LoansImpl());
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        ENDPOINT.stop();
+    }
 
     @Before
     public void setUp() throws Exception {
-        //palmaDataAccessor=SPRING_CONTEXT.getBean(IPalmaDataAccessor.class);
         palmaDataAccessor = new PalmaDataAccessor();
         ehubConsumer = createEhubConsumer();
         ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
         pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
                 DevelopmentData.ELIB_FORMAT_0_ID);
-        URL arenaPalmaURL = (new File("src/main/wsdl/com/axiell/arena/palma")).toURI().toURL();
+        URL arenaPalmaURL = (new File("src/main/resources/com/axiell/arena/palma")).toURI().toURL();
         ehubConsumer.getProperties().put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, arenaPalmaURL.toString());
-        mockServer = SmockClient.createServer(new EndpointInterceptor[]{new PayloadLoggingInterceptor()});
     }
 
     @After
     public void tearDown() {
-        mockServer.verify();
     }
 
     @Test
-    public void test() {
-
-    }
-    //@Test
     public void testCheckOutTest() {
-        mockServer.expect(RequestMatchers.anything()).andRespond(CommonSmockClient.withMessage("/com/axiell/arena/palma/CheckOutTestResponse.xml"));
         PreCheckoutAnalysis preCheckoutAnalysis =
                 palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(preCheckoutAnalysis);
@@ -73,10 +76,9 @@ public class PalmaDataAccessorTest {
         assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
-    //@Test
+    @Test
     public void testCheckOut() {
         Date expirationDate = new Date();
-        mockServer.expect(RequestMatchers.anything()).andRespond(CommonSmockClient.withMessage("/com/axiell/arena/palma/CheckOutResponse.xml"));
         LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD,
                 DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(lmsLoan);
@@ -92,4 +94,51 @@ public class PalmaDataAccessorTest {
         return ehubConsumer;
     }
 
+    @javax.jws.WebService(
+            serviceName = "LoansPalmaService",
+            portName = "loans",
+            targetNamespace = "http://loans.palma.services.arena.axiell.com/",
+            wsdlLocation = "com/axiell/arena/palma/loans.wsdl",
+            endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
+
+    public static class LoansImpl implements Loans {
+
+        public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(CheckOutTest parameters) {
+            try {
+                JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
+                Unmarshaller unmarshaller = jc.createUnmarshaller();
+                JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse> jaxbElement =
+                        (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse>) unmarshaller.unmarshal(
+                                new ClassPathResource("com/axiell/arena/palma/CheckOutTestResponse.xml").getFile());
+                return jaxbElement.getValue();
+            } catch (JAXBException | IOException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
+        }
+
+        public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(CheckOut parameters) {
+            try {
+                JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
+                Unmarshaller unmarshaller = jc.createUnmarshaller();
+                JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse> jaxbElement =
+                        (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse>) unmarshaller.unmarshal(
+                                new ClassPathResource("com/axiell/arena/palma/CheckOutResponse.xml").getFile());
+                return jaxbElement.getValue();
+            } catch (JAXBException | IOException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
+        }
+
+        @Override
+        public com.axiell.arena.services.palma.loans.RenewLoansResponse renewLoans(final RenewLoans parameters) {
+            return null;
+        }
+
+        @Override
+        public com.axiell.arena.services.palma.loans.GetLoansResponse getLoans(GetLoans parameters) {
+            return null;
+        }
+    }
 }

@@ -41,16 +41,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-bundle-jaxrs</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson-provider</artifactId>
         </dependency>
@@ -194,12 +184,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.javacrumbs</groupId>
-            <artifactId>smock-http-cxf</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <scope>test</scope>
@@ -314,7 +298,7 @@
                    <verbose>true</verbose>
                    <packageName>com.axiell.arena.palma</packageName>
                    <sourceDestDir>${project.build.directory}/generated-sources/wsdl1</sourceDestDir>
-                   <wsdlDirectory>src/main/wsdl/com/axiell/arena/palma</wsdlDirectory>
+                   <wsdlDirectory>src/main/resources/com/axiell/arena/palma</wsdlDirectory>
                    <wsdlFiles>
                        <wsdlFile>loans.wsdl</wsdlFile>
                    </wsdlFiles>
@@ -332,7 +316,12 @@
                            <sourceRoot>${project.build.directory}/generated-sources/wsdl1</sourceRoot>
                            <wsdlOptions>
                                <wsdlOption>
-                                   <wsdl>${basedir}/src/main/wsdl/com/axiell/arena/palma/loans.wsdl</wsdl>
+                                   <wsdl>${basedir}/src/main/resources/com/axiell/arena/palma/loans.wsdl</wsdl>
+                                   <!--
+                                   <extraargs>
+                                       <extraarg>-impl</extraarg>
+                                   </extraargs>
+                                   -->
                                </wsdlOption>
                            </wsdlOptions>
                        </configuration>

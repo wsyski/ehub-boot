@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.springframework.stereotype.Component;
 
 import com.axiell.arena.services.palma.loans.CheckOut;
@@ -190,9 +186,11 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         if (loansService == null) {
             LoansPalmaService service = new LoansPalmaService(loansServiceWsdlURL);
             loansService = service.getLoans();
+            /*
             Client client = ClientProxy.getClient(loansService);
             client.getInInterceptors().add(new LoggingInInterceptor());
             client.getOutInterceptors().add(new LoggingOutInterceptor());
+            */
             palmaLoansServices.put(loansServiceWsdlURL, loansService);
         }
         return loansService;

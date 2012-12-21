@@ -412,81 +412,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-bundle-jaxrs</artifactId>
-                <version>${cxf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                        <artifactId>geronimo-servlet_2.5_spec</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-impl</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-server</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-continuation</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-http</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-io</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-util</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-security</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-asm</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-expression</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>net.javacrumbs</groupId>
-                <artifactId>smock-http-cxf</artifactId>
-                <version>${smock.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-impl</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>servlet-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-oxm</artifactId>
-                    </exclusion>
-                </exclusions>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
                 <version>${hamcrest-all.version}</version>
@@ -508,7 +433,6 @@
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
         <jacoco-maven-plugin.version>0.5.10.201208310627</jacoco-maven-plugin.version>
         <cxf-codegen-plugin.version>2.7.1</cxf-codegen-plugin.version>
-        <cxf.version>2.7.1</cxf.version>
         <jaxws-maven-plugin.version>2.2</jaxws-maven-plugin.version>
         <maven-jaxb2-plugin.version>0.8.2</maven-jaxb2-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
