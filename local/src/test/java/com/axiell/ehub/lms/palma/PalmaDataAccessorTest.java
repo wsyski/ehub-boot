@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.jws.WebService;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -94,7 +95,7 @@ public class PalmaDataAccessorTest {
         return ehubConsumer;
     }
 
-    @javax.jws.WebService(
+    @WebService(
             serviceName = "LoansPalmaService",
             portName = "loans",
             targetNamespace = "http://loans.palma.services.arena.axiell.com/",
