@@ -5,10 +5,9 @@ package com.axiell.ehub.lms.palma;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+import com.axiell.ehub.util.LoggingHandler;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +31,10 @@ import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.util.XjcSupport;
 
+import javax.xml.ws.Binding;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.Handler;
+
 /**
  * Default implementation of the {@link IPalmaDataAccessor}.
  */
@@ -46,7 +49,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
     private static final String MESSAGE_INVALID_PATRON = "invalidPatron";
     private static final String MESSAGE_INVALID_PIN_CODE = "invalidPinCode";
     private static final String INTERNAL_ERROR_MESSAGE = "Internal error in palma";
-    private Map<URL, Loans> palmaLoansServices = new HashMap<>();
+    private Map<URL, Loans> loanPorts = new HashMap<>();
 
     /**
      * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#preCheckout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, String, String)
@@ -68,7 +71,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         com.axiell.arena.services.palma.loans.CheckOutTestResponse loansCheckOutTestResponse = loansService.checkOutTest(checkOutTest);
         CheckOutTestResponse checkOutTestResponse = loansCheckOutTestResponse.getCheckOutTestResponse();
         String lmsLoanId = null;
-        Result result = null;
+        Result result;
         checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, libraryCard);
         Validate.notNull(checkOutTestResponse.getTestStatus(), "Test status can not be null");
         final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
@@ -169,11 +172,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         String arenaPalmaUrl = getPalmaUrl(ehubConsumer);
         URL loansServiceWsdlURL;
         try {
-            if (arenaPalmaUrl.startsWith("file")) {
-                loansServiceWsdlURL = new URL(arenaPalmaUrl + "loans.wsdl");
-            } else {
-                loansServiceWsdlURL = new URL(arenaPalmaUrl + "/loans?wsdl");
-            }
+            loansServiceWsdlURL = new URL(arenaPalmaUrl + "/loans?wsdl");
         } catch (MalformedURLException ex) {
             final ErrorCauseArgument argument0 =
                     new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_PROPERTY_KEY, EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL.name());
@@ -182,18 +181,28 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
             final ErrorCauseArgument argument2 = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
             throw new InternalServerErrorException(INTERNAL_ERROR_MESSAGE, ErrorCause.EHUB_CONSUMER_INVALID_PROPERTY, argument0, argument1, argument2);
         }
-        Loans loansService = palmaLoansServices.get(loansServiceWsdlURL);
-        if (loansService == null) {
-            LoansPalmaService service = new LoansPalmaService(loansServiceWsdlURL);
-            loansService = service.getLoans();
-            /*
+        Loans loanPort = loanPorts.get(loansServiceWsdlURL);
+        if (loanPort == null) {
+            LoansPalmaService loansPalmaService = new LoansPalmaService(loansServiceWsdlURL);
+            loanPort = loansPalmaService.getLoans();
+            BindingProvider bp = (BindingProvider) loanPort;
+            Binding binding = bp.getBinding();
+
+            List<Handler> handlerList = binding.getHandlerChain();
+            if (handlerList == null)
+                handlerList = new ArrayList<>();
+            LoggingHandler loggingHandler = new LoggingHandler();
+            handlerList.add(loggingHandler);
+            binding.setHandlerChain(handlerList);
+
+            /* CXF
             Client client = ClientProxy.getClient(loansService);
             client.getInInterceptors().add(new LoggingInInterceptor());
             client.getOutInterceptors().add(new LoggingOutInterceptor());
             */
-            palmaLoansServices.put(loansServiceWsdlURL, loansService);
+            loanPorts.put(loansServiceWsdlURL, loanPort);
         }
-        return loansService;
+        return loanPort;
     }
 
     private String getPalmaUrl(final EhubConsumer ehubConsumer) {

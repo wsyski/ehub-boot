@@ -16,8 +16,11 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -129,6 +132,18 @@ public class ToString {
             sb.append("Entity: ");
             sb.append(fromObject(entity));
         }
+        return sb.toString();
+    }
+
+    public static String fromSOAPMessage(final SOAPMessage soapMessage) {
+        StringBuilder sb = new StringBuilder();
+        StringBufferOutputStream stringBufferOutputStream = new StringBufferOutputStream();
+        try {
+            soapMessage.writeTo(stringBufferOutputStream);
+        } catch (SOAPException | IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        sb.append(stringBufferOutputStream.toString());
         return sb.toString();
     }
 
@@ -252,6 +267,33 @@ public class ToString {
             StringBuffer buffer = new StringBuffer();
             appendDetail(buffer, null, collection);
             return buffer.toString();
+        }
+    }
+
+    private static class StringBufferOutputStream extends OutputStream {
+        private StringBuffer textBuffer = new StringBuffer();
+
+        /**
+         *
+         */
+        public StringBufferOutputStream() {
+            super();
+        }
+
+        /*
+         * @see java.io.OutputStream#write(int)
+         */
+        public void write(int b) throws IOException {
+            char a = (char) b;
+            textBuffer.append(a);
+        }
+
+        public String toString() {
+            return textBuffer.toString();
+        }
+
+        public void clear() {
+            textBuffer.delete(0, textBuffer.length());
         }
     }
 }

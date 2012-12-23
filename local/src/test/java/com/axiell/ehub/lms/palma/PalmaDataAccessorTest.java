@@ -6,7 +6,9 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.ContentProviderName;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -20,12 +22,9 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.Endpoint;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,8 +32,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
 public class PalmaDataAccessorTest {
-    protected static Endpoint ENDPOINT;
-    protected static String ENDPOINT_ADDRESS;
+    private Endpoint endpoint;
 
     @Autowired
     private IPalmaDataAccessor palmaDataAccessor;
@@ -42,30 +40,20 @@ public class PalmaDataAccessorTest {
     private EhubConsumer ehubConsumer;
     private PendingLoan pendingLoan;
 
-    @BeforeClass
-    public static void beforeClass() {
-        ENDPOINT_ADDRESS = "http://localhost:16521/arena.pa.palma/loans";
-        ENDPOINT = Endpoint.publish(ENDPOINT_ADDRESS, new LoansImpl());
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        ENDPOINT.stop();
-    }
-
     @Before
     public void setUp() throws Exception {
-        palmaDataAccessor = new PalmaDataAccessor();
-        ehubConsumer = createEhubConsumer();
+       palmaDataAccessor = new PalmaDataAccessor();
+        ehubConsumer = DevelopmentData.createEhubConsumer();
         ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
         pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
                 DevelopmentData.ELIB_FORMAT_0_ID);
-        URL arenaPalmaURL = (new File("src/main/resources/com/axiell/arena/palma")).toURI().toURL();
-        ehubConsumer.getProperties().put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, arenaPalmaURL.toString());
+        String palmaUrl = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL);
+        endpoint = Endpoint.publish(palmaUrl + "/loans", new LoansImpl());
     }
 
     @After
     public void tearDown() {
+        endpoint.stop();
     }
 
     @Test
@@ -86,28 +74,15 @@ public class PalmaDataAccessorTest {
         assertEquals(DevelopmentData.LMS_LOAN_ID, lmsLoan.getId());
     }
 
-
-    public EhubConsumer createEhubConsumer() {
-        Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, DevelopmentData.ARENA_PALMA_URL);
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
-        EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", DevelopmentData.EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties);
-        return ehubConsumer;
-    }
-
-    @WebService(
-            serviceName = "LoansPalmaService",
-            portName = "loans",
-            targetNamespace = "http://loans.palma.services.arena.axiell.com/",
-            wsdlLocation = "com/axiell/arena/palma/loans.wsdl",
-            endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
-
+    @WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
+            wsdlLocation = "com/axiell/arena/palma/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
     public static class LoansImpl implements Loans {
 
         public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(CheckOutTest parameters) {
             try {
                 JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
+                @SuppressWarnings("unchecked")
                 JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse> jaxbElement =
                         (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse>) unmarshaller.unmarshal(
                                 new ClassPathResource("com/axiell/arena/palma/CheckOutTestResponse.xml").getFile());
@@ -122,6 +97,7 @@ public class PalmaDataAccessorTest {
             try {
                 JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
+                @SuppressWarnings("unchecked")
                 JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse> jaxbElement =
                         (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse>) unmarshaller.unmarshal(
                                 new ClassPathResource("com/axiell/arena/palma/CheckOutResponse.xml").getFile());
