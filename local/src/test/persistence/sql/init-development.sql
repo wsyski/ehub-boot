@@ -1,6 +1,9 @@
 spool init-development.log
 set define off
 
+PROMPT drop.sql
+@@drop.sql
+
 PROMPT schema.sql
 @@schema.sql
 
@@ -17,3 +20,4 @@ COMMIT;
 --ROLLBACK;
 
 spool off
+exit;
