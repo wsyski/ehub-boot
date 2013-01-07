@@ -9,3 +9,8 @@ drop table EHUB_ADMIN_USER cascade;
 drop table EHUB_CONSUMER cascade;
 drop table EHUB_CONSUMER_PROPERTY cascade;
 drop table EHUB_LOAN cascade;
+drop table CONTENT_PROVIDER_NAME cascade;
+drop table CONTENT_DISPOSITION cascade;
+drop table EHUB_CONSUMER_PROPERTY_KEY cascade;
+drop table CONTENT_P_CONSUMER_P_KEY cascade;
+drop table CONTENT_PROVIDER_PROPERTY_KEY cascade;
