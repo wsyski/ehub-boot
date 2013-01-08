@@ -54,7 +54,7 @@ final class AuthorizationHeaderInterceptor implements PreProcessInterceptor, Acc
 
         if (authorizationHeaders == null || authorizationHeaders.isEmpty()) {
             throw new UnauthorizedException("The method '" + resourceMethod.getMethod().getName() + "' in the resource '" + resourceMethod.getResourceClass()
-                    + "'expects an 'AuthInfo', but the request does not contain an Authorization header", ErrorCause.MISSING_AUTHORIZATION_HEDAER);
+                    + "'expects an 'AuthInfo', but the request does not contain an Authorization header", ErrorCause.MISSING_AUTHORIZATION_HEADER);
         }
 
         return null;

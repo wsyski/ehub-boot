@@ -3,9 +3,8 @@
  */
 package com.axiell.ehub;
 
-import java.text.MessageFormat;
-
 import javax.xml.bind.annotation.XmlEnum;
+import java.text.MessageFormat;
 
 /**
  * Represents the cause of an error within the eHUB.
@@ -14,7 +13,7 @@ import javax.xml.bind.annotation.XmlEnum;
 public enum ErrorCause {
     BAD_REQUEST("Some parameter(s) in your URL or XML are not correct. Please see the eHUB API documentation and review your request."), 
     MISSING_CONTENT_PROVIDER_NAME("The content provider name is missing in your request. Please see the eHUB API documentation and review your request."), 
-    MISSING_AUTHORIZATION_HEDAER("Authorization header is missing"), 
+    MISSING_AUTHORIZATION_HEADER("Authorization header is missing"),
     MISSING_EHUB_CONSUMER_ID("The eHUB Consumer ID is missing in the authentication information"), 
     MISSING_SIGNATURE("The signature is missing in the authentication information"), 
     MISSING_LIBRARY_CARD("The library card is missing in the authentication information"), 

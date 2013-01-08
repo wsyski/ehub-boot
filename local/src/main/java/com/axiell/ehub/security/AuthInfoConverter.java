@@ -108,7 +108,7 @@ final class AuthInfoConverter implements StringConverter<AuthInfo> {
      */
     private Map<String, String> parseAuthorizationHeader(String authorizationHeader) {
         if (authorizationHeader == null) {
-            throw new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEDAER);
+            throw new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER);
         }
         
         final Map<String, String> nvpMap = new HashMap<>();

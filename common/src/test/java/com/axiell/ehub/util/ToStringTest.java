@@ -44,17 +44,14 @@ public class ToStringTest {
         map1.put("twoKey","twoValue");
         map1.put("threeKey","threeValue");
         String toString=ToString.fromMap(map1);
-        System.out.println(toString);
         assertEquals("{oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}", toString);
         Map<String,Map<String,String>> map2=new LinkedHashMap<>();
         map2.put("oneMap", map1);
         map2.put("twoMap", map1);
         toString=ToString.fromMap(map2);
-        System.out.println(toString);
         assertEquals("{oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}", toString);
         Collection collection=Arrays.asList("col1","col2","col3");
         toString=ToString.fromCollection(collection);
-        System.out.println(toString);
         assertEquals("[col1, col2, col3]", toString);
         TestBean2 testBean2 =new TestBean2();
         testBean2.setField21(map2);
@@ -65,7 +62,6 @@ public class ToStringTest {
         testBean1.setField13(testBean2);
         testBean1.setField14(new Date(0L));
         toString=ToString.fromObject(testBean1);
-        System.out.println(toString);
         assertEquals("[field11={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, \n" +
                 "  field12=[col1, col2, col3], \n" +
                 "  field13=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
@@ -73,7 +69,6 @@ public class ToStringTest {
                 "  field14=1970-01-01 01:00:00]", toString);
         Map<String,TestBean2> map3=Collections.singletonMap("oneBean",testBean2);
         toString=ToString.fromMap(map3);
-        System.out.println(toString);
         assertEquals("{oneBean=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
                 "  field22=[col1, col2, col3]]}", toString);
     }
