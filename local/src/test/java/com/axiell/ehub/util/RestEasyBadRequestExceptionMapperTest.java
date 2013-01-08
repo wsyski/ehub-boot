@@ -23,9 +23,9 @@ public class RestEasyBadRequestExceptionMapperTest {
                RestEasyBadRequestExceptionMapper mapper = new RestEasyBadRequestExceptionMapper();
                final Response response = mapper.toResponse(ex);
         setOut(old);
-        assertTrue(out.toString().contains("Got a silly nullpointer somewhere"));
-        assertTrue(out.toString().contains("NULLPOINTER!!! AAHHH!!!"));
-        assertTrue(out.toString().contains("java.lang.NullPointerException"));
+        assertTrue(out.toString("UTF-8").contains("Got a silly nullpointer somewhere"));
+        assertTrue(out.toString("UTF-8").contains("NULLPOINTER!!! AAHHH!!!"));
+        assertTrue(out.toString("UTF-8").contains("java.lang.NullPointerException"));
 
         BadRequestException exc = new BadRequestException("Got a silly UnautorizedException somewhere", new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER));
         final Response unauthorized = mapper.toResponse(exc);
