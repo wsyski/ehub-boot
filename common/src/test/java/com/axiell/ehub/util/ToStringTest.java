@@ -3,17 +3,34 @@
  */
 package com.axiell.ehub.util;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.junit.Assert;
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.core.BaseClientResponse;
+import org.jboss.resteasy.client.core.BaseClientResponse.BaseClientResponseStreamFactory;
+import org.jboss.resteasy.specimpl.HttpHeadersImpl;
+import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import org.jboss.resteasy.specimpl.UriInfoImpl;
+import org.jboss.resteasy.spi.HttpRequest;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
+import static org.junit.Assert.assertEquals;
 
 /**
  * 
@@ -28,17 +45,17 @@ public class ToStringTest {
         map1.put("threeKey","threeValue");
         String toString=ToString.fromMap(map1);
         System.out.println(toString);
-        Assert.assertEquals("{oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}", toString);
+        assertEquals("{oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}", toString);
         Map<String,Map<String,String>> map2=new LinkedHashMap<>();
         map2.put("oneMap", map1);
         map2.put("twoMap", map1);
         toString=ToString.fromMap(map2);
         System.out.println(toString);
-        Assert.assertEquals("{oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}", toString);
+        assertEquals("{oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}", toString);
         Collection collection=Arrays.asList("col1","col2","col3");
         toString=ToString.fromCollection(collection);
         System.out.println(toString);
-        Assert.assertEquals("[col1, col2, col3]", toString);
+        assertEquals("[col1, col2, col3]", toString);
         TestBean2 testBean2 =new TestBean2();
         testBean2.setField21(map2);
         testBean2.setField22(collection);
@@ -49,7 +66,7 @@ public class ToStringTest {
         testBean1.setField14(new Date(0L));
         toString=ToString.fromObject(testBean1);
         System.out.println(toString);
-        Assert.assertEquals("[field11={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, \n" +
+        assertEquals("[field11={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, \n" +
                 "  field12=[col1, col2, col3], \n" +
                 "  field13=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
                 "  field22=[col1, col2, col3]], \n" +
@@ -57,7 +74,7 @@ public class ToStringTest {
         Map<String,TestBean2> map3=Collections.singletonMap("oneBean",testBean2);
         toString=ToString.fromMap(map3);
         System.out.println(toString);
-        Assert.assertEquals("{oneBean=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
+        assertEquals("{oneBean=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, \n" +
                 "  field22=[col1, col2, col3]]}", toString);
     }
 
@@ -120,5 +137,90 @@ public class ToStringTest {
             this.field22 = field22;
         }
     }
+
+    @Test
+    public void testFromClientRequest() throws Exception {
+        ClientRequest request = new ClientRequest("uriTemplate");
+        request.setHttpMethod("GET");
+        request.overrideUri(URI.create("http://test.com/tester?test=true"));
+        request.formParameter("formParameter1", "formValue1")
+        .pathParameter("pathParameter1", "pathValue1")
+        .header("header1", "headerValue1")
+        .body(MediaType.APPLICATION_JSON, "{\"jsonData\":[\"jsonValue1\",\"jsonValue2\"]}");
+
+        final String toStringString = ToString.fromClientRequest(request);
+        assertEquals("GET " + request.getUri() + LINE_SEPARATOR +
+                "Parameters: {formParameter1=[formValue1]}" + LINE_SEPARATOR +
+                "Parameters: {pathParameter1=[pathValue1]}" + LINE_SEPARATOR +
+                "Headers: {header1=[headerValue1]}" + LINE_SEPARATOR +
+                "Body: [value={{,\",j,s,o,n,D,a,t,a,\",:,[,\",j,s,o,n,V,a,l,u,e,1,\",,,\",j,s,o,n,V,a,l,u,e,2,\",],}}, " + LINE_SEPARATOR +
+                "  hash=0]", toStringString);
+
+    }
+
+    @Test
+    public void testFromClientResponse() throws Exception {
+        final Mockery mockery = new Mockery();
+        mockery.setImposteriser(ClassImposteriser.INSTANCE);
+        final BaseClientResponse response = mockery.<BaseClientResponse>mock(BaseClientResponse.class);
+        final BaseClientResponseStreamFactory factory = mockery.mock(BaseClientResponseStreamFactory.class);
+        final MultivaluedMapImpl multivaluedMap = new MultivaluedMapImpl();
+        multivaluedMap.put("key", "value");
+        mockery.checking(new Expectations() {
+            {
+                exactly(3).of(response).getResponseStatus();
+                will(returnValue(Status.fromStatusCode(200)));
+                exactly(2).of(response).getHeaders();
+                will(returnValue(multivaluedMap));
+                one(factory).getInputStream();
+                will(returnValue(IOUtils.toInputStream("HELLO WORLD!!", "UTF-8")));
+                one(response).getStreamFactory();
+                will(returnValue(factory));
+                one(response).resetStream();
+            }
+        });
+        final String toStringString = ToString.fromClientResponse(response);
+        mockery.assertIsSatisfied();
+        assertEquals("Response-Code: 200 OK" + LINE_SEPARATOR + "Headers: {key=value}"+LINE_SEPARATOR + "Payload: HELLO WORLD!!", toStringString);
+
+    }
+
+    @Test
+    public void testFromHttpRequest() throws Exception {
+        Mockery mockery = new Mockery();
+        final HttpRequest request = mockery.mock(HttpRequest.class);
+        final UriInfo uriinfo = mockery.mock(UriInfo.class);
+        final MultivaluedMapImpl multivaluedMap = new MultivaluedMapImpl();
+                multivaluedMap.put("who", "me & bobby McGee");
+
+        final MultivaluedMapImpl multivaluedMap2 = new MultivaluedMapImpl();
+                        multivaluedMap2.put("requestheader", "value");
+        final HttpHeaders headers = new HttpHeadersImpl() {
+            {
+                this.setRequestHeaders(multivaluedMap2);
+            }
+        };
+
+        mockery.checking(new Expectations() {
+            {
+                one(uriinfo).getRequestUri();
+                will(returnValue(URI.create("http://pretty.silly.me/a/uri?maybe=true")));
+                one(request).getUri();
+                will(returnValue(uriinfo));
+                one(request).getHttpMethod();
+                will(returnValue("GET"));
+                exactly(2).of(request).getDecodedFormParameters();
+                will(returnValue(multivaluedMap));
+                exactly(4).of(request).getHttpHeaders();
+                will(returnValue(headers));
+            }
+        });
+        final String toStringString = ToString.fromHttpRequest(request);
+        mockery.assertIsSatisfied();
+        assertEquals("GET http://pretty.silly.me/a/uri?maybe=true" + LINE_SEPARATOR + "Parameters: {who=me & bobby McGee}" + LINE_SEPARATOR + "Headers: {requestheader=value}", toStringString);
+
+    }
+
+
 
 }
