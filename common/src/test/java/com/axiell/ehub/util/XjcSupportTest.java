@@ -23,7 +23,6 @@ public class XjcSupportTest {
     public void testMarshalUnmarshal() throws Exception {
         PendingLoan pendingLoan = new PendingLoan("id", "contentProvider", "otherId", "format");
         final String xml = marshal(pendingLoan);
-        System.out.println("xml = " + xml);
         assertXpathExists("/pendingLoan", xml);
         assertXpathEvaluatesTo("format", "/pendingLoan/@contentProviderFormatId", xml);
         assertXpathEvaluatesTo("contentProvider", "/pendingLoan/@contentProviderName", xml);
