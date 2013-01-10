@@ -6,3 +6,6 @@
 .idea
 *.iml
 target/
+coverage-error.log
+local/src/main/webapp/xsd/
+local/src/test/persistence/sql/schema.sql

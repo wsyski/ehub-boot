@@ -4,7 +4,7 @@
 package com.axiell.ehub.user;
 
 import static com.axiell.ehub.util.EhubUrlCodec.UTF8;
-import static com.axiell.ehub.util.HashFunction.hmacSha1;
+import static com.axiell.ehub.util.HmacSHA1HashFunction.hmacSha1;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
 import java.io.UnsupportedEncodingException;

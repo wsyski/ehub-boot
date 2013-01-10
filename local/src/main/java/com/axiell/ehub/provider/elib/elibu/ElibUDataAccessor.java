@@ -3,22 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.elibu;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
-import static com.axiell.ehub.util.HashFunction.md5;
-
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-
-import org.jboss.resteasy.client.ProxyFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -39,6 +23,22 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_ID;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_KEY;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 /**
  * The ElibU integration.
@@ -59,7 +59,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String elibuRecordId, String language) {
         final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        final String md5ServiceKey = md5(serviceKey.getBytes());
+        final String md5ServiceKey = md5Hex(serviceKey.getBytes());
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String productUrl = contentProvider.getProperty(PRODUCT_URL);
 
@@ -156,7 +156,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     protected final Integer consumeLicense(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
         final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        final String md5ServiceKey = md5(serviceKey.getBytes());
+        final String md5ServiceKey = md5Hex(serviceKey.getBytes());
         final String subscriptionId = contentProviderConsumer.getProperty(SUBSCRIPTION_ID);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeLicenseUrl = contentProvider.getProperty(CONSUME_LICENSE_URL);
@@ -190,9 +190,9 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
             final FormatDecoration formatDecoration) {
         final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        final String md5ServiceKey = md5(serviceKey.getBytes());
+        final String md5ServiceKey = DigestUtils.md5Hex(serviceKey.getBytes());
         final String checksum = new StringBuilder(serviceId).append(serviceKey).append(licenseId).append(elibuRecordId).toString();
-        final String md5Checksum = md5(checksum.getBytes());
+        final String md5Checksum = DigestUtils.md5Hex(checksum.getBytes());
 
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeProductUrl = contentProvider.getProperty(PRODUCT_URL);

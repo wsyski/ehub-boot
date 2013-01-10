@@ -20,6 +20,7 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -40,7 +41,7 @@ import java.util.Locale;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
-import static com.axiell.ehub.util.HashFunction.md5;
+import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 /**
  * The Elib integration.
@@ -61,7 +62,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
         final String retailerId = contentProviderConsumer.getProperty(ELIB_RETAILER_ID);
         final String retailerKeyCode = contentProviderConsumer.getProperty(ELIB_RETAILER_KEY);
-        final String md5RetailerKeyCode = md5(retailerKeyCode.getBytes());
+        final String md5RetailerKeyCode = md5Hex(retailerKeyCode.getBytes());
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String productUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL);
 
@@ -121,7 +122,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                                           final PendingLoan pendingLoan) {
         final String retailerId = contentProviderConsumer.getProperty(ELIB_RETAILER_ID);
         final String retailerKeyCode = contentProviderConsumer.getProperty(ELIB_RETAILER_KEY);
-        final String md5RetailerKeyCode = md5(retailerKeyCode.getBytes());
+        final String md5RetailerKeyCode = md5Hex(retailerKeyCode.getBytes());
         final String elibRecordId = pendingLoan.getContentProviderRecordId();
         final String formatId = pendingLoan.getContentProviderFormatId();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -208,7 +209,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     protected List<Orderitem> getOrderItems(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
         final String retailerId = contentProviderConsumer.getProperty(ELIB_RETAILER_ID);
         final String retailerKeyCode = contentProviderConsumer.getProperty(ELIB_RETAILER_KEY);
-        final String md5RetailerKeyCode = md5(retailerKeyCode.getBytes());
+        final String md5RetailerKeyCode = md5Hex(retailerKeyCode.getBytes());
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String orderListUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL);
 
