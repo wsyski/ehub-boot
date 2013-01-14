@@ -14,3 +14,4 @@ drop table CONTENT_DISPOSITION cascade constraints;
 drop table EHUB_CONSUMER_PROPERTY_KEY cascade constraints;
 drop table CONTENT_P_CONSUMER_P_KEY cascade constraints;
 drop table CONTENT_PROVIDER_PROPERTY_KEY cascade constraints;
+drop sequence hibernate_sequence;

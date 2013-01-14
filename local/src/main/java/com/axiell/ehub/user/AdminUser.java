@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -28,7 +29,7 @@ import com.axiell.ehub.InternalServerErrorException;
 @Entity
 @Table(name = "EHUB_ADMIN_USER")
 @Access(AccessType.PROPERTY)
-public class AdminUser extends AbstractPersistable<Long> {
+public class AdminUser extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = -3349510792156153723L;
     private static final int SALT_LENGTH = 16;
     private String name;
@@ -90,7 +91,7 @@ public class AdminUser extends AbstractPersistable<Long> {
     /**
      * Sets the clear password.
      * 
-     * @param clear password the clear password to set
+     * @param clearPassword password the clear password to set
      */
     public void setClearPassword(String clearPassword) {
         this.clearPassword = clearPassword;

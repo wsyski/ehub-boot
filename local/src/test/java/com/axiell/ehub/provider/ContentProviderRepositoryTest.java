@@ -25,7 +25,7 @@ import com.axiell.ehub.provider.record.format.IFormatAdminController;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/com/axiell/ehub/admin-controller-context.xml")
+@ContextConfiguration(locations = {"classpath:/com/axiell/ehub/admin-controller-context.xml"})
 public class ContentProviderRepositoryTest extends AbstractEhubRepositoryTest<DevelopmentData> {
 
     @Autowired
