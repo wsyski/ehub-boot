@@ -1,0 +1,446 @@
+drop.sql
+drop table CONTENT_PROVIDER cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_PROVIDER_CONSUMER cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_PROVIDER_PROPERTY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_P_CONSUMER_PROPERTY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_P_FORMAT_DECORATION cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_P_FORMAT_LANGUAGE cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_P_FORMAT_TEXT_BUNDLE cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table EHUB_ADMIN_USER cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table EHUB_CONSUMER cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table EHUB_CONSUMER_PROPERTY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table EHUB_LOAN cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_PROVIDER_NAME cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_DISPOSITION cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table EHUB_CONSUMER_PROPERTY_KEY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_P_CONSUMER_P_KEY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+drop table CONTENT_PROVIDER_PROPERTY_KEY cascade constraints
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+schema.sql
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Sequence created.
+
+schema-ext.sql
+
+Sequence dropped.
+
+
+Sequence created.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table created.
+
+
+Table altered.
+
+
+Table altered.
+
+basic-data.sql
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+development-data.sql
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+Commit complete.
+
