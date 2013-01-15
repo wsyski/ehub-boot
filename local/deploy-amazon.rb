@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-
+require 'rubygems'
 require "aws-sdk"
 require 'pp'
 
