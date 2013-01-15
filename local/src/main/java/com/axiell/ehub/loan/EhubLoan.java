@@ -54,7 +54,7 @@ public class EhubLoan extends AbstractTimestampAwarePersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID", nullable = false)
-    @ForeignKey(name = "EHUB_LOAN_EHUB_CONSUMER_FK")
+    @ForeignKey(name = "FK_EHUB_LOAN_EHUB_CONSUMER")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
     }

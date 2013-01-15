@@ -59,7 +59,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "CONTENT_P_F_T_CONTENT_P_F_D_FK")
+    @ForeignKey(name = "FK_CONTENT_P_F_T_CONTENT_P_F_D")
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;
     }

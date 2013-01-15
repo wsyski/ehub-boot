@@ -16,6 +16,9 @@ PROMPT basic-data.sql
 PROMPT development-data.sql
 @@development-data.sql
 
+PROMPT rename-constraints.sql
+@@rename-constraints.sql
+
 COMMIT;
 --ROLLBACK;
 

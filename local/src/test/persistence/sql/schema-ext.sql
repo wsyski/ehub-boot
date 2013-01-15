@@ -11,11 +11,11 @@
         VERSION varchar2(255 char) not null,
         CREATED_DATE timestamp not null,
         MODIFIED_DATE timestamp not null,
-        primary key(VERSION)
+        primary key (VERSION)
     );
 
  alter table CONTENT_PROVIDER
-        add constraint CONTENT_P_CONTENT_P_N_FK
+        add constraint FK_CONTENT_P_CONTENT_P_N
         foreign key (NAME)
         references CONTENT_PROVIDER_NAME;
 
@@ -25,7 +25,7 @@
     );
 
  alter table CONTENT_P_FORMAT_DECORATION
-        add constraint CONTENT_P_F_D_CONTENT_D_FK
+        add constraint FK_CONTENT_P_F_D_CONTENT_D
         foreign key (CONTENT_DISPOSITION)
         references CONTENT_DISPOSITION;
 
@@ -35,7 +35,7 @@
     );
 
  alter table EHUB_CONSUMER_PROPERTY
-        add constraint EHUB_C_P_EHUB_C_P_K_FK
+        add constraint FK_EHUB_C_P_EHUB_C_P_K
         foreign key (PROPERTY_KEY)
         references EHUB_CONSUMER_PROPERTY_KEY;
 
@@ -45,7 +45,7 @@
     );
 
  alter table CONTENT_P_CONSUMER_PROPERTY
-        add constraint CONTENT_P_C_P_CNT_P_C_P_K_FK
+        add constraint FK_CONTENT_P_C_P_CNT_P_C_P_K
         foreign key (PROPERTY_KEY)
         references CONTENT_P_CONSUMER_P_KEY;
 
@@ -55,11 +55,11 @@
     );
 
  alter table CONTENT_PROVIDER_PROPERTY
-        add constraint CONTENT_P_P_CONTENT_P_P_K_FK
+        add constraint FK_CONTENT_P_P_CONTENT_P_P_K
         foreign key (PROPERTY_KEY)
         references CONTENT_PROVIDER_PROPERTY_KEY;
 
  alter table CONTENT_P_FORMAT_TEXT_BUNDLE
-        add constraint CONT_P_F_T_B_CONT_P_F_L_FK
+        add constraint FK_CONT_P_F_T_B_CONT_P_F_L
         foreign key (LANGUAGE)
         references CONTENT_P_FORMAT_LANGUAGE;

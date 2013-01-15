@@ -63,7 +63,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID")
-    @ForeignKey(name = "CONTENT_P_C_EHUB_C_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_EHUB_C")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
     }
@@ -84,7 +84,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID")
-    @ForeignKey(name = "CONTENT_P_C_CONTENT_P_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_CONTENT_P")
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
@@ -108,7 +108,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "CONTENT_P_C_P_CONTENT_P_C_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_P_CONTENT_P_C")
     public Map<ContentProviderConsumerPropertyKey, String> getProperties() {
         return properties;
     }

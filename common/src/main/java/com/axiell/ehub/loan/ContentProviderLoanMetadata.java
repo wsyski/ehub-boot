@@ -74,7 +74,7 @@ public class ContentProviderLoanMetadata {
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
-    @ForeignKey(name = "EHUB_LOAN_CONTENT_PROVIDER_FK")
+    @ForeignKey(name = "FK_EHUB_LOAN_CONTENT_PROVIDER")
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
@@ -114,7 +114,7 @@ public class ContentProviderLoanMetadata {
      * @return a {@link FormatDecoration}
      */
     @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "CONTENT_P_L_M_CONTENT_P_F_D_FK")
+    @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D")
     @ManyToOne
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;

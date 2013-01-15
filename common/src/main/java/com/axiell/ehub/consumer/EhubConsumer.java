@@ -171,7 +171,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "EHUB_CONSUMER_P_EHUB_C_FK")
+    @ForeignKey(name = "FK_EHUB_CONSUMER_P_EHUB_C")
     public Map<EhubConsumerPropertyKey, String> getProperties() {
         return properties;
     }

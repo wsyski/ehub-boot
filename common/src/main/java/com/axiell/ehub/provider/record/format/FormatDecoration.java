@@ -64,7 +64,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
-    @ForeignKey(name = "CONTENT_P_F_D_CONTENT_P_FK")
+    @ForeignKey(name = "FK_CONTENT_P_F_D_CONTENT_P")
     public ContentProvider getContentProvider() {
         return contentProvider;
     }

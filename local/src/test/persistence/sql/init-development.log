@@ -1,446 +1,204 @@
+> set define off
+> PROMPT drop.sql
 drop.sql
-drop table CONTENT_PROVIDER cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_PROVIDER_CONSUMER cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_PROVIDER_PROPERTY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_P_CONSUMER_PROPERTY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_P_FORMAT_DECORATION cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_P_FORMAT_LANGUAGE cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_P_FORMAT_TEXT_BUNDLE cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table EHUB_ADMIN_USER cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table EHUB_CONSUMER cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table EHUB_CONSUMER_PROPERTY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table EHUB_LOAN cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_PROVIDER_NAME cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_DISPOSITION cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table EHUB_CONSUMER_PROPERTY_KEY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_P_CONSUMER_P_KEY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
-drop table CONTENT_PROVIDER_PROPERTY_KEY cascade constraints
-           *
-ERROR at line 1:
-ORA-00942: table or view does not exist 
-
-
+> @@drop.sql
+table CONTENT_PROVIDER dropped.
+table CONTENT_PROVIDER_CONSUMER dropped.
+table CONTENT_PROVIDER_PROPERTY dropped.
+table CONTENT_P_CONSUMER_PROPERTY dropped.
+table CONTENT_P_FORMAT_DECORATION dropped.
+table CONTENT_P_FORMAT_LANGUAGE dropped.
+table CONTENT_P_FORMAT_TEXT_BUNDLE dropped.
+table EHUB_ADMIN_USER dropped.
+table EHUB_CONSUMER dropped.
+table EHUB_CONSUMER_PROPERTY dropped.
+table EHUB_LOAN dropped.
+table CONTENT_PROVIDER_NAME dropped.
+table CONTENT_DISPOSITION dropped.
+table EHUB_CONSUMER_PROPERTY_KEY dropped.
+table CONTENT_P_CONSUMER_P_KEY dropped.
+table CONTENT_PROVIDER_PROPERTY_KEY dropped.
+table RELEASE dropped.
+sequence HIBERNATE_SEQUENCE dropped.
+> PROMPT schema.sql
 schema.sql
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Table altered.
-
-
-Sequence created.
-
+> @@schema.sql
+table CONTENT_PROVIDER created.
+table CONTENT_PROVIDER_CONSUMER created.
+table CONTENT_PROVIDER_PROPERTY created.
+table CONTENT_P_CONSUMER_PROPERTY created.
+table CONTENT_P_FORMAT_DECORATION created.
+table CONTENT_P_FORMAT_LANGUAGE created.
+table CONTENT_P_FORMAT_TEXT_BUNDLE created.
+table EHUB_ADMIN_USER created.
+table EHUB_CONSUMER created.
+table EHUB_CONSUMER_PROPERTY created.
+table EHUB_LOAN created.
+table CONTENT_PROVIDER_CONSUMER altered.
+table CONTENT_PROVIDER_CONSUMER altered.
+table CONTENT_PROVIDER_PROPERTY altered.
+table CONTENT_P_CONSUMER_PROPERTY altered.
+table CONTENT_P_FORMAT_DECORATION altered.
+table CONTENT_P_FORMAT_TEXT_BUNDLE altered.
+table EHUB_CONSUMER_PROPERTY altered.
+table EHUB_LOAN altered.
+table EHUB_LOAN altered.
+table EHUB_LOAN altered.
+sequence HIBERNATE_SEQUENCE created.
+> PROMPT schema-ext.sql
 schema-ext.sql
-
-Sequence dropped.
-
-
-Sequence created.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table created.
-
-
-Table altered.
-
-
-Table altered.
-
+> @@schema-ext.sql
+sequence HIBERNATE_SEQUENCE dropped.
+sequence HIBERNATE_SEQUENCE created.
+table CONTENT_PROVIDER_NAME created.
+table RELEASE created.
+table CONTENT_PROVIDER altered.
+table CONTENT_DISPOSITION created.
+table CONTENT_P_FORMAT_DECORATION altered.
+table EHUB_CONSUMER_PROPERTY_KEY created.
+table EHUB_CONSUMER_PROPERTY altered.
+table CONTENT_P_CONSUMER_P_KEY created.
+table CONTENT_P_CONSUMER_PROPERTY altered.
+table CONTENT_PROVIDER_PROPERTY_KEY created.
+table CONTENT_PROVIDER_PROPERTY altered.
+table CONTENT_P_FORMAT_TEXT_BUNDLE altered.
+> PROMPT basic-data.sql
 basic-data.sql
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
+> @@basic-data.sql
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+> PROMPT development-data.sql
 development-data.sql
+> @@development-data.sql
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+1 rows inserted.
+> PROMPT rename-constraints.sql
+rename-constraints.sql
+> @@rename-constraints.sql
+anonymous block completed
+sql: alter table CONTENT_DISPOSITION rename constraint SYS_C0073383 to PK_CONTENT_DISPOSITION
+sql: alter index SYS_C0073383 rename to PK_CONTENT_DISPOSITION
+sql: alter table CONTENT_PROVIDER rename constraint SYS_C0073303 to PK_CONTENT_PROVIDER
+sql: alter index SYS_C0073303 rename to PK_CONTENT_PROVIDER
+sql: alter table CONTENT_PROVIDER rename constraint SYS_C0073304 to UQ_CONTENT_PROVIDER
+sql: alter index SYS_C0073304 rename to UQ_CONTENT_PROVIDER
+sql: alter table CONTENT_PROVIDER_CONSUMER rename constraint SYS_C0073308 to PK_CONTENT_PROVIDER_CONSUMER
+sql: alter index SYS_C0073308 rename to PK_CONTENT_PROVIDER_CONSUMER
+sql: alter table CONTENT_PROVIDER_NAME rename constraint SYS_C0073376 to PK_CONTENT_PROVIDER_NAME
+sql: alter index SYS_C0073376 rename to PK_CONTENT_PROVIDER_NAME
+sql: alter table CONTENT_PROVIDER_PROPERTY rename constraint SYS_C0073311 to PK_CONTENT_PROVIDER_PROPERTY
+sql: alter index SYS_C0073311 rename to PK_CONTENT_PROVIDER_PROPERTY
+sql: alter table CONTENT_PROVIDER_PROPERTY_KEY rename constraint SYS_C0073392 to PK_CONTENT_PROVIDER_PROPERTY_K
+sql: alter index SYS_C0073392 rename to PK_CONTENT_PROVIDER_PROPERTY_K
+sql: alter table CONTENT_P_CONSUMER_PROPERTY rename constraint SYS_C0073314 to PK_CONTENT_P_CONSUMER_PROPERTY
+sql: alter index SYS_C0073314 rename to PK_CONTENT_P_CONSUMER_PROPERTY
+sql: alter table CONTENT_P_CONSUMER_P_KEY rename constraint SYS_C0073389 to PK_CONTENT_P_CONSUMER_P_KEY
+sql: alter index SYS_C0073389 rename to PK_CONTENT_P_CONSUMER_P_KEY
+sql: alter table CONTENT_P_FORMAT_DECORATION rename constraint SYS_C0073323 to PK_CONTENT_P_FORMAT_DECORATION
+sql: alter index SYS_C0073323 rename to PK_CONTENT_P_FORMAT_DECORATION
+sql: alter table CONTENT_P_FORMAT_DECORATION rename constraint SYS_C0073324 to UQ_CONTENT_P_FORMAT_DECORATION
+sql: alter index SYS_C0073324 rename to UQ_CONTENT_P_FORMAT_DECORATION
+sql: alter table CONTENT_P_FORMAT_LANGUAGE rename constraint SYS_C0073326 to PK_CONTENT_P_FORMAT_LANGUAGE
+sql: alter index SYS_C0073326 rename to PK_CONTENT_P_FORMAT_LANGUAGE
+sql: alter table CONTENT_P_FORMAT_TEXT_BUNDLE rename constraint SYS_C0073334 to PK_CONTENT_P_FORMAT_TEXT_BUNDL
+sql: alter index SYS_C0073334 rename to PK_CONTENT_P_FORMAT_TEXT_BUNDL
+sql: alter table CONTENT_P_FORMAT_TEXT_BUNDLE rename constraint SYS_C0073335 to UQ_CONTENT_P_FORMAT_TEXT_BUNDL
+sql: alter index SYS_C0073335 rename to UQ_CONTENT_P_FORMAT_TEXT_BUNDL
+sql: alter table EHUB_ADMIN_USER rename constraint SYS_C0073342 to PK_EHUB_ADMIN_USER
+sql: alter index SYS_C0073342 rename to PK_EHUB_ADMIN_USER
+sql: alter table EHUB_ADMIN_USER rename constraint SYS_C0073343 to UQ_EHUB_ADMIN_USER
+sql: alter index SYS_C0073343 rename to UQ_EHUB_ADMIN_USER
+sql: alter table EHUB_CONSUMER rename constraint SYS_C0073349 to PK_EHUB_CONSUMER
+sql: alter index SYS_C0073349 rename to PK_EHUB_CONSUMER
+sql: alter table EHUB_CONSUMER rename constraint SYS_C0073350 to UQ_EHUB_CONSUMER
+sql: alter index SYS_C0073350 rename to UQ_EHUB_CONSUMER
+sql: alter table EHUB_CONSUMER_PROPERTY rename constraint SYS_C0073353 to PK_EHUB_CONSUMER_PROPERTY
+sql: alter index SYS_C0073353 rename to PK_EHUB_CONSUMER_PROPERTY
+sql: alter table EHUB_CONSUMER_PROPERTY_KEY rename constraint SYS_C0073386 to PK_EHUB_CONSUMER_PROPERTY_KEY
+sql: alter index SYS_C0073386 rename to PK_EHUB_CONSUMER_PROPERTY_KEY
+sql: alter table EHUB_LOAN rename constraint SYS_C0073363 to PK_EHUB_LOAN
+sql: alter index SYS_C0073363 rename to PK_EHUB_LOAN
+sql: alter table EHUB_LOAN rename constraint SYS_C0073364 to UQ_EHUB_LOAN
+sql: alter index SYS_C0073364 rename to UQ_EHUB_LOAN
+sql: alter table RELEASE rename constraint SYS_C0073380 to PK_RELEASE
+sql: alter index SYS_C0073380 rename to PK_RELEASE
 
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-1 row created.
-
-
-Commit complete.
-
+> COMMIT
+committed.
+> --ROLLBACK;

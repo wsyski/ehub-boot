@@ -90,7 +90,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "CONTENT_P_P_CONTENT_P_FK")
+    @ForeignKey(name = "FK_CONTENT_P_P_CONTENT_P")
     public Map<ContentProviderPropertyKey, String> getProperties() {
         return properties;
     }
