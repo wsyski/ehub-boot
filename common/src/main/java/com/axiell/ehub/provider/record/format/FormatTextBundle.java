@@ -12,8 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import org.hibernate.annotations.ForeignKey;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.axiell.ehub.provider.ContentProvider;
 
@@ -23,7 +23,7 @@ import com.axiell.ehub.provider.ContentProvider;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE"}))
 @Access(AccessType.PROPERTY)
-public class FormatTextBundle extends AbstractPersistable<Long> {
+public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 8478816548440529433L;
     private FormatDecoration formatDecoration;
     private String language;
@@ -59,7 +59,7 @@ public class FormatTextBundle extends AbstractPersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "CONTENT_P_F_T_CONTENT_P_F_D_FK")
+    @ForeignKey(name = "FK_CONTENT_P_F_T_CONTENT_P_F_D")
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;
     }

@@ -3,36 +3,17 @@
  */
 package com.axiell.ehub.consumer;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.ForeignKey;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.ErrorCauseArgument.Type;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Represents a consumer of the eHUB. An {@link EhubConsumer} can have many {@link ContentProviderConsumer}s, i.e.
@@ -41,7 +22,7 @@ import com.axiell.ehub.provider.ContentProviderName;
 @Entity
 @Table(name = "EHUB_CONSUMER")
 @Access(AccessType.PROPERTY)
-public class EhubConsumer extends AbstractPersistable<Long> {
+public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1365720155205061749L;
     private String description;
     private String secretKey;
@@ -56,10 +37,10 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Constructs a new {@link EhubConsumer}.
-     * 
+     *
      * @param description the description of the {@link EhubConsumer}
-     * @param secretKey the secret key of the {@link EhubConsumer}
-     * @param properties the {@link EhubConsumer} properties
+     * @param secretKey   the secret key of the {@link EhubConsumer}
+     * @param properties  the {@link EhubConsumer} properties
      */
     public EhubConsumer(final String description, final String secretKey, final Map<EhubConsumerPropertyKey, String> properties) {
         this.description = description;
@@ -69,7 +50,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the description of the {@link EhubConsumer}.
-     * 
+     *
      * @return the description of the {@link EhubConsumer}
      */
     @Column(name = "DESCRIPTION", nullable = false, unique = true)
@@ -79,7 +60,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Sets the description of the {@link EhubConsumer}.
-     * 
+     *
      * @param description the description of the {@link EhubConsumer} to set
      */
     public void setDescription(String description) {
@@ -88,7 +69,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the secret key of the {@link EhubConsumer}.
-     * 
+     *
      * @return the secret key of the {@link EhubConsumer}
      */
     @Column(name = "SECRET_KEY", nullable = false, unique = false)
@@ -98,7 +79,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Sets the secret key of the {@link EhubConsumer}.
-     * 
+     *
      * @param secretKey the secret key of the {@link EhubConsumer} to set
      */
     public void setSecretKey(String secretKey) {
@@ -107,7 +88,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the {@link ContentProviderConsumer}s this {@link EhubConsumer} has.
-     * 
+     *
      * @return a {@link Set} of {@link ContentProviderConsumer}s
      */
     @OneToMany(mappedBy = "ehubConsumer", fetch = FetchType.LAZY)
@@ -117,7 +98,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Sets the {@link ContentProviderConsumer}s this {@link EhubConsumer} has.
-     * 
+     *
      * @param contentProviderConsumers the {@link ContentProviderConsumer}s this {@link EhubConsumer} has to set
      */
     public void setContentProviderConsumers(final Set<ContentProviderConsumer> contentProviderConsumers) {
@@ -126,7 +107,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the {@link ContentProviderConsumer}s this {@link EhubConsumer} has as a {@link List}.
-     * 
+     *
      * @return a {@link List} of {@link ContentProviderConsumer}s
      */
     @Transient
@@ -136,7 +117,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the {@link ContentProviderConsumer} for a given {@link ContentProviderName}.
-     * 
+     *
      * @param contentProviderName content provider name.
      * @return content consumer
      * @throws X if no {@link ContentProviderConsumer} could be found with the given provider name
@@ -158,7 +139,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
     /**
      * Gets a list of {@link ContentProvider}s for which this {@link EhubConsumer} has no
      * {@link ContentProviderConsumer}.
-     * 
+     *
      * @param allContentProviders a list of all available {@link ContentProvider}s in the eHUB
      * @return a list of {@link ContentProvider}s
      */
@@ -182,7 +163,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the {@link EhubConsumer} properties.
-     * 
+     *
      * @return the {@link EhubConsumer} properties
      */
     @ElementCollection(fetch = FetchType.LAZY)
@@ -190,14 +171,14 @@ public class EhubConsumer extends AbstractPersistable<Long> {
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "EHUB_CONSUMER_P_EHUB_C_FK")
+    @ForeignKey(name = "FK_EHUB_CONSUMER_P_EHUB_C")
     public Map<EhubConsumerPropertyKey, String> getProperties() {
         return properties;
     }
 
     /**
      * Sets the {@link EhubConsumer} properties.
-     * 
+     *
      * @param properties the {@link EhubConsumer} properties
      */
     public void setProperties(final Map<EhubConsumerPropertyKey, String> properties) {
@@ -206,7 +187,7 @@ public class EhubConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the value of a property with the given key.
-     * 
+     *
      * @param key the key of the property
      * @return the property value
      * @throws IllegalArgumentException if there exists no property with the given name

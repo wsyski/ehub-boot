@@ -3,43 +3,18 @@
  */
 package com.axiell.ehub.consumer;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB;
-import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang3.Validate;
-import org.hibernate.annotations.ForeignKey;
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
+import org.apache.commons.lang3.Validate;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
+import java.util.*;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
+import static com.axiell.ehub.provider.ContentProviderName.ELIB;
+import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
 
 /**
  * Represents a consumer of a specific {@link ContentProvider}. It holds the consumer specific parameters used when
@@ -48,7 +23,7 @@ import com.axiell.ehub.provider.ContentProviderName;
 @Entity
 @Table(name = "CONTENT_PROVIDER_CONSUMER")
 @Access(AccessType.PROPERTY)
-public class ContentProviderConsumer extends AbstractPersistable<Long> {
+public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = -2497784815429100591L;
     private final static Map<ContentProviderName, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
@@ -69,12 +44,13 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Constructs a new {@link ContentProviderConsumer}.
-     * 
-     * @param ehubConsumer the {@link EhubConsumer}
+     *
+     * @param ehubConsumer    the {@link EhubConsumer}
      * @param contentProvider the {@link ContentProvider}
-     * @param properties {@link ContentProviderConsumer} properties
+     * @param properties      {@link ContentProviderConsumer} properties
      */
-    public ContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider, final Map<ContentProviderConsumerPropertyKey, String> properties) {
+    public ContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider,
+                                   final Map<ContentProviderConsumerPropertyKey, String> properties) {
         this.ehubConsumer = ehubConsumer;
         this.contentProvider = contentProvider;
         this.properties = properties;
@@ -82,19 +58,19 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the {@link EhubConsumer}
-     * 
+     *
      * @return the {@link EhubConsumer}
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID")
-    @ForeignKey(name = "CONTENT_P_C_EHUB_C_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_EHUB_C")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
     }
 
     /**
      * Sets the {@link EhubConsumer}.
-     * 
+     *
      * @param ehubConsumer the {@link EhubConsumer} to set
      */
     public void setEhubConsumer(final EhubConsumer ehubConsumer) {
@@ -103,19 +79,19 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Returns the {@link ContentProvider}.
-     * 
+     *
      * @return the {@link ContentProvider}
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID")
-    @ForeignKey(name = "CONTENT_P_C_CONTENT_P_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_CONTENT_P")
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
 
     /**
      * Sets the {@link ContentProvider}.
-     * 
+     *
      * @param contentProvider the {@link ContentProvider} to set
      */
     public void setContentProvider(ContentProvider contentProvider) {
@@ -124,7 +100,7 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the {@link ContentProviderConsumer} properties
-     * 
+     *
      * @return the {@link ContentProviderConsumer} properties
      */
     @ElementCollection(fetch = FetchType.LAZY)
@@ -132,14 +108,14 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "CONTENT_P_C_P_CONTENT_P_C_FK")
+    @ForeignKey(name = "FK_CONTENT_P_C_P_CONTENT_P_C")
     public Map<ContentProviderConsumerPropertyKey, String> getProperties() {
         return properties;
     }
 
     /**
      * Sets the {@link ContentProviderConsumer} properties.
-     * 
+     *
      * @param properties the {@link ContentProviderConsumer} properties to set
      */
     public void setProperties(final Map<ContentProviderConsumerPropertyKey, String> properties) {
@@ -148,7 +124,7 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the valid properties for this {@link ContentProviderConsumer}.
-     * 
+     *
      * @return a {@link List} of {@link ContentProviderConsumerPropertyKey}s
      */
     @Transient
@@ -160,10 +136,10 @@ public class ContentProviderConsumer extends AbstractPersistable<Long> {
 
     /**
      * Gets the value of a property with the given key.
-     * 
+     *
      * @param key the key of the property
      * @return the property value
-     * @throws NullPointerException if this {@link ContentProviderConsumer} has no valid property keys
+     * @throws NullPointerException     if this {@link ContentProviderConsumer} has no valid property keys
      * @throws IllegalArgumentException if there exists no property with the given key among the valid property keys
      */
     @Transient
