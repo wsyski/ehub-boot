@@ -7,7 +7,14 @@ declare
    constraint_name varchar2(255);
    
 begin
-    for uc in (select table_name, index_name, constraint_name, constraint_type from user_constraints where constraint_type in ('P','U') AND table_name in (select table_name from user_tables) ORDER BY table_name,constraint_type,constraint_name)
+    for uc in (
+select table_name, index_name, constraint_name, constraint_type 
+from user_constraints 
+where constraint_type in ('P','U') AND table_name in (select table_name from user_tables) 
+order by table_name,constraint_type,
+(select listagg(column_name, '|') WITHIN GROUP (ORDER BY column_name) from user_ind_columns where 
+user_ind_columns.table_name=user_constraints.table_name AND user_ind_columns.index_name=user_constraints.index_name)
+)
     loop
         if uc.constraint_type = 'P' then
             constraint_name := 'PK_'||substr(uc.table_name,1,27);
