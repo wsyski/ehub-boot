@@ -12,7 +12,7 @@
     <util:properties id="remoteProperties" location="classpath:remote-client.properties" />
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
-        <property name="ehubBaseUri" value="#{remoteProperties['remote.ehubBaseUri']}"/>
+        <property name="ehubBaseUri" value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}"/>
     </bean>
     
     <bean id="failureAspect" class="com.axiell.ehub.ClientResponseFailureAspect"/>
