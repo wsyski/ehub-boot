@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
     </parent>
     <artifactId>ehub-local</artifactId>
     <name>${project.artifactId}</name>
