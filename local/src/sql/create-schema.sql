@@ -10,7 +10,7 @@ ALTER PROFILE DEFAULT LIMIT
 FAILED_LOGIN_ATTEMPTS UNLIMITED
 PASSWORD_LIFE_TIME UNLIMITED;
 
-CREATE USER &1 IDENTIFIED BY &&password;
+CREATE USER &&user_name IDENTIFIED BY &&password;
 alter user &&user_name default tablespace data temporary tablespace temp
 quota unlimited on data;
 GRANT connect TO &&user_name;
