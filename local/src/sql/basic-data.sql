@@ -82,3 +82,5 @@ insert into CONTENT_PROVIDER_PROPERTY (CONTENT_PROVIDER_ID, PROPERTY_KEY, PROPER
 -- Admin user with password !gogetit1
 insert into EHUB_ADMIN_USER (ID, NAME, SALT, PASSWORD, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1, 'admin', '4223126763863898', '9WHZhWaKsSgik7E+Mq9xYIXSqEM=', systimestamp, systimestamp);
 
+insert into RELEASE(VERSION,CREATE_DATETIME,MODIFY_DATETIME) VALUES('0.3',systimestamp,systimestamp);
+
