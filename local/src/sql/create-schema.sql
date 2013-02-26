@@ -6,9 +6,7 @@ define user_name='&1'
 col password new_value password
 select substr('&user_name',1,1)||'ehub'||substr('&user_name',-1,1) password from dual;
 
-ALTER PROFILE DEFAULT LIMIT
-FAILED_LOGIN_ATTEMPTS UNLIMITED
-PASSWORD_LIFE_TIME UNLIMITED;
+ALTER PROFILE DEFAULT LIMIT FAILED_LOGIN_ATTEMPTS UNLIMITED PASSWORD_LIFE_TIME UNLIMITED;
 
 CREATE USER &&user_name IDENTIFIED BY &&password;
 alter user &&user_name default tablespace data temporary tablespace temp
