@@ -23,11 +23,11 @@ public abstract class AbstractTimestampAwarePersistable<PK extends Serializable>
     private static final long serialVersionUID = 141481953116476081L;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_DATE", nullable = false)
+    @Column(name = "CREATE_DATETIME", nullable = false)
     private Date createdDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "MODIFIED_DATE", nullable = false)
+    @Column(name = "MODIFY_DATETIME", nullable = false)
     private Date modifiedDate;
 
     /*

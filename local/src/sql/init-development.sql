@@ -1,9 +1,6 @@
 spool init-development.log
 set define off
 
-PROMPT drop.sql
-@@drop.sql
-
 PROMPT schema.sql
 @@schema.sql
 
@@ -13,14 +10,12 @@ PROMPT schema-ext.sql
 PROMPT basic-data.sql
 @@basic-data.sql
 
-PROMPT development-data.sql
-@@development-data.sql
-
 PROMPT rename-constraints.sql
 @@rename-constraints.sql
 
-COMMIT;
---ROLLBACK;
+PROMPT development-data.sql
+@@development-data.sql
 
 spool off
 exit;
+

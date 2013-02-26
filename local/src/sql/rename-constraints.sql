@@ -20,12 +20,12 @@ user_ind_columns.table_name=user_constraints.table_name AND user_ind_columns.ind
             constraint_name := 'PK_'||substr(uc.table_name,1,27);
         else
             if table_name_prev is NULL OR table_name_prev <> uc.table_name then
-               constraint_name := 'UQ_'||substr(uc.table_name,1,27);
+               constraint_name := 'UK_'||substr(uc.table_name,1,27);
                table_name_prev := uc.table_name;
                uq_no := null;
             else
                uq_no := nvl(uq_no,0) + 1;
-               constraint_name := 'UQ_'||substr(uc.table_name,1,25)||'_'||uq_no;
+               constraint_name := 'UK_'||substr(uc.table_name,1,25)||'_'||uq_no;
             end if;   
         end if;
         if constraint_name <> uc.constraint_name then

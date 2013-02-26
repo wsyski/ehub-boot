@@ -9,8 +9,8 @@
 
  create table RELEASE (
         VERSION varchar2(255 char) not null,
-        CREATED_DATE timestamp not null,
-        MODIFIED_DATE timestamp not null,
+        CREATE_DATETIME timestamp not null,
+        MODIFY_DATETIME timestamp not null,
         primary key (VERSION)
     );
 
