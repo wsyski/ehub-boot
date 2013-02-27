@@ -2,9 +2,9 @@ set serveroutput on
 
 declare
    statement varchar2(4000);
-   table_name_prev varchar2(255) := null;
-   uq_no number := null;
-   constraint_name varchar2(255);
+  uq_no number := null;
+   table_name_prev user_constraints.table_name%TYPE := null;
+   constraint_name user_constraints.constraint_name%TYPE;
 
 begin
     for uc in (
@@ -40,3 +40,4 @@ begin
         end if;
     end loop;
 end;
+/
