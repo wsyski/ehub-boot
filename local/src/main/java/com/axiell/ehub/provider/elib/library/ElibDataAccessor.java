@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
+import static com.axiell.ehub.provider.elib.library.ElibUtils.generateIsbn13or10;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 /**
@@ -238,6 +239,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
      */
     private ElibLoan getElibLoan(List<Orderitem> orderItems, String elibRecordId, String elibFormatId) {
         final long elibRecordIdValue = Long.valueOf(elibRecordId);
+        //The id elib uses is the isbn, when we make a loan with ISBN13, they return the loan as ISBN10, so let's compare both ISBN10 and ISBN13 to make sure we don't miss it
+        final long elibRecordIdSecondaryValue = Long.valueOf(generateIsbn13or10(elibRecordId));
         final short elibFormatIdValue = Short.valueOf(elibFormatId);
 
         for (Orderitem orderItem : orderItems) {
@@ -247,7 +250,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
             final se.elib.library.orderlist.Response.Data.Orderitem.Book.Format bookFormat = book.getFormat();
             final short bookFormatId = bookFormat.getId();
 
-            if (elibRecordIdValue == bookIdValue && elibFormatIdValue == bookFormatId) {
+            if ((elibRecordIdValue == bookIdValue || elibRecordIdSecondaryValue == bookIdValue) && elibFormatIdValue == bookFormatId) {
                 final long orderNumber = orderItem.getRetailerordernumber();
                 final String expirationDate = orderItem.getLoanexpiredate();
                 return new ElibLoan(orderNumber, expirationDate);
