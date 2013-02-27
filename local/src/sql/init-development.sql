@@ -13,6 +13,9 @@ PROMPT basic-data.sql
 PROMPT rename-constraints.sql
 @@rename-constraints.sql
 
+PROMPT create-fk-indexes.sql
+@@create-fk-indexes.sql
+
 PROMPT development-data.sql
 @@development-data.sql
 
