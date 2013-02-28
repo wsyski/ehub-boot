@@ -377,7 +377,7 @@
                             <arguments>
                                 <argument>ehub-db</argument>
                                 <argument>${project.basedir}/src/main/resources/hibernate.properties</argument>
-                                <argument>${project.basedir}/src/sql/schema.sql</argument>
+                                <argument>${project.basedir}/src/sql/basic/schema.sql</argument>
                                 <argument>true</argument>
                                 <argument>true</argument>
                             </arguments>

@@ -8,6 +8,7 @@ declare
    old_index_name user_indexes.index_name%TYPE;
    current_index_name user_indexes.index_name%TYPE;
    pos integer;
+   len integer;
    dummy char(1);
 begin
     for uc in (
@@ -17,9 +18,14 @@ begin
         order by table_name,constraint_type
     )
     loop
-        index_name := 'I_'||substr(uc.constraint_name,1,28);
+        len := length(uc.constraint_name);
+        if len > 28 and substr(uc.constraint_name, len - 1, 1) = '_' and ascii(substr(uc.constraint_name, len, 1)) >= ascii('0') and ascii(substr(uc.constraint_name, len, 1)) <= ascii('9') then
+            index_name := 'I_'||substr(uc.constraint_name, 1, 26)||substr(uc.constraint_name, len - 1, 2);
+        else
+            index_name := 'I_'||substr(uc.constraint_name, 1, 28);
+        end if;    
         constraint_columns.delete();
-        --dbms_output.put_line('Processing table: '||uc.table_name||' index_name: '||index_name);
+        --dbms_output.put_line('Processing table: '||uc.table_name||' index_name: '||index_name||' constraint_name: '||uc.constraint_name);
         for ucc in (
             select column_name 
             from user_cons_columns 

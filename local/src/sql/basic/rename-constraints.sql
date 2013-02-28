@@ -2,7 +2,7 @@ set serveroutput on
 
 declare
    statement varchar2(4000);
-  uq_no number := null;
+   uq_no integer := null;
    table_name_prev user_constraints.table_name%TYPE := null;
    constraint_name user_constraints.constraint_name%TYPE;
 
