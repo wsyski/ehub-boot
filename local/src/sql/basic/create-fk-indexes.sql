@@ -4,13 +4,14 @@ declare
    type constraint_columns_type is table of user_cons_columns.column_name%TYPE;
    statement varchar2(4000);
    index_name user_indexes.index_name%TYPE;
-   constraint_columns constraint_columns_type:=constraint_columns_type(); 
+   constraint_columns constraint_columns_type:=constraint_columns_type();
+   constraint_columns_string varchar2(4000);
    old_index_name user_indexes.index_name%TYPE;
    current_index_name user_indexes.index_name%TYPE;
    pos integer;
    len integer;
    dummy char(1);
-begin
+  begin
     for uc in (
         select table_name, index_name, constraint_name 
         from user_constraints 
@@ -25,7 +26,7 @@ begin
             index_name := 'I_'||substr(uc.constraint_name, 1, 28);
         end if;    
         constraint_columns.delete();
-        --dbms_output.put_line('Processing table: '||uc.table_name||' index_name: '||index_name||' constraint_name: '||uc.constraint_name);
+        constraint_columns_string := null;
         for ucc in (
             select column_name 
             from user_cons_columns 
@@ -35,8 +36,13 @@ begin
         loop
             constraint_columns.extend;
             constraint_columns(constraint_columns.last) := ucc.column_name;
+            if constraint_columns_string is not null then
+                constraint_columns_string := constraint_columns_string || ',';
+            end if;
+            constraint_columns_string := constraint_columns_string || ucc.column_name;
         end loop;
-        --Check if index exists 
+        --dbms_output.put_line('Processing table: '||uc.table_name||' index_name: '||index_name||' constraint_name: '||uc.constraint_name||' columns: '||constraint_columns_string);
+        --Check if index exists
         old_index_name := null;
         current_index_name := null;
         statement:=null;
@@ -49,11 +55,11 @@ begin
         loop
           if old_index_name is null or old_index_name != uic.index_name then
                if current_index_name is not null then
-                   --dbms_output.put_line('Index: '||uic.index_name||' has the same columns');
+                   --dbms_output.put_line('Index: '||uic.index_name||' contains all fk index columns');
                    exit;
                end if;
                old_index_name := uic.index_name;
-               current_index_name:= uic.index_name;
+               current_index_name := uic.index_name;
                pos := 0;
                --dbms_output.put_line('Trying index: '||uic.index_name);
           end if;     
@@ -65,15 +71,7 @@ begin
         end loop;
         --dbms_output.put_line('current_index_name: '||current_index_name);
         if current_index_name is null then
-            statement := 'CREATE INDEX '||index_name||' on '||uc.table_name||'(';
-            pos:=0;
-            for i IN constraint_columns.first .. constraint_columns.last loop
-                if i > constraint_columns.first then
-                    statement := statement || ',';
-                end if;    
-                statement := statement || constraint_columns(i);
-            end loop;
-            statement:=statement||')';
+            statement := 'CREATE INDEX '||index_name||' on '||uc.table_name||'('||constraint_columns_string||')';
         elsif current_index_name != index_name then
             -- Check if there exist a constraint with the same name
             begin
@@ -86,7 +84,7 @@ begin
         end if;
         if statement is not null then
             dbms_output.put_line('sql: '||statement);
-		        execute immediate statement;    
+            execute immediate statement;    
         end if; 
     end loop;
 end;
