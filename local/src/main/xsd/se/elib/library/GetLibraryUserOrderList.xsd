@@ -81,7 +81,7 @@
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
-                                                <xs:attribute name="id" type="xs:unsignedLong" use="required"/>
+                                                <xs:attribute name="id" type="xs:string" use="required"/>
                                                 <xs:attribute name="idtype" type="xs:string" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
