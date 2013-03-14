@@ -20,7 +20,7 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -73,10 +73,10 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         String errorMessage = "Could not get formats";
         if (elibStatus.getCode() == ELIB_STATUS_CODE_OK) {
             final se.elib.library.product.Response.Data data = elibResponse.getData();
+            final Formats formats = new Formats();
             if (data != null) {
                 final Product product = data.getProduct();
                 final Product.Formats elibFormats = product.getFormats();
-                final Formats formats = new Formats();
 
                 for (Product.Formats.Format elibFormat : elibFormats.getFormat()) {
                     final String formatId = String.valueOf(elibFormat.getFormatId());
@@ -102,11 +102,10 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                     final Format format = new Format(formatId, name, description, iconUrl);
                     formats.addFormat(format);
                 }
-                return formats;
+            } else {
+                LOGGER.warn("Null data received from the response contentProviderRecordId: " + contentProviderRecordId);
             }
-            else {
-                errorMessage = "Null data received from the response";
-            }
+            return formats;
         }
         final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
         final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
@@ -147,7 +146,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         } else {
             final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
             final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
-            throw new InternalServerErrorException("Could not create loan", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
+            throw new InternalServerErrorException("Could not create loan", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName,
+                    argContentProviderStatus);
         }
     }
 
@@ -172,18 +172,31 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                 String contentUrl = null;
                 for (Serializable serializable : serializables) {
                     if (serializable instanceof JAXBElement) {
-                        contentUrl = String.class.cast(JAXBElement.class.cast(serializable).getValue());
-                        break;
+                        String value = String.class.cast(JAXBElement.class.cast(serializable).getValue());
+                        if (!StringUtils.isBlank(value)) {
+                            contentUrl = value;
+                            break;
+                        }
                     }
                 }
-                if (contentUrl == null && serializables.size() == 1) {
-                    contentUrl = String.class.cast(serializables.get(0));
+                if (contentUrl == null) {
+                    for (Serializable serializable : serializables) {
+                        String value = String.class.cast(serializable);
+                        if (!StringUtils.isBlank(value)) {
+                            contentUrl = value;
+                            break;
+                        }
+                    }
+                }
+                if (contentUrl != null) {
                     final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
                     return createContent(contentUrl, formatDecorations);
-                } else if (contentUrl == null) {
+                } else {
                     final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
-                    final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(ELIB_STATUS_CODE_OK));
-                    throw new InternalServerErrorException("Can not determine the content url", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
+                    final ErrorCauseArgument argContentProviderStatus =
+                            new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(ELIB_STATUS_CODE_OK));
+                    throw new InternalServerErrorException("Can not determine the content url", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName,
+                            argContentProviderStatus);
                 }
             }
         }
@@ -223,8 +236,9 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
             return data.getOrderitem();
         }
         final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
-        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(ELIB_STATUS_CODE_OK));
-        throw new InternalServerErrorException("Could not get order items", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
+        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(elibStatus.getCode()));
+        throw new InternalServerErrorException("Could not get order items", ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName,
+                argContentProviderStatus);
     }
 
     /**
@@ -238,19 +252,17 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
      * @throws
      */
     private ElibLoan getElibLoan(List<Orderitem> orderItems, String elibRecordId, String elibFormatId) {
-        final long elibRecordIdValue = Long.valueOf(elibRecordId);
         //The id elib uses is the isbn, when we make a loan with ISBN13, they return the loan as ISBN10, so let's compare both ISBN10 and ISBN13 to make sure we don't miss it
-        final long elibRecordIdSecondaryValue = Long.valueOf(generateIsbn13or10(elibRecordId));
+        final String elibSecondaryRecordId = generateIsbn13or10(elibRecordId);
         final short elibFormatIdValue = Short.valueOf(elibFormatId);
 
         for (Orderitem orderItem : orderItems) {
             final Book book = orderItem.getBook();
-            final BigInteger bookId = book.getId();
-            final long bookIdValue = bookId.longValue();
+            final String bookId = book.getId();
             final se.elib.library.orderlist.Response.Data.Orderitem.Book.Format bookFormat = book.getFormat();
             final short bookFormatId = bookFormat.getId();
 
-            if ((elibRecordIdValue == bookIdValue || elibRecordIdSecondaryValue == bookIdValue) && elibFormatIdValue == bookFormatId) {
+            if ((elibRecordId.equals(bookId) || elibSecondaryRecordId.equals(bookId)) && elibFormatIdValue == bookFormatId) {
                 final long orderNumber = orderItem.getRetailerordernumber();
                 final String expirationDate = orderItem.getLoanexpiredate();
                 return new ElibLoan(orderNumber, expirationDate);
