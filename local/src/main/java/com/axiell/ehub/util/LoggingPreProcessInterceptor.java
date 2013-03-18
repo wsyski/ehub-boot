@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
@@ -27,6 +28,9 @@ public final class LoggingPreProcessInterceptor implements PreProcessInterceptor
 
     @Override
     public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethod method) throws Failure, WebApplicationException {
+        StopWatch stopWatch=new StopWatch();
+        stopWatch.start();
+        httpRequest.setAttribute("stopWatch", stopWatch);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Request:" + ToString.getLf() + ToString.fromHttpRequest(httpRequest));
         }

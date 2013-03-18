@@ -10,6 +10,9 @@ PROMPT schema-ext.sql
 PROMPT basic-data.sql
 @@basic-data.sql
 
+PROMPT insert-into-release.sql
+@@insert-into-release.sql
+
 PROMPT rename-constraints.sql
 @@rename-constraints.sql
 
