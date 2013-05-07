@@ -17,14 +17,14 @@
         <constructor-arg ref="sslHttpClient"/>
     </bean>
 
-    <bean id="loansProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create">
+    <bean id="loansProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create" scope="prototype">
         <constructor-arg index="0" type="java.lang.Class" value="com.axiell.ehub.loan.ILoansResource"/>
         <constructor-arg index="1" type="java.net.URI" ref="ehubUri"/>
         <constructor-arg index="2" ref="clientExecutor"/>
         <constructor-arg index="3" ref="restEasyProviderFactory"/>
     </bean>
 
-    <bean id="contentProvidersProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create">
+    <bean id="contentProvidersProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create" scope="prototype">
         <constructor-arg index="0" type="java.lang.Class" value="com.axiell.ehub.provider.IContentProvidersResource"/>
         <constructor-arg index="1" type="java.net.URI" ref="ehubUri"/>
         <constructor-arg index="2" ref="clientExecutor"/>
