@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <import resource="common-context.xml"/>
+    <import resource="classpath:com/axiell/ehub/common-context.xml"/>
 
     <util:properties id="remoteProperties" location="classpath:remote-client.properties"/>
     <bean id="sslHttpClient" class="com.axiell.ehub.SslHttpClientBuilder" factory-method="createSelfSignedCertSSLCapableHttpConnector">
@@ -45,7 +45,7 @@
     </bean>
 
     <bean id="ehubUri" class="java.net.URI">
-        <constructor-arg value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}"/>
+        <constructor-arg value="http://localhost:1111"/>
     </bean>
 
     <bean id="restEasyProviderFactory2" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

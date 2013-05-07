@@ -12,6 +12,8 @@ import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.aop.framework.Advised;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import java.util.Locale;
@@ -36,7 +38,8 @@ public class RemoteLoanTest extends AbstractEhubClientTest<LoanDevelopmentData> 
                 fail("Can not retrieve EhubClient");
             }
         }
-        ehubClient.setEhubBaseUri("http://localhost:1111");
+        ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"failConfig.xml"});
+                ehubService = (IEhubService) springContext.getBean("ehubClient");
         try {
             ehubService.getFormats(authInfoNoCard, ContentProviderName.ELIB.toString(), DevelopmentData.ELIB_RECORD_0_ID, Locale.ENGLISH.getLanguage());
         } catch (EhubException ex) {
