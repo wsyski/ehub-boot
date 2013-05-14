@@ -3,15 +3,15 @@
  */
 package com.axiell.ehub.provider.elib.elibu;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.List;
 
 /**
  * Represents an ElibU product.
  */
-@JsonIgnoreProperties(value = {"BookType", "Categories", "Contributors", "CoverImage", "CreatedDate", "Description", "DistributionRegions", "Language",
+@JsonIgnoreProperties(value = {"BookType", "Categories", "PublishedDate",  "Contributors", "CoverImage", "CreatedDate", "Description", "DistributionRegions", "Language",
     "OrderableFormatGroups", "ProductID", "PublicIdentifiers", "Publisher", "Relations", "Statuses", "Teaser", "Title", "UpdatedDate"})
 public class Product {
     @JsonProperty("AvailableFormats")
