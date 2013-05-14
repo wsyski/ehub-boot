@@ -28,7 +28,7 @@
 
     <distributionManagement>
         <repository>
-            <id>Arena Project</id>
+            <id>Axiell maven repository</id>
             <name>Arena Project-releases</name>
             <url>http://arenarep.axiell.com/artifactory/libs-releases-local</url>
         </repository>
