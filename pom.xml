@@ -20,8 +20,10 @@
     </organization>
 
     <scm>
-        <connection>scm:git:https://github.com/axiell/eHub</connection>
-        <developerConnection>scm:git:https://github.com/axiell/eHub</developerConnection>
+
+        <connection>scm:git:git@github.com:axiell/eHub.git</connection>
+        <url>scm:git:git@github.com:axiell/eHub.git</url>
+        <developerConnection>scm:git:git@github.com:axiell/eHub.git</developerConnection>
 
 
       </scm>
