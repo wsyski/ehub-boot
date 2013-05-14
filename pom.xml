@@ -20,6 +20,13 @@
         <url>http://www.axiell.com</url>
     </organization>
 
+    <scm>
+        <connection>scm:git:https://github.com/axiell/eHub</connection>
+        <developerConnection>scm:git:https://github.com/axiell/eHub</developerConnection>
+
+
+      </scm>
+
     <reporting>
         <plugins>
             <plugin>
