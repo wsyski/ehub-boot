@@ -21,8 +21,8 @@
     </organization>
 
     <scm>
-        <connection>scm:git:https://github.com/axiell/eHub</connection>
-        <developerConnection>scm:git:https://github.com/axiell/eHub</developerConnection>
+        <connection>scm:git:ssh://axiellbamboo@github.com/axiell/eHub</connection>
+        <developerConnection>scm:git:ssh://axiellbamboo@github.com/axiell/eHub</developerConnection>
 
 
       </scm>
