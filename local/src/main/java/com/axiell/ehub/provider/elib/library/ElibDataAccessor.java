@@ -34,7 +34,6 @@ import se.elib.library.product.Response.Data.Product;
 
 import javax.xml.bind.JAXBElement;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
