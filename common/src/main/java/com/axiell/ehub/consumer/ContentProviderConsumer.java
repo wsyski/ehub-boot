@@ -131,7 +131,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     public List<ContentProviderConsumerPropertyKey> getValidPropertyKeys() {
         Validate.notNull(contentProvider, "Content Provider can't be null");
         Set<ContentProviderConsumerPropertyKey> keySet = VALID_PROPERTY_KEYS.get(contentProvider.getName());
-        return new ArrayList<>(keySet);
+        return keySet == null ? new ArrayList<ContentProviderConsumerPropertyKey>() : new ArrayList<>(keySet);
     }
 
     /**
