@@ -10,10 +10,12 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -79,6 +81,17 @@ public class DevelopmentData {
     public static final int ELIBU_EBOOK_PLAYER_WIDTH_AND_HEIGHT = 0;
     public static final int ELIB_PLAYER_WIDTH = 600;
     public static final int ELIB_PLAYER_HEIGHT = 215;
+
+    public static final String PUBLIT_URL = "http://beta.publit.se/";
+    public static final String PUBLIT_FORMAT_0_ID = "E-bok";
+    public static final Object PUBLIT_FORMAT_0_NAME = "E-bok";
+    public static final int PUBLIT_PLAYER_WIDTH = 320;
+    public static final int PUBLIT_PLAYER_HEIGHT = 240;
+    public static final Object PUBLIT_USERNAME = "axiell";
+    public static final Object PUBLIT_PASSWORD = "4x1eLl_12";
+    public static final String PUBLIT_RECORD_0_ID = "9789174376838";
+    public static final String PUBLIT_LIBRARY_CARD = "12345";
+    public static final String PUBLIT_LIBRARY_CARD_PIN = "1111";
 
     protected IContentProviderAdminController contentProviderAdminController;
     protected IFormatAdminController formatAdminController;

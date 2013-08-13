@@ -3,6 +3,48 @@
  */
 package com.axiell.ehub.provider;
 
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
+import static com.axiell.ehub.provider.ContentProviderName.ELIB;
+import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
+import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.ForeignKey;
+
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -10,18 +52,6 @@ import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.eekboom.utils.Strings;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.ForeignKey;
-
-import javax.persistence.*;
-import java.text.Collator;
-import java.util.*;
-
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB;
-import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
 
 /**
  * Represents a Content Provider. It contains the common parameters for a certain Content Provider, e.g. the base URL of
@@ -37,6 +67,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     static {
         VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL)));
         VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(PRODUCT_URL, CONSUME_LICENSE_URL)));
+        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL)));
     }
 
     private ContentProviderName name;
@@ -51,8 +82,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Constructs a new {@link ContentProvider}.
-     *
-     * @param name       the name of the {@link ContentProvider}
+     * 
+     * @param name the name of the {@link ContentProvider}
      * @param properties the {@link ContentProvider} properties
      */
     public ContentProvider(final ContentProviderName name, final Map<ContentProviderPropertyKey, String> properties) {
@@ -62,7 +93,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns the name of the {@link ContentProvider}.
-     *
+     * 
      * @return the name of the {@link ContentProvider}
      */
     @Column(name = "NAME", nullable = false, unique = true)
@@ -73,7 +104,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Sets the name of the {@link ContentProvider}. Only used by JPA.
-     *
+     * 
      * @param name the name of the {@link ContentProvider} to set
      */
     protected void setName(final ContentProviderName name) {
@@ -82,7 +113,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Gets the {@link ContentProvider} properties.
-     *
+     * 
      * @return the {@link ContentProvider} properties
      */
     @ElementCollection(fetch = FetchType.LAZY)
@@ -97,7 +128,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Sets the {@link ContentProvider} properties. Only used by JPA.
-     *
+     * 
      * @param properties the {@link ContentProvider} properties to set
      */
     protected void setProperties(Map<ContentProviderPropertyKey, String> properties) {
@@ -106,7 +137,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Gets the valid properties for this {@link ContentProvider}.
-     *
+     * 
      * @return a {@link List} of {@link ContentProviderPropertyKey}s
      */
     @Transient
@@ -118,11 +149,11 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Gets the value of a property with the given key.
-     *
+     * 
      * @param key the key of the property
      * @return the property value
      * @throws IllegalArgumentException if this {@link ContentProvider} has no valid property keys, or if there exists
-     *                                  no property with the given name
+     * no property with the given name
      */
     @Transient
     public String getProperty(final ContentProviderPropertyKey key) {
@@ -134,9 +165,9 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns the mapping between the formats at this {@link ContentProvider} and their types.
-     *
+     * 
      * @return a {@link Map} where the key is the unique format ID at this {@link ContentProvider} and the value is a
-     *         {@link FormatDecoration}
+     * {@link FormatDecoration}
      */
     @OneToMany(mappedBy = "contentProvider", fetch = FetchType.LAZY)
     @MapKey(name = "contentProviderFormatId")
@@ -146,8 +177,9 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Sets the mapping between the formats at this {@link ContentProvider} and their decorations.
-     *
-     * @param formatDecorations the map between the formats at this {@link ContentProvider} and their format decorations to set
+     * 
+     * @param formatDecorations the map between the formats at this {@link ContentProvider} and their format decorations
+     * to set
      */
     public void setFormatDecorations(Map<String, FormatDecoration> formatDecorations) {
         this.formatDecorations = formatDecorations;
@@ -155,7 +187,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns a list of format IDs.
-     *
+     * 
      * @param locale
      * @return a list of format IDs
      */
@@ -171,7 +203,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Gets a specific {@link FormatDecoration} for the given format ID.
-     *
+     * 
      * @param formatId the non-null ID of the format at this {@link ContentProvider}
      * @return a {@link FormatDecoration}
      * @throws NotFoundException

@@ -15,6 +15,7 @@ import java.util.*;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
+import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;;
 
 /**
  * Represents a consumer of a specific {@link ContentProvider}. It holds the consumer specific parameters used when
@@ -30,6 +31,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     static {
         VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(ELIB_RETAILER_ID, ELIB_RETAILER_KEY)));
         VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
+        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
     }
 
     private EhubConsumer ehubConsumer;
@@ -154,6 +156,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      * Enumeration for content provider consumer property keys.
      */
     public static enum ContentProviderConsumerPropertyKey {
-        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID
+        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD
     }
 }

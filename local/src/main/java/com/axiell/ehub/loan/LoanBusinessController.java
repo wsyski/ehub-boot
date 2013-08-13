@@ -4,6 +4,7 @@
 package com.axiell.ehub.loan;
 
 import com.axiell.ehub.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
+import com.axiell.ehub.provider.publit.PublitDataAccessor;
 import com.axiell.ehub.security.AuthInfo;
 
 /**
@@ -35,6 +37,9 @@ public class LoanBusinessController implements ILoanBusinessController {
     
     @Autowired(required = true)
     private ElibUDataAccessor elibUDataAccessor;
+    
+    @Autowired(required = true)
+    private PublitDataAccessor publitDataAccessor;
         
     @Autowired(required = true)
     private IEhubLoanRepository ehubLoanRepository;
@@ -64,6 +69,8 @@ public class LoanBusinessController implements ILoanBusinessController {
                     case ELIBU:
                         contentProviderLoan = elibUDataAccessor.createLoan(contentProviderConsumer, libraryCard, pin, pendingLoan);
                         break;
+                    case PUBLIT:
+                        contentProviderLoan = publitDataAccessor.createLoan(contentProviderConsumer, libraryCard, pin, pendingLoan);
                     default:
                         throw new NotImplementedException("Create new loan for content provider with name '" + contentProviderName + "' has not been implemented");
                 }
@@ -144,6 +151,9 @@ public class LoanBusinessController implements ILoanBusinessController {
                 break;
             case ELIBU:
                 content = elibUDataAccessor.getContent(contentProviderConsumer, libraryCard, pin, contentProviderLoanMetadata);
+                break;
+            case PUBLIT:
+                content = publitDataAccessor.getContent(contentProviderConsumer, libraryCard, pin, contentProviderLoanMetadata);
                 break;
             default:
                 throw new NotImplementedException("Get ready loan for content provider with name '" + contentProviderName + "' has not been implemented");
