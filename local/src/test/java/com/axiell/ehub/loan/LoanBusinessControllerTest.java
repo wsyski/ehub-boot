@@ -55,7 +55,7 @@ public class LoanBusinessControllerTest extends AbstractEhubRepositoryTest<LoanD
      * Test method for {@link LoanBusinessController#createLoan(AuthInfo, PendingLoan)}
      */
     @Test
-    public void testCreateLoanOnline() throws EhubException {
+    public void testElibCreateLoanOnline() throws EhubException {
         if (isOnline()) {
             //String recordId = DevelopmentData.ELIB_RECORD_0_ID;
             //String format= DevelopmentData.ELIB_FORMAT_0_ID;
@@ -66,12 +66,33 @@ public class LoanBusinessControllerTest extends AbstractEhubRepositoryTest<LoanD
             PendingLoan pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), recordId, format);
             ReadyLoan createReadyLoan = loanBusinessController.createLoan(authInfo, pendingLoan);
             Assert.assertNotNull(createReadyLoan);
-            ReadyLoan getReadyLoan = loanBusinessController.getReadyLoan(authInfo, createReadyLoan.getLmsLoan().getId());
-            IContent content = getReadyLoan.getContentProviderLoan().getContent();
+            ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, createReadyLoan.getLmsLoan().getId());
+            IContent content = readyLoan.getContentProviderLoan().getContent();
             String url =
                     content instanceof DownloadableContent ? DownloadableContent.class.cast(content).getUrl() : StreamingContent.class.cast(content).getUrl();
             Assert.assertNotNull(url);
-            Assert.assertNotNull(getReadyLoan);
+            Assert.assertNotNull(readyLoan);
+            Assert.assertEquals(ContentProviderName.ELIB, readyLoan.getContentProviderLoan().getMetadata().getContentProvider().getName());
+        }
+    }
+    
+    @Test
+    public void testPublitCreateLoanOnline() throws EhubException {
+        if (isOnline()) {
+            String recordId = DevelopmentData.PUBLIT_RECORD_0_ID;
+            String format = DevelopmentData.PUBLIT_FORMAT_0_ID;
+            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
+                    .libraryCard(DevelopmentData.PUBLIT_LIBRARY_CARD).pin(DevelopmentData.PUBLIT_LIBRARY_CARD_PIN).build();
+            PendingLoan pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.PUBLIT.name(), recordId, format);
+            ReadyLoan createReadyLoan = loanBusinessController.createLoan(authInfo, pendingLoan);
+            Assert.assertNotNull(createReadyLoan);
+            ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, createReadyLoan.getLmsLoan().getId());
+            IContent content = readyLoan.getContentProviderLoan().getContent();
+            String url =
+                    content instanceof DownloadableContent ? DownloadableContent.class.cast(content).getUrl() : StreamingContent.class.cast(content).getUrl();
+            Assert.assertNotNull(url);
+            Assert.assertNotNull(readyLoan);
+            Assert.assertEquals(ContentProviderName.PUBLIT, readyLoan.getContentProviderLoan().getMetadata().getContentProvider().getName());
         }
     }
 
@@ -83,11 +104,26 @@ public class LoanBusinessControllerTest extends AbstractEhubRepositoryTest<LoanD
      * @throws EhubException
      */
     @Test
-    public void testGetReadyLoanAuthInfoLongOnline() throws EhubException {
+    public void testELibGetReadyLoanAuthInfoLongOnline() throws EhubException {
         if (isOnline()) {
             AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
                     .libraryCard(DevelopmentData.ELIB_LIBRARY_CARD).pin(DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
-            Long expReadyLoanId = developmentData.getEhubLoanId();
+            Long expReadyLoanId = developmentData.getELibEhubLoanId();
+            try {
+                ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, expReadyLoanId);
+                Assert.fail("A NotFoundException should have been thrown");
+            } catch (NotFoundException e) {
+                Assert.assertNotNull(e);
+            }
+        }
+    }
+    
+    @Test
+    public void testPublitGetReadyLoanAuthInfoLongOnline() throws EhubException {
+        if (isOnline()) {
+            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
+                    .libraryCard(DevelopmentData.PUBLIT_LIBRARY_CARD).pin(DevelopmentData.PUBLIT_LIBRARY_CARD_PIN).build();
+            Long expReadyLoanId = developmentData.getPublitEhubLoanId();
             try {
                 ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, expReadyLoanId);
                 Assert.fail("A NotFoundException should have been thrown");

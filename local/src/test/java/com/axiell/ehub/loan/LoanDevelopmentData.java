@@ -18,7 +18,8 @@ import com.axiell.ehub.provider.record.format.IFormatAdminController;
  */
 public class LoanDevelopmentData extends DevelopmentData {    
     private IEhubLoanRepository ehubLoanRepository;
-    private Long ehubLoanId;
+    private Long elibehubLoanId;
+    private Long publitehubLoanId;
     
     /**
      * @param contentProviderAdminController
@@ -37,7 +38,8 @@ public class LoanDevelopmentData extends DevelopmentData {
     @Override
     public void init() throws Exception {
         super.init();
-        initEhubLoan(getEhubConsumer(), getElibProvider());
+        initELibEhubLoan(getEhubConsumer(), getElibProvider());
+        initPublitEhubLoan(getEhubConsumer(), getPublitProvider());
     }
     
     /**
@@ -54,8 +56,12 @@ public class LoanDevelopmentData extends DevelopmentData {
      *
      * @return the ehubLoanId
      */
-    public Long getEhubLoanId() {
-        return ehubLoanId;
+    public Long getELibEhubLoanId() {
+        return elibehubLoanId;
+    }
+    
+    public Long getPublitEhubLoanId() {
+        return publitehubLoanId;
     }
     
     /**
@@ -63,13 +69,23 @@ public class LoanDevelopmentData extends DevelopmentData {
      * @param ehubConsumer
      * @param elibProvider
      */
-    private void initEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
+    private void initELibEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
         FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(DevelopmentData.ELIB_FORMAT_1_ID);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata(DevelopmentData.CONTENT_PROVIDER_LOAN_ID, elibProvider, new Date(),
                 elibFormatDecoration1);
-        LmsLoan lmsLoan = new LmsLoan(DevelopmentData.LMS_LOAN_ID);
+        LmsLoan lmsLoan = new LmsLoan(DevelopmentData.LMS_LOAN_ID_1);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);
-        ehubLoanId = ehubLoan.getId();
+        elibehubLoanId = ehubLoan.getId();
+    }
+    
+    private void initPublitEhubLoan(EhubConsumer ehubConsumer, ContentProvider publitProvider) {
+        FormatDecoration publitFormatDecoration1 = publitProvider.getFormatDecoration(DevelopmentData.PUBLIT_FORMAT_0_ID);
+        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata(DevelopmentData.CONTENT_PROVIDER_LOAN_ID, publitProvider, new Date(),
+                publitFormatDecoration1);
+        LmsLoan lmsLoan = new LmsLoan(DevelopmentData.LMS_LOAN_ID_2);
+        EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
+        ehubLoan = ehubLoanRepository.save(ehubLoan);
+        publitehubLoanId = ehubLoan.getId();
     }
 }

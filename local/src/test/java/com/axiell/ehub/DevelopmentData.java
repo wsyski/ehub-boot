@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public class DevelopmentData {
     public static final String ELIB_RECORD_0_ID = "9100128260";
     public static final String ELIB_RECORD_1_ID = "9127025500";
     public static final String LMS_RECORD_ID = "0_1";
-    public static final String LMS_LOAN_ID = "04479593";
+    public static final String LMS_LOAN_ID_1 = "04479593";
+    public static final String LMS_LOAN_ID_2 = "4";
     public static final String ELIB_FORMAT_0_ID = "58";
     public static final String ELIB_FORMAT_0_NAME = "Epub with Adobe DRM for PC, Mac and e-book readers";
     public static final String ELIB_FORMAT_1_ID = "71";
@@ -84,11 +86,11 @@ public class DevelopmentData {
 
     public static final String PUBLIT_URL = "http://beta.publit.se/";
     public static final String PUBLIT_FORMAT_0_ID = "E-bok";
-    public static final Object PUBLIT_FORMAT_0_NAME = "E-bok";
+    public static final String PUBLIT_FORMAT_0_NAME = "E-bok";
     public static final int PUBLIT_PLAYER_WIDTH = 320;
     public static final int PUBLIT_PLAYER_HEIGHT = 240;
-    public static final Object PUBLIT_USERNAME = "axiell";
-    public static final Object PUBLIT_PASSWORD = "4x1eLl_12";
+    public static final String PUBLIT_USERNAME = "axiell";
+    public static final String PUBLIT_PASSWORD = "4x1eLl_12";
     public static final String PUBLIT_RECORD_0_ID = "9789174376838";
     public static final String PUBLIT_LIBRARY_CARD = "12345";
     public static final String PUBLIT_LIBRARY_CARD_PIN = "1111";
@@ -101,6 +103,7 @@ public class DevelopmentData {
     private Long ehubConsumerId;
     private EhubConsumer ehubConsumer;
     private ContentProvider elibProvider;
+    private ContentProvider publitProvider;
 
     /**
      * 
@@ -122,8 +125,10 @@ public class DevelopmentData {
     public void init() throws Exception {
         elibProvider = initElibProvider();
         initElibUProvider();
+        publitProvider = initPublitProvider();
         ehubConsumer = initEhubConsumer();
         initElibConsumer(getEhubConsumer(), getElibProvider());
+        initPublitConsumer(getEhubConsumer(), getPublitProvider());
     }
 
     /**
@@ -192,6 +197,10 @@ public class DevelopmentData {
      */
     public ContentProvider getElibProvider() {
         return elibProvider;
+    }
+    
+    public ContentProvider getPublitProvider() {
+        return publitProvider;
     }
     
     /**
@@ -290,6 +299,28 @@ public class DevelopmentData {
         return contentProviderAdminController.save(elibUProvider);
     }
 
+    private ContentProvider initPublitProvider() {
+        Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
+        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, PUBLIT_URL);
+        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL, PUBLIT_URL);
+        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL, PUBLIT_URL);
+        ContentProvider publitProvider = new ContentProvider(ContentProviderName.PUBLIT, contentProviderProperties);
+        publitProvider = contentProviderAdminController.save(publitProvider);
+
+        Map<String, FormatDecoration> formatDecorations = new HashMap<>();
+        FormatDecoration formatDecoration0 = new FormatDecoration(publitProvider, PUBLIT_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE, PUBLIT_PLAYER_WIDTH,
+                PUBLIT_PLAYER_HEIGHT);
+
+        formatDecorations.put(PUBLIT_FORMAT_0_ID, formatDecoration0);
+        for (Map.Entry<String, FormatDecoration> entry : formatDecorations.entrySet()) {
+            FormatDecoration value = formatAdminController.save(entry.getValue());
+            formatDecorations.put(entry.getKey(), value);
+        }
+        publitProvider.setFormatDecorations(formatDecorations);
+        publitProvider = contentProviderAdminController.save(publitProvider);
+        return publitProvider;
+    }
+    
     /**
      * 
      * @return
@@ -298,6 +329,7 @@ public class DevelopmentData {
         EhubConsumer ehubConsumer = createEhubConsumer();
         ehubConsumer = consumerAdminController.save(ehubConsumer);
         ehubConsumerId = ehubConsumer.getId();
+        ehubConsumer.setContentProviderConsumers(new HashSet<ContentProviderConsumer>());
         return ehubConsumer;
     }
 
@@ -313,10 +345,22 @@ public class DevelopmentData {
         elibConsumerProperties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID, ELIB_SERVICE_ID);
         ContentProviderConsumer elibConsumer = new ContentProviderConsumer(ehubConsumer, elibProvider, elibConsumerProperties);
         elibConsumer = consumerAdminController.save(elibConsumer);
-        ehubConsumer.setContentProviderConsumers(Collections.singleton(elibConsumer));
+        ehubConsumer.getContentProviderConsumers().add(elibConsumer);
         consumerAdminController.save(ehubConsumer);
         return elibConsumer;
     }
+    
+    private ContentProviderConsumer initPublitConsumer(EhubConsumer ehubConsumer, ContentProvider publitProvider) {
+        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> publitConsumerProperties = new HashMap<>();
+        publitConsumerProperties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.PUBLIT_USERNAME, PUBLIT_USERNAME);
+        publitConsumerProperties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.PUBLIT_PASSWORD, PUBLIT_PASSWORD);
+        ContentProviderConsumer publitConsumer = new ContentProviderConsumer(ehubConsumer, publitProvider, publitConsumerProperties);
+        publitConsumer = consumerAdminController.save(publitConsumer);
+        ehubConsumer.getContentProviderConsumers().add(publitConsumer);
+        consumerAdminController.save(ehubConsumer);
+        return publitConsumer;
+    }
+
 
     public static EhubConsumer createEhubConsumer() {
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();

@@ -62,7 +62,7 @@ public class PalmaDataAccessorTest {
                 palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(preCheckoutAnalysis);
         assertEquals(PreCheckoutAnalysis.Result.ACTIVE_LOAN, preCheckoutAnalysis.getResult());
-        assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
+        assertEquals(DevelopmentData.LMS_LOAN_ID_1, preCheckoutAnalysis.getLmsLoanId());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class PalmaDataAccessorTest {
         LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD,
                 DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(lmsLoan);
-        assertEquals(DevelopmentData.LMS_LOAN_ID, lmsLoan.getId());
+        assertEquals(DevelopmentData.LMS_LOAN_ID_1, lmsLoan.getId());
     }
 
     @WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",

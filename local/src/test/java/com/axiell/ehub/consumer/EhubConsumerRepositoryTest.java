@@ -55,7 +55,7 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
     public void testEhubConsumer() {
         EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(developmentData.getEhubConsumerId());
         Assert.assertEquals(2, ehubConsumer.getProperties().size());
-        Assert.assertEquals(1, ehubConsumer.getContentProviderConsumers().size());
+        Assert.assertEquals(2, ehubConsumer.getContentProviderConsumers().size());
     }
     
     @Test

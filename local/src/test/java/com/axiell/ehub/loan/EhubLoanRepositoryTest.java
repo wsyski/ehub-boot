@@ -57,7 +57,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
         EhubLoan ehubLoan = iterable.iterator().next();
         EhubConsumer ehubConsumer = ehubLoan.getEhubConsumer();
         Assert.assertEquals(2, ehubConsumer.getProperties().size());
-        ehubLoan = ehubLoanRepository.getLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID);
-        Assert.assertEquals(DevelopmentData.LMS_LOAN_ID, ehubLoan.getLmsLoan().getId());
+        ehubLoan = ehubLoanRepository.getLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID_1);
+        Assert.assertEquals(DevelopmentData.LMS_LOAN_ID_1, ehubLoan.getLmsLoan().getId());
     }
 }
