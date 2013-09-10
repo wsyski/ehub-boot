@@ -1,0 +1,49 @@
+package com.axiell.ehub.provider;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.loan.EhubLoan;
+import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.provider.record.format.Formats;
+
+@Component
+public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {
+    @Autowired(required = true)
+    private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
+    
+    @Override
+    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String contentProviderRecordId, String language) {
+	final ContentProviderName nameEnum = ContentProviderName.fromString(contentProviderName);
+        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(nameEnum);
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(nameEnum);
+        return dataAccessor.getFormats(consumer, contentProviderRecordId, language);
+    }
+
+    @Override
+    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
+	final ContentProviderName name = pendingLoan.getContentProviderNameEnum();
+	final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
+	final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+	return dataAccessor.createLoan(consumer, libraryCard, pin, pendingLoan);
+    }
+
+    @Override
+    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin) {
+	final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
+	final ContentProviderName name = getContentProviderName(metadata);
+	final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
+	final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+	return dataAccessor.getContent(consumer, libraryCard, pin, metadata);
+    }
+
+    private ContentProviderName getContentProviderName(ContentProviderLoanMetadata metadata) {
+	final ContentProvider contentProvider = metadata.getContentProvider();
+	return contentProvider.getName();
+    }
+}
