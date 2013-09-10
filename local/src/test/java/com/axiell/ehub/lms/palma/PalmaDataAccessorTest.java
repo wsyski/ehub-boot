@@ -1,11 +1,18 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.*;
-import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.loan.LmsLoan;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.provider.ContentProviderName;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.Date;
+
+import javax.jws.WebService;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.ws.Endpoint;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,18 +23,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.jws.WebService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.ws.Endpoint;
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Logger;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import com.axiell.arena.services.palma.loans.CheckOut;
+import com.axiell.arena.services.palma.loans.CheckOutTest;
+import com.axiell.arena.services.palma.loans.GetLoans;
+import com.axiell.arena.services.palma.loans.Loans;
+import com.axiell.arena.services.palma.loans.RenewLoans;
+import com.axiell.ehub.DevelopmentData;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.loan.LmsLoan;
+import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.provider.ContentProviderName;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
@@ -58,10 +63,10 @@ public class PalmaDataAccessorTest {
 
     @Test
     public void testCheckOutTest() {
-        PreCheckoutAnalysis preCheckoutAnalysis =
-                palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
+        CheckoutTestAnalysis preCheckoutAnalysis =
+                palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         assertNotNull(preCheckoutAnalysis);
-        assertEquals(PreCheckoutAnalysis.Result.ACTIVE_LOAN, preCheckoutAnalysis.getResult());
+        assertEquals(CheckoutTestAnalysis.Result.ACTIVE_LOAN, preCheckoutAnalysis.getResult());
         assertEquals(DevelopmentData.LMS_LOAN_ID_1, preCheckoutAnalysis.getLmsLoanId());
     }
 

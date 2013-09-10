@@ -28,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import se.elib.library.product.Response;
 import se.elib.library.orderlist.Response.Data.Orderitem;
 import se.elib.library.orderlist.Response.Data.Orderitem.Book;
 import se.elib.library.product.Response.Data.Product;
@@ -67,11 +68,11 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         final String productUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL);
 
         final IElibProductResource elibProductResource = ProxyFactory.create(IElibProductResource.class, productUrl);
-        final se.elib.library.product.Response elibResponse = elibProductResource.getProduct(retailerId, md5RetailerKeyCode, contentProviderRecordId, language);
-        final se.elib.library.product.Response.Status elibStatus = elibResponse.getStatus();
+        final Response elibResponse = elibProductResource.getProduct(retailerId, md5RetailerKeyCode, contentProviderRecordId, language);
+        final Response.Status elibStatus = elibResponse.getStatus();
         String errorMessage = "Could not get formats";
         if (elibStatus.getCode() == ELIB_STATUS_CODE_OK) {
-            final se.elib.library.product.Response.Data data = elibResponse.getData();
+            final Response.Data data = elibResponse.getData();
             final Formats formats = new Formats();
             if (data != null) {
                 final Product product = data.getProduct();
@@ -202,14 +203,6 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
         final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
         throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
-    }
-
-    /**
-     * @see com.axiell.ehub.provider.IContentProviderDataAccessor#getContentProviderName()
-     */
-    @Override
-    public ContentProviderName getContentProviderName() {
-        return ContentProviderName.ELIB;
     }
 
     /**

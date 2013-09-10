@@ -123,7 +123,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      * @throws X if no {@link ContentProviderConsumer} could be found with the given provider name
      */
     @Transient
-    public final ContentProviderConsumer getContentProviderConsumer(final ContentProviderName contentProviderName) {
+    public ContentProviderConsumer getContentProviderConsumer(final ContentProviderName contentProviderName) {
         for (ContentProviderConsumer contentProviderConsumer : contentProviderConsumers) {
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
             if (contentProvider.getName().equals(contentProviderName)) {

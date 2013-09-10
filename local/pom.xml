@@ -88,6 +88,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -158,6 +163,12 @@
             <artifactId>jetty-webapp</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>			
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>
@@ -225,11 +236,10 @@
                     <srcdir>${project.basedir}/../common/src/main/java</srcdir>
                     <destdir>${project.basedir}/src/main/webapp/xsd</destdir>
                     <includes>
-                        <include>**/ContentProviderFormats.java</include>
+                        <include>**/Formats.java</include>
                         <include>**/PendingLoan.java</include>
                         <include>**/ReadyLoan.java</include>
                         <include>**/EhubError.java</include>
-                        <include>**/ExportRecords.java</include>
                     </includes>
                     <schemas>
                         <schema>

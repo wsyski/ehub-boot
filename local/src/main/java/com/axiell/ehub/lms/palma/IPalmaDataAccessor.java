@@ -24,10 +24,10 @@ public interface IPalmaDataAccessor {
      * @param pendingLoan the {@link PendingLoan} containing media information
      * @param libraryCard the library card of the end-user who wants to checkout this media
      * @param pin the pin of the library card
-     * @return a {@link PreCheckoutAnalysis}
+     * @return a {@link CheckoutTestAnalysis}
      * @throws ForbiddenException
      */
-    PreCheckoutAnalysis preCheckout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, String libraryCard, String pin);
+    CheckoutTestAnalysis checkoutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, String libraryCard, String pin);
 
     /**
      * Does a checkout in the LMS of the media defined in the provided {@link PendingLoan}.

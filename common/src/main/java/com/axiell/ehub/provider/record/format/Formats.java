@@ -24,7 +24,7 @@ import com.axiell.ehub.provider.ContentProvider;
 @XmlRootElement(name = "contentProviderFormats")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(Format.class)
-public final class Formats {
+public class Formats {
     private Set<Format> formats = new HashSet<>();
     
     /**

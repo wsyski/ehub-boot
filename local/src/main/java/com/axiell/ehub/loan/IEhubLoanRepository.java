@@ -22,12 +22,23 @@ import com.axiell.ehub.consumer.EhubConsumer;
 public interface IEhubLoanRepository extends CrudRepository<EhubLoan, Long> {
 
     /**
-     * Returns a loan for given ID of the {@link EhubConsumer} and the ID of the {@link LmsLoan}
+     * Finds a loan for given ID of the {@link EhubConsumer} and the ID of the {@link LmsLoan}
      * 
      * @param ehubConsumerId the ID of the {@link EhubConsumer}
      * @param lmsLoanId the ID of the {@link LmsLoan}
      * @return an {@link EhubLoan}
      */
     @Query("select l from EhubLoan l where l.ehubConsumer.id = :ehubConsumerId and l.lmsLoan.id = :lmsLoanId")
-    EhubLoan getLoan(@Param("ehubConsumerId") Long ehubConsumerId, @Param("lmsLoanId") String lmsLoanId);
+    EhubLoan findLoan(@Param("ehubConsumerId") Long ehubConsumerId, @Param("lmsLoanId") String lmsLoanId);
+    
+    /**
+     * Finds a loan for the given ID of the {@link EhubConsumer} and the ID of the {@link ReadyLoan}.
+     * 
+     * 
+     * @param ehubConsumerId the ID of the {@link EhubConsumer}
+     * @param readyLoanId the ID of the {@link ReadyLoan}
+     * @return an {@link EhubLoan}
+     */
+    @Query("select l from EhubLoan l where l.ehubConsumer.id = :ehubConsumerId and l.id = :readyLoanId")
+    EhubLoan findLoan(@Param("ehubConsumerId") Long ehubConsumerId, @Param("readyLoanId") Long readyLoanId);
 }

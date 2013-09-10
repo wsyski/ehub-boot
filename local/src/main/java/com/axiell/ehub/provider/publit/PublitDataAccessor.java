@@ -126,9 +126,4 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
         final String password = contentProviderConsumer.getProperty(PUBLIT_PASSWORD);
         return PublitTradeApiFactory.getApi(userName, password, url);
     }
-    
-    @Override
-    public ContentProviderName getContentProviderName() {
-        return ContentProviderName.PUBLIT;
-    }
 }

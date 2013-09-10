@@ -19,7 +19,7 @@ import com.axiell.ehub.provider.ContentProviderName;
 @XmlRootElement(name = "pendingLoan")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(ContentProviderName.class)
-public final class PendingLoan {
+public class PendingLoan {
     private String lmsRecordId;
     private String contentProviderName;
     private String contentProviderRecordId;
@@ -92,7 +92,7 @@ public final class PendingLoan {
      * @throws
      */
     @XmlTransient
-    public final ContentProviderName getContentProviderNameEnum() {
+    public ContentProviderName getContentProviderNameEnum() {
         return ContentProviderName.fromString(contentProviderName);
     }
 

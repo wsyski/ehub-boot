@@ -5,25 +5,26 @@ package com.axiell.ehub.lms.palma;
 
 import org.apache.commons.lang3.Validate;
 
+import com.axiell.ehub.InternalServerErrorException;
+
 /**
  * Represents an analysis of a checkout before it is made in the LMS.
  */
-public final class PreCheckoutAnalysis {
-    private final Result status;
+public final class CheckoutTestAnalysis {
+    private final Result result;
     private final String lmsLoanId;
 
     /**
-     * Constructs a new {@link PreCheckoutAnalysis}.
+     * Constructs a new {@link CheckoutTestAnalysis}.
      * 
      * @param result the result of the analysis
      * @param lmsLoanId the ID of the LMS loan if the result is {@link Result#ACTIVE_LOAN}, <code>null</code> otherwise
      */
-    PreCheckoutAnalysis(final Result result, final String lmsLoanId) {
-        Validate.notNull(result, "Status can't be null");
-        this.status = result;
-        if (Result.ACTIVE_LOAN.equals(result) && lmsLoanId == null) {
-            // LMS Loan ID can't be null when result indicates that it is an active loan
-            // TODO: throw appropriate
+    public CheckoutTestAnalysis(final Result result, final String lmsLoanId) {
+        Validate.notNull(result, "Pre-checkout result can't be null");
+        this.result = result;
+        if (Result.ACTIVE_LOAN.equals(result) && lmsLoanId == null) {            
+            throw new InternalServerErrorException("Invalid pre-checkout analysis - active loan but no LMS loan ID");
         }
         this.lmsLoanId = lmsLoanId;
     }
@@ -34,7 +35,7 @@ public final class PreCheckoutAnalysis {
      * @return the {@link Result}
      */
     public Result getResult() {
-        return status;
+        return result;
     }
 
     /**

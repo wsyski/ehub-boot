@@ -26,7 +26,7 @@ import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.lms.palma.PreCheckoutAnalysis.Result;
+import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.util.XjcSupport;
@@ -52,10 +52,10 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
     private Map<URL, Loans> loanPorts = new HashMap<>();
 
     /**
-     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#preCheckout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, String, String)
+     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkoutTest(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, String, String)
      */
     @Override
-    public PreCheckoutAnalysis preCheckout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final String libraryCard, final String pin) {
+    public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final String libraryCard, final String pin) {
         String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
         com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory requestObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
@@ -94,7 +94,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
                         new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, checkOutTestResponse.getTestStatus().value());
                 throw new InternalServerErrorException(INTERNAL_ERROR_MESSAGE, ErrorCause.LMS_ERROR, argStatus, argEhubConsumerId);
         }
-        return new PreCheckoutAnalysis(result, lmsLoanId);
+        return new CheckoutTestAnalysis(result, lmsLoanId);
     }
 
     /**

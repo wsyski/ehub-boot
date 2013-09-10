@@ -23,41 +23,83 @@ import com.axiell.ehub.provider.record.format.IFormatAdminController;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/com/axiell/ehub/admin-controller-context.xml")
-public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevelopmentData> {    
-    
+public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevelopmentData> {
+    private static final Long INVALID_EHUB_CONSUMER_ID = -1L;
+
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
-    
+
     @Autowired
     private IFormatAdminController formatAdminController;
 
     @Autowired
     private IConsumerAdminController consumerAdminController;
-    
+
     @Autowired
-    private IEhubLoanRepository ehubLoanRepository;
-    
+    private IEhubLoanRepository underTest;
+
+    private EhubLoan expectedEhubLoan;
+    private EhubLoan actualEhubLoan;
+
     /**
      * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
      */
     @Override
     protected LoanDevelopmentData initDevelopmentData() {
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, ehubLoanRepository);
+	return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest);
     }
-    
+
     /**
      * 
      * @throws Exception
      */
     @Test
     @Rollback(true)
-    public void testGetLoan() throws Exception {
-        Iterable<EhubLoan> iterable = ehubLoanRepository.findAll();
-        Assert.assertTrue(iterable.iterator().hasNext());
-        EhubLoan ehubLoan = iterable.iterator().next();
-        EhubConsumer ehubConsumer = ehubLoan.getEhubConsumer();
-        Assert.assertEquals(2, ehubConsumer.getProperties().size());
-        ehubLoan = ehubLoanRepository.getLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID_1);
-        Assert.assertEquals(DevelopmentData.LMS_LOAN_ID_1, ehubLoan.getLmsLoan().getId());
+    public void findLoanByEhubConsumerIdAndLmsLoanId() throws Exception {
+	givenExpectedEhubLoan();
+	whenFindLoanByLmsLoanId();
+
+	thenActualEhubLoanIsNotNull();
+	Assert.assertEquals(DevelopmentData.LMS_LOAN_ID_1, actualEhubLoan.getLmsLoan().getId());
+    }
+
+    private void givenExpectedEhubLoan() {
+	Iterable<EhubLoan> iterable = underTest.findAll();
+	Assert.assertTrue(iterable.iterator().hasNext());
+	expectedEhubLoan = iterable.iterator().next();
+    }
+
+    private void whenFindLoanByLmsLoanId() {
+	EhubConsumer ehubConsumer = expectedEhubLoan.getEhubConsumer();
+	actualEhubLoan = underTest.findLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID_1);
+    }
+
+    private void thenActualEhubLoanIsNotNull() {
+	Assert.assertNotNull(actualEhubLoan);
+    }
+
+    @Test
+    @Rollback(true)
+    public void findLoanByEhubConsumerIdAndReadyLoanId() {
+	givenExpectedEhubLoan();
+	whenFindLoanByReadyLoanId();
+	thenActualEhubLoanIsNotNull();
+    }
+
+    private void whenFindLoanByReadyLoanId() {
+	EhubConsumer ehubConsumer = expectedEhubLoan.getEhubConsumer();
+	actualEhubLoan = underTest.findLoan(ehubConsumer.getId(), expectedEhubLoan.getId());
+    }
+
+    @Test
+    @Rollback(true)
+    public void invalidEhubConsumerId() {
+	givenExpectedEhubLoan();
+	actualEhubLoan = underTest.findLoan(INVALID_EHUB_CONSUMER_ID, expectedEhubLoan.getId());
+	thenActualEhubLoanIsNull();
+    }
+    
+    private void thenActualEhubLoanIsNull() {
+	Assert.assertNull(actualEhubLoan);
     }
 }

@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.provider;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +15,7 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 
 /**
  * This Aspect converts {@link ClientResponseFailure}s thrown by the {@link IContentProviderDataAccessor}s to
@@ -20,7 +23,8 @@ import com.axiell.ehub.InternalServerErrorException;
  */
 @Aspect
 public class ContentProviderResponseFailureAspect {
-    private static final String UNKNOWN_CONTENT_PROVIDER = "unknown";
+    private static final int UNKNOWN_STATUS_CODE = -1;
+    private static final String UNKNOWN_CONTENT_PROVIDER = "unknown";    
     private static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";
 
     /**
@@ -34,12 +38,21 @@ public class ContentProviderResponseFailureAspect {
     public void toInternalServerErrorException(final JoinPoint joinPoint, final ClientResponseFailure crf) {
         final ClientResponse<?> response = crf.getResponse();        
         final String message = getMessage(response);
-        final int statusCode = response.getResponseStatus().getStatusCode();
-        final ErrorCauseArgument statusArg = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, statusCode);
-        final ErrorCauseArgument nameArg = getContentProviderNameArg(joinPoint);        
+        final ErrorCauseArgument nameArg = makeContentProviderNameErrorCauseArgument(joinPoint);
+        final ErrorCauseArgument statusArg = makeStatusCodeErrorCauseArgument(response);                
         throw new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, nameArg, statusArg);
     }
 
+    private ErrorCauseArgument makeStatusCodeErrorCauseArgument(final ClientResponse<?> response) {
+	final int statusCode = getStatusCode(response);
+        return new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, statusCode);
+    }
+
+    private int getStatusCode(final ClientResponse<?> response) {
+	final Status status = response.getResponseStatus();
+        return status == null ? UNKNOWN_STATUS_CODE : status.getStatusCode();
+    }
+    
     /**
      * Returns an {@link ErrorCauseArgument} containing the name of the {@link ContentProvider} that caused the
      * {@link ClientResponseFailure}.
@@ -47,17 +60,29 @@ public class ContentProviderResponseFailureAspect {
      * @param joinPoint the {@link JoinPoint} to use
      * @return an {@link ErrorCauseArgument}
      */
-    private ErrorCauseArgument getContentProviderNameArg(final JoinPoint joinPoint) {
-        final Object target = joinPoint.getTarget();
-        final Object contentProviderName;
-
-        if (target instanceof IContentProviderDataAccessor) {
-            IContentProviderDataAccessor contentProviderDataAccessor = (IContentProviderDataAccessor) target;
-            contentProviderName = contentProviderDataAccessor.getContentProviderName();
-        } else {
-            contentProviderName = UNKNOWN_CONTENT_PROVIDER;
-        }
+    private ErrorCauseArgument makeContentProviderNameErrorCauseArgument(final JoinPoint joinPoint) {	
+	Object contentProviderName = getContentProviderName(joinPoint);	
         return new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, contentProviderName);
+    }
+    
+    private Object getContentProviderName(JoinPoint joinPoint) {
+	ContentProvider contentProvider = getContentProvider(joinPoint);
+	return contentProvider == null ? UNKNOWN_CONTENT_PROVIDER : contentProvider.getName();	
+    }
+    
+    private ContentProvider getContentProvider(JoinPoint joinPoint) {
+	ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(joinPoint);
+	return contentProviderConsumer == null ? null : contentProviderConsumer.getContentProvider();
+    }
+    
+    private ContentProviderConsumer getContentProviderConsumer(JoinPoint joinPoint) {
+	for (Object arg : joinPoint.getArgs()) {
+	    if (arg instanceof ContentProviderConsumer) {
+		ContentProviderConsumer contentProviderConsumer = (ContentProviderConsumer) arg;
+		return contentProviderConsumer;
+	    }
+	}
+	return null;
     }
 
     /**

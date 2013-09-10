@@ -3,7 +3,6 @@
  */
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.security.UnauthorizedException;

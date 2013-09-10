@@ -48,7 +48,7 @@ public class PalmaDataAccessorOnlineTest {
     @Test
     public void testCheckOutTestOnline() {
         if (isOnline()) {
-            PreCheckoutAnalysis preCheckoutAnalysis = palmaDataAccessor.preCheckout(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD,
+            CheckoutTestAnalysis preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD,
                     DevelopmentData.ELIB_LIBRARY_CARD_PIN);
             assertNotNull(preCheckoutAnalysis);
         }

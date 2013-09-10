@@ -137,14 +137,6 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         return consumeProduct(contentProviderConsumer, licenseId, elibuRecordId, formatDecoration);
     }
-
-    /**
-     * @see com.axiell.ehub.provider.IContentProviderDataAccessor#getContentProviderName()
-     */
-    @Override
-    public ContentProviderName getContentProviderName() {
-        return ContentProviderName.ELIBU;
-    }
     
     /**
      * Consumes an ElibU license.

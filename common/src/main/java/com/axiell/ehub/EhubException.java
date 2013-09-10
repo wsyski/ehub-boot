@@ -7,7 +7,7 @@ package com.axiell.ehub;
  * Indicates that an exception occurred in the eHUB.
  * 
  * <p>
- * It is is intended for the client of the eHUB. For exceptions within the eHUB see the {@link EhubRuntimeException} and
+ * It is intended for the client of the eHUB. For exceptions within the eHUB see the {@link EhubRuntimeException} and
  * all its sub-classes.
  * </p>
  */

@@ -46,12 +46,4 @@ public interface IContentProviderDataAccessor {
      * @return an {@link IContent}
      */
     IContent getContent(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, ContentProviderLoanMetadata contentProviderLoanMetadata);
-
-    /**
-     * Gets the name of the {@link ContentProvider} for which this {@link IContentProviderDataAccessor} provides an
-     * integration.
-     * 
-     * @return a {@link ContentProviderName}
-     */
-    ContentProviderName getContentProviderName();
 }

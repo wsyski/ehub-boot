@@ -20,7 +20,7 @@ import org.apache.commons.lang3.Validate;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso({ContentProviderLoanMetadata.class, DownloadableContent.class, StreamingContent.class})
-public final class ContentProviderLoan {
+public class ContentProviderLoan {
     private final ContentProviderLoanMetadata metadata;
     private IContent content;
 

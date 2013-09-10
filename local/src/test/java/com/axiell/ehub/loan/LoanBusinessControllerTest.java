@@ -3,133 +3,202 @@
  */
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.AbstractEhubRepositoryTest;
-import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.EhubException;
-import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.consumer.IConsumerAdminController;
-import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.IContentProviderAdminController;
-import com.axiell.ehub.provider.record.format.IFormatAdminController;
-import com.axiell.ehub.security.AuthInfo;
-import org.junit.Assert;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.inOrder;
+
+import java.util.Date;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
-/**
- *
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:/com/axiell/ehub/admin-controller-context.xml", "classpath:/com/axiell/ehub/business-controller-context.xml"})
-public class LoanBusinessControllerTest extends AbstractEhubRepositoryTest<LoanDevelopmentData> {
+import com.axiell.ehub.EhubException;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.consumer.IConsumerBusinessController;
+import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
+import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
+import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.security.AuthInfo;
 
-    @Autowired
-    private IContentProviderAdminController contentProviderAdminController;
+@RunWith(MockitoJUnitRunner.class)
+public class LoanBusinessControllerTest {
+    private static final Long READY_LOAN_ID = 0L;
+    private ILoanBusinessController underTest;
+    @Mock
+    private IConsumerBusinessController consumerBusinessController;
+    @Mock
+    private IPalmaDataAccessor palmaDataAccessor;
+    @Mock
+    private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
+    @Mock
+    private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
+    @Mock
+    private IReadyLoanFactory readyLoanFactory;
+    private AuthInfo authInfo;
+    private PendingLoan pendingLoan;
+    @Mock
+    private EhubConsumer ehubConsumer;
+    @Mock
+    private ContentProvider contentProvider;
+    @Mock
+    private FormatDecoration formatDecoration;
+    @Mock
+    private LmsLoan lmsLoan;
+    @Mock
+    private IContent content;
+    @Mock
+    private ContentProviderLoan contentProviderLoan;
+    @Mock
+    private ContentProviderLoanMetadata contentProviderLoanMetadata;
+    @Mock
+    private EhubLoan newEhubLoan;
+    @Mock
+    private EhubLoan existingEhubLoan;
+    @Mock
+    private ReadyLoan actualReadyLoan;
 
-    @Autowired
-    private IFormatAdminController formatAdminController;
-
-    @Autowired
-    private IConsumerAdminController consumerAdminController;
-
-    @Autowired
-    private IEhubLoanRepository ehubLoanRepository;
-
-    @Autowired
-    private ILoanBusinessController loanBusinessController;
-
-    /**
-     * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
-     */
-    @Override
-    protected LoanDevelopmentData initDevelopmentData() {
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, ehubLoanRepository);
+    @Before
+    public void setUpCommonArguments() throws EhubException {
+	authInfo = new AuthInfo.Builder(0L, "secret").libraryCard("libraryCard").pin("pin").build();
+	pendingLoan = new PendingLoan("lmsRecordId", ContentProviderName.ELIB.toString(), "contentProviderRecordId", "contentProviderFormat");
     }
 
-    // TODO: mock the ContentProvider layer and fix this test
-
-    /**
-     * Test method for {@link LoanBusinessController#createLoan(AuthInfo, PendingLoan)}
-     */
-    @Test
-    public void testElibCreateLoanOnline() throws EhubException {
-        if (isOnline()) {
-            //String recordId = DevelopmentData.ELIB_RECORD_0_ID;
-            //String format= DevelopmentData.ELIB_FORMAT_0_ID;
-            String recordId = DevelopmentData.ELIB_RECORD_1_ID;
-            String format = DevelopmentData.ELIB_FORMAT_1_ID;
-            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
-                    .libraryCard(DevelopmentData.ELIB_LIBRARY_CARD).pin(DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
-            PendingLoan pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), recordId, format);
-            ReadyLoan createReadyLoan = loanBusinessController.createLoan(authInfo, pendingLoan);
-            Assert.assertNotNull(createReadyLoan);
-            ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, createReadyLoan.getLmsLoan().getId());
-            IContent content = readyLoan.getContentProviderLoan().getContent();
-            String url =
-                    content instanceof DownloadableContent ? DownloadableContent.class.cast(content).getUrl() : StreamingContent.class.cast(content).getUrl();
-            Assert.assertNotNull(url);
-            Assert.assertNotNull(readyLoan);
-            Assert.assertEquals(ContentProviderName.ELIB, readyLoan.getContentProviderLoan().getMetadata().getContentProvider().getName());
-        }
-    }
-    
-    @Test
-    public void testPublitCreateLoanOnline() throws EhubException {
-        if (isOnline()) {
-            String recordId = DevelopmentData.PUBLIT_RECORD_0_ID;
-            String format = DevelopmentData.PUBLIT_FORMAT_0_ID;
-            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
-                    .libraryCard(DevelopmentData.PUBLIT_LIBRARY_CARD).pin(DevelopmentData.PUBLIT_LIBRARY_CARD_PIN).build();
-            PendingLoan pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.PUBLIT.name(), recordId, format);
-            ReadyLoan createReadyLoan = loanBusinessController.createLoan(authInfo, pendingLoan);
-            Assert.assertNotNull(createReadyLoan);
-            ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, createReadyLoan.getLmsLoan().getId());
-            IContent content = readyLoan.getContentProviderLoan().getContent();
-            String url =
-                    content instanceof DownloadableContent ? DownloadableContent.class.cast(content).getUrl() : StreamingContent.class.cast(content).getUrl();
-            Assert.assertNotNull(url);
-            Assert.assertNotNull(readyLoan);
-            Assert.assertEquals(ContentProviderName.PUBLIT, readyLoan.getContentProviderLoan().getMetadata().getContentProvider().getName());
-        }
+    @Before
+    public void setUpLoanBusinessController() {
+	underTest = new LoanBusinessController();
+	ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
+	ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
+	ReflectionTestUtils.setField(underTest, "ehubLoanRepositoryFacade", ehubLoanRepositoryFacade);
+	ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
+	ReflectionTestUtils.setField(underTest, "readyLoanFactory", readyLoanFactory);
     }
 
-    /**
-     * Test method for
-     * {@link com.axiell.ehub.loan.LoanBusinessController#getReadyLoan(com.axiell.ehub.security.AuthInfo, java.lang.Long)}
-     * .
-     *
-     * @throws EhubException
-     */
-    @Test
-    public void testELibGetReadyLoanAuthInfoLongOnline() throws EhubException {
-        if (isOnline()) {
-            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
-                    .libraryCard(DevelopmentData.ELIB_LIBRARY_CARD).pin(DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
-            Long expReadyLoanId = developmentData.getELibEhubLoanId();
-            try {
-                ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, expReadyLoanId);
-                Assert.fail("A NotFoundException should have been thrown");
-            } catch (NotFoundException e) {
-                Assert.assertNotNull(e);
-            }
-        }
+    @Before
+    public void setUpEhubConsumer() {
+	given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
     }
-    
+
+    @Before
+    public void setUpContentProviderNameFromExistingLoan() {
+	given(existingEhubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
+	given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
+	given(contentProvider.getName()).willReturn(ContentProviderName.ELIB);
+    }
+
+    @Before
+    public void setUpContentProviderLoan() {
+	given(contentProviderDataAccessorFacade.createLoan(any(EhubConsumer.class), any(String.class), any(String.class), any(PendingLoan.class))).willReturn(
+		contentProviderLoan);
+    }
+
+    @Before
+    public void setUpSavedEhubLoan() {
+	given(ehubLoanRepositoryFacade.saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class))).willReturn(newEhubLoan);
+    }
+
     @Test
-    public void testPublitGetReadyLoanAuthInfoLongOnline() throws EhubException {
-        if (isOnline()) {
-            AuthInfo authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
-                    .libraryCard(DevelopmentData.PUBLIT_LIBRARY_CARD).pin(DevelopmentData.PUBLIT_LIBRARY_CARD_PIN).build();
-            Long expReadyLoanId = developmentData.getPublitEhubLoanId();
-            try {
-                ReadyLoan readyLoan = loanBusinessController.getReadyLoan(authInfo, expReadyLoanId);
-                Assert.fail("A NotFoundException should have been thrown");
-            } catch (NotFoundException e) {
-                Assert.assertNotNull(e);
-            }
-        }
+    public void createNewLoan() throws EhubException {
+	givenNewLoanAsPreCheckoutAnalysisResult();
+	whenCreateLoan();
+	thenNewEhubLoanIsSavedInTheEhubDatabase();
+    }
+
+    private void givenNewLoanAsPreCheckoutAnalysisResult() {
+	CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.NEW_LOAN, null);
+	given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class))).willReturn(
+		preCheckoutAnalysis);
+    }
+
+    private void whenCreateLoan() {
+	actualReadyLoan = underTest.createLoan(authInfo, pendingLoan);
+    }
+
+    private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
+	InOrder inOrder = inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class));
+	inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(String.class), any(String.class), any(PendingLoan.class));
+	inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(String.class), any(String.class));
+	inOrder.verify(ehubLoanRepositoryFacade).saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class));
+    }
+
+    @Test
+    public void createActiveLoan() {
+	givenActiveLoanAsPreCheckoutAnalysisResult();
+	givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+
+	whenCreateLoan();
+
+	InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+	thenContentIsRetrievedFromContentProvider(inOrder);
+    }
+
+    private void givenActiveLoanAsPreCheckoutAnalysisResult() {
+	CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.ACTIVE_LOAN, "lmsLoanId");
+	given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class))).willReturn(
+		preCheckoutAnalysis);
+    }
+
+    private void givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId() {
+	given(ehubLoanRepositoryFacade.findEhubLoan(any(EhubConsumer.class), any(String.class))).willReturn(existingEhubLoan);
+    }
+
+    private InOrder thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId() {
+	InOrder inOrder = inOrder(consumerBusinessController, ehubLoanRepositoryFacade, contentProviderDataAccessorFacade);
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(ehubLoanRepositoryFacade).findEhubLoan(any(EhubConsumer.class), (any(String.class)));
+	return inOrder;
+    }
+
+    private void thenContentIsRetrievedFromContentProvider(InOrder inOrder) {
+	inOrder.verify(contentProviderDataAccessorFacade).getContent(any(EhubConsumer.class), any(EhubLoan.class), any(String.class), any(String.class));
+    }
+
+    @Test
+    public void getReadyLoanByReadyLoanId() {
+	givenEhubLoanCanBeFoundInTheEhubDatabaseByReadyLoanLoanId();
+
+	whenGetReadyLoanByReadLoanId();
+
+	InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByReadyLoanId();
+	thenContentIsRetrievedFromContentProvider(inOrder);
+    }
+
+    private void givenEhubLoanCanBeFoundInTheEhubDatabaseByReadyLoanLoanId() {
+	given(ehubLoanRepositoryFacade.findEhubLoan(any(EhubConsumer.class), any(Long.class))).willReturn(existingEhubLoan);
+    }
+
+    private void whenGetReadyLoanByReadLoanId() {
+	actualReadyLoan = underTest.getReadyLoan(authInfo, READY_LOAN_ID);
+    }
+
+    private InOrder thenEhubLoanIsFoundInTheEhubDatabaseByReadyLoanId() {
+	InOrder inOrder = inOrder(consumerBusinessController, ehubLoanRepositoryFacade, contentProviderDataAccessorFacade);
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(ehubLoanRepositoryFacade).findEhubLoan(any(EhubConsumer.class), any(Long.class));
+	return inOrder;
+    }
+
+    private void whenGetReadyLoanByLmsLoanId() {
+	actualReadyLoan = underTest.getReadyLoan(authInfo, "lmsLoanId");
+    }
+
+    @Test
+    public void getReadyLoanByLmsLoanId() {
+	givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+
+	whenGetReadyLoanByLmsLoanId();
+
+	InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+	thenContentIsRetrievedFromContentProvider(inOrder);
     }
 }

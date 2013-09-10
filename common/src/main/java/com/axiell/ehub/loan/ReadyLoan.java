@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 @XmlRootElement(name = "readyLoan")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso({LmsLoan.class, ContentProviderLoan.class})
-public final class ReadyLoan {
+public class ReadyLoan {
     private Long id;
     private LmsLoan lmsLoan;
     private ContentProviderLoan contentProviderLoan;

@@ -41,7 +41,7 @@ public final class AuthInfo {
     /**
      * Constructs a new {@link AuthInfo}.
      * 
-     * @param ehubConsumerId the ID of the {@link EhubConsumer}
+     * @param ehubConsumer the ID of the {@link EhubConsumer}
      * @param libraryCard the library card of a user, can be <code>null</code>
      * @param pin the pin of the library card, can be <code>null</code>
      * @param signature a {@link Signature}

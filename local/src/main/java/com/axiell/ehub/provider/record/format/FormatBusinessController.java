@@ -6,12 +6,9 @@ package com.axiell.ehub.provider.record.format;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.IContentProviderDataAccessor;
-import com.axiell.ehub.provider.IContentProviderDataAccessorFactory;
+import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.security.AuthInfo;
 
 /**
@@ -23,25 +20,17 @@ public class FormatBusinessController implements IFormatBusinessController {
     private IConsumerBusinessController consumerBusinessController;
 
     @Autowired(required = true)
-    private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
+    private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
 
-    /**
-     * @see com.axiell.ehub.provider.IContentProviderBusinessController#getFormats(com.axiell.ehub.security.AuthInfo,
-     * java.lang.String, java.lang.String, java.lang.String)
-     */
     @Override
     @Transactional(readOnly = true)
-    public Formats getFormats(AuthInfo authInfo,
-            String contentProviderName,
-            String contentProviderRecordId,
-            String language) {
-        final Long ehubConsumerId = authInfo.getEhubConsumerId();
-        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(ehubConsumerId);
-        final ContentProviderName contentProviderNameEnum = ContentProviderName.fromString(contentProviderName);
-        final ContentProviderConsumer contentProviderConsumer = ehubConsumer
-                .getContentProviderConsumer(contentProviderNameEnum);
-        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory
-                .getInstance(contentProviderNameEnum);
-        return dataAccessor.getFormats(contentProviderConsumer, contentProviderRecordId, language);
+    public Formats getFormats(AuthInfo authInfo, String contentProviderName, String contentProviderRecordId, String language) {
+        final EhubConsumer ehubConsumer = getEhubConsumer(authInfo);
+        return contentProviderDataAccessorFacade.getFormats(ehubConsumer, contentProviderName, contentProviderRecordId, language);
+    }
+    
+    private EhubConsumer getEhubConsumer(AuthInfo authInfo) {
+    	final Long ehubConsumerId = authInfo.getEhubConsumerId();
+        return consumerBusinessController.getEhubConsumer(ehubConsumerId);
     }
 }
