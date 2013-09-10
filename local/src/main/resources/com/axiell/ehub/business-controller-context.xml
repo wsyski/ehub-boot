@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
 	<import resource="persistence-context.xml"/>
+	<import resource="factory-context.xml"/>
+	<import resource="facade-context.xml"/>
 	
 	<bean id="ehubLoanRepositoryFacade" class="com.axiell.ehub.loan.EhubLoanRepositoryFacade"/>
 

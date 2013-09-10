@@ -17,9 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.axiell.ehub.EhubError;
+import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.consumer.IConsumerBusinessController;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthInfoConverterTest {
@@ -30,23 +30,28 @@ public class AuthInfoConverterTest {
 
     private AuthInfoConverter underTest;
     @Mock
-    private IConsumerBusinessController consumerBusinessController;
+    private ISignatureFactory signatureFactory;
     @Mock
     private EhubConsumer ehubConsumer;
+    private Signature expectedSignature;
     private String authorizationHeader;
     private AuthInfo actualAuthInfo;
 
     @Before
     public void setUpAuthInfoConverter() {
 	underTest = new AuthInfoConverter();
-	ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
+	ReflectionTestUtils.setField(underTest, "signatureFactory", signatureFactory);
+    }
+    
+    @Before
+    public void setUpExpectedSignature() {
+	expectedSignature = new Signature(EHUB_CONSUMER_ID, SECRET_KEY, CARD, PIN);
     }
 
     @Test
     public void validSignature() {
 	givenValidSignatureInHeader();
-	givenExpectedEhubConsumer();
-	givenExpectedSecretKey();
+	givenExpectedSignature();
 	whenFromString();
 	thenAuthInfoIsNotNull();
     }
@@ -62,12 +67,8 @@ public class AuthInfoConverterTest {
 		EHUB_CONSUMER_ID, CARD, PIN, signature);
     }
     
-    private void givenExpectedEhubConsumer() {
-	given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
-    }
-
-    private void givenExpectedSecretKey() {
-	given(ehubConsumer.getSecretKey()).willReturn(SECRET_KEY);
+    private void givenExpectedSignature() {
+	given(signatureFactory.createExpectedSignature(any(Long.class), any(String.class), any(String.class))).willReturn(expectedSignature);
     }
 
     private void whenFromString() {
@@ -77,53 +78,11 @@ public class AuthInfoConverterTest {
     private void thenAuthInfoIsNotNull() {
 	Assert.assertNotNull(actualAuthInfo);
     }
-
-    @Test
-    public void ehubConsumerNotFound() {
-	givenValidSignatureInHeader();
-	givenNoEhubConsumer();
-	try {
-	    whenFromString();
-	} catch (UnauthorizedException e) {
-	    thenActualErrorCauseEqualsExpectedErrorCause(e, ErrorCause.EHUB_CONSUMER_NOT_FOUND);
-	}
-    }
-
-    private void givenNoEhubConsumer() {
-	given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(null);
-    }
-
-    private void thenActualErrorCauseEqualsExpectedErrorCause(UnauthorizedException e, ErrorCause expectedErrorCause) {
-	ErrorCause actualErrorCause = getActualErrorCause(e);
-	Assert.assertEquals(expectedErrorCause, actualErrorCause);
-    }
-
-    private ErrorCause getActualErrorCause(UnauthorizedException e) {
-	EhubError ehubError = e.getEhubError();
-	return ehubError.getCause();
-    }
-
-    @Test
-    public void missingSecretKey() {
-	givenValidSignatureInHeader();
-	givenExpectedEhubConsumer();
-	givenNoSecretKey();
-	try {
-	    whenFromString();
-	} catch (UnauthorizedException e) {
-	    thenActualErrorCauseEqualsExpectedErrorCause(e, ErrorCause.MISSING_SECRET_KEY);
-	}
-    }
-
-    private void givenNoSecretKey() {
-	given(ehubConsumer.getSecretKey()).willReturn(null);
-    }
-
+    
     @Test
     public void invalidSignature() {
 	givenInvalidSignatureInHeader();
-	givenExpectedEhubConsumer();
-	givenExpectedSecretKey();
+	givenExpectedSignature();
 	try {
 	    whenFromString();
 	} catch (UnauthorizedException e) {
@@ -133,5 +92,15 @@ public class AuthInfoConverterTest {
 
     private void givenInvalidSignatureInHeader() {
 	makeAuthorizationHeader("invalidSignature");
+    }
+    
+    private void thenActualErrorCauseEqualsExpectedErrorCause(EhubRuntimeException e, ErrorCause expectedErrorCause) {
+	ErrorCause actualErrorCause = getActualErrorCause(e);
+	Assert.assertEquals(expectedErrorCause, actualErrorCause);
+    }
+
+    private ErrorCause getActualErrorCause(EhubRuntimeException e) {
+	EhubError ehubError = e.getEhubError();
+	return ehubError.getCause();
     }
 }

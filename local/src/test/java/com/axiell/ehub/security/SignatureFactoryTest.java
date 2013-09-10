@@ -16,7 +16,7 @@ import com.axiell.ehub.consumer.IConsumerBusinessController;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SignatureFactoryTest {    
-    private SignatureFactory underTest;
+    private ISignatureFactory underTest;
     @Mock
     private IConsumerBusinessController consumerBusinessController;
     @Mock
@@ -36,12 +36,12 @@ public class SignatureFactoryTest {
 
     @Test
     public void createExpectedSignature() {
-	ehubConsumerIsFoundInDatabase();
+	givenEhubConsumerIsFoundInDatabase();
 	whenCreateExpectedSignature();
 	thenActualSignatureIsNotNull();
     }
     
-    private void ehubConsumerIsFoundInDatabase() {
+    private void givenEhubConsumerIsFoundInDatabase() {
 	given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
     }
 

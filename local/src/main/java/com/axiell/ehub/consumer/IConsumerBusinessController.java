@@ -16,7 +16,8 @@ public interface IConsumerBusinessController {
      * Gets the {@link EhubConsumer} with the given ID.
      * 
      * @param ehubConsumerId the ID of the {@link EhubConsumer}
-     * @return an {@link EhubConsumer}, <code>null</code> if no {@link EhubConsumer} is found for the given ID
+     * @return an {@link EhubConsumer}
+     * @throws UnauthorizedException if the {@link EhubConsumer} could not be found
      */
     EhubConsumer getEhubConsumer(Long ehubConsumerId);
 }

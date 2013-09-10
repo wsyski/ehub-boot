@@ -12,6 +12,9 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
 
@@ -19,6 +22,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
  * Represents the signature of a request to the Axiell eHUB.
  */
 final class Signature {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Signature.class);    
     private final byte[] digest;
 
     /**
@@ -94,7 +98,15 @@ final class Signature {
      * provided {@link Signature}, <code>false</code> otherwise
      */
     boolean isValid(Signature expectedSignature) {
+	logSignatures(expectedSignature);
         byte[] expectedDigest = expectedSignature.getDigest();
         return MessageDigest.isEqual(expectedDigest, digest);
+    }
+    
+    private void logSignatures(final Signature expectedSignature) {
+	if (LOGGER.isDebugEnabled()) {
+	    LOGGER.debug("Expected signature = '" + expectedSignature.toString() + "'");
+	    LOGGER.debug("Actual signature   = '" + toString() + "'");
+	}
     }
 }
