@@ -30,7 +30,7 @@
         <repository>
             <id>Axiell maven repository</id>
             <name>Arena Project-releases</name>
-            <url>http://arenarep.axiell.com/artifactory/libs-releases-local</url>
+            <url>http://arenarep.axiell.com/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
