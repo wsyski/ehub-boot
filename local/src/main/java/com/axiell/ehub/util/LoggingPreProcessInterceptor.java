@@ -28,12 +28,12 @@ public final class LoggingPreProcessInterceptor implements PreProcessInterceptor
 
     @Override
     public ServerResponse preProcess(HttpRequest httpRequest, ResourceMethod method) throws Failure, WebApplicationException {
-        StopWatch stopWatch=new StopWatch();
-        stopWatch.start();
-        httpRequest.setAttribute("stopWatch", stopWatch);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Request:" + ToString.getLf() + ToString.fromHttpRequest(httpRequest));
-        }
-        return null;
+	StopWatch stopWatch = new StopWatch();
+	stopWatch.start();
+	httpRequest.setAttribute("stopWatch", stopWatch);
+	if (LOGGER.isDebugEnabled()) {
+	    LOGGER.debug("Request:" + ToString.getLf() + ToString.fromHttpRequest(httpRequest));
+	}
+	return null;
     }
 }
