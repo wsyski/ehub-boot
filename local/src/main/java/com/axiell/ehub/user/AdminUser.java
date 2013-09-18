@@ -16,11 +16,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.Validate;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.InternalServerErrorException;
 
 /**
