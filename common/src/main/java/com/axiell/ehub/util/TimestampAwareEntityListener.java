@@ -57,7 +57,6 @@ public class TimestampAwareEntityListener {
         if (!(target instanceof ITimestampAware)) {
             return;
         }
-        @SuppressWarnings("unchecked")
         ITimestampAware<?> timestampAware = (ITimestampAware<?>) target;
         DateTime now = touchDate(timestampAware, isNew);
         LOGGER.debug("Touched {} - date at {} by {}", timestampAware, now);
