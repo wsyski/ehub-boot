@@ -2,10 +2,32 @@
 <config format="alma-export">
 	<index>
         <field name="contentProviderName">
-            <query type="xquery">let $contentProviderName:=//exportCatalogueRecord/@contentProviderName let $pattern:='(.+)(id_type=ISBN&amp;amp;id=)([0-9X]+)(.*)' return if (not(empty($contentProviderName))) then string($contentProviderName) else for $link in //view/externalUrls/externalUrl/@value return if (matches($link,$pattern)) then 'elib' else null</query>
+            <query type="xquery"><![CDATA[
+              let $contentProviderName:=//exportCatalogueRecord/@contentProviderName
+              let $patterns:=(
+                '^https?://.+(elib).se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
+                '^https?://.+(publit)\.se/api/get-item/.+\?(.*&amp;)?key=([^&amp;]+)(&amp;.*)?$')
+              return
+                if (not(empty($contentProviderName))) then string($contentProviderName)
+                else
+                  (for $link in //view/externalUrls/externalUrl/@value
+                    for $pattern in $patterns
+                      return if (matches($link,$pattern)) then replace($link,$pattern,'$1') else ())[position() eq 1]
+              ]]></query>
         </field>
         <field name="contentProviderRecordId">
-            <query type="xquery">let $contentProviderRecordId:=//exportCatalogueRecord/@contentProviderRecordId let $pattern:='(.+)(id_type=ISBN&amp;amp;id=)([0-9X]+)(.*)' return if (not(empty($contentProviderRecordId))) then string($contentProviderRecordId) else for $link in //view/externalUrls/externalUrl/@value return if (matches($link,$pattern)) then replace($link,$pattern,'$3') else null</query>
+            <query type="xquery"><![CDATA[
+              let $contentProviderRecordId:=//exportCatalogueRecord/@contentProviderRecordId
+              let $patterns:=(
+                '^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
+                '^https?://.+(publit)\.se/api/get-item/.+\?(.*&amp;)?key=([^&amp;]+)(&amp;.*)?$')
+              return
+                if (not(empty($contentProviderRecordId))) then string($contentProviderRecordId)
+                else
+                  (for $link in //view/externalUrls/externalUrl/@value
+                    for $pattern in $patterns
+                      return if (matches($link,$pattern)) then replace($link,$pattern,'$3') else ())[position() eq 1]
+              ]]></query>
         </field>
 	</index>
 </config>
