@@ -5,7 +5,7 @@
             <query type="xquery"><![CDATA[
               let $contentProviderName:=//exportCatalogueRecord/@contentProviderName
               let $patterns:=(
-                '^https?://.+(elib).se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
+                '^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
                 '^https?://.+(publit)\.se/api/get-item/.+\?(.*&amp;)?key=([^&amp;]+)(&amp;.*)?$')
               return
                 if (not(empty($contentProviderName))) then string($contentProviderName)
