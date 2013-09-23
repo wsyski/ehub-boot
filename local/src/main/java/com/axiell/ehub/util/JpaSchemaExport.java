@@ -2,6 +2,7 @@ package com.axiell.ehub.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.hibernate.cfg.Configuration;
@@ -11,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility class that provides the possibility to export an database schema from the JPA annotated objects.
+ * Utility class that provides the possibility to export an database schema from
+ * the JPA annotated objects.
  */
 @SuppressWarnings("deprecation")
 public class JpaSchemaExport {
@@ -20,11 +22,13 @@ public class JpaSchemaExport {
     /**
      * Main method.
      * 
-     * @param args a list of arguments to the schema export  
-     * @throws IOException if an I/O exception occured
+     * @param args
+     *            a list of arguments to the schema export
+     * @throws IOException
+     *             if an I/O exception occured
      */
     public static void main(String[] args) throws IOException {
-        execute(args[0], args[1], args[2], Boolean.parseBoolean(args[3]), Boolean.parseBoolean(args[4]));
+	execute(args[0], args[1], args[2], Boolean.parseBoolean(args[3]), Boolean.parseBoolean(args[4]));
     }
 
     /**
@@ -39,8 +43,7 @@ public class JpaSchemaExport {
      */
     public static void execute(String persistenceUnitName, String hbm2ddlFile, String outputFile, boolean isCreate, boolean isFormat) throws IOException {
         LOGGER.debug("Starting schema export");
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(hbm2ddlFile));
+        Properties properties = loadProperties(hbm2ddlFile);
         Ejb3Configuration cfg = new Ejb3Configuration().configure(persistenceUnitName, properties);
         Configuration hbmcfg = cfg.getHibernateConfiguration();
         SchemaExport schemaExport = new SchemaExport(hbmcfg);
@@ -49,5 +52,28 @@ public class JpaSchemaExport {
         schemaExport.setDelimiter(";");
         schemaExport.execute(true, false, false, isCreate);
         LOGGER.debug("Schema exported to " + outputFile);
+    }
+
+    private static Properties loadProperties(String hbm2ddlFile) throws IOException {
+	final Properties properties = new Properties();
+	InputStream is = null;
+
+	try {
+	    is = new FileInputStream(hbm2ddlFile);
+	    properties.load(is);
+	} finally {
+	    closeStream(is);
+	}
+	return properties;
+    }
+
+    private static void closeStream(InputStream is) {
+	if (is != null) {
+	    try {
+		is.close();
+	    } catch (IOException e) {
+		LOGGER.error("Could not close stream", e);
+	    }
+	}
     }
 }
