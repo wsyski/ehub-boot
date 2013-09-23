@@ -4,7 +4,6 @@
 package com.axiell.ehub.security;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +38,7 @@ final class AuthorizationHeaderInterceptor implements PreProcessInterceptor, Acc
     @Override
     public boolean accept(@SuppressWarnings("rawtypes") Class c, Method method) {
         final Class<?>[] parameterTypes = method.getParameterTypes();
-        final List<Class<?>> parameterTypeList = parameterTypes == null ? new ArrayList<Class<?>>() : Arrays.asList(parameterTypes);
+        final List<Class<?>> parameterTypeList = Arrays.asList(parameterTypes);
         return parameterTypeList.contains(AuthInfo.class);
     }
 
