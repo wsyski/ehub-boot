@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
 import com.axiell.ehub.provider.publit.PublitDataAccessor;
@@ -18,6 +19,9 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
 
     @Autowired(required = true)
     private PublitDataAccessor publitDataAccessor;
+    
+    @Autowired(required = true)
+    private AskewsDataAccessor askewsDataAccessor;
 
     @Override
     public IContentProviderDataAccessor getInstance(ContentProviderName contentProviderName) {
@@ -28,6 +32,8 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
                 return elibUDataAccessor;
             case PUBLIT:
                 return publitDataAccessor;
+            case ASKEWS:
+                return askewsDataAccessor;
             default:
                 throw new NotImplementedException("Content provider with name '" + contentProviderName
                         + "' has not been implemented");

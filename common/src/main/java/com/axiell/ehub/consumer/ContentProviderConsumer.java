@@ -15,7 +15,8 @@ import java.util.*;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
-import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;;
+import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
+import static com.axiell.ehub.provider.ContentProviderName.ASKEWS;
 
 /**
  * Represents a consumer of a specific {@link ContentProvider}. It holds the consumer specific parameters used when
@@ -30,8 +31,11 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     static {
         VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(ELIB_RETAILER_ID, ELIB_RETAILER_KEY)));
-        VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
+        VALID_PROPERTY_KEYS.put(ELIBU,
+                new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
         VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
+        VALID_PROPERTY_KEYS.put(ASKEWS,
+                new HashSet<>(Arrays.asList(ASKEWS_AUTHID, ASKEWS_TOKENKEY, ASKEWS_BARCODE, ASKEWS_LOAN_DURATION)));
     }
 
     private EhubConsumer ehubConsumer;
@@ -46,13 +50,13 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Constructs a new {@link ContentProviderConsumer}.
-     *
-     * @param ehubConsumer    the {@link EhubConsumer}
+     * 
+     * @param ehubConsumer the {@link EhubConsumer}
      * @param contentProvider the {@link ContentProvider}
-     * @param properties      {@link ContentProviderConsumer} properties
+     * @param properties {@link ContentProviderConsumer} properties
      */
     public ContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider,
-                                   final Map<ContentProviderConsumerPropertyKey, String> properties) {
+            final Map<ContentProviderConsumerPropertyKey, String> properties) {
         this.ehubConsumer = ehubConsumer;
         this.contentProvider = contentProvider;
         this.properties = properties;
@@ -60,7 +64,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Gets the {@link EhubConsumer}
-     *
+     * 
      * @return the {@link EhubConsumer}
      */
     @ManyToOne
@@ -72,7 +76,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Sets the {@link EhubConsumer}.
-     *
+     * 
      * @param ehubConsumer the {@link EhubConsumer} to set
      */
     public void setEhubConsumer(final EhubConsumer ehubConsumer) {
@@ -81,7 +85,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Returns the {@link ContentProvider}.
-     *
+     * 
      * @return the {@link ContentProvider}
      */
     @ManyToOne
@@ -93,7 +97,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Sets the {@link ContentProvider}.
-     *
+     * 
      * @param contentProvider the {@link ContentProvider} to set
      */
     public void setContentProvider(ContentProvider contentProvider) {
@@ -102,7 +106,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Gets the {@link ContentProviderConsumer} properties
-     *
+     * 
      * @return the {@link ContentProviderConsumer} properties
      */
     @ElementCollection(fetch = FetchType.LAZY)
@@ -117,7 +121,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Sets the {@link ContentProviderConsumer} properties.
-     *
+     * 
      * @param properties the {@link ContentProviderConsumer} properties to set
      */
     public void setProperties(final Map<ContentProviderConsumerPropertyKey, String> properties) {
@@ -126,7 +130,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Gets the valid properties for this {@link ContentProviderConsumer}.
-     *
+     * 
      * @return a {@link List} of {@link ContentProviderConsumerPropertyKey}s
      */
     @Transient
@@ -138,17 +142,18 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Gets the value of a property with the given key.
-     *
+     * 
      * @param key the key of the property
      * @return the property value
-     * @throws NullPointerException     if this {@link ContentProviderConsumer} has no valid property keys
+     * @throws NullPointerException if this {@link ContentProviderConsumer} has no valid property keys
      * @throws IllegalArgumentException if there exists no property with the given key among the valid property keys
      */
     @Transient
     public String getProperty(final ContentProviderConsumerPropertyKey key) {
         List<ContentProviderConsumerPropertyKey> validPropertyKeys = getValidPropertyKeys();
         Validate.notNull(validPropertyKeys, "Valid property keys can't be null");
-        Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: " + contentProvider.getName());
+        Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: "
+                + contentProvider.getName());
         return getProperties().get(key);
     }
 
@@ -156,6 +161,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      * Enumeration for content provider consumer property keys.
      */
     public static enum ContentProviderConsumerPropertyKey {
-        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD
+        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTHID, ASKEWS_TOKENKEY, ASKEWS_BARCODE, ASKEWS_LOAN_DURATION
     }
 }
