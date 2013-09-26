@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 
 import com.axiell.ehub.ErrorCause;
@@ -12,6 +13,7 @@ import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 @Component
 public class ExpirationDateFactory implements IExpirationDateFactory {
+    private static final int HOUR_OF_DAY = 12;    
 
     @Override
     public Date createExpirationDate(ContentProvider contentProvider) {
@@ -38,9 +40,9 @@ public class ExpirationDateFactory implements IExpirationDateFactory {
     }
 
     private Date toDate(final String expirationDays) {
-	final int expiprationDaysAsInt = Integer.valueOf(expirationDays);
-	final DateTime now = DateTime.now();
-	final DateTime expirationDaysDateTime = now.plusDays(expiprationDaysAsInt);
+	final DateTime today = DateTime.now(DateTimeZone.UTC).withHourOfDay(HOUR_OF_DAY);
+	final int expirationDaysAsInt = Integer.valueOf(expirationDays);
+	final DateTime expirationDaysDateTime = today.plusDays(expirationDaysAsInt);
 	return expirationDaysDateTime.toDate();
     }
 }

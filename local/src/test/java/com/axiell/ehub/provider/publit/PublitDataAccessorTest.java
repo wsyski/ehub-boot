@@ -20,10 +20,7 @@ import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.IExpirationDateFactory;
-import com.axiell.ehub.provider.publit.api.Product;
-import com.axiell.ehub.provider.publit.api.ShopCustomerOrder;
-import com.axiell.ehub.provider.publit.api.ShopOrderUrl;
-import com.axiell.ehub.provider.publit.api.ShopOrderUrl.DownloadItem;
+import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 import com.axiell.ehub.provider.record.format.Format;
 
 public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorTest {

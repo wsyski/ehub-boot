@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.publit.api;
+package com.axiell.ehub.provider.publit;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;

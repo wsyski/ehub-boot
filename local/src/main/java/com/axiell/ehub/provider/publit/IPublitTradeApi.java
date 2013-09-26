@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.publit.api;
+package com.axiell.ehub.provider.publit;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 

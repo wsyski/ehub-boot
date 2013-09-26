@@ -8,8 +8,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.cache.CacheFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 
-import com.axiell.ehub.provider.publit.api.IPublitTradeApi;
-
 abstract class PublitTradeApiFactory {
     public static IPublitTradeApi getApi(final String userName, final String password, final String endpointUrl) {    
         Credentials credentials = new UsernamePasswordCredentials(userName, password);

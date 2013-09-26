@@ -7,6 +7,7 @@ import java.util.Date;
 import junit.framework.Assert;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,10 +73,9 @@ public class ExpirationDateFactoryTest {
     }
 
     private void thenActualDateEqualsExpectedDate() {
-	DateTime now = DateTime.now();
-	DateTime actualDateAsDateTime = new DateTime(actualDate);
-	Days actualDaysBetween = Days.daysBetween(now, actualDateAsDateTime);
-//	int expectedDaysBetween = LOAN_EXPIRATION_DAYS - 1;
+	DateTime today = DateTime.now(DateTimeZone.UTC).withHourOfDay(12);
+	DateTime actualExpirationDateAsDateTime = new DateTime(DateTimeZone.UTC).withMillis(actualDate.getTime());
+	Days actualDaysBetween = Days.daysBetween(today, actualExpirationDateAsDateTime);
 	Assert.assertEquals(LOAN_EXPIRATION_DAYS, actualDaysBetween.getDays());
     }
 }

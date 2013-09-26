@@ -11,10 +11,7 @@ import org.junit.Test;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-import com.axiell.ehub.provider.publit.api.Product;
-import com.axiell.ehub.provider.publit.api.ShopCustomerOrder;
-import com.axiell.ehub.provider.publit.api.ShopOrderUrl;
-import com.axiell.ehub.provider.publit.api.ShopOrderUrl.DownloadItem;
+import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 
 public class PublitIT extends AbstractContentProviderIT {
     private static final String PUBLIT_RECORD_0_ID = "9789174376838";

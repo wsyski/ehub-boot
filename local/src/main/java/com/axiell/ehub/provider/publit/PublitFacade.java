@@ -13,10 +13,6 @@ import org.springframework.stereotype.Component;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-import com.axiell.ehub.provider.publit.api.IPublitTradeApi;
-import com.axiell.ehub.provider.publit.api.Product;
-import com.axiell.ehub.provider.publit.api.ShopCustomerOrder;
-import com.axiell.ehub.provider.publit.api.ShopOrderUrl;
 
 @Component
 class PublitFacade implements IPublitFacade {
