@@ -29,7 +29,7 @@ public final class RecordsResource implements IRecordsResource {
     }
     
     /**
-     * @see com.axiell.ehub.contentprovider.record.IRecordsResource#getFormats(com.axiell.ehub.security.AuthInfo, java.lang.String, java.lang.String)
+     * @see com.axiell.ehub.provider.record.IRecordsResource#getFormats(com.axiell.ehub.security.AuthInfo, java.lang.String, java.lang.String)
      */
     @Override
     public Formats getFormats(AuthInfo authInfo, String recordId, String language) {

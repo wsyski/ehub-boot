@@ -7,6 +7,7 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
 import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
@@ -67,7 +68,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     static {
         VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL)));
         VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(PRODUCT_URL, CONSUME_LICENSE_URL)));
-        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL)));
+        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS)));
     }
 
     private ContentProviderName name;
@@ -209,7 +210,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * @throws NotFoundException
      */
     @Transient
-    public final FormatDecoration getFormatDecoration(String formatId) {
+    public FormatDecoration getFormatDecoration(String formatId) {
         final FormatDecoration formatDecoration = getFormatDecorations().get(formatId);
 
         if (formatDecoration == null) {
@@ -248,6 +249,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * Enumeration for content provider property keys.
      */
     public static enum ContentProviderPropertyKey {
-        PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL
+        PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS
     }
 }

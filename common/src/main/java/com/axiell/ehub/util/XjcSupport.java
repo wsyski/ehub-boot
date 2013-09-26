@@ -1,21 +1,29 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.loan.ReadyLoan;
-import com.axiell.ehub.provider.record.format.Formats;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.jboss.resteasy.spi.InternalServerErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.*;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.loan.ReadyLoan;
+import com.axiell.ehub.provider.record.format.Formats;
 
 /**
  * Provides the possibility to marshal and unmarshal XML documents.
@@ -116,7 +124,7 @@ public final class XjcSupport {
          * The domain JAXB context path.
          */
         private static final Class<?>[] CONTEXT_PATH =
-                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class};
+                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ContentProviderLoan.class};
 
         /**
          * The domain {@link javax.xml.bind.JAXBContext} singleton.
@@ -132,8 +140,8 @@ public final class XjcSupport {
         private static JAXBContext createContext() {
             try {
                 return JAXBContext.newInstance(CONTEXT_PATH);
-            } catch (JAXBException ex) {
-                throw new InternalServerErrorException("Could not create a JAXB context for the context path '" + CONTEXT_PATH + "'", ex);
+            } catch (JAXBException ex) {        	
+                throw new InternalServerErrorException("Could not create a JAXB context for the context path '" + Arrays.toString(CONTEXT_PATH) + "'", ex);
             }
         }
     }

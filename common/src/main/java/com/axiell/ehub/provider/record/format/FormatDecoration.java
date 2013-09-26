@@ -185,7 +185,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      *         {@link FormatDecoration}
      */
     @Transient
-    public final FormatTextBundle getTextBundle(final String language) {
+    public FormatTextBundle getTextBundle(final String language) {
         Validate.notNull(language, "The language can't be null");
         final Map<String, FormatTextBundle> textBundles = getTextBundles();
 

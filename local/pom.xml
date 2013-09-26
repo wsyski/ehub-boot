@@ -281,29 +281,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            <plugin>
-               <groupId>org.jvnet.jax-ws-commons</groupId>
-               <artifactId>jaxws-maven-plugin</artifactId>
-               <executions>
-                   <execution>
-                       <goals>
-                           <goal>wsimport</goal>
-                       </goals>
-                   </execution>
-               </executions>
-               <configuration>
-                   <extension>true</extension>
-                   <verbose>true</verbose>
-                   <packageName>com.axiell.arena.palma</packageName>
-                   <sourceDestDir>${project.build.directory}/generated-sources/wsdl1</sourceDestDir>
-                   <wsdlDirectory>src/main/resources/com/axiell/arena/palma</wsdlDirectory>
-                   <wsdlFiles>
-                       <wsdlFile>loans.wsdl</wsdlFile>
-                   </wsdlFiles>
-               </configuration>
-           </plugin>
-           -->
            <plugin>
                <groupId>org.apache.cxf</groupId>
                <artifactId>cxf-codegen-plugin</artifactId>
@@ -456,6 +433,10 @@
                     </deployables>
                 </configuration>
             </plugin>
+            <plugin>
+          		<groupId>org.apache.maven.plugins</groupId>
+          		<artifactId>maven-failsafe-plugin</artifactId>          		
+        	</plugin>
         </plugins>
     </build>
     <properties>
