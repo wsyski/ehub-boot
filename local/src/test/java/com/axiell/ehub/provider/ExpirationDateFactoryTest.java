@@ -75,7 +75,7 @@ public class ExpirationDateFactoryTest {
 	DateTime now = DateTime.now();
 	DateTime actualDateAsDateTime = new DateTime(actualDate);
 	Days actualDaysBetween = Days.daysBetween(now, actualDateAsDateTime);
-	int expectedDaysBetween = LOAN_EXPIRATION_DAYS - 1;
-	Assert.assertEquals(expectedDaysBetween, actualDaysBetween.getDays());
+//	int expectedDaysBetween = LOAN_EXPIRATION_DAYS - 1;
+	Assert.assertEquals(LOAN_EXPIRATION_DAYS, actualDaysBetween.getDays());
     }
 }

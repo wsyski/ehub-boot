@@ -4,11 +4,13 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
+@Component
 public class ExpirationDateFactory implements IExpirationDateFactory {
 
     @Override
