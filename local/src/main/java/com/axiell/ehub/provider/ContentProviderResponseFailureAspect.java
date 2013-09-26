@@ -77,10 +77,8 @@ public class ContentProviderResponseFailureAspect {
     
     private ContentProviderConsumer getContentProviderConsumer(JoinPoint joinPoint) {
 	for (Object arg : joinPoint.getArgs()) {
-	    if (arg instanceof ContentProviderConsumer) {
-		ContentProviderConsumer contentProviderConsumer = (ContentProviderConsumer) arg;
-		return contentProviderConsumer;
-	    }
+	    if (arg instanceof ContentProviderConsumer)
+		return (ContentProviderConsumer) arg;
 	}
 	return null;
     }

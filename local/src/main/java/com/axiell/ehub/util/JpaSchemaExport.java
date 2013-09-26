@@ -16,9 +16,15 @@ import org.slf4j.LoggerFactory;
  * the JPA annotated objects.
  */
 @SuppressWarnings("deprecation")
-public class JpaSchemaExport {
+public final class JpaSchemaExport {
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaSchemaExport.class);
 
+    /**
+     * Private constructor that prevents direct instantiation.
+     */
+    private JpaSchemaExport() {	
+    }
+    
     /**
      * Main method.
      * 

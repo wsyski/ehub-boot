@@ -7,15 +7,19 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.springframework.stereotype.Component;
 
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
 
 @Component
 class ElibUFacade implements IElibUFacade {
+    private static final String UTF8 = "UTF-8";
 
     @Override
     public Response getProduct(ContentProviderConsumer contentProviderConsumer, String elibuRecordId) {
@@ -47,12 +51,25 @@ class ElibUFacade implements IElibUFacade {
     public Response consumeProduct(ContentProviderConsumer contentProviderConsumer, Integer licenseId, String elibuRecordId) {
 	final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        final String md5ServiceKey = DigestUtils.md5Hex(serviceKey.getBytes());
+        final String md5ServiceKey = makeMd5ServiceKey(serviceKey);
         final String checksum = new StringBuilder(serviceId).append(serviceKey).append(licenseId).append(elibuRecordId).toString();
         final String md5Checksum = DigestUtils.md5Hex(checksum.getBytes());
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeProductUrl = contentProvider.getProperty(PRODUCT_URL);
         final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, consumeProductUrl);
         return elibUResource.consumeProduct(serviceId, md5ServiceKey, elibuRecordId, licenseId, md5Checksum);
+    }
+
+    private String makeMd5ServiceKey(final String serviceKey) {
+	byte[] serviceKeyAsBytes = toByteArray(serviceKey);
+	return DigestUtils.md5Hex(serviceKeyAsBytes);
+    }
+
+    private byte[] toByteArray(final String serviceKey) {
+	try {
+	    return serviceKey.getBytes(UTF8);    
+	} catch (UnsupportedEncodingException e) {
+	    throw new InternalServerErrorException("Could not get service key in '" + UTF8 + "' encoding", e);
+	}
     }
 }

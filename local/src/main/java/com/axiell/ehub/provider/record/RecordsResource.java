@@ -14,6 +14,7 @@ import com.axiell.ehub.security.AuthInfo;
  * Default implementation of the {@link IRecordsResource}.
  */
 public final class RecordsResource implements IRecordsResource {
+    private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
     private final IFormatBusinessController formatBusinessController;
     private final String contentProviderName;    
     
@@ -33,9 +34,8 @@ public final class RecordsResource implements IRecordsResource {
      */
     @Override
     public Formats getFormats(AuthInfo authInfo, String recordId, String language) {
-        if (language == null) {
-            language = Locale.ENGLISH.getLanguage();
-        }
+        if (language == null)
+            formatBusinessController.getFormats(authInfo, contentProviderName, recordId, DEFAULT_LANGUAGE);
         return formatBusinessController.getFormats(authInfo, contentProviderName, recordId, language);
     }
 }

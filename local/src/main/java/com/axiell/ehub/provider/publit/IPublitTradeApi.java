@@ -20,19 +20,19 @@ public interface IPublitTradeApi {
     @Cache
     @Path("/products/{isbn13}/ok")
     @Produces(APPLICATION_JSON)
-    public List<Product> getProduct(@PathParam("isbn13")
+    List<Product> getProduct(@PathParam("isbn13")
     final String isbn13);
 
     @GET
     @Path("/download-ticket/{orderId}/ok")
     @Produces(APPLICATION_JSON)
-    public ShopOrderUrl getShopOrderUrl(@PathParam("orderId")
+    ShopOrderUrl getShopOrderUrl(@PathParam("orderId")
     final String orderId);
 
     @POST
     @Path("/orders")
     @Produces(APPLICATION_JSON)
-    public ShopCustomerOrder createShopOrder(@QueryParam("retailer_customer_id")
+    ShopCustomerOrder createShopOrder(@QueryParam("retailer_customer_id")
     final String customerId, @QueryParam("firstname")
     final String firstName, @QueryParam("lastname")
     final String lastName, @QueryParam("email")

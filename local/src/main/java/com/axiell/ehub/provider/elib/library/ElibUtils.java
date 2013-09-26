@@ -4,7 +4,7 @@ import org.apache.commons.validator.routines.ISBNValidator;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class ElibUtils {
+public final class ElibUtils {
     private static final String CHECK_DIGITS = "0123456789X0";
     private static final ISBNValidator VALIDATOR = ISBNValidator.getInstance();
     static final int ELIB_STATUS_CODE_OK = 101;

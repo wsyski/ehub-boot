@@ -30,11 +30,17 @@ import java.util.Map;
  * Converts objects to human readable strings. Useful with debugging.
  */
 
-public class ToString {
+public final class ToString {
     private static final Logger LOGGER = LoggerFactory.getLogger(ToString.class);
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE = new RecursiveToStringStyle();
     private static final String LF = SystemUtils.LINE_SEPARATOR;
+    
+    /**
+     * Private constructor that prevents direct instantiation.
+     */
+    private ToString() {	
+    }
 
     public static String fromClientRequest(final ClientRequest clientRequest) {
         StringBuilder sb = new StringBuilder();
@@ -69,7 +75,7 @@ public class ToString {
         return sb.toString();
     }
 
-    public static String fromClientResponse(final ClientResponse clientResponse) {
+    public static String fromClientResponse(final ClientResponse<?> clientResponse) {
         StringBuilder sb = new StringBuilder();
         sb.append("Response-Code: ");
         sb.append(clientResponse.getStatus());
@@ -84,7 +90,7 @@ public class ToString {
         }
         String body = null;
         try {
-            InputStream io = ((BaseClientResponse) clientResponse).getStreamFactory().getInputStream();
+            InputStream io = ((BaseClientResponse<?>) clientResponse).getStreamFactory().getInputStream();
             body = IOUtils.toString(io, EhubUrlCodec.UTF8);
             clientResponse.resetStream();
         } catch (IOException ex) {
@@ -210,7 +216,7 @@ public class ToString {
             } else {
                 buffer.append('{');
                 for (; ; ) {
-                    Map.Entry e = iterator.next();
+                    Map.Entry<?, ?> e = iterator.next();
                     Object key = e.getKey();
                     Object value = e.getValue();
                     if (key == this) {
@@ -235,7 +241,7 @@ public class ToString {
 
         @Override
         protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
-            Iterator iterator = coll.iterator();
+            Iterator<?> iterator = coll.iterator();
             if (!iterator.hasNext()) {
                 buffer.append("[]");
             } else {

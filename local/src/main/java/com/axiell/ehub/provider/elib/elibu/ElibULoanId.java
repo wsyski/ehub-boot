@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 import com.axiell.ehub.InternalServerErrorException;
 
-class ElibULoanId {
+final class ElibULoanId {
     private static final String ELIBU_LOAN_ID_PATTERN = "{0}|{1}|{2}";
     private static final String ELIBU_LOAN_ID_SPLIT_PATTERN = "\\|";
     private static final int ELIBU_LOAN_ID_PARTS = 3;

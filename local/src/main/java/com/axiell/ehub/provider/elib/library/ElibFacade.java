@@ -4,17 +4,20 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 import org.jboss.resteasy.client.ProxyFactory;
 import org.springframework.stereotype.Component;
 
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 @Component
 class ElibFacade implements IElibFacade {
+    private static final String UTF8 = "UTF-8";
     private static final String ENGLISH = Locale.ENGLISH.getLanguage();
     private static final String CREATE_LOAN_MOBI_POCKET_ID = "X";
 
@@ -48,7 +51,16 @@ class ElibFacade implements IElibFacade {
 
     private String getMd5RetailerKeyCode(ContentProviderConsumer contentProviderConsumer) {
 	final String retailerKeyCode = contentProviderConsumer.getProperty(ELIB_RETAILER_KEY);
-	return md5Hex(retailerKeyCode.getBytes());
+	final byte[] retailerKeyCodeAsBytes = toByteArray(retailerKeyCode);
+	return md5Hex(retailerKeyCodeAsBytes);
+    }
+    
+    private byte[] toByteArray(final String retailerKeyCode) {
+	try {
+	    return retailerKeyCode.getBytes(UTF8);    
+	} catch (UnsupportedEncodingException e) {
+	    throw new InternalServerErrorException("Could not get retailer key code '" + UTF8 + "' encoding", e);
+	}
     }
     
     private String getElibUrl(ContentProviderConsumer contentProviderConsumer, ContentProviderPropertyKey propertyKey) {

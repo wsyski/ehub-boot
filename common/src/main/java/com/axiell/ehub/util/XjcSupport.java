@@ -101,6 +101,28 @@ public final class XjcSupport {
         return type.cast(obj);
     }
 
+    public static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
+        if (date == null) {
+            return null;
+        }
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(date);
+        XMLGregorianCalendar xmlGregorianCalendar = null;
+        try {
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+        } catch (DatatypeConfigurationException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return xmlGregorianCalendar;
+    }
+
+    public static Date xmlGregorianCalendar2date(final XMLGregorianCalendar xmlGregorianCalendar) {
+        if (xmlGregorianCalendar == null) {
+            return null;
+        }
+        return xmlGregorianCalendar.toGregorianCalendar().getTime();
+    }
+    
     /**
      * Returns a {@link javax.xml.bind.JAXBContext}.
      * <p/>
@@ -144,28 +166,5 @@ public final class XjcSupport {
                 throw new InternalServerErrorException("Could not create a JAXB context for the context path '" + Arrays.toString(CONTEXT_PATH) + "'", ex);
             }
         }
-    }
-
-    public static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
-        if (date == null) {
-            return null;
-        }
-        GregorianCalendar c = new GregorianCalendar();
-        c.setTime(date);
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-        try {
-            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-        } catch (DatatypeConfigurationException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return xmlGregorianCalendar;
-    }
-
-    public static Date xmlGregorianCalendar2date(final XMLGregorianCalendar xmlGregorianCalendar) {
-        if (xmlGregorianCalendar == null) {
-            return null;
-        }
-        Date date = xmlGregorianCalendar.toGregorianCalendar().getTime();
-        return date;
     }
 }

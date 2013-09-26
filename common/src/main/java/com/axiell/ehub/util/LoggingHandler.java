@@ -1,17 +1,17 @@
 package com.axiell.ehub.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPMessage;
-import javax.xml.ws.Response;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
+
+import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.soap.SOAPHandler;
+import javax.xml.ws.handler.soap.SOAPMessageContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SOAP Logging Handler
@@ -21,11 +21,9 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
 
     public boolean handleMessage(final SOAPMessageContext soapMessageContext) {
         if (LOGGER.isDebugEnabled()) {
-            @SuppressWarnings("unchecked")
             boolean isRequest = (Boolean) soapMessageContext.get(SOAPMessageContext.MESSAGE_OUTBOUND_PROPERTY);
             SOAPMessage soapMessage = soapMessageContext.getMessage();
             LOGGER.debug((isRequest ? "SOAP request:" : "SOAP response:")+ToString.getLf() + ToString.fromSOAPMessage(soapMessage));
-
         }
         return true;
     }
@@ -45,7 +43,7 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
         return null;
     }
 
-    public class StringBufferOutputStream extends OutputStream {
+    public static class StringBufferOutputStream extends OutputStream {
         private StringBuffer textBuffer = new StringBuffer();
 
         /**
