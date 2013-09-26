@@ -28,7 +28,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String PIN = "pin";
     protected static final String EHUB_FORMAT_NAME = "ehubFormatName";
     protected static final String EHUB_FORMAT_DESCRIPTION = "ehubFormatDescription";
-    
+
     @Mock
     protected PendingLoan pendingLoan;
     @Mock
@@ -38,56 +38,56 @@ public abstract class AbstractContentProviderDataAccessorTest {
     @Mock
     protected FormatDecoration formatDecoration;
     @Mock
-    protected FormatTextBundle textBundle;    
+    protected FormatTextBundle textBundle;
     @Mock
     protected ContentProviderLoanMetadata loanMetadata;
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
-    
+
     protected void givenTextBundle() {
-	givenContentProvider();
-	givenFormatDecorationFromContentProvider();
-	given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
+        givenContentProvider();
+        givenFormatDecorationFromContentProvider();
+        given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
     }
-    
+
     protected void givenContentProvider() {
-	given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
     }
-    
+
     protected void givenFormatDecorationFromContentProvider() {
-	given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
+        given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
     }
-    
+
     protected void givenEhubFormatNameAndDescription() {
-	given(textBundle.getName()).willReturn(EHUB_FORMAT_NAME);
-	given(textBundle.getDescription()).willReturn(EHUB_FORMAT_DESCRIPTION);
+        given(textBundle.getName()).willReturn(EHUB_FORMAT_NAME);
+        given(textBundle.getDescription()).willReturn(EHUB_FORMAT_DESCRIPTION);
     }
-    
+
     protected void givenContentDisposition() {
-	given(formatDecoration.getContentDisposition()).willReturn(ContentDisposition.DOWNLOADABLE);
+        given(formatDecoration.getContentDisposition()).willReturn(ContentDisposition.DOWNLOADABLE);
     }
-    
+
     protected void givenFormatDecorationFromContentProviderLoanMetadata() {
-	given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
     }
-    
+
     protected void thenActualLoanContainsDownloadUrl() {
-	Assert.assertNotNull(actualLoan);
-	IContent content = actualLoan.getContent();
-	DownloadableContent downloadableContent = (DownloadableContent) content;
-	Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
+        Assert.assertNotNull(actualLoan);
+        IContent content = actualLoan.getContent();
+        DownloadableContent downloadableContent = (DownloadableContent) content;
+        Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
     }
-    
+
     protected void thenActualContentContainsDownloadUrl() {
-	DownloadableContent downloadableContent = (DownloadableContent) actualContent;
-	Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
+        DownloadableContent downloadableContent = (DownloadableContent) actualContent;
+        Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
     }
-    
+
     protected void thenFormatHasEhubFormatNameAndDescription() {
-	Assert.assertFalse(actualFormats.getFormats().isEmpty());
-	Format actualFormat = actualFormats.getFormats().iterator().next();
-	Assert.assertEquals(EHUB_FORMAT_NAME, actualFormat.getName());
-	Assert.assertEquals(EHUB_FORMAT_DESCRIPTION, actualFormat.getDescription());
+        Assert.assertFalse(actualFormats.getFormats().isEmpty());
+        Format actualFormat = actualFormats.getFormats().iterator().next();
+        Assert.assertEquals(EHUB_FORMAT_NAME, actualFormat.getName());
+        Assert.assertEquals(EHUB_FORMAT_DESCRIPTION, actualFormat.getDescription());
     }
 }
