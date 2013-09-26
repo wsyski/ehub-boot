@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @XmlEnum(String.class)
 public enum ContentProviderName {
-    ELIB, ELIBU, PUBLIT;
+    ELIB, ELIBU, PUBLIT, ASKEWS;
     
     private static final Map<String, ContentProviderName> STRING_TO_ENUM = new HashMap<>();
     

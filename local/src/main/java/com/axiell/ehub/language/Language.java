@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Defines a supported language in the eHUB.
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_LANGUAGE")
 @Access(AccessType.PROPERTY)
-public class Language {
+public class Language implements Serializable {
     private String id;
 
     /**

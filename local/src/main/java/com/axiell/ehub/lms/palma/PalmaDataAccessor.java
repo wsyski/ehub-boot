@@ -62,6 +62,8 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         CheckOutTestRequest checkOutTestRequest = requestObjectFactory.createCheckOutTestRequest();
         checkOutTestRequest.setArenaMember(agencyMemberIdentifier);
         checkOutTestRequest.setRecordId(pendingLoan.getLmsRecordId());
+        checkOutTestRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
+        checkOutTestRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutTestRequest.setUser(libraryCard);
         checkOutTestRequest.setPassword(pin);
         com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
@@ -110,6 +112,8 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
         checkOutRequest.setExpirationDate(XjcSupport.date2XMLGregorianCalendar(expirationDate));
+        checkOutRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
+        checkOutRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutRequest.setUser(libraryCard);
         checkOutRequest.setPassword(pin);
         com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();

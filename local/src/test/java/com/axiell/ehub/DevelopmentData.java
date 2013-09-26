@@ -94,6 +94,18 @@ public class DevelopmentData {
     public static final String PUBLIT_RECORD_0_ID = "9789174376838";
     public static final String PUBLIT_LIBRARY_CARD = "12345";
     public static final String PUBLIT_LIBRARY_CARD_PIN = "1111";
+    
+    public static final String ASKEWS_FORMAT_0_ID = "Askews";
+    public static final String ASKEWS_FORMAT_0_NAME = "Askews";
+    public static final int ASKEWS_PLAYER_WIDTH = 320;
+    public static final int ASKEWS_PLAYER_HEIGHT = 240;
+    public static final String ASKEWS_BARCODE = "axiell";
+    public static final String ASKEWS_AUTHID = "0";
+    public static final String ASKEWS_TOKENKEY = "g94ngpts3ngmkeaqtz953dbmutyndw";
+    public static final String ASKEWS_LOAN_DURATION = "1";
+    public static final String ASKEWS_RECORD_0_ID = "9781407059815-6";
+    public static final String ASKEWS_LIBRARY_CARD = "12345";
+    public static final String ASKEWS_LIBRARY_CARD_PIN = "1111";
 
     protected IContentProviderAdminController contentProviderAdminController;
     protected IFormatAdminController formatAdminController;

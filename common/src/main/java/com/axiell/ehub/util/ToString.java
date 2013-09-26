@@ -72,8 +72,8 @@ public class ToString {
     public static String fromClientResponse(final ClientResponse clientResponse) {
         StringBuilder sb = new StringBuilder();
         sb.append("Response-Code: ");
-        sb.append(clientResponse.getResponseStatus().getStatusCode());
-        if (StringUtils.isNotBlank(clientResponse.getResponseStatus().getReasonPhrase())) {
+        sb.append(clientResponse.getStatus());
+        if (clientResponse.getResponseStatus()!=null && StringUtils.isNotBlank(clientResponse.getResponseStatus().getReasonPhrase())) {
             sb.append(" ");
             sb.append(clientResponse.getResponseStatus().getReasonPhrase());
         }

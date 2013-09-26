@@ -52,9 +52,13 @@ public class AuthInfoTest {
         String actInfoValue1 = expInfo1.toString();
         Assert.assertEquals(expInfoValue1, actInfoValue1);
 
-        AuthInfo expInfo2 = new AuthInfo.Builder(2L, expEhubConsumerSecretKey2).build();
+        AuthInfo expInfo2 = new AuthInfo.Builder(expEhubConsumerId2, expEhubConsumerSecretKey2).build();
         String actInfoValue2 = expInfo2.toString();
         Assert.assertEquals(expInfoValue2, actInfoValue2);
+
+        AuthInfo expInfo3 = new AuthInfo.Builder(10000L, "4CWXdU1852").libraryCard("909265910").pin("4447").build();
+        String actInfoValue3 = expInfo3.toString();
+        System.out.println(actInfoValue3);
     }
     
     /**

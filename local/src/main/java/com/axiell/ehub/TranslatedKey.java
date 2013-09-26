@@ -3,14 +3,14 @@
  */
 package com.axiell.ehub;
 
-import java.io.Serializable;
-import java.text.Collator;
-import java.util.Locale;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.io.Serializable;
+import java.text.Collator;
+import java.util.Locale;
 
 /**
  * Represents a key that provides a translated label and a translated title. When it is compared to another
@@ -18,22 +18,21 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Serializable {
     private static final long serialVersionUID = -6412303252692270087L;
-    private final Collator collator;
+    private transient Collator collator;
     private final K key;
     private final String label;
     private final String title;
+    private final Locale locale;
 
     /**
      * Constructs a new {@link TranslatedKey}.
-     * 
+     *
      * @param component the component owning the translation of the key
-     * @param key the key
+     * @param key       the key
      */
     public TranslatedKey(final Component component, final K key) {
-        final Locale locale = component.getLocale();
-        this.collator = Collator.getInstance(locale);
+        locale = component.getLocale();
         this.key = key;
-
         final IModel<String> emptyModel = new Model<>();
 
         final StringResourceModel labelModel = new StringResourceModel(key.toString() + ".label", component, emptyModel);
@@ -45,7 +44,7 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
 
     /**
      * Returns the key.
-     * 
+     *
      * @return the key
      */
     public K getKey() {
@@ -54,7 +53,7 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
 
     /**
      * Returns the translated label.
-     * 
+     *
      * @return the translated label
      */
     public String getLabel() {
@@ -63,7 +62,7 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
 
     /**
      * Returns the translated title.
-     * 
+     *
      * @return the translated title
      */
     public String getTitle() {
@@ -75,6 +74,9 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
      */
     @Override
     public int compareTo(TranslatedKey<K> key) {
+        if (collator == null) {
+            this.collator = Collator.getInstance(locale);
+        }
         return collator.compare(label, key.getLabel());
     }
 }

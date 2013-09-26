@@ -12,17 +12,21 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.jboss.resteasy.spi.interception.ClientExecutionInterceptor;
+
+import java.io.IOException;
+
 
 class ExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
 
     @Override
     public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
 	ClientRequest request = new ClientRequest("http://www.google.com");
-	ClientResponse<?> response = null;
+	ClientResponse<?> response;
 	try {
 	    response = request.get();
-	} catch (Exception e) {
-	    throw new InternalServerErrorException(e.getMessage(), e);
+	} catch (Exception ex) {
+        throw new RuntimeException(ex.getMessage(),ex);
 	}
 	throw new ClientResponseFailure(response);
     }
