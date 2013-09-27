@@ -1,127 +1,200 @@
 package com.axiell.ehub.lms.palma;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.util.Date;
-
-import javax.jws.WebService;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.ws.Endpoint;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import com.axiell.arena.services.palma.loans.CheckOut;
+import com.axiell.arena.services.palma.loans.CheckOutResponse;
 import com.axiell.arena.services.palma.loans.CheckOutTest;
-import com.axiell.arena.services.palma.loans.GetLoans;
-import com.axiell.arena.services.palma.loans.Loans;
-import com.axiell.arena.services.palma.loans.RenewLoans;
-import com.axiell.ehub.DevelopmentData;
+import com.axiell.arena.services.palma.loans.CheckOutTestResponse;
+import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
+import com.axiell.arena.services.palma.util.ISOCurrencyCodeType;
+import com.axiell.ehub.ForbiddenException;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.ContentProviderName;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
+
+@RunWith(MockitoJUnitRunner.class)
 public class PalmaDataAccessorTest {
-    private Endpoint endpoint;
+    private static final String LMS_RECORD_ID = "recordId";
+    private static final String PROVIDER_FORMAT_ID = "providerFormatId";
+    private static final String PROVIDER_RECORD_ID = "providerRecordId";
+    private static final String LIBRARY_CARD = "libraryCard";
+    private static final String PIN = "pin";
+    private static final String LOAN_ID = "loanId";
+    private static final String PALMA_URL = "http://localhost:16521/arena.pa.palma";
+    private static final String AGENCY_M_IDENTIFIER = "agencyMemberIdentifier";
+    private static final long EHUB_ID = 1L;
 
-    @Autowired
-    private PalmaDataAccessor palmaDataAccessor;
+    private PalmaDataAccessor underTest;
 
+    @Mock
+    IPalmaFacadeFactory palmaFacadeFactory;
+
+    @Mock
+    IPalmaFacade palmaFacade;
+
+    @Mock
     private EhubConsumer ehubConsumer;
+
     private PendingLoan pendingLoan;
+
+    private CheckoutTestAnalysis preCheckoutAnalysis;
+
+    private LmsLoan lmsLoan;
 
     @Before
     public void setUp() throws Exception {
-        palmaDataAccessor = new PalmaDataAccessor();
-        palmaDataAccessor.setPalmaFacadeFactory(new PalmaFacadeFactory());
-        ehubConsumer = DevelopmentData.createEhubConsumer();
-        ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
-        pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
-                DevelopmentData.ELIB_FORMAT_0_ID);
-        String palmaUrl = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL);
-        endpoint = Endpoint.publish(palmaUrl + "/loans", new LoansImpl());
-    }
-
-    @After
-    public void tearDown() {
-        endpoint.stop();
+        underTest = new PalmaDataAccessor();
+        underTest.setPalmaFacadeFactory(palmaFacadeFactory);
+        pendingLoan = new PendingLoan(LMS_RECORD_ID, ContentProviderName.ELIB.name(), PROVIDER_RECORD_ID, PROVIDER_FORMAT_ID);
+        Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperies = new HashMap<>();
+        ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, PALMA_URL);
+        ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, AGENCY_M_IDENTIFIER);
+        given(palmaFacadeFactory.getInstance(ehubConsumer)).willReturn(palmaFacade);
+        given(ehubConsumer.getProperties()).willReturn(ehubConsumerProperies);
+        given(ehubConsumer.getId()).willReturn(EHUB_ID);
     }
 
     @Test
-    public void testCheckOutTest() {
-        CheckoutTestAnalysis preCheckoutAnalysis =
-                palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN);
+    public void checkOutTestActiveLoan() {
+        givenCheckOutTestResponseFromAlmaWithStatus(CheckOutTestErrorStatusType.ACTIVE_LOAN);
+        whenPreCheckoutAnalysis();
+        thenPreCheckOutAnalysisReturnsActiveLoan();
+    }
+
+    @Test
+    public void checkOutTestCheckoutDenied() {
+        givenCheckOutTestResponseFromAlmaWithStatus(CheckOutTestErrorStatusType.CHECK_OUT_DENIED);
+        try {
+            whenPreCheckoutAnalysis();
+            fail();
+        } catch (ForbiddenException ex) {
+            thenForbiddenExceptionIsThrown(ex);
+        }
+    }
+
+    @Test
+    public void checkOutTestInvalidRecordId() {
+        givenCheckOutTestResponseFromAlmaWithStatus(CheckOutTestErrorStatusType.INVALID_RECORD_ID);
+        try {
+            whenPreCheckoutAnalysis();
+            fail();
+        } catch (NotFoundException ex) {
+            thenNotFoundExceptionIsThrown(ex);
+        }
+    }
+
+
+    @Test
+    public void checkOutTestNewLoan() {
+        givenCheckOutTestResponseFromAlmaWithStatus(CheckOutTestErrorStatusType.NEW_LOAN);
+        whenPreCheckoutAnalysis();
+        thenPreCheckOutAnalysisReturnsNewLoan();
+    }
+
+    @Test
+    public void checkOutSuccess() {
+        givenCheckOutResponseSuccess();
+        thenLmsLoanSuccess();
+    }
+
+
+
+    private void givenCheckOutResponseSuccess() {
+        CheckOutResponse checkOutResponse = getCheckOutResponse();
+        given(palmaFacade.checkOut(Mockito.any(CheckOut.class))).willReturn(checkOutResponse);
+        Date expirationDate = new Date();
+        lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, LIBRARY_CARD, PIN);
+    }
+
+    private void thenLmsLoanSuccess() {
+        assertNotNull(lmsLoan);
+        assertEquals(LOAN_ID, lmsLoan.getId());
+    }
+
+    private void thenPreCheckOutAnalysisReturnsActiveLoan() {
         assertNotNull(preCheckoutAnalysis);
         assertEquals(CheckoutTestAnalysis.Result.ACTIVE_LOAN, preCheckoutAnalysis.getResult());
-        assertEquals(DevelopmentData.LMS_LOAN_ID_1, preCheckoutAnalysis.getLmsLoanId());
+        assertEquals(LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
-    @Test
-    public void testCheckOut() {
-        Date expirationDate = new Date();
-        LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, DevelopmentData.ELIB_LIBRARY_CARD,
-                DevelopmentData.ELIB_LIBRARY_CARD_PIN);
-        assertNotNull(lmsLoan);
-        assertEquals(DevelopmentData.LMS_LOAN_ID_1, lmsLoan.getId());
+    private void thenPreCheckOutAnalysisReturnsNewLoan() {
+        assertNotNull(preCheckoutAnalysis);
+        assertEquals(CheckoutTestAnalysis.Result.NEW_LOAN, preCheckoutAnalysis.getResult());
+        assertNull(preCheckoutAnalysis.getLmsLoanId());
     }
 
-    @WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
-            wsdlLocation = "com/axiell/arena/palma/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
-    public static class LoansImpl implements Loans {
+    private void thenForbiddenExceptionIsThrown(final ForbiddenException ex) {
+    }
 
-        public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(CheckOutTest parameters) {
-            try {
-                JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
-                Unmarshaller unmarshaller = jc.createUnmarshaller();
-                @SuppressWarnings("unchecked")
-                JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse> jaxbElement =
-                        (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutTestResponse>) unmarshaller.unmarshal(
-                                new ClassPathResource("com/axiell/arena/palma/CheckOutTestResponse.xml").getFile());
-                return jaxbElement.getValue();
-            } catch (JAXBException | IOException ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex);
-            }
-        }
+    private void thenNotFoundExceptionIsThrown(final NotFoundException ex) {
+    }
 
-        public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(CheckOut parameters) {
-            try {
-                JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
-                Unmarshaller unmarshaller = jc.createUnmarshaller();
-                @SuppressWarnings("unchecked")
-                JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse> jaxbElement =
-                        (JAXBElement<com.axiell.arena.services.palma.loans.CheckOutResponse>) unmarshaller.unmarshal(
-                                new ClassPathResource("com/axiell/arena/palma/CheckOutResponse.xml").getFile());
-                return jaxbElement.getValue();
-            } catch (JAXBException | IOException ex) {
-                ex.printStackTrace();
-                throw new RuntimeException(ex);
-            }
+    private static CheckOutTestResponse getCheckOutTestResponse(final CheckOutTestErrorStatusType testStatus) {
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        CheckOutTestResponse checkOutTest = loansObjectFactory.createCheckOutTestResponse();
+        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
+        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
+        status.setType("ok");
+        com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory checkouttestresponseObjectFactory =
+                new com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory();
+        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
+                checkouttestresponseObjectFactory.createCheckOutTestResponse();
+        checkOutTest.setCheckOutTestResponse(checkOutTestResponse);
+        checkOutTestResponse.setStatus(status);
+        switch (testStatus) {
+            case ACTIVE_LOAN:
+                checkOutTestResponse.setLoanId(LOAN_ID);
+                break;
+            default:
         }
+        checkOutTestResponse.setTestStatus(testStatus);
+        return checkOutTest;
+    }
 
-        @Override
-        public com.axiell.arena.services.palma.loans.RenewLoansResponse renewLoans(final RenewLoans parameters) {
-            return null;
-        }
+    private static CheckOutResponse getCheckOutResponse() {
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        CheckOutResponse checkOut = loansObjectFactory.createCheckOutResponse();
+        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
+        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
+        status.setType("ok");
+        com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory checkoutresponseObjectFactory =
+                new com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory();
+        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = checkoutresponseObjectFactory.createCheckOutResponse();
+        checkOut.setCheckOutResponse(checkOutResponse);
+        checkOutResponse.setStatus(status);
+        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutSuccess checkoutSuccess =
+                checkoutresponseObjectFactory.createCheckOutResponseCheckOutSuccess();
+        checkoutSuccess.setLoanId(LOAN_ID);
+        checkoutSuccess.setRecordId(LMS_RECORD_ID);
+        com.axiell.arena.services.palma.util.ObjectFactory utilObjectFactory = new com.axiell.arena.services.palma.util.ObjectFactory();
+        com.axiell.arena.services.palma.util.MoneyType fee = utilObjectFactory.createMoneyType();
+        fee.setCurrency(ISOCurrencyCodeType.SEK);
+        fee.setAmount(10);
+        checkoutSuccess.setFee(fee);
+        checkOutResponse.setCheckOutSuccess(checkoutSuccess);
+        return checkOut;
+    }
 
-        @Override
-        public com.axiell.arena.services.palma.loans.GetLoansResponse getLoans(GetLoans parameters) {
-            return null;
-        }
+    private void givenCheckOutTestResponseFromAlmaWithStatus(final CheckOutTestErrorStatusType testStatus) {
+        CheckOutTestResponse checkOutTestResponse = getCheckOutTestResponse(testStatus);
+        given(palmaFacade.checkOutTest(Mockito.any(CheckOutTest.class))).willReturn(checkOutTestResponse);
+    }
+
+    private void whenPreCheckoutAnalysis() {
+        preCheckoutAnalysis = underTest.checkoutTest(ehubConsumer, pendingLoan, LIBRARY_CARD, PIN);
     }
 }

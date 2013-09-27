@@ -71,6 +71,28 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         return new CheckoutTestAnalysis(result, lmsLoanId);
     }
 
+    /**
+     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, java.util.Date, String, String)
+     */
+    @Override
+    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final String libraryCard,
+                            final String pin) {
+        String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
+        CheckOut checkOut = createCheckOut(agencyMemberIdentifier, pendingLoan, libraryCard, pin, expirationDate);
+        IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
+        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
+        CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
+        String lmsLoanId;
+        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer);
+        CheckOutResponse.CheckOutSuccess checkOutSuccess = checkOutResponse.getCheckOutSuccess();
+        if (checkOutSuccess != null) {
+            lmsLoanId = checkOutSuccess.getLoanId();
+        } else {
+            throw createCheckOutErrorException(checkOutResponse.getCheckOutError(), ehubConsumer, pendingLoan, libraryCard);
+        }
+        return new LmsLoan(lmsLoanId);
+    }
+
     private static ForbiddenException createCheckOutTestCheckoutDeniedException(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan,
                                                                                 final String libraryCard) {
         final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
@@ -85,7 +107,6 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         return new NotFoundException(ErrorCause.LMS_RECORD_NOT_FOUND, argLmsRecordId, argEhubConsumerId);
     }
 
-
     private static InternalServerErrorException createCheckOutTestInternalErrorException(final EhubConsumer ehubConsumer,
                                                                                          final CheckOutTestResponse checkOutTestResponse) {
         final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
@@ -94,43 +115,21 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         return new InternalServerErrorException(LMS_ERROR_MESSAGE, ErrorCause.LMS_ERROR, argStatus, argEhubConsumerId);
     }
 
-
-    static CheckOutTest createCheckOutTest(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard, final String pin) {
-        com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory requestObjectFactory =
+    private static CheckOutTest createCheckOutTest(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard,
+                                                   final String pin) {
+        com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory checkouttestrequestObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
-        CheckOutTestRequest checkOutTestRequest = requestObjectFactory.createCheckOutTestRequest();
+        CheckOutTestRequest checkOutTestRequest = checkouttestrequestObjectFactory.createCheckOutTestRequest();
         checkOutTestRequest.setArenaMember(agencyMemberIdentifier);
         checkOutTestRequest.setRecordId(pendingLoan.getLmsRecordId());
         checkOutTestRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
         checkOutTestRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutTestRequest.setUser(libraryCard);
         checkOutTestRequest.setPassword(pin);
-        com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
-        CheckOutTest checkOutTest = objectFactory.createCheckOutTest();
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        CheckOutTest checkOutTest = loansObjectFactory.createCheckOutTest();
         checkOutTest.setCheckOutTestRequest(checkOutTestRequest);
         return checkOutTest;
-    }
-
-    /**
-     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, java.util.Date, String, String)
-     */
-    @Override
-    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final String libraryCard,
-                            final String pin) {
-        String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
-        CheckOut checkOut = createCheckOut(agencyMemberIdentifier, pendingLoan, libraryCard, pin, expirationDate);
-        IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
-        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
-        CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
-        String lmsLoanId;
-        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer, libraryCard);
-        CheckOutResponse.CheckOutSuccess checkOutSuccess = checkOutResponse.getCheckOutSuccess();
-        if (checkOutSuccess != null) {
-            lmsLoanId = checkOutSuccess.getLoanId();
-        } else {
-            throw createCheckOutErrorException(checkOutResponse.getCheckOutError(), ehubConsumer, pendingLoan, libraryCard);
-        }
-        return new LmsLoan(lmsLoanId);
     }
 
     private static RuntimeException createCheckOutErrorException(final CheckOutResponse.CheckOutError checkOutError, final EhubConsumer ehubConsumer,
@@ -151,11 +150,11 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         }
     }
 
-    static CheckOut createCheckOut(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard,
-                                   final String pin, final Date expirationDate) {
-        com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory requestObjectFactory =
+    private static CheckOut createCheckOut(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard,
+                                           final String pin, final Date expirationDate) {
+        com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory checkoutrequestObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
-        CheckOutRequest checkOutRequest = requestObjectFactory.createCheckOutRequest();
+        CheckOutRequest checkOutRequest = checkoutrequestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
         checkOutRequest.setExpirationDate(XjcSupport.date2XMLGregorianCalendar(expirationDate));
@@ -163,24 +162,25 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         checkOutRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutRequest.setUser(libraryCard);
         checkOutRequest.setPassword(pin);
-        com.axiell.arena.services.palma.loans.ObjectFactory objectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
-        CheckOut checkOut = objectFactory.createCheckOut();
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        CheckOut checkOut = loansObjectFactory.createCheckOut();
         checkOut.setCheckOutRequest(checkOutRequest);
         return checkOut;
     }
 
-    private void checkCheckOutTestResponseStatus(final CheckOutTestResponse checkOutTestResponse, final EhubConsumer ehubConsumer, final String libraryCard) {
+    private static void checkCheckOutTestResponseStatus(final CheckOutTestResponse checkOutTestResponse, final EhubConsumer ehubConsumer,
+                                                        final String libraryCard) {
         Validate.isNotNull(checkOutTestResponse, ehubConsumer, "CheckOutTestResponse was null");
         Validate.isNotNull(checkOutTestResponse.getTestStatus(), "CheckOutTestResponse testStatus was null");
         checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, libraryCard);
     }
 
-    private void checkCheckOutResponseStatus(final CheckOutResponse checkOutResponse, final EhubConsumer ehubConsumer, final String libraryCard) {
+    private static void checkCheckOutResponseStatus(final CheckOutResponse checkOutResponse, final EhubConsumer ehubConsumer) {
         Validate.isNotNull(checkOutResponse, ehubConsumer, "CheckOutResponse status was null");
         Validate.isNotNull(checkOutResponse.getCheckOutSuccess(), ehubConsumer, "CheckOutResponse checkOutSuccess was null");
     }
 
-    private void checkResponseStatus(final Status status, final EhubConsumer ehubConsumer, final String libraryCard) {
+    private static void checkResponseStatus(final Status status, final EhubConsumer ehubConsumer, final String libraryCard) {
         Validate.isNotNull(status, ehubConsumer, "Error status was null");
         String responseStatus = status.getType() == null ? STATUS_ERROR : status.getType();
         if (!responseStatus.equals(STATUS_OK)) {
@@ -206,7 +206,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         }
     }
 
-    private String getAgencyMemberIdentifier(final EhubConsumer ehubConsumer) {
+    private static String getAgencyMemberIdentifier(final EhubConsumer ehubConsumer) {
         EhubConsumer.EhubConsumerPropertyKey arenaAgencyMemberIdentifierKey = EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER;
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(arenaAgencyMemberIdentifierKey);
         Validate.isNotBlank(agencyMemberIdentifier, ehubConsumer, agencyMemberIdentifier + " is blank");
