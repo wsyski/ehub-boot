@@ -83,7 +83,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
         CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
         String lmsLoanId;
-        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer);
+        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer,libraryCard);
         CheckOutResponse.CheckOutSuccess checkOutSuccess = checkOutResponse.getCheckOutSuccess();
         if (checkOutSuccess != null) {
             lmsLoanId = checkOutSuccess.getLoanId();
@@ -175,20 +175,23 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, libraryCard);
     }
 
-    private static void checkCheckOutResponseStatus(final CheckOutResponse checkOutResponse, final EhubConsumer ehubConsumer) {
+    private static void checkCheckOutResponseStatus(final CheckOutResponse checkOutResponse, final EhubConsumer ehubConsumer, final String libraryCard) {
         Validate.isNotNull(checkOutResponse, ehubConsumer, "CheckOutResponse status was null");
-        Validate.isNotNull(checkOutResponse.getCheckOutSuccess(), ehubConsumer, "CheckOutResponse checkOutSuccess was null");
+        Validate.isNotNull(checkOutResponse.getCheckOutSuccess()==null ? checkOutResponse.getCheckOutError() : checkOutResponse.getCheckOutSuccess(),
+                ehubConsumer, "CheckOutResponse checkOutSuccess and checkOutError were null");
+        checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, libraryCard);
     }
 
     private static void checkResponseStatus(final Status status, final EhubConsumer ehubConsumer, final String libraryCard) {
         Validate.isNotNull(status, ehubConsumer, "Error status was null");
-        String responseStatus = status.getType() == null ? STATUS_ERROR : status.getType();
-        if (!responseStatus.equals(STATUS_OK)) {
+        Validate.isNotNull(status.getType(), ehubConsumer, "Status type was null");
+        String statusType = status.getType();
+        if (!statusType.equals(STATUS_OK)) {
             final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
             final ErrorCauseArgument argLibraryCard = new ErrorCauseArgument(ErrorCauseArgument.Type.LIBRARY_CARD, libraryCard);
-            if (status.getMessage() != null) {
-                responseStatus = status.getMessage();
-                switch (responseStatus) {
+            String statusMessage = status.getMessage();
+            if (statusMessage != null) {
+                switch (statusMessage) {
                     case MESSAGE_INVALID_PIN_CODE:
                         throw new ForbiddenException(ErrorCause.LMS_INVALID_PIN_CODE, argLibraryCard, argEhubConsumerId);
                     case MESSAGE_BLOCKED_BORR_CARD:
@@ -201,7 +204,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
                         throw new ForbiddenException(ErrorCause.LMS_INVALID_LIBRARY_CARD, argLibraryCard, argEhubConsumerId);
                 }
             }
-            final ErrorCauseArgument argStatus = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, responseStatus);
+            final ErrorCauseArgument argStatus = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, statusMessage);
             throw new InternalServerErrorException(LMS_ERROR_MESSAGE, ErrorCause.LMS_ERROR, argStatus, argEhubConsumerId);
         }
     }

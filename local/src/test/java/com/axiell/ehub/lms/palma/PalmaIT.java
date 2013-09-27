@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/com/axiell/ehub/common-context.xml")
-public class PalmaDataAccessorWSTest {
+public class PalmaIT {
     private Endpoint endpoint;
 
     @Autowired
@@ -41,8 +41,6 @@ public class PalmaDataAccessorWSTest {
 
     @Before
     public void setUp() throws Exception {
-        palmaDataAccessor = new PalmaDataAccessor();
-        palmaDataAccessor.setPalmaFacadeFactory(new PalmaFacadeFactory());
         ehubConsumer = DevelopmentData.createEhubConsumer();
         ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
         pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
@@ -78,7 +76,7 @@ public class PalmaDataAccessorWSTest {
             wsdlLocation = "com/axiell/arena/palma/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
     public static class LoansImpl implements Loans {
 
-        public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(CheckOutTest parameters) {
+        public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {
             try {
                 JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -93,7 +91,7 @@ public class PalmaDataAccessorWSTest {
             }
         }
 
-        public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(CheckOut parameters) {
+        public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(final CheckOut parameters) {
             try {
                 JAXBContext jc = JAXBContext.newInstance("com.axiell.arena.services.palma.loans");
                 Unmarshaller unmarshaller = jc.createUnmarshaller();
