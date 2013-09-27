@@ -40,14 +40,15 @@ public class PalmaDataAccessorTest {
     private Endpoint endpoint;
 
     @Autowired
-    private IPalmaDataAccessor palmaDataAccessor;
+    private PalmaDataAccessor palmaDataAccessor;
 
     private EhubConsumer ehubConsumer;
     private PendingLoan pendingLoan;
 
     @Before
     public void setUp() throws Exception {
-       palmaDataAccessor = new PalmaDataAccessor();
+        palmaDataAccessor = new PalmaDataAccessor();
+        palmaDataAccessor.setPalmaFacadeFactory(new PalmaFacadeFactory());
         ehubConsumer = DevelopmentData.createEhubConsumer();
         ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
         pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
