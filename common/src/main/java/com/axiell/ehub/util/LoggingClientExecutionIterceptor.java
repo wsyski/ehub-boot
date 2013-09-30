@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.util.strings.ToString;
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
@@ -23,11 +24,11 @@ public class LoggingClientExecutionIterceptor implements ClientExecutionIntercep
     public ClientResponse execute(ClientExecutionContext ctx) throws Exception {
         ClientRequest clientRequest = ctx.getRequest();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(ToString.getLf() + ToString.fromClientRequest(clientRequest));
+            LOGGER.debug(ToString.lineFeed() + ToString.clientRequestToString(clientRequest));
         }
         ClientResponse clientResponse = ctx.proceed();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(ToString.getLf() + ToString.fromClientResponse(clientResponse));
+            LOGGER.debug(ToString.lineFeed() + ToString.clientResponseToString(clientResponse));
         }
         return clientResponse;
     }

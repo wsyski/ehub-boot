@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.util.strings.ToString;
 import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
@@ -26,7 +27,7 @@ public final class LoggingPostProcessInterceptor implements PostProcessIntercept
     public void postProcess(final ServerResponse serverResponse) {
         if (LOGGER.isDebugEnabled()) {
             StopWatch stopWatch = (StopWatch) servletRequest.getAttribute("stopWatch");
-            LOGGER.debug("Response time: " + stopWatch.getTime() + ToString.getLf() + ToString.fromServerResponse(serverResponse));
+            LOGGER.debug("Response time: " + stopWatch.getTime() + ToString.lineFeed() + ToString.serverResponseToString(serverResponse));
         }
     }
 

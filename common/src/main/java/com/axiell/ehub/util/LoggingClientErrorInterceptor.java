@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.util.strings.ToString;
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.ClientErrorInterceptor;
@@ -21,6 +22,6 @@ public class LoggingClientErrorInterceptor implements ClientErrorInterceptor {
      */
     @Override
     public void handle(final ClientResponse<?> clientResponse) {
-        LOGGER.error(" Response:" + ToString.getLf() + ToString.fromClientResponse(clientResponse));
+        LOGGER.error(" Response:" + ToString.lineFeed() + ToString.clientResponseToString(clientResponse));
     }
 }
