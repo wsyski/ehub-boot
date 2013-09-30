@@ -17,6 +17,7 @@ class RecursiveToStringStyle extends ToStringStyle {
     private static final String EMPTY_MAP = "{}";
     private static final char COLLECTION_START_CHAR = '[';
     private static final char COLLECTION_END_CHAR = ']';
+    private static final char CLASS_PREFIX_CHAR = '@';
 
 
     public RecursiveToStringStyle() {
@@ -82,7 +83,7 @@ class RecursiveToStringStyle extends ToStringStyle {
 
     private void appendCurrentValue(final StringBuffer buffer, final String fieldName, final Object value, final Collection<Object> traversedObjects) {
         if (isTraversed(value, traversedObjects)) {
-            buffer.append("@" + value.getClass().getName());
+            buffer.append(CLASS_PREFIX_CHAR).append(value.getClass().getName());
         } else {
             addToTraversedObjects(value, traversedObjects);
             appendInternal(buffer, fieldName, value, true);
@@ -161,7 +162,7 @@ class RecursiveToStringStyle extends ToStringStyle {
 
     private void appendValue(final StringBuffer buffer, final String fieldName, final Object currentMapKey, final Collection<Object> traversedObjects) {
         if (isTraversed(currentMapKey, traversedObjects)) {
-            buffer.append("@" + currentMapKey.getClass().getName());
+            buffer.append(CLASS_PREFIX_CHAR).append(currentMapKey.getClass().getName());
         } else {
             addToTraversedObjects(currentMapKey, traversedObjects);
             appendInternal(buffer, fieldName, currentMapKey, true);
