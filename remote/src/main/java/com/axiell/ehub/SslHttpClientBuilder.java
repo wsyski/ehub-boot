@@ -4,7 +4,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -51,13 +50,12 @@ public final class SslHttpClientBuilder {
     private static SSLContext initSslContext(final X509TrustManager trustManager) {
 	// Now put the trust manager into an SSLContext.
 	// Supported: SSL, SSLv2, SSLv3, TLS, TLSv1, TLSv1.1
-	final KeyManager[] keyManagers = null;
 	final TrustManager[] trustManagers = new TrustManager[] { trustManager };
 	final SecureRandom secureRandom = new SecureRandom();
 	final SSLContext sslContext;
 	try {
 	    sslContext = SSLContext.getInstance(SSL_PROTOCOL);
-	    sslContext.init(keyManagers, trustManagers, secureRandom);
+	    sslContext.init(null, trustManagers, secureRandom);
 	} catch (NoSuchAlgorithmException | KeyManagementException ex) {
 	    throw new SslHttpClientException("Error in initializing SSL capable http client!!", ex);
 	}
