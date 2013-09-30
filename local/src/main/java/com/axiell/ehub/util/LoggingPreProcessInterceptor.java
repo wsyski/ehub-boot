@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.util.strings.ToString;
 import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ResourceMethod;
@@ -32,7 +33,7 @@ public final class LoggingPreProcessInterceptor implements PreProcessInterceptor
 	stopWatch.start();
 	httpRequest.setAttribute("stopWatch", stopWatch);
 	if (LOGGER.isDebugEnabled()) {
-	    LOGGER.debug("Request:" + ToString.getLf() + ToString.fromHttpRequest(httpRequest));
+	    LOGGER.debug("Request:" + ToString.lineFeed() + ToString.httpRequestToString(httpRequest));
 	}
 	return null;
     }

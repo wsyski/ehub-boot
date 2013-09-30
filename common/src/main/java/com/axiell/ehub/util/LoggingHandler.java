@@ -1,17 +1,17 @@
 package com.axiell.ehub.util;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Set;
+import com.axiell.ehub.util.strings.ToString;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Set;
 
 /**
  * SOAP Logging Handler
@@ -23,14 +23,14 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
         if (LOGGER.isDebugEnabled()) {
             boolean isRequest = (Boolean) soapMessageContext.get(SOAPMessageContext.MESSAGE_OUTBOUND_PROPERTY);
             SOAPMessage soapMessage = soapMessageContext.getMessage();
-            LOGGER.debug((isRequest ? "SOAP request:" : "SOAP response:")+ToString.getLf() + ToString.fromSOAPMessage(soapMessage));
+            LOGGER.debug((isRequest ? "SOAP request:" : "SOAP response:")+ ToString.lineFeed() + ToString.soapMessageToString(soapMessage));
         }
         return true;
     }
 
     public boolean handleFault(final SOAPMessageContext soapMessageContext) {
         SOAPMessage soapMessage = soapMessageContext.getMessage();
-        LOGGER.error("SOAP response:"+ToString.getLf() + ToString.fromSOAPMessage(soapMessage));
+        LOGGER.error("SOAP response:"+ToString.lineFeed() + ToString.soapMessageToString(soapMessage));
         return true;
     }
 
