@@ -42,9 +42,8 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
 
     @Before
     public void setUp() throws Exception {
-	System.setProperty("ehub-server-uri", "http://localhost:" + PORT_NO);
-	ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[] { "/com/axiell/ehub/remote-client-context.xml" });
-	setUpEhubClient(springContext);
+	System.setProperty("ehub-server-uri", "http://localhost:" + PORT_NO);	
+	setUpEhubClient();
 
 	serviceLauncher = new ServiceLauncher(PORT_NO, ".", "../../local/src/main");
 	WebAppContext webAppContext = serviceLauncher.addWebContext(".", "", "../../local/src/test/resources/");
@@ -55,7 +54,14 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
 	setUpAuthInfo();
     }
 
-    protected abstract void setUpEhubClient(ApplicationContext springContext);
+    private void setUpEhubClient() {
+	@SuppressWarnings("resource")
+	ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[] { "/com/axiell/ehub/remote-client-context.xml" });
+	Object bean = springContext.getBean("ehubClient");
+	castBeanToIEhubService(bean);
+    }
+    
+    protected abstract void castBeanToIEhubService(Object bean);
     
     private void initDevelopmentData() throws Exception {
 	IContentProviderAdminController contentProviderAdminController = applicationContext.getBean(IContentProviderAdminController.class);
