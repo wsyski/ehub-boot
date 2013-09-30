@@ -46,7 +46,7 @@ public class ToStringTest {
         toString = ToString.fromMap(map2);
         assertEquals("{oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}",
                 toString);
-        Collection collection = Arrays.asList("col1", "col2", "col3");
+        Collection<String> collection = Arrays.asList("col1", "col2", "col3");
         toString = ToString.fromCollection(collection);
         assertEquals("[col1, col2, col3]", toString);
         TestBean2 testBean2 = new TestBean2();
@@ -73,8 +73,8 @@ public class ToStringTest {
     }
 
     private static class TestBean1 {
-        Map field11;
-        Collection field12;
+        Map<? , ?> field11;
+        Collection<?> field12;
         TestBean2 field13;
         Date field14;
 
