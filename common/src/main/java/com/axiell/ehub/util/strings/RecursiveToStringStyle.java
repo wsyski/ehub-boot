@@ -3,10 +3,7 @@ package com.axiell.ehub.util.strings;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import static com.axiell.ehub.util.strings.ToString.dateToString;
@@ -71,8 +68,10 @@ class RecursiveToStringStyle extends ToStringStyle {
         buffer.append(COLLECTION_START_CHAR);
         final Iterator<?> collectionIterator = collection.iterator();
         for (; ; ) {
+            Collection<Object> traversedObjects = new ArrayList<>();
+            addToTraversedObjects(collection, traversedObjects);
             Object value = collectionIterator.next();
-            appendCurrentValue(buffer, fieldName, value);
+            appendCurrentValue(buffer, fieldName, value, traversedObjects);
             if (iteratorHasNoMoreEntries(collectionIterator)) {
                 buffer.append(COLLECTION_END_CHAR);
                 break;
@@ -81,10 +80,11 @@ class RecursiveToStringStyle extends ToStringStyle {
         }
     }
 
-    private void appendCurrentValue(final StringBuffer buffer, final String fieldName, final Object value) {
-        if (value == this) {
-            buffer.append("(this Collection)");
+    private void appendCurrentValue(final StringBuffer buffer, final String fieldName, final Object value, final Collection<Object> traversedObjects) {
+        if (isTraversed(value, traversedObjects)) {
+            buffer.append("@" + value.getClass().getName());
         } else {
+            addToTraversedObjects(value, traversedObjects);
             appendInternal(buffer, fieldName, value, true);
         }
     }
@@ -130,7 +130,9 @@ class RecursiveToStringStyle extends ToStringStyle {
         buffer.append(MAP_START_CHAR);
         final Iterator<? extends Entry<?, ?>> mapIterator = map.entrySet().iterator();
         for (; ; ) {
-            appendCurrentEntry(buffer, fieldName, mapIterator);
+            Collection<Object> traversedObjects = new ArrayList<>();
+            addToTraversedObjects(map, traversedObjects);
+            appendCurrentEntry(buffer, fieldName, mapIterator, traversedObjects);
             if (iteratorHasNoMoreEntries(mapIterator)) {
                 buffer.append(MAP_END_CHAR);
                 break;
@@ -139,13 +141,14 @@ class RecursiveToStringStyle extends ToStringStyle {
         }
     }
 
-    private void appendCurrentEntry(final StringBuffer buffer, final String fieldName, final Iterator<? extends Entry<?, ?>> mapIterator) {
+    private void appendCurrentEntry(final StringBuffer buffer, final String fieldName, final Iterator<? extends Entry<?, ?>> mapIterator,
+                                    Collection<Object> traversedObjects) {
         Entry<?, ?> currentMapEntry = mapIterator.next();
         Object currentMapKey = currentMapEntry.getKey();
         Object CurrentMapValue = currentMapEntry.getValue();
-        appendValue(buffer, fieldName, currentMapKey);
+        appendValue(buffer, fieldName, currentMapKey, traversedObjects);
         buffer.append(EQUALS_CHAR);
-        appendValue(buffer, fieldName, CurrentMapValue);
+        appendValue(buffer, fieldName, CurrentMapValue, traversedObjects);
     }
 
     private void appendEntrySeparator(final StringBuffer buffer) {
@@ -156,14 +159,24 @@ class RecursiveToStringStyle extends ToStringStyle {
         return !mapIterator.hasNext();
     }
 
-    private void appendValue(final StringBuffer buffer, final String fieldName, final Object currentMapKey) {
-        if (currentMapKey == this) {
-            buffer.append("(this Map)");
+    private void appendValue(final StringBuffer buffer, final String fieldName, final Object currentMapKey, final Collection<Object> traversedObjects) {
+        if (isTraversed(currentMapKey, traversedObjects)) {
+            buffer.append("@" + currentMapKey.getClass().getName());
         } else {
+            addToTraversedObjects(currentMapKey, traversedObjects);
             appendInternal(buffer, fieldName, currentMapKey, true);
         }
     }
 
+    private boolean isTraversed(final Object value, final Collection<Object> traversedObjects) {
+        return traversedObjects.contains(value);
+    }
+
+    private void addToTraversedObjects(final Object value, final Collection<Object> traversedObjects) {
+        if (value instanceof Collection || value instanceof Map) {
+            traversedObjects.add(value);
+        }
+    }
 
     public String toString(final Map<?, ?> map) {
         StringBuffer buffer = new StringBuffer();
