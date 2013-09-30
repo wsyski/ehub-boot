@@ -6,11 +6,13 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.util.LoggingHandler;
 import com.axiell.ehub.util.Validate;
+
 import org.springframework.stereotype.Component;
 
 import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,7 +47,8 @@ public class PalmaFacadeFactory implements IPalmaFacadeFactory {
     private void addLoggingHandler(final Loans loanPort) {
         BindingProvider bp = (BindingProvider) loanPort;
         Binding binding = bp.getBinding();
-        List<Handler> handlerList = binding.getHandlerChain();
+        @SuppressWarnings("rawtypes")
+	List<Handler> handlerList = binding.getHandlerChain();
         if (handlerList == null) {
             handlerList = new ArrayList<>();
         }

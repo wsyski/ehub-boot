@@ -28,7 +28,7 @@ import org.apache.commons.lang3.Validate;
 @XmlRootElement(name = "error")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(ErrorCauseArgument.class)
-public final class EhubError {
+public class EhubError {
     private ErrorCause cause;
     private String message;
     private List<ErrorCauseArgument> arguments = new ArrayList<>();

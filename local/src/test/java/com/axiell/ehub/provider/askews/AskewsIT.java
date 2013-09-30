@@ -4,6 +4,7 @@ import static org.mockito.BDDMockito.given;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.askews.api.ArrayOfLoanDetails;
@@ -32,7 +33,11 @@ public class AskewsIT extends AbstractContentProviderIT {
         underTest = new AskewsFacade();
     }
 
+    /*
+     * Test is temporarily ignored. 
+     */
     @Test
+    @Ignore
     public void createLoan() {
         givenAskewsProperties();
         whenGetUserId();

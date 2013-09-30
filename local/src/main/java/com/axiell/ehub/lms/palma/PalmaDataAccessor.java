@@ -28,7 +28,6 @@ import java.util.Date;
 @Component
 final class PalmaDataAccessor implements IPalmaDataAccessor {
     private static final String STATUS_OK = "ok";
-    private static final String STATUS_ERROR = "error";
     private static final String MESSAGE_BLOCKED_BORR_CARD = "blockedBorrCard";
     private static final String MESSAGE_BORR_CARD_NOT_FOUND = "borrCardNotFound";
     private static final String MESSAGE_INVALID_ACCOUNT_CARD = "invalidAccountCard";
@@ -157,7 +156,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         CheckOutRequest checkOutRequest = checkoutrequestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
-        checkOutRequest.setExpirationDate(XjcSupport.date2XMLGregorianCalendar(expirationDate));
+        checkOutRequest.setExpirationDate(XjcSupport.toXmlGregorianCalendar(expirationDate));
         checkOutRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
         checkOutRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutRequest.setUser(libraryCard);

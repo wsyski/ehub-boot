@@ -5,26 +5,26 @@ import java.text.MessageFormat;
 import com.axiell.ehub.InternalServerErrorException;
 
 final class ElibULoanId {
-    private static final String ELIBU_LOAN_ID_PATTERN = "{0}|{1}|{2}";
+    private static final String ELIBU_LOAN_ID_PATTERN = "{0}|{1}|{2}|{3}";
     private static final String ELIBU_LOAN_ID_SPLIT_PATTERN = "\\|";
-    private static final int ELIBU_LOAN_ID_PARTS = 3;
-    private static final int ELIBU_RECORD_ID_INDEX = 1;
+    private static final int ELIBU_LOAN_ID_PARTS = 4;
+    private static final int ELIBU_RECORD_ID_INDEX = 2;
 
     private final String recordId;
     private final String value;
 
     private ElibULoanId(String contentProviderLoanId) {
 	recordId = findRecordId(contentProviderLoanId);
-	value = contentProviderLoanId;	
+	value = contentProviderLoanId;
     }
 
-    private ElibULoanId(Integer licenseId, String recordId, String formatId) {
+    private ElibULoanId(String subscriptionId, Integer licenseId, String recordId, String formatId) {
 	this.recordId = recordId;
-	value = MessageFormat.format(ELIBU_LOAN_ID_PATTERN, licenseId, recordId, formatId);
+	value = MessageFormat.format(ELIBU_LOAN_ID_PATTERN, subscriptionId, licenseId, recordId, formatId);
     }
 
-    static ElibULoanId create(Integer licenseId, String recordId, String formatId) {
-	return new ElibULoanId(licenseId, recordId, formatId);
+    static ElibULoanId create(String subscriptionId, Integer licenseId, String recordId, String formatId) {
+	return new ElibULoanId(subscriptionId, licenseId, recordId, formatId);
     }
 
     static ElibULoanId fromContentProviderLoanId(String contentProviderLoanId) {
@@ -32,9 +32,9 @@ final class ElibULoanId {
     }
 
     private String findRecordId(String contentProviderLoanId) {
-	validateProvidedContentProviderLoanId(contentProviderLoanId);	
+	validateProvidedContentProviderLoanId(contentProviderLoanId);
 	final String[] parts = contentProviderLoanId.split(ELIBU_LOAN_ID_SPLIT_PATTERN);
-	
+
 	if (expectedNumberOfParts(parts))
 	    return parts[ELIBU_RECORD_ID_INDEX];
 

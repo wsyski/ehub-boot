@@ -15,11 +15,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.jboss.resteasy.spi.InternalServerErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.axiell.ehub.EhubError;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
@@ -28,8 +25,7 @@ import com.axiell.ehub.provider.record.format.Formats;
 /**
  * Provides the possibility to marshal and unmarshal XML documents.
  */
-public final class XjcSupport {
-    private static final Logger LOGGER = LoggerFactory.getLogger(XjcSupport.class);
+public class XjcSupport {
 
     /**
      * Private constructor that prevents direct instantiation.
@@ -101,26 +97,31 @@ public final class XjcSupport {
         return type.cast(obj);
     }
 
-    public static XMLGregorianCalendar date2XMLGregorianCalendar(final Date date) {
-        if (date == null) {
+    public static XMLGregorianCalendar toXmlGregorianCalendar(final Date date) {
+        if (date == null)
             return null;
-        }
-        GregorianCalendar c = new GregorianCalendar();
-        c.setTime(date);
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-        try {
-            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-        } catch (DatatypeConfigurationException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return xmlGregorianCalendar;
+        
+        final GregorianCalendar gregorianCalendar = newGregorianCalendar(date);
+        return newXmlGregorianCalendar(gregorianCalendar);
     }
 
-    public static Date xmlGregorianCalendar2date(final XMLGregorianCalendar xmlGregorianCalendar) {
-        if (xmlGregorianCalendar == null) {
-            return null;
+    private static GregorianCalendar newGregorianCalendar(final Date date) {
+	final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+	return calendar;
+    }
+
+    private static XMLGregorianCalendar newXmlGregorianCalendar(GregorianCalendar gregorianCalendar) {
+	final DatatypeFactory factory = newDatatypeFactory();
+        return factory.newXMLGregorianCalendar(gregorianCalendar);
+    }
+
+    private static DatatypeFactory newDatatypeFactory() {
+        try {
+            return DatatypeFactory.newInstance();
+        } catch (DatatypeConfigurationException ex) {
+            throw new InternalServerErrorException(ex.getMessage(), ex);
         }
-        return xmlGregorianCalendar.toGregorianCalendar().getTime();
     }
     
     /**
@@ -132,7 +133,6 @@ public final class XjcSupport {
      * </p>
      *
      * @return a {@link javax.xml.bind.JAXBContext}
-     *         created
      */
     private static JAXBContext getJaxbContext() {
         return JaxbContextHolder.JAXB_CONTEXT;
@@ -157,7 +157,6 @@ public final class XjcSupport {
          * Creates a new instance of {@link javax.xml.bind.JAXBContext}.
          *
          * @return a new instance of {@link javax.xml.bind.JAXBContext}
-         *         be created
          */
         private static JAXBContext createContext() {
             try {

@@ -4,7 +4,6 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -12,9 +11,6 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.jboss.resteasy.spi.interception.ClientExecutionInterceptor;
-
-import java.io.IOException;
 
 
 class ExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {

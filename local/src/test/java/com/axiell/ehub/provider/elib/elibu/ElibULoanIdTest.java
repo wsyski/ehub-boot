@@ -8,10 +8,11 @@ import org.junit.Test;
 import com.axiell.ehub.InternalServerErrorException;
 
 public class ElibULoanIdTest {
+    private String subscriptionId = "subscriptionId";
     private Integer licenseId = 1;
     private String recordId = "recordId";
     private String formatId = "formatID";
-    private String validLoanId = licenseId + "|" + recordId + "|" + formatId;
+    private String validLoanId = subscriptionId + "|" + licenseId + "|" + recordId + "|" + formatId;
     private String invalidLoanId = licenseId + "|" + recordId;
     private ElibULoanId actualLoanId;
 
@@ -22,7 +23,7 @@ public class ElibULoanIdTest {
     }
 
     private void whenCreate() {
-	actualLoanId = ElibULoanId.create(licenseId, recordId, formatId);
+	actualLoanId = ElibULoanId.create(subscriptionId, licenseId, recordId, formatId);
     }
     
     private void thenActualLoanIdEqualsExpectedLoanId() {

@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.provider.elib.elibu;
 
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
+
 import java.util.Date;
 import java.util.List;
 
@@ -91,7 +93,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {
+	    final PendingLoan pendingLoan) {	
 	final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
 	final String recordId = pendingLoan.getContentProviderRecordId();
 	final String formatId = pendingLoan.getContentProviderFormatId();
@@ -102,8 +104,9 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
 	final IContent content = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
-	final String elibuLoanId = ElibULoanId.create(licenseId, recordId, formatId).toString();
-	// TODO: expiration date
+	final String subscriptionId = contentProviderConsumer.getProperty(SUBSCRIPTION_ID);
+	final String elibuLoanId = ElibULoanId.create(subscriptionId, licenseId, recordId, formatId).toString();
+	// TODO:
 	final Date expirationDate = new Date();
 	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(elibuLoanId, contentProvider, expirationDate, formatDecoration);
 	return new ContentProviderLoan(metadata, content);

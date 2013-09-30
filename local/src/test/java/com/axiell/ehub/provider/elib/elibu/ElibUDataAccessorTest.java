@@ -32,11 +32,12 @@ import com.axiell.ehub.provider.record.format.FormatTextBundle;
  * 
  */
 public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+    private static final String SUBSCRIPTION_ID = "1";
     private static final String RECORD_ID = "1";    
     private static final String FORMAT_ID = "1";
     private static final Integer LICENSE_ID = 1;
     private static final String CONTENT_URL = "url";
-    private static final String ELIBU_LOAN_ID = ElibULoanId.create(LICENSE_ID, RECORD_ID, FORMAT_ID).toString();
+    private static final String ELIBU_LOAN_ID = ElibULoanId.create(SUBSCRIPTION_ID, LICENSE_ID, RECORD_ID, FORMAT_ID).toString();
     
     private ElibUDataAccessor underTest;    
     @Mock

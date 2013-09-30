@@ -76,6 +76,11 @@ public class ExpirationDateFactoryTest {
 	DateTime today = DateTime.now(DateTimeZone.UTC).withHourOfDay(12);
 	DateTime actualExpirationDateAsDateTime = new DateTime(DateTimeZone.UTC).withMillis(actualDate.getTime());
 	Days actualDaysBetween = Days.daysBetween(today, actualExpirationDateAsDateTime);
-	Assert.assertEquals(LOAN_EXPIRATION_DAYS, actualDaysBetween.getDays());
+	assertActualDaysBetweenEquals30Or29(actualDaysBetween);
+    }
+    
+    private void assertActualDaysBetweenEquals30Or29(Days actualDaysBetween) {
+	int days = actualDaysBetween.getDays();
+	Assert.assertTrue(days == LOAN_EXPIRATION_DAYS || days == LOAN_EXPIRATION_DAYS - 1);
     }
 }
