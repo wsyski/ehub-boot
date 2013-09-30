@@ -1,17 +1,14 @@
 package com.axiell.ehub;
 
-import javax.annotation.Resource;
-
 import com.axiell.ehub.loan.PendingLoan;
 
 public class RemoteLoanIT_06 extends AbstractRemoteLoanIT {
-    @Resource(name = "ehubClient")
     private IEhubService ehubService;
-
     private PendingLoan pendingLoan;
 
-    protected void setUpEhubClient(org.springframework.context.ApplicationContext springContext) {
-	ehubService = (IEhubService) springContext.getBean("ehubClient");
+    @Override
+    protected void castBeanToIEhubService(Object bean) {
+	ehubService = (IEhubService) bean;
     }
 
     @Override

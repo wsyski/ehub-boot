@@ -1,16 +1,11 @@
 package com.axiell.ehub;
 
-import javax.annotation.Resource;
-
-import org.springframework.context.ApplicationContext;
-
 public class RemoteFormatIT_06 extends AbstractRemoteFormatIT {
-    @Resource(name = "ehubClient")
     private IEhubService ehubService;
 
     @Override
-    protected void setUpEhubClient(ApplicationContext springContext) {
-	ehubService = (IEhubService) springContext.getBean("ehubClient");
+    protected void castBeanToIEhubService(Object bean) {
+	ehubService = (IEhubService) bean;
     }
 
     @Override
