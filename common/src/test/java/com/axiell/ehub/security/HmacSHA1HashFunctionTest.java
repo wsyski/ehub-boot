@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Axiell Group AB.
  */
-package com.axiell.ehub.util;
+package com.axiell.ehub.security;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
 import org.junit.Test;
+
+import com.axiell.ehub.security.HmacSHA1HashFunction;
 
 /**
  * 

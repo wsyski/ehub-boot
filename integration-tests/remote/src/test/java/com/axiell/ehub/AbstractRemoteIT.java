@@ -5,6 +5,7 @@ package com.axiell.ehub;
 
 import javax.sql.DataSource;
 
+import org.eclipse.jetty.server.handler.ContextHandler.Context;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.After;
 import org.junit.Before;
@@ -42,16 +43,30 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
 
     @Before
     public void setUp() throws Exception {
-	System.setProperty("ehub-server-uri", "http://localhost:" + PORT_NO);	
+	setEhubServerUri();	
 	setUpEhubClient();
+	
+	WebAppContext webAppContext = startService();
+	initApplicationContext(webAppContext);
 
+	initDevelopmentData();
+	initAuthInfo();
+    }
+
+    private WebAppContext startService() throws Exception {
 	serviceLauncher = new ServiceLauncher(PORT_NO, ".", "../../local/src/main");
 	WebAppContext webAppContext = serviceLauncher.addWebContext(".", "", "../../local/src/test/resources/");
 	serviceLauncher.start();
-	applicationContext = (XmlWebApplicationContext) WebApplicationContextUtils.getWebApplicationContext(webAppContext.getServletContext());
+	return webAppContext;
+    }
 
-	initDevelopmentData();
-	setUpAuthInfo();
+    private void initApplicationContext(WebAppContext webAppContext) {
+	Context servletContext = webAppContext.getServletContext();
+	applicationContext = (XmlWebApplicationContext) WebApplicationContextUtils.getWebApplicationContext(servletContext);
+    }
+
+    private void setEhubServerUri() {
+	System.setProperty("ehub-server-uri", "http://localhost:" + PORT_NO);
     }
 
     private void setUpEhubClient() {
@@ -72,7 +87,7 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
 	developmentData.init();
     }
 
-    private void setUpAuthInfo() throws EhubException {
+    private void initAuthInfo() throws EhubException {
 	authInfo = new AuthInfo.Builder(developmentData.getEhubConsumerId(), DevelopmentData.EHUB_CONSUMER_SECRET_KEY)
 		.libraryCard(DevelopmentData.ELIB_LIBRARY_CARD).pin(DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
 	LOGGER.debug("Authorization header value = " + authInfo.toString());

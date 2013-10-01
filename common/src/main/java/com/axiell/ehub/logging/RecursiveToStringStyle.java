@@ -1,4 +1,4 @@
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.*;
 import java.util.Map.Entry;
 
-import static com.axiell.ehub.util.strings.ToString.dateToString;
+import static com.axiell.ehub.logging.ToString.dateToString;
 import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 
 class RecursiveToStringStyle extends ToStringStyle {

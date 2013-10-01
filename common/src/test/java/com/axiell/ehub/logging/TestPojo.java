@@ -1,4 +1,4 @@
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
 public class TestPojo {
     private final String aProperty;
