@@ -81,8 +81,8 @@ class RecursiveToStringStyle extends ToStringStyle {
     }
 
     private void appendCurrentValue(final StringBuffer buffer, final String fieldName, final Object value, final Collection<Object> traversedObjects) {
-        if (isTraversed(value, traversedObjects)) {
-            buffer.append(toStringTraversedObject(value));
+        if (isObjectTraversed(value, traversedObjects)) {
+            buffer.append(traversedObjectToString(value));
         } else {
             addToTraversedObjects(value, traversedObjects);
             appendInternal(buffer, fieldName, value, true);
@@ -160,16 +160,16 @@ class RecursiveToStringStyle extends ToStringStyle {
     }
 
     private void appendValue(final StringBuffer buffer, final String fieldName, final Object currentMapKey, final Collection<Object> traversedObjects) {
-        if (isTraversed(currentMapKey, traversedObjects)) {
-            buffer.append(toStringTraversedObject(currentMapKey));
+        if (isObjectTraversed(currentMapKey, traversedObjects)) {
+            buffer.append(traversedObjectToString(currentMapKey));
         } else {
             addToTraversedObjects(currentMapKey, traversedObjects);
             appendInternal(buffer, fieldName, currentMapKey, true);
         }
     }
 
-    private boolean isTraversed(final Object value, final Collection<Object> traversedObjects) {
-        return traversedObjects.contains(value);
+    private boolean isObjectTraversed(final Object objectToCheckForTraversation, final Collection<Object> alreadyTraversedObjects) {
+        return alreadyTraversedObjects.contains(objectToCheckForTraversation);
     }
 
     private void addToTraversedObjects(final Object value, final Collection<Object> traversedObjects) {
@@ -178,8 +178,8 @@ class RecursiveToStringStyle extends ToStringStyle {
         }
     }
 
-    private String toStringTraversedObject(Object value) {
-        return new StringBuilder().append(CLASS_PREFIX_CHAR).append(value.getClass().getName()).toString();
+    private String traversedObjectToString(final Object value) {
+        return CLASS_PREFIX_CHAR + value.getClass().getName();
     }
 
     public String toString(final Map<?, ?> map) {

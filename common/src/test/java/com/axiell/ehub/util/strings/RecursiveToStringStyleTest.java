@@ -2,7 +2,6 @@ package com.axiell.ehub.util.strings;
 
 import com.google.common.collect.Lists;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -21,7 +20,6 @@ public class RecursiveToStringStyleTest {
     private Map mapWithValues;
     private Collection collectionWithValues;
     private StringBuffer stringBuffer;
-    private String result;
 
     @Before
     public void setUp() {
@@ -43,7 +41,6 @@ public class RecursiveToStringStyleTest {
         thenResultHasDifferentFormats();
     }
 
-    @Ignore("Recursiveness (itself inside the map) not handled correctly")
     @Test
     public void mapContainingItselfToString() {
         givenMapContainsItself();
@@ -72,7 +69,6 @@ public class RecursiveToStringStyleTest {
     }
 
     @SuppressWarnings("unchecked")
-    @Ignore("Does not handle recursiveness with itself as it should")
     @Test
     public void collectionWithItselfToString() {
         givenCollectionContainsItself();
@@ -81,17 +77,19 @@ public class RecursiveToStringStyleTest {
     }
 
     private void thenRecursivenessIsHandledCorrectly() {
-        assertEquals("{This map}", stringBuffer.toString());
+        assertEquals("{key=@java.util.HashMap}", stringBuffer.toString());
     }
 
+    @SuppressWarnings("unchecked")
     private Object givenMapContainsItself() {
         return mapWithValues.put("key", mapWithValues);
     }
 
     private void thenCollectionHandledRecursivenessCorrectly() {
-        assertEquals("[(this Collection)]", stringBuffer.toString());
+        assertEquals("[@java.util.ArrayList]", stringBuffer.toString());
     }
 
+    @SuppressWarnings("unchecked")
     private void givenCollectionContainsItself() {
         collectionWithValues = Lists.newArrayList();
         collectionWithValues.add(collectionWithValues);
@@ -136,6 +134,7 @@ public class RecursiveToStringStyleTest {
         underTest.appendDetail(stringBuffer, null, mapWithValues);
     }
 
+    @SuppressWarnings("unchecked")
     private void givenThatMapHasOnlyStringValues() {
         mapWithValues = new HashMap();
         mapWithValues.put("key1", "value1");
@@ -143,6 +142,7 @@ public class RecursiveToStringStyleTest {
         mapWithValues.put("key3", "value3");
     }
 
+    @SuppressWarnings("unchecked")
     private void givenThatMapHasDifferentObjectValues() {
         mapWithValues = new HashMap();
         mapWithValues.put("key1", "value1");
