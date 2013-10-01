@@ -1,6 +1,8 @@
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
+import com.axiell.ehub.logging.RecursiveToStringStyle;
 import com.google.common.collect.Lists;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

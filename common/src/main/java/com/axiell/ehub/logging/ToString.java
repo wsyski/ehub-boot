@@ -1,4 +1,4 @@
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
 import com.axiell.ehub.util.EhubUrlCodec;
 import org.apache.commons.io.IOUtils;

@@ -1,8 +1,10 @@
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.axiell.ehub.logging.StringBufferOutputStream;
 
 import java.io.IOException;
 

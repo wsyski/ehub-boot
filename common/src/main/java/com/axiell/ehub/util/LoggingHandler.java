@@ -1,14 +1,16 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.util.strings.ToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.axiell.ehub.logging.ToString;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;

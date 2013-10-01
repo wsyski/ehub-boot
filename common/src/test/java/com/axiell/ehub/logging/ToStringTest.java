@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Axiell Group AB.
  */
-package com.axiell.ehub.util.strings;
+package com.axiell.ehub.logging;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -15,11 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.axiell.ehub.logging.ToString;
+
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Arrays;

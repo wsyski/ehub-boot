@@ -1,6 +1,5 @@
-package com.axiell.ehub.util;
+package com.axiell.ehub.logging;
 
-import com.axiell.ehub.util.strings.ToString;
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.core.ClientErrorInterceptor;

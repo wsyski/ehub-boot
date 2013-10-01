@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Axiell Group AB.
  */
-package com.axiell.ehub.util;
+package com.axiell.ehub.security;
 
 import com.axiell.ehub.InternalServerErrorException;
 
