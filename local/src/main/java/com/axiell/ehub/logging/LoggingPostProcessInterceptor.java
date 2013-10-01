@@ -1,9 +1,5 @@
 package com.axiell.ehub.logging;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.ext.Provider;
-
 import org.apache.commons.lang3.time.StopWatch;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ServerResponse;
@@ -11,7 +7,9 @@ import org.jboss.resteasy.spi.interception.PostProcessInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.axiell.ehub.logging.ToString;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.ext.Provider;
 
 /**
  * Logging post process interceptor
@@ -22,7 +20,7 @@ public final class LoggingPostProcessInterceptor implements PostProcessIntercept
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingPostProcessInterceptor.class);
 
     @Context
-    HttpServletRequest servletRequest;
+    private HttpServletRequest servletRequest;
 
     @Override
     public void postProcess(final ServerResponse serverResponse) {
