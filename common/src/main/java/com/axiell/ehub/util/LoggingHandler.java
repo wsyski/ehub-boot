@@ -10,8 +10,8 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.Set;
 
-import static com.axiell.ehub.util.strings.ToString.lineFeed;
-import static com.axiell.ehub.util.strings.ToString.soapMessageToString;
+import static com.axiell.ehub.logging.ToString.lineFeed;
+import static com.axiell.ehub.logging.ToString.soapMessageToString;
 
 /**
  * SOAP Logging Handler

@@ -1,6 +1,6 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.util.strings.ToString;
+import com.axiell.ehub.logging.ToString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
