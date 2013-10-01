@@ -145,10 +145,10 @@ class RecursiveToStringStyle extends ToStringStyle {
                                     Collection<Object> traversedObjects) {
         Entry<?, ?> currentMapEntry = mapIterator.next();
         Object currentMapKey = currentMapEntry.getKey();
-        Object CurrentMapValue = currentMapEntry.getValue();
+        Object currentMapValue = currentMapEntry.getValue();
         appendValue(buffer, fieldName, currentMapKey, traversedObjects);
         buffer.append(EQUALS_CHAR);
-        appendValue(buffer, fieldName, CurrentMapValue, traversedObjects);
+        appendValue(buffer, fieldName, currentMapValue, traversedObjects);
     }
 
     private void appendEntrySeparator(final StringBuffer buffer) {

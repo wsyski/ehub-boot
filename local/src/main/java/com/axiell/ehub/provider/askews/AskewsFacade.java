@@ -32,10 +32,9 @@ public class AskewsFacade implements IAskewsFacade {
     @Override
     public ArrayOfLoanDetails getLoanDetails(Integer userId,
             Integer authId,
-            Integer loanType,
             Integer loanId,
             String tokenKey) {
-        return askewsService.getLoanDetails(userId, authId, loanType, loanId, tokenKey);
+        return askewsService.getLoanDetails(userId, authId, null, loanId, tokenKey);
     }
 
     @Override

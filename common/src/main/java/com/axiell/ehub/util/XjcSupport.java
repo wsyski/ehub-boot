@@ -25,7 +25,7 @@ import com.axiell.ehub.provider.record.format.Formats;
 /**
  * Provides the possibility to marshal and unmarshal XML documents.
  */
-public class XjcSupport {
+public final class XjcSupport {
 
     /**
      * Private constructor that prevents direct instantiation.

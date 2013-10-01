@@ -48,9 +48,9 @@ public class AskewsIT extends AbstractContentProviderIT {
     }
 
     private void givenAskewsProperties() {
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_AUTHID)).willReturn(
+        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID)).willReturn(
                 AUTH_ID.toString());
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_TOKENKEY)).willReturn(
+        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY)).willReturn(
                 TOKEN_KEY.toString());
         given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_BARCODE)).willReturn(
                 BARCODE.toString());
@@ -75,7 +75,7 @@ public class AskewsIT extends AbstractContentProviderIT {
     }
     
     private void whenGetLoanDetails() {
-        arrayOfLoanDetails = underTest.getLoanDetails(userLookupResult.getUserid(), AUTH_ID, null, loanId, TOKEN_KEY);
+        arrayOfLoanDetails = underTest.getLoanDetails(userLookupResult.getUserid(), AUTH_ID, loanId, TOKEN_KEY);
     }
     
     private void thenLoanDetailsResultContainsExpectedElements() {

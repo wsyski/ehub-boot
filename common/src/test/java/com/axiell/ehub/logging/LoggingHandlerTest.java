@@ -1,6 +1,7 @@
-package com.axiell.ehub.util;
+package com.axiell.ehub.logging;
 
 import com.axiell.ehub.logging.ToString;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
+
 import java.util.Set;
 
 import static junit.framework.Assert.assertNull;

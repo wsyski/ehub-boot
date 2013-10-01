@@ -3,14 +3,23 @@
  */
 package com.axiell.ehub.loan;
 
-import org.apache.commons.lang3.Validate;
+import java.util.Date;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.ForeignKey;
 
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-
-import javax.persistence.*;
-import java.util.Date;
+import com.axiell.ehub.util.Validate;
 
 /**
  * Represents the metadata of a loan at a Content Provider.
@@ -38,14 +47,20 @@ public class ContentProviderLoanMetadata {
      * @param formatDecoration a decoration of the format of the loan at the {@link ContentProvider}
      */
     public ContentProviderLoanMetadata(String id, ContentProvider contentProvider, Date expirationDate, FormatDecoration formatDecoration) {
-        Validate.notNull(id);
-        Validate.notNull(contentProvider);
-        Validate.notNull(expirationDate);
-        Validate.notNull(formatDecoration);
+        Validate.isNotNull(id, "ID can't be null");
+        Validate.isNotNull(contentProvider, "ContentProvider can't be null");
+        Validate.isNotNull(expirationDate, "Expiration date can't be null");
+        Validate.isNotNull(formatDecoration, "Format decoration can't be null");
         this.id = id;
         this.contentProvider = contentProvider;
-        this.expirationDate = expirationDate;
+        this.expirationDate = initExpirationDate(expirationDate);
         this.formatDecoration = formatDecoration;
+    }
+
+    @Transient
+    private Date initExpirationDate(Date expirationDate) {
+	final long time = expirationDate.getTime(); 
+	return new Date(time);
     }
 
     /**
