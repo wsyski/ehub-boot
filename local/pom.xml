@@ -379,6 +379,24 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-test-sources/palma_265</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -522,8 +540,7 @@
                     <extension>true</extension>
                     <verbose>true</verbose>
                     <packageName>com.askews.api</packageName>
-                    <sourceDestDir>${project.build.directory}/generated-sources/askews
-                    </sourceDestDir>
+                    <sourceDestDir>${project.build.directory}/generated-sources/askews</sourceDestDir>
                     <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
                     <wsdlFiles>
                         <wsdlFile>askews.wsdl</wsdlFile>
