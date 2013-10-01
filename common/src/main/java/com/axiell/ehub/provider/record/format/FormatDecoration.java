@@ -55,6 +55,8 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
         this.contentProvider = contentProvider;
         this.contentProviderFormatId = contentProviderFormatId;
         this.contentDisposition = contentDisposition;
+        this.playerWidth = playerWidth;
+        this.playerHeight = playerHeight;
     }
 
     /**
