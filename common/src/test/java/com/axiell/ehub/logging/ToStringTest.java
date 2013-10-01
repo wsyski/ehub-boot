@@ -3,42 +3,70 @@
  */
 package com.axiell.ehub.logging;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 import org.jboss.resteasy.client.core.BaseClientResponse.BaseClientResponseStreamFactory;
+import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.specimpl.HttpHeadersImpl;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito.BDDMyOngoingStubbing;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.axiell.ehub.logging.ToString;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-
+import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPMessage;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ToStringTest {
+
+    @Mock
+    private ServerResponse serverResponse;
+
+    @Mock
+    private MultivaluedMap<String, Object> metaData;
+
+    @Mock
+    private Set<Entry<String, List<Object>>> metaDataEntries;
+
+    @Mock
+    private Iterator<Entry<String, List<Object>>> metaDataEntriesIterator;
+
+    @Mock
+    private SOAPMessage soapMessage;
+
+    private String actualResult;
 
     @Test
     public void testToString() throws UnsupportedEncodingException {
@@ -81,7 +109,7 @@ public class ToStringTest {
     }
 
     private static class TestBean1 {
-        Map<? , ?> field11;
+        Map<?, ?> field11;
         Collection<?> field12;
         TestBean2 field13;
         Date field14;
@@ -201,6 +229,53 @@ public class ToStringTest {
 
     @Test
     public void serverResponseToString() {
+        givenServerResponseHasAResponseStatus();
+        givenServerResponseHasNonEmptyMetadata();
+        givenServerResponseHasAnEntity();
+        whenServerResponseIsTransformedToString();
+        thenResultingStringHasAppropriateData();
+    }
 
+    @Test
+    public void soapMessageToString() throws IOException, SOAPException {
+        whenSoapMessageIsProcessed();
+        thenSoapMessageIsWrittenToOutputStream();
+    }
+
+    private void thenSoapMessageIsWrittenToOutputStream() throws SOAPException, IOException {
+        verify(soapMessage).writeTo(any(StringBufferOutputStream.class));
+    }
+
+    private String whenSoapMessageIsProcessed() {
+        return ToString.soapMessageToString(soapMessage);
+    }
+
+    private void thenResultingStringHasAppropriateData() {
+        assertEquals("Response-Code: 200\nMetadata: {first=[second, third], fourth=[fifth]}\nEntity: [aProperty=one, \n  anotherProperty=two]", actualResult);
+    }
+
+    private void whenServerResponseIsTransformedToString() {
+        actualResult = ToString.serverResponseToString(serverResponse);
+    }
+
+    private void givenServerResponseHasAnEntity() {
+        given(serverResponse.getEntity()).willReturn(new TestPojo("one", "two"));
+    }
+
+    private void givenServerResponseHasNonEmptyMetadata() {
+        given(serverResponse.getMetadata()).willReturn(metaData);
+        given(metaData.isEmpty()).willReturn(false);
+        given(metaData.entrySet()).willReturn(metaDataEntries);
+        given(metaDataEntries.iterator()).willReturn(metaDataEntriesIterator);
+        given(metaDataEntriesIterator.hasNext())
+                .willReturn(true)
+                .willReturn(false);
+        given(metaDataEntriesIterator.next())
+                .willReturn(new SimpleEntry<String, List<Object>>("first", Lists.<Object>newArrayList("second", "third")))
+                .willReturn(new SimpleEntry<String, List<Object>>("fourth", Lists.<Object>newArrayList("fifth")));
+    }
+
+    private BDDMyOngoingStubbing<Integer> givenServerResponseHasAResponseStatus() {
+        return given(serverResponse.getStatus()).willReturn(200);
     }
 }
