@@ -14,6 +14,7 @@ public final class ElibUtils {
     private static final int ISBN10_MAX_LENGTH = 9;
     private static final int ISBN10_START_POSITION = 0;
     private static final int ISBN10_CHECKSUM_CONSTANT = 11;
+    private static final int INVALID_ISBN10__DIGIT = -1;
 
     /**
      * Private constructor that prevents direct instantiation.
@@ -64,24 +65,37 @@ public final class ElibUtils {
     }
 
     private static String calculateIsbn10FromIsbn13(final String isbn13) throws IsbnConversionException {
-        String isbn10WithoutCheckDigits;
-        int isbn10DigitIterator, isbn10ChecksumDigest, currentIsbn10Digit;
-        isbn10WithoutCheckDigits = getIsbn10FromIsbn13WithoutCheckDigits(isbn13);
-        isbn10ChecksumDigest = 0;
-        for (isbn10DigitIterator = ISBN10_START_POSITION; isbn10DigitIterator < ISBN10_MAX_LENGTH; isbn10DigitIterator++) {
-            currentIsbn10Digit = getCurrentIsbn10Digit(isbn10WithoutCheckDigits, isbn10DigitIterator);
-            if (currentIsbn10Digit == -1) {
-                throw new IsbnConversionException();
-            } else {
-                isbn10ChecksumDigest = addDigitToisbn10ChecksumDigest(isbn10DigitIterator, isbn10ChecksumDigest, currentIsbn10Digit);
-            }
-        }
-        return doCalculateIsbn10WithCheckDigit(isbn10WithoutCheckDigits, isbn10ChecksumDigest);
+        String isbn10WithoutCheckDigit = getIsbn10FromIsbn13WithoutCheckDigit(isbn13);
+        int isbn10ChecksumDigest = calculateIsbn10ChecksumDigest(isbn10WithoutCheckDigit);
+        return doCalculateIsbn10WithCheckDigit(isbn10WithoutCheckDigit, isbn10ChecksumDigest);
     }
 
-    private static String doCalculateIsbn10WithCheckDigit(final String isbn10WithoutCheckDigits, int isbn10ChecksumDigest) {
-        isbn10ChecksumDigest = ISBN10_CHECKSUM_CONSTANT - (isbn10ChecksumDigest % ISBN10_CHECKSUM_CONSTANT);
-        return isbn10WithoutCheckDigits + CHECK_DIGITS.substring(isbn10ChecksumDigest, isbn10ChecksumDigest + 1);
+    private static int calculateIsbn10ChecksumDigest(final String isbn10WithoutCheckDigits) throws IsbnConversionException {
+        int currentIsbn10Digit;
+        int isbn10ChecksumDigest = 0;
+        for (int isbn10DigitIterator = ISBN10_START_POSITION; isbn10DigitIterator < ISBN10_MAX_LENGTH; isbn10DigitIterator++) {
+            currentIsbn10Digit = getCurrentIsbn10Digit(isbn10WithoutCheckDigits, isbn10DigitIterator);
+            isbn10ChecksumDigest = handleIsbn10DigitAndAppendToDigest(currentIsbn10Digit, isbn10ChecksumDigest, isbn10DigitIterator);
+        }
+        return isbn10ChecksumDigest;
+    }
+
+    private static int handleIsbn10DigitAndAppendToDigest(final int currentIsbn10Digit, final int isbn10ChecksumDigest, final int isbn10DigitIterator) throws
+            IsbnConversionException {
+        if (isNotValidIsbn10Digit(currentIsbn10Digit)) {
+            throw new IsbnConversionException();
+        } else {
+            return addDigitToisbn10ChecksumDigest(isbn10DigitIterator, isbn10ChecksumDigest, currentIsbn10Digit);
+        }
+    }
+
+    private static boolean isNotValidIsbn10Digit(final int currentIsbn10Digit) {
+        return currentIsbn10Digit == INVALID_ISBN10__DIGIT;
+    }
+
+    private static String doCalculateIsbn10WithCheckDigit(final String isbn10WithoutCheckDigits, final int currentIsbn10ChecksumDigest) {
+        int newIsbn10ChecksumDigest = ISBN10_CHECKSUM_CONSTANT - (currentIsbn10ChecksumDigest % ISBN10_CHECKSUM_CONSTANT);
+        return isbn10WithoutCheckDigits + CHECK_DIGITS.substring(newIsbn10ChecksumDigest, newIsbn10ChecksumDigest + 1);
     }
 
     private static int addDigitToisbn10ChecksumDigest(final int isbn10DigitIterator, final int n, final int currentIsbn10Digit) {
@@ -92,7 +106,7 @@ public final class ElibUtils {
         return charToInt(isbn10WithoutCheckDigits.charAt(i));
     }
 
-    private static String getIsbn10FromIsbn13WithoutCheckDigits(final String isbn13) {
+    private static String getIsbn10FromIsbn13WithoutCheckDigit(final String isbn13) {
         return isbn13.substring(3, 12);
     }
 
