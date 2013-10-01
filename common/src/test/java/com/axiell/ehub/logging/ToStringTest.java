@@ -198,4 +198,9 @@ public class ToStringTest {
         assertEquals("GET http://pretty.silly.me/a/uri?maybe=true" + LINE_SEPARATOR + "Parameters: {who=[me & bobby McGee]}" + LINE_SEPARATOR +
                 "Headers: {requestheader=[value]}", toStringString);
     }
+
+    @Test
+    public void serverResponseToString() {
+
+    }
 }
