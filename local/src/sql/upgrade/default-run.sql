@@ -1,4 +1,4 @@
-spool default.log
+spool upgrade.log
 set define off
 
 PROMPT insert-into-release.sql
