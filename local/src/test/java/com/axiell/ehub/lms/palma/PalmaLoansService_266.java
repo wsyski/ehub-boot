@@ -9,20 +9,21 @@ import junit.framework.Assert;
 
 import javax.jws.WebService;
 
-
 @WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
         wsdlLocation = "com/axiell/ehub/lms/palma_266/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
 public class PalmaLoansService_266 extends AbstractPalmaLoansService implements Loans {
     private static final String CONTEXT_PATH = "com.axiell.arena.services.palma.loans";
 
+    @Override
     public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {
         verifyCheckOutTest(parameters);
-        return getFileResponseUnmarshaller().unmarshalFromFile("com/axiell/ehub/lms/palma/CheckOutTestResponse.xml");
+        return getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_XML);
     }
 
+    @Override
     public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(final CheckOut parameters) {
         verifyCheckOut(parameters);
-        return getFileResponseUnmarshaller().unmarshalFromFile("com/axiell/ehub/lms/palma/CheckOutResponse.xml");
+        return getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_RESPONSE_XML);
     }
 
     @Override
@@ -35,6 +36,7 @@ public class PalmaLoansService_266 extends AbstractPalmaLoansService implements 
         return null;
     }
 
+    @Override
     protected String getContextPath() {
         return CONTEXT_PATH;
     }
