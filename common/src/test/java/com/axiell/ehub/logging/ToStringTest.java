@@ -251,7 +251,7 @@ public class ToStringTest {
     }
 
     private void thenResultingStringHasAppropriateData() {
-        assertEquals("Response-Code: 200\nMetadata: {first=[second, third], fourth=[fifth]}\nEntity: [aProperty=one, \n  anotherProperty=two]", actualResult);
+        assertEquals("Response-Code: 200" + System.getProperty("line.separator") + "Metadata: {first=[second, third], fourth=[fifth]}" + System.getProperty("line.separator") + "Entity: [aProperty=one, " + System.getProperty("line.separator") + "  anotherProperty=two]", actualResult);
     }
 
     private void whenServerResponseIsTransformedToString() {
