@@ -22,12 +22,47 @@ import java.util.Map;
 
 public class XQueryFieldEvaluator extends XMLFieldEvaluatorBase {
     private Configuration config = Configuration.makeConfiguration(null, null);
-    private JavaExtensionLibrary jel = new JavaExtensionLibrary(config);
 
     public XQueryFieldEvaluator() {
         FunctionLibraryList fll = new FunctionLibraryList();
+        JavaExtensionLibrary jel = new JavaExtensionLibrary(config);
         fll.addFunctionLibrary(jel);
         config.setExtensionBinder("java", fll);
+    }
+
+    protected final Object[] evaluateExpression(final String query, final Node contextNode, final Map<String, Object> variables, final String defaultNamespace,
+                                                final Map<String, String> namespaces) throws XPathException {
+        StaticQueryContext sqc = getStaticQueryContext(variables);
+        DynamicQueryContext dqc = getDynamicQueryContext(contextNode);
+        XQueryExpression e = sqc.compileQuery(getNamespaceDeclaration(defaultNamespace, namespaces) + query);
+        List objectList = e.evaluate(dqc);
+        return nodeInfos2Nodes(objectList.toArray());
+    }
+
+    private DynamicQueryContext getDynamicQueryContext(final Node contextNode) {
+        DynamicQueryContext dqc = new DynamicQueryContext(config);
+        dqc.setContextItem(new DocumentWrapper(contextNode, "", config));
+        return dqc;
+    }
+
+    private StaticQueryContext getStaticQueryContext(Map<String, Object> variables) throws XPathException {
+        Map<QName, Object> qualifiedVariables = evaluateQualifiedVariables(variables);
+        StaticQueryContext sqc = new StaticQueryContext(config);
+        for (Map.Entry<QName, Object> entry : qualifiedVariables.entrySet()) {
+            sqc.declareGlobalVariable(StructuredQName.fromClarkName(entry.getKey().toString()), SequenceType.SINGLE_ITEM,
+                    convertJavaToSaxon(entry.getValue()), false);
+        }
+        return sqc;
+    }
+
+    private Map<QName, Object> evaluateQualifiedVariables(final Map<String, Object> variables) {
+        Map<QName, Object> qualifiedVariables = new HashMap<>();
+        if (variables != null) {
+            for (Map.Entry<String, Object> entry : variables.entrySet()) {
+                qualifiedVariables.put(QName.valueOf(entry.getKey()), entry.getValue());
+            }
+        }
+        return qualifiedVariables;
     }
 
     private static ValueRepresentation convertJavaToSaxon(final Object object) throws XPathException {
@@ -35,28 +70,8 @@ public class XQueryFieldEvaluator extends XMLFieldEvaluatorBase {
         return JPConverter.allocate(objectNotNull.getClass(), null).convert(objectNotNull, null);
     }
 
-    protected final Object[] evaluateExpression(final String query, final Node contextNode, final Map<String, Object> variables, final String defaultNamespace,
-                                                final Map<String, String> namespaces) throws XPathException {
-        Map<QName, Object> qualifiedVariables = new HashMap<>();
-        if (variables != null) {
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                qualifiedVariables.put(QName.valueOf(entry.getKey()), entry.getValue());
-            }
-        }
-        StaticQueryContext sqc = new StaticQueryContext(config);
-        for (Map.Entry<QName, Object> entry : qualifiedVariables.entrySet()) {
-            sqc.declareGlobalVariable(StructuredQName.fromClarkName(entry.getKey().toString()), SequenceType.SINGLE_ITEM,
-                    convertJavaToSaxon(entry.getValue()), false);
-        }
-        DynamicQueryContext dqc = new DynamicQueryContext(config);
-        XQueryExpression e = sqc.compileQuery(getNamespaceDeclaration(defaultNamespace, namespaces) + query);
-        dqc.setContextItem(new DocumentWrapper(contextNode, "", config));
-        List<Object> objectList = e.evaluate(dqc);
-        return nodeInfos2Nodes(objectList.toArray());
-    }
-
     private static String getNamespaceDeclaration(final String defaultNamespace, final Map<String, String> namespaces) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (defaultNamespace != null) {
             sb.append("declare default element namespace \"");
             sb.append(defaultNamespace);
