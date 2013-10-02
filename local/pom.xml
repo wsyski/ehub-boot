@@ -335,12 +335,6 @@
                             <goal>wsdl2java</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <executions>
                     <execution>
                         <id>generate-test-sources-palma-265</id>
                         <phase>generate-test-sources</phase>
@@ -551,10 +545,6 @@
                         </deployable>
                     </deployables>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>

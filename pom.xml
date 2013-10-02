@@ -206,7 +206,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>%regex[.*IT_*.*]</include>
+                        <include>%regex[.*IT(_.*)?]</include>
                     </includes>
                 </configuration>
             </plugin>
