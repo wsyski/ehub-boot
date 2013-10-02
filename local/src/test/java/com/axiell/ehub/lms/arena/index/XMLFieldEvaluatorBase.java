@@ -6,9 +6,6 @@ import org.w3c.dom.Node;
 
 public abstract class XMLFieldEvaluatorBase {
 
-    protected XMLFieldEvaluatorBase() {
-    }
-
     protected static Object[] nodeInfos2Nodes(final Object[] objects) {
         int len = objects.length;
         Object[] nodes = new Object[len];
@@ -24,6 +21,4 @@ public abstract class XMLFieldEvaluatorBase {
         }
         return nodes;
     }
-
-
 }
