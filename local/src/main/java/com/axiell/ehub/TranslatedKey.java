@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -17,7 +19,6 @@ import java.util.Locale;
  * {@link TranslatedKey} it is the translated labels of the keys that are compared.
  */
 public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Serializable {
-    private static final long serialVersionUID = -6412303252692270087L;
     private transient Collator collator;
     private final K key;
     private final String label;
@@ -78,5 +79,22 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
             this.collator = Collator.getInstance(locale);
         }
         return collator.compare(label, key.getLabel());
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        
+        if (!(obj instanceof TranslatedKey<?>))
+            return false;
+            
+        TranslatedKey<?> rhs = (TranslatedKey<?>) obj;
+        return new EqualsBuilder().append(label, rhs.getLabel()).isEquals();
+    }
+    
+    @Override
+    public int hashCode() {
+	return new HashCodeBuilder(17, 31).append(label).toHashCode();
     }
 }
