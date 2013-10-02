@@ -34,7 +34,7 @@ public class AlmaExportParseExternalUrlsTest {
         XMLUnit.setIgnoreWhitespace(true);
         almaExportDocument = parseDocument(new FileSystemResource(ALMA_EXPORT_PATH));
         xpathEngine = XMLUnit.newXpathEngine();
-        xQueryFieldEvaluator=new XQueryFieldEvaluator();
+        xQueryFieldEvaluator = new XQueryFieldEvaluator();
     }
 
     @Test
@@ -50,57 +50,70 @@ public class AlmaExportParseExternalUrlsTest {
     }
 
     @Test
+    public void evaluateContentProviderName() throws XpathException, IOException, SAXException, XPathException {
+        givenAlmaExportIsParsedForFieldName("contentProviderName");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue.xml");
+        whenXQueryIsEvaluated();
+        thenXQueryReturnValueIsExtracted("contentProviderName");
+    }
+
+    @Test
     public void evaluateElibContentProviderName() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderName");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH+"/alma-export-catalogue-elib.xml");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-elib.xml");
         whenXQueryIsEvaluated();
-        thenValueIsExtracted("elib");
+        thenXQueryReturnValueIsExtracted("elib");
     }
 
     @Test
     public void evaluatePublitContentProviderName() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderName");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH+"/alma-export-catalogue-publit.xml");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-publit.xml");
         whenXQueryIsEvaluated();
-        thenValueIsExtracted("publit");
+        thenXQueryReturnValueIsExtracted("publit");
+    }
+
+    @Test
+    public void evaluateContentProviderRecordId() throws XpathException, IOException, SAXException, XPathException {
+        givenAlmaExportIsParsedForFieldName("contentProviderRecordId");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue.xml");
+        whenXQueryIsEvaluated();
+        thenXQueryReturnValueIsExtracted("contentProviderRecordId");
     }
 
     @Test
     public void evaluateElibContentProviderRecordId() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderRecordId");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH+"/alma-export-catalogue-elib.xml");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-elib.xml");
         whenXQueryIsEvaluated();
-        thenValueIsExtracted("9185011207");
+        thenXQueryReturnValueIsExtracted("9185011207");
     }
 
     @Test
     public void evaluatePublitContentProviderRecordId() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderRecordId");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH+"/alma-export-catalogue-publit.xml");
+        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-publit.xml");
         whenXQueryIsEvaluated();
-        thenValueIsExtracted("9789174376838");
+        thenXQueryReturnValueIsExtracted("9789174376838");
     }
 
-    private void thenValueIsExtracted(final String value) {
+    private void thenXQueryReturnValueIsExtracted(final String value) {
         assertNotNull(xQueryResults);
         assertEquals(1, xQueryResults.length);
         assertEquals(value, xQueryResults[0]);
     }
 
     private void whenXQueryIsEvaluated() throws XPathException {
-        xQueryResults =xQueryFieldEvaluator.evaluateExpression(xQuery, almaExportCatalogueDocument,null,null,null);
+        xQueryResults = xQueryFieldEvaluator.evaluateExpression(xQuery, almaExportCatalogueDocument, null, null, null);
     }
 
     private void givenAlmaExportCatalogueIsParsed(final String path) throws IOException, SAXException, XpathException {
         almaExportCatalogueDocument = parseDocument(new ClassPathResource(path));
-        String value=xpathEngine.evaluate("/AlmaMessage/exportCatalogueRecordsResponse/exportCatalogueRecord/view/externalUrls/externalUrl/@value",
-                almaExportCatalogueDocument);
-        assertNotNull(value);
     }
 
 
     private void givenAlmaExportIsParsedForFieldName(final String fieldName) throws XpathException {
-        xQuery = evaluateAlmaExportXPath("/config/index/field[@name=\""+fieldName+"\"]/query[@type=\"xquery\"]/text()");
+        xQuery = evaluateAlmaExportXPath("/config/index/field[@name=\"" + fieldName + "\"]/query[@type=\"xquery\"]/text()");
     }
 
     private String evaluateAlmaExportXPath(final String xPath) throws XpathException {
