@@ -49,13 +49,13 @@ public abstract class AbstractPalmaIT<T> {
     }
 
     @Test
-    public void testCheckOutTest() {
+    public void checkOutTest() {
         whenCheckOutTestExecuted();
         thenActiveLoanReturned();
     }
 
     @Test
-    public void testCheckOut() {
+    public void checkOut() {
         whenCheckOutExecuted();
         thenLmsLoanIsReturned();
     }
