@@ -1,7 +1,10 @@
 package com.axiell.ehub.util;
 
+import java.util.Collection;
+
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
+
 import org.apache.commons.lang3.StringUtils;
 
 public final class Validate {
@@ -13,9 +16,8 @@ public final class Validate {
     }
 
     public static void isNotNull(final Object underValidation, final String message) {
-        if (underValidation == null) {
+        if (underValidation == null)
             throw new InternalServerErrorException(message);
-        }
     }
 
     public static void isNotBlank(final String underValidation, final String message) {
@@ -32,5 +34,10 @@ public final class Validate {
     public static void isNotBlank(final String underValidation, final EhubConsumer ehubConsumer, final String message) {
         String errorMessage = new StringBuilder(message).append(" ehub consumer ID = '").append(ehubConsumer.getId()).append("'").toString();
         isNotBlank(underValidation, errorMessage);
+    }
+    
+    public static void isNotEmpty(final Collection<?> underValidation, final String message) {
+	if (underValidation.isEmpty())
+	    throw new InternalServerErrorException(message);
     }
 }

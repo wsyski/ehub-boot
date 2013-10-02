@@ -1,15 +1,10 @@
 package com.axiell.ehub.provider.askews;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_BARCODE;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_LOAN_DURATION;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY;
-
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +13,6 @@ import org.springframework.stereotype.Component;
 import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.LoanDetails;
 import com.askews.api.LoanRequestResult;
-import com.askews.api.UserLookupResult;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -31,71 +25,82 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.util.Validate;
 
 @Component
 public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(AskewsDataAccessor.class);
-    private static final String ASKEWS_FORMAT = "Askews";
+    private static final String ASKEWS_FORMAT_ID = "Askews1";
     private static final Integer WAITING_TO_PROCESS = 1;
     private static final Integer TITLE_HAS_BEEN_PROCESSED = 4;
     private static final Integer LOAN_SUCCESS = 1;
     private static final int MAX_RETRIES = 60;
     private static final Integer RETRY_WAIT_MILLIS = 1000;
-    private static final Integer ERROR_CODE_OK = 0;
 
     @Autowired(required = true)
     private IAskewsFacade askewsFacade;
 
+    @Autowired(required = true)
+    private IExpirationDateFactory expirationDateFactory;
+
     @Override
     public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
+	final FormatTextBundle textBundle = getTextBundle(contentProviderConsumer, language);
+	final Format format = makeFormat(textBundle);
 	final Formats formats = new Formats();
-	formats.addFormat(new Format(ASKEWS_FORMAT, ASKEWS_FORMAT, null, null));
+	formats.addFormat(format);
 	return formats;
+    }
+
+    private FormatTextBundle getTextBundle(ContentProviderConsumer contentProviderConsumer, String language) {
+	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(ASKEWS_FORMAT_ID);
+	Validate.isNotNull(formatDecoration, "FormatDecoration is null for Askews format ID = '" + ASKEWS_FORMAT_ID + "'");
+	final FormatTextBundle textBundle = formatDecoration.getTextBundle(language);
+	Validate.isNotNull(textBundle, "FormatTextBundle is null for Askews format ID = '" + ASKEWS_FORMAT_ID + "'");
+	return textBundle;
+    }
+
+    private Format makeFormat(final FormatTextBundle textBundle) {
+	final String name = textBundle.getName();
+	final String description = textBundle.getDescription();
+	return new Format(ASKEWS_FORMAT_ID, name, description, null);
     }
 
     @Override
     public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
-	final Integer authId = getAuthId(contentProviderConsumer);
-	final Integer duration = getDuration(contentProviderConsumer);
-	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
-	final Integer askewsLoanId = processLoan(contentProviderConsumer, pendingLoan, authId, duration, tokenKey);
-	final String contentUrl = getContentUrl(contentProviderConsumer, authId, tokenKey, askewsLoanId);
+	final String contentProviderLoanId = processLoan(contentProviderConsumer, pendingLoan);
+	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
 
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-	final String formatId = pendingLoan.getContentProviderFormatId();
-	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+	final FormatDecoration formatDecoration = getFormatDecoration(pendingLoan, contentProvider);
 
 	final IContent content = createContent(contentUrl, formatDecoration);
 
-	final Date expirationDate = new DateTime().plusDays(duration).toDate();
-	final String contentProviderLoanId = askewsLoanId.toString();
+	final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
 	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(contentProviderLoanId, contentProvider, expirationDate, formatDecoration);
 	return new ContentProviderLoan(metadata, content);
     }
 
-    private Integer getAuthId(ContentProviderConsumer contentProviderConsumer) {
-	final String authId = contentProviderConsumer.getProperty(ASKEWS_AUTH_ID);
-	return Integer.valueOf(authId);
-    }
-    
-    private Integer getDuration(ContentProviderConsumer contentProviderConsumer) {
-	final String duration = contentProviderConsumer.getProperty(ASKEWS_LOAN_DURATION);
-	return Integer.valueOf(duration);
-    }
-
-    private Integer processLoan(final ContentProviderConsumer contentProviderConsumer, final PendingLoan pendingLoan, final Integer authId,
-	    final Integer duration, final String tokenKey) {
-	final Integer userId = getUserId(contentProviderConsumer);
-	final LoanRequestResult loanRequestResult = askewsFacade.processLoan(userId, authId, pendingLoan.getContentProviderRecordId(), duration, tokenKey);
+    private String processLoan(final ContentProviderConsumer contentProviderConsumer, final PendingLoan pendingLoan) {
+	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+	final LoanRequestResult loanRequestResult = askewsFacade.processLoan(contentProviderConsumer, contentProviderRecordId);
 
 	if (loanRequestWasNotSucessful(loanRequestResult)) {
 	    throwInternalServerErrorException(loanRequestResult.getErrorDesc().getValue(), loanRequestResult.getErrorCode());
 	}
 
-	return loanRequestResult.getLoanid();
+	return loanRequestResult.getLoanid().toString();
+    }
+    
+    private FormatDecoration getFormatDecoration(PendingLoan pendingLoan, final ContentProvider contentProvider) {
+	final String formatId = pendingLoan.getContentProviderFormatId();
+	return contentProvider.getFormatDecoration(formatId);
     }
 
     private boolean loanRequestWasNotSucessful(LoanRequestResult loanRequestResult) {
@@ -103,8 +108,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 	return !LOAN_SUCCESS.equals(requestStatus);
     }
 
-    private String getContentUrl(ContentProviderConsumer contentProviderConsumer, Integer authId, String tokenKey, Integer loanId) {
-	final LoanDetails loanDetails = tryToGetLoanLoanDetails(contentProviderConsumer, authId, tokenKey, loanId);
+    private String getContentUrl(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
+	final LoanDetails loanDetails = tryToGetLoanLoanDetails(contentProviderConsumer, contentProviderLoanId);
 	return getContentUrl(loanDetails);
     }
 
@@ -113,14 +118,14 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 	return downloadUrl.getValue();
     }
 
-    private LoanDetails tryToGetLoanLoanDetails(ContentProviderConsumer contentProviderConsumer, Integer authId, String tokenKey, Integer loanId) {
+    private LoanDetails tryToGetLoanLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
 	LoanDetails loanDetails = null;
 	int retryCount = 0;
 
 	do {
 	    retryCount++;
 	    sleep(retryCount);
-	    loanDetails = getLoanDetails(contentProviderConsumer, authId, tokenKey, loanId);
+	    loanDetails = getLoanDetails(contentProviderConsumer, contentProviderLoanId);
 	} while (waitingToBeProcessed(loanDetails) && retryCount <= MAX_RETRIES);
 
 	if (waitingToBeProcessed(loanDetails)) {
@@ -140,10 +145,11 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 	}
     }
 
-    private LoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, Integer authId, String tokenKey, Integer loanId) {
-	final Integer userId = getUserId(contentProviderConsumer);
-	final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(userId, authId, loanId, tokenKey);
-	final LoanDetails loanDetails = loanDetailsArray.getLoanDetails().get(0);
+    private LoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
+	final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId);
+	final List<LoanDetails> loanDetailsList = loanDetailsArray.getLoanDetails();
+	Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId + "'");
+	final LoanDetails loanDetails = loanDetailsList.get(0);
 	validateLoanHasNotFailed(loanDetails);
 	return loanDetails;
     }
@@ -162,11 +168,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public IContent getContent(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin,
 	    ContentProviderLoanMetadata contentProviderLoanMetadata) {
-	final Integer authId = getAuthId(contentProviderConsumer);
-	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
-	final Integer loanId = Integer.valueOf(contentProviderLoanMetadata.getId());
-
-	final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, authId, tokenKey, loanId);
+	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
+	final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, contentProviderLoanId);
 
 	if (titleHasNotBeenProcessed(loanDetail)) {
 	    throwInternalServerErrorException("Title has not yet been processed", loanDetail.getLoanStatus());
@@ -180,24 +183,6 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private boolean titleHasNotBeenProcessed(LoanDetails loanDetail) {
 	Integer loanStatus = loanDetail.getLoanStatus();
 	return !TITLE_HAS_BEEN_PROCESSED.equals(loanStatus);
-    }
-
-    private Integer getUserId(ContentProviderConsumer contentProviderConsumer) {
-	final String barcode = contentProviderConsumer.getProperty(ASKEWS_BARCODE);
-	final Integer authId = getAuthId(contentProviderConsumer);
-	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
-	final UserLookupResult userLookupResult = askewsFacade.getUserID(barcode, authId, tokenKey);
-
-	if (userLookupWasNotSuccessful(userLookupResult)) {
-	    throwInternalServerErrorException(userLookupResult.getErrorDesc().getValue(), userLookupResult.getErrorCode());
-	}
-
-	return userLookupResult.getUserid();
-    }
-
-    private boolean userLookupWasNotSuccessful(UserLookupResult userLookupResult) {
-	final Integer errorCode = userLookupResult.getErrorCode();
-	return !ERROR_CODE_OK.equals(errorCode);
     }
 
     private void throwInternalServerErrorException(String errorMessage, Integer errorCode) {

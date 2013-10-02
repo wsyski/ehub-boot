@@ -1,11 +1,11 @@
 package com.axiell.ehub.lms.palma;
 
 
-public class PalmaIT_266 extends AbstractPalmaIT {
+public class PalmaIT_265 extends AbstractPalmaIT {
 
 
     @Override
     protected Object getPalmaLoansServiceInstance() {
-        return new PalmaLoansService_266();
+        return new PalmaLoansService_265();
     }
 }
