@@ -1,3 +1,9 @@
+spool upgrade-0.6-0.7.log
+set define off
+
+PROMPT insert-into-release.sql
+@@../../basic/insert-into-release.sql
+
 WHENEVER SQLERROR EXIT FAILURE
 
 insert into CONTENT_PROVIDER_NAME(NAME) values('PUBLIT');
@@ -27,3 +33,5 @@ insert into CONTENT_PROVIDER_PROPERTY (CONTENT_PROVIDER_ID, PROPERTY_KEY, PROPER
 insert into CONTENT_PROVIDER_PROPERTY (CONTENT_PROVIDER_ID, PROPERTY_KEY, PROPERTY_VALUE) VALUES (4, 'LOAN_EXPIRATION_DAYS', '30');
 
 commit;
+
+spool off
