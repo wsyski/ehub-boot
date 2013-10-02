@@ -19,8 +19,8 @@ public abstract class AbstractContentProviderIT {
     
     @BeforeClass
     public static final void setUpWheteherIntegrationTestShouldBeRun() {
-	boolean online = isOnline();	
-	Assume.assumeTrue(online);
+//	boolean online = isOnline();	
+//	Assume.assumeTrue(online);
     }
     
     private static boolean isOnline() {

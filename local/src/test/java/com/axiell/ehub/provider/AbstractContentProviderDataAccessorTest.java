@@ -2,6 +2,9 @@ package com.axiell.ehub.provider;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+
+import java.util.Date;
+
 import junit.framework.Assert;
 
 import org.junit.runner.RunWith;
@@ -41,6 +44,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected FormatTextBundle textBundle;
     @Mock
     protected ContentProviderLoanMetadata loanMetadata;
+    @Mock
+    protected IExpirationDateFactory expirationDateFactory;
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
@@ -72,6 +77,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
     }
 
+    protected void givenExpirationDate() {
+	given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
+    }
+    
     protected void thenActualLoanContainsDownloadUrl() {
         Assert.assertNotNull(actualLoan);
         IContent content = actualLoan.getContent();

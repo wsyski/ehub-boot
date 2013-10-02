@@ -1,6 +1,12 @@
 package com.axiell.ehub.provider.askews;
 
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_BARCODE;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY;
+
 import java.net.URL;
+
+import javax.xml.bind.JAXBElement;
 
 import org.springframework.stereotype.Component;
 
@@ -8,37 +14,82 @@ import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.IeBookService;
 import com.askews.api.LoanRequestResult;
 import com.askews.api.UserLookupResult;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.ErrorCauseArgument.Type;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 @Component
 public class AskewsFacade implements IAskewsFacade {
     private static final String WSDL_LOCATION = "com/askews/api/askews.wsdl";
+    private static final Integer ERROR_CODE_OK = 0;
 
     private IeBookService askewsService;
 
     public AskewsFacade() {
-        URL wsdlUrl = getClass().getClassLoader().getResource(WSDL_LOCATION);
-        askewsService = new AskewsSoapService(wsdlUrl).getBasicHttpBindingIeBookService();
+	URL wsdlUrl = getClass().getClassLoader().getResource(WSDL_LOCATION);
+	askewsService = new AskewsSoapService(wsdlUrl).getBasicHttpBindingIeBookService();
     }
 
     @Override
-    public LoanRequestResult processLoan(Integer userId,
-            Integer authId,
-            String contentProviderRecordId,
-            Integer duration,
-            String tokenKey) {
-        return askewsService.processLoan(userId, authId, contentProviderRecordId, duration, tokenKey);
+    public LoanRequestResult processLoan(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId) {
+	final Integer userId = getUserId(contentProviderConsumer);
+	final Integer authId = getAuthId(contentProviderConsumer);
+	final Integer duration = getDuration(contentProviderConsumer);
+	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
+	return askewsService.processLoan(userId, authId, contentProviderRecordId, duration, tokenKey);
+    }
+    
+    private Integer getAuthId(ContentProviderConsumer contentProviderConsumer) {
+	final String authId = contentProviderConsumer.getProperty(ASKEWS_AUTH_ID);
+	return Integer.valueOf(authId);
+    }
+
+    private Integer getDuration(ContentProviderConsumer contentProviderConsumer) {
+	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+	final String duration = contentProvider.getProperty(ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS);
+	return Integer.valueOf(duration);
     }
 
     @Override
-    public ArrayOfLoanDetails getLoanDetails(Integer userId,
-            Integer authId,
-            Integer loanId,
-            String tokenKey) {
-        return askewsService.getLoanDetails(userId, authId, null, loanId, tokenKey);
+    public ArrayOfLoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
+	final Integer userId = getUserId(contentProviderConsumer);
+	final Integer authId = getAuthId(contentProviderConsumer);
+	final Integer loanId = contentProviderLoanId == null ? null : Integer.valueOf(contentProviderLoanId);
+	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
+	return askewsService.getLoanDetails(userId, authId, null, loanId, tokenKey);
+    }
+    
+    private Integer getUserId(ContentProviderConsumer contentProviderConsumer) {
+	final String barcode = contentProviderConsumer.getProperty(ASKEWS_BARCODE);
+	final Integer authId = getAuthId(contentProviderConsumer);
+	final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
+	final UserLookupResult userLookupResult = askewsService.getUserID(barcode, authId, tokenKey);
+	validateUserLookupWasSuccessful(userLookupResult);
+	return userLookupResult.getUserid();
     }
 
-    @Override
-    public UserLookupResult getUserID(String barcode, Integer authId, String tokenKey) {
-        return askewsService.getUserID(barcode, authId, tokenKey);
+    private void validateUserLookupWasSuccessful(final UserLookupResult userLookupResult) {
+	if (userLookupWasNotSuccessful(userLookupResult)) {
+	    throwInternalServerErrorException(userLookupResult);
+	}
+    }
+
+    private boolean userLookupWasNotSuccessful(UserLookupResult userLookupResult) {
+	final Integer errorCode = userLookupResult.getErrorCode();
+	return !ERROR_CODE_OK.equals(errorCode);
+    }
+    
+    private void throwInternalServerErrorException(UserLookupResult userLookupResult) {
+	final JAXBElement<String> errorDesc = userLookupResult.getErrorDesc();
+	final String errorMessage = errorDesc.getValue();
+	final Integer errorCode = userLookupResult.getErrorCode();
+	ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ASKEWS);
+	ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(errorCode));
+	throw new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 }

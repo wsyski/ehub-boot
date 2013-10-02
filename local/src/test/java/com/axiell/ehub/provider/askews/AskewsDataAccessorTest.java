@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,18 +20,12 @@ import com.askews.api.LoanRequestResult;
 import com.askews.api.UserLookupResult;
 import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 
 public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
     private static final String FORMAT_ID = "formatId";
     private static final Integer LOAN_ID = 1;
-    private static final Integer USER_ID = 1;
-    private static final Integer AUTH_ID = 1;
-    private static final Integer LOAN_DURATION = 10;
-    private static final String TOKEN_KEY = "tokenKey";
-    private static final String BARCODE = "barcode";
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
     private static final Integer LOAN_REQUEST_NOT_SUCCESS = -1;
     private static final Integer TITLE_HAS_BEEN_PROCESSED = 4;
@@ -50,25 +45,25 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     private JAXBElement<String> errorDesc;
 
     @Before
-    public void setUpPublitDataAccessor() {
+    public void setUpAskewsDataAccessor() {
 	underTest = new AskewsDataAccessor();
 	ReflectionTestUtils.setField(underTest, "askewsFacade", askewsFacade);
+	ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
     }
 
     @Test
     public void createLoan() {
 	givenPendingLoan();
-	givenAskewsProperties();
-	givenUserId();
 	givenProcessLoan();
 	givenLoanRequestSuccess();
+	givenLoanId();
 	givenLoanDetails();
-	givenLoanStatusIsTitleHasBeenProcessed();
 	givenLoanHasNotFailed();
 	givenDownloadUrlInLoanDetail();
 	givenContentProvider();
 	givenFormatDecorationFromContentProvider();
 	givenContentDisposition();
+	givenExpirationDate();
 	whenCreateLoan();
 	thenActualLoanContainsDownloadUrl();
     }
@@ -78,36 +73,23 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 	given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
-    private void givenUserId() {
-	given(userLookupResult.getUserid()).willReturn(USER_ID);
-	given(askewsFacade.getUserID(BARCODE, AUTH_ID, TOKEN_KEY)).willReturn(userLookupResult);
-    }
-
-    private void givenAskewsProperties() {
-	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID)).willReturn(AUTH_ID.toString());
-	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY)).willReturn(TOKEN_KEY.toString());
-	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_BARCODE)).willReturn(BARCODE.toString());
-	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_LOAN_DURATION)).willReturn(LOAN_DURATION.toString());
-    }
-
     private void givenProcessLoan() {
-	given(askewsFacade.processLoan(USER_ID, AUTH_ID, RECORD_ID, LOAN_DURATION, TOKEN_KEY)).willReturn(loanRequestResult);
-	given(loanRequestResult.getLoanid()).willReturn(LOAN_ID);
+	given(askewsFacade.processLoan(contentProviderConsumer, RECORD_ID)).willReturn(loanRequestResult);
     }
 
     private void givenLoanRequestSuccess() {
 	given(loanRequestResult.getLoanRequestSuccess()).willReturn(LOAN_REQUEST_SUCCESS);
     }
 
+    private void givenLoanId() {
+	given(loanRequestResult.getLoanid()).willReturn(LOAN_ID);
+    }
+    
     private void givenLoanDetails() {
 	List<LoanDetails> loanDetailsList = new ArrayList<LoanDetails>();
 	loanDetailsList.add(loanDetail);
 	given(arrayOfLoanDetails.getLoanDetails()).willReturn(loanDetailsList);
-	given(askewsFacade.getLoanDetails(USER_ID, AUTH_ID, LOAN_ID, TOKEN_KEY)).willReturn(arrayOfLoanDetails);
-    }
-
-    private void givenLoanStatusIsTitleHasBeenProcessed() {
-	given(loanDetail.getLoanStatus()).willReturn(TITLE_HAS_BEEN_PROCESSED);
+	given(askewsFacade.getLoanDetails(contentProviderConsumer, LOAN_ID.toString())).willReturn(arrayOfLoanDetails);
     }
 
     private void givenLoanHasNotFailed() {
@@ -123,9 +105,68 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     @Test
+    public void createLoanWhenStatusIsNotSuccess() {
+	givenPendingLoan();
+	givenProcessLoan();
+	givenLoanRequestIsNotSucess();
+	givenLoanRequestResultErrorDesc();
+	try {
+	    whenCreateLoan();
+	    Assert.fail("Should throw an InternalServerErrorException");
+	} catch (InternalServerErrorException e) {
+	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+	}
+    }
+
+    private void givenLoanRequestIsNotSucess() {
+	given(loanRequestResult.getLoanRequestSuccess()).willReturn(LOAN_REQUEST_NOT_SUCCESS);
+    }
+
+    private void givenLoanRequestResultErrorDesc() {
+	given(loanRequestResult.getErrorDesc()).willReturn(errorDesc);
+    }
+
+    @Test
+    public void createLoanHasFailed() {
+	givenPendingLoan();
+	givenProcessLoan();
+	givenLoanRequestSuccess();
+	givenLoanId();
+	givenLoanDetails();
+	givenLoanHasFailed();
+	givenLoanDetailErrorDesc();
+	try {
+	    whenCreateLoan();
+	    Assert.fail("Should throw an InternalServerErrorException");
+	} catch (InternalServerErrorException e) {
+	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+	}
+    }
+
+    private void givenLoanHasFailed() {
+	given(loanDetail.isHasFailed()).willReturn(true);
+    }
+
+    private void givenLoanDetailErrorDesc() {
+	given(loanDetail.getErrorDesc()).willReturn(errorDesc);
+    }
+    
+    @Test 
+    public void createLoanWasNotSuccessful() {
+	givenPendingLoan();
+	givenProcessLoan();
+	givenLoanRequestIsNotSucess();
+	givenLoanRequestResultErrorDesc();
+	try {
+	    whenCreateLoan();
+	    Assert.fail("Should throw an InternalServerErrorException");
+	} catch (InternalServerErrorException e) {
+	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+	}
+    }
+
+    @Test
     public void getContent() {
-	givenAskewsProperties();
-	givenUserId();
 	givenContentProviderLoanId();
 	givenContentProvider();
 	givenFormatDecorationFromContentProviderLoanMetadata();
@@ -141,56 +182,48 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 	given(loanMetadata.getId()).willReturn(LOAN_ID.toString());
     }
 
+    private void givenLoanStatusIsTitleHasBeenProcessed() {
+	given(loanDetail.getLoanStatus()).willReturn(TITLE_HAS_BEEN_PROCESSED);
+    }
+    
     private void whenGetContent() {
 	actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata);
     }
-
+    
     @Test
-    public void createLoanWhenStatusIsNotSuccess() {
-	givenPendingLoan();
-	givenAskewsProperties();
-	givenUserId();
-	givenProcessLoan();
-	givenLoanRequestStatusIsNotSucess();
-	givenLoanRequestResultErrorDesc();
-	try {
-	    whenCreateLoan();
+    public void getFormatsWhenNoFormatDecoration() {
+	givenContentProvider();
+	try{
+	    whenGetFormats();    
+	    Assert.fail("An InternalServerErrorException should have been thrown");
+	} catch (InternalServerErrorException e) {
+	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+	}	
+    }
+
+    private void whenGetFormats() {
+	actualFormats = underTest.getFormats(contentProviderConsumer, RECORD_ID, LANGUAGE);
+    }
+    
+    @Test
+    public void getFormatsWhenNoTextBundle() {
+	givenContentProvider();
+	givenFormatDecorationFromContentProvider();
+	try{
+	    whenGetFormats();    
+	    Assert.fail("An InternalServerErrorException should have been thrown");
 	} catch (InternalServerErrorException e) {
 	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
 	}
     }
-
-    private void givenLoanRequestStatusIsNotSucess() {
-	given(loanRequestResult.getLoanRequestSuccess()).willReturn(LOAN_REQUEST_NOT_SUCCESS);
-    }
-
-    private void givenLoanRequestResultErrorDesc() {
-	given(loanRequestResult.getErrorDesc()).willReturn(errorDesc);
-    }
-
+    
     @Test
-    public void loanHasFailed() {
-	givenPendingLoan();
-	givenAskewsProperties();
-	givenUserId();
-	givenProcessLoan();
-	givenLoanRequestSuccess();
-	givenLoanDetails();
-	givenLoanStatusIsTitleHasBeenProcessed();
-	givenLoanHasFailed();
-	givenLoanDetailErrorDesc();
-	try {
-	    whenCreateLoan();
-	} catch (InternalServerErrorException e) {
-	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-	}
-    }
-
-    private void givenLoanHasFailed() {
-	given(loanDetail.isHasFailed()).willReturn(true);
-    }
-
-    private void givenLoanDetailErrorDesc() {
-	given(loanDetail.getErrorDesc()).willReturn(errorDesc);
+    public void getFormats() {
+	givenContentProvider();
+	givenFormatDecorationFromContentProvider();
+	givenTextBundle();
+	givenEhubFormatNameAndDescription();
+	whenGetFormats();
+	thenFormatHasEhubFormatNameAndDescription();
     }
 }

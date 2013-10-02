@@ -4,7 +4,6 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
-import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 import com.axiell.ehub.provider.record.format.Format;
 
@@ -31,9 +29,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     private PublitDataAccessor underTest;
     @Mock
-    private IPublitFacade publitFacade;
-    @Mock
-    private IExpirationDateFactory expirationDateFactory;
+    private IPublitFacade publitFacade;    
     @Mock
     private Product product;
     @Mock
@@ -186,10 +182,6 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     private void whenCreateLoan() {
 	actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan);
-    }
-    
-    private void givenExpirationDate() {
-	given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
     }
 
     @Test

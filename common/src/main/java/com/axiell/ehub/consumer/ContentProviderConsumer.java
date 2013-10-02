@@ -35,7 +35,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
                 new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
         VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
         VALID_PROPERTY_KEYS.put(ASKEWS,
-                new HashSet<>(Arrays.asList(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE, ASKEWS_LOAN_DURATION)));
+                new HashSet<>(Arrays.asList(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE)));
     }
 
     private EhubConsumer ehubConsumer;
@@ -161,6 +161,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      * Enumeration for content provider consumer property keys.
      */
     public static enum ContentProviderConsumerPropertyKey {
-        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE, ASKEWS_LOAN_DURATION
+        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE 
     }
 }

@@ -2,91 +2,93 @@ package com.axiell.ehub.provider.askews;
 
 import static org.mockito.BDDMockito.given;
 
+import java.util.List;
+
+import javax.xml.bind.JAXBElement;
+
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.LoanDetails;
 import com.askews.api.LoanRequestResult;
-import com.askews.api.UserLookupResult;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
+import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 public class AskewsIT extends AbstractContentProviderIT {
     private static final Integer AUTH_ID = 0;
     private static final String TOKEN_KEY = "g94ngpts3ngmkeaqtz953dbmutyndw";
-    private static final String BARCODE = "axiell";
-    private static final Integer LOAN_DURATION = 1;
-    private static final String RECORD_ID = "9781843176343-6";
+    private static final String BARCODE = "askews2";
+    private static final String LOAN_DURATION = "1";
+    private static final String RECORD_ID = "9780857892645-6";
+    private static final String LOAN_ID = "448562";
 
     private IAskewsFacade underTest;
 
-    private UserLookupResult userLookupResult;
     private LoanRequestResult loanRequestResult;
-    private Integer loanId;
     private ArrayOfLoanDetails arrayOfLoanDetails;
 
     @Before
-    public void setUpElibFacade() {
-        underTest = new AskewsFacade();
+    public void setUpAskewsFacade() {
+	underTest = new AskewsFacade();
     }
 
-    /*
-     * Test is temporarily ignored. 
-     */
     @Test
-    @Ignore
-    public void createLoan() {
-        givenAskewsProperties();
-        whenGetUserId();
-        whenProcessLoan();
-        thenLoanRequestResultContainsExpectedElements();
-        whenGetLoanDetails();
-        thenLoanDetailsResultContainsExpectedElements();
+    public void processLoan() {
+	givenAskewsProperties();
+	givenDuration();
+	whenProcessLoan();
+	thenLoanRequestResultContainsExpectedElements();
     }
 
     private void givenAskewsProperties() {
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID)).willReturn(
-                AUTH_ID.toString());
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY)).willReturn(
-                TOKEN_KEY.toString());
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_BARCODE)).willReturn(
-                BARCODE.toString());
-        given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_LOAN_DURATION))
-                .willReturn(LOAN_DURATION.toString());
+	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID)).willReturn(AUTH_ID.toString());
+	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY)).willReturn(TOKEN_KEY);
+	given(contentProviderConsumer.getProperty(ContentProviderConsumerPropertyKey.ASKEWS_BARCODE)).willReturn(BARCODE);
     }
 
-    private void whenGetUserId() {
-        userLookupResult = underTest.getUserID(BARCODE, AUTH_ID, TOKEN_KEY);
+    private void givenDuration() {
+	givenContentProvider();
+	given(contentProvider.getProperty(ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS)).willReturn(LOAN_DURATION);
     }
 
     private void whenProcessLoan() {
-        loanRequestResult = underTest.processLoan(userLookupResult.getUserid(), AUTH_ID, RECORD_ID, LOAN_DURATION,
-                TOKEN_KEY);
+	loanRequestResult = underTest.processLoan(contentProviderConsumer, RECORD_ID);
     }
 
     private void thenLoanRequestResultContainsExpectedElements() {
-        Assert.assertNotNull(loanRequestResult);
-        loanId = loanRequestResult.getLoanid();
-        Assert.assertNotNull(loanId);
-        Assert.assertEquals(Integer.valueOf(1), loanRequestResult.getLoanRequestSuccess());
+	Assert.assertNotNull(loanRequestResult);
+	Integer loanId = loanRequestResult.getLoanid();
+	Assert.assertNotNull(loanId);
+	Integer loanRequestSuccess = loanRequestResult.getLoanRequestSuccess();
+	Assert.assertNotNull(loanRequestSuccess);
     }
-    
+
+    @Test
+    public void getLoanDetails() {
+	givenAskewsProperties();
+	whenGetLoanDetails();
+	thenLoanDetailsResultContainsExpectedElements();
+    }
+
     private void whenGetLoanDetails() {
-        arrayOfLoanDetails = underTest.getLoanDetails(userLookupResult.getUserid(), AUTH_ID, loanId, TOKEN_KEY);
+	arrayOfLoanDetails = underTest.getLoanDetails(contentProviderConsumer, LOAN_ID);
     }
-    
+
     private void thenLoanDetailsResultContainsExpectedElements() {
-        Assert.assertNotNull(arrayOfLoanDetails);
-        Assert.assertNotNull(arrayOfLoanDetails.getLoanDetails());
-        Assert.assertTrue(arrayOfLoanDetails.getLoanDetails().size() == 1);
-        LoanDetails loanDetails = arrayOfLoanDetails.getLoanDetails().get(0);
+	Assert.assertNotNull(arrayOfLoanDetails);
+	List<LoanDetails> loanDetailsList = arrayOfLoanDetails.getLoanDetails();
+	Assert.assertNotNull(loanDetailsList);
+	Assert.assertFalse(loanDetailsList.isEmpty());
+	LoanDetails loanDetails = loanDetailsList.get(0);
         Assert.assertNotNull(loanDetails);
         Assert.assertFalse(loanDetails.isHasFailed());
-        Assert.assertNotNull(loanDetails.getDownloadURL());
-        Assert.assertNotNull(loanDetails.getDownloadURL().getValue());
-        Assert.assertTrue(loanDetails.getDownloadURL().getValue().startsWith("http"));
+        JAXBElement<String> downloadUrl = loanDetails.getDownloadURL();
+        Assert.assertNotNull(downloadUrl);
+        String contentUrl = downloadUrl.getValue();
+        Assert.assertNotNull(contentUrl);
+        Assert.assertTrue(contentUrl.startsWith("http"));
     }
 }
