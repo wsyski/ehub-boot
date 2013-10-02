@@ -140,6 +140,36 @@
 
         <!-- Test dependencies -->
         <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-dom</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-xpath</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-xqj</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-common</artifactId>
             <version>${project.version}</version>
@@ -293,7 +323,7 @@
                             <sourceRoot>${project.build.directory}/generated-sources/palma</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/com/axiell/arena/palma_266/loans.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_266/loans.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
@@ -318,7 +348,7 @@
                             <sourceRoot>${project.build.directory}/generated-test-sources/palma_265</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${project.basedir}/src/test/resources/com/axiell/arena/palma_265/loans.wsdl</wsdl>
+                                    <wsdl>${project.basedir}/src/test/resources/com/axiell/ehub/lms/palma_265/loans.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
