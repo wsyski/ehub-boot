@@ -41,7 +41,8 @@
 					<span wicket:id="contentProviderConsumerLinkLabel"></span>
 				</a>
 				<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
-					<wicket:message key="lnkDelete.label"/>
+					<i class="icon-remove"></i>
+					<!--<wicket:message key="lnkDelete.label"/>-->
 				</a>
         	</div>
         	
@@ -69,7 +70,7 @@
         				</div>
         			</div>        			
         			<div>
-        				<input wicket:id="submit" type="submit" wicket:message="value:btnAdd.label,title:btnAdd.title"></input>
+        				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnAdd.label,title:btnAdd.title"></input>
         			</div>
         		</form>
         		<a wicket:id="cancelNewCpcLink" wicket:message="title:lnkCancelNewCpc.title">
