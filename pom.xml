@@ -101,6 +101,8 @@
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <updateWorkingCopyVersions>false</updateWorkingCopyVersions>
+                        <developmentVersion>1.0-SNAPSHOT</developmentVersion>
+                        <releaseVersion>0.7</releaseVersion>
                     </configuration>
                 </plugin>
 
