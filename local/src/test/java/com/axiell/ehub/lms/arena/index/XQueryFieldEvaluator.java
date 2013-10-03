@@ -2,9 +2,11 @@ package com.axiell.ehub.lms.arena.index;
 
 import net.sf.saxon.Configuration;
 import net.sf.saxon.dom.DocumentWrapper;
+import net.sf.saxon.dom.NodeOverNodeInfo;
 import net.sf.saxon.expr.JPConverter;
 import net.sf.saxon.functions.FunctionLibraryList;
 import net.sf.saxon.functions.JavaExtensionLibrary;
+import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.om.ValueRepresentation;
 import net.sf.saxon.query.DynamicQueryContext;
@@ -20,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class XQueryFieldEvaluator extends XMLFieldEvaluatorBase {
+public class XQueryFieldEvaluator  {
     private Configuration config = Configuration.makeConfiguration(null, null);
 
     public XQueryFieldEvaluator() {
@@ -88,4 +90,21 @@ public class XQueryFieldEvaluator extends XMLFieldEvaluatorBase {
         }
         return sb.toString();
     }
+
+    static Object[] nodeInfos2Nodes(final Object[] objects) {
+        int len = objects.length;
+        Object[] nodes = new Object[len];
+        for (int i = 0; i < len; i++) {
+            Object object = objects[i];
+            if (Node.class.isAssignableFrom(object.getClass())) {
+                nodes[i] = object;
+            } else if (NodeInfo.class.isAssignableFrom(object.getClass())) {
+                nodes[i] = NodeOverNodeInfo.wrap((NodeInfo) object);
+            } else {
+                nodes[i] = object.toString();
+            }
+        }
+        return nodes;
+    }
+
 }
