@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class AlmaExportParseExternalUrlsTest {
     private static final String ALMA_EXPORT_PATH = "src/main/webapp/xml/arena/index/alma-export.xml";
-    private static final String ALMA_INDEX_CLASSPATH = "com/axiell/ehub/arena/index";
+    private static final String ALMA_INDEX_CLASSPATH = "com/axiell/ehub/lms/arena/index";
 
     private String xQuery;
     private Document almaExportDocument;
