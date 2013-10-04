@@ -100,8 +100,9 @@
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <updateWorkingCopyVersions>false</updateWorkingCopyVersions>
-                        <developmentVersion>1.0-SNAPSHOT</developmentVersion>
-                        <releaseVersion>0.7</releaseVersion>
+                        <developmentVersion>${ehub.snapshot.version}</developmentVersion>
+                        <releaseVersion>${ehub.release.version}</releaseVersion>
+                        <tag>${ehub.release.version}</tag>
                     </configuration>
                 </plugin>
 
@@ -668,6 +669,9 @@
         <joda-time.version>2.1</joda-time.version>
         <xmlunit.version>1.5</xmlunit.version>
         <saxon.version>9.1.0.8</saxon.version>
+
+        <ehub.release.version>0.7</ehub.release.version>
+        <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
     <profiles>
