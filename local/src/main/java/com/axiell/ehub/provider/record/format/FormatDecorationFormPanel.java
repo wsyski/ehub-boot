@@ -3,13 +3,9 @@
  */
 package com.axiell.ehub.provider.record.format;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.wicket.Component;
+import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
@@ -27,7 +23,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Skeletal implementation of a {@link Panel} containing a {@link StatelessForm} that provides the possibility to either
@@ -251,7 +248,7 @@ public abstract class FormatDecorationFormPanel extends Panel {
     }
 
     /**
-     * This {@link IBehavior} re-renders the player container when the {@link Component} this {@link IBehavior} is added
+     * This IBehavior re-renders the player container when the Component this IBehavior is added
      * to is changed.
      */
     private class ContentDispositionChoiceOnChangeBehavior extends AjaxFormComponentUpdatingBehavior {

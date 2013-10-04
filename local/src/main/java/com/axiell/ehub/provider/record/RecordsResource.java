@@ -3,12 +3,11 @@
  */
 package com.axiell.ehub.provider.record;
 
-import java.util.Locale;
-
-import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
 import com.axiell.ehub.security.AuthInfo;
+
+import java.util.Locale;
 
 /**
  * Default implementation of the {@link IRecordsResource}.
@@ -22,7 +21,7 @@ public final class RecordsResource implements IRecordsResource {
      * Constructs a new {@link RecordsResource}.
      * 
      * @param formatBusinessController the {@link IFormatBusinessController}
-     * @param contentProviderName the name of the {@link ContentProvider}
+     * @param contentProviderName the name of the ContentProvider
      */
     public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderName) {
         this.formatBusinessController = formatBusinessController;

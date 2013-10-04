@@ -7,7 +7,6 @@ import org.apache.wicket.extensions.breadcrumb.BreadCrumbBar;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 
 /**
  * Skeletal implementation of a {@link Panel} that contains a {@link BreadCrumbBar}. It should be sub-classed to provide
@@ -36,7 +35,7 @@ public abstract class AbstractBreadCrumbBarPanel<P extends BreadCrumbPanel> exte
      * Gets the default active {@link Panel} in the {@link BreadCrumbBar}.
      * 
      * @param activePanelId the ID of the active {@link Panel}
-     * @param breadCrumbModel the {@link Model} of the {@link BreadCrumbBar}
+     * @param breadCrumbModel the Model of the {@link BreadCrumbBar}
      * @return a {@link Panel}
      */
     abstract P getActivePanel(String activePanelId, IBreadCrumbModel breadCrumbModel);
