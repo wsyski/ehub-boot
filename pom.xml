@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.axiell.ehub</groupId>
@@ -101,6 +100,9 @@
                     <configuration>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
                         <updateWorkingCopyVersions>false</updateWorkingCopyVersions>
+                        <developmentVersion>${ehub.snapshot.version}</developmentVersion>
+                        <releaseVersion>${ehub.release.version}</releaseVersion>
+                        <tag>${ehub.release.version}</tag>
                     </configuration>
                 </plugin>
 
@@ -168,11 +170,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <configuration>
-                    <sonar.jdbc.url>jdbc:derby://localhost:1527/sonar;create=true</sonar.jdbc.url>
+                    <sonar.jdbc.url>jdbc:derby://arenabuild.dmz:1527/sonar</sonar.jdbc.url>
                     <sonar.jdbc.driverClassName>org.apache.derby.jdbc.ClientDriver</sonar.jdbc.driverClassName>
                     <sonar.jdbc.username>sonar</sonar.jdbc.username>
                     <sonar.jdbc.password>sonar</sonar.jdbc.password>
-                    <sonar.host.url>http://localhost:9000/sonar</sonar.host.url>
+                    <sonar.host.url>http://arenarep.axiell.com/sonar</sonar.host.url>
                 </configuration>
             </plugin>
 
@@ -667,6 +669,9 @@
         <joda-time.version>2.1</joda-time.version>
         <xmlunit.version>1.5</xmlunit.version>
         <saxon.version>9.1.0.8</saxon.version>
+
+        <ehub.release.version>0.7</ehub.release.version>
+        <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
     <profiles>

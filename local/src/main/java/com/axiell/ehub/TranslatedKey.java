@@ -19,6 +19,8 @@ import java.util.Locale;
  * {@link TranslatedKey} it is the translated labels of the keys that are compared.
  */
 public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Serializable {
+    private static final int NON_ZERO_ODD_NUMBER = 17;
+    private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 31;
     private transient Collator collator;
     private final K key;
     private final String label;
@@ -95,6 +97,6 @@ public final class TranslatedKey<K> implements Comparable<TranslatedKey<K>>, Ser
     
     @Override
     public int hashCode() {
-	return new HashCodeBuilder(17, 31).append(label).toHashCode();
+	return new HashCodeBuilder(NON_ZERO_ODD_NUMBER, MULTIPLIER_NON_ZERO_ODD_NUMBER).append(label).toHashCode();
     }
 }

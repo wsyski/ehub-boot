@@ -3,24 +3,20 @@
  */
 package com.axiell.ehub.security;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.ext.Provider;
-
+import com.axiell.ehub.ErrorCause;
 import org.jboss.resteasy.annotations.interception.Precedence;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
 import org.jboss.resteasy.core.ResourceMethod;
 import org.jboss.resteasy.core.ServerResponse;
-import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.AcceptedByMethod;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
-import com.axiell.ehub.ErrorCause;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.ext.Provider;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This {@link PreProcessInterceptor} is executed before all resource methods that contains a parameter of type
@@ -47,7 +43,7 @@ final class AuthorizationHeaderInterceptor implements PreProcessInterceptor, Acc
      * org.jboss.resteasy.core.ResourceMethod)
      */
     @Override
-    public ServerResponse preProcess(HttpRequest request, ResourceMethod resourceMethod) throws Failure, WebApplicationException {
+    public ServerResponse preProcess(HttpRequest request, ResourceMethod resourceMethod)  {
         final HttpHeaders headers = request.getHttpHeaders();
         final List<String> authorizationHeaders = headers.getRequestHeader("Authorization");
 

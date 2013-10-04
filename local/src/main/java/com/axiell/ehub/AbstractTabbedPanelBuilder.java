@@ -40,7 +40,7 @@ public abstract class AbstractTabbedPanelBuilder<I> implements Serializable {
     /**
      * The first tab is the selected tab by default.
      */
-    protected final static int DEFAULT_SELECTED_TAB = 0;
+    protected static final int DEFAULT_SELECTED_TAB = 0;
 
     // Required parameters
     private final String panelId;
