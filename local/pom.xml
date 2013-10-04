@@ -9,7 +9,7 @@
     </parent>
     <artifactId>ehub-local</artifactId>
     <name>${project.artifactId}</name>
-    <version>${project.version}</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
