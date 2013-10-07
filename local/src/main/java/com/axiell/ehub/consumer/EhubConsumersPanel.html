@@ -1,13 +1,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
     <body>
         <wicket:panel>
-        	<a wicket:id="newEhubConsumerLink" wicket:message="title:lnkNewEhubConsumer.title">
+        	<h4>
+			<a wicket:id="newEhubConsumerLink" wicket:message="title:lnkNewEhubConsumer.title">
         		<wicket:message key="lnkNewEhubConsumer.label"/>
         	</a>
+			</h4>
         
         	<div wicket:id="ehubConsumerFormContainer">
         		<div>
-        			<wicket:message key="txtEhubConsumerFormHeader"/>
+        			<h4><wicket:message key="txtEhubConsumerFormHeader"/></h4>
         		</div>
         		<form wicket:id="ehubConsumerForm">        		
         			<div>
@@ -23,7 +25,7 @@
         				<input wicket:id="property" type="text"></input>
         			</div>
         			<div>
-        				<input wicket:id="submit" type="submit" wicket:message="value:btnCreate.label,title:btnCreate.title"></input>
+        				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnCreate.label,title:btnCreate.title"></input>
         			</div>
         		</form>
         		<a wicket:id="cancelNewEhubConsumerLink" wicket:message="title:lnkCancelNewEhubConsumer.title">
@@ -32,11 +34,11 @@
         	</div>
         	
         	<div>
-        		<wicket:message key="txtEhubConsumersHeader"/>
+        		<h4><wicket:message key="txtEhubConsumersHeader"/></h4>
         	</div>
         
         	<div wicket:id="ehubConsumers">
-        		<table>
+        		<table class="table table-striped">
         			<tr>
         				<td>
 							<a wicket:id="ehubConsumerLink" wicket:message="title:lnkEhubConsumer.title">
@@ -44,6 +46,7 @@
 							</a>
 						</td>
 						<td>
+							<i class="icon-remove"></i>
 							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
 								<wicket:message key="lnkDelete.label"/>
 							</a>

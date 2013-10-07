@@ -10,30 +10,32 @@
        					<input wicket:id="property" type="text"></input>
 		        	</div>
 		        	<div>
-        				<input wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
+        				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
         			</div>
 				</form>
 			</div>
         	
-        	<a wicket:id="newFormatDecorationLink" wicket:message="title:lnkNewFormatDecoration.title">
+        	<h4><a wicket:id="newFormatDecorationLink" wicket:message="title:lnkNewFormatDecoration.title">
         		<wicket:message key="lnkNewFormatDecoration.label"/>
-        	</a>
+        	</a></h4>
+			
         	<div wicket:id="decorationFormPanel"></div>
         	
         	<div>
         		<wicket:message key="txtFormatsHeader"/>
         	</div>
         	<div wicket:id="decorations">
-        		<table>
+        		<table class="table">
         			<tr>
-        				<td>
+        				<td class="contentFormatCell">
 			        		<a wicket:id="decorationLink" wicket:message="title:lnkDecoration.title">
 			        			<span wicket:id="decorationLinkLabel"></span>
 			        		</a>
 			        	</td>
 			        	<td>
 							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
-								<wicket:message key="lnkDelete.label"/>
+								<i class="icon-remove"></i>
+								<!--<wicket:message key="lnkDelete.label"/>-->
 							</a>
 						</td>
 			        </tr>		

@@ -6,11 +6,10 @@ package com.axiell.ehub.user;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 
-import com.axiell.ehub.EhubAdminApplication;
 
 /**
  * A {@link Panel} that provides the possibility to logout from the eHUB Administration interface. If the end-user
- * decides to logout she is sent to the home page of the {@link EhubAdminApplication}.
+ * decides to logout she is sent to the home page of the EhubAdminApplication.
  */
 public final class LogoutPanel extends Panel {
     private static final long serialVersionUID = -4761711573336380963L;

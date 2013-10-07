@@ -3,13 +3,11 @@
  */
 package com.axiell.ehub.provider;
 
-import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.axiell.ehub.provider.record.format.FormatDecoration;
+import java.util.List;
 
 /**
  * Default implementation of the {@link IContentProviderAdminController}.
@@ -47,7 +45,7 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
     }
 
     /**
-     * Initializes the {@link ContentProvider}, which includes initializing all its {@link FormatDecoration}s and
+     * Initializes the {@link ContentProvider}, which includes initializing all its FormatDecorations and
      * all its properties.
      * 
      * @param contentProvider the {@link ContentProvider} to initialize

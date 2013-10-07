@@ -49,8 +49,40 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
         com.axiell.arena.services.palma.loans.CheckOutTestResponse loansCheckOutTestResponse = palmaFacade.checkOutTest(checkOutTest);
         CheckOutTestResponse checkOutTestResponse = loansCheckOutTestResponse.getCheckOutTestResponse();
-        String lmsLoanId = null;
         checkCheckOutTestResponseStatus(checkOutTestResponse, ehubConsumer, libraryCard);
+        return getCheckoutTestAnalysis(ehubConsumer, pendingLoan, libraryCard, checkOutTestResponse);
+    }
+
+    /**
+     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, java.util.Date, String, String)
+     */
+    @Override
+    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final String libraryCard,
+                            final String pin) {
+        String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
+        CheckOut checkOut = createCheckOut(agencyMemberIdentifier, pendingLoan, libraryCard, pin, expirationDate);
+        IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
+        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
+        CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
+        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer, libraryCard);
+        return getLmsLoan(ehubConsumer, pendingLoan, libraryCard, checkOutResponse);
+    }
+
+    private LmsLoan getLmsLoan(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final String libraryCard,
+                               final CheckOutResponse checkOutResponse) {
+        String lmsLoanId;
+        CheckOutResponse.CheckOutSuccess checkOutSuccess = checkOutResponse.getCheckOutSuccess();
+        if (checkOutSuccess != null) {
+            lmsLoanId = checkOutSuccess.getLoanId();
+        } else {
+            throw createCheckOutErrorException(checkOutResponse.getCheckOutError(), ehubConsumer, pendingLoan, libraryCard);
+        }
+        return new LmsLoan(lmsLoanId);
+    }
+
+    private CheckoutTestAnalysis getCheckoutTestAnalysis(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final String libraryCard,
+                                                         final CheckOutTestResponse checkOutTestResponse) {
+        String lmsLoanId = null;
         Result result;
         switch (checkOutTestResponse.getTestStatus()) {
             case NEW_LOAN:
@@ -68,28 +100,6 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
                 throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse);
         }
         return new CheckoutTestAnalysis(result, lmsLoanId);
-    }
-
-    /**
-     * @see com.axiell.ehub.lms.palma.IPalmaDataAccessor#checkout(com.axiell.ehub.consumer.EhubConsumer, com.axiell.ehub.loan.PendingLoan, java.util.Date, String, String)
-     */
-    @Override
-    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final String libraryCard,
-                            final String pin) {
-        String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
-        CheckOut checkOut = createCheckOut(agencyMemberIdentifier, pendingLoan, libraryCard, pin, expirationDate);
-        IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
-        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
-        CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
-        String lmsLoanId;
-        checkCheckOutResponseStatus(checkOutResponse, ehubConsumer,libraryCard);
-        CheckOutResponse.CheckOutSuccess checkOutSuccess = checkOutResponse.getCheckOutSuccess();
-        if (checkOutSuccess != null) {
-            lmsLoanId = checkOutSuccess.getLoanId();
-        } else {
-            throw createCheckOutErrorException(checkOutResponse.getCheckOutError(), ehubConsumer, pendingLoan, libraryCard);
-        }
-        return new LmsLoan(lmsLoanId);
     }
 
     private static ForbiddenException createCheckOutTestCheckoutDeniedException(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan,
@@ -176,7 +186,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
 
     private static void checkCheckOutResponseStatus(final CheckOutResponse checkOutResponse, final EhubConsumer ehubConsumer, final String libraryCard) {
         Validate.isNotNull(checkOutResponse, ehubConsumer, "CheckOutResponse status was null");
-        Validate.isNotNull(checkOutResponse.getCheckOutSuccess()==null ? checkOutResponse.getCheckOutError() : checkOutResponse.getCheckOutSuccess(),
+        Validate.isNotNull(checkOutResponse.getCheckOutSuccess() == null ? checkOutResponse.getCheckOutError() : checkOutResponse.getCheckOutSuccess(),
                 ehubConsumer, "CheckOutResponse checkOutSuccess and checkOutError were null");
         checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, libraryCard);
     }

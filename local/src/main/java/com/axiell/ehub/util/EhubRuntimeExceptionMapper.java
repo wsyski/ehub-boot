@@ -3,14 +3,13 @@
  */
 package com.axiell.ehub.util;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-
+import com.axiell.ehub.EhubRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.axiell.ehub.EhubRuntimeException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 /**
  * An {@link ExceptionMapper} that maps all {@link EhubRuntimeException}s to the {@link Response} of the {@link EhubRuntimeException}.
@@ -23,7 +22,7 @@ public final class EhubRuntimeExceptionMapper<E extends EhubRuntimeException> im
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
      */
     @Override
-    public final Response toResponse(E exception) {
+    public Response toResponse(E exception) {
         LOGGER.error(exception.getMessage(), exception);        
         return exception.getResponse();
     }

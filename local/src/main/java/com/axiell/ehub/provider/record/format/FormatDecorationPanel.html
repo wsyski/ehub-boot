@@ -4,11 +4,11 @@
 	        <div wicket:id="decorationFormPanel"></div>
 	        
 	        <div>
-	        	<wicket:message key="txtTextsHeader"/>
+	        	<h4><wicket:message key="txtTextsHeader"/></h4>
 	        </div>
 	        <form wicket:id="textsForm">	        	
 	        	<div wicket:id="texts">
-	        		<table>	        				
+	        		<table class="table">	        				
 	        			<tr>
 		        			<td>
 			       				<label wicket:for="language">
@@ -30,14 +30,17 @@
 			       			</td>
 			       			<td>
 			       				<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
-			       					<wicket:message key="lnkDelete.label"/>
+									<i class="icon-remove"></i>
+									<!--
+									<wicket:message key="lnkDelete.label"/>
+									-->
 			       				</a>
 			       			</td>	
 	       				</tr>
 	       			</table>
        			</div>
        			<div>
-       				<input wicket:id="submit" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"></input>
+       				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"></input>
        			</div>
 	        </form>
         </wicket:panel>

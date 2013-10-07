@@ -7,7 +7,7 @@
         <nofRecordsTotal>1</nofRecordsTotal>
         <startNo>1</startNo>
         <stopNo>1</stopNo>
-        <exportCatalogueRecord id="id">
+        <exportCatalogueRecord id="id" contentProviderName="contentProviderName" contentProviderRecordId="contentProviderRecordId">
             <facet/>
             <index/>
             <uberkey/>
@@ -16,7 +16,8 @@
                     <author value="author"/>
                 </authors>
                 <externalUrls>
-                    <externalUrl url="http://www.elib.se/library/ebook_detail.asp?id_type=ISBN&amp;id=9185011207&amp;lib=45" linkText="Loan e-book from Elib"/>
+                    <externalUrl value="http://www.elib.se/library/ebook_detail.asp?id_type=ISBN&amp;id=9185011207&amp;lib=45" linkText="Loan e-book from Elib"/>
+                    <externalUrl value="http://beta.publit.se/api/get-item/9789174376838.epub?key=450726c649cc3263c914e3ba39503848b8bee9e4" linkText="Loan e-book from Publit"/>
                 </externalUrls>
             </view>
         </exportCatalogueRecord>

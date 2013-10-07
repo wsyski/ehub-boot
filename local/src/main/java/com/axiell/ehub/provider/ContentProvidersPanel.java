@@ -3,8 +3,6 @@
  */
 package com.axiell.ehub.provider;
 
-import java.util.List;
-
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
@@ -13,13 +11,14 @@ import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.List;
+
 /**
- * A {@link Panel} that displays all available {@link ContentProvider}s in the eHUB. 
+ * A Panel that displays all available {@link ContentProvider}s in the eHUB.
  */
 public final class ContentProvidersPanel extends BreadCrumbPanel {
     private static final long serialVersionUID = -6803834402491511228L;
@@ -31,7 +30,7 @@ public final class ContentProvidersPanel extends BreadCrumbPanel {
     /**
      * Constructs a new {@link ContentProvidersPanel}.
      * 
-     * @param panelId the ID of this {@link Panel}
+     * @param panelId the ID of this Panel
      * @param breadCrumbModel the {@link IBreadCrumbModel} to be used
      */
     public ContentProvidersPanel(String panelId, final IBreadCrumbModel breadCrumbModel) {
