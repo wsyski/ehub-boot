@@ -1,12 +1,9 @@
 package com.axiell.ehub.provider.elib.library;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ElibUtilsTest {
     private static final String ISBN_13 = "9789173892377";
     private static final String ISBN_10 = "9173892378";
