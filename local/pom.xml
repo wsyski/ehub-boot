@@ -521,6 +521,11 @@
                 <configuration>
                     <archiveClasses>false</archiveClasses>
                     <attachClasses>true</attachClasses>
+                    <archive>
+          				<manifest>
+            				<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+          				</manifest>
+        			</archive>
                 </configuration>
             </plugin>
             <plugin>
