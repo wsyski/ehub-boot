@@ -14,7 +14,10 @@ public final class ElibUtils {
     private static final int ISBN10_MAX_LENGTH = 9;
     private static final int ISBN10_START_POSITION = 0;
     private static final int ISBN10_CHECKSUM_CONSTANT = 11;
-    private static final int INVALID_ISBN10__DIGIT = -1;
+    private static final int INVALID_ISBN10_DIGIT = -1;
+    private static final int ISBN10_LENGTH = 10;
+    private static final int ISBN10_START_DIGIT = 3;
+    private static final int ISBN10_LAST_DIGIT = 12;
 
     /**
      * Private constructor that prevents direct instantiation.
@@ -90,7 +93,7 @@ public final class ElibUtils {
     }
 
     private static boolean isNotValidIsbn10Digit(final int currentIsbn10Digit) {
-        return currentIsbn10Digit == INVALID_ISBN10__DIGIT;
+        return currentIsbn10Digit == INVALID_ISBN10_DIGIT;
     }
 
     private static String doCalculateIsbn10WithCheckDigit(final String isbn10WithoutCheckDigits, final int currentIsbn10ChecksumDigest) {
@@ -99,7 +102,7 @@ public final class ElibUtils {
     }
 
     private static int addDigitToisbn10ChecksumDigest(final int isbn10DigitIterator, final int n, final int currentIsbn10Digit) {
-        return n + (10 - isbn10DigitIterator) * currentIsbn10Digit;
+        return n + (ISBN10_LENGTH - isbn10DigitIterator) * currentIsbn10Digit;
     }
 
     private static int getCurrentIsbn10Digit(final String isbn10WithoutCheckDigits, final int i) {
@@ -107,7 +110,7 @@ public final class ElibUtils {
     }
 
     private static String getIsbn10FromIsbn13WithoutCheckDigit(final String isbn13) {
-        return isbn13.substring(3, 12);
+        return isbn13.substring(ISBN10_START_DIGIT, ISBN10_LAST_DIGIT);
     }
 
     private static class IsbnConversionException extends Exception {
