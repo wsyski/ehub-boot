@@ -9,6 +9,7 @@
     </parent>
     <artifactId>ehub-local</artifactId>
     <name>${project.artifactId}</name>
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <dependencies>
@@ -514,6 +515,14 @@
                 <configuration>
                     <archiveClasses>false</archiveClasses>
                     <attachClasses>true</attachClasses>
+                    <archive>
+          				<manifest>
+            				<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+          				</manifest>
+          				<manifestEntries>
+                			<Build-Time>${maven.build.timestamp}</Build-Time>
+            			</manifestEntries>
+        			</archive>
                 </configuration>
             </plugin>
             <plugin>

@@ -47,7 +47,7 @@ public class AdminUser extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @param name the name of the {@link AdminUser}
      * @param clearPassword the clear password of the {@link AdminUser}
-     * @throws NullPointerException if the name of the clear password is null
+     * @throws NullPointerException if the name or the clear password is null
      */
     AdminUser(String name, String clearPassword) {
         Validate.notNull(name, "The name can't be null");

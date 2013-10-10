@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.publit;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,8 +12,9 @@ public class Product {
     private String title;
     private String subTitle;
     private String publisher;
-    private String original_publication_year;
-    
+    @JsonProperty("original_publication_year")
+    private String originalPublicationYear;
+
     public Integer getId() {
         return id;
     }
@@ -33,7 +35,7 @@ public class Product {
         return publisher;
     }
 
-    public String getOriginal_publication_year() {
-        return original_publication_year;
+    public String getOriginalPublicationYear() {
+        return originalPublicationYear;
     }
 }
