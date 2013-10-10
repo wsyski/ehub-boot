@@ -61,7 +61,7 @@ public class FormatBusinessControllerTest {
 
     private void thenFormatsAreRetrievedFromContentProvider() {
 	InOrder inOrder = inOrder(consumerBusinessController, contentProviderDataAccessorFacade);
-	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
 	inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(String.class), any(String.class));
     }
 }
