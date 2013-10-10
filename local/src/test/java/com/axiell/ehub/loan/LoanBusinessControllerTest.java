@@ -124,7 +124,7 @@ public class LoanBusinessControllerTest {
 
     private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
 	InOrder inOrder = inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
-	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
 	inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class));
 	inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(String.class), any(String.class), any(PendingLoan.class));
 	inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(String.class), any(String.class));
@@ -154,7 +154,7 @@ public class LoanBusinessControllerTest {
 
     private InOrder thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId() {
 	InOrder inOrder = inOrder(consumerBusinessController, ehubLoanRepositoryFacade, contentProviderDataAccessorFacade);
-	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
 	inOrder.verify(ehubLoanRepositoryFacade).findEhubLoan(any(EhubConsumer.class), (any(String.class)));
 	return inOrder;
     }
@@ -183,7 +183,7 @@ public class LoanBusinessControllerTest {
 
     private InOrder thenEhubLoanIsFoundInTheEhubDatabaseByReadyLoanId() {
 	InOrder inOrder = inOrder(consumerBusinessController, ehubLoanRepositoryFacade, contentProviderDataAccessorFacade);
-	inOrder.verify(consumerBusinessController).getEhubConsumer(any(Long.class));
+	inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
 	inOrder.verify(ehubLoanRepositoryFacade).findEhubLoan(any(EhubConsumer.class), any(Long.class));
 	return inOrder;
     }
