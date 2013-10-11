@@ -60,7 +60,7 @@ public final class ToString {
 
     public static String clientResponseToString(final ClientResponse<?> clientResponseToProcess) {
         StringBuilder clientResponseStringBuilder = newStringBuilder();
-        appendResponseStatus(clientResponseToProcess.getResponseStatus().getStatusCode(), clientResponseStringBuilder);
+        appendResponseStatus(clientResponseToProcess.getStatus(), clientResponseStringBuilder);
         appendResponseReason(clientResponseToProcess, clientResponseStringBuilder);
         appendHeaders(clientResponseToProcess.getHeaders(), clientResponseStringBuilder);
         readAndAppendResponseBody(clientResponseToProcess, clientResponseStringBuilder);
