@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.consumer;
 
+import com.axiell.ehub.security.AuthInfo;
+
 /**
  * Defines the business methods related to {@link EhubConsumer}s.
  * 
@@ -11,13 +13,8 @@ package com.axiell.ehub.consumer;
  * </p>
  */
 public interface IConsumerBusinessController {
-
-    /**
-     * Gets the {@link EhubConsumer} with the given ID.
-     * 
-     * @param ehubConsumerId the ID of the {@link EhubConsumer}
-     * @return an {@link EhubConsumer}
-     * @throws UnauthorizedException if the {@link EhubConsumer} could not be found
-     */
+   
     EhubConsumer getEhubConsumer(Long ehubConsumerId);
+   
+    EhubConsumer getEhubConsumer(AuthInfo authInfo);
 }

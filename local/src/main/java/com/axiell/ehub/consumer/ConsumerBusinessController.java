@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
+import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.security.UnauthorizedException;
 
 /**
@@ -18,9 +19,6 @@ public class ConsumerBusinessController implements IConsumerBusinessController {
     @Autowired(required = true)
     private IEhubConsumerRepository ehubConsumerRepository;
     
-    /**
-     * @see com.axiell.ehub.consumer.IConsumerBusinessController#getEhubConsumer(java.lang.Long)
-     */
     @Override
     @Transactional(readOnly = true)
     public EhubConsumer getEhubConsumer(final Long ehubConsumerId) {
@@ -31,5 +29,12 @@ public class ConsumerBusinessController implements IConsumerBusinessController {
 	    throw new UnauthorizedException(ErrorCause.EHUB_CONSUMER_NOT_FOUND, ehubConsumerIdArg);
 	}
 	return ehubConsumer;
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public EhubConsumer getEhubConsumer(final AuthInfo authInfo) {
+	final Long ehubConsumerId = authInfo.getEhubConsumerId();
+        return getEhubConsumer(ehubConsumerId);
     }
 }
