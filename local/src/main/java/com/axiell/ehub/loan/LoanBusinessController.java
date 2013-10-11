@@ -37,7 +37,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Override
     @Transactional(readOnly = false)
     public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan) {
-	final EhubConsumer ehubConsumer = getEhubConsumer(authInfo);
+	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
 	final String libraryCard = authInfo.getLibraryCard();
 	final String pin = authInfo.getPin();
 	final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, libraryCard, pin);
@@ -57,11 +57,6 @@ public class LoanBusinessController implements ILoanBusinessController {
 	}
     }
 
-    private EhubConsumer getEhubConsumer(final AuthInfo authInfo) {
-	final Long ehubConsumerId = authInfo.getEhubConsumerId();
-	return consumerBusinessController.getEhubConsumer(ehubConsumerId);
-    }
-
     private ReadyLoan getReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final String lmsLoanId) {
 	final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
 	return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan);
@@ -75,7 +70,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Override
     @Transactional(readOnly = true)
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId) {
-	final EhubConsumer ehubConsumer = getEhubConsumer(authInfo);
+	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
 	final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
 	final String libraryCard = authInfo.getLibraryCard();
 	final String pin = authInfo.getPin();
@@ -85,7 +80,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Override
     @Transactional(readOnly = true)
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId) {
-	final EhubConsumer ehubConsumer = getEhubConsumer(authInfo);
+	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
 	final String libraryCard = authInfo.getLibraryCard();
 	final String pin = authInfo.getPin();
 	return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId);
