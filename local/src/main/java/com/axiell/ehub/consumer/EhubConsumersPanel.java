@@ -22,8 +22,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public class EhubConsumersPanel extends BreadCrumbPanel {
     private final WebMarkupContainer ehubConsumerFormContainer;
     private final ListView<EhubConsumer> ehubConsumersView;
-    private final NewEhubConsumerForm ehubConsumerForm;
-    private final NewEhubConsumerLink newEhubConsumerLink;
+    private final EhubConsumerCreateForm ehubConsumerForm;
+    private final EhubConsumerCreateLink newEhubConsumerLink;
 
     @SpringBean(name = "consumerAdminController") 
     private IConsumerAdminController consumerAdminController;
@@ -45,16 +45,16 @@ public class EhubConsumersPanel extends BreadCrumbPanel {
         ehubConsumerFormContainer = makeEhubConsumerFormContainer(consumersMediator);
         add(ehubConsumerFormContainer);
 
-        ehubConsumerForm = new NewEhubConsumerForm("ehubConsumerForm", consumersMediator);
+        ehubConsumerForm = new EhubConsumerCreateForm("ehubConsumerForm", consumersMediator);
         ehubConsumerFormContainer.add(ehubConsumerForm);
 
         newEhubConsumerLink = makeNewEhubConsumerLink(consumersMediator);
         add(newEhubConsumerLink);
     }
 
-    private NewEhubConsumerLink makeNewEhubConsumerLink(ConsumersMediator consumersMediator) {
-	NewEhubConsumerLink link = new NewEhubConsumerLink("newEhubConsumerLink", consumersMediator);
-        consumersMediator.registerNewEhubConsumerLink(link);
+    private EhubConsumerCreateLink makeNewEhubConsumerLink(ConsumersMediator consumersMediator) {
+	EhubConsumerCreateLink link = new EhubConsumerCreateLink("newEhubConsumerLink", consumersMediator);
+        consumersMediator.registerEhubConsumerCreateLink(link);
         return link;
     }
 

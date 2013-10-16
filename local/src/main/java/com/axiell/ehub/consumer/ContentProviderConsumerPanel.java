@@ -6,7 +6,6 @@ package com.axiell.ehub.consumer;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -18,7 +17,7 @@ import com.axiell.ehub.provider.ContentProvider;
  */
 final class ContentProviderConsumerPanel extends BreadCrumbPanel {
     ContentProviderConsumer contentProviderConsumer;
-    private final StatelessForm<ContentProviderConsumer> contentProviderConsumerForm;
+    private final ContentProviderConsumerEditForm contentProviderConsumerForm;
 
     @SpringBean(name = "consumerAdminController") 
     private IConsumerAdminController consumerAdminController;
@@ -30,7 +29,7 @@ final class ContentProviderConsumerPanel extends BreadCrumbPanel {
         final ConsumersMediator consumersMediator = new ConsumersMediator();
         consumersMediator.registerContentProviderConsumerPanel(this);
         
-        contentProviderConsumerForm = new EditContentProviderConsumerForm("cpcForm", contentProviderConsumer, consumersMediator);
+        contentProviderConsumerForm = new ContentProviderConsumerEditForm("cpcForm", contentProviderConsumer, consumersMediator);
         add(contentProviderConsumerForm);
     }
 

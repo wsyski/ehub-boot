@@ -6,12 +6,12 @@ import org.apache.wicket.model.IModel;
 import com.axiell.ehub.TranslatedKeys;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 
-class EditContentProviderConsumerForm extends AbstractContentProviderConsumerForm {
+class ContentProviderConsumerEditForm extends AbstractContentProviderConsumerForm {
 
-    EditContentProviderConsumerForm(final String id, final ContentProviderConsumer contentProviderConsumer, final ConsumersMediator consumersMediator) {
+    ContentProviderConsumerEditForm(final String id, final ContentProviderConsumer contentProviderConsumer, final ConsumersMediator consumersMediator) {
 	super(id);
 	addPropertiesListView(contentProviderConsumer, formModel);
-	addSubmitButton(consumersMediator, formModel);
+	addEditButton(consumersMediator, formModel);
     }
 
     private void addPropertiesListView(final ContentProviderConsumer contentProviderConsumer, final IModel<ContentProviderConsumer> formModel) {
@@ -20,8 +20,8 @@ class EditContentProviderConsumerForm extends AbstractContentProviderConsumerFor
 	add(contentProviderConsumerPropertiesListView);
     }
 
-    private void addSubmitButton(final ConsumersMediator consumersMediator, final IModel<ContentProviderConsumer> formModel) {
-	final Button submitButton = new EditContentProviderConsumerSubmitButton("submit", consumersMediator, formModel);
-	add(submitButton);
+    private void addEditButton(final ConsumersMediator consumersMediator, final IModel<ContentProviderConsumer> formModel) {
+	final Button button = new ContentProviderConsumerEditButton("submit", consumersMediator, formModel);
+	add(button);
     }
 }

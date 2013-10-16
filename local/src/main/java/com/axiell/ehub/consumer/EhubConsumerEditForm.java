@@ -7,13 +7,13 @@ import com.axiell.ehub.DisabledTextField;
 import com.axiell.ehub.TranslatedKeys;
 import com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
 
-class EditEhubConsumerForm extends AbstractEhubConsumerForm {
+class EhubConsumerEditForm extends AbstractEhubConsumerForm {
 
-    EditEhubConsumerForm(final String id, final EhubConsumer ehubConsumer, final ConsumersMediator consumersMediator) {
+    EhubConsumerEditForm(final String id, final EhubConsumer ehubConsumer, final ConsumersMediator consumersMediator) {
 	super(id);
         addIdField(ehubConsumer);
         addSecretKeyField(ehubConsumer);
-        addSubmitButton(consumersMediator, formModel);
+        addEditButton(consumersMediator, formModel);
     }
 
     private void addIdField(final EhubConsumer ehubConsumer) {
@@ -26,8 +26,8 @@ class EditEhubConsumerForm extends AbstractEhubConsumerForm {
         add(secretKeyField);
     }
     
-    private void addSubmitButton(final ConsumersMediator consumersMediator, final IModel<EhubConsumer> formModel) {
-	final Button submitButton = new EditEhubConsumerSubmitButton("submit", consumersMediator, formModel);
+    private void addEditButton(final ConsumersMediator consumersMediator, final IModel<EhubConsumer> formModel) {
+	final Button submitButton = new EhubConsumerEditButton("submit", consumersMediator, formModel);
         add(submitButton);
     }
     

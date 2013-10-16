@@ -6,16 +6,16 @@ import java.util.List;
 import com.axiell.ehub.TranslatedKeys;
 import com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
 
-class NewEhubConsumerForm extends AbstractEhubConsumerForm {
+class EhubConsumerCreateForm extends AbstractEhubConsumerForm {
 
-    NewEhubConsumerForm(final String id, final ConsumersMediator consumersMediator) {
+    EhubConsumerCreateForm(final String id, final ConsumersMediator consumersMediator) {
 	super(id);
-	addSubmitButton(consumersMediator);
+	addCreateButton(consumersMediator);
     }
 
-    private void addSubmitButton(final ConsumersMediator consumersMediator) {
-	final NewEhubConsumerSubmitButton submitButton = new NewEhubConsumerSubmitButton("submit", consumersMediator, formModel);
-	add(submitButton);
+    private void addCreateButton(final ConsumersMediator consumersMediator) {
+	final EhubConsumerCreateButton button = new EhubConsumerCreateButton("submit", consumersMediator, formModel);
+	add(button);
     }
 
     @Override

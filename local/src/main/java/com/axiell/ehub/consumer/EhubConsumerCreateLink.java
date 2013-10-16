@@ -3,10 +3,10 @@ package com.axiell.ehub.consumer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 
-final class NewEhubConsumerLink extends IndicatingAjaxFallbackLink<Void> {
+final class EhubConsumerCreateLink extends IndicatingAjaxFallbackLink<Void> {
     private final ConsumersMediator consumersMediator;
 
-    NewEhubConsumerLink(final String id, final ConsumersMediator consumersMediator) {
+    EhubConsumerCreateLink(final String id, final ConsumersMediator consumersMediator) {
         super(id);
         setOutputMarkupPlaceholderTag(true);
         this.consumersMediator = consumersMediator;
@@ -20,6 +20,6 @@ final class NewEhubConsumerLink extends IndicatingAjaxFallbackLink<Void> {
             target.addComponent(this);
         }
         
-        consumersMediator.afterNewEhubConsumerLinkClick(target);
+        consumersMediator.afterClickOnEhubConsumerCreateLink(target);
     }
 }

@@ -22,6 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.provider.ContentProviderMediator;
 
 /**
  * 
@@ -44,20 +45,11 @@ public final class FormatDecorationPanel extends BreadCrumbPanel {
      * @param breadCrumbModel
      * @param formatDecoration
      */
-    public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration) {
+    public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration, final ContentProviderMediator contentProviderMediator) {
         super(panelId, breadCrumbModel);
         this.formatDecoration = formatDecoration;
-        this.decorationFormPanel = new FormatDecorationFormPanel("decorationFormPanel", false) {
-            private static final long serialVersionUID = 2576304583773628287L;
-
-            /**
-             * @see com.axiell.ehub.provider.record.format.FormatDecorationFormPanel#afterSave(com.axiell.ehub.provider.record.format.FormatDecoration)
-             */
-            @Override
-            protected void afterSave(FormatDecoration formatDecoration) {
-                FormatDecorationPanel.this.formatDecoration = formatDecoration;
-            }            
-        };
+        this.decorationFormPanel = new FormatDecorationFormPanel("decorationFormPanel", false, contentProviderMediator);
+        decorationFormPanel.setFormModelObject(formatDecoration);
         add(decorationFormPanel);
 
         this.textsForm = createTextsForm();

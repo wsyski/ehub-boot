@@ -22,8 +22,8 @@ import com.axiell.ehub.provider.IContentProviderAdminController;
 final class EhubConsumerPanel extends BreadCrumbPanel {
     private EhubConsumer ehubConsumer;
     private final EhubConsumerHandler ehubConsumerHandler;
-    private final NewContentProviderConsumerLink newContentProviderConsumerLink;
-    private final EditEhubConsumerForm editEhubConsumerForm;
+    private final ContentProviderConsumerCreateLink newContentProviderConsumerLink;
+    private final EhubConsumerEditForm editEhubConsumerForm;
     private final ContentProviderConsumerListView contentProviderConsumerListView;
     private final WebMarkupContainer newContentProviderConsumerFormContainer;
     private final NewContentProviderConsumerForm newContentProviderConsumerForm;
@@ -42,7 +42,7 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
 	ehubConsumerHandler = new EhubConsumerHandler();
 	this.ehubConsumer = ehubConsumer;
 
-	editEhubConsumerForm = new EditEhubConsumerForm("ehubConsumerForm", ehubConsumer, consumersMediator);
+	editEhubConsumerForm = new EhubConsumerEditForm("ehubConsumerForm", ehubConsumer, consumersMediator);
 	add(editEhubConsumerForm);
 
 	contentProviderConsumerListView = new ContentProviderConsumerListView("contentProviderConsumers", breadCrumbModel, consumersMediator);
@@ -51,10 +51,10 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
 	newContentProviderConsumerForm = new NewContentProviderConsumerForm("contentProviderConsumerForm", ehubConsumerHandler, ehubConsumer, consumersMediator);
 	newContentProviderConsumerFormContainer = makeNewContentProviderConsumerFormContainer(newContentProviderConsumerForm, consumersMediator);
 	add(newContentProviderConsumerFormContainer);
-	consumersMediator.registerNewContentProviderConsumerFormContainer(newContentProviderConsumerFormContainer);
+	consumersMediator.registerContentProviderConsumerCreateFormContainer(newContentProviderConsumerFormContainer);
 
-	newContentProviderConsumerLink = new NewContentProviderConsumerLink("newCpcLink", consumersMediator);
-	consumersMediator.registerNewContentProviderConsumerLink(newContentProviderConsumerLink);
+	newContentProviderConsumerLink = new ContentProviderConsumerCreateLink("newCpcLink", consumersMediator);
+	consumersMediator.registerContentProviderConsumerCreateLink(newContentProviderConsumerLink);
 	add(newContentProviderConsumerLink);
     }
 

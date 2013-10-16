@@ -3,7 +3,9 @@
  */
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.provider.ContentProviderMediator;
 import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
@@ -30,26 +32,22 @@ import java.util.List;
  * Skeletal implementation of a {@link Panel} containing a {@link StatelessForm} that provides the possibility to either
  * create a new {@link FormatDecoration} or o modify an existing {@link FormatDecoration}.
  */
-public abstract class FormatDecorationFormPanel extends Panel {
+public class FormatDecorationFormPanel extends Panel {
     private static final long serialVersionUID = 8362085580448033511L;
+    private final ContentProviderMediator contentProviderMediator;
     private final StatelessForm<FormatDecoration> decorationForm;
     private WebMarkupContainer playerContainer;
+    
 
     private Link<?> onCancelVisibleLink;
 
     @SpringBean(name = "formatAdminController")
     private IFormatAdminController formatAdminController;
 
-    /**
-     * Constructs a new {@link FormatDecorationPanel}.
-     * 
-     * @param panelId the ID of this {@link Panel}
-     * @param newFormatDecoration <code>true</code> if and only if a new {@link FormatDecoration} should be created,
-     * <code>false</code> otherwise
-     */
-    public FormatDecorationFormPanel(final String panelId, final boolean newFormatDecoration) {
+    public FormatDecorationFormPanel(final String panelId, final boolean newFormatDecoration, final ContentProviderMediator contentProviderMediator) {
         super(panelId);
         setOutputMarkupPlaceholderTag(true);
+        this.contentProviderMediator = contentProviderMediator;
         this.decorationForm = createFormatDecorationForm(newFormatDecoration);
         add(decorationForm);
 
@@ -80,13 +78,6 @@ public abstract class FormatDecorationFormPanel extends Panel {
         };
         add(cancelLink);
     }
-
-    /**
-     * Invoked after the provided {@link FormatDecoration} has been saved.
-     * 
-     * @param formatDecoration the saved {@link FormatDecoration}
-     */
-    protected abstract void afterSave(FormatDecoration formatDecoration);
 
     /**
      * Sets the {@link Link} that should be made visible when the end-user cancels the creation or modification of the
@@ -166,7 +157,7 @@ public abstract class FormatDecorationFormPanel extends Panel {
             @Override
             public void onSubmit() {
                 final FormatDecoration formatDecoration = formatAdminController.save(decorationForm.getModelObject());
-                afterSave(formatDecoration);
+                contentProviderMediator.afterSavedFormatDecoration(formatDecoration);
             }
         };
         form.add(submitButton);

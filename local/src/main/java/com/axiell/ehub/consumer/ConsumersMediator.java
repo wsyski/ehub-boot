@@ -11,24 +11,24 @@ import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerP
 
 final class ConsumersMediator implements Serializable {
     private EhubConsumerPanel ehubConsumerPanel;
-    private NewContentProviderConsumerLink newContentProviderConsumerLink;
+    private ContentProviderConsumerCreateLink contentProviderConsumerCreateLink;
     private WebMarkupContainer contentProviderConsumerFormContainer;
     private ContentProviderConsumerPropertiesListView contentProviderConsumerPropertiesListView;
     private WebMarkupContainer contentProviderConsumerPropertiesContainer;
     private ContentProviderConsumerPanel contentProviderConsumerPanel;
     private EhubConsumersPanel ehubConsumersPanel;
-    private NewEhubConsumerLink newEhubConsumerLink;
+    private EhubConsumerCreateLink ehubConsumerCreateLink;
     private WebMarkupContainer ehubConsumerFormContainer;
     
     void registerEhubConsumerPanel(final EhubConsumerPanel ehubConsumerPanel) {
 	this.ehubConsumerPanel = ehubConsumerPanel;
     }
     
-    void registerNewContentProviderConsumerLink(final NewContentProviderConsumerLink newContentProviderConsumerLink) {
-	this.newContentProviderConsumerLink = newContentProviderConsumerLink;
+    void registerContentProviderConsumerCreateLink(final ContentProviderConsumerCreateLink contentProviderConsumerCreateLink) {
+	this.contentProviderConsumerCreateLink = contentProviderConsumerCreateLink;
     }
     
-    void registerNewContentProviderConsumerFormContainer(final WebMarkupContainer contentProviderConsumerFormContainer) {
+    void registerContentProviderConsumerCreateFormContainer(final WebMarkupContainer contentProviderConsumerFormContainer) {
 	this.contentProviderConsumerFormContainer = contentProviderConsumerFormContainer;
     }
     
@@ -48,8 +48,8 @@ final class ConsumersMediator implements Serializable {
 	this.ehubConsumersPanel = ehubConsumersPanel;
     }
     
-    void registerNewEhubConsumerLink(final NewEhubConsumerLink newEhubConsumerLink) {
-	this.newEhubConsumerLink = newEhubConsumerLink;
+    void registerEhubConsumerCreateLink(final EhubConsumerCreateLink ehubConsumerCreateLink) {
+	this.ehubConsumerCreateLink = ehubConsumerCreateLink;
     }
     
     void registerEhubConsumerFormContainer(final WebMarkupContainer ehubConsumerFormContainer) {
@@ -70,11 +70,11 @@ final class ConsumersMediator implements Serializable {
     
     void afterCancelNewContentProviderConsumer(final AjaxRequestTarget target) {
 	contentProviderConsumerFormContainer.setVisible(false);
-	newContentProviderConsumerLink.setVisible(true);
+	contentProviderConsumerCreateLink.setVisible(true);
 
         if (target != null) {
             target.addComponent(contentProviderConsumerFormContainer);
-            target.addComponent(newContentProviderConsumerLink);
+            target.addComponent(contentProviderConsumerCreateLink);
         }
     }
     
@@ -105,15 +105,15 @@ final class ConsumersMediator implements Serializable {
     
     void afterCancelNewEhubConsumerConsumer(final AjaxRequestTarget target) {
 	ehubConsumerFormContainer.setVisible(false);
-	newEhubConsumerLink.setVisible(true);
+	ehubConsumerCreateLink.setVisible(true);
 
         if (target != null) {
             target.addComponent(ehubConsumerFormContainer);
-            target.addComponent(newEhubConsumerLink);
+            target.addComponent(ehubConsumerCreateLink);
         }
     }
     
-    void afterNewEhubConsumerLinkClick(final AjaxRequestTarget target) {
+    void afterClickOnEhubConsumerCreateLink(final AjaxRequestTarget target) {
 	ehubConsumerFormContainer.setVisible(true);
 	
 	if (target != null) {

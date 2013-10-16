@@ -1,17 +1,18 @@
 package com.axiell.ehub.consumer;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-class EditEhubConsumerSubmitButton extends Button {
+final class EhubConsumerCreateButton extends Button {
     private final ConsumersMediator consumersMediator;
     private final IModel<EhubConsumer> formModel;
 
     @SpringBean(name = "consumerAdminController")
     private IConsumerAdminController consumerAdminController;
     
-    EditEhubConsumerSubmitButton(final String id, final ConsumersMediator consumersMediator, final IModel<EhubConsumer> formModel) {
+    EhubConsumerCreateButton(final String id, final ConsumersMediator consumersMediator, final IModel<EhubConsumer> formModel) {
         super(id);
         this.consumersMediator = consumersMediator;
         this.formModel = formModel;
@@ -19,8 +20,10 @@ class EditEhubConsumerSubmitButton extends Button {
 
     @Override
     public void onSubmit() {
+        final String secretKey = RandomStringUtils.random(10, true, true);
         EhubConsumer ehubConsumer = formModel.getObject();
-        consumerAdminController.save(ehubConsumer);
-        consumersMediator.afterEditEhubConsumer();
+        ehubConsumer.setSecretKey(secretKey);
+        ehubConsumer = consumerAdminController.save(ehubConsumer);
+        consumersMediator.afterNewEhubConsumer(ehubConsumer);
     }
 }
