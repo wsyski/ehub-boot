@@ -7,11 +7,13 @@ import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecorationFormPanel;
+import com.axiell.ehub.provider.record.format.FormatDecorationPanel;
 import com.axiell.ehub.provider.record.format.FormatDecorationPanelFactory;
 
 public class ContentProviderMediator implements Serializable {
     private ContentProviderPanel contentProviderPanel;
     private FormatDecorationFormPanel formatDecorationFormPanel;
+    private FormatDecorationPanel formatDecorationPanel;
     
     void registerContentProviderPanel(final ContentProviderPanel contentProviderPanel) {
 	this.contentProviderPanel = contentProviderPanel;
@@ -19,6 +21,10 @@ public class ContentProviderMediator implements Serializable {
     
     void registerFormatDecorationFormPanel(final FormatDecorationFormPanel formatDecorationFormPanel) {
 	this.formatDecorationFormPanel = formatDecorationFormPanel;
+    }
+    
+    public void registerFormatDecorationPanel(final FormatDecorationPanel formatDecorationPanel) {
+	this.formatDecorationPanel = formatDecorationPanel;
     }
 
     void afterEditContentProvider() {
@@ -40,5 +46,13 @@ public class ContentProviderMediator implements Serializable {
     public void afterSavedFormatDecoration(final FormatDecoration formatDecoration) {
 	final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration, this);
         contentProviderPanel.activate(factory);	
+    }
+
+    public void afterSavedTextxs() {
+	formatDecorationPanel.activate(formatDecorationPanel);
+    }
+
+    public void afterDeleteTexts() {
+	formatDecorationPanel.activate(formatDecorationPanel);
     }
 }
