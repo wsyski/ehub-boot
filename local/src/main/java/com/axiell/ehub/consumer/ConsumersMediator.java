@@ -12,7 +12,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerP
 final class ConsumersMediator implements Serializable {
     private EhubConsumerPanel ehubConsumerPanel;
     private ContentProviderConsumerCreateLink contentProviderConsumerCreateLink;
-    private WebMarkupContainer contentProviderConsumerFormContainer;
+    private WebMarkupContainer contentProviderConsumerCreateFormContainer;
     private ContentProviderConsumerPropertiesListView contentProviderConsumerPropertiesListView;
     private WebMarkupContainer contentProviderConsumerPropertiesContainer;
     private ContentProviderConsumerPanel contentProviderConsumerPanel;
@@ -28,8 +28,8 @@ final class ConsumersMediator implements Serializable {
 	this.contentProviderConsumerCreateLink = contentProviderConsumerCreateLink;
     }
     
-    void registerContentProviderConsumerCreateFormContainer(final WebMarkupContainer contentProviderConsumerFormContainer) {
-	this.contentProviderConsumerFormContainer = contentProviderConsumerFormContainer;
+    void registerContentProviderConsumerCreateFormContainer(final WebMarkupContainer contentProviderConsumerCreateFormContainer) {
+	this.contentProviderConsumerCreateFormContainer = contentProviderConsumerCreateFormContainer;
     }
     
     void registerContentProviderConsumerPropertiesListView(final ContentProviderConsumerPropertiesListView contentProviderConsumerPropertiesListView) {
@@ -61,19 +61,19 @@ final class ConsumersMediator implements Serializable {
     }
     
     void afterNewContentProviderConsumerLinkClick(final AjaxRequestTarget target) {
-	contentProviderConsumerFormContainer.setVisible(true);
+	contentProviderConsumerCreateFormContainer.setVisible(true);
 	
 	if (target != null) {
-	    target.addComponent(contentProviderConsumerFormContainer);
+	    target.addComponent(contentProviderConsumerCreateFormContainer);
 	}
     }
     
     void afterCancelNewContentProviderConsumer(final AjaxRequestTarget target) {
-	contentProviderConsumerFormContainer.setVisible(false);
+	contentProviderConsumerCreateFormContainer.setVisible(false);
 	contentProviderConsumerCreateLink.setVisible(true);
 
         if (target != null) {
-            target.addComponent(contentProviderConsumerFormContainer);
+            target.addComponent(contentProviderConsumerCreateFormContainer);
             target.addComponent(contentProviderConsumerCreateLink);
         }
     }

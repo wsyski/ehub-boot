@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-class NewContentProviderConsumerSubmitButton extends Button {
+class ContentProviderConsumerCreateButton extends Button {
     private final IModel<ContentProviderConsumer> formModel;
     private final ConsumersMediator consumersMediator;
     private final EhubConsumer ehubConsumer;
@@ -12,7 +12,7 @@ class NewContentProviderConsumerSubmitButton extends Button {
     @SpringBean(name = "consumerAdminController")
     private IConsumerAdminController consumerAdminController;
 
-    NewContentProviderConsumerSubmitButton(final String id, final IModel<ContentProviderConsumer> formModel, final ConsumersMediator consumersMediator, final EhubConsumer ehubConsumer) {
+    ContentProviderConsumerCreateButton(final String id, final IModel<ContentProviderConsumer> formModel, final ConsumersMediator consumersMediator, final EhubConsumer ehubConsumer) {
 	super(id);
 	this.formModel = formModel;
 	this.consumersMediator = consumersMediator;

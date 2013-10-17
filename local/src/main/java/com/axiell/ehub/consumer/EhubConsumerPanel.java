@@ -25,8 +25,8 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
     private final ContentProviderConsumerCreateLink newContentProviderConsumerLink;
     private final EhubConsumerEditForm editEhubConsumerForm;
     private final ContentProviderConsumerListView contentProviderConsumerListView;
-    private final WebMarkupContainer newContentProviderConsumerFormContainer;
-    private final NewContentProviderConsumerForm newContentProviderConsumerForm;
+    private final WebMarkupContainer contentProviderConsumerCreateFormContainer;
+    private final ContentProviderConsumerCreateForm contentProviderConsumerCreateForm;
 
     @SpringBean(name = "consumerAdminController")
     private IConsumerAdminController consumerAdminController;
@@ -48,17 +48,17 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
 	contentProviderConsumerListView = new ContentProviderConsumerListView("contentProviderConsumers", breadCrumbModel, consumersMediator);
 	add(contentProviderConsumerListView);
 
-	newContentProviderConsumerForm = new NewContentProviderConsumerForm("contentProviderConsumerForm", ehubConsumerHandler, ehubConsumer, consumersMediator);
-	newContentProviderConsumerFormContainer = makeNewContentProviderConsumerFormContainer(newContentProviderConsumerForm, consumersMediator);
-	add(newContentProviderConsumerFormContainer);
-	consumersMediator.registerContentProviderConsumerCreateFormContainer(newContentProviderConsumerFormContainer);
+	contentProviderConsumerCreateForm = new ContentProviderConsumerCreateForm("contentProviderConsumerForm", ehubConsumerHandler, ehubConsumer, consumersMediator);
+	contentProviderConsumerCreateFormContainer = makeContentProviderConsumerCreateFormContainer(contentProviderConsumerCreateForm, consumersMediator);
+	add(contentProviderConsumerCreateFormContainer);
+	consumersMediator.registerContentProviderConsumerCreateFormContainer(contentProviderConsumerCreateFormContainer);
 
 	newContentProviderConsumerLink = new ContentProviderConsumerCreateLink("newCpcLink", consumersMediator);
 	consumersMediator.registerContentProviderConsumerCreateLink(newContentProviderConsumerLink);
 	add(newContentProviderConsumerLink);
     }
 
-    private WebMarkupContainer makeNewContentProviderConsumerFormContainer(NewContentProviderConsumerForm form, ConsumersMediator consumersMediator) {
+    private WebMarkupContainer makeContentProviderConsumerCreateFormContainer(ContentProviderConsumerCreateForm form, ConsumersMediator consumersMediator) {
 	final ContentProviderConsumerCancelLink link = new ContentProviderConsumerCancelLink("cancelNewCpcLink", consumersMediator);
 	WebMarkupContainer container = new WebMarkupContainer("contentProviderConsumerFormContainer");
 	container.setOutputMarkupPlaceholderTag(true);
@@ -92,8 +92,8 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
     }
 
     private void updateNewContentProviderConsumerForm() {
-	newContentProviderConsumerFormContainer.setVisible(false);
-	newContentProviderConsumerForm.resetForm();
+	contentProviderConsumerCreateFormContainer.setVisible(false);
+	contentProviderConsumerCreateForm.resetForm();
     }
 
     private void updateContentProviderConsumerListView() {

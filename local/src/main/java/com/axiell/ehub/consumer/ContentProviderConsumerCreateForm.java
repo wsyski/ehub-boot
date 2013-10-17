@@ -10,16 +10,16 @@ import org.apache.wicket.model.IModel;
 import com.axiell.ehub.TranslatedKey;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 
-class NewContentProviderConsumerForm extends AbstractContentProviderConsumerForm {
+class ContentProviderConsumerCreateForm extends AbstractContentProviderConsumerForm {
 
-    NewContentProviderConsumerForm(final String id, final EhubConsumerHandler ehubConsumerHandler, final EhubConsumer ehubConsumer,
+    ContentProviderConsumerCreateForm(final String id, final EhubConsumerHandler ehubConsumerHandler, final EhubConsumer ehubConsumer,
 	    final ConsumersMediator consumersMediator) {
 	super(id);
 	consumersMediator.registerContentProviderConsumerPropertiesListView(contentProviderConsumerPropertiesListView);
 
 	addContentProviderChoice(ehubConsumerHandler, consumersMediator);
 	addContentProviderConsumerPropertiesContainer(consumersMediator);
-	addSubmitButton(ehubConsumer, consumersMediator, formModel);
+	addCreateButton(ehubConsumer, consumersMediator, formModel);
     }
 
     private void addContentProviderChoice(final EhubConsumerHandler ehubConsumerHandler, final ConsumersMediator consumersMediator) {
@@ -40,9 +40,9 @@ class NewContentProviderConsumerForm extends AbstractContentProviderConsumerForm
 	return container;
     }
 
-    private void addSubmitButton(final EhubConsumer ehubConsumer, final ConsumersMediator consumersMediator, final IModel<ContentProviderConsumer> formModel) {
-	final Button submitButton = new NewContentProviderConsumerSubmitButton("submit", formModel, consumersMediator, ehubConsumer);
-	add(submitButton);
+    private void addCreateButton(final EhubConsumer ehubConsumer, final ConsumersMediator consumersMediator, final IModel<ContentProviderConsumer> formModel) {
+	final Button createButton = new ContentProviderConsumerCreateButton("submit", formModel, consumersMediator, ehubConsumer);
+	add(createButton);
     }
 
     void resetForm() {
