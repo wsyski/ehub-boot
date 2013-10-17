@@ -1,15 +1,9 @@
 package com.axiell.ehub.consumer;
 
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.model.IModel;
 
 import com.axiell.ehub.provider.ContentProvider;
 
-/**
- * The {@link IModel} of a {@link ContentProvider} {@link DropDownChoice} in the {@link ContentProviderConsumer}
- * {@link StatelessForm}.
- */
 class ContentProviderModel implements IModel<ContentProvider> {
     private final IModel<ContentProviderConsumer> formModel;
 

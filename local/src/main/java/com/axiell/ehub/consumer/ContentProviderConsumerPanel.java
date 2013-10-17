@@ -6,21 +6,16 @@ package com.axiell.ehub.consumer;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.provider.ContentProvider;
 
 /**
- * A {@link Panel} that displays a {@link ContentProviderConsumer}. It also provides the possibility to modify the
- * properties of the {@link ContentProviderConsumer}.
+ * A Panel that displays a ContentProviderConsumer. It also provides the possibility to modify the
+ * properties of the ContentProviderConsumer.
  */
 final class ContentProviderConsumerPanel extends BreadCrumbPanel {
-    ContentProviderConsumer contentProviderConsumer;
+    private final ContentProviderConsumer contentProviderConsumer;
     private final ContentProviderConsumerEditForm contentProviderConsumerForm;
-
-    @SpringBean(name = "consumerAdminController") 
-    private IConsumerAdminController consumerAdminController;
 
     ContentProviderConsumerPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final ContentProviderConsumer contentProviderConsumer) {
         super(panelId, breadCrumbModel);

@@ -3,12 +3,10 @@ package com.axiell.ehub.consumer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 
 import com.axiell.ehub.TranslatedKeys;
@@ -16,8 +14,8 @@ import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerP
 import com.axiell.ehub.provider.ContentProvider;
 
 /**
- * This {@link AjaxFormComponentUpdatingBehavior} updates the {@link ListView}
- * of {@link ContentProviderConsumer} properties when the {@link Component} this
+ * This AjaxFormComponentUpdatingBehavior updates the ListView
+ * of ContentProviderConsumer properties when the Component this
  * behavior is added to is changed.
  */
 class ContentProviderChoiceOnChangeBehavior extends AjaxFormComponentUpdatingBehavior {

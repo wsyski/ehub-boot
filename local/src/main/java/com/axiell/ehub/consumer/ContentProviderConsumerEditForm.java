@@ -10,11 +10,11 @@ class ContentProviderConsumerEditForm extends AbstractContentProviderConsumerFor
 
     ContentProviderConsumerEditForm(final String id, final ContentProviderConsumer contentProviderConsumer, final ConsumersMediator consumersMediator) {
 	super(id);
-	addPropertiesListView(contentProviderConsumer, formModel);
+	addPropertiesListView(contentProviderConsumer);
 	addEditButton(consumersMediator, formModel);
     }
 
-    private void addPropertiesListView(final ContentProviderConsumer contentProviderConsumer, final IModel<ContentProviderConsumer> formModel) {
+    private void addPropertiesListView(final ContentProviderConsumer contentProviderConsumer) {
 	final TranslatedKeys<ContentProviderConsumerPropertyKey> keys = new TranslatedKeys<>(this, contentProviderConsumer.getProperties());
 	contentProviderConsumerPropertiesListView.setList(keys);
 	add(contentProviderConsumerPropertiesListView);
