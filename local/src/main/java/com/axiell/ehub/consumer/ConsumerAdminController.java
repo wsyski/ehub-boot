@@ -81,16 +81,16 @@ public class ConsumerAdminController implements IConsumerAdminController {
 
     @Override
     @Transactional(readOnly = false)
-    public ContentProviderConsumer add(Long ehubConsumerId, ContentProviderConsumer contentProviderConsumer) {
-	EhubConsumer ehubConsumer = getEhubConsumer(ehubConsumerId);
-	contentProviderConsumer.setEhubConsumer(ehubConsumer);
-	contentProviderConsumer = save(contentProviderConsumer);
+    public ContentProviderConsumer add(final Long ehubConsumerId, final ContentProviderConsumer providedContentProviderConsumer) {
+	final EhubConsumer ehubConsumer = getEhubConsumer(ehubConsumerId);
+	providedContentProviderConsumer.setEhubConsumer(ehubConsumer);
+	final ContentProviderConsumer savedContentProviderConsumer = save(providedContentProviderConsumer);
 
-	Set<ContentProviderConsumer> contentProviderConsumers = ehubConsumer.getContentProviderConsumers();
-	contentProviderConsumers.add(contentProviderConsumer);
+	final Set<ContentProviderConsumer> contentProviderConsumers = ehubConsumer.getContentProviderConsumers();
+	contentProviderConsumers.add(savedContentProviderConsumer);
 	save(ehubConsumer);
 
-	return contentProviderConsumer;
+	return savedContentProviderConsumer;
     }
 
     /**

@@ -8,26 +8,25 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.provider.ContentProviderMediator;
-
 public final class FormatDecorationPanel extends BreadCrumbPanel {
-    private final FormatDecorationFormPanel decorationFormPanel;
+    private final FormatDecorationEditFormPanel decorationFormPanel;
     private FormatDecoration formatDecoration;
     private final TextsForm textsForm;
 
     @SpringBean(name = "formatAdminController") 
     private IFormatAdminController formatAdminController;
-
-    public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration, final ContentProviderMediator contentProviderMediator) {
+    
+    public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration) {
         super(panelId, breadCrumbModel);
-        contentProviderMediator.registerFormatDecorationPanel(this);
+        final FormatDecorationMediator formatDecorationMediator = new FormatDecorationMediator();
+        formatDecorationMediator.registerFormatDecorationPanel(this);
+        
         this.formatDecoration = formatDecoration;
         
-        this.decorationFormPanel = new FormatDecorationFormPanel("decorationFormPanel", false, contentProviderMediator);
-        decorationFormPanel.setFormModelObject(formatDecoration);
+        decorationFormPanel = new FormatDecorationEditFormPanel("decorationFormPanel", formatDecorationMediator, formatDecoration);
         add(decorationFormPanel);
 
-        this.textsForm = new TextsForm("textsForm", contentProviderMediator);
+        textsForm = new TextsForm("textsForm", formatDecorationMediator);
         add(textsForm);
     }
 

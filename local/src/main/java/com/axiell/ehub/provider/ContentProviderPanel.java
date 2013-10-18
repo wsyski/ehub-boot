@@ -7,37 +7,24 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.FormatDecorationCreateFormPanel;
 import com.axiell.ehub.provider.record.format.FormatDecorationCreateLink;
-import com.axiell.ehub.provider.record.format.FormatDecorationFormPanel;
 import com.axiell.ehub.provider.record.format.FormatDecorationsListView;
 
-/**
- * A {@link Panel} that displays a {@link ContentProvider}. It also provides the possibility to modify the properties of
- * the {@link ContentProvider} and to add new {@link FormatDecoration}s to the {@link ContentProvider}.
- */
 final class ContentProviderPanel extends BreadCrumbPanel {
     private final ContentProviderName contentProviderName;
     private final ContentProviderEditForm contentProviderForm;
-    private final FormatDecorationsListView decorationsListView;
-    private ContentProvider contentProvider;
+    private final FormatDecorationsListView formatDecorationsListView;
     
     private final IndicatingAjaxFallbackLink<Void> formatDecorationCreateLink;
-    private final FormatDecorationFormPanel decorationFormPanel;
+    private final FormatDecorationCreateFormPanel formatDecorationCreateFormPanel;
 
     @SpringBean(name = "contentProviderAdminController") 
     private IContentProviderAdminController contentProviderAdminController;
     
-    /**
-     * Constructs a new {@link ContentProviderPanel}.
-     * 
-     * @param panelId the ID of this {@link Panel}
-     * @param breadCrumbModel the {@link IBreadCrumbModel} to be used
-     * @param contentProviderName the name of the {@link ContentProvider} to be shown
-     */
     ContentProviderPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final ContentProviderName contentProviderName) {
         super(panelId, breadCrumbModel);
         final ContentProviderMediator contentProviderMediator = new ContentProviderMediator();
@@ -47,22 +34,22 @@ final class ContentProviderPanel extends BreadCrumbPanel {
         contentProviderForm = new ContentProviderEditForm("contentProviderForm", contentProviderMediator);
         add(contentProviderForm);
                 
-        decorationsListView = new FormatDecorationsListView("decorations", breadCrumbModel, contentProviderMediator);
-        add(decorationsListView);
+        formatDecorationsListView = new FormatDecorationsListView("decorations", breadCrumbModel, contentProviderMediator);
+        add(formatDecorationsListView);
         
-        decorationFormPanel = new FormatDecorationFormPanel("decorationFormPanel", true, contentProviderMediator);
-        contentProviderMediator.registerFormatDecorationFormPanel(decorationFormPanel);
-        add(decorationFormPanel);
+        formatDecorationCreateFormPanel = new FormatDecorationCreateFormPanel("decorationFormPanel", contentProviderMediator);
+        contentProviderMediator.registerFormatDecorationCreateFormPanel(formatDecorationCreateFormPanel);
+        add(formatDecorationCreateFormPanel);
         
         formatDecorationCreateLink = makeFormatDecorationCreateLink(contentProviderMediator);
         add(formatDecorationCreateLink);
-        decorationFormPanel.setOnCancelVisibleLink(formatDecorationCreateLink);
         
     }
 
     private FormatDecorationCreateLink makeFormatDecorationCreateLink(final ContentProviderMediator contentProviderMediator) {
 	FormatDecorationCreateLink link = new FormatDecorationCreateLink("newFormatDecorationLink", contentProviderMediator);
 	link.setOutputMarkupPlaceholderTag(true);
+	contentProviderMediator.registerFormatDecorationCreateLink(link);
 	return link;
     }
     
@@ -73,16 +60,22 @@ final class ContentProviderPanel extends BreadCrumbPanel {
 
     @Override
     public void onActivate(IBreadCrumbParticipant previous) {
-        contentProvider = contentProviderAdminController.getContentProvider(contentProviderName);
-        contentProviderForm.setContentProvider(contentProvider);
-
-        decorationsListView.setContentProvider(contentProvider);
+	final ContentProvider contentProvider = contentProviderAdminController.getContentProvider(contentProviderName);
         
-        final FormatDecoration formatDecoration = new FormatDecoration(contentProvider);
-        decorationFormPanel.setFormModelObject(formatDecoration);
-        decorationFormPanel.setVisible(false);
+	contentProviderForm.setContentProvider(contentProvider);
+
+        formatDecorationsListView.setContentProvider(contentProvider);
+        
+        updateFormatDecorationCreateFormPanel(contentProvider);
+        
         formatDecorationCreateLink.setVisible(true);
         
         super.onActivate(previous);
+    }
+
+    private void updateFormatDecorationCreateFormPanel(ContentProvider contentProvider) {
+	final FormatDecoration formatDecoration = new FormatDecoration(contentProvider);
+        formatDecorationCreateFormPanel.setFormModelObject(formatDecoration);
+        formatDecorationCreateFormPanel.setVisible(false);
     }
 }

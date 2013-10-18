@@ -38,7 +38,8 @@ public final class FormatDecorationsListView extends ListView<String> {
     }
 
     private BreadCrumbPanelLink makeFormatDecorationLink(final String formatId, final FormatDecoration formatDecoration) {	                                
-        final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration, contentProviderMediator);	
+//        final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration, contentProviderMediator);	
+	final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration);
 	final BreadCrumbPanelLink link = new BreadCrumbPanelLink("decorationLink", breadCrumbModel, factory);        
         final Label linkLabel = new Label("decorationLinkLabel", formatId);
         link.add(linkLabel);

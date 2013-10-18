@@ -6,53 +6,70 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatDecorationFormPanel;
-import com.axiell.ehub.provider.record.format.FormatDecorationPanel;
+import com.axiell.ehub.provider.record.format.FormatDecorationCreateFormPanel;
+import com.axiell.ehub.provider.record.format.FormatDecorationCreateLink;
 import com.axiell.ehub.provider.record.format.FormatDecorationPanelFactory;
+import com.axiell.ehub.provider.record.format.IContentDispositionChangedAwareMediator;
+import com.axiell.ehub.provider.record.format.PlayerContainer;
 
-public class ContentProviderMediator implements Serializable {
+public class ContentProviderMediator implements Serializable, IContentDispositionChangedAwareMediator {
     private ContentProviderPanel contentProviderPanel;
-    private FormatDecorationFormPanel formatDecorationFormPanel;
-    private FormatDecorationPanel formatDecorationPanel;
-    
+    private FormatDecorationCreateFormPanel formatDecorationCreateFormPanel;
+    private FormatDecorationCreateLink formatDecorationCreateLink;
+    private PlayerContainer playerContainer;
+
     void registerContentProviderPanel(final ContentProviderPanel contentProviderPanel) {
 	this.contentProviderPanel = contentProviderPanel;
     }
-    
-    void registerFormatDecorationFormPanel(final FormatDecorationFormPanel formatDecorationFormPanel) {
-	this.formatDecorationFormPanel = formatDecorationFormPanel;
+
+    void registerFormatDecorationCreateFormPanel(final FormatDecorationCreateFormPanel formatDecorationCreateFormPanel) {
+	this.formatDecorationCreateFormPanel = formatDecorationCreateFormPanel;
+    }
+
+    public void registerFormatDecorationCreateLink(final FormatDecorationCreateLink formatDecorationCreateLink) {
+	this.formatDecorationCreateLink = formatDecorationCreateLink;
     }
     
-    public void registerFormatDecorationPanel(final FormatDecorationPanel formatDecorationPanel) {
-	this.formatDecorationPanel = formatDecorationPanel;
+    @Override
+    public void registerPlayerContainer(PlayerContainer playerContainer) {
+	this.playerContainer = playerContainer;
     }
 
     void afterEditContentProvider() {
 	contentProviderPanel.activate(contentProviderPanel);
     }
-    
+
     public void afterDeleteFormatDecoration() {
 	contentProviderPanel.activate(contentProviderPanel);
     }
 
-    public void afterClickOnFormatDecorationCreateLink(AjaxRequestTarget target) {
-	formatDecorationFormPanel.setVisible(true);
-	
+    public void afterClickOnFormatDecorationCreateLink(final AjaxRequestTarget target) {
+	formatDecorationCreateFormPanel.setVisible(true);
+
 	if (target != null) {
-	    target.addComponent(formatDecorationFormPanel);
+	    target.addComponent(formatDecorationCreateFormPanel);
 	}
     }
 
-    public void afterSavedFormatDecoration(final FormatDecoration formatDecoration) {
-	final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration, this);
-        contentProviderPanel.activate(factory);	
+    public void afterNewFormatDecoration(final FormatDecoration formatDecoration) {
+	final IBreadCrumbPanelFactory factory = new FormatDecorationPanelFactory(formatDecoration);
+	contentProviderPanel.activate(factory);
     }
 
-    public void afterSavedTextxs() {
-	formatDecorationPanel.activate(formatDecorationPanel);
+    public void afterCancelNewFormatDecoration(final AjaxRequestTarget target) {
+	formatDecorationCreateFormPanel.setVisible(false);
+	formatDecorationCreateLink.setVisible(true);
+
+	if (target != null) {
+	    target.addComponent(formatDecorationCreateFormPanel);
+	    target.addComponent(formatDecorationCreateLink);
+	}
     }
 
-    public void afterDeleteTexts() {
-	formatDecorationPanel.activate(formatDecorationPanel);
+    @Override
+    public void afterContentDispositionChanged(AjaxRequestTarget target) {
+	if (target != null) {
+	    target.addComponent(playerContainer);
+	}
     }
 }

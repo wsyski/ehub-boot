@@ -7,28 +7,27 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.DeleteLink;
 import com.axiell.ehub.language.Language;
-import com.axiell.ehub.provider.ContentProviderMediator;
 
 final class TextsDeleteLink extends DeleteLink<Void> {
     private static final String CONFIRMATION_TEXTS = "Are you sure you want to delete these texts?";    
     private final Language language;
     private final IModel<FormatDecoration> formatModel;
-    private final ContentProviderMediator contentProviderMediator;    
+    private final FormatDecorationMediator formatDecorationMediator;    
     
     @SpringBean(name = "formatAdminController")
     private IFormatAdminController formatAdminController;
 
-    TextsDeleteLink(final String id, final Language language, final IModel<FormatDecoration> formatModel, final ContentProviderMediator contentProviderMediator) {
+    TextsDeleteLink(final String id, final Language language, final IModel<FormatDecoration> formatModel, final FormatDecorationMediator formatDecorationMediator) {
 	super(id, CONFIRMATION_TEXTS);	
 	this.language = language;	
 	this.formatModel = formatModel;
-	this.contentProviderMediator = contentProviderMediator;
+	this.formatDecorationMediator = formatDecorationMediator;
     }
 
     @Override
     public void onClick() {
         deleteTexts();
-        contentProviderMediator.afterDeleteTexts();
+        formatDecorationMediator.afterDeleteTexts();
     }
 
     private void deleteTexts() {
