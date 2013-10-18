@@ -14,23 +14,41 @@ public final class LoginPanel extends Panel {
 
     public LoginPanel(String panelId) {
         super(panelId);
-
-        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
-        add(feedbackPanel);
+        addFeedbackPanel();
 
         final AdminUser user = new AdminUser();
-        final CompoundPropertyModel<AdminUser> formModel = new CompoundPropertyModel<>(user);
-        StatelessForm<AdminUser> loginForm = new StatelessForm<>("loginForm", formModel);
+        final StatelessForm<AdminUser> loginForm = makeLoginForm(user);
 
-        final RequiredTextField<String> nameField = new RequiredTextField<>("name");
-        loginForm.add(nameField);
-
-        final PasswordTextField passwordField = new PasswordTextField("clearPassword");
-        loginForm.add(passwordField);
-
-        final LoginButton loginButton = new LoginButton("submit", user);
-        loginForm.add(loginButton);
+        addNameField(loginForm);
+        addPasswordField(loginForm);
+        addLoginButton(user, loginForm);
 
         add(loginForm);
+    }
+
+    private void addFeedbackPanel() {
+	final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        add(feedbackPanel);
+    }
+    
+    private StatelessForm<AdminUser> makeLoginForm(final AdminUser user) {
+	final CompoundPropertyModel<AdminUser> formModel = new CompoundPropertyModel<>(user);
+        StatelessForm<AdminUser> loginForm = new StatelessForm<>("loginForm", formModel);
+	return loginForm;
+    }
+
+    private void addNameField(StatelessForm<AdminUser> loginForm) {
+	final RequiredTextField<String> nameField = new RequiredTextField<>("name");
+        loginForm.add(nameField);
+    }
+
+    private void addPasswordField(StatelessForm<AdminUser> loginForm) {
+	final PasswordTextField passwordField = new PasswordTextField("clearPassword");
+        loginForm.add(passwordField);
+    }
+
+    private void addLoginButton(final AdminUser user, StatelessForm<AdminUser> loginForm) {
+	final LoginButton loginButton = new LoginButton("submit", user);
+        loginForm.add(loginButton);
     }
 }
