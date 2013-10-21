@@ -2,10 +2,9 @@ package com.axiell.ehub.consumer;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.DeleteLink;
+import com.axiell.ehub.ConfirmationLink;
 
-final class EhubConsumerDeleteLink extends DeleteLink<EhubConsumer> {
-    private static final String CONFIRMATION_TEXT = "Are you sure you want to delete this eHUB Consumer?";
+final class EhubConsumerDeleteLink extends ConfirmationLink<EhubConsumer> {   
     private final EhubConsumer ehubConsumer;
     private final ConsumersMediator consumersMediator;
 
@@ -13,7 +12,7 @@ final class EhubConsumerDeleteLink extends DeleteLink<EhubConsumer> {
     private IConsumerAdminController consumerAdminController;
     
     EhubConsumerDeleteLink(final String id, final EhubConsumer ehubConsumer, final ConsumersMediator consumersMediator) {
-        super(id, CONFIRMATION_TEXT);
+        super(id);
         this.ehubConsumer = ehubConsumer;
         this.consumersMediator = consumersMediator;
     }

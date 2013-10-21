@@ -9,9 +9,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.language.Language;
 
-/**
- * 
- */
 abstract class AbstractTextModel implements IModel<String> {
     private final IModel<FormatDecoration> formModel;
     private final String language;

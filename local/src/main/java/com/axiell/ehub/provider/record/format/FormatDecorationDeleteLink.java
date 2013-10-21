@@ -2,11 +2,10 @@ package com.axiell.ehub.provider.record.format;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.DeleteLink;
+import com.axiell.ehub.ConfirmationLink;
 import com.axiell.ehub.provider.ContentProviderMediator;
 
-public final class FormatDecorationDeleteLink extends DeleteLink<Void> {
-    private static final String CONFIRMATION_TEXT = "Are you sure you want to delete this format?";
+public final class FormatDecorationDeleteLink extends ConfirmationLink<Void> {
     private final FormatDecoration formatDecoration;
     private final ContentProviderMediator contentProviderMediator;
     
@@ -14,7 +13,7 @@ public final class FormatDecorationDeleteLink extends DeleteLink<Void> {
     private IFormatAdminController formatAdminController;
 
     public FormatDecorationDeleteLink(final String id, final FormatDecoration formatDecoration, final ContentProviderMediator contentProviderMediator) {
-        super(id, CONFIRMATION_TEXT);
+        super(id);
         this.formatDecoration = formatDecoration;
         this.contentProviderMediator = contentProviderMediator;
     }

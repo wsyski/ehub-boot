@@ -11,12 +11,12 @@ class NameModel extends AbstractTextModel {
     }
 
     @Override
-    String getText(FormatTextBundle textBundle) {
+    String getText(final FormatTextBundle textBundle) {
         return textBundle.getName();
     }
 
     @Override
-    void setText(FormatTextBundle textBundle, String text) {
+    void setText(final FormatTextBundle textBundle, final String text) {
         textBundle.setName(text);
     }
 }

@@ -11,14 +11,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 public final class FormatDecorationPanel extends BreadCrumbPanel {
     private final FormatDecorationEditFormPanel decorationFormPanel;
     private FormatDecoration formatDecoration;
-    private final TextsForm textsForm;
+    private final FormatDecorationMediator formatDecorationMediator;
 
     @SpringBean(name = "formatAdminController") 
     private IFormatAdminController formatAdminController;
     
     public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration) {
         super(panelId, breadCrumbModel);
-        final FormatDecorationMediator formatDecorationMediator = new FormatDecorationMediator();
+        formatDecorationMediator = new FormatDecorationMediator();
         formatDecorationMediator.registerFormatDecorationPanel(this);
         
         this.formatDecoration = formatDecoration;
@@ -26,8 +26,12 @@ public final class FormatDecorationPanel extends BreadCrumbPanel {
         decorationFormPanel = new FormatDecorationEditFormPanel("decorationFormPanel", formatDecorationMediator, formatDecoration);
         add(decorationFormPanel);
 
-        textsForm = new TextsForm("textsForm", formatDecorationMediator);
-        add(textsForm);
+        addOrReplaceTextsForm();
+    }
+
+    private void addOrReplaceTextsForm() {
+	final TextsForm textsForm = new TextsForm("textsForm", formatDecorationMediator, formatDecoration);
+        addOrReplace(textsForm);
     }
 
     @Override
@@ -38,7 +42,7 @@ public final class FormatDecorationPanel extends BreadCrumbPanel {
     @Override
     public void onActivate(IBreadCrumbParticipant previous) {
         formatDecoration = formatAdminController.getFormatDecoration(formatDecoration.getId());
-        textsForm.setModelObject(formatDecoration);
+        addOrReplaceTextsForm();
 
         decorationFormPanel.setFormModelObject(formatDecoration);
         super.onActivate(previous);

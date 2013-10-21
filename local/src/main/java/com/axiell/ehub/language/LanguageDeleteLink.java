@@ -2,10 +2,9 @@ package com.axiell.ehub.language;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.DeleteLink;
+import com.axiell.ehub.ConfirmationLink;
 
-final class LanguageDeleteLink extends DeleteLink<Void> {
-    private static final String CONFIRMATION_TEXT = "Are you sure you want to delete this language including all format texts in this language?";
+final class LanguageDeleteLink extends ConfirmationLink<Void> {
     private final Language language;
     private final LanguagesMediator mediator;
     
@@ -13,7 +12,7 @@ final class LanguageDeleteLink extends DeleteLink<Void> {
     private ILanguageAdminController languageAdminController;
 
     LanguageDeleteLink(final String id, final Language language, final LanguagesMediator mediator) {
-        super(id, CONFIRMATION_TEXT);
+        super(id);
         this.language = language;
         this.mediator = mediator;
     }

@@ -9,12 +9,12 @@ class PlayerHeightModel extends AbstractPlayerModel {
     }
 
     @Override
-    protected Integer getObject(FormatDecoration formatDecoration) {
+    protected Integer getObject(final FormatDecoration formatDecoration) {
         return formatDecoration.getPlayerHeight();
     }
     
     @Override
-    protected void setObject(FormatDecoration formatDecoration, Integer value) {
+    protected void setObject(final FormatDecoration formatDecoration, final Integer value) {
         formatDecoration.setPlayerHeight(value);
     }
 }

@@ -11,7 +11,8 @@ import org.apache.wicket.model.Model;
 import com.axiell.ehub.language.Language;
 
 final class TextsListView extends ListView<Language> {
-    private final IModel<FormatDecoration> formModel;
+    private IModel<FormatDecoration> formModel;
+//    private final IModel<FormatDecoration> formModel;
     private final FormatDecorationMediator formatDecorationMediator;
 
     TextsListView(final String id, final List<? extends Language> languages, final IModel<FormatDecoration> formModel, final FormatDecorationMediator formatDecorationMediator) {
@@ -19,6 +20,12 @@ final class TextsListView extends ListView<Language> {
         this.formModel = formModel;
         this.formatDecorationMediator = formatDecorationMediator;
     }
+    
+//    TextsListView(final String id, final List<? extends Language> languages, final FormatDecorationMediator formatDecorationMediator) {
+//      super(id, languages);
+////      this.formModel = formModel;
+//      this.formatDecorationMediator = formatDecorationMediator;
+//  }
 
     @Override
     protected void populateItem(ListItem<Language> item) {
@@ -35,6 +42,10 @@ final class TextsListView extends ListView<Language> {
 
         final TextsDeleteLink deleteLink = new TextsDeleteLink("deleteLink", language, formModel, formatDecorationMediator);
         item.add(deleteLink);
+    }
+    
+    void setFormModel(IModel<FormatDecoration> formModel) {
+	this.formModel = formModel;
     }
 
     private TextField<String> makeLanguageField(final Language language) {

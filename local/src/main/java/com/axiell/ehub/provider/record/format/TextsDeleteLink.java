@@ -5,22 +5,21 @@ import java.util.Map;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.axiell.ehub.DeleteLink;
+import com.axiell.ehub.ConfirmationLink;
 import com.axiell.ehub.language.Language;
 
-final class TextsDeleteLink extends DeleteLink<Void> {
-    private static final String CONFIRMATION_TEXTS = "Are you sure you want to delete these texts?";    
+final class TextsDeleteLink extends ConfirmationLink<Void> {   
     private final Language language;
-    private final IModel<FormatDecoration> formatModel;
+    private final IModel<FormatDecoration> formModel;
     private final FormatDecorationMediator formatDecorationMediator;    
     
     @SpringBean(name = "formatAdminController")
     private IFormatAdminController formatAdminController;
 
-    TextsDeleteLink(final String id, final Language language, final IModel<FormatDecoration> formatModel, final FormatDecorationMediator formatDecorationMediator) {
-	super(id, CONFIRMATION_TEXTS);	
+    TextsDeleteLink(final String id, final Language language, final IModel<FormatDecoration> formModel, final FormatDecorationMediator formatDecorationMediator) {
+	super(id);	
 	this.language = language;	
-	this.formatModel = formatModel;
+	this.formModel = formModel;
 	this.formatDecorationMediator = formatDecorationMediator;
     }
 
@@ -31,7 +30,7 @@ final class TextsDeleteLink extends DeleteLink<Void> {
     }
 
     private void deleteTexts() {
-	final FormatDecoration formatDecoration = formatModel.getObject();
+	final FormatDecoration formatDecoration = formModel.getObject();
         final Map<String, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
         final String languageId = language.getId();
         final FormatTextBundle textBundle = textBundles.get(languageId);

@@ -13,7 +13,7 @@ class FormatDecorationMediator implements Serializable, IContentDispositionChang
     }
     
     @Override
-    public void registerPlayerContainer(PlayerContainer playerContainer) {
+    public void registerPlayerContainer(final PlayerContainer playerContainer) {
 	this.playerContainer = playerContainer;
     }
     
@@ -26,7 +26,7 @@ class FormatDecorationMediator implements Serializable, IContentDispositionChang
     }
     
     @Override
-    public void afterContentDispositionChanged(AjaxRequestTarget target) {
+    public void afterContentDispositionChanged(final AjaxRequestTarget target) {
 	if (target != null) {
 	    target.addComponent(playerContainer);
 	}	   

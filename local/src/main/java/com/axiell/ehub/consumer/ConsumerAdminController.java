@@ -26,11 +26,11 @@ public class ConsumerAdminController implements IConsumerAdminController {
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(EhubConsumer ehubConsumer) {
-	ehubConsumer = getEhubConsumer(ehubConsumer.getId());
-	Set<ContentProviderConsumer> consumers = ehubConsumer.getContentProviderConsumers();
+    public void delete(final EhubConsumer providedEhubConsumer) {
+	EhubConsumer retrievedEhubConsumer = getEhubConsumer(providedEhubConsumer.getId());
+	Set<ContentProviderConsumer> consumers = retrievedEhubConsumer.getContentProviderConsumers();
 	contentProviderConsumerRepository.delete(consumers);
-	ehubConsumerRepository.delete(ehubConsumer);
+	ehubConsumerRepository.delete(retrievedEhubConsumer);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ConsumerAdminController implements IConsumerAdminController {
      */
     @Override
     @Transactional(readOnly = true)
-    public EhubConsumer getEhubConsumer(Long ehubConsumerId) {
+    public EhubConsumer getEhubConsumer(final Long ehubConsumerId) {
 	EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(ehubConsumerId);
 	return initialize(ehubConsumer);
     }
