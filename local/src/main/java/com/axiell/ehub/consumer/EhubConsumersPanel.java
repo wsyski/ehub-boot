@@ -19,7 +19,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
  * A {@link Panel} that displays all available {@link EhubConsumer}s in the eHUB. It also provides the possibility
  * create a new {@link EhubConsumer}.
  */
-public class EhubConsumersPanel extends BreadCrumbPanel {
+final class EhubConsumersPanel extends BreadCrumbPanel {
     private final WebMarkupContainer ehubConsumerFormContainer;
     private final ListView<EhubConsumer> ehubConsumersView;
     private final EhubConsumerCreateForm ehubConsumerForm;
@@ -34,7 +34,7 @@ public class EhubConsumersPanel extends BreadCrumbPanel {
      * @param panelId the ID of this {@link Panel}
      * @param breadCrumbModel the {@link IBreadCrumbModel} to be used
      */
-    public EhubConsumersPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
+    EhubConsumersPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
         super(panelId, breadCrumbModel);
         ConsumersMediator consumersMediator = new ConsumersMediator();
         consumersMediator.registerEhubConsumersPanel(this);

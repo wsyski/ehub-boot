@@ -12,14 +12,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public final class LanguagesPanel extends BreadCrumbPanel {
+final class LanguagesPanel extends BreadCrumbPanel {
     private final LanguagesListView languagesListView;
     private final LanguageForm languageForm;
 
     @SpringBean(name = "languageAdminController")
     private ILanguageAdminController languageAdminController;
 
-    public LanguagesPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
+    LanguagesPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
 	super(panelId, breadCrumbModel);
 	final LanguagesMediator mediator = new LanguagesMediator();
 	mediator.registerLanguagesPanel(this);

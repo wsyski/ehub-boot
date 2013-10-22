@@ -38,5 +38,5 @@ public abstract class AbstractBreadCrumbBarPanel<P extends BreadCrumbPanel> exte
      * @param breadCrumbModel the Model of the {@link BreadCrumbBar}
      * @return a {@link Panel}
      */
-    abstract P getActivePanel(String activePanelId, IBreadCrumbModel breadCrumbModel);
+    public abstract P getActivePanel(String activePanelId, IBreadCrumbModel breadCrumbModel);
 }

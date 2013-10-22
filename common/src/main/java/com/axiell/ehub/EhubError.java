@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.apache.commons.lang3.Validate;
 @XmlRootElement(name = "error")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(ErrorCauseArgument.class)
-public class EhubError {
+public class EhubError implements Serializable {
     private ErrorCause cause;
     private String message;
     private List<ErrorCauseArgument> arguments = new ArrayList<>();

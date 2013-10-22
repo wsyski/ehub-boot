@@ -211,20 +211,20 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     @Transient
     public FormatTextBundle getTextBundle(final String language) {
 	Validate.notNull(language, "The language can't be null");
-	final Map<String, FormatTextBundle> textBundles = getTextBundles();
+	final Map<String, FormatTextBundle> bundles = getTextBundles();
 
-	if (textBundles == null) {
+	if (bundles == null) {
 	    return null;
 	}
 
 	final String lowerCaseLanguage = language.toLowerCase();
-	final FormatTextBundle textBundle = textBundles.get(lowerCaseLanguage);
+	final FormatTextBundle textBundle = bundles.get(lowerCaseLanguage);
 
 	if (textBundle == null) {
 	    // Get the default text in English if no text bundle exists in the
 	    // chosen language
 	    final String defaultLanguage = Locale.ENGLISH.getLanguage();
-	    return textBundles.get(defaultLanguage);
+	    return bundles.get(defaultLanguage);
 	} else {
 	    return textBundle;
 	}

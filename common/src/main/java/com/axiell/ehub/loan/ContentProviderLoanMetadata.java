@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.loan;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -26,7 +27,7 @@ import com.axiell.ehub.util.Validate;
  */
 @Embeddable
 @Access(AccessType.PROPERTY)
-public class ContentProviderLoanMetadata {
+public class ContentProviderLoanMetadata implements Serializable {
     private String id;
     private ContentProvider contentProvider;
     private Date expirationDate;
@@ -53,14 +54,8 @@ public class ContentProviderLoanMetadata {
         Validate.isNotNull(formatDecoration, "Format decoration can't be null");
         this.id = id;
         this.contentProvider = contentProvider;
-        this.expirationDate = initExpirationDate(expirationDate);
+        this.expirationDate = expirationDate;
         this.formatDecoration = formatDecoration;
-    }
-
-    @Transient
-    private Date initExpirationDate(Date expirationDate) {
-	final long time = expirationDate.getTime(); 
-	return new Date(time);
     }
 
     /**
@@ -111,9 +106,15 @@ public class ContentProviderLoanMetadata {
     @Temporal(TemporalType.DATE)
     @Column(name = "EXPIRATION_DATE", nullable = false)
     public Date getExpirationDate() {
-        return expirationDate;
+        return createDate(expirationDate);
     }
 
+    @Transient
+    private Date createDate(Date date) {
+	final long time = date.getTime(); 
+	return new Date(time);
+    }
+    
     /**
      * Sets the expiration date of the loan at the {@link ContentProvider}. Only used by JPA and JAXB.
      * 

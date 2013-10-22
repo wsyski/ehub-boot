@@ -15,13 +15,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 /**
  * A Panel that displays all available {@link ContentProvider}s in the eHUB.
  */
-public final class ContentProvidersPanel extends BreadCrumbPanel {
+final class ContentProvidersPanel extends BreadCrumbPanel {
     private final ContentProvidersListView contentProvidersView;
 
     @SpringBean(name = "contentProviderAdminController")
     private IContentProviderAdminController contentProviderAdminController;
 
-    public ContentProvidersPanel(String panelId, final IBreadCrumbModel breadCrumbModel) {
+    ContentProvidersPanel(String panelId, final IBreadCrumbModel breadCrumbModel) {
         super(panelId, breadCrumbModel);
         this.contentProvidersView = new ContentProvidersListView("contentProviders", breadCrumbModel);
         add(contentProvidersView);

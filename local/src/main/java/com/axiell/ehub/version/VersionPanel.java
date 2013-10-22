@@ -11,12 +11,12 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public class VersionPanel extends BreadCrumbPanel {
+final class VersionPanel extends BreadCrumbPanel {
 
     @SpringBean(name = "releaseAdminController")
     private IReleaseAdminController releaseAdminController;
 
-    public VersionPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
+    VersionPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
 	super(panelId, breadCrumbModel);
 	addDatabaseInfo();
 	addManifestInfo();
