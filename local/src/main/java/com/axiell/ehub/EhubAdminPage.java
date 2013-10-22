@@ -19,6 +19,7 @@ import com.axiell.ehub.language.LanguagesPanel;
 import com.axiell.ehub.provider.ContentProvidersPanel;
 import com.axiell.ehub.user.AdminUser;
 import com.axiell.ehub.user.LogoutPanel;
+import com.axiell.ehub.version.VersionPanel;
 
 /**
  * The main page of the {@link EhubAdminApplication} when the user is logged in.
@@ -61,6 +62,8 @@ public class EhubAdminPage extends AbstractBasePage {
                     return new ContentProvidersBreadCrumbBarPanel(panelId);
                 case LANGUAGES:
                     return new LanguagesBreadCrumbBarPanel(panelId);
+                case VERSION:
+                    return new VersionBreadCrumbBarPanel(panelId);
                 default:
                     throw new IllegalArgumentException("Unknown tab identifier '" + identifier + "'");
             }
@@ -80,6 +83,7 @@ public class EhubAdminPage extends AbstractBasePage {
                 case EHUB_CONSUMERS:
                 case CONTENT_PROVIDERS:
                 case LANGUAGES:
+                case VERSION:
                     titleKey = identifier.toString();
                     break;
                 default:
@@ -95,7 +99,7 @@ public class EhubAdminPage extends AbstractBasePage {
      * Represents a tab in the tabbed panel.
      */
     private static enum Tab {
-        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, LANGUAGES;
+        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, LANGUAGES, VERSION;
     }
     
     private static class EhubConsumersBreadCrumbBarPanel extends AbstractBreadCrumbBarPanel<EhubConsumersPanel> {
@@ -131,6 +135,17 @@ public class EhubAdminPage extends AbstractBasePage {
 	@Override
 	LanguagesPanel getActivePanel(String activePanelId, IBreadCrumbModel breadCrumbModel) {
 	    return new LanguagesPanel(activePanelId, breadCrumbModel);
+	}
+    }
+    
+    private static class VersionBreadCrumbBarPanel extends AbstractBreadCrumbBarPanel<VersionPanel> {
+	private VersionBreadCrumbBarPanel(final String panelId) {
+	    super(panelId);
+	}
+	
+	@Override
+	VersionPanel getActivePanel(String activePanelId, IBreadCrumbModel breadCrumbModel) {
+	    return new VersionPanel(activePanelId, breadCrumbModel);
 	}
     }
 }

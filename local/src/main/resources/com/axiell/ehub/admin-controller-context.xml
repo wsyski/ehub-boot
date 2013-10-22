@@ -11,4 +11,5 @@
 	<bean id="contentProviderAdminController" class="com.axiell.ehub.provider.ContentProviderAdminController"/>
 	<bean id="formatAdminController" class="com.axiell.ehub.provider.record.format.FormatAdminController"/>
 	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>	
+	<bean id="releaseAdminController" class="com.axiell.ehub.version.ReleaseAdminController"/>
 </beans>

@@ -8,7 +8,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 final class LanguagesListView extends ListView<Language> {
-    final LanguagesMediator mediator;
+    private final LanguagesMediator mediator;
 
     LanguagesListView(final String id, final LanguagesMediator mediator) {
         super(id);

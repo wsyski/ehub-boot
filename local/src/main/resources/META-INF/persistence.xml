@@ -12,5 +12,6 @@
 		<class>com.axiell.ehub.loan.EhubLoan</class>
 		<class>com.axiell.ehub.loan.ContentProviderLoanMetadata</class>
 		<class>com.axiell.ehub.user.AdminUser</class>
+		<class>com.axiell.ehub.version.Release</class>
 	</persistence-unit>
 </persistence>

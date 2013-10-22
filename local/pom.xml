@@ -138,6 +138,15 @@
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-spring</artifactId>
         </dependency>
+        
+        <dependency>
+  			<groupId>com.jcabi</groupId>
+  			<artifactId>jcabi-manifests</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-validator</artifactId>
+		</dependency>
 
         <!-- Test dependencies -->
         <dependency>

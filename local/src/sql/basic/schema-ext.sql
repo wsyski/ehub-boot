@@ -7,13 +7,6 @@
         primary key (NAME)
     );
 
- create table RELEASE (
-        VERSION varchar2(255 char) not null,
-        CREATE_DATETIME timestamp not null,
-        MODIFY_DATETIME timestamp not null,
-        primary key (VERSION)
-    );
-
  alter table CONTENT_PROVIDER
         add constraint FK_CONTENT_P_CONTENT_P_N
         foreign key (NAME)
