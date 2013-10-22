@@ -74,12 +74,17 @@ public class FormatDecorationTest {
     @Test
     public void getDefaultTextBundle() {
 	givenTextBundles();
+	givenNoSwedishTextBundle();
 	givenDefaultTextBundle();
 	whenGetTextBundle();
 	thenActualTextBundleIsNotNull();
 	thenActualTextBundleEqualsDefaultTextBundle();
     }
 
+    private void givenNoSwedishTextBundle() {
+	given(textBundles.get(SWEDISH)).willReturn(null);
+    }
+    
     private void givenDefaultTextBundle() {
 	given(textBundles.get(ENGLISH)).willReturn(defaultTextBundle);
 	
