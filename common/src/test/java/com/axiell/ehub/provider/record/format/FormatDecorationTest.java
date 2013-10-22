@@ -48,14 +48,14 @@ public class FormatDecorationTest {
     
     @Test
     public void getSpecificTextBundle() {
-	givenSwedishTextBundles();
+	givenTextBundles();
 	givenSwedishTextBundle();
 	whenGetTextBundle();
 	thenActualTextBundleIsNotNull();
 	thenActualTextBundleEqualsSwedishTextBundle();
     }
 
-    private void givenSwedishTextBundles() {
+    private void givenTextBundles() {
 	underTest.setTextBundles(textBundles);
     }
 
@@ -73,7 +73,7 @@ public class FormatDecorationTest {
     
     @Test
     public void getDefaultTextBundle() {
-	givenSwedishTextBundles();
+	givenTextBundles();
 	givenDefaultTextBundle();
 	whenGetTextBundle();
 	thenActualTextBundleIsNotNull();
