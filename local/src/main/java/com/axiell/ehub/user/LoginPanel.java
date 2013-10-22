@@ -33,8 +33,7 @@ public final class LoginPanel extends Panel {
     
     private StatelessForm<AdminUser> makeLoginForm(final AdminUser user) {
 	final CompoundPropertyModel<AdminUser> formModel = new CompoundPropertyModel<>(user);
-        StatelessForm<AdminUser> loginForm = new StatelessForm<>("loginForm", formModel);
-	return loginForm;
+        return new StatelessForm<>("loginForm", formModel);
     }
 
     private void addNameField(StatelessForm<AdminUser> loginForm) {
