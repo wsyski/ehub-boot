@@ -24,7 +24,7 @@ public class ApplicationLauncher {
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setServer(server);
 		webAppContext.setContextPath("");
-        // webAppContext.setExtraClasspath("target/classes");
+        webAppContext.setExtraClasspath("target/classes");
 		webAppContext.setWar("src/main/webapp");
         HandlerCollection handlers= new HandlerCollection();
         handlers.setHandlers(new Handler[]{webAppContext, new DefaultHandler()});
