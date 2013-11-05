@@ -7,6 +7,8 @@ import java.util.Date;
 
 import junit.framework.Assert;
 
+import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -17,9 +19,9 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
-import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
 
@@ -31,6 +33,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String PIN = "pin";
     protected static final String EHUB_FORMAT_NAME = "ehubFormatName";
     protected static final String EHUB_FORMAT_DESCRIPTION = "ehubFormatDescription";
+    private static final int ERROR_STATUS = 500;
 
     @Mock
     protected PendingLoan pendingLoan;
@@ -46,6 +49,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected ContentProviderLoanMetadata loanMetadata;
     @Mock
     protected IExpirationDateFactory expirationDateFactory;
+    @Mock
+    protected ClientResponseFailure failure;
+    @Mock
+    protected ClientResponse<?> response;
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
@@ -79,6 +86,14 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     protected void givenExpirationDate() {
 	given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
+    }
+    
+    protected void givenClientResponse() {
+	given(failure.getResponse()).willReturn(response);
+    }
+    
+    protected void givenClientResponseStatus() {
+	given(response.getStatus()).willReturn(ERROR_STATUS);
     }
     
     protected void thenActualLoanContainsDownloadUrl() {

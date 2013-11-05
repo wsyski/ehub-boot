@@ -49,7 +49,7 @@ import com.axiell.ehub.provider.record.format.Formats;
 @Component
 public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElibDataAccessor.class);
-    
+
     @Autowired(required = true)
     private IElibFacade elibFacade;
 
@@ -141,7 +141,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 	final ElibLoan elibLoan = makeElibLoan(orderItems, elibRecordId, formatId);
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(elibLoan.id, contentProvider, elibLoan.expirationDate, formatDecoration);
+	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, elibLoan.expirationDate, elibRecordId,
+		formatDecoration).contentProviderLoanId(elibLoan.id).build();
 	final se.elib.library.loan.Response.Data data = loanResponse.getData();
 	final String contentUrl = data.getDownloadurl();
 	final IContent content = createContent(contentUrl, formatDecoration);
@@ -217,7 +218,6 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 	throw makeNotFoundException(contentProviderLoanId);
     }
 
-
     private boolean contentProviderLoanIdEqualsOrderNumber(String contentProviderLoanId, Orderitem orderItem) {
 	final String orderNumber = String.valueOf(orderItem.getRetailerordernumber());
 	return contentProviderLoanId.equals(orderNumber);
@@ -256,7 +256,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 	final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
 	return new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
     }
-    
+
     /**
      * Represents an Elib loan.
      */

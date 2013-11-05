@@ -3,8 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.elibu;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
-
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +16,7 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -104,22 +102,17 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
 	final IContent content = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
-	final String subscriptionId = contentProviderConsumer.getProperty(SUBSCRIPTION_ID);
-	final String elibuLoanId = ElibULoanId.create(subscriptionId, licenseId, recordId, formatId).toString();
 	// TODO:
 	final Date expirationDate = new Date();
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(elibuLoanId, contentProvider, expirationDate, formatDecoration);
+	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration).build();
 	return new ContentProviderLoan(metadata, content);
     }
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
 	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
-
-	final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
-	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
-	final ElibULoanId elibULoanId = ElibULoanId.fromContentProviderLoanId(contentProviderLoanId);
-	final String recordId = elibULoanId.getRecordId();
+	final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);	
+	final String recordId = contentProviderLoanMetadata.getRecordId();
 	final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
 	return consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
     }
@@ -167,13 +160,6 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 	    }
 	}
 
-	throw makeNotFoundException(recordId, formatId);
-    }
-
-    private NotFoundException makeNotFoundException(String recordId, String formatId) {
-	final ErrorCauseArgument argument1 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_RECORD_ID, recordId);
-	final ErrorCauseArgument argument2 = new ErrorCauseArgument(Type.FORMAT_ID, formatId);
-	final ErrorCauseArgument argument3 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIBU);
-	return new NotFoundException(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, argument1, argument2, argument3);
+	throw NotFoundExceptionFactory.create(ContentProviderName.ELIBU, recordId, formatId);
     }
 }

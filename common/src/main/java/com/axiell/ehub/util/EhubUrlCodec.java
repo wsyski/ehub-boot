@@ -13,8 +13,7 @@ import com.axiell.ehub.InternalServerErrorException;
  * Utility class that provides the possibility to URL encode and decode strings.
  */
 public final class EhubUrlCodec {
-    public static final String UTF8 = "UTF-8";
-    private static final URLCodec URL_CODEC = new URLCodec(UTF8);
+    private static final URLCodec URL_CODEC = new URLCodec(EhubCharsets.UTF_8);
     
     /**
      * Private constructor that prevents direct instantiation.

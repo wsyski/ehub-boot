@@ -3,15 +3,12 @@
  */
 package com.axiell.ehub.provider;
 
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProviderName.ASKEWS;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
 import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
+import static com.axiell.ehub.provider.ContentProviderName.OVERDRIVE;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -64,13 +61,14 @@ import com.eekboom.utils.Strings;
 @Access(AccessType.PROPERTY)
 public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 3731023842900003678L;
-    private final static Map<ContentProviderName, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    private static final Map<ContentProviderName, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
     static {
         VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL)));
         VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(PRODUCT_URL, CONSUME_LICENSE_URL)));
         VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS)));
         VALID_PROPERTY_KEYS.put(ASKEWS, new HashSet<>(Arrays.asList(LOAN_EXPIRATION_DAYS)));
+        VALID_PROPERTY_KEYS.put(OVERDRIVE, new HashSet<>(Arrays.asList(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL)));
     }
 
     private ContentProviderName name;
@@ -251,6 +249,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * Enumeration for content provider property keys.
      */
     public static enum ContentProviderPropertyKey {
-        PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS
+        PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS, OAUTH_URL, API_BASE_URL, OAUTH_PATRON_URL, PATRON_API_BASE_URL
     }
 }

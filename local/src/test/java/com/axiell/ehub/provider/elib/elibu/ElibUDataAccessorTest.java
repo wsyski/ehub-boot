@@ -21,6 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
@@ -32,14 +33,12 @@ import com.axiell.ehub.provider.record.format.FormatTextBundle;
  * 
  */
 public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTest {
-    private static final String SUBSCRIPTION_ID = "1";
     private static final String RECORD_ID = "1";    
     private static final String FORMAT_ID = "1";
     private static final Integer LICENSE_ID = 1;
     private static final String CONTENT_URL = "url";
-    private static final String ELIBU_LOAN_ID = ElibULoanId.create(SUBSCRIPTION_ID, LICENSE_ID, RECORD_ID, FORMAT_ID).toString();
     
-    private ElibUDataAccessor underTest;    
+    private AbstractContentProviderDataAccessor underTest;    
     @Mock
     private IElibUFacade elibUFacade;    
     @Mock
@@ -368,7 +367,7 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 	givenStatus();
 	givenStatusIsConsumedLicense();
 	givenLicenseId();
-	givenContentProviderLoanId();
+	givenContentProviderRecordId();
 	givenConsumeProductResponse();
 	givenResult();
 	givenStatus();
@@ -384,8 +383,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 	thenActualContentContainsDownloadUrl();
     }
     
-    private void givenContentProviderLoanId() {
-	given(loanMetadata.getId()).willReturn(ELIBU_LOAN_ID);
+    private void givenContentProviderRecordId() {
+	given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
     }
     
     private void whenGetContent() {

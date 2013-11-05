@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +23,6 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     private static final String RECORD_ID = "1";
     private static final String FORMAT_ID = "formatId";
     private static final Integer SHOP_CUSTOMER_ORDER_ID = 1;
-    private static final int ERROR_STATUS = 500;
 
     private PublitDataAccessor underTest;
     @Mock
@@ -38,10 +35,6 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     private ShopOrderUrl shopOrderUrl;
     @Mock
     private DownloadItem downloadItem;
-    @Mock
-    private ClientResponseFailure failure;
-    @Mock
-    private ClientResponse<?> response;
 
     @Before
     public void setUpPublitDataAccessor() {
@@ -128,14 +121,6 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     
     private void givenClientResponseFailureInGetProduct() {
 	given(publitFacade.getProduct(contentProviderConsumer, RECORD_ID)).willThrow(failure);
-    }
-    
-    private void givenClientResponse() {
-	given(failure.getResponse()).willReturn(response);
-    }
-    
-    private void givenClientResponseStatus() {
-	given(response.getStatus()).willReturn(ERROR_STATUS);
     }
 
     @Test

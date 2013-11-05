@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.loan;
 
+import java.io.Serializable;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -20,7 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Embeddable
 @Access(AccessType.PROPERTY)
 @XmlAccessorType(XmlAccessType.NONE)
-public class LmsLoan {
+public class LmsLoan implements Serializable {
     private String id;
 
     /**

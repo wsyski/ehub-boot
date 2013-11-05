@@ -74,7 +74,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
-	final String contentProviderLoanId = processLoan(contentProviderConsumer, pendingLoan);
+	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+	final String contentProviderLoanId = processLoan(contentProviderConsumer, contentProviderRecordId);
 	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
 
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -83,12 +84,12 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 	final IContent content = createContent(contentUrl, formatDecoration);
 
 	final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(contentProviderLoanId, contentProvider, expirationDate, formatDecoration);
+	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
+		formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
 	return new ContentProviderLoan(metadata, content);
     }
 
-    private String processLoan(final ContentProviderConsumer contentProviderConsumer, final PendingLoan pendingLoan) {
-	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+    private String processLoan(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId) {
 	final LoanRequestResult loanRequestResult = askewsFacade.processLoan(contentProviderConsumer, contentProviderRecordId);
 
 	if (loanRequestWasNotSucessful(loanRequestResult)) {
@@ -97,7 +98,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
 	return loanRequestResult.getLoanid().toString();
     }
-    
+
     private FormatDecoration getFormatDecoration(PendingLoan pendingLoan, final ContentProvider contentProvider) {
 	final String formatId = pendingLoan.getContentProviderFormatId();
 	return contentProvider.getFormatDecoration(formatId);
@@ -148,7 +149,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private LoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
 	final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId);
 	final List<LoanDetails> loanDetailsList = loanDetailsArray.getLoanDetails();
-	Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId + "'");
+	Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId
+		+ "'");
 	final LoanDetails loanDetails = loanDetailsList.get(0);
 	validateLoanHasNotFailed(loanDetails);
 	return loanDetails;
