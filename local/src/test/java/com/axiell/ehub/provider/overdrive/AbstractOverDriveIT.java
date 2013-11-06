@@ -5,17 +5,15 @@ import static org.mockito.BDDMockito.given;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
+import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AbstractOverDriveIT {
+public class AbstractOverDriveIT extends AbstractContentProviderIT {
     // Product #1
     // protected static final String PRODUCT_ID =
     // "08f7d7e6-423f-45a6-9a1e-5ae9122c82e7";
