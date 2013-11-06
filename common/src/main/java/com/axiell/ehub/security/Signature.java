@@ -4,7 +4,6 @@
 package com.axiell.ehub.security;
 
 import static com.axiell.ehub.security.HmacSHA1HashFunction.hmacSha1;
-import static com.axiell.ehub.util.EhubUrlCodec.UTF8;
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.util.EhubCharsets;
 
 /**
  * Represents the signature of a request to the Axiell eHUB.
@@ -61,10 +61,10 @@ final class Signature {
         final byte[] key;
 
         try {
-            input = baseString.getBytes(UTF8);
-            key = ehubConsumerSecretKey.getBytes(UTF8);
+            input = baseString.getBytes(EhubCharsets.UTF_8);
+            key = ehubConsumerSecretKey.getBytes(EhubCharsets.UTF_8);
         } catch (UnsupportedEncodingException e) {
-            throw new InternalServerErrorException("Could not get the bytes of strings in '" + UTF8 + "' encoding", e);
+            throw new InternalServerErrorException("Could not get the bytes of strings in '" + EhubCharsets.UTF_8 + "' encoding", e);
         }
 
         this.digest = hmacSha1(input, key);

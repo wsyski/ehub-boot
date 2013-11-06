@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.loan;
 
+import java.io.Serializable;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
@@ -12,7 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.axiell.ehub.util.HashCodeBuilderFactory;
 
 /**
  * Represents a loan in the Library Management System (LMS).
@@ -20,7 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Embeddable
 @Access(AccessType.PROPERTY)
 @XmlAccessorType(XmlAccessType.NONE)
-public class LmsLoan {
+public class LmsLoan implements Serializable {
     private String id;
 
     /**
@@ -78,6 +81,6 @@ public class LmsLoan {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 31).append(id).toHashCode();
+        return HashCodeBuilderFactory.create().append(id).toHashCode();
     }
 }

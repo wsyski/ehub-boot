@@ -37,7 +37,7 @@ public class XQueryFieldEvaluator  {
         StaticQueryContext sqc = getStaticQueryContext(variables);
         DynamicQueryContext dqc = getDynamicQueryContext(contextNode);
         XQueryExpression e = sqc.compileQuery(getNamespaceDeclaration(defaultNamespace, namespaces) + query);
-        List objectList = e.evaluate(dqc);
+        List<?> objectList = e.evaluate(dqc);
         return nodeInfos2Nodes(objectList.toArray());
     }
 

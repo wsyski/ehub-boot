@@ -25,7 +25,7 @@ public interface IContentProvidersResource {
     /**
      * The root path of this resource.
      */
-    static final String ROOT_PATH = "v1/content-providers";
+    String ROOT_PATH = "v1/content-providers";
 
     /**
      * Gets the {@link IRecordsResource} for a specific {@link ContentProviderName}.

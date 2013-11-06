@@ -41,7 +41,8 @@ public class ReadyLoanTest {
     private ContentProviderLoanMetadata initContentProviderLoanMetadata() {
 	ContentProvider contentProvider = initContentProvider();
 	FormatDecoration formatDecoration = new FormatDecoration(contentProvider, "58", ContentDisposition.DOWNLOADABLE, 10, 10);
-	return new ContentProviderLoanMetadata("contentProviderLoanId", contentProvider, new Date(), formatDecoration);
+	return new ContentProviderLoanMetadata.Builder(contentProvider, new Date(), "contentProviderRecordId", formatDecoration).contentProviderLoanId(
+		"contentProviderLoanId").build();
     }
 
     private ContentProvider initContentProvider() {

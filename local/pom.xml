@@ -138,6 +138,15 @@
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-spring</artifactId>
         </dependency>
+        
+        <dependency>
+  			<groupId>com.jcabi</groupId>
+  			<artifactId>jcabi-manifests</artifactId>
+		</dependency>
+		<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-validator</artifactId>
+		</dependency>
 
         <!-- Test dependencies -->
         <dependency>
@@ -266,7 +275,7 @@
                 </executions>
                 <configuration>
                     <srcdir>${project.basedir}/../common/src/main/java</srcdir>
-                    <destdir>${project.basedir}/src/main/webapp/xsd</destdir>
+                    <destdir>${project.basedir}/src/main/webapp/xsd/v1</destdir>
                     <includes>
                         <include>**/Formats.java</include>
                         <include>**/PendingLoan.java</include>

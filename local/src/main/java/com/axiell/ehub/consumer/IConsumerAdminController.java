@@ -60,4 +60,12 @@ public interface IConsumerAdminController {
      * @param contentProviderConsumer the {@link ContentProviderConsumer} to delete
      */
     void delete(ContentProviderConsumer contentProviderConsumer);
+
+    /**
+     * 
+     * @param ehubConsumerId
+     * @param contentProviderConsumer
+     * @return
+     */
+    ContentProviderConsumer add(Long ehubConsumerId, ContentProviderConsumer contentProviderConsumer);
 }

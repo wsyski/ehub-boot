@@ -3,6 +3,30 @@
  */
 package com.axiell.ehub.consumer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.ForeignKey;
+
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -10,10 +34,6 @@ import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
-import org.hibernate.annotations.ForeignKey;
-
-import javax.persistence.*;
-import java.util.*;
 
 /**
  * Represents a consumer of the eHUB. An {@link EhubConsumer} can have many {@link ContentProviderConsumer}s, i.e.
@@ -112,7 +132,13 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      */
     @Transient
     public List<ContentProviderConsumer> getContentProviderConsumersAsList() {
-        return contentProviderConsumers == null ? new ArrayList<ContentProviderConsumer>() : new ArrayList<ContentProviderConsumer>(contentProviderConsumers);
+	if (contentProviderConsumers == null)
+	    return new ArrayList<ContentProviderConsumer>();
+	
+	final List<ContentProviderConsumer> contentProviderConsumerList = new ArrayList<ContentProviderConsumer>(contentProviderConsumers);
+	final ContentProviderConsumerComparator comparator = new ContentProviderConsumerComparator();
+	Collections.sort(contentProviderConsumerList, comparator);	
+	return contentProviderConsumerList;
     }
 
     /**

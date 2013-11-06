@@ -13,7 +13,7 @@ import java.util.List;
 public interface IContentProviderAdminController {
 
     /**
-     * Gets a list of {@link ContentProvider}s sorted by their descriptions in ascending order.
+     * Gets a list of {@link ContentProvider}s sorted by their names in ascending order.
      * 
      * <p>
      * <b>NOTE:</b> The {@link ContentProvider}s might not have been fully initialized.

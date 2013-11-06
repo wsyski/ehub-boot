@@ -34,9 +34,7 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
     protected AuthInfo authInfo;
 
     @Rule
-    public WireMockRule palmaMockRule = new WireMockRule(16521);
-    @Rule
-    public WireMockRule elibMockRule = new WireMockRule(16530);
+    public WireMockRule httpMockRule = new WireMockRule(16521);
 
     protected abstract D initDevelopmentData(XmlWebApplicationContext applicationContext, IContentProviderAdminController contentProviderAdminController,
 	    IFormatAdminController formatAdminController, IConsumerAdminController consumerAdminController);

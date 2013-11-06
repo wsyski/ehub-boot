@@ -1,6 +1,7 @@
 package com.axiell.ehub.logging;
 
-import com.axiell.ehub.util.EhubUrlCodec;
+import com.axiell.ehub.util.EhubCharsets;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.ClientRequest;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -209,7 +211,7 @@ public final class ToString {
 
     private static String readClientResponseStream(final ClientResponse<?> clientResponseToProcess) throws IOException {
         InputStream io = ((BaseClientResponse<?>) clientResponseToProcess).getStreamFactory().getInputStream();
-        final String body = IOUtils.toString(io, EhubUrlCodec.UTF8);
+        final String body = IOUtils.toString(io, EhubCharsets.UTF_8);
         clientResponseToProcess.resetStream();
         return body;
     }

@@ -4,7 +4,7 @@
 package com.axiell.ehub.user;
 
 import static com.axiell.ehub.security.HmacSHA1HashFunction.hmacSha1;
-import static com.axiell.ehub.util.EhubUrlCodec.UTF8;
+import static com.axiell.ehub.util.EhubCharsets.UTF_8;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
 import java.io.UnsupportedEncodingException;
@@ -159,10 +159,10 @@ public class AdminUser extends AbstractTimestampAwarePersistable<Long> {
         final byte[] key;
 
         try {
-            input = baseString.getBytes(UTF8);
-            key = name.getBytes(UTF8);
+            input = baseString.getBytes(UTF_8);
+            key = name.getBytes(UTF_8);
         } catch (UnsupportedEncodingException e) {
-            throw new InternalServerErrorException("Could not get the bytes of strings in '" + UTF8 + "' encoding", e);
+            throw new InternalServerErrorException("Could not get the bytes of strings in '" + UTF_8 + "' encoding", e);
         }
 
         byte[] digest = hmacSha1(input, key);

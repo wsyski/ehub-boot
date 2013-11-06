@@ -32,7 +32,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired(required = true)
     private IPublitFacade publitFacade;
-    
+
     @Autowired(required = true)
     private IExpirationDateFactory expirationDateFactory;
 
@@ -78,7 +78,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     private Format makeFormat(final ContentProvider contentProvider, final Product product, final String language) {
 	final String formatId = product.getType();
-	
+
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
 	final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
 
@@ -92,26 +92,28 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 	    name = textBundle.getName() == null ? formatId : textBundle.getName();
 	    description = textBundle.getDescription();
 	}
-	
+
 	return new Format(formatId, name, description, null);
     }
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
 	    final PendingLoan pendingLoan) {
-	final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, pendingLoan);
+	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+	final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, contentProviderRecordId);
 	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(pendingLoan.getContentProviderFormatId());
 	final IContent content = createContent(contentUrl, formatDecoration);
 	final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata(contentProviderLoanId, contentProvider, expirationDate, formatDecoration);
+	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
+		formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
 	return new ContentProviderLoan(metadata, content);
     }
 
-    private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final PendingLoan pendingLoan) {
+    private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String contentProviderRecordId) {
 	final ShopCustomerOrder shopCustomerOrder;
-	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+
 	try {
 	    shopCustomerOrder = publitFacade.createShopOrder(contentProviderConsumer, contentProviderRecordId, libraryCard);
 	} catch (ClientResponseFailure failure) {

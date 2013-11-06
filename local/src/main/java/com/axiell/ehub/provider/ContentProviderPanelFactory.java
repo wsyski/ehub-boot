@@ -1,0 +1,19 @@
+package com.axiell.ehub.provider;
+
+import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
+import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
+
+final class ContentProviderPanelFactory implements IBreadCrumbPanelFactory {
+    private final ContentProvider contentProvider;
+
+    ContentProviderPanelFactory(ContentProvider contentProvider) {
+        this.contentProvider = contentProvider;
+    }
+
+    @Override
+    public BreadCrumbPanel create(final String id, final IBreadCrumbModel model) {
+        final ContentProviderName contentProviderName = contentProvider.getName();
+        return new ContentProviderPanel(id, model, contentProviderName);
+    }
+}
