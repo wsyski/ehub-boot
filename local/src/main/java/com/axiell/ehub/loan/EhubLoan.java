@@ -3,13 +3,21 @@
  */
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.AbstractTimestampAwarePersistable;
-import com.axiell.ehub.consumer.EhubConsumer;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ForeignKey;
 
-import javax.persistence.*;
+import com.axiell.ehub.AbstractTimestampAwarePersistable;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.util.HashCodeBuilderFactory;
 
 /**
  * Represents an eHUB loan, which basically connects an LMS loan, a Content Provider loan and the eHUB consumer who
@@ -126,6 +134,6 @@ public class EhubLoan extends AbstractTimestampAwarePersistable<Long> {
      */
     @Override
     public final int hashCode() {
-        return new HashCodeBuilder(17, 31).append(getLmsLoan()).append(getEhubConsumer()).toHashCode();
+        return HashCodeBuilderFactory.create().append(getLmsLoan()).append(getEhubConsumer()).toHashCode();
     }
 }

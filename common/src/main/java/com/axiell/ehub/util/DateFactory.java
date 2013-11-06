@@ -7,7 +7,10 @@ public final class DateFactory {
     private DateFactory() {
     }
 
-    public static Date create(Date date) {
+    public static Date create(final Date date) {
+	if (date == null)
+	    return date;
+	
 	final long time = date.getTime();
 	return new Date(time);
     }

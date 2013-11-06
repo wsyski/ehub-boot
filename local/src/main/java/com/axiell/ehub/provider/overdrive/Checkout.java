@@ -7,6 +7,8 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import com.axiell.ehub.util.DateFactory;
+
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Checkout {
@@ -15,7 +17,7 @@ public class Checkout {
     private List<CirculationFormat> formats;
     
     public Date getExpirationDate() {
-	return expirationDate;
+	return DateFactory.create(expirationDate);
     }
     
     public List<CirculationFormat> getFormats() {

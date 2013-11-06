@@ -21,15 +21,15 @@ public class Release implements Serializable {
     @Id
     @Column(name = "VERSION")
     private String version;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_DATETIME", nullable = false)
     private Date createdDate;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MODIFY_DATETIME", nullable = false)
     private Date modifiedDate;
-    
+
     public String getVersion() {
 	return version;
     }
@@ -42,15 +42,15 @@ public class Release implements Serializable {
     public String toString() {
 	return version;
     }
-    
+
     public DateTime getCreatedDate() {
 	return createdDate == null ? null : new DateTime(createdDate);
     }
 
     public void setCreatedDate(final DateTime createdDate) {
 	this.createdDate = createdDate == null ? null : createdDate.toDate();
-    }    
-    
+    }
+
     public DateTime getModifiedDate() {
 	return modifiedDate == null ? null : new DateTime(modifiedDate);
     }

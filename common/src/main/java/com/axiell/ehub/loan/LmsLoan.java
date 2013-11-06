@@ -14,7 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.axiell.ehub.util.HashCodeBuilderFactory;
 
 /**
  * Represents a loan in the Library Management System (LMS).
@@ -80,6 +81,6 @@ public class LmsLoan implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 31).append(id).toHashCode();
+        return HashCodeBuilderFactory.create().append(id).toHashCode();
     }
 }

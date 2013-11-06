@@ -76,8 +76,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 	if (downloadLinkTemplate == null)
 	    throw NotFoundExceptionFactory.create(ContentProviderName.OVERDRIVE, productId, formatType);
 	
-	final DownloadLink downloadLink = overDriveFacade.getDownloadLink(contentProviderConsumer, patronAccessToken, downloadLinkTemplate);
-	final String contentUrl = getContentUrl(downloadLink);
+	final String contentUrl = getContentUrl(contentProviderConsumer, patronAccessToken, downloadLinkTemplate);
 
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
@@ -85,6 +84,12 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
 		formatDecoration).build();
 	return new ContentProviderLoan(metadata, content);
+    }
+
+    private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
+	    final DownloadLinkTemplate downloadLinkTemplate) {
+	final DownloadLink downloadLink = overDriveFacade.getDownloadLink(contentProviderConsumer, patronAccessToken, downloadLinkTemplate);
+	return getContentUrl(downloadLink);
     }
 
     private String getContentUrl(final DownloadLink downloadLink) {
@@ -103,8 +108,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 	final String formatType = formatDecoration.getContentProviderFormatId();
 	final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
 	final DownloadLinkTemplate downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);
-	final DownloadLink downloadLink = overDriveFacade.getDownloadLink(contentProviderConsumer, patronAccessToken, downloadLinkTemplate);
-	final String contentUrl = getContentUrl(downloadLink);
+	final String contentUrl = getContentUrl(contentProviderConsumer, patronAccessToken, downloadLinkTemplate);
 	return createContent(contentUrl, formatDecoration);
     }
 }

@@ -3,12 +3,20 @@
  */
 package com.axiell.ehub.provider;
 
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.OAUTH_PATRON_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.OAUTH_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PATRON_API_BASE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
 import static com.axiell.ehub.provider.ContentProviderName.ASKEWS;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
-import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
 import static com.axiell.ehub.provider.ContentProviderName.OVERDRIVE;
+import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -41,7 +49,6 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ForeignKey;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
@@ -50,6 +57,7 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.util.HashCodeBuilderFactory;
 import com.eekboom.utils.Strings;
 
 /**
@@ -242,7 +250,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      */
     @Override
     public final int hashCode() {
-        return new HashCodeBuilder(17, 31).append(name).toHashCode();
+        return HashCodeBuilderFactory.create().append(name).toHashCode();
     }
 
     /**

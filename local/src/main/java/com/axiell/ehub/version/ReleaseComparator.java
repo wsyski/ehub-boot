@@ -1,13 +1,12 @@
 package com.axiell.ehub.version;
 
-import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
 import com.eekboom.utils.Strings;
 
-class ReleaseComparator implements Comparator<Release>, Serializable {
+class ReleaseComparator implements Comparator<Release> {
     private static final Locale ENGLISH = Locale.ENGLISH;
     private final Comparator<String> comparator;
     
