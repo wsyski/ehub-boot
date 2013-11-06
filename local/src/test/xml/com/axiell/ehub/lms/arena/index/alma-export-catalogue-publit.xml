@@ -16,7 +16,7 @@
                     <author value="author"/>
                 </authors>
                 <externalUrls>
-                    <externalUrl value="http://beta.publit.se/api/get-item/9789174376838.epub?key=450726c649cc3263c914e3ba39503848b8bee9e4" linkText="Loan e-book from Publit"/>
+                    <externalUrl value="http://www.publit.se/api/products/9789174376838" linkText="Loan e-book from Publit"/>
                 </externalUrls>
             </view>
         </exportCatalogueRecord>

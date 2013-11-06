@@ -7,7 +7,7 @@ xquery version "1.0";
 let $contentProviderName:=//exportCatalogueRecord/@contentProviderName
 let $patterns:=(
 '^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
-'^https?://.+(publit)\.se/api/get-item/()([^\.]+)\.\w+\?(.*)?$')
+'^https?://.+(publit)\.se/api/products/()([^\.]+)$')
 return
 if (not(empty($contentProviderName))) then string($contentProviderName)
 else
@@ -23,7 +23,7 @@ xquery version "1.0";
 let $contentProviderRecordId:=//exportCatalogueRecord/@contentProviderRecordId
 let $patterns:=(
 '^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
-'^https?://.+(publit)\.se/api/get-item/()([^\.]+)\.\w+\?(.*)?$')
+'^https?://.+(publit)\.se/api/products/()([^\.]+)$')
 return
 if (not(empty($contentProviderRecordId))) then string($contentProviderRecordId)
 else
