@@ -15,8 +15,7 @@ import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 public class AbstractOverDriveIT extends AbstractContentProviderIT {
     // Product #1
-    // protected static final String PRODUCT_ID =
-    // "08f7d7e6-423f-45a6-9a1e-5ae9122c82e7";
+    // protected static final String PRODUCT_ID = "08f7d7e6-423f-45a6-9a1e-5ae9122c82e7";
 
     // Product #2
     protected static final String PRODUCT_ID = "A43F3999-8237-461C-83FE-1F70589BD3F4";
