@@ -14,12 +14,20 @@ import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 
 public class PublitIT extends AbstractContentProviderIT {
+    // Test environment variables
     private static final String PUBLIT_RECORD_0_ID = "9789174376838";
     private static final String PUBLIT_USERNAME = "axiell";
     private static final String PUBLIT_PASSWORD = "4x1eLl_12";
     private static final String PUBLIT_URL = "http://beta.publit.se/";
-    private static final String PUBLIT_LIBRARY_CARD = "12345";
     private static final String SHOP_ORDER_ID = "52593";
+    
+    // Production environment variables
+//    private static final String PUBLIT_USERNAME = "bibl_atingoaxiell";
+//    private static final String PUBLIT_PASSWORD = "b6U4uWRa";
+//    private static final String PUBLIT_URL = "http://www.publit.se/";    
+//    private static final String PUBLIT_RECORD_0_ID = "9789175758411";
+    
+    private static final String PUBLIT_LIBRARY_CARD = "12345";    
     private IPublitFacade underTest;
    
     private List<Product> actualProducts;
