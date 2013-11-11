@@ -1,6 +1,7 @@
 package com.axiell.ehub.loan;
 
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 public interface IEhubLoanRepositoryFacade {
 
@@ -9,4 +10,6 @@ public interface IEhubLoanRepositoryFacade {
     EhubLoan findEhubLoan(EhubConsumer ehubConsumer, String lmsLoanId);
 
     EhubLoan findEhubLoan(EhubConsumer ehubConsumer, Long readyLoanId);
+    
+    long countLoansByFormatDecoration(FormatDecoration formatDecoration);
 }

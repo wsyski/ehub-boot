@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.axiell.ehub.feedback.EhubFeedbackPanel;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatDecorationCreateFormPanel;
 import com.axiell.ehub.provider.record.format.FormatDecorationCreateLink;
@@ -37,6 +38,8 @@ final class ContentProviderPanel extends BreadCrumbPanel {
         formatDecorationsListView = new FormatDecorationsListView("decorations", breadCrumbModel, contentProviderMediator);
         add(formatDecorationsListView);
         
+        addFeedbackPanel();
+        
         formatDecorationCreateFormPanel = new FormatDecorationCreateFormPanel("decorationFormPanel", contentProviderMediator);
         contentProviderMediator.registerFormatDecorationCreateFormPanel(formatDecorationCreateFormPanel);
         add(formatDecorationCreateFormPanel);
@@ -44,6 +47,11 @@ final class ContentProviderPanel extends BreadCrumbPanel {
         formatDecorationCreateLink = makeFormatDecorationCreateLink(contentProviderMediator);
         add(formatDecorationCreateLink);
         
+    }
+
+    private void addFeedbackPanel() {
+	EhubFeedbackPanel feedback = new EhubFeedbackPanel("feedback");
+        add(feedback);
     }
 
     private FormatDecorationCreateLink makeFormatDecorationCreateLink(final ContentProviderMediator contentProviderMediator) {

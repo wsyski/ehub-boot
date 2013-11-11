@@ -15,6 +15,7 @@ import com.axiell.ehub.EhubError;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EhubLoanRepositoryFacadeTest {
@@ -33,6 +34,9 @@ public class EhubLoanRepositoryFacadeTest {
     private LmsLoan lmsLoan;
     @Mock
     private ContentProviderLoan contentProviderLoan;
+    @Mock
+    private FormatDecoration formatDecoration;
+    private long actualCount;
     
     @Before
     public void setUpEhubLoanRepositoryFacade() {
@@ -135,5 +139,25 @@ public class EhubLoanRepositoryFacadeTest {
     
     private void whenEhubLoanIsSaved() {
 	actualEhubLoan = underTest.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
+    }
+    
+    @Test
+    public void countLoansByFormatDecoration() {
+	whenCountLoansByFormatDecoration();
+	thenActualCountIsZero();
+    }
+
+    private void whenCountLoansByFormatDecoration() {
+	actualCount = underTest.countLoansByFormatDecoration(formatDecoration);
+    }
+
+    private void thenActualCountIsZero() {
+	Assert.assertEquals(0, actualCount);
+    }
+    
+    @Test
+    public void countLoansByFormatDecorationWhenFormatDecorationIsNull() {
+	actualCount = underTest.countLoansByFormatDecoration(null);
+	thenActualCountIsZero();
     }
 }

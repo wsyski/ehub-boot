@@ -4,6 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="persistence-context.xml"/>
+	<import resource="facade-context.xml"/>
 	
 	<!-- List only the Admin Controllers here -->
 	<bean id="consumerAdminController" class="com.axiell.ehub.consumer.ConsumerAdminController"/>
@@ -12,4 +13,5 @@
 	<bean id="formatAdminController" class="com.axiell.ehub.provider.record.format.FormatAdminController"/>
 	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>	
 	<bean id="releaseAdminController" class="com.axiell.ehub.version.ReleaseAdminController"/>
+	<bean id="loanAdminController" class="com.axiell.ehub.loan.LoanAdminController"/>
 </beans>

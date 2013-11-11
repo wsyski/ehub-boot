@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.loan.ILoanAdminController;
 
 /**
  * Default implementation of the {@link IFormatAdminController}.
@@ -23,10 +24,10 @@ public class FormatAdminController implements IFormatAdminController {
 
     @Autowired(required = true)
     private IFormatTextBundleRepository formatTextBundleRepository;
+    
+    @Autowired(required = true)
+    private ILoanAdminController loanAdminController;
 
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#getFormatDecoration(java.lang.Long)
-     */
     @Override
     @Transactional(readOnly = true)
     public FormatDecoration getFormatDecoration(Long formatDecorationId) {
@@ -34,18 +35,12 @@ public class FormatAdminController implements IFormatAdminController {
         return initialize(formatDecoration);
     }
 
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#save(com.axiell.ehub.provider.record.format.FormatDecoration)
-     */
     @Override
     @Transactional(readOnly = false)
     public FormatDecoration save(FormatDecoration formatDecoration) {
         return formatDecorationRepository.save(formatDecoration);
     }
-
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#delete(com.axiell.ehub.provider.record.format.FormatDecoration)
-     */
+    
     @Override
     @Transactional(readOnly = false)
     public void delete(final FormatDecoration formatDecoration) {
@@ -58,27 +53,25 @@ public class FormatAdminController implements IFormatAdminController {
         formatDecorationRepository.delete(initalizedDecoration);
     }
 
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#save(com.axiell.ehub.provider.record.format.FormatTextBundle)
-     */
     @Override
     @Transactional(readOnly = false)
     public FormatTextBundle save(FormatTextBundle formatTextBundle) {
         return formatTextBundleRepository.save(formatTextBundle);
     }
 
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#delete(com.axiell.ehub.provider.record.format.FormatTextBundle)
-     */
+    @Override
+    @Transactional(readOnly = false)
+    public boolean deletable(final FormatDecoration formatDecoration) {
+	long count = loanAdminController.countLoansByFormatDecoration(formatDecoration);
+        return count == 0;
+    }
+    
     @Override
     @Transactional(readOnly = false)
     public void delete(FormatTextBundle formatTextBundle) {
         formatTextBundleRepository.delete(formatTextBundle);
     }
 
-    /**
-     * @see com.axiell.ehub.provider.record.format.IFormatAdminController#deleteFormatTextBundles(com.axiell.ehub.language.Language)
-     */
     @Override
     @Transactional(readOnly = false)
     public void deleteFormatTextBundles(Language language) {

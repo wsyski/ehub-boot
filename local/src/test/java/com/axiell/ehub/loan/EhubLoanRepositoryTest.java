@@ -16,6 +16,7 @@ import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerAdminController;
 import com.axiell.ehub.provider.IContentProviderAdminController;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 
 /**
@@ -39,7 +40,9 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     private IEhubLoanRepository underTest;
 
     private EhubLoan expectedEhubLoan;
+    private FormatDecoration formatDecoration;
     private EhubLoan actualEhubLoan;
+    private long actualCount;
 
     /**
      * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
@@ -101,5 +104,28 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     
     private void thenActualEhubLoanIsNull() {
 	Assert.assertNull(actualEhubLoan);
+    }
+    
+    @Test
+    @Rollback(true)
+    public void countByFormatDecoration() {
+	givenExpectedEhubLoan();
+	givenFormatDecoration();
+	whenCountByFormatDecorationId();
+	thenActualCountIsOne();
+    }
+
+    private void givenFormatDecoration() {
+	ContentProviderLoanMetadata contentProviderLoanMetadata = expectedEhubLoan.getContentProviderLoanMetadata();
+	formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
+    }
+    
+    private void whenCountByFormatDecorationId() {
+	final Long formatDecorationId = formatDecoration.getId();
+	actualCount = underTest.countLoansByFormatDecorationId(formatDecorationId);
+    }
+    
+    private void thenActualCountIsOne() {
+	Assert.assertEquals(1, actualCount);
     }
 }

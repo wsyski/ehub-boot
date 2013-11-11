@@ -39,32 +39,3 @@ h1 {
 .contentFormatCell {
 	min-width: 50px;
 }
-
-/*
-h2 {
-	color: #cc1256;
-}
-
-.loginBoxes input[type="text"], 
-.loginBoxes input[type="password"] {
-	display: inline;
-	float: left;
-	margin-bottom: 10px;
-	width: 200px;
-}
-
-.loginBoxes input[type="submit"] {
-	clear: both;
-	float: left;
-	margin: 10px 0;
-}
-
-
-.loginBoxes label {
-    width: 100px; 
-	display: block; 
-	float: left; 
-	clear: both;
-}
-
-*/
