@@ -7,6 +7,7 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
     @Autowired(required = true)
@@ -43,5 +44,14 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
 	}
 
 	return ehubLoan;
+    }
+    
+    @Override
+    public long countLoansByFormatDecoration(final FormatDecoration formatDecoration) {
+	if (formatDecoration == null)
+	    return 0;
+	
+	final Long formatDecorationId = formatDecoration.getId();
+	return ehubLoanRepository.countLoansByFormatDecorationId(formatDecorationId);
     }
 }

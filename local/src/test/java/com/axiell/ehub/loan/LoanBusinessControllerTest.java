@@ -20,9 +20,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
+import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
@@ -64,7 +64,7 @@ public class LoanBusinessControllerTest {
     @Mock
     private EhubLoan existingEhubLoan;
     @Mock
-    private ReadyLoan actualReadyLoan;
+    private ReadyLoan actualReadyLoan;    
 
     @Before
     public void setUpCommonArguments() throws EhubException {

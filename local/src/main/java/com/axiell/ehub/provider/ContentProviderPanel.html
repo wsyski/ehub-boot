@@ -1,6 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
     <body>
         <wicket:panel>
+        	<div wicket:id="feedback"></div>
+        
         	<div>
         		<form wicket:id="contentProviderForm">        			
 		        	<div wicket:id="properties">
@@ -23,8 +25,8 @@
         	
         	<div>
         		<wicket:message key="txtFormatsHeader"/>
-        	</div>
-        	<div wicket:id="decorations">
+        	</div>        	
+        	<div wicket:id="decorations">        		
         		<table class="table">
         			<tr>
         				<td class="contentFormatCell">
@@ -35,7 +37,6 @@
 			        	<td>
 							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
 								<i class="icon-remove"></i>
-								<!--<wicket:message key="lnkDelete.label"/>-->
 							</a>
 						</td>
 			        </tr>		

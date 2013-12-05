@@ -29,6 +29,14 @@ public interface IFormatAdminController {
     FormatDecoration save(FormatDecoration formatDecoration);
 
     /**
+     * Indicates whether the specific {@link FormatDecoration} can be deleted.
+     * 
+     * @return <code>true</code> if and only if the {@link FormatDecoration} can
+     *         be deleted, <code>false</code> otherwise
+     */
+    boolean deletable(FormatDecoration formatDecoration);
+    
+    /**
      * Deletes the {@link FormatDecoration} and all its {@link FormatTextBundle}s.
      * 
      * @param formatDecoration the {@link FormatDecoration} to be deleted
