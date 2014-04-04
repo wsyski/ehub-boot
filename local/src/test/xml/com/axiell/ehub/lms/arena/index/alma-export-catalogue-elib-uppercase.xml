@@ -16,7 +16,7 @@
                     <author value="author"/>
                 </authors>
                 <externalUrls>
-                    <externalUrl value="http://www.elib.se/library/ebook_detail.asp?id_type=ISBN&amp;id=918501120X&amp;lib=45" linkText="Loan e-book from Elib"/>
+                    <externalUrl value="http://www.elib.se/library/ebook_detail.asp?id_type=ISBN&amp;ID=918501120X&amp;lib=45" linkText="Loan e-book from Elib"/>
                 </externalUrls>
             </view>
         </exportCatalogueRecord>
