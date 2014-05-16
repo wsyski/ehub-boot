@@ -8,6 +8,7 @@ public final class ElibUtils {
     private static final String CHECK_DIGITS = "0123456789X0";
     private static final ISBNValidator VALIDATOR = ISBNValidator.getInstance();
     static final int ELIB_STATUS_CODE_OK = 101;
+    static final int ELIB_PRODUCT_OK_ID = 9;
     static final DateTimeFormatter ELIB_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     private static final int ISBN_10 = 10;
     private static final int ISBN_13 = 13;

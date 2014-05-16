@@ -3,28 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
-import static com.axiell.ehub.provider.elib.library.ElibUtils.generateIsbn13or10;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_STATUS_CODE_OK;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_DATE_FORMAT;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.JAXBElement;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import se.elib.library.orderlist.Response.Data.Orderitem;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData.UrlData;
-
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -42,6 +20,28 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import se.elib.library.orderlist.Response.Data.Orderitem;
+import se.elib.library.orderlist.Response.Data.Orderitem.Book;
+import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData;
+import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData.UrlData;
+import se.elib.library.product.Response;
+import se.elib.library.product.Response.Data;
+
+import javax.xml.bind.JAXBElement;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_DATE_FORMAT;
+import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_PRODUCT_OK_ID;
+import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_STATUS_CODE_OK;
+import static com.axiell.ehub.provider.elib.library.ElibUtils.generateIsbn13or10;
 
 /**
  * The Elib integration.
@@ -55,131 +55,138 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
-	final se.elib.library.product.Response response = elibFacade.getProduct(contentProviderConsumer, contentProviderRecordId, language);
-	final se.elib.library.product.Response.Status status = response.getStatus();
-	final short statusCode = status.getCode();
+        final se.elib.library.product.Response response = elibFacade.getProduct(contentProviderConsumer, contentProviderRecordId, language);
+        final se.elib.library.product.Response.Status status = response.getStatus();
+        final short statusCode = status.getCode();
 
-	if (statusCode == ELIB_STATUS_CODE_OK)
-	    return makeFormats(contentProviderConsumer, contentProviderRecordId, language, response);
+        if (statusCode == ELIB_STATUS_CODE_OK) {
+            return makeFormats(contentProviderConsumer, contentProviderRecordId, language, response);
+        }
+        throw makeInternalServerErrorException("Could not get formats", String.valueOf(statusCode));
+    }
 
-	throw makeInternalServerErrorException("Could not get formats", String.valueOf(statusCode));
+    private boolean productStatusIsActive(final Response response, final String contentProviderRecordId) {
+        final Data data = response.getData();
+        if (data != null) {
+            return data.getProduct().getStatus().getId() == ELIB_PRODUCT_OK_ID;
+        } else {
+            LOGGER.warn("No data received in the get formats response where content provider record ID = '" + contentProviderRecordId + "'");
+            return false;
+        }
     }
 
     private Formats makeFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language,
-	    final se.elib.library.product.Response response) {
-	final Formats formats = new Formats();
-	final se.elib.library.product.Response.Data data = response.getData();
+                                final se.elib.library.product.Response response) {
+        final Formats formats = new Formats();
+        if (productStatusIsActive(response, contentProviderRecordId)) {
+            final se.elib.library.product.Response.Data data = response.getData();
+            final se.elib.library.product.Response.Data.Product product = data.getProduct();
+            final se.elib.library.product.Response.Data.Product.Formats elibFormats = product.getFormats();
+            final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 
-	if (data == null) {
-	    LOGGER.warn("No data received in the get formats response where content provider record ID = '" + contentProviderRecordId + "'");
-	    return formats;
-	}
+            for (se.elib.library.product.Response.Data.Product.Formats.Format elibFormat : elibFormats.getFormat()) {
+                final Format format = makeFormat(language, contentProvider, elibFormat);
+                formats.addFormat(format);
+            }
+        }
 
-	final se.elib.library.product.Response.Data.Product product = data.getProduct();
-	final se.elib.library.product.Response.Data.Product.Formats elibFormats = product.getFormats();
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-
-	for (se.elib.library.product.Response.Data.Product.Formats.Format elibFormat : elibFormats.getFormat()) {
-	    final Format format = makeFormat(language, contentProvider, elibFormat);
-	    formats.addFormat(format);
-	}
-
-	return formats;
+        return formats;
     }
 
     private Format makeFormat(final String language, final ContentProvider contentProvider,
-	    se.elib.library.product.Response.Data.Product.Formats.Format elibFormat) {
-	final String formatId = String.valueOf(elibFormat.getFormatId());
-	/*
-	 * First try to get the name and description from the eHUB database. If
+                              se.elib.library.product.Response.Data.Product.Formats.Format elibFormat) {
+        final String formatId = String.valueOf(elibFormat.getFormatId());
+    /*
+     * First try to get the name and description from the eHUB database. If
 	 * there exist no FormatTextBundle for this format in this language use
 	 * the Elib translations instead.
 	 */
-	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-	final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
 
-	final String name;
-	final String description;
+        final String name;
+        final String description;
 
-	if (textBundle == null) {
-	    name = elibFormat.getName();
-	    description = elibFormat.getDescription();
-	} else {
-	    name = textBundle.getName() == null ? elibFormat.getName() : textBundle.getName();
-	    description = textBundle.getDescription() == null ? elibFormat.getDescription() : textBundle.getDescription();
-	}
+        if (textBundle == null) {
+            name = elibFormat.getName();
+            description = elibFormat.getDescription();
+        } else {
+            name = textBundle.getName() == null ? elibFormat.getName() : textBundle.getName();
+            description = textBundle.getDescription() == null ? elibFormat.getDescription() : textBundle.getDescription();
+        }
 
-	final String iconUrl = elibFormat.getIcon();
-	return new Format(formatId, name, description, iconUrl);
+        final String iconUrl = elibFormat.getIcon();
+        return new Format(formatId, name, description, iconUrl);
     }
 
     private InternalServerErrorException makeInternalServerErrorException(String message, String statusCode) {
-	final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
-	final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, statusCode);
-	return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, statusCode);
+        return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {
-	final String elibRecordId = pendingLoan.getContentProviderRecordId();
-	final String formatId = pendingLoan.getContentProviderFormatId();
+                                          final PendingLoan pendingLoan) {
+        final String elibRecordId = pendingLoan.getContentProviderRecordId();
+        final String formatId = pendingLoan.getContentProviderFormatId();
 
-	final se.elib.library.loan.Response response = elibFacade.createLoan(contentProviderConsumer, elibRecordId, formatId, libraryCard, pin);
-	final se.elib.library.loan.Response.Status status = response.getStatus();
-	final int statusCode = status.getCode();
+        final se.elib.library.loan.Response response = elibFacade.createLoan(contentProviderConsumer, elibRecordId, formatId, libraryCard, pin);
+        final se.elib.library.loan.Response.Status status = response.getStatus();
+        final int statusCode = status.getCode();
 
-	if (statusCode == ELIB_STATUS_CODE_OK)
-	    return makeContentProviderLoan(contentProviderConsumer, libraryCard, elibRecordId, formatId, response);
+        if (statusCode == ELIB_STATUS_CODE_OK) {
+            return makeContentProviderLoan(contentProviderConsumer, libraryCard, elibRecordId, formatId, response);
+        }
 
-	throw makeInternalServerErrorException("Could not create loan", String.valueOf(statusCode));
+        throw makeInternalServerErrorException("Could not create loan", String.valueOf(statusCode));
     }
 
     private ContentProviderLoan makeContentProviderLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard,
-	    final String elibRecordId, final String formatId, final se.elib.library.loan.Response loanResponse) {
-	final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
-	final ElibLoan elibLoan = makeElibLoan(orderItems, elibRecordId, formatId);
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, elibLoan.expirationDate, elibRecordId,
-		formatDecoration).contentProviderLoanId(elibLoan.id).build();
-	final se.elib.library.loan.Response.Data data = loanResponse.getData();
-	final String contentUrl = data.getDownloadurl();
-	final IContent content = createContent(contentUrl, formatDecoration);
-	return new ContentProviderLoan(metadata, content);
+                                                        final String elibRecordId, final String formatId, final se.elib.library.loan.Response loanResponse) {
+        final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
+        final ElibLoan elibLoan = makeElibLoan(orderItems, elibRecordId, formatId);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, elibLoan.expirationDate, elibRecordId,
+                formatDecoration).contentProviderLoanId(elibLoan.id).build();
+        final se.elib.library.loan.Response.Data data = loanResponse.getData();
+        final String contentUrl = data.getDownloadurl();
+        final IContent content = createContent(contentUrl, formatDecoration);
+        return new ContentProviderLoan(metadata, content);
     }
 
     protected List<Orderitem> getOrderItems(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
-	final se.elib.library.orderlist.Response response = elibFacade.getOrderList(contentProviderConsumer, libraryCard);
-	final se.elib.library.orderlist.Response.Status status = response.getStatus();
-	final short statusCode = status.getCode();
+        final se.elib.library.orderlist.Response response = elibFacade.getOrderList(contentProviderConsumer, libraryCard);
+        final se.elib.library.orderlist.Response.Status status = response.getStatus();
+        final short statusCode = status.getCode();
 
-	if (statusCode == ELIB_STATUS_CODE_OK) {
-	    se.elib.library.orderlist.Response.Data data = response.getData();
-	    return data.getOrderitem();
-	}
+        if (statusCode == ELIB_STATUS_CODE_OK) {
+            se.elib.library.orderlist.Response.Data data = response.getData();
+            return data.getOrderitem();
+        }
 
-	throw makeInternalServerErrorException("Could not get order items", String.valueOf(statusCode));
+        throw makeInternalServerErrorException("Could not get order items", String.valueOf(statusCode));
     }
 
     private ElibLoan makeElibLoan(List<Orderitem> orderItems, String reqRecordId, String reqFormatId) {
-	final short reqFormatIdValue = Short.valueOf(reqFormatId);
+        final short reqFormatIdValue = Short.valueOf(reqFormatId);
 
-	for (Orderitem orderItem : orderItems) {
-	    final Book book = orderItem.getBook();
-	    final String orderRecordId = book.getId();
-	    final se.elib.library.orderlist.Response.Data.Orderitem.Book.Format bookFormat = book.getFormat();
-	    final short orderFormatId = bookFormat.getId();
+        for (Orderitem orderItem : orderItems) {
+            final Book book = orderItem.getBook();
+            final String orderRecordId = book.getId();
+            final se.elib.library.orderlist.Response.Data.Orderitem.Book.Format bookFormat = book.getFormat();
+            final short orderFormatId = bookFormat.getId();
 
-	    if (requestRecordIdEqualsOrderRecordId(reqRecordId, orderRecordId) && requestFormatIdEqualsOrderFormatId(reqFormatIdValue, orderFormatId)) {
-		final long orderNumber = orderItem.getRetailerordernumber();
-		final String expirationDate = orderItem.getLoanexpiredate();
-		return new ElibLoan(orderNumber, expirationDate);
-	    }
-	}
+            if (requestRecordIdEqualsOrderRecordId(reqRecordId, orderRecordId) && requestFormatIdEqualsOrderFormatId(reqFormatIdValue, orderFormatId)) {
+                final long orderNumber = orderItem.getRetailerordernumber();
+                final String expirationDate = orderItem.getLoanexpiredate();
+                return new ElibLoan(orderNumber, expirationDate);
+            }
+        }
 
-	throw new InternalServerErrorException("Could not find an order number in the list of order items matching the record ID '" + reqRecordId
-		+ "' and the format '" + reqFormatId + "'", ErrorCause.MISSING_CONTENT_PROVIDER_LOAN_ID);
+        throw new InternalServerErrorException("Could not find an order number in the list of order items matching the record ID '" + reqRecordId
+                + "' and the format '" + reqFormatId + "'", ErrorCause.MISSING_CONTENT_PROVIDER_LOAN_ID);
     }
 
     private boolean requestRecordIdEqualsOrderRecordId(String reqRecordId, final String orderRecordId) {
@@ -188,86 +195,86 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 	 * return the loan as ISBN10, so let's compare both ISBN10 and ISBN13 to
 	 * make sure we don't miss it
 	 */
-	final String secondaryReqRecordId = generateIsbn13or10(reqRecordId);
-	return reqRecordId.equals(orderRecordId) || secondaryReqRecordId.equals(orderRecordId);
+        final String secondaryReqRecordId = generateIsbn13or10(reqRecordId);
+        return reqRecordId.equals(orderRecordId) || secondaryReqRecordId.equals(orderRecordId);
     }
 
     private boolean requestFormatIdEqualsOrderFormatId(final short reqFormatIdValue, final short orderFormatId) {
-	return reqFormatIdValue == orderFormatId;
+        return reqFormatIdValue == orderFormatId;
     }
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
-	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
-	final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
+                               final ContentProviderLoanMetadata contentProviderLoanMetadata) {
+        final String contentProviderLoanId = contentProviderLoanMetadata.getId();
+        final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
 
-	for (Orderitem orderItem : orderItems) {
-	    if (contentProviderLoanIdEqualsOrderNumber(contentProviderLoanId, orderItem)) {
-		final String contentUrl = getContentUrl(orderItem);
+        for (Orderitem orderItem : orderItems) {
+            if (contentProviderLoanIdEqualsOrderNumber(contentProviderLoanId, orderItem)) {
+                final String contentUrl = getContentUrl(orderItem);
 
-		if (contentUrl == null) {
-		    throw makeInternalServerErrorException("Can not determine the content url", String.valueOf(ELIB_STATUS_CODE_OK));
-		} else {
-		    final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
-		    return createContent(contentUrl, formatDecorations);
-		}
-	    }
-	}
+                if (contentUrl == null) {
+                    throw makeInternalServerErrorException("Can not determine the content url", String.valueOf(ELIB_STATUS_CODE_OK));
+                } else {
+                    final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
+                    return createContent(contentUrl, formatDecorations);
+                }
+            }
+        }
 
-	throw makeNotFoundException(contentProviderLoanId);
+        throw makeNotFoundException(contentProviderLoanId);
     }
 
     private boolean contentProviderLoanIdEqualsOrderNumber(String contentProviderLoanId, Orderitem orderItem) {
-	final String orderNumber = String.valueOf(orderItem.getRetailerordernumber());
-	return contentProviderLoanId.equals(orderNumber);
+        final String orderNumber = String.valueOf(orderItem.getRetailerordernumber());
+        return contentProviderLoanId.equals(orderNumber);
     }
 
     private String getContentUrl(final Orderitem orderItem) {
-	final Book book = orderItem.getBook();
-	final BookData bookData = book.getData();
-	final UrlData urlData = bookData.getData();
-	final List<Serializable> content = urlData.getContent();
-	return getContentUrl(content);
+        final Book book = orderItem.getBook();
+        final BookData bookData = book.getData();
+        final UrlData urlData = bookData.getData();
+        final List<Serializable> content = urlData.getContent();
+        return getContentUrl(content);
     }
 
     private String getContentUrl(final List<Serializable> serializables) {
-	for (Serializable serializable : serializables) {
-	    if (serializable instanceof JAXBElement) {
-		String value = String.class.cast(JAXBElement.class.cast(serializable).getValue());
-		if (!StringUtils.isBlank(value)) {
-		    return value;
-		}
-	    }
-	}
+        for (Serializable serializable : serializables) {
+            if (serializable instanceof JAXBElement) {
+                String value = String.class.cast(JAXBElement.class.cast(serializable).getValue());
+                if (!StringUtils.isBlank(value)) {
+                    return value;
+                }
+            }
+        }
 
-	for (Serializable serializable : serializables) {
-	    String value = String.class.cast(serializable);
-	    if (!StringUtils.isBlank(value)) {
-		return value;
-	    }
-	}
+        for (Serializable serializable : serializables) {
+            String value = String.class.cast(serializable);
+            if (!StringUtils.isBlank(value)) {
+                return value;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     private NotFoundException makeNotFoundException(final String contentProviderLoanId) {
-	final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
-	final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
-	return new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
+        final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        return new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
     }
 
     /**
      * Represents an Elib loan.
      */
     private static class ElibLoan {
-	private final String id;
-	private final Date expirationDate;
+        private final String id;
+        private final Date expirationDate;
 
-	private ElibLoan(long orderNumber, String date) {
-	    id = String.valueOf(orderNumber);
-	    final DateTime dateTime = ELIB_DATE_FORMAT.parseDateTime(date);
-	    expirationDate = dateTime.toDate();
-	}
+        private ElibLoan(long orderNumber, String date) {
+            id = String.valueOf(orderNumber);
+            final DateTime dateTime = ELIB_DATE_FORMAT.parseDateTime(date);
+            expirationDate = dateTime.toDate();
+        }
     }
 }
