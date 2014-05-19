@@ -7,5 +7,10 @@
 *.iml
 target/
 coverage-error.log
+atlassian-ide-plugin.xml
+eHub*.log
+catalina.base_IS_UNDEFINED
+insert-into-release.sql
+schema.sql
 local/src/main/webapp/xsd/
 local/src/test/persistence/sql/schema.sql
