@@ -40,7 +40,7 @@
 
 
     <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" scope="singleton">
-        <property name="targetClass" value="org.jboss.resteasy.spi.ResteasyProviderFactory"/>
+        <property name="targetClass" value="com.axiell.ehub.logging.TimeLoggingResteasyProviderFactory"/>
         <property name="targetMethod" value="getInstance"/>
     </bean>
 
