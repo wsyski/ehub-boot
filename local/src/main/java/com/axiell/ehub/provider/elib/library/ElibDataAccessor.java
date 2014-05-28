@@ -54,7 +54,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private IElibFacade elibFacade;
 
     @Override
-    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
+    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String libraryCard, String contentProviderRecordId, String language) {
 	final se.elib.library.product.Response response = elibFacade.getProduct(contentProviderConsumer, contentProviderRecordId, language);
 	final se.elib.library.product.Response.Status status = response.getStatus();
 	final short statusCode = status.getCode();
@@ -121,7 +121,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {
+                                          final PendingLoan pendingLoan, String language) {
 	final String elibRecordId = pendingLoan.getContentProviderRecordId();
 	final String formatId = pendingLoan.getContentProviderFormatId();
 
@@ -198,7 +198,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
 	final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
 
