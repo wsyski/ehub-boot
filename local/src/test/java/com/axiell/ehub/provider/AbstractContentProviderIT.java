@@ -16,19 +16,20 @@ public abstract class AbstractContentProviderIT {
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
     protected ContentProvider contentProvider;
-    
+
     @BeforeClass
     public static final void setUpWheteherIntegrationTestShouldBeRun() {
-	boolean online = isOnline();	
-	Assume.assumeTrue(online);
+        boolean online = isOnline();
+        Assume.assumeTrue(online);
     }
-    
+
     private static boolean isOnline() {
-	final String onlineProperty = System.getProperty("online");
+        final String onlineProperty = System.getProperty("online");
         return onlineProperty == null ? false : Boolean.valueOf(onlineProperty);
+        //return true;
     }
-    
+
     protected void givenContentProvider() {
-	given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
     }
 }

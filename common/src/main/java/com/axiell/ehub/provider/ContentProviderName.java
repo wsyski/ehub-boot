@@ -18,55 +18,52 @@ import java.util.Map;
  */
 @XmlEnum(String.class)
 public enum ContentProviderName {
-    ELIB, ELIBU, PUBLIT, ASKEWS, OVERDRIVE;
+    ELIB, ELIBU, PUBLIT, ASKEWS, OVERDRIVE, ELIB3;
 
     private static final Map<String, ContentProviderName> STRING_TO_ENUM = new HashMap<>();
 
     static {
-	for (ContentProviderName name : values()) {
-	    STRING_TO_ENUM.put(name.toString(), name);
-	}
+        for (ContentProviderName name : values()) {
+            STRING_TO_ENUM.put(name.toString(), name);
+        }
     }
 
     /**
      * Gets the {@link ContentProviderName} from the provided {@link String}.
-     * 
+     * <p/>
      * <p>
      * This method is case-insensitive, i.e. the strings <code>elib</code>,
      * <code>Elib</code> and <code>ELIB</code> returns the same
      * {@link ContentProviderName}.
      * </p>
-     * 
-     * @param name
-     *            the name of the {@link ContentProviderName} to return
+     *
+     * @param name the name of the {@link ContentProviderName} to return
      * @return the {@link ContentProviderName} with the given name
-     * @throws BadRequestException
-     *             if the provided name is <code>null</code>
-     * @throws NotFoundException
-     *             if no {@link ContentProviderName} could be found for the
-     *             given name
+     * @throws BadRequestException if the provided name is <code>null</code>
+     * @throws NotFoundException   if no {@link ContentProviderName} could be found for the
+     *                             given name
      */
     public static ContentProviderName fromString(String name) {
-	validateName(name);
-	final ContentProviderName contentProviderName = getContentProviderName(name);
-	validateContentProviderName(name, contentProviderName);
-	return contentProviderName;
+        validateName(name);
+        final ContentProviderName contentProviderName = getContentProviderName(name);
+        validateContentProviderName(name, contentProviderName);
+        return contentProviderName;
     }
 
     private static void validateName(String name) {
-	if (name == null)
-	    throw new BadRequestException(ErrorCause.MISSING_CONTENT_PROVIDER_NAME);
+        if (name == null)
+            throw new BadRequestException(ErrorCause.MISSING_CONTENT_PROVIDER_NAME);
     }
 
     private static ContentProviderName getContentProviderName(String name) {
-	final String upperCaseName = name.toUpperCase();
-	return STRING_TO_ENUM.get(upperCaseName);
+        final String upperCaseName = name.toUpperCase();
+        return STRING_TO_ENUM.get(upperCaseName);
     }
 
     private static void validateContentProviderName(final String name, final ContentProviderName contentProviderName) {
-	if (contentProviderName == null) {
-	    final ErrorCauseArgument argument = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, name);
-	    throw new NotFoundException(ErrorCause.UNKNOWN_CONTENT_PROVIDER, argument);
-	}
+        if (contentProviderName == null) {
+            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, name);
+            throw new NotFoundException(ErrorCause.UNKNOWN_CONTENT_PROVIDER, argument);
+        }
     }
 }

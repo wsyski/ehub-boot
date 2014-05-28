@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
@@ -35,6 +36,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String EHUB_FORMAT_DESCRIPTION = "ehubFormatDescription";
     private static final int ERROR_STATUS = 500;
 
+    @Mock
+    protected IContentFactory contentFactory;
+    @Mock
+    protected DownloadableContent downloadableContent;
     @Mock
     protected PendingLoan pendingLoan;
     @Mock
@@ -76,8 +81,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(textBundle.getDescription()).willReturn(EHUB_FORMAT_DESCRIPTION);
     }
 
-    protected void givenContentDisposition() {
-        given(formatDecoration.getContentDisposition()).willReturn(ContentDisposition.DOWNLOADABLE);
+    protected void givenDownloadableContentDisposition() {
+        given(formatDecoration.getContentDisposition()).willReturn(DOWNLOADABLE);
     }
 
     protected void givenFormatDecorationFromContentProviderLoanMetadata() {
@@ -85,17 +90,22 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void givenExpirationDate() {
-	given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
+        given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
     }
-    
+
     protected void givenClientResponse() {
-	given(failure.getResponse()).willReturn(response);
+        given(failure.getResponse()).willReturn(response);
     }
-    
+
     protected void givenClientResponseStatus() {
-	given(response.getStatus()).willReturn(ERROR_STATUS);
+        given(response.getStatus()).willReturn(ERROR_STATUS);
     }
-    
+
+    protected void givenCreatedDownloadableContent() {
+        given(downloadableContent.getUrl()).willReturn(DOWNLOAD_URL);
+        given(contentFactory.create(DOWNLOAD_URL, formatDecoration)).willReturn(downloadableContent);
+    }
+
     protected void thenActualLoanContainsDownloadUrl() {
         Assert.assertNotNull(actualLoan);
         IContent content = actualLoan.getContent();

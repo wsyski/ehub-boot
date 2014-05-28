@@ -3,30 +3,28 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
-import static com.axiell.ehub.EhubAssert.thenInternalServerErrorExceptionIsThrown;
-import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.record.format.Format;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.springframework.test.util.ReflectionTestUtils;
+import se.elib.library.orderlist.Response.Data.Orderitem;
+import se.elib.library.product.Response.Data.Product;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import se.elib.library.orderlist.Response.Data.Orderitem;
-
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
-import com.axiell.ehub.provider.record.format.Format;
+import static com.axiell.ehub.EhubAssert.thenInternalServerErrorExceptionIsThrown;
+import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 /**
  * Elib Data Accessor Test
@@ -39,6 +37,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     private static final String ELIB_FORMAT_DESCRIPTION = "elibFormatDescription";
     private static final String FORMAT_ID = "12";
     private static final String CONTENT_PROVIDER_LOAN_ID = "1";
+    private static final short ELIB_PRODUCT_OK_ID = 9;
+    private static final short ELIB_PRODUCT_NOT_OK_ID = 8;
 
     private ElibDataAccessor underTest;
     @Mock
@@ -74,6 +74,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     private se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData bookData;
     @Mock
     private se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData.UrlData urlData;
+    @Mock
+    private Product.Status productStatus;
 
     @Before
     public void setUpElibDataAccessor() {

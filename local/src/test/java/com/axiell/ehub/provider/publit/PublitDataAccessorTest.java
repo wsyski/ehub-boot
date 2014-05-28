@@ -26,7 +26,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     private PublitDataAccessor underTest;
     @Mock
-    private IPublitFacade publitFacade;    
+    private IPublitFacade publitFacade;
     @Mock
     private Product product;
     @Mock
@@ -38,206 +38,209 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Before
     public void setUpPublitDataAccessor() {
-	underTest = new PublitDataAccessor();
-	ReflectionTestUtils.setField(underTest, "publitFacade", publitFacade);
-	ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
+        underTest = new PublitDataAccessor();
+        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
+        ReflectionTestUtils.setField(underTest, "publitFacade", publitFacade);
+        ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
     }
 
     @Test
     public void getFormatsWithPublitFormatNameWhenNoTextBundle() {
-	givenProducts();
-	givenContentProvider();
-	givenFormatId();
-	whenGetFormats();
-	Format format = thenOneFormatIsReturned();
-	thenFormatHasPublitFormatName(format);
-	thenFormatHasNoDescription(format);
+        givenProducts();
+        givenContentProvider();
+        givenFormatId();
+        whenGetFormats();
+        Format format = thenOneFormatIsReturned();
+        thenFormatHasPublitFormatName(format);
+        thenFormatHasNoDescription(format);
     }
 
     private void givenProducts() {
-	List<Product> products = Arrays.asList(product);
-	given(publitFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(products);
+        List<Product> products = Arrays.asList(product);
+        given(publitFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(products);
     }
 
     private void givenFormatId() {
-	given(product.getType()).willReturn(FORMAT_ID);
+        given(product.getType()).willReturn(FORMAT_ID);
     }
 
     private void whenGetFormats() {
-	actualFormats = underTest.getFormats(contentProviderConsumer, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
     }
 
     private Format thenOneFormatIsReturned() {
-	Assert.assertNotNull(actualFormats);
-	Set<Format> formatSet = actualFormats.getFormats();
-	Assert.assertFalse(formatSet.isEmpty());
-	return formatSet.iterator().next();
+        Assert.assertNotNull(actualFormats);
+        Set<Format> formatSet = actualFormats.getFormats();
+        Assert.assertFalse(formatSet.isEmpty());
+        return formatSet.iterator().next();
     }
 
     private void thenFormatHasNoDescription(Format format) {
-	String description = format.getDescription();
-	Assert.assertNull(description);
+        String description = format.getDescription();
+        Assert.assertNull(description);
     }
 
     private void thenFormatHasPublitFormatName(Format format) {
-	String name = format.getName();
-	Assert.assertEquals(FORMAT_ID, name);
+        String name = format.getName();
+        Assert.assertEquals(FORMAT_ID, name);
     }
-    
+
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
-	givenProducts();
-	givenContentProvider();
-	givenFormatId();
-	givenTextBundle();
-	givenEhubFormatNameAndDescription();
-	whenGetFormats();
-	thenFormatHasEhubFormatNameAndDescription();
+        givenProducts();
+        givenContentProvider();
+        givenFormatId();
+        givenTextBundle();
+        givenEhubFormatNameAndDescription();
+        whenGetFormats();
+        thenFormatHasEhubFormatNameAndDescription();
     }
-    
+
     @Test
     public void getFormatsWithPublitFormatNameWhenTextBundle() {
-	givenProducts();
-	givenContentProvider();
-	givenFormatId();
-	givenTextBundle();
-	whenGetFormats();
-	Format format = thenOneFormatIsReturned();
-	thenFormatHasPublitFormatName(format);
-	thenFormatHasNoDescription(format);
+        givenProducts();
+        givenContentProvider();
+        givenFormatId();
+        givenTextBundle();
+        whenGetFormats();
+        Format format = thenOneFormatIsReturned();
+        thenFormatHasPublitFormatName(format);
+        thenFormatHasNoDescription(format);
     }
 
     @Test
     public void getFormatsWhenClientResponseFailureIsThrown() {
-	givenClientResponseFailureInGetProduct();
-	givenClientResponse();
-	givenClientResponseStatus();
-	try {
-	    whenGetFormats();    
-	} catch (InternalServerErrorException e) {
-	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-	}	
+        givenClientResponseFailureInGetProduct();
+        givenClientResponse();
+        givenClientResponseStatus();
+        try {
+            whenGetFormats();
+        } catch (InternalServerErrorException e) {
+            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
-    
+
     private void givenClientResponseFailureInGetProduct() {
-	given(publitFacade.getProduct(contentProviderConsumer, RECORD_ID)).willThrow(failure);
+        given(publitFacade.getProduct(contentProviderConsumer, RECORD_ID)).willThrow(failure);
     }
 
     @Test
     public void createLoan() {
-	givenPendingLoan();
-	givenShopCustomerOrder();
-	givenShopCustomerOrderId();
-	givenShopOrderUrl();
-	givenDownloadItems();
-	givenDownloadUrl();
-	givenExpirationDate();
-	givenContentProvider();
-	givenFormatDecorationFromContentProvider();
-	givenContentDisposition();	
-	whenCreateLoan();
-	thenActualLoanContainsDownloadUrl();
+        givenPendingLoan();
+        givenShopCustomerOrder();
+        givenShopCustomerOrderId();
+        givenShopOrderUrl();
+        givenDownloadItems();
+        givenDownloadUrl();
+        givenExpirationDate();
+        givenContentProvider();
+        givenFormatDecorationFromContentProvider();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenCreateLoan();
+        thenActualLoanContainsDownloadUrl();
     }
 
     private void givenPendingLoan() {
-	given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-	given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
+        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
+        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenShopCustomerOrder() {
-	given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willReturn(shopCustomerOrder);
+        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willReturn(shopCustomerOrder);
     }
 
     private void givenShopCustomerOrderId() {
-	given(shopCustomerOrder.getId()).willReturn(SHOP_CUSTOMER_ORDER_ID);
+        given(shopCustomerOrder.getId()).willReturn(SHOP_CUSTOMER_ORDER_ID);
     }
 
     private void givenShopOrderUrl() {
-	given(publitFacade.getShopOrderUrl(contentProviderConsumer, SHOP_CUSTOMER_ORDER_ID.toString())).willReturn(shopOrderUrl);
+        given(publitFacade.getShopOrderUrl(contentProviderConsumer, SHOP_CUSTOMER_ORDER_ID.toString())).willReturn(shopOrderUrl);
     }
 
     private void givenDownloadItems() {
-	List<DownloadItem> downloadItems = Arrays.asList(downloadItem);
-	given(shopOrderUrl.getDownloadItems()).willReturn(downloadItems);
+        List<DownloadItem> downloadItems = Arrays.asList(downloadItem);
+        given(shopOrderUrl.getDownloadItems()).willReturn(downloadItems);
     }
 
     private void givenDownloadUrl() {
-	given(downloadItem.getUrl()).willReturn(DOWNLOAD_URL);
+        given(downloadItem.getUrl()).willReturn(DOWNLOAD_URL);
     }
 
     private void whenCreateLoan() {
-	actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan);
+        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
     }
 
     @Test
     public void createLoanWhenClientResponseFailureIsThrown() {
-	givenPendingLoan();
-	givenClientResponseFailureInCreateShopOrder();
-	givenClientResponse();
-	givenClientResponseStatus();
-	try {
-	    whenCreateLoan();    
-	} catch (InternalServerErrorException e) {
-	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-	}	
+        givenPendingLoan();
+        givenClientResponseFailureInCreateShopOrder();
+        givenClientResponse();
+        givenClientResponseStatus();
+        try {
+            whenCreateLoan();
+        } catch (InternalServerErrorException e) {
+            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenClientResponseFailureInCreateShopOrder() {
-	given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willThrow(failure);
+        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willThrow(failure);
     }
-    
+
     @Test
     public void getContent() {
-	givenContentProviderLoanId();
-	givenShopOrderUrl();
-	givenDownloadItems();
-	givenDownloadUrl();
-	givenContentProvider();
-	givenFormatDecorationFromContentProviderLoanMetadata();
-	givenContentDisposition();
-	whenGetContent();
-	thenActualContentContainsDownloadUrl();
+        givenContentProviderLoanId();
+        givenShopOrderUrl();
+        givenDownloadItems();
+        givenDownloadUrl();
+        givenContentProvider();
+        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenGetContent();
+        thenActualContentContainsDownloadUrl();
     }
 
     private void givenContentProviderLoanId() {
-	given(loanMetadata.getId()).willReturn(SHOP_CUSTOMER_ORDER_ID.toString());
+        given(loanMetadata.getId()).willReturn(SHOP_CUSTOMER_ORDER_ID.toString());
     }
 
     private void whenGetContent() {
-	actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata);
+        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
     }
-    
+
     @Test
     public void getContentWhenEmptyListOfDownloadItems() {
-	givenContentProviderLoanId();
-	givenShopOrderUrl();
-	givenEmptyListOfDownloadItems();
-	try {
-	    whenGetContent();
-	} catch (InternalServerErrorException e) {
-	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenContentProviderLoanId();
+        givenShopOrderUrl();
+        givenEmptyListOfDownloadItems();
+        try {
+            whenGetContent();
+        } catch (InternalServerErrorException e) {
+            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenEmptyListOfDownloadItems() {
-	List<DownloadItem> downloadItems = new ArrayList<>();
-	given(shopOrderUrl.getDownloadItems()).willReturn(downloadItems);
+        List<DownloadItem> downloadItems = new ArrayList<>();
+        given(shopOrderUrl.getDownloadItems()).willReturn(downloadItems);
     }
-    
+
     @Test
     public void getContentWhenClientResponseFailureIsThrown() {
-	givenContentProviderLoanId();
-	givenClientResponseFailureInGetShopOrderUrl();
-	givenClientResponse();
-	givenClientResponseStatus();
-	try {
-	    whenGetContent();
-	} catch (InternalServerErrorException e) {
-	    EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenContentProviderLoanId();
+        givenClientResponseFailureInGetShopOrderUrl();
+        givenClientResponse();
+        givenClientResponseStatus();
+        try {
+            whenGetContent();
+        } catch (InternalServerErrorException e) {
+            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenClientResponseFailureInGetShopOrderUrl() {
-	given(publitFacade.getShopOrderUrl(contentProviderConsumer, SHOP_CUSTOMER_ORDER_ID.toString())).willThrow(failure);
+        given(publitFacade.getShopOrderUrl(contentProviderConsumer, SHOP_CUSTOMER_ORDER_ID.toString())).willThrow(failure);
     }
 }

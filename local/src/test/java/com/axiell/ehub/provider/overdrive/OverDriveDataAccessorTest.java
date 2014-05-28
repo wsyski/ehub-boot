@@ -58,234 +58,237 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Before
     public void setUpElibUDataAccessor() {
-	underTest = new OverDriveDataAccessor();
-	ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
+        underTest = new OverDriveDataAccessor();
+        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
+        ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
     }
 
     @Test
     public void getFormatsWithOverDriveFormatNameWhenNoTextBundle() {
-	givenProduct();
-	givenDiscoveryFormat();
-	givenContentProvider();
-	givenFormatIdInDiscoveryFormat();
-	givenFormatNameInDiscoveryFormat();
-	whenGetFormats();
-	thenFormatSetContainsOneFormat();
-	thenFormatHasOverDriveName();
+        givenProduct();
+        givenDiscoveryFormat();
+        givenContentProvider();
+        givenFormatIdInDiscoveryFormat();
+        givenFormatNameInDiscoveryFormat();
+        whenGetFormats();
+        thenFormatSetContainsOneFormat();
+        thenFormatHasOverDriveName();
     }
 
     private void givenProduct() {
-	given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(product);
+        given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(product);
     }
 
     private void givenDiscoveryFormat() {
-	List<DiscoveryFormat> discoveryFormats = Arrays.asList(discoveryFormat);
-	given(product.getFormats()).willReturn(discoveryFormats);
+        List<DiscoveryFormat> discoveryFormats = Arrays.asList(discoveryFormat);
+        given(product.getFormats()).willReturn(discoveryFormats);
     }
 
     private void givenFormatIdInDiscoveryFormat() {
-	given(discoveryFormat.getId()).willReturn(FORMAT_ID);
+        given(discoveryFormat.getId()).willReturn(FORMAT_ID);
     }
 
     private void givenFormatNameInDiscoveryFormat() {
-	given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
+        given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
     }
 
     private void whenGetFormats() {
-	actualFormats = underTest.getFormats(contentProviderConsumer, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
     }
 
     private void thenFormatSetContainsOneFormat() {
-	Set<Format> formatSet = thenFormatSetIsNotNull();
-	Assert.assertTrue(formatSet.size() == 1);
+        Set<Format> formatSet = thenFormatSetIsNotNull();
+        Assert.assertTrue(formatSet.size() == 1);
     }
 
     private void thenFormatHasOverDriveName() {
-	Assert.assertFalse(actualFormats.getFormats().isEmpty());
-	Format actualFormat = actualFormats.getFormats().iterator().next();
-	Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.getName());
+        Assert.assertFalse(actualFormats.getFormats().isEmpty());
+        Format actualFormat = actualFormats.getFormats().iterator().next();
+        Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.getName());
     }
 
     private Set<Format> thenFormatSetIsNotNull() {
-	Assert.assertNotNull(actualFormats);
-	Set<Format> formatSet = actualFormats.getFormats();
-	Assert.assertNotNull(formatSet);
-	return formatSet;
+        Assert.assertNotNull(actualFormats);
+        Set<Format> formatSet = actualFormats.getFormats();
+        Assert.assertNotNull(formatSet);
+        return formatSet;
     }
 
     @Test
     public void getFormatsWithEhubNameAndDescription() {
-	givenProduct();
-	givenDiscoveryFormat();
-	givenContentProvider();
-	givenFormatIdInDiscoveryFormat();
-	givenTextBundle();
-	givenEhubFormatNameAndDescription();
-	whenGetFormats();
-	thenFormatHasEhubFormatNameAndDescription();
+        givenProduct();
+        givenDiscoveryFormat();
+        givenContentProvider();
+        givenFormatIdInDiscoveryFormat();
+        givenTextBundle();
+        givenEhubFormatNameAndDescription();
+        whenGetFormats();
+        thenFormatHasEhubFormatNameAndDescription();
     }
 
     @Test
     public void getFormatsWithOverDriveFormatNameWhenTextBundle() {
-	givenProduct();
-	givenDiscoveryFormat();
-	givenContentProvider();
-	givenFormatIdInDiscoveryFormat();
-	givenFormatNameInDiscoveryFormat();
-	givenTextBundle();
-	whenGetFormats();
-	thenFormatSetContainsOneFormat();
-	thenFormatHasOverDriveName();
+        givenProduct();
+        givenDiscoveryFormat();
+        givenContentProvider();
+        givenFormatIdInDiscoveryFormat();
+        givenFormatNameInDiscoveryFormat();
+        givenTextBundle();
+        whenGetFormats();
+        thenFormatSetContainsOneFormat();
+        thenFormatHasOverDriveName();
     }
 
     private void givenErrorDetails() {
-	given(response.getEntity(ErrorDetails.class)).willReturn(errorDetails);
+        given(response.getEntity(ErrorDetails.class)).willReturn(errorDetails);
     }
 
     @Test
     public void createLoan() {
-	givenPatronAccessToken();
-	givenRecordIdInPendingLoan();
-	givenFormatIdInPendingLoan();
-	givenCheckout();
-	givenExpirationDateInCheckout();
-	givenCirculationFormats();
-	givenFormatType();
-	givenReserveId();
-	givenLinkTemplates();
-	givenDownloadLinkTemplate();
-	givenDownloadLink();
-	givenLinks();
-	givenContentLink();
-	givenDownloadUrl();
-	givenContentProvider();
-	givenFormatDecorationFromContentProvider();
-	givenFormatIdFromFormatDecoration();
-	givenContentDisposition();
-	whenCreateLoan();
-	thenActualLoanContainsDownloadUrl();
+        givenPatronAccessToken();
+        givenRecordIdInPendingLoan();
+        givenFormatIdInPendingLoan();
+        givenCheckout();
+        givenExpirationDateInCheckout();
+        givenCirculationFormats();
+        givenFormatType();
+        givenReserveId();
+        givenLinkTemplates();
+        givenDownloadLinkTemplate();
+        givenDownloadLink();
+        givenLinks();
+        givenContentLink();
+        givenDownloadUrl();
+        givenContentProvider();
+        givenFormatDecorationFromContentProvider();
+        givenFormatIdFromFormatDecoration();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenCreateLoan();
+        thenActualLoanContainsDownloadUrl();
     }
 
     private void givenCirculationFormats() {
-	List<CirculationFormat> circulationFormats = Arrays.asList(circulationFormat);
-	given(checkout.getFormats()).willReturn(circulationFormats);
+        List<CirculationFormat> circulationFormats = Arrays.asList(circulationFormat);
+        given(checkout.getFormats()).willReturn(circulationFormats);
     }
 
     private void givenFormatType() {
-	given(circulationFormat.getFormatType()).willReturn(FORMAT_ID);
+        given(circulationFormat.getFormatType()).willReturn(FORMAT_ID);
     }
 
     private void givenReserveId() {
-	given(circulationFormat.getReserveId()).willReturn(RECORD_ID);
+        given(circulationFormat.getReserveId()).willReturn(RECORD_ID);
     }
 
     private void givenLinkTemplates() {
-	given(circulationFormat.getLinkTemplates()).willReturn(linkTemplates);
+        given(circulationFormat.getLinkTemplates()).willReturn(linkTemplates);
     }
 
     private void givenDownloadLinkTemplate() {
-	given(linkTemplates.getDownloadLink()).willReturn(downloadLinkTemplate);
+        given(linkTemplates.getDownloadLink()).willReturn(downloadLinkTemplate);
     }
 
     public void givenPatronAccessToken() {
-	given(overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, CARD, PIN)).willReturn(accessToken);
+        given(overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, CARD, PIN)).willReturn(accessToken);
     }
 
     private void givenCheckout() {
-	given(overDriveFacade.checkout(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(checkout);
+        given(overDriveFacade.checkout(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(checkout);
     }
 
     private void givenExpirationDateInCheckout() {
-	given(checkout.getExpirationDate()).willReturn(new Date());
+        given(checkout.getExpirationDate()).willReturn(new Date());
     }
 
     private void givenDownloadLink() {
-	given(overDriveFacade.getDownloadLink(contentProviderConsumer, accessToken, downloadLinkTemplate)).willReturn(downloadLink);
+        given(overDriveFacade.getDownloadLink(contentProviderConsumer, accessToken, downloadLinkTemplate)).willReturn(downloadLink);
     }
 
     private void givenLinks() {
-	given(downloadLink.getLinks()).willReturn(links);
+        given(downloadLink.getLinks()).willReturn(links);
     }
 
     private void givenContentLink() {
-	given(links.getContentLink()).willReturn(contentLink);
+        given(links.getContentLink()).willReturn(contentLink);
     }
 
     private void givenDownloadUrl() {
-	given(contentLink.getHref()).willReturn(DOWNLOAD_URL);
+        given(contentLink.getHref()).willReturn(DOWNLOAD_URL);
     }
 
     private void givenRecordIdInPendingLoan() {
-	given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
+        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
     }
 
     private void givenFormatIdInPendingLoan() {
-	given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
+        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     public void givenFormatIdFromFormatDecoration() {
-	given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
+        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void whenCreateLoan() {
-	actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan);
+        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
     }
 
     @Test
     public void createLoanWhenNotSameFormat() {
-	givenPatronAccessToken();
-	givenRecordIdInPendingLoan();
-	givenFormatIdInPendingLoan();
-	givenCheckout();
-	givenExpirationDateInCheckout();
-	givenCirculationFormats();
-	try {
-	    whenCreateLoan();
-	    Assert.fail("A NotFoundException should have been thrown");
-	} catch (NotFoundException e) {
-	    thenNotFoundExceptionIsThrown(e);
-	}
+        givenPatronAccessToken();
+        givenRecordIdInPendingLoan();
+        givenFormatIdInPendingLoan();
+        givenCheckout();
+        givenExpirationDateInCheckout();
+        givenCirculationFormats();
+        try {
+            whenCreateLoan();
+            Assert.fail("A NotFoundException should have been thrown");
+        } catch (NotFoundException e) {
+            thenNotFoundExceptionIsThrown(e);
+        }
     }
 
     @Test
     public void getContent() {
-	givenPatronAccessToken();
-	givenCheckouts();
-	givenRecordIdFromContentProviderLoanMetadata();
-	givenFormatDecorationFromContentProviderLoanMetadata();
-	givenCheckoutList();
-	givenCirculationFormats();
-	givenFormatType();
-	givenReserveId();
-	givenLinkTemplates();
-	givenDownloadLinkTemplate();
-	givenDownloadLink();
-	givenLinks();
-	givenContentLink();
-	givenDownloadUrl();
-	givenFormatIdFromFormatDecoration();
-	givenContentDisposition();
-	whenGetContent();
-	thenActualContentContainsDownloadUrl();
+        givenPatronAccessToken();
+        givenCheckouts();
+        givenRecordIdFromContentProviderLoanMetadata();
+        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenCheckoutList();
+        givenCirculationFormats();
+        givenFormatType();
+        givenReserveId();
+        givenLinkTemplates();
+        givenDownloadLinkTemplate();
+        givenDownloadLink();
+        givenLinks();
+        givenContentLink();
+        givenDownloadUrl();
+        givenFormatIdFromFormatDecoration();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenGetContent();
+        thenActualContentContainsDownloadUrl();
     }
 
     public void givenCheckouts() {
-	given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
+        given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
     }
 
     public void givenRecordIdFromContentProviderLoanMetadata() {
-	given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
+        given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
     }
 
     private void givenCheckoutList() {
-	List<Checkout> checkoutList = Arrays.asList(checkout);
-	given(checkouts.getCheckouts()).willReturn(checkoutList);
+        List<Checkout> checkoutList = Arrays.asList(checkout);
+        given(checkouts.getCheckouts()).willReturn(checkoutList);
     }
 
     public void whenGetContent() {
-	actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata);
+        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
     }
-    
+
     @Test
     public void getContentWhenNoDownloadLinkTemplate() {
         givenPatronAccessToken();

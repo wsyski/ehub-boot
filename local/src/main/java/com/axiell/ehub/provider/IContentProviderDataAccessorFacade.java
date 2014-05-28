@@ -9,9 +9,9 @@ import com.axiell.ehub.provider.record.format.Formats;
 
 public interface IContentProviderDataAccessorFacade {
     
-    Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String contentProviderRecordId, String language);
+    Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String libraryCard, String contentProviderRecordId, String language);
 
-    ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan);
+    ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language);
 
-    IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin);
+    IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin, String language);
 }

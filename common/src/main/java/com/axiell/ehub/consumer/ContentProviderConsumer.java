@@ -33,14 +33,15 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     private static final Map<ContentProviderName, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
     static {
-	VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(ELIB_RETAILER_ID, ELIB_RETAILER_KEY)));
-	VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
-	VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
-	VALID_PROPERTY_KEYS.put(ASKEWS, new HashSet<>(Arrays.asList(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE)));
-	VALID_PROPERTY_KEYS.put(
-		OVERDRIVE,
-		new HashSet<>(Arrays.asList(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
-			OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME)));
+        VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(ELIB_RETAILER_ID, ELIB_RETAILER_KEY)));
+        VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
+        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
+        VALID_PROPERTY_KEYS.put(ASKEWS, new HashSet<>(Arrays.asList(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE)));
+        VALID_PROPERTY_KEYS.put(
+                OVERDRIVE,
+                new HashSet<>(Arrays.asList(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
+                        OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
+        );
     }
 
     private EhubConsumer ehubConsumer;
@@ -55,68 +56,63 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     /**
      * Constructs a new {@link ContentProviderConsumer}.
-     * 
-     * @param ehubConsumer
-     *            the {@link EhubConsumer}
-     * @param contentProvider
-     *            the {@link ContentProvider}
-     * @param properties
-     *            {@link ContentProviderConsumer} properties
+     *
+     * @param ehubConsumer    the {@link EhubConsumer}
+     * @param contentProvider the {@link ContentProvider}
+     * @param properties      {@link ContentProviderConsumer} properties
      */
     public ContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider,
-	    final Map<ContentProviderConsumerPropertyKey, String> properties) {
-	this.ehubConsumer = ehubConsumer;
-	this.contentProvider = contentProvider;
-	this.properties = properties;
+                                   final Map<ContentProviderConsumerPropertyKey, String> properties) {
+        this.ehubConsumer = ehubConsumer;
+        this.contentProvider = contentProvider;
+        this.properties = properties;
     }
 
     /**
      * Gets the {@link EhubConsumer}
-     * 
+     *
      * @return the {@link EhubConsumer}
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID")
     @ForeignKey(name = "FK_CONTENT_P_C_EHUB_C")
     public EhubConsumer getEhubConsumer() {
-	return ehubConsumer;
+        return ehubConsumer;
     }
 
     /**
      * Sets the {@link EhubConsumer}.
-     * 
-     * @param ehubConsumer
-     *            the {@link EhubConsumer} to set
+     *
+     * @param ehubConsumer the {@link EhubConsumer} to set
      */
     public void setEhubConsumer(final EhubConsumer ehubConsumer) {
-	this.ehubConsumer = ehubConsumer;
+        this.ehubConsumer = ehubConsumer;
     }
 
     /**
      * Returns the {@link ContentProvider}.
-     * 
+     *
      * @return the {@link ContentProvider}
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID")
     @ForeignKey(name = "FK_CONTENT_P_C_CONTENT_P")
     public ContentProvider getContentProvider() {
-	return contentProvider;
+        return contentProvider;
     }
 
     /**
      * Sets the {@link ContentProvider}.
-     * 
-     * @param contentProvider
-     *            the {@link ContentProvider} to set
+     *
+     * @param contentProvider the {@link ContentProvider} to set
      */
     public void setContentProvider(ContentProvider contentProvider) {
-	this.contentProvider = contentProvider;
+        this.contentProvider = contentProvider;
     }
 
     /**
      * Gets the {@link ContentProviderConsumer} properties
-     * 
+     *
      * @return the {@link ContentProviderConsumer} properties
      */
     @ElementCollection(fetch = FetchType.LAZY)
@@ -126,57 +122,53 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     @Column(name = "PROPERTY_VALUE")
     @ForeignKey(name = "FK_CONTENT_P_C_P_CONTENT_P_C")
     public Map<ContentProviderConsumerPropertyKey, String> getProperties() {
-	return properties;
+        return properties;
     }
 
     /**
      * Sets the {@link ContentProviderConsumer} properties.
-     * 
-     * @param properties
-     *            the {@link ContentProviderConsumer} properties to set
+     *
+     * @param properties the {@link ContentProviderConsumer} properties to set
      */
     public void setProperties(final Map<ContentProviderConsumerPropertyKey, String> properties) {
-	this.properties = properties;
+        this.properties = properties;
     }
 
     /**
      * Gets the valid properties for this {@link ContentProviderConsumer}.
-     * 
+     *
      * @return a {@link List} of {@link ContentProviderConsumerPropertyKey}s
      */
     @Transient
     public List<ContentProviderConsumerPropertyKey> getValidPropertyKeys() {
-	Validate.notNull(contentProvider, "Content Provider can't be null");
-	Set<ContentProviderConsumerPropertyKey> keySet = VALID_PROPERTY_KEYS.get(contentProvider.getName());
-	return keySet == null ? new ArrayList<ContentProviderConsumerPropertyKey>() : new ArrayList<>(keySet);
+        Validate.notNull(contentProvider, "Content Provider can't be null");
+        Set<ContentProviderConsumerPropertyKey> keySet = VALID_PROPERTY_KEYS.get(contentProvider.getName());
+        return keySet == null ? new ArrayList<ContentProviderConsumerPropertyKey>() : new ArrayList<>(keySet);
     }
 
     /**
      * Gets the value of a property with the given key.
-     * 
-     * @param key
-     *            the key of the property
+     *
+     * @param key the key of the property
      * @return the property value
-     * @throws NullPointerException
-     *             if this {@link ContentProviderConsumer} has no valid property
-     *             keys
-     * @throws IllegalArgumentException
-     *             if there exists no property with the given key among the
-     *             valid property keys
+     * @throws NullPointerException     if this {@link ContentProviderConsumer} has no valid property
+     *                                  keys
+     * @throws IllegalArgumentException if there exists no property with the given key among the
+     *                                  valid property keys
      */
     @Transient
     public String getProperty(final ContentProviderConsumerPropertyKey key) {
-	List<ContentProviderConsumerPropertyKey> validPropertyKeys = getValidPropertyKeys();
-	Validate.notNull(validPropertyKeys, "Valid property keys can't be null");
-	Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: " + contentProvider.getName());
-	return getProperties().get(key);
+        List<ContentProviderConsumerPropertyKey> validPropertyKeys = getValidPropertyKeys();
+        Validate.notNull(validPropertyKeys, "Valid property keys can't be null");
+        Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: " + contentProvider.getName());
+        return getProperties().get(key);
     }
 
     /**
      * Enumeration for content provider consumer property keys.
      */
     public static enum ContentProviderConsumerPropertyKey {
-	ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE, 
-	OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME
+        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE,
+        OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY
     }
 }

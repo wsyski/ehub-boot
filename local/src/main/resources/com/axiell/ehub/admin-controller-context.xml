@@ -4,8 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="persistence-context.xml"/>
-	<import resource="facade-context.xml"/>
-	
+    <import resource="facade-context.xml"/>
+
 	<!-- List only the Admin Controllers here -->
 	<bean id="consumerAdminController" class="com.axiell.ehub.consumer.ConsumerAdminController"/>
 	<bean id="languageAdminController" class="com.axiell.ehub.language.LanguageAdminController"/>

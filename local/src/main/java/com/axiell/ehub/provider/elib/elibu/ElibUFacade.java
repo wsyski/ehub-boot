@@ -5,10 +5,10 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
+import static com.axiell.ehub.util.Md5Function.md5Hex;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ class ElibUFacade implements IElibUFacade {
 
     @Override
     public Response getProduct(ContentProviderConsumer contentProviderConsumer, String elibuRecordId) {
-	final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
+        final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String md5ServiceKey = makeMd5ServiceKey(contentProviderConsumer);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String productUrl = contentProvider.getProperty(PRODUCT_URL);
@@ -31,26 +31,13 @@ class ElibUFacade implements IElibUFacade {
     }
 
     private String makeMd5ServiceKey(ContentProviderConsumer contentProviderConsumer) {
-	final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        return makeMd5Hex(serviceKey);
-    }
-    
-    private String makeMd5Hex(final String value) {
-	final byte[] valueAsBytes = toByteArray(value);
-	return DigestUtils.md5Hex(valueAsBytes);
+        final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
+        return md5Hex(serviceKey);
     }
 
-    private byte[] toByteArray(final String value) {
-	try {
-	    return value.getBytes(UTF8);    
-	} catch (UnsupportedEncodingException e) {
-	    throw new InternalServerErrorException("Could not convert value in '" + UTF8 + "' encoding", e);
-	}
-    }
-    
     @Override
     public Response consumeLicense(ContentProviderConsumer contentProviderConsumer, String libraryCard) {
-	final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
+        final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String md5ServiceKey = makeMd5ServiceKey(contentProviderConsumer);
         final String subscriptionId = contentProviderConsumer.getProperty(SUBSCRIPTION_ID);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -58,14 +45,14 @@ class ElibUFacade implements IElibUFacade {
         final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, consumeLicenseUrl);
         return elibUResource.consumeLicense(serviceId, md5ServiceKey, subscriptionId, libraryCard);
     }
-    
+
     @Override
     public Response consumeProduct(ContentProviderConsumer contentProviderConsumer, Integer licenseId, String elibuRecordId) {
-	final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
+        final String serviceId = contentProviderConsumer.getProperty(ELIBU_SERVICE_ID);
         final String serviceKey = contentProviderConsumer.getProperty(ELIBU_SERVICE_KEY);
-        final String md5ServiceKey = makeMd5Hex(serviceKey);
+        final String md5ServiceKey = md5Hex(serviceKey);
         final String checksum = new StringBuilder(serviceId).append(serviceKey).append(licenseId).append(elibuRecordId).toString();
-        final String md5Checksum = makeMd5Hex(checksum);
+        final String md5Checksum = md5Hex(checksum);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeProductUrl = contentProvider.getProperty(PRODUCT_URL);
         final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, consumeProductUrl);

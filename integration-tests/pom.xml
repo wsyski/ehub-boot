@@ -17,5 +17,6 @@
 		<module>remote-0.4</module>
 		<module>remote-0.6</module>
 		<module>remote-1.0-SNAPSHOT</module>
-	</modules>	
+		<module>local-it</module>
+	</modules>
 </project>

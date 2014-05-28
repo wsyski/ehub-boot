@@ -43,7 +43,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     private IElibUFacade elibUFacade;
 
     @Override
-    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String elibuRecordId, String language) {
+    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String libraryCard, String elibuRecordId, String language) {
 	final Response response = elibUFacade.getProduct(contentProviderConsumer, elibuRecordId);
 	final Result result = response.getResult();
 	final Status status = result.getStatus();
@@ -91,7 +91,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {	
+                                          final PendingLoan pendingLoan, String language) {
 	final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
 	final String recordId = pendingLoan.getContentProviderRecordId();
 	final String formatId = pendingLoan.getContentProviderFormatId();
@@ -110,7 +110,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);	
 	final String recordId = contentProviderLoanMetadata.getRecordId();
 	final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();

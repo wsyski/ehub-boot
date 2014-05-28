@@ -49,7 +49,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private IExpirationDateFactory expirationDateFactory;
 
     @Override
-    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
+    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String libraryCard, String contentProviderRecordId, String language) {
 	final FormatTextBundle textBundle = getTextBundle(contentProviderConsumer, language);
 	final Format format = makeFormat(textBundle);
 	final Formats formats = new Formats();
@@ -73,7 +73,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
+    public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language) {
 	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
 	final String contentProviderLoanId = processLoan(contentProviderConsumer, contentProviderRecordId);
 	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
@@ -169,7 +169,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public IContent getContent(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin,
-	    ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
 	final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, contentProviderLoanId);
 

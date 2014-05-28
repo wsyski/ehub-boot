@@ -19,9 +19,9 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EhubLoanRepositoryFacadeTest {
-    
+
     private IEhubLoanRepositoryFacade underTest;
-    
+
     @Mock
     private IEhubLoanRepository ehubLoanRepository;
     @Mock
@@ -37,127 +37,127 @@ public class EhubLoanRepositoryFacadeTest {
     @Mock
     private FormatDecoration formatDecoration;
     private long actualCount;
-    
+
     @Before
     public void setUpEhubLoanRepositoryFacade() {
-	underTest = new EhubLoanRepositoryFacade();
-	ReflectionTestUtils.setField(underTest, "ehubLoanRepository", ehubLoanRepository);
+        underTest = new EhubLoanRepositoryFacade();
+        ReflectionTestUtils.setField(underTest, "ehubLoanRepository", ehubLoanRepository);
     }
-    
+
     @Test
     public void ehubLoanNotFoundByReadyLoanId() {
-	givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId();
+        givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId();
 
-	try {
-	    whenGetReadyLoanByReadyLoanId();
-	    Assert.fail("A NotFoundException should have been thrown");
-	} catch (NotFoundException e) {
-	    thenErrorCauseIsLoanByIdNotFound(e);
-	}
+        try {
+            whenGetReadyLoanByReadyLoanId();
+            Assert.fail("A NotFoundException should have been thrown");
+        } catch (NotFoundException e) {
+            thenErrorCauseIsLoanByIdNotFound(e);
+        }
     }
 
     private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId() {
-	given(ehubLoanRepository.findLoan(any(Long.class), any(Long.class))).willReturn(null);
+        given(ehubLoanRepository.findLoan(any(Long.class), any(Long.class))).willReturn(null);
     }
 
     private void whenGetReadyLoanByReadyLoanId() {
-	actualEhubLoan = underTest.findEhubLoan(ehubConsumer, readyLoanId);
+        actualEhubLoan = underTest.findEhubLoan(ehubConsumer, readyLoanId);
     }
 
     private void thenErrorCauseIsLoanByIdNotFound(NotFoundException e) {
-	ErrorCause errorCause = getErrorCause(e);
-	Assert.assertEquals(ErrorCause.LOAN_BY_ID_NOT_FOUND, errorCause);
+        ErrorCause errorCause = getErrorCause(e);
+        Assert.assertEquals(ErrorCause.LOAN_BY_ID_NOT_FOUND, errorCause);
     }
 
     private ErrorCause getErrorCause(NotFoundException e) {
-	Assert.assertNotNull(e);
-	EhubError ehubError = e.getEhubError();
-	return ehubError.getCause();
+        Assert.assertNotNull(e);
+        EhubError ehubError = e.getEhubError();
+        return ehubError.getCause();
     }
-    
+
     @Test
     public void ehubLoanNotFoundByLmsLoanId() {
-	givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
+        givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
 
-	try {
-	    whenGetReadyLoanByLmsLoanId();
-	    Assert.fail("A NotFoundException should have been thrown");
-	} catch (NotFoundException e) {
-	    thenErrorCauseIsLoanByLmsIdNotFound(e);
-	}
+        try {
+            whenGetReadyLoanByLmsLoanId();
+            Assert.fail("A NotFoundException should have been thrown");
+        } catch (NotFoundException e) {
+            thenErrorCauseIsLoanByLmsIdNotFound(e);
+        }
     }
 
     private void whenGetReadyLoanByLmsLoanId() {
-	actualEhubLoan = underTest.findEhubLoan(ehubConsumer, "lmsLoanId");
+        actualEhubLoan = underTest.findEhubLoan(ehubConsumer, "lmsLoanId");
     }
 
     private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId() {
-	given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(null);
+        given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(null);
     }
-    
+
     private void thenErrorCauseIsLoanByLmsIdNotFound(NotFoundException e) {
-	ErrorCause errorCause = getErrorCause(e);
-	Assert.assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);	
+        ErrorCause errorCause = getErrorCause(e);
+        Assert.assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);
     }
-    
+
     @Test
     public void ehubLoanByReadyLoanId() {
-	givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId();
-	whenGetReadyLoanByReadyLoanId();
-	thenActualEhubLoanEqualsExpectedEhubLoan();
+        givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId();
+        whenGetReadyLoanByReadyLoanId();
+        thenActualEhubLoanEqualsExpectedEhubLoan();
     }
-    
+
     private void givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId() {
-	given(ehubLoanRepository.findLoan(any(Long.class), any(Long.class))).willReturn(expectedEhubLoan);
+        given(ehubLoanRepository.findLoan(any(Long.class), any(Long.class))).willReturn(expectedEhubLoan);
     }
-    
+
     private void thenActualEhubLoanEqualsExpectedEhubLoan() {
-	Assert.assertEquals(expectedEhubLoan, actualEhubLoan);
+        Assert.assertEquals(expectedEhubLoan, actualEhubLoan);
     }
-    
+
     @Test
     public void ehubLoanByLmsLoanId() {
-	givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
-	whenGetReadyLoanByLmsLoanId();
-	thenActualEhubLoanEqualsExpectedEhubLoan();
+        givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
+        whenGetReadyLoanByLmsLoanId();
+        thenActualEhubLoanEqualsExpectedEhubLoan();
     }
-    
+
     private void givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId() {
-	given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(expectedEhubLoan);
+        given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(expectedEhubLoan);
     }
-    
+
     @Test
     public void saveEhubLoan() {
-	givenEhubLoanCanBeSavedInTheEhubDatabase();	
-	whenEhubLoanIsSaved();	
-	thenActualEhubLoanEqualsExpectedEhubLoan();
+        givenEhubLoanCanBeSavedInTheEhubDatabase();
+        whenEhubLoanIsSaved();
+        thenActualEhubLoanEqualsExpectedEhubLoan();
     }
 
     private void givenEhubLoanCanBeSavedInTheEhubDatabase() {
-	given(ehubLoanRepository.save(any(EhubLoan.class))).willReturn(expectedEhubLoan);
+        given(ehubLoanRepository.save(any(EhubLoan.class))).willReturn(expectedEhubLoan);
     }
-    
+
     private void whenEhubLoanIsSaved() {
-	actualEhubLoan = underTest.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
+        actualEhubLoan = underTest.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
     }
-    
+
     @Test
     public void countLoansByFormatDecoration() {
-	whenCountLoansByFormatDecoration();
-	thenActualCountIsZero();
+        whenCountLoansByFormatDecoration();
+        thenActualCountIsZero();
     }
 
     private void whenCountLoansByFormatDecoration() {
-	actualCount = underTest.countLoansByFormatDecoration(formatDecoration);
+        actualCount = underTest.countLoansByFormatDecoration(formatDecoration);
     }
 
     private void thenActualCountIsZero() {
-	Assert.assertEquals(0, actualCount);
+        Assert.assertEquals(0, actualCount);
     }
-    
+
     @Test
     public void countLoansByFormatDecorationWhenFormatDecorationIsNull() {
-	actualCount = underTest.countLoansByFormatDecoration(null);
-	thenActualCountIsZero();
+        actualCount = underTest.countLoansByFormatDecoration(null);
+        thenActualCountIsZero();
     }
 }

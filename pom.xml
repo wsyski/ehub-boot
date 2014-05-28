@@ -652,7 +652,7 @@
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
         <resteasy.version>2.3.5.Final</resteasy.version>
-        <spring.version>3.2.4.RELEASE</spring.version>
+        <spring.version>3.2.9.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>
         <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
         <smock.version>0.7</smock.version>
