@@ -77,365 +77,368 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Before
     public void setUpElibDataAccessor() {
-	underTest = new ElibDataAccessor();
-	ReflectionTestUtils.setField(underTest, "elibFacade", elibFacade);
+        underTest = new ElibDataAccessor();
+        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
+        ReflectionTestUtils.setField(underTest, "elibFacade", elibFacade);
     }
 
     @Test
     public void getFormatsWhenNoDataInProductReponse() {
-	givenProductResponse();
-	givenProductResponseStatusOk();
-	whenGetFormats();
-	thenNoFormats();
+        givenProductResponse();
+        givenProductResponseStatusOk();
+        whenGetFormats();
+        thenNoFormats();
     }
 
     private void givenProductResponse() {
-	given(elibFacade.getProduct(contentProviderConsumer, RECORD_ID, LANGUAGE)).willReturn(productResponse);
+        given(elibFacade.getProduct(contentProviderConsumer, RECORD_ID, LANGUAGE)).willReturn(productResponse);
     }
 
     private void givenProductResponseStatusOk() {
-	se.elib.library.product.Response.Status status = new se.elib.library.product.Response.Status();
-	status.setCode(STATUS_CODE_OK);
-	given(productResponse.getStatus()).willReturn(status);
+        se.elib.library.product.Response.Status status = new se.elib.library.product.Response.Status();
+        status.setCode(STATUS_CODE_OK);
+        given(productResponse.getStatus()).willReturn(status);
     }
 
     private void whenGetFormats() {
-	actualFormats = underTest.getFormats(contentProviderConsumer, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
     }
 
     private void thenNoFormats() {
-	Assert.assertTrue(actualFormats.getFormats().isEmpty());
+        Assert.assertTrue(actualFormats.getFormats().isEmpty());
     }
 
     @Test
     public void getFormatsWithElibFormatNameAndDescriptionWhenNoTextBundle() {
-	givenProductResponse();
-	givenProductResponseStatusOk();
-	givenProductFormats();
-	givenNoTextBundle();
-	whenGetFormats();
-	thenFormatHasElibFormatNameAndDescription();
+        givenProductResponse();
+        givenProductResponseStatusOk();
+        givenProductFormats();
+        givenNoTextBundle();
+        whenGetFormats();
+        thenFormatHasElibFormatNameAndDescription();
     }
 
     private void givenProductFormats() {
-	List<se.elib.library.product.Response.Data.Product.Formats.Format> elibFormatList = Arrays.asList(elibFormat);
-	given(productResponse.getData()).willReturn(productData);
-	given(productData.getProduct()).willReturn(product);
-	given(product.getFormats()).willReturn(elibFormats);
-	given(elibFormats.getFormat()).willReturn(elibFormatList);
-	given(elibFormat.getName()).willReturn(ELIB_FORMAT_NAME);
-	given(elibFormat.getDescription()).willReturn(ELIB_FORMAT_DESCRIPTION);
+        List<se.elib.library.product.Response.Data.Product.Formats.Format> elibFormatList = Arrays.asList(elibFormat);
+        given(productResponse.getData()).willReturn(productData);
+        given(productData.getProduct()).willReturn(product);
+        given(product.getFormats()).willReturn(elibFormats);
+        given(elibFormats.getFormat()).willReturn(elibFormatList);
+        given(elibFormat.getName()).willReturn(ELIB_FORMAT_NAME);
+        given(elibFormat.getDescription()).willReturn(ELIB_FORMAT_DESCRIPTION);
     }
 
     private void givenNoTextBundle() {
-	givenContentProvider();
+        givenContentProvider();
     }
 
     private void thenFormatHasElibFormatNameAndDescription() {
-	Assert.assertFalse(actualFormats.getFormats().isEmpty());
-	Format actualFormat = actualFormats.getFormats().iterator().next();
-	Assert.assertEquals(ELIB_FORMAT_NAME, actualFormat.getName());
-	Assert.assertEquals(ELIB_FORMAT_DESCRIPTION, actualFormat.getDescription());
+        Assert.assertFalse(actualFormats.getFormats().isEmpty());
+        Format actualFormat = actualFormats.getFormats().iterator().next();
+        Assert.assertEquals(ELIB_FORMAT_NAME, actualFormat.getName());
+        Assert.assertEquals(ELIB_FORMAT_DESCRIPTION, actualFormat.getDescription());
     }
 
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
-	givenProductResponse();
-	givenProductResponseStatusOk();
-	givenProductFormats();
-	givenTextBundle();
-	givenEhubFormatNameAndDescription();
-	whenGetFormats();
-	thenFormatHasEhubFormatNameAndDescription();
+        givenProductResponse();
+        givenProductResponseStatusOk();
+        givenProductFormats();
+        givenTextBundle();
+        givenEhubFormatNameAndDescription();
+        whenGetFormats();
+        thenFormatHasEhubFormatNameAndDescription();
     }
 
     @Test
     public void getFormatsWithElibFormatNameAndDescriptionWhenTextBundle() {
-	givenProductResponse();
-	givenProductResponseStatusOk();
-	givenProductFormats();
-	givenTextBundle();
-	whenGetFormats();
-	thenFormatHasElibFormatNameAndDescription();
+        givenProductResponse();
+        givenProductResponseStatusOk();
+        givenProductFormats();
+        givenTextBundle();
+        whenGetFormats();
+        thenFormatHasElibFormatNameAndDescription();
     }
 
     @Test
     public void getFormatsWhenStatusNotOk() {
-	givenProductResponse();
-	givenProductResponseStatusNotOk();
-	try {
-	    whenGetFormats();
-	    Assert.fail("An InternalServerErrorException should have been thrown");
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenProductResponse();
+        givenProductResponseStatusNotOk();
+        try {
+            whenGetFormats();
+            Assert.fail("An InternalServerErrorException should have been thrown");
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenProductResponseStatusNotOk() {
-	se.elib.library.product.Response.Status status = new se.elib.library.product.Response.Status();
-	status.setCode(STATUS_CODE_NOT_OK);
-	given(productResponse.getStatus()).willReturn(status);
+        se.elib.library.product.Response.Status status = new se.elib.library.product.Response.Status();
+        status.setCode(STATUS_CODE_NOT_OK);
+        given(productResponse.getStatus()).willReturn(status);
     }
 
     @Test
     public void createLoan() {
-	givenPendingLoan();
-	givenContentProvider();
-	givenLoanResponse();
-	givenLoanResponseStatusOk();
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenOrderListData();
-	givenOrderItem();
-	givenExpectedRecordId();
-	givenBookFormat();
-	givenExpectedFormatId();
-	givenFormatDecorationFromContentProvider();
-	givenLoanResponseData();
-	givenDownloadUrl();
-	givenContentDisposition();
-	whenCreateLoan();
-	thenActualLoanContainsDownloadUrl();
+        givenPendingLoan();
+        givenContentProvider();
+        givenLoanResponse();
+        givenLoanResponseStatusOk();
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenOrderListData();
+        givenOrderItem();
+        givenExpectedRecordId();
+        givenBookFormat();
+        givenExpectedFormatId();
+        givenFormatDecorationFromContentProvider();
+        givenLoanResponseData();
+        givenDownloadUrl();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenCreateLoan();
+        thenActualLoanContainsDownloadUrl();
     }
 
     private void givenPendingLoan() {
-	given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-	given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
+        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
+        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenLoanResponse() {
-	given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(String.class), any(String.class)))
-		.willReturn(loanResponse);
+        given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(String.class), any(String.class)))
+                .willReturn(loanResponse);
     }
 
     private void givenLoanResponseStatusOk() {
-	se.elib.library.loan.Response.Status status = new se.elib.library.loan.Response.Status();
-	status.setCode(STATUS_CODE_OK);
-	given(loanResponse.getStatus()).willReturn(status);
+        se.elib.library.loan.Response.Status status = new se.elib.library.loan.Response.Status();
+        status.setCode(STATUS_CODE_OK);
+        given(loanResponse.getStatus()).willReturn(status);
     }
 
     private void givenOrderListResponse() {
-	given(elibFacade.getOrderList(contentProviderConsumer, CARD)).willReturn(orderListResponse);
+        given(elibFacade.getOrderList(contentProviderConsumer, CARD)).willReturn(orderListResponse);
     }
 
     private void givenOrderListResponseStatusOk() {
-	se.elib.library.orderlist.Response.Status status = new se.elib.library.orderlist.Response.Status();
-	status.setCode(STATUS_CODE_OK);
-	given(orderListResponse.getStatus()).willReturn(status);
+        se.elib.library.orderlist.Response.Status status = new se.elib.library.orderlist.Response.Status();
+        status.setCode(STATUS_CODE_OK);
+        given(orderListResponse.getStatus()).willReturn(status);
     }
 
     private void givenOrderListData() {
-	given(orderListResponse.getData()).willReturn(orderListData);
-	List<Orderitem> orderItemList = Arrays.asList(orderitem);
-	given(orderListData.getOrderitem()).willReturn(orderItemList);
+        given(orderListResponse.getData()).willReturn(orderListData);
+        List<Orderitem> orderItemList = Arrays.asList(orderitem);
+        given(orderListData.getOrderitem()).willReturn(orderItemList);
     }
 
     private void givenOrderItem() {
-	given(orderitem.getBook()).willReturn(book);
-	given(orderitem.getLoanexpiredate()).willReturn("2013-09-24 13:16:00");
+        given(orderitem.getBook()).willReturn(book);
+        given(orderitem.getLoanexpiredate()).willReturn("2013-09-24 13:16:00");
     }
 
     private void givenExpectedRecordId() {
-	given(book.getId()).willReturn(RECORD_ID);
+        given(book.getId()).willReturn(RECORD_ID);
     }
 
     private void givenBookFormat() {
-	given(book.getFormat()).willReturn(bookFormat);
+        given(book.getFormat()).willReturn(bookFormat);
     }
 
     private void givenExpectedFormatId() {
-	given(bookFormat.getId()).willReturn(Short.valueOf(FORMAT_ID));
+        given(bookFormat.getId()).willReturn(Short.valueOf(FORMAT_ID));
     }
 
     private void givenLoanResponseData() {
-	given(loanResponse.getData()).willReturn(loanData);
+        given(loanResponse.getData()).willReturn(loanData);
     }
 
     private void givenDownloadUrl() {
-	given(loanData.getDownloadurl()).willReturn(DOWNLOAD_URL);
+        given(loanData.getDownloadurl()).willReturn(DOWNLOAD_URL);
     }
 
     private void whenCreateLoan() {
-	actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan);
+        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
     }
 
     @Test
     public void createLoanWhenLoanResponseStatusNotOk() {
-	givenLoanResponse();
-	givenLoanResponseStatusNotOk();
-	try {
-	    whenCreateLoan();
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenLoanResponse();
+        givenLoanResponseStatusNotOk();
+        try {
+            whenCreateLoan();
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenLoanResponseStatusNotOk() {
-	se.elib.library.loan.Response.Status status = new se.elib.library.loan.Response.Status();
-	status.setCode(STATUS_CODE_NOT_OK);
-	given(loanResponse.getStatus()).willReturn(status);
+        se.elib.library.loan.Response.Status status = new se.elib.library.loan.Response.Status();
+        status.setCode(STATUS_CODE_NOT_OK);
+        given(loanResponse.getStatus()).willReturn(status);
     }
 
     @Test
     public void createLoanWhenOrderListResponseStatusNotOk() {
-	givenPendingLoan();
-	givenContentProvider();
-	givenLoanResponse();
-	givenLoanResponseStatusOk();
-	givenOrderListResponse();
-	givenOrderListResponseStatusNotOk();
-	try {
-	    whenCreateLoan();
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenPendingLoan();
+        givenContentProvider();
+        givenLoanResponse();
+        givenLoanResponseStatusOk();
+        givenOrderListResponse();
+        givenOrderListResponseStatusNotOk();
+        try {
+            whenCreateLoan();
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenOrderListResponseStatusNotOk() {
-	se.elib.library.orderlist.Response.Status status = new se.elib.library.orderlist.Response.Status();
-	status.setCode(STATUS_CODE_NOT_OK);
-	given(orderListResponse.getStatus()).willReturn(status);
+        se.elib.library.orderlist.Response.Status status = new se.elib.library.orderlist.Response.Status();
+        status.setCode(STATUS_CODE_NOT_OK);
+        given(orderListResponse.getStatus()).willReturn(status);
     }
 
     @Test
     public void createLoanWhenNoOrderItems() {
-	givenPendingLoan();
-	givenContentProvider();
-	givenLoanResponse();
-	givenLoanResponseStatusOk();
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenEmptyOrderList();
-	try {
-	    whenCreateLoan();
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenPendingLoan();
+        givenContentProvider();
+        givenLoanResponse();
+        givenLoanResponseStatusOk();
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenEmptyOrderList();
+        try {
+            whenCreateLoan();
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenEmptyOrderList() {
-	given(orderListResponse.getData()).willReturn(orderListData);
-	List<Orderitem> orderItemList = Arrays.asList();
-	given(orderListData.getOrderitem()).willReturn(orderItemList);
+        given(orderListResponse.getData()).willReturn(orderListData);
+        List<Orderitem> orderItemList = Arrays.asList();
+        given(orderListData.getOrderitem()).willReturn(orderItemList);
     }
 
     @Test
     public void createLoanWhenNoMatchingRecordIdAndFormatId() {
-	givenPendingLoan();
-	givenContentProvider();
-	givenLoanResponse();
-	givenLoanResponseStatusOk();
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenOrderListData();
-	givenOrderItem();
-	givenUnexpectedRecordId();
-	givenBookFormat();
-	givenUnexpectedFormatId();
-	try {
-	    whenCreateLoan();
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenPendingLoan();
+        givenContentProvider();
+        givenLoanResponse();
+        givenLoanResponseStatusOk();
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenOrderListData();
+        givenOrderItem();
+        givenUnexpectedRecordId();
+        givenBookFormat();
+        givenUnexpectedFormatId();
+        try {
+            whenCreateLoan();
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 
     private void givenUnexpectedRecordId() {
-	given(book.getId()).willReturn("12345");
+        given(book.getId()).willReturn("12345");
     }
 
     private void givenUnexpectedFormatId() {
-	given(bookFormat.getId()).willReturn(Short.valueOf("98"));
+        given(bookFormat.getId()).willReturn(Short.valueOf("98"));
     }
 
     @Test
     public void getContent() {
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenOrderListData();
-	givenContentProviderLoanId();
-	givenOrderItem();
-	givenExpectedOrderId();
-	givenBookData();
-	givenUrlData();
-	givenUrlContent();
-	givenFormatDecorationFromContentProviderLoanMetadata();
-	givenContentDisposition();
-	whenGetContent();
-	thenActualContentContainsDownloadUrl();
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenOrderListData();
+        givenContentProviderLoanId();
+        givenOrderItem();
+        givenExpectedOrderId();
+        givenBookData();
+        givenUrlData();
+        givenUrlContent();
+        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenDownloadableContentDisposition();
+        givenCreatedDownloadableContent();
+        whenGetContent();
+        thenActualContentContainsDownloadUrl();
     }
 
     private void givenContentProviderLoanId() {
-	given(loanMetadata.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
+        given(loanMetadata.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
     }
 
     private void whenGetContent() {
-	actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata);
+        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
     }
 
     private void givenExpectedOrderId() {
-	given(orderitem.getRetailerordernumber()).willReturn(Long.valueOf(CONTENT_PROVIDER_LOAN_ID));
+        given(orderitem.getRetailerordernumber()).willReturn(Long.valueOf(CONTENT_PROVIDER_LOAN_ID));
     }
 
     private void givenBookData() {
-	given(book.getData()).willReturn(bookData);
+        given(book.getData()).willReturn(bookData);
     }
 
     private void givenUrlData() {
-	given(bookData.getData()).willReturn(urlData);
+        given(bookData.getData()).willReturn(urlData);
     }
 
     private void givenUrlContent() {
-	List<Serializable> content = new ArrayList<Serializable>();
-	content.add(DOWNLOAD_URL);
-	given(urlData.getContent()).willReturn(content);
+        List<Serializable> content = new ArrayList<Serializable>();
+        content.add(DOWNLOAD_URL);
+        given(urlData.getContent()).willReturn(content);
     }
 
     @Test
     public void getContentWhenNoOrderItems() {
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenEmptyOrderList();
-	givenContentProviderLoanId();
-	try {
-	    whenGetContent();
-	} catch (NotFoundException e) {
-	    thenNotFoundExceptionIsThrown(e);
-	}
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenEmptyOrderList();
+        givenContentProviderLoanId();
+        try {
+            whenGetContent();
+        } catch (NotFoundException e) {
+            thenNotFoundExceptionIsThrown(e);
+        }
     }
 
     @Test
     public void getContentWhenUnexpectedOrderId() {
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenOrderListData();
-	givenContentProviderLoanId();
-	givenOrderItem();
-	givenUnexpectedOrderId();
-	try {
-	    whenGetContent();
-	} catch (NotFoundException e) {
-	    thenNotFoundExceptionIsThrown(e);
-	}
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenOrderListData();
+        givenContentProviderLoanId();
+        givenOrderItem();
+        givenUnexpectedOrderId();
+        try {
+            whenGetContent();
+        } catch (NotFoundException e) {
+            thenNotFoundExceptionIsThrown(e);
+        }
     }
 
     private void givenUnexpectedOrderId() {
-	given(orderitem.getRetailerordernumber()).willReturn(0L);
+        given(orderitem.getRetailerordernumber()).willReturn(0L);
     }
 
     @Test
     public void getContentWhenNoContent() {
-	givenOrderListResponse();
-	givenOrderListResponseStatusOk();
-	givenOrderListData();
-	givenContentProviderLoanId();
-	givenOrderItem();
-	givenExpectedOrderId();
-	givenBookData();
-	givenUrlData();
-	try {
-	    whenGetContent();
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionIsThrown(e);
-	}
+        givenOrderListResponse();
+        givenOrderListResponseStatusOk();
+        givenOrderListData();
+        givenContentProviderLoanId();
+        givenOrderItem();
+        givenExpectedOrderId();
+        givenBookData();
+        givenUrlData();
+        try {
+            whenGetContent();
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionIsThrown(e);
+        }
     }
 }
