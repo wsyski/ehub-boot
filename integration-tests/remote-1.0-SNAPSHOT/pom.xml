@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-remote</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -116,11 +116,11 @@
                             <goal>deploy-war</goal>
                         </goals>
                         <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
                             <httpConnector>
                                 <port>16518</port>
                             </httpConnector>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
                             <war>${project.basedir}/../local-it/target/local-it-${project.version}.war</war>
                             <webApp>
                                 <contextPath>/</contextPath>
@@ -145,5 +145,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
