@@ -91,58 +91,76 @@
                     <ajdtVersion>none</ajdtVersion>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.2.v20140210</version>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                            <goal>deploy-war</goal>
-                        </goals>
+
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.6</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>9.2.0.M1</version>
+                        <executions>
+                            <execution>
+                                <id>start-jetty</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                    <goal>deploy-war</goal>
+                                </goals>
+                                <configuration>
+
+                                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                                    <daemon>true</daemon>
+                                    <httpConnector>
+
+                                        <port>16518</port>
+                                    </httpConnector>
+                                    <stopWait>30</stopWait>
+                                    <war>${project.basedir}/../local/target/ehub-it-local-${project.version}.war</war>
+                                    <webApp>
+                                        <contextPath>/</contextPath>
+                                    </webApp>
+                                    <stopKey>STOP</stopKey>
+                                    <stopPort>5005</stopPort>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-jetty</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
-                            <httpConnector>
-                                <port>16518</port>
-                            </httpConnector>
-                            <war>${project.basedir}/../local/target/ehub-it-local-${project.version}.war</war>
-                            <webApp>
-                                <contextPath>/</contextPath>
-                            </webApp>
+                            <stopWait>30</stopWait>
                             <stopKey>STOP</stopKey>
                             <stopPort>5005</stopPort>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <stopKey>STOP</stopKey>
-                    <stopPort>5005</stopPort>
-                </configuration>
 
-            </plugin>
-        </plugins>
-    </build>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+    </profiles>
 </project>

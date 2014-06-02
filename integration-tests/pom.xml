@@ -16,7 +16,7 @@
         <module>common</module>
         <module>local</module>
         <module>remote</module>
-		<module>remote-0.4</module>
+		<module>remote-0.7</module>
 		<module>remote-0.6</module>
 		<module>remote-1.0-SNAPSHOT</module>
 	</modules>
