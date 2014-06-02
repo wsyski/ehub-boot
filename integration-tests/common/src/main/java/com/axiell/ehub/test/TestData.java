@@ -72,7 +72,7 @@ public class TestData {
 
     @Override
     public String toString() {
-        return "CommandData{" +
+        return "TestData{" +
                 "ehubConsumerId=" + ehubConsumerId +
                 ", ehubConsumerSecretKey=" + ehubConsumerSecretKey +
                 ", ehubLoanId=" + ehubLoanId +
