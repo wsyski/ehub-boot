@@ -14,3 +14,4 @@ insert-into-release.sql
 schema.sql
 local/src/main/webapp/xsd/
 local/src/test/persistence/sql/schema.sql
+rebel.xml

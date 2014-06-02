@@ -77,17 +77,24 @@
     <build>
         <plugins>
             <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.6</version>
-                    <executions>
-                      <execution>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <ajdtVersion>none</ajdtVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
                         <goals>
-                          <goal>integration-test</goal>
-                          <goal>verify</goal>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
-                      </execution>
-                    </executions>
-                  </plugin>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -101,11 +108,9 @@
                             <goal>deploy-war</goal>
                         </goals>
                         <configuration>
-
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
-                            <war>${project.basedir}/../local-it/target/local-it-1.0-SNAPSHOT.war</war>
-
+                            <war>${project.basedir}/../local-it/target/local-it-${project.version}.war</war>
                             <webApp>
                                 <contextPath>/</contextPath>
                             </webApp>
@@ -126,13 +131,6 @@
                     <stopPort>5005</stopPort>
                 </configuration>
 
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <ajdtVersion>none</ajdtVersion>
-                </configuration>
             </plugin>
         </plugins>
     </build>

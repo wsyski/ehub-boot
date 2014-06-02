@@ -102,45 +102,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.cargo</groupId>-->
-                <!--<artifactId>cargo-maven2-plugin</artifactId>-->
-                <!--<version>1.0.6</version>-->
-                <!--<configuration>-->
-                    <!--<wait>false</wait>-->
-                    <!--<configuration>-->
-
-                        <!--<deployables>-->
-                            <!--<deployable>-->
-                                <!--<groupId>com.axiell.ehub</groupId>-->
-                                <!--<artifactId>local-it</artifactId>-->
-                                <!--<type>war</type>-->
-                                <!--<properties>-->
-                                    <!--<context>ROOT</context>-->
-                                <!--</properties>-->
-                            <!--</deployable>-->
-                        <!--</deployables>-->
-
-                    <!--</configuration>-->
-
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>start</id>-->
-                        <!--<phase>pre-integration-test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>start</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>stop</id>-->
-                        <!--<phase>post-integration-test</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>stop</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -180,38 +141,4 @@
             </plugin>
         </plugins>
     </build>
-    <!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>tomcat6x</id>-->
-            <!--<activation>-->
-                <!--<activeByDefault>true</activeByDefault>-->
-            <!--</activation>-->
-            <!--<build>-->
-                <!--<plugins>-->
-                    <!--<plugin>-->
-                        <!--<groupId>org.codehaus.cargo</groupId>-->
-                        <!--<artifactId>cargo-maven2-plugin</artifactId>-->
-                        <!--<configuration>-->
-                            <!--<container>-->
-
-                                <!--<containerId>tomcat6x</containerId>-->
-                                <!--<zipUrlInstaller>-->
-                                    <!--<url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.37/bin/apache-tomcat-6.0.37.zip</url>-->
-                                <!--</zipUrlInstaller>-->
-                                <!--<log>${basedir}/target/container.log</log>-->
-                                <!--<timeout>300000</timeout>-->
-                            <!--</container>-->
-                            <!--<configuration>-->
-                                <!--<type>standalone</type>-->
-                                <!--<properties>-->
-                                    <!--<cargo.servlet.port>8080</cargo.servlet.port>-->
-                                    <!--&lt;!&ndash;<cargo.jvmargs>${jvm.options}</cargo.jvmargs>&ndash;&gt;-->
-                                <!--</properties>-->
-                            <!--</configuration>-->
-                        <!--</configuration>-->
-                    <!--</plugin>-->
-                <!--</plugins>-->
-            <!--</build>-->
-        <!--</profile>-->
-    <!--</profiles>-->
 </project>
