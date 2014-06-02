@@ -5,7 +5,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Path("test-data")
+@Path("v1/test-data")
 public interface ITestDataResource {
 
     @POST
