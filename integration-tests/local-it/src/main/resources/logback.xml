@@ -10,7 +10,8 @@
 	<logger name="org.hibernate.SQL" level="INFO" />
 	<logger name="org.hibernate.tool.hbm2ddl" level="INFO" />
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="STDOUT" class="ch.qos.logback.core.FileAppender">
+        <file>target/server.log</file>
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
