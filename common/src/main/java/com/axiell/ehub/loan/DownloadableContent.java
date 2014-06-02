@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 /**
  * Represents a downloadable content.
  */
-public final class DownloadableContent implements IContent {
+public class DownloadableContent implements IContent {
     private String url;
 
     /**

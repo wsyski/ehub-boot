@@ -27,12 +27,12 @@ public final class Validate {
     }
 
     public static void isNotNull(final Object underValidation, final EhubConsumer ehubConsumer, final String message) {
-        String errorMessage = new StringBuilder(message).append(" ehub consumer ID = '").append(ehubConsumer.getId()).append("'").toString();
+        String errorMessage = new StringBuilder(message).append(" axiell consumer ID = '").append(ehubConsumer.getId()).append("'").toString();
         isNotNull(underValidation, errorMessage);
     }
 
     public static void isNotBlank(final String underValidation, final EhubConsumer ehubConsumer, final String message) {
-        String errorMessage = new StringBuilder(message).append(" ehub consumer ID = '").append(ehubConsumer.getId()).append("'").toString();
+        String errorMessage = new StringBuilder(message).append(" axiell consumer ID = '").append(ehubConsumer.getId()).append("'").toString();
         isNotBlank(underValidation, errorMessage);
     }
     

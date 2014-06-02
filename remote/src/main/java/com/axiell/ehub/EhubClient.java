@@ -19,11 +19,6 @@ public final class EhubClient implements IEhubService {
     private ILoansResource loansResource;
     private IContentProvidersResource contentProvidersResource;
 
-
-    /**
-     * @see com.axiell.ehub.IEhubService#getFormats(com.axiell.ehub.security.AuthInfo, java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
     @Override
     public Formats getFormats(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) throws
             EhubException {
@@ -31,28 +26,19 @@ public final class EhubClient implements IEhubService {
         return recordsResource.getFormats(authInfo, contentProviderRecordId, language);
     }
 
-    /**
-     * @see com.axiell.ehub.IEhubService#createLoan(com.axiell.ehub.security.AuthInfo, com.axiell.ehub.loan.PendingLoan)
-     */
     @Override
-    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan) throws EhubException {
-        return loansResource.createLoan(authInfo, pendingLoan);
+    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) throws EhubException {
+        return loansResource.createLoan(authInfo, language, pendingLoan);
     }
 
-    /**
-     * @see com.axiell.ehub.IEhubService#getReadyLoan(com.axiell.ehub.security.AuthInfo, java.lang.Long)
-     */
     @Override
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId) throws EhubException {
-        return loansResource.getLoan(authInfo, readyLoanId);
+    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) throws EhubException {
+        return loansResource.getLoan(authInfo, readyLoanId, language);
     }
 
-    /**
-     * @see com.axiell.ehub.IEhubService#getReadyLoan(com.axiell.ehub.security.AuthInfo, java.lang.String)
-     */
     @Override
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId) throws EhubException {
-        return loansResource.getLoan(authInfo, lmsLoanId);
+    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) throws EhubException {
+        return loansResource.getLoan(authInfo, lmsLoanId, language);
     }
 
     @Required

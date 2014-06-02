@@ -5,34 +5,51 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.security.AuthInfo;
 
+import javax.ws.rs.HeaderParam;
+
 /**
  * Default implementation of the {@link ILoansResource}.
  */
 public final class LoansResource implements ILoansResource {
     private ILoanBusinessController loanBusinessController;
 
-    /**
-     * @see com.axiell.ehub.loan.ILoansResource#createLoan(com.axiell.ehub.security.AuthInfo, com.axiell.ehub.loan.PendingLoan)
-     */
-    @Override
-    public ReadyLoan createLoan(AuthInfo authInfo, PendingLoan pendingLoan) {
-        return loanBusinessController.createLoan(authInfo, pendingLoan);
-    }
+//    @Override
+//    public ReadyLoan createLoan(@HeaderParam("Authorization") AuthInfo authInfo, PendingLoan pendingLoan) {
+//        return createLoan(authInfo, null, pendingLoan);
+//    }
 
     /**
-     * @see com.axiell.ehub.loan.ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, java.lang.Long)
+     * @see ILoansResource#createLoan(com.axiell.ehub.security.AuthInfo, String, PendingLoan)
      */
     @Override
-    public ReadyLoan getLoan(AuthInfo authInfo, Long readyLoanId) {
-        return loanBusinessController.getReadyLoan(authInfo, readyLoanId);
+    public ReadyLoan createLoan(AuthInfo authInfo, String language, PendingLoan pendingLoan) {
+        return loanBusinessController.createLoan(authInfo, pendingLoan, language);
     }
-    
+
+//    @Override
+//    public ReadyLoan getLoan(@HeaderParam("Authorization") AuthInfo authInfo, Long readyLoanId) {
+//        return getLoan(authInfo, readyLoanId, null);
+//    }
+
     /**
-     * @see com.axiell.ehub.loan.ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, java.lang.String)
+     * @see ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, Long, String)
      */
     @Override
-    public ReadyLoan getLoan(AuthInfo authInfo, String lmsLoanId) {
-        return loanBusinessController.getReadyLoan(authInfo, lmsLoanId);
+    public ReadyLoan getLoan(AuthInfo authInfo, Long readyLoanId, String language) {
+        return loanBusinessController.getReadyLoan(authInfo, readyLoanId, language);
+    }
+
+//    @Override
+//    public ReadyLoan getLoan(@HeaderParam("Authorization") AuthInfo authInfo, String lmsLoanId) {
+//        return getLoan(authInfo, lmsLoanId, null);
+//    }
+
+    /**
+     * @see ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, String, String)
+     */
+    @Override
+    public ReadyLoan getLoan(AuthInfo authInfo, String lmsLoanId, String language) {
+        return loanBusinessController.getReadyLoan(authInfo, lmsLoanId, language);
     }
 
     /**

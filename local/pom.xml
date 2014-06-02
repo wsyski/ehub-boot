@@ -390,53 +390,53 @@
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util=com.axiell.arena.services.palma_265.util</extraarg>
+                                        <extraarg>http://axiell.com/arena/services/palma/util=com.axiell.ehub.services.palma_265.util</extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/status=com.axiell.arena.services.palma_265.util.status
+                                        <extraarg>http://axiell.com/arena/services/palma/util/status=com.axiell.ehub.services.palma_265.util.status
                                         </extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/cr=com.axiell.arena.services.palma_265.util.cr
+                                        <extraarg>http://axiell.com/arena/services/palma/util/cr=com.axiell.ehub.services.palma_265.util.cr
                                         </extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/loan=com.axiell.arena.services.palma_265.util.loan
+                                        <extraarg>http://axiell.com/arena/services/palma/util/loan=com.axiell.ehub.services.palma_265.util.loan
                                         </extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://loans.palma.services.arena.axiell.com/=com.axiell.arena.services.palma_265.loans</extraarg>
+                                        <extraarg>http://loans.palma.services.arena.axiell.com/=com.axiell.ehub.services.palma_265.loans</extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/util/borrowerCard=com.axiell.arena.services.palma_265.util.borrowercard
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/loansRequest=com.axiell.arena.services.palma_265.patron.loansrequest
+                                            http://axiell.com/arena/services/palma/util/borrowerCard=com.axiell.ehub.services.palma_265.util.borrowercard
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/loansResponse=com.axiell.arena.services.palma_265.patron.loansresponse
+                                            http://axiell.com/arena/services/palma/patron/loansRequest=com.axiell.ehub.services.palma_265.patron.loansrequest
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/renewLoansRequest=com.axiell.arena.services.palma_265.patron.renewloansrequest
+                                            http://axiell.com/arena/services/palma/patron/loansResponse=com.axiell.ehub.services.palma_265.patron.loansresponse
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/renewLoansResponse=com.axiell.arena.services.palma_265.patron.renewloansresponse
+                                            http://axiell.com/arena/services/palma/patron/renewLoansRequest=com.axiell.ehub.services.palma_265.patron.renewloansrequest
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutRequest=com.axiell.arena.services.palma_265.patron.checkoutrequest
+                                            http://axiell.com/arena/services/palma/patron/renewLoansResponse=com.axiell.ehub.services.palma_265.patron.renewloansresponse
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutResponse=com.axiell.arena.services.palma_265.patron.checkoutresponse
+                                            http://axiell.com/arena/services/palma/patron/checkOutRequest=com.axiell.ehub.services.palma_265.patron.checkoutrequest
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutTestRequest=com.axiell.arena.services.palma_265.patron.checkouttestrequest
+                                            http://axiell.com/arena/services/palma/patron/checkOutResponse=com.axiell.ehub.services.palma_265.patron.checkoutresponse
                                         </extraarg>
                                         <extraarg>-p</extraarg>
                                         <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutTestResponse=com.axiell.arena.services.palma_265.patron.checkouttestresponse
+                                            http://axiell.com/arena/services/palma/patron/checkOutTestRequest=com.axiell.ehub.services.palma_265.patron.checkouttestrequest
+                                        </extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>
+                                            http://axiell.com/arena/services/palma/patron/checkOutTestResponse=com.axiell.ehub.services.palma_265.patron.checkouttestresponse
                                         </extraarg>
                                     </extraargs>
                                 </wsdlOption>

@@ -34,34 +34,34 @@ public class FormatBusinessControllerTest {
 
     @Before
     public void setUpCommonArguments() throws Exception {
-	authInfo = new AuthInfo.Builder(0L, "secret").libraryCard("libraryCard").pin("pin").build();	
+        authInfo = new AuthInfo.Builder(0L, "secret").libraryCard("libraryCard").pin("pin").build();
     }
 
     @Before
     public void setUpFormatBusinessController() {
-	underTest = new FormatBusinessController();
-	ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
-	ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
+        underTest = new FormatBusinessController();
+        ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
+        ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
     }
 
     @Before
     public void setUpEhubConsumer() {
-	given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
+        given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
     }
-    
+
     @Test
     public void testGetFormats() {
-	whenGetFormats();
-	thenFormatsAreRetrievedFromContentProvider();
+        whenGetFormats();
+        thenFormatsAreRetrievedFromContentProvider();
     }
 
     private void whenGetFormats() {
-	underTest.getFormats(authInfo, ContentProviderName.ELIB.toString(), "contentProviderRecordId", "language");
+        underTest.getFormats(authInfo, ContentProviderName.ELIB.toString(), "contentProviderRecordId", "language");
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
-	InOrder inOrder = inOrder(consumerBusinessController, contentProviderDataAccessorFacade);
-	inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
-	inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(String.class), any(String.class));
+        InOrder inOrder = inOrder(consumerBusinessController, contentProviderDataAccessorFacade);
+        inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
+        inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(String.class), any(String.class), any(String.class));
     }
 }

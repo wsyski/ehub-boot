@@ -22,18 +22,16 @@ public final class HmacSHA1HashFunction {
      */
     private HmacSHA1HashFunction() {
     }
-    
 
-    
     /**
      * Creates an HMAC-SHA1 hash from the given input.
-     * 
+     *
      * @param input the input to create the hash from
-     * @param key the key to initialize the underlying {@link Mac} with
+     * @param key   the key to initialize the underlying {@link Mac} with
      * @return a HMAC-SHA1 digest
      */
     public static byte[] hmacSha1(final byte[] input, final byte[] key) {
-        final SecretKey secretKey = new SecretKeySpec(key, HMAC_SHA1);         
+        final SecretKey secretKey = new SecretKeySpec(key, HMAC_SHA1);
         try {
             Mac mac = Mac.getInstance(HMAC_SHA1);
             mac.init(secretKey);
@@ -42,5 +40,5 @@ public final class HmacSHA1HashFunction {
             throw new InternalServerErrorException("Could not create an HMAC-SHA1 hash", e);
         }
     }
-    
+
 }

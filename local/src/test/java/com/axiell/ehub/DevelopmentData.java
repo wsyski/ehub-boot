@@ -27,7 +27,7 @@ public class DevelopmentData {
     public static final String ELIB_PRODUCT_URL = "http://localhost:16521/webservices/GetProduct.asmx/GetProduct";
     public static final String ELIB_CREATE_LOAN_URL = "http://localhost:16521/webservices/createloan.asmx/CreateLoan";
     public static final String ELIB_ORDER_LIST_URL = "http://localhost:16521/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList";
-    public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
+    public static final String ARENA_PALMA_URL = "http://localhost:16521/ehub.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String ELIB_SERVICE_KEY = "hu81K8js";
     public static final String ELIB_SERVICE_ID = "926";

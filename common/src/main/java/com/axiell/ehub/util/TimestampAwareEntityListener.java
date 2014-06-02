@@ -21,7 +21,7 @@ import javax.persistence.PreUpdate;
  * &lt;persistence-unit-metadata&gt;
  *     &lt;persistence-unit-defaults&gt;
  *         &lt;entity-listeners&gt;
- *             &lt;entity-listener class="com.axiell.ehub.util.TimestampAwareEntityListener" /&gt;
+ *             &lt;entity-listener class="com.axiell.axiell.util.TimestampAwareEntityListener" /&gt;
  *         &lt;/entity-listeners&gt;
  *     &lt;/persistence-unit-defaults&gt;
  * &lt;/persistence-unit-metadata&gt;

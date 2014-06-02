@@ -22,11 +22,11 @@ import com.axiell.ehub.loan.PendingLoan;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
-    private IContentProviderDataAccessorFacade underTest;    
+    private IContentProviderDataAccessorFacade underTest;
     @Mock
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
     @Mock
-    private IContentProviderDataAccessor contentProviderDataAccessor;    
+    private IContentProviderDataAccessor contentProviderDataAccessor;
     @Mock
     private EhubConsumer ehubConsumer;
     @Mock
@@ -41,86 +41,86 @@ public class ContentProviderDataAccessorFacadeTest {
     private ContentProviderLoan contentProviderLoan;
     @Mock
     private IContent content;
-    
+
     @Before
     public void setUpContentProviderDataAccessorFacade() {
-	underTest = new ContentProviderDataAccessorFacade();
-	ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFactory", contentProviderDataAccessorFactory);
+        underTest = new ContentProviderDataAccessorFacade();
+        ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFactory", contentProviderDataAccessorFactory);
     }
-    
+
     @Before
     public void setUpContentProviderDataAccessor() {
-	given(contentProviderDataAccessorFactory.getInstance(ContentProviderName.ELIB)).willReturn(contentProviderDataAccessor);
+        given(contentProviderDataAccessorFactory.getInstance(ContentProviderName.ELIB)).willReturn(contentProviderDataAccessor);
     }
-    
+
     @Before
     public void setUpPendingLoan() {
-	given(pendingLoan.getContentProviderNameEnum()).willReturn(ContentProviderName.ELIB);
+        given(pendingLoan.getContentProviderNameEnum()).willReturn(ContentProviderName.ELIB);
     }
-    
+
     @Before
     public void setUpEhubLoan() {
-	given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
-	given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
-	given(contentProvider.getName()).willReturn(ContentProviderName.ELIB);
+        given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
+        given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
+        given(contentProvider.getName()).willReturn(ContentProviderName.ELIB);
     }
-    
+
     @Before
     public void setUpContentProviderLoan() {
-	given(contentProviderDataAccessor.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class))).willReturn(
-		contentProviderLoan);
+        given(contentProviderDataAccessor.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class))).willReturn(
+                contentProviderLoan);
     }
-    
+
     @Before
     public void setUpContent() {
-	given(contentProviderDataAccessor.getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class))).willReturn(content);
+        given(contentProviderDataAccessor.getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class), any(String.class))).willReturn(content);
     }
 
     @Test
     public void createLoan() {
-	whenCreateLoan();
-	thenLoanIsCreatedByContentProvider();
+        whenCreateLoan();
+        thenLoanIsCreatedByContentProvider();
     }
 
     private void whenCreateLoan() {
-	underTest.createLoan(ehubConsumer, "libraryCard", "pin", pendingLoan);
+        underTest.createLoan(ehubConsumer, "libraryCard", "pin", pendingLoan, "language");
     }
-    
+
     private void thenLoanIsCreatedByContentProvider() {
-	InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-	inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-	inOrder.verify(contentProviderDataAccessor).createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class));
+        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessor).createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class));
     }
 
     @Test
     public void getContent() {
-	whenGetContent();
-	thenContentIsRetrievedFromContentProvider();
+        whenGetContent();
+        thenContentIsRetrievedFromContentProvider();
     }
 
     private void whenGetContent() {
-	underTest.getContent(ehubConsumer, ehubLoan, "libraryCard", "pin");
+        underTest.getContent(ehubConsumer, ehubLoan, "libraryCard", "pin", "language");
     }
-    
+
     private void thenContentIsRetrievedFromContentProvider() {
-	InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-	inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-	inOrder.verify(contentProviderDataAccessor).getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class));
+        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessor).getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class), any(String.class));
     }
-    
+
     @Test
     public void getFormats() {
-	whenGetFormats();
-	thenFormatsAreRetrievedFromContentProvider();
+        whenGetFormats();
+        thenFormatsAreRetrievedFromContentProvider();
     }
 
     private void whenGetFormats() {
-	underTest.getFormats(ehubConsumer, ContentProviderName.ELIB.toString(), "contentProviderRecordId", "language");
+        underTest.getFormats(ehubConsumer, ContentProviderName.ELIB.toString(), "card", "contentProviderRecordId", "language");
     }
-    
+
     private void thenFormatsAreRetrievedFromContentProvider() {
-	InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-	inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-	inOrder.verify(contentProviderDataAccessor).getFormats(any(ContentProviderConsumer.class), any(String.class), any(String.class));
+        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessor).getFormats(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(String.class));
     }
 }

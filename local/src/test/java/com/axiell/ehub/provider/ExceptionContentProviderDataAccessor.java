@@ -16,7 +16,7 @@ import com.axiell.ehub.provider.record.format.Formats;
 class ExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
 
     @Override
-    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language) {
+    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String libraryCard, String contentProviderRecordId, String language) {
 	ClientRequest request = new ClientRequest("http://www.google.com");
 	ClientResponse<?> response;
 	try {
@@ -28,13 +28,13 @@ class ExceptionContentProviderDataAccessor implements IContentProviderDataAccess
     }
 
     @Override
-    public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
+    public ContentProviderLoan createLoan(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language) {
 	throw new NotImplementedException("createLoan has not been implemented");
     }
 
     @Override
     public IContent getContent(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin,
-	    ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	throw new NotImplementedException("getContent has not been implemented");
     }
 }

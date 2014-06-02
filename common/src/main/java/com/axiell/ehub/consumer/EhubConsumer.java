@@ -146,7 +146,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param contentProviderName content provider name.
      * @return content consumer
-     * @throws X if no {@link ContentProviderConsumer} could be found with the given provider name
+     * @throws NotFoundException if no {@link ContentProviderConsumer} could be found with the given provider name
      */
     @Transient
     public ContentProviderConsumer getContentProviderConsumer(final ContentProviderName contentProviderName) {
@@ -224,7 +224,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     }
 
     /**
-     * Enumeration for ehub consumer property keys.
+     * Enumeration for axiell consumer property keys.
      */
     public static enum EhubConsumerPropertyKey {
         ARENA_PALMA_URL, ARENA_AGENCY_M_IDENTIFIER

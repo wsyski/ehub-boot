@@ -36,53 +36,53 @@ public class LoanBusinessController implements ILoanBusinessController {
 
     @Override
     @Transactional(readOnly = false)
-    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan) {
-	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-	final String libraryCard = authInfo.getLibraryCard();
-	final String pin = authInfo.getPin();
-	final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, libraryCard, pin);
-	final Result result = checkoutTestAnalysis.getResult();
+    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) {
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final String libraryCard = authInfo.getLibraryCard();
+        final String pin = authInfo.getPin();
+        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, libraryCard, pin);
+        final Result result = checkoutTestAnalysis.getResult();
 
-	switch (result) {
-	case NEW_LOAN:
-	    final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, libraryCard, pin, pendingLoan);
-	    final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.getExpirationDate(), libraryCard, pin);
-	    final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
-	    return readyLoanFactory.createReadyLoan(ehubLoan, contentProviderLoan);
-	case ACTIVE_LOAN:
-	    final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
-	    return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId);
-	default:
-	    throw new NotImplementedException("Create loan where the result of the pre-checkout analysis is '" + result + "' has not been implemented");
-	}
+        switch (result) {
+            case NEW_LOAN:
+                final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, libraryCard, pin, pendingLoan, language);
+                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.getExpirationDate(), libraryCard, pin);
+                final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
+                return readyLoanFactory.createReadyLoan(ehubLoan, contentProviderLoan);
+            case ACTIVE_LOAN:
+                final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
+                return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId, language);
+            default:
+                throw new NotImplementedException("Create loan where the result of the pre-checkout analysis is '" + result + "' has not been implemented");
+        }
     }
 
-    private ReadyLoan getReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final String lmsLoanId) {
-	final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
-	return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan);
+    private ReadyLoan getReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final String lmsLoanId, final String language) {
+        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
+        return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan, language);
     }
 
-    private ReadyLoan makeReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final EhubLoan ehubLoan) {
-	final IContent content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, libraryCard, pin);
-	return readyLoanFactory.createReadyLoan(ehubLoan, content);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId) {
-	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-	final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
-	final String libraryCard = authInfo.getLibraryCard();
-	final String pin = authInfo.getPin();
-	return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan);
+    private ReadyLoan makeReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final EhubLoan ehubLoan, final String language) {
+        final IContent content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, libraryCard, pin, language);
+        return readyLoanFactory.createReadyLoan(ehubLoan, content);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId) {
-	final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-	final String libraryCard = authInfo.getLibraryCard();
-	final String pin = authInfo.getPin();
-	return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId);
+    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) {
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
+        final String libraryCard = authInfo.getLibraryCard();
+        final String pin = authInfo.getPin();
+        return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan, language);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) {
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final String libraryCard = authInfo.getLibraryCard();
+        final String pin = authInfo.getPin();
+        return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId, language);
     }
 }

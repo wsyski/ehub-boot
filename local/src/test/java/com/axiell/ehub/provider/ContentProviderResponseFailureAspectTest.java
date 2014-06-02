@@ -16,35 +16,35 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 @ContextConfiguration(locations = {"aspects-test.xml"})
 public class ContentProviderResponseFailureAspectTest {
     private static final String CONTENT_PROVIDER_NAME = ContentProviderName.PUBLIT.toString();
-    
+
     @Autowired
     private ExceptionContentProviderDataAccessor underTest;
     private ContentProviderConsumer contentProviderConsumer;
-    
+
     @Before
     public void setUpContentProviderConsumer() {
-	ContentProviderName name = ContentProviderName.fromString(CONTENT_PROVIDER_NAME);
-	ContentProvider contentProvider = new ContentProvider();
-	contentProvider.setName(name);
-	contentProviderConsumer = new ContentProviderConsumer();
-	contentProviderConsumer.setContentProvider(contentProvider);
+        ContentProviderName name = ContentProviderName.fromString(CONTENT_PROVIDER_NAME);
+        ContentProvider contentProvider = new ContentProvider();
+        contentProvider.setName(name);
+        contentProviderConsumer = new ContentProviderConsumer();
+        contentProviderConsumer.setContentProvider(contentProvider);
     }
-    
+
     @Test
     public void clientResponseFailureToInternalServerErrorException() {
-	try {
-	    underTest.getFormats(contentProviderConsumer, "contentProviderRecordId", "language");
-	    Assert.fail("An InternalServerErrorException should have been thrown");
-	} catch (InternalServerErrorException e) {
-	    thenInternalServerErrorExceptionMessageContainsExpectedContentProviderName(e);
-	}
+        try {
+            underTest.getFormats(contentProviderConsumer, "libraryCard", "contentProviderRecordId", "language");
+            Assert.fail("An InternalServerErrorException should have been thrown");
+        } catch (InternalServerErrorException e) {
+            thenInternalServerErrorExceptionMessageContainsExpectedContentProviderName(e);
+        }
     }
 
     private void thenInternalServerErrorExceptionMessageContainsExpectedContentProviderName(InternalServerErrorException e) {
-	Assert.assertNotNull(e);
-	EhubError ehubError = e.getEhubError();
-	Assert.assertNotNull(ehubError);
-	String actualMessage = ehubError.getMessage();
-	Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME));
+        Assert.assertNotNull(e);
+        EhubError ehubError = e.getEhubError();
+        Assert.assertNotNull(ehubError);
+        String actualMessage = ehubError.getMessage();
+        Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME));
     }
 }

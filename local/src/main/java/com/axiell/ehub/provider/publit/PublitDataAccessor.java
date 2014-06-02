@@ -37,7 +37,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
     private IExpirationDateFactory expirationDateFactory;
 
     @Override
-    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final String language) {
+    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, String libraryCard, final String contentProviderRecordId, final String language) {
 	final Formats formats = new Formats();
 	final List<Product> products = getProducts(contentProviderConsumer, contentProviderRecordId);
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -98,7 +98,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {
+                                          final PendingLoan pendingLoan, String language) {
 	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
 	final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, contentProviderRecordId);
 	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
@@ -144,7 +144,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
 	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
 	return createContent(contentUrl, contentProviderLoanMetadata.getFormatDecoration());

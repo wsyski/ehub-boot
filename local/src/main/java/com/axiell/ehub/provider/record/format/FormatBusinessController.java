@@ -26,6 +26,7 @@ public class FormatBusinessController implements IFormatBusinessController {
     @Transactional(readOnly = true)
     public Formats getFormats(AuthInfo authInfo, String contentProviderName, String contentProviderRecordId, String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        return contentProviderDataAccessorFacade.getFormats(ehubConsumer, contentProviderName, contentProviderRecordId, language);
+        final String libraryCard = authInfo.getLibraryCard();
+        return contentProviderDataAccessorFacade.getFormats(ehubConsumer, contentProviderName, libraryCard, contentProviderRecordId, language);
     }
 }

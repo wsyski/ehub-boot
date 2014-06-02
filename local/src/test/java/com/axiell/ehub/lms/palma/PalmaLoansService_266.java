@@ -1,38 +1,38 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.*;
-import com.axiell.arena.services.palma.patron.checkoutrequest.CheckOutRequest;
-import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
+import com.axiell.ehub.services.palma.loans.*;
+import com.axiell.ehub.services.palma.patron.checkoutrequest.CheckOutRequest;
+import com.axiell.ehub.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.provider.ContentProviderName;
 import junit.framework.Assert;
 
 import javax.jws.WebService;
 
-@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
-        wsdlLocation = "com/axiell/ehub/lms/palma_266/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
+@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.ehub.axiell.com/",
+        wsdlLocation = "com/axiell/ehub/lms/palma_266/loans.wsdl", endpointInterface = "com.axiell.ehub.services.palma.loans.Loans")
 public class PalmaLoansService_266 extends AbstractPalmaLoansService implements Loans {
-    private static final String CONTEXT_PATH = "com.axiell.arena.services.palma.loans";
+    private static final String CONTEXT_PATH = "com.axiell.ehub.services.palma.loans";
 
     @Override
-    public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {
+    public com.axiell.ehub.services.palma.loans.CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {
         verifyCheckOutTest(parameters);
         return getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_XML);
     }
 
     @Override
-    public com.axiell.arena.services.palma.loans.CheckOutResponse checkOut(final CheckOut parameters) {
+    public com.axiell.ehub.services.palma.loans.CheckOutResponse checkOut(final CheckOut parameters) {
         verifyCheckOut(parameters);
         return getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_RESPONSE_XML);
     }
 
     @Override
-    public com.axiell.arena.services.palma.loans.RenewLoansResponse renewLoans(final RenewLoans parameters) {
+    public com.axiell.ehub.services.palma.loans.RenewLoansResponse renewLoans(final RenewLoans parameters) {
         return null;
     }
 
     @Override
-    public com.axiell.arena.services.palma.loans.GetLoansResponse getLoans(final GetLoans parameters) {
+    public com.axiell.ehub.services.palma.loans.GetLoansResponse getLoans(final GetLoans parameters) {
         return null;
     }
 

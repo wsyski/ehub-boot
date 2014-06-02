@@ -29,7 +29,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     private IOverDriveFacade overDriveFacade;
 
     @Override
-    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final String language) {
+    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, String libraryCard, final String contentProviderRecordId, final String language) {
 	final Product product = overDriveFacade.getProduct(contentProviderConsumer, contentProviderRecordId);
 	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 	final Formats formats = new Formats();
@@ -63,7 +63,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final PendingLoan pendingLoan) {
+                                          final PendingLoan pendingLoan, String language) {
 	final OAuthAccessToken patronAccessToken = overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
 	final String productId = pendingLoan.getContentProviderRecordId();
 	final String formatType = pendingLoan.getContentProviderFormatId();
@@ -100,7 +100,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-	    final ContentProviderLoanMetadata contentProviderLoanMetadata) {
+                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
 	final OAuthAccessToken patronAccessToken = overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
 	final Checkouts checkouts = overDriveFacade.getCheckouts(contentProviderConsumer, patronAccessToken);
 	final String productId = contentProviderLoanMetadata.getRecordId();

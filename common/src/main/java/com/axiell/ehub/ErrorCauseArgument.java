@@ -34,7 +34,7 @@ public class ErrorCauseArgument {
      */
     public ErrorCauseArgument(final Type type, final Object value) {
         this.type = type;
-        this.value = value.toString();
+        this.value = value == null ? null : value.toString();
     }
 
     /**

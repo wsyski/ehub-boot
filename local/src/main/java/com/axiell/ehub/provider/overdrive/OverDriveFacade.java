@@ -1,27 +1,19 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.logging.TimeLoggingExecutionInterceptor;
-import com.axiell.ehub.logging.TimeLoggingResteasyProviderFactory;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
-import com.axiell.ehub.util.EhubAddress;
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
+
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.springframework.stereotype.Component;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
+import com.axiell.ehub.util.EhubAddress;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {
     private static final String GRANT_TYPE_CLIENT_CREDENTIALS = "client_credentials";
     private static final String GRANT_TYPE_PASSWORD = "password";
-
-    public OverDriveFacade() {
-        final OverDriveClientErrorInterceptor clientErrorInterceptor = new OverDriveClientErrorInterceptor();
-        final ResteasyProviderFactory resteasyProviderFactory = TimeLoggingResteasyProviderFactory.getInstance();
-        resteasyProviderFactory.addClientErrorInterceptor(clientErrorInterceptor);
-        resteasyProviderFactory.registerProvider(TimeLoggingExecutionInterceptor.class);
-    }
 
     @Override
     public OAuthAccessToken getOAuthAccessToken(final ContentProviderConsumer contentProviderConsumer) {

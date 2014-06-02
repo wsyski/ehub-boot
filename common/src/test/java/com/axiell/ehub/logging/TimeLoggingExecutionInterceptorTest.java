@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @PrepareForTest({Logger.class, TimeLoggingExecutionInterceptor.class, Status.class})
 public class TimeLoggingExecutionInterceptorTest {
     private static final String GET = "GET";
-    private static final String URL = "http://arena.com/some/request";
+    private static final String URL = "http://ehub.com/some/request";
     private static final int STATUS_OK = 200;
     private static final long ELAPSE = 1L;
     private static final int STATUS_SERVER_ERROR = 500;

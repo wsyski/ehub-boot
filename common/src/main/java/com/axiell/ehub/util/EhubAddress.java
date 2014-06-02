@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public final class EhubAddress {
     private static final Logger LOGGER = LoggerFactory.getLogger(EhubAddress.class);
-    private static final String PRODUCTION_HOST = "ehub.axiell.com";
+    private static final String PRODUCTION_HOST = "axiell.axiell.com";
 
     private EhubAddress() {	
     }

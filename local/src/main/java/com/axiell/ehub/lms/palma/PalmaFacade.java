@@ -1,6 +1,6 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.*;
+import com.axiell.ehub.services.palma.loans.*;
 
 class PalmaFacade implements IPalmaFacade {
     private Loans loanPort;

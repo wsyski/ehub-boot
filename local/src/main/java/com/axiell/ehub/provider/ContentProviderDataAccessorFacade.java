@@ -16,34 +16,34 @@ import com.axiell.ehub.provider.record.format.Formats;
 public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {
     @Autowired(required = true)
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
-    
+
     @Override
-    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String contentProviderRecordId, String language) {
-	final ContentProviderName nameEnum = ContentProviderName.fromString(contentProviderName);
+    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String libraryCard, String contentProviderRecordId, String language) {
+        final ContentProviderName nameEnum = ContentProviderName.fromString(contentProviderName);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(nameEnum);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(nameEnum);
-        return dataAccessor.getFormats(consumer, contentProviderRecordId, language);
+        return dataAccessor.getFormats(consumer, libraryCard, contentProviderRecordId, language);
     }
 
     @Override
-    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan) {
-	final ContentProviderName name = pendingLoan.getContentProviderNameEnum();
-	final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-	final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-	return dataAccessor.createLoan(consumer, libraryCard, pin, pendingLoan);
+    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language) {
+        final ContentProviderName name = pendingLoan.getContentProviderNameEnum();
+        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+        return dataAccessor.createLoan(consumer, libraryCard, pin, pendingLoan, language);
     }
 
     @Override
-    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin) {
-	final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
-	final ContentProviderName name = getContentProviderName(metadata);
-	final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-	final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-	return dataAccessor.getContent(consumer, libraryCard, pin, metadata);
+    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin, String language) {
+        final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
+        final ContentProviderName name = getContentProviderName(metadata);
+        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+        return dataAccessor.getContent(consumer, libraryCard, pin, metadata, language);
     }
 
     private ContentProviderName getContentProviderName(ContentProviderLoanMetadata metadata) {
-	final ContentProvider contentProvider = metadata.getContentProvider();
-	return contentProvider.getName();
+        final ContentProvider contentProvider = metadata.getContentProvider();
+        return contentProvider.getName();
     }
 }

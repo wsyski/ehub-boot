@@ -33,7 +33,17 @@ public final class InternalServerErrorException extends EhubRuntimeException {
 
     /**
      * Constructs a new {@link InternalServerErrorException}.
-     * 
+     *
+     * @param cause the {@link ErrorCause}
+     * @param arguments an array of {@link ErrorCauseArgument}s
+     */
+    public InternalServerErrorException(ErrorCause cause, ErrorCauseArgument... arguments) {
+        super(Status.INTERNAL_SERVER_ERROR.getStatusCode(), cause, arguments);
+    }
+
+    /**
+     * Constructs a new {@link InternalServerErrorException}.
+     *
      * @param message the formatted error message to be written in the server log
      * @param cause the {@link ErrorCause}
      * @param arguments an array of {@link ErrorCauseArgument}s

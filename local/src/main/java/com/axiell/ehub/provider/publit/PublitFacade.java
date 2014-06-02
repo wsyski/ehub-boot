@@ -28,39 +28,39 @@ class PublitFacade implements IPublitFacade {
 
     @Override
     public List<Product> getProduct(ContentProviderConsumer contentProviderConsumer, String publitRecordId) {
-	final IPublitTradeApi api = getProductApi(contentProviderConsumer);
-	return api.getProduct(publitRecordId);
+        final IPublitTradeApi api = getProductApi(contentProviderConsumer);
+        return api.getProduct(publitRecordId);
     }
 
     @Override
     public ShopCustomerOrder createShopOrder(ContentProviderConsumer contentProviderConsumer, String publitRecordId, String libraryCard) {
-	final IPublitTradeApi api = getCreateLoanApi(contentProviderConsumer);
-	return api.createShopOrder(libraryCard, FIRST_NAME, LAST_NAME, EMAIL, STREET, ZIP_CODE, CITY, PAYMENT_METHOD, ORDER_TYPE, publitRecordId, CALLBACK);
+        final IPublitTradeApi api = getCreateLoanApi(contentProviderConsumer);
+        return api.createShopOrder(libraryCard, FIRST_NAME, LAST_NAME, EMAIL, STREET, ZIP_CODE, CITY, PAYMENT_METHOD, ORDER_TYPE, publitRecordId, CALLBACK);
     }
 
     @Override
     public ShopOrderUrl getShopOrderUrl(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
-	final IPublitTradeApi api = getOrderListApi(contentProviderConsumer);
-	return api.getShopOrderUrl(contentProviderLoanId);
+        final IPublitTradeApi api = getOrderListApi(contentProviderConsumer);
+        return api.getShopOrderUrl(contentProviderLoanId);
     }
 
     private IPublitTradeApi getProductApi(ContentProviderConsumer contentProviderConsumer) {
-	return getApi(PRODUCT_URL, contentProviderConsumer);
+        return getApi(PRODUCT_URL, contentProviderConsumer);
     }
 
     private IPublitTradeApi getCreateLoanApi(ContentProviderConsumer contentProviderConsumer) {
-	return getApi(CREATE_LOAN_URL, contentProviderConsumer);
+        return getApi(CREATE_LOAN_URL, contentProviderConsumer);
     }
 
     private IPublitTradeApi getOrderListApi(ContentProviderConsumer contentProviderConsumer) {
-	return getApi(ORDER_LIST_URL, contentProviderConsumer);
+        return getApi(ORDER_LIST_URL, contentProviderConsumer);
     }
 
     private IPublitTradeApi getApi(ContentProviderPropertyKey apiUrl, ContentProviderConsumer contentProviderConsumer) {
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-	final String url = contentProvider.getProperty(apiUrl);
-	final String userName = contentProviderConsumer.getProperty(PUBLIT_USERNAME);
-	final String password = contentProviderConsumer.getProperty(PUBLIT_PASSWORD);
-	return PublitTradeApiFactory.getApi(userName, password, url);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final String url = contentProvider.getProperty(apiUrl);
+        final String userName = contentProviderConsumer.getProperty(PUBLIT_USERNAME);
+        final String password = contentProviderConsumer.getProperty(PUBLIT_PASSWORD);
+        return PublitTradeApiFactory.getApi(userName, password, url);
     }
 }
