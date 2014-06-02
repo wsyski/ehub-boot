@@ -15,5 +15,6 @@ public interface ITestDataResource {
     TestData init();
 
     @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
     Response delete();
 }
