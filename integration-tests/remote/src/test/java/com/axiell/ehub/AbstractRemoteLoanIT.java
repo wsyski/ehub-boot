@@ -30,11 +30,11 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     protected abstract void givenPendingLoan();
 
     private void givenPalmaWsdl() {
-        stubFor(get(urlEqualTo("/ehub.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("loans.wsdl")));
+        stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("loans.wsdl")));
     }
 
     private void givenCheckoutTestOkResponse() {
-        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withStatus(200)));
     }
 
     private void givenGetLibraryUserOrderList() {
@@ -42,7 +42,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     }
 
     private void givenCheckoutResponse() {
-        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withStatus(200)));
     }
 
     protected abstract void whenCreateLoan() throws EhubException;
@@ -118,7 +118,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     }
 
     private void givenCheckoutTestErrorResponse() {
-        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withStatus(200)));
     }
 
     protected void thenCustomEhubExceptionValidation(EhubException e) {
