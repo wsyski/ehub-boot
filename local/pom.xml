@@ -38,6 +38,12 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-spring</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>resteasy-jettison-provider</artifactId>
+                    <groupId>org.jboss.resteasy</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
