@@ -41,7 +41,7 @@ public class TestDataResource implements ITestDataResource {
     private static final String ELIB_PRODUCT_URL = "http://localhost:16521/webservices/GetProduct.asmx/GetProduct";
     private static final String ELIB_CREATE_LOAN_URL = "http://localhost:16521/webservices/createloan.asmx/CreateLoan";
     private static final String ELIB_ORDER_LIST_URL = "http://localhost:16521/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList";
-    private static final String ARENA_PALMA_URL = "http://localhost:16521/ehub.pa.palma";
+    private static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
     private static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     private static final String ELIB_SERVICE_KEY = "hu81K8js";
     private static final String ELIB_SERVICE_ID = "926";

@@ -45,14 +45,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${hsqldb.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local</artifactId>
             <version>${project.version}</version>
             <classifier>classes</classifier>
             <scope>provided</scope>
         </dependency>
-		
-		<dependency>
+
+        <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local</artifactId>
             <version>${project.version}</version>
