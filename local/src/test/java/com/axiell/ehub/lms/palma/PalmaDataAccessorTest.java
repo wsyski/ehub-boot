@@ -1,12 +1,12 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.ehub.services.palma.loans.CheckOut;
-import com.axiell.ehub.services.palma.loans.CheckOutResponse;
-import com.axiell.ehub.services.palma.loans.CheckOutTest;
-import com.axiell.ehub.services.palma.loans.CheckOutTestResponse;
-import com.axiell.ehub.services.palma.patron.checkoutresponse.CheckOutErrorStatusType;
-import com.axiell.ehub.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
-import com.axiell.ehub.services.palma.util.ISOCurrencyCodeType;
+import com.axiell.arena.services.palma.loans.CheckOut;
+import com.axiell.arena.services.palma.loans.CheckOutResponse;
+import com.axiell.arena.services.palma.loans.CheckOutTest;
+import com.axiell.arena.services.palma.loans.CheckOutTestResponse;
+import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutErrorStatusType;
+import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
+import com.axiell.arena.services.palma.util.ISOCurrencyCodeType;
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -166,14 +166,14 @@ public class PalmaDataAccessorTest {
     }
 
     private static CheckOutTestResponse getCheckOutTestResponse(final CheckOutTestErrorStatusType checkOutStatus) {
-        com.axiell.ehub.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.ehub.services.palma.loans.ObjectFactory();
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
         CheckOutTestResponse checkOutTest = loansObjectFactory.createCheckOutTestResponse();
-        com.axiell.ehub.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.ehub.services.palma.util.status.ObjectFactory();
-        com.axiell.ehub.services.palma.util.status.Status status = statusObjectFactory.createStatus();
+        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
+        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
         status.setType("ok");
-        com.axiell.ehub.services.palma.patron.checkouttestresponse.ObjectFactory checkouttestresponseObjectFactory =
-                new com.axiell.ehub.services.palma.patron.checkouttestresponse.ObjectFactory();
-        com.axiell.ehub.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
+        com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory checkouttestresponseObjectFactory =
+                new com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory();
+        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
                 checkouttestresponseObjectFactory.createCheckOutTestResponse();
         checkOutTest.setCheckOutTestResponse(checkOutTestResponse);
         checkOutTestResponse.setStatus(status);
@@ -188,29 +188,29 @@ public class PalmaDataAccessorTest {
     }
 
     private static CheckOutResponse getCheckOutResponse(final CheckOutErrorStatusType errorStatus) {
-        com.axiell.ehub.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.ehub.services.palma.loans.ObjectFactory();
+        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
         CheckOutResponse checkOut = loansObjectFactory.createCheckOutResponse();
-        com.axiell.ehub.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.ehub.services.palma.util.status.ObjectFactory();
-        com.axiell.ehub.services.palma.util.status.Status status = statusObjectFactory.createStatus();
+        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
+        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
         status.setType("ok");
-        com.axiell.ehub.services.palma.patron.checkoutresponse.ObjectFactory checkoutresponseObjectFactory =
-                new com.axiell.ehub.services.palma.patron.checkoutresponse.ObjectFactory();
-        com.axiell.ehub.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = checkoutresponseObjectFactory.createCheckOutResponse();
+        com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory checkoutresponseObjectFactory =
+                new com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory();
+        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = checkoutresponseObjectFactory.createCheckOutResponse();
         checkOut.setCheckOutResponse(checkOutResponse);
         checkOutResponse.setStatus(status);
         if (errorStatus == null) {
-            com.axiell.ehub.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutSuccess checkOutSuccess =
+            com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutSuccess checkOutSuccess =
                     checkoutresponseObjectFactory.createCheckOutResponseCheckOutSuccess();
             checkOutSuccess.setLoanId(LOAN_ID);
             checkOutSuccess.setRecordId(LMS_RECORD_ID);
-            com.axiell.ehub.services.palma.util.ObjectFactory utilObjectFactory = new com.axiell.ehub.services.palma.util.ObjectFactory();
-            com.axiell.ehub.services.palma.util.MoneyType fee = utilObjectFactory.createMoneyType();
+            com.axiell.arena.services.palma.util.ObjectFactory utilObjectFactory = new com.axiell.arena.services.palma.util.ObjectFactory();
+            com.axiell.arena.services.palma.util.MoneyType fee = utilObjectFactory.createMoneyType();
             fee.setCurrency(ISOCurrencyCodeType.SEK);
             fee.setAmount(10);
             checkOutSuccess.setFee(fee);
             checkOutResponse.setCheckOutSuccess(checkOutSuccess);
         } else {
-            com.axiell.ehub.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutError checkOutError =
+            com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutError checkOutError =
                     checkoutresponseObjectFactory.createCheckOutResponseCheckOutError();
             checkOutError.setStatus(errorStatus);
             checkOutResponse.setCheckOutError(checkOutError);

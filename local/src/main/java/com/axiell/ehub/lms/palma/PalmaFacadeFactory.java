@@ -1,24 +1,22 @@
 package com.axiell.ehub.lms.palma;
 
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.logging.LoggingHandler;
+import com.axiell.arena.services.palma.loans.Loans;
+import com.axiell.arena.services.palma.loans.LoansPalmaService;
+import com.axiell.ehub.util.Validate;
+import org.springframework.stereotype.Component;
+
+import javax.xml.ws.Binding;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.Handler;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import javax.xml.ws.Binding;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.Handler;
-
-import org.springframework.stereotype.Component;
-
-import com.axiell.ehub.services.palma.loans.Loans;
-import com.axiell.ehub.services.palma.loans.LoansPalmaService;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.logging.LoggingHandler;
-import com.axiell.ehub.util.Validate;
 
 @Component
 public class PalmaFacadeFactory implements IPalmaFacadeFactory {
@@ -48,7 +46,7 @@ public class PalmaFacadeFactory implements IPalmaFacadeFactory {
         BindingProvider bp = (BindingProvider) loanPort;
         Binding binding = bp.getBinding();
         @SuppressWarnings("rawtypes")
-	List<Handler> handlerList = binding.getHandlerChain();
+        List<Handler> handlerList = binding.getHandlerChain();
         if (handlerList == null) {
             handlerList = new ArrayList<>();
         }
