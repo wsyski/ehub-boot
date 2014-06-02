@@ -7,7 +7,7 @@
         <artifactId>ehub-it</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>ehub-it-remote-1.0-SNAPSHOT</artifactId>
+    <artifactId>ehub-it-remote-0.7</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local</artifactId>
-            <version>${project.version}</version>
+            <version>0.7</version>
             <classifier>classes</classifier>
             <scope>test</scope>
         </dependency>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ehub-local</artifactId>
-            <version>${project.version}</version>
+            <version>0.7</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
@@ -53,14 +53,14 @@
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-it-remote</artifactId>
-            <version>${project.version}</version>
+            <version>0.7</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-it-remote</artifactId>
-            <version>${project.version}</version>
+            <version>0.7</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-remote</artifactId>
-            <version>${project.version}</version>
+            <version>0.7</version>
             <scope>test</scope>
         </dependency>
 

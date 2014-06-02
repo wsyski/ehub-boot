@@ -121,7 +121,7 @@
                             <httpConnector>
                                 <port>16518</port>
                             </httpConnector>
-                            <war>${project.basedir}/../local-it/target/local-it-${project.version}.war</war>
+                            <war>${project.basedir}/../local/target/ehub-it-local-${project.version}.war</war>
                             <webApp>
                                 <contextPath>/</contextPath>
                             </webApp>
