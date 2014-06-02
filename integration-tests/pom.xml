@@ -14,10 +14,10 @@
 
 	<modules>
         <module>common</module>
-		<module>remote</module>
+        <module>local</module>
+        <module>remote</module>
 		<module>remote-0.4</module>
 		<module>remote-0.6</module>
 		<module>remote-1.0-SNAPSHOT</module>
-		<module>local-it</module>
 	</modules>
 </project>
