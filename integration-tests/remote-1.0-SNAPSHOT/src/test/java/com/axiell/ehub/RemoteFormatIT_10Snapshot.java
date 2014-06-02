@@ -5,11 +5,11 @@ public class RemoteFormatIT_10Snapshot extends AbstractRemoteFormatIT {
 
     @Override
     protected void castBeanToIEhubService(Object bean) {
-	ehubService = (IEhubService) bean;
+        ehubService = (IEhubService) bean;
     }
 
     @Override
-    protected void whenGetFormats() throws EhubException {	
-	actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME, DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
+    protected void whenGetFormats() throws EhubException {
+        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME, DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }

@@ -3,7 +3,6 @@
  */
 package com.axiell.ehub;
 
-import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestData;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -19,13 +18,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.core.Response;
 
-public abstract class AbstractRemoteIT<A> {
+public abstract class AbstractRemoteIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteIT.class);
     private static final int PORT_NO = 8080;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
     protected static final String CONTENT_PROVIDER_NAME = "ELIB";
     protected TestData testData;
-    protected A authInfo;
+    protected AuthInfo authInfo;
 
     @Rule
     public WireMockRule httpMockRule = new WireMockRule(16521);
@@ -62,7 +61,9 @@ public abstract class AbstractRemoteIT<A> {
 
     protected abstract void castBeanToIEhubService(Object bean);
 
-    protected abstract A initAuthInfo() throws EhubException;
+    protected void initAuthInfo() throws EhubException {
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+    }
 
     @After
     public void tearDown() throws Exception {
