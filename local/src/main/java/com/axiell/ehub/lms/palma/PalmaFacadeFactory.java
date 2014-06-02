@@ -13,8 +13,8 @@ import javax.xml.ws.handler.Handler;
 
 import org.springframework.stereotype.Component;
 
-import com.axiell.arena.services.palma.loans.Loans;
-import com.axiell.arena.services.palma.loans.LoansPalmaService;
+import com.axiell.ehub.services.palma.loans.Loans;
+import com.axiell.ehub.services.palma.loans.LoansPalmaService;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.logging.LoggingHandler;

@@ -1,0 +1,55 @@
+package com.axiell.ehub.provider.elib.library3;
+
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.ContentProvider;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.springframework.stereotype.Component;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
+
+@Component
+class Elib3Facade implements IElibFacade {
+
+    public Elib3Facade() {
+        final ElibClientErrorInterceptor clientErrorInterceptor = new ElibClientErrorInterceptor();
+        final ResteasyProviderFactory resteasyProviderFactory = ResteasyProviderFactory.getInstance();
+        resteasyProviderFactory.addClientErrorInterceptor(clientErrorInterceptor);
+    }
+
+    @Override
+    public BookAvailability getBookAvailability(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(libraryCard).appendParameter(elibProductId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        return elibResource.getBookAvailability(serviceId, checksum, elibProductId, libraryCard);
+    }
+
+    @Override
+    public Product getProduct(final ContentProviderConsumer contentProviderConsumer, final String elibProductId) {
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(elibProductId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        final GetProductResponse response = elibResource.getProduct(serviceId, checksum, elibProductId);
+        return response.getProduct();
+    }
+
+    @Override
+    public CreatedLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(libraryCard).appendParameter(elibProductId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        final CreateLoanResponse response = elibResource.createLoan(serviceId, libraryCard, elibProductId, checksum);
+        return response.getCreatedLoan();
+    }
+
+    @Override
+    public Loan getLoan(final ContentProviderConsumer contentProviderConsumer, final String loanId) {
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(loanId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        final GetLoanResponse response = elibResource.getLoan(serviceId, checksum, loanId);
+        return response.getLoan();
+    }
+}

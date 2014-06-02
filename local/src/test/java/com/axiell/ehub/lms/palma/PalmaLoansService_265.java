@@ -1,17 +1,17 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma_265.loans.*;
-import com.axiell.arena.services.palma_265.patron.checkoutrequest.CheckOutRequest;
-import com.axiell.arena.services.palma_265.patron.checkouttestrequest.CheckOutTestRequest;
+import com.axiell.ehub.services.palma_265.loans.*;
+import com.axiell.ehub.services.palma_265.patron.checkoutrequest.CheckOutRequest;
+import com.axiell.ehub.services.palma_265.patron.checkouttestrequest.CheckOutTestRequest;
 import com.axiell.ehub.DevelopmentData;
 import junit.framework.Assert;
 
 import javax.jws.WebService;
 
-@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
-        wsdlLocation = "com/axiell/ehub/lms/palma_265/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma_265.loans.Loans")
+@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.ehub.axiell.com/",
+        wsdlLocation = "com/axiell/ehub/lms/palma_265/loans.wsdl", endpointInterface = "com.axiell.ehub.services.palma_265.loans.Loans")
 public class PalmaLoansService_265 extends AbstractPalmaLoansService implements Loans {
-    private static final String CONTEXT_PATH = "com.axiell.arena.services.palma_265.loans";
+    private static final String CONTEXT_PATH = "com.axiell.ehub.services.palma_265.loans";
 
     @Override
     public CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {

@@ -3,13 +3,13 @@
  */
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.CheckOut;
-import com.axiell.arena.services.palma.loans.CheckOutTest;
-import com.axiell.arena.services.palma.patron.checkoutrequest.CheckOutRequest;
-import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
-import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
-import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
-import com.axiell.arena.services.palma.util.status.Status;
+import com.axiell.ehub.services.palma.loans.CheckOut;
+import com.axiell.ehub.services.palma.loans.CheckOutTest;
+import com.axiell.ehub.services.palma.patron.checkoutrequest.CheckOutRequest;
+import com.axiell.ehub.services.palma.patron.checkoutresponse.CheckOutResponse;
+import com.axiell.ehub.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
+import com.axiell.ehub.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
+import com.axiell.ehub.services.palma.util.status.Status;
 import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
@@ -47,7 +47,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
         CheckOutTest checkOutTest = createCheckOutTest(agencyMemberIdentifier, pendingLoan, libraryCard, pin);
         IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
-        com.axiell.arena.services.palma.loans.CheckOutTestResponse loansCheckOutTestResponse = palmaFacade.checkOutTest(checkOutTest);
+        com.axiell.ehub.services.palma.loans.CheckOutTestResponse loansCheckOutTestResponse = palmaFacade.checkOutTest(checkOutTest);
         CheckOutTestResponse checkOutTestResponse = loansCheckOutTestResponse.getCheckOutTestResponse();
         checkCheckOutTestResponseStatus(checkOutTestResponse, ehubConsumer, libraryCard);
         return getCheckoutTestAnalysis(ehubConsumer, pendingLoan, libraryCard, checkOutTestResponse);
@@ -62,7 +62,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         String agencyMemberIdentifier = getAgencyMemberIdentifier(ehubConsumer);
         CheckOut checkOut = createCheckOut(agencyMemberIdentifier, pendingLoan, libraryCard, pin, expirationDate);
         IPalmaFacade palmaFacade = getPalmaFacade(ehubConsumer);
-        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
+        com.axiell.ehub.services.palma.loans.CheckOutResponse loansCheckOutResponse = palmaFacade.checkOut(checkOut);
         CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
         checkCheckOutResponseStatus(checkOutResponse, ehubConsumer, libraryCard);
         return getLmsLoan(ehubConsumer, pendingLoan, libraryCard, checkOutResponse);
@@ -126,8 +126,8 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
 
     private static CheckOutTest createCheckOutTest(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard,
                                                    final String pin) {
-        com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory checkouttestrequestObjectFactory =
-                new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
+        com.axiell.ehub.services.palma.patron.checkouttestrequest.ObjectFactory checkouttestrequestObjectFactory =
+                new com.axiell.ehub.services.palma.patron.checkouttestrequest.ObjectFactory();
         CheckOutTestRequest checkOutTestRequest = checkouttestrequestObjectFactory.createCheckOutTestRequest();
         checkOutTestRequest.setArenaMember(agencyMemberIdentifier);
         checkOutTestRequest.setRecordId(pendingLoan.getLmsRecordId());
@@ -135,7 +135,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         checkOutTestRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutTestRequest.setUser(libraryCard);
         checkOutTestRequest.setPassword(pin);
-        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        com.axiell.ehub.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.ehub.services.palma.loans.ObjectFactory();
         CheckOutTest checkOutTest = loansObjectFactory.createCheckOutTest();
         checkOutTest.setCheckOutTestRequest(checkOutTestRequest);
         return checkOutTest;
@@ -161,8 +161,8 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
 
     private static CheckOut createCheckOut(final String agencyMemberIdentifier, final PendingLoan pendingLoan, final String libraryCard,
                                            final String pin, final Date expirationDate) {
-        com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory checkoutrequestObjectFactory =
-                new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
+        com.axiell.ehub.services.palma.patron.checkoutrequest.ObjectFactory checkoutrequestObjectFactory =
+                new com.axiell.ehub.services.palma.patron.checkoutrequest.ObjectFactory();
         CheckOutRequest checkOutRequest = checkoutrequestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
@@ -171,7 +171,7 @@ final class PalmaDataAccessor implements IPalmaDataAccessor {
         checkOutRequest.setContentProviderName(pendingLoan.getContentProviderName());
         checkOutRequest.setUser(libraryCard);
         checkOutRequest.setPassword(pin);
-        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
+        com.axiell.ehub.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.ehub.services.palma.loans.ObjectFactory();
         CheckOut checkOut = loansObjectFactory.createCheckOut();
         checkOut.setCheckOutRequest(checkOutRequest);
         return checkOut;

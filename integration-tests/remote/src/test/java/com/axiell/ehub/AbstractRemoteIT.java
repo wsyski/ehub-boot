@@ -3,12 +3,10 @@
  */
 package com.axiell.ehub;
 
-import javax.sql.DataSource;
-import javax.ws.rs.core.Response;
-
+import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestData;
-import org.eclipse.jetty.server.handler.ContextHandler.Context;
-import org.eclipse.jetty.webapp.WebAppContext;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.After;
@@ -18,29 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.context.support.XmlWebApplicationContext;
 
-import com.axiell.ehub.consumer.IConsumerAdminController;
-import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.IContentProviderAdminController;
-import com.axiell.ehub.provider.record.format.IFormatAdminController;
-import com.axiell.ehub.security.AuthInfo;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import javax.ws.rs.core.Response;
 
-public abstract class AbstractRemoteIT<D extends DevelopmentData> {
+public abstract class AbstractRemoteIT<A> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteIT.class);
-    private static final int PORT_NO = 9080;
-    private static final String EHUB_SERVER_URI = "ehub-server-uri";
-    protected static final String CONTENT_PROVIDER_NAME = ContentProviderName.ELIB.toString();
+    private static final int PORT_NO = 8080;
+    private static final String EHUB_SERVER_URI = "axiell-server-uri";
+    protected static final String CONTENT_PROVIDER_NAME = "ELIB";
     protected TestData testData;
-    protected AuthInfo authInfo;
+    protected A authInfo;
 
     @Rule
     public WireMockRule httpMockRule = new WireMockRule(16521);
-
-    protected abstract D initDevelopmentData(XmlWebApplicationContext applicationContext, IContentProviderAdminController contentProviderAdminController,
-                                             IFormatAdminController formatAdminController, IConsumerAdminController consumerAdminController);
 
     @Before
     public void setUp() throws Exception {
@@ -54,6 +42,7 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
         final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
         final ClientResponse<TestData> response = request.post(TestData.class);
         testData = response.getEntity();
+        LOGGER.info("Test data initialized: " + testData.toString());
     }
 
     private String getTestDataServiceBaseUri() {
@@ -73,17 +62,15 @@ public abstract class AbstractRemoteIT<D extends DevelopmentData> {
 
     protected abstract void castBeanToIEhubService(Object bean);
 
-    private void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey())
-                .libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
-        LOGGER.debug("Authorization header value = " + authInfo.toString());
-    }
+    protected abstract A initAuthInfo() throws EhubException;
 
     @After
     public void tearDown() throws Exception {
         final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
         final ClientResponse<?> response = request.delete();
-        if (response.getStatus() != Response.Status.OK.getStatusCode()) {
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            LOGGER.info("Test data deleted");
+        } else {
             final String reason = response.getEntity(String.class);
             throw new IllegalStateException("Could not delete test data: " + reason);
         }

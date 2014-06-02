@@ -1,42 +1,19 @@
 package com.axiell.ehub;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import com.axiell.ehub.loan.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Date;
 import java.util.Locale;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-import com.axiell.ehub.consumer.IConsumerAdminController;
-import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.IEhubLoanRepository;
-import com.axiell.ehub.loan.LmsLoan;
-import com.axiell.ehub.loan.LoanDevelopmentData;
-import com.axiell.ehub.loan.ReadyLoan;
-import com.axiell.ehub.provider.IContentProviderAdminController;
-import com.axiell.ehub.provider.record.format.IFormatAdminController;
-
-public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT<LoanDevelopmentData> {
+public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     protected String lmsLoanId;
     protected Long readyLoanId;
     protected ReadyLoan actualReadyLoan;
-
-    @Override
-    protected LoanDevelopmentData initDevelopmentData(XmlWebApplicationContext applicationContext,
-                                                      IContentProviderAdminController contentProviderAdminController, IFormatAdminController formatAdminController,
-                                                      IConsumerAdminController consumerAdminController) {
-        IEhubLoanRepository ehubLoanRepository = applicationContext.getBean(IEhubLoanRepository.class);
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, ehubLoanRepository);
-    }
 
     @Test
     public final void createLoan() throws EhubException {
@@ -53,11 +30,11 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT<LoanDevelopm
     protected abstract void givenPendingLoan();
 
     private void givenPalmaWsdl() {
-        stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("loans.wsdl")));
+        stubFor(get(urlEqualTo("/ehub.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("loans.wsdl")));
     }
 
     private void givenCheckoutTestOkResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withStatus(200)));
     }
 
     private void givenGetLibraryUserOrderList() {
@@ -65,7 +42,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT<LoanDevelopm
     }
 
     private void givenCheckoutResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withStatus(200)));
     }
 
     protected abstract void whenCreateLoan() throws EhubException;
@@ -141,7 +118,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT<LoanDevelopm
     }
 
     private void givenCheckoutTestErrorResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/ehub.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withStatus(200)));
     }
 
     protected void thenCustomEhubExceptionValidation(EhubException e) {

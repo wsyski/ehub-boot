@@ -116,6 +116,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenProductResponseStatusOk();
         givenProductFormats();
         givenNoTextBundle();
+        givenProductStatusIsOk();
         whenGetFormats();
         thenFormatHasElibFormatNameAndDescription();
     }
@@ -141,11 +142,26 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         Assert.assertEquals(ELIB_FORMAT_DESCRIPTION, actualFormat.getDescription());
     }
 
+    private void givenProductStatusIsOk() {
+        givenThereIsAProductStatus();
+        given(productStatus.getId()).willReturn(ELIB_PRODUCT_OK_ID);
+    }
+
+    private void givenProductStatusIsNotOk() {
+        givenThereIsAProductStatus();
+        given(productStatus.getId()).willReturn(ELIB_PRODUCT_NOT_OK_ID);
+    }
+
+    private void givenThereIsAProductStatus() {
+        given(product.getStatus()).willReturn(productStatus);
+    }
+
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
+        givenProductStatusIsOk();
         givenTextBundle();
         givenEhubFormatNameAndDescription();
         whenGetFormats();
@@ -153,10 +169,23 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     @Test
+    public void getFormatsProductIdNotOk() {
+        givenProductResponse();
+        givenProductResponseStatusOk();
+        givenProductFormats();
+        givenProductStatusIsNotOk();
+        givenTextBundle();
+        givenEhubFormatNameAndDescription();
+        whenGetFormats();
+        thenNoFormats();
+    }
+
+    @Test
     public void getFormatsWithElibFormatNameAndDescriptionWhenTextBundle() {
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
+        givenProductStatusIsOk();
         givenTextBundle();
         whenGetFormats();
         thenFormatHasElibFormatNameAndDescription();

@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
  * 
  * <p>
  * <b>NOTE:</b> Even though this interface is public it should only be used within the package
- * <code>com.axiell.ehub.consumer</code>. Access to this repository outside this package should be done through the
+ * <code>com.axiell.axiell.consumer</code>. Access to this repository outside this package should be done through the
  * {@link IConsumerBusinessController}.
  * </p>
  * <p>

@@ -104,7 +104,7 @@
 
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
-                            <war>${project.basedir}/../local-it/target/local-it.war</war>
+                            <war>${project.basedir}/../local-it/target/local-it-1.0-SNAPSHOT.war</war>
 
                             <webApp>
                                 <contextPath>/</contextPath>
