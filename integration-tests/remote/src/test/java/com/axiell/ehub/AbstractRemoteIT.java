@@ -20,7 +20,7 @@ import javax.ws.rs.core.Response;
 
 public abstract class AbstractRemoteIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteIT.class);
-    private static final int PORT_NO = 8080;
+    private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
     protected static final String CONTENT_PROVIDER_NAME = "ELIB";
     protected TestData testData;

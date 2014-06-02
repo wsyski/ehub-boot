@@ -116,6 +116,9 @@
                             <goal>deploy-war</goal>
                         </goals>
                         <configuration>
+                            <httpConnector>
+                                <port>16518</port>
+                            </httpConnector>
                             <scanIntervalSeconds>0</scanIntervalSeconds>
                             <daemon>true</daemon>
                             <war>${project.basedir}/../local-it/target/local-it-${project.version}.war</war>
