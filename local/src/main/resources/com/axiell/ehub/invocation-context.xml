@@ -10,6 +10,7 @@
 	<bean class="com.axiell.ehub.util.EhubRuntimeExceptionMapper"/>
 	<bean class="com.axiell.ehub.security.AuthorizationHeaderInterceptor"/>
 	<bean class="com.axiell.ehub.security.AuthInfoConverter"/>
+    <bean class="com.axiell.ehub.logging.LoggingClientErrorInterceptor"/>
 
 	<!-- List only the JAX-RS root resources here -->
 
