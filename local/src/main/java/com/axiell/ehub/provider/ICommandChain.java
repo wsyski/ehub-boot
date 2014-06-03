@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider;
 
-public interface ICommandChain<T, D extends ICommandData> {
+public interface ICommandChain<T, D> {
 
     T execute(D data);
 }

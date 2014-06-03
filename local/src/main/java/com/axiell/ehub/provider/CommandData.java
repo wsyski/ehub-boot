@@ -96,4 +96,19 @@ public class CommandData implements ICommandData {
         this.content = content;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "CommandData{" +
+                "contentProviderConsumer=" + contentProviderConsumer +
+                ", libraryCard=" + libraryCard +
+                ", language=" + language +
+                ", contentProviderRecordId=" + contentProviderRecordId +
+                ", pendingLoan=" + pendingLoan +
+                ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
+                ", formatDecoration=" + formatDecoration +
+                ", contentUrl=" + contentUrl +
+                ", content=" + contentUrl +
+                "}";
+    }
 }

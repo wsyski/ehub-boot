@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response.Status;
  * Indicates that an unexpected exception occurred within the eHUB. It will result in an error response with status code
  * 500.
  */
-public final class InternalServerErrorException extends EhubRuntimeException {
+public class InternalServerErrorException extends EhubRuntimeException {
     private static final long serialVersionUID = -5479730041071582555L;
 
     /**

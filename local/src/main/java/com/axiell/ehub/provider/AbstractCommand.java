@@ -49,6 +49,6 @@ public abstract class AbstractCommand<D extends ICommandData> implements IComman
 
     @Override
     public String toString() {
-        return String.format("{0} {next={1}, forwards={2}}", getClass().getSimpleName(), next, forwards);
+        return getClass().getSimpleName() + "{next=" + next + ", forwards=" + forwards + "}";
     }
 }
