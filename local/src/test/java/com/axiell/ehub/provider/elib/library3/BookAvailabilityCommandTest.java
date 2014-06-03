@@ -57,9 +57,8 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         givenInternalErrorServerExceptionWithMaxNoOfDownloadsReached();
         try {
             whenRun();
-            fail("An InternalServerErrorException should have been thrown");
+            thenInternalServerErrorExceptionShouldHaveBeenThrown();
         } catch (InternalServerErrorException e) {
-            assertNotNull(e);
             thenInternalErrorExceptionIsCreatedWithMaxNoOfDownloadsReached();
         }
     }
@@ -75,9 +74,8 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         givenInternalErrorServerExceptionWithMaxNoOfDownloadsReached();
         try {
             whenRun();
-            fail("An InternalServerErrorException should have been thrown");
+            thenInternalServerErrorExceptionShouldHaveBeenThrown();
         } catch (InternalServerErrorException e) {
-            assertNotNull(e);
             thenInternalErrorExceptionIsCreatedWithBorrowerLimitReached();
         }
     }
@@ -93,9 +91,8 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         givenInternalErrorServerExceptionWithMaxNoOfDownloadsReached();
         try {
             whenRun();
-            fail("An InternalServerErrorException should have been thrown");
+            thenInternalServerErrorExceptionShouldHaveBeenThrown();
         } catch (InternalServerErrorException e) {
-            assertNotNull(e);
             thenInternalErrorExceptionIsCreatedWithLibraryLimitReached();
         }
     }
@@ -109,9 +106,8 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         givenInternalErrorServerExceptionWithProductUnavailable();
         try {
             whenRun();
-            fail("An InternalServerErrorException should have been thrown");
+            thenInternalServerErrorExceptionShouldHaveBeenThrown();
         } catch (InternalServerErrorException e) {
-            assertNotNull(e);
             thenInternalErrorExceptionIsCreatedWithProductUnavailable();
         }
     }
