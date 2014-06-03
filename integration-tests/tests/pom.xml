@@ -18,6 +18,16 @@
         <module>remote-1.0-SNAPSHOT</module>
 	</modules>
 
+    <dependencies>
+            <dependency>
+                <groupId>com.axiell.ehub</groupId>
+                <artifactId>local-it</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+
     <profiles>
                <profile>
                    <id>integration-test</id>

@@ -72,13 +72,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.axiell.ehub</groupId>
-            <artifactId>local-it</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>provided</scope>
-        </dependency>
 
     </dependencies>
 
