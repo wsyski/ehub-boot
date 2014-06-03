@@ -21,7 +21,7 @@
     <dependencies>
             <dependency>
                 <groupId>com.axiell.ehub</groupId>
-                <artifactId>local-it</artifactId>
+                <artifactId>ehub-it-local</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
                 <scope>provided</scope>
