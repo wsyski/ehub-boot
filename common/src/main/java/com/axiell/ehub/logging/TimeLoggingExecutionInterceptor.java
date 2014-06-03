@@ -1,11 +1,12 @@
 package com.axiell.ehub.logging;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.annotations.interception.ClientInterceptor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.spi.interception.ClientExecutionContext;
 import org.jboss.resteasy.spi.interception.ClientExecutionInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.ext.Provider;
@@ -16,13 +17,14 @@ import javax.ws.rs.ext.Provider;
 public class TimeLoggingExecutionInterceptor implements ClientExecutionInterceptor {
     private static final String INVOCATION_TRAIL_NOT_AVAILABLE = "INVOCATION_TRAIL_NOT_AVAILABLE";
     private static final String SEPARATOR = "; ";
-    private final Logger timeLog = Logger.getLogger("time");
+    private final Logger timeLog = LoggerFactory.getLogger("time");
 
     @Override
     public ClientResponse execute(final ClientExecutionContext ctx) throws Exception {
         final StopWatch stopWatch = new StopWatch();
         Exception exception = null;
         ClientResponse response = null;
+
         stopWatch.start();
         try {
             response = ctx.proceed();

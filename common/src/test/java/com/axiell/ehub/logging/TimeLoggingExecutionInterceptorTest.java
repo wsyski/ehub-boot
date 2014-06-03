@@ -1,7 +1,6 @@
 package com.axiell.ehub.logging;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.spi.interception.ClientExecutionContext;
@@ -11,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response.Status;
 
@@ -21,7 +22,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Logger.class, TimeLoggingExecutionInterceptor.class, Status.class})
+@PrepareForTest({LoggerFactory.class, TimeLoggingExecutionInterceptor.class, Status.class})
 public class TimeLoggingExecutionInterceptorTest {
     private static final String GET = "GET";
     private static final String URL = "http://ehub.com/some/request";
@@ -49,10 +50,10 @@ public class TimeLoggingExecutionInterceptorTest {
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(Logger.class);
+        mockStatic(LoggerFactory.class);
         mockStatic(Status.class);
         whenNew(StopWatch.class).withNoArguments().thenReturn(stopWatch);
-        given(Logger.getLogger("time")).willReturn(logger);
+        given(LoggerFactory.getLogger("time")).willReturn(logger);
         underTest = new TimeLoggingExecutionInterceptor();
     }
 
