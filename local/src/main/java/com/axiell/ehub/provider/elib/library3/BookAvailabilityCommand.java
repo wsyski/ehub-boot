@@ -28,7 +28,7 @@ class BookAvailabilityCommand extends AbstractElib3Command<CommandData> {
         retriveBookAvailability(data);
     }
 
-    private void retriveBookAvailability(CommandData data) {
+    private void retriveBookAvailability(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final PendingLoan pendingLoan = data.getPendingLoan();
         final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
