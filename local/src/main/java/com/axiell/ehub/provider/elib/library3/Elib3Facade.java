@@ -12,6 +12,7 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 @Component
 class Elib3Facade implements IElibFacade {
 
+
     @Override
     public BookAvailability getBookAvailability(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
         final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
@@ -45,5 +46,11 @@ class Elib3Facade implements IElibFacade {
         final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
         final GetLoanResponse response = elibResource.getLoan(serviceId, checksum, loanId);
         return response.getLoan();
+    }
+
+    @Override
+    public LibraryProduct getLibraryProduct(ContentProviderConsumer contentProviderConsumer, String elibProductId) {
+        // TODO: implement
+        return null;
     }
 }

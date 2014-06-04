@@ -24,8 +24,7 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
     @Override
     public void run(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final PendingLoan pendingLoan = data.getPendingLoan();
-        final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
         final String libraryCard = data.getLibraryCard();
         final String language = data.getLanguage();
         final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, libraryCard);
@@ -36,7 +35,7 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         else {
             final Date expirationDate = createdLoan.getExpirationDate();
             final String contentProviderLoanId = createdLoan.getLoanId();
-            final String formatId = pendingLoan.getContentProviderFormatId();
+            final String formatId = data.getContentProviderFormatId();
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
             final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
             final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
