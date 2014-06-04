@@ -5,13 +5,10 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_INACTIVE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
