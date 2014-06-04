@@ -13,15 +13,11 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Matches;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;

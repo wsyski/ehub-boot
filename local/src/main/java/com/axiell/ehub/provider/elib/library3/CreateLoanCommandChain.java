@@ -27,11 +27,11 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     }
 
     private void configureFirstCommand() {
-        firstCommand.next(createLoanCommand);
+        firstCommand.on(BookAvailabilityCommand.Result.PRODUCT_AVAILABLE, createLoanCommand);
     }
 
     private void configureCreateLoanCommand() {
-        createLoanCommand.next(createContentCommand);
+        createLoanCommand.on(CreateLoanCommand.Result.LOAN_CREATED, createContentCommand);
     }
 
     private void configureCreateContentCommand() {
