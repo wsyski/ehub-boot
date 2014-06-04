@@ -8,19 +8,19 @@ public class LibraryProduct {
     @JsonProperty("ModelAvailabilities")
     private List<ModelAvailability> models;
 
-    public boolean isAvailable() {
+    public boolean hasAvailableModel() {
         if (hasNoModels())
             return true;
-        return hasX();
+        return hasAtLeastOneAvailableModel();
     }
 
     private boolean hasNoModels() {
         return models == null || models.isEmpty();
     }
 
-    private boolean hasX() {
+    private boolean hasAtLeastOneAvailableModel() {
         for (ModelAvailability model : models) {
-            if (model.isProductAvailable())
+            if (model.isAvailable())
                 return true;
         }
         return false;
@@ -34,7 +34,7 @@ public class LibraryProduct {
         @JsonProperty("Max")
         private Integer max;
 
-        public boolean isProductAvailable() {
+        public boolean isAvailable() {
             if (isAccessModel())
                 return true;
             return hasAvailableLicenses();

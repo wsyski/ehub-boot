@@ -2,12 +2,10 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
 
@@ -30,8 +28,7 @@ class BookAvailabilityCommand extends AbstractElib3Command<CommandData> {
 
     private void retriveBookAvailability(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final PendingLoan pendingLoan = data.getPendingLoan();
-        final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
         final String libraryCard = data.getLibraryCard();
         final String language = data.getLanguage();
         final BookAvailability bookAvailability = elibFacade.getBookAvailability(contentProviderConsumer, contentProviderRecordId, libraryCard);

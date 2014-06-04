@@ -17,7 +17,7 @@ import com.axiell.ehub.provider.ContentProvider;
  * Represents a format of a record at a specific {@link ContentProvider}.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public final class Format implements Serializable {
+public class Format implements Serializable {
     private static final long serialVersionUID = 5161980869973204797L;
     private String id;
     private String name;

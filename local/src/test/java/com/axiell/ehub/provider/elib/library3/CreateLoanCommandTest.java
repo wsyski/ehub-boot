@@ -44,10 +44,10 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
 
     @Test
     public void loanCreated() {
+        givenProductIdInPendingLoan();
         givenBasicCommandData();
         givenCreatedLoan();
         givenContentProviderFromContentProviderConsumer();
-        givenProductIdInPendingLoan();
         givenContentUrlInCreatedLoan();
         givenExpirationDateInCreatedLoan();
         givenFormatDecorationForFormatId();
