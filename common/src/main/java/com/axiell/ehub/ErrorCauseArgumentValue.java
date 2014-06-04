@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name = "ERROR_CAUSE_ARGUMENT_VALUE", uniqueConstraints = @UniqueConstraint(columnNames = {"TYPE"}))
+@Table(name = "ERROR_CAUSE_ARGUMENT_VALUE")
 @Access(AccessType.PROPERTY)
 public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<Long> {
     private Type type;
@@ -18,7 +18,7 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TYPE")
+    @Column(name = "TYPE", unique = true)
     public Type getType() {
         return type;
     }
