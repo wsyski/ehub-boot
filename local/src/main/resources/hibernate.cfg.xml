@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.axiell.ehub.ErrorCauseArgumentValue"/>
+        <mapping class="com.axiell.ehub.ErrorCauseArgumentValueTextBundle"/>
+        <mapping class="com.axiell.ehub.consumer.EhubConsumer"/>
+        <mapping class="com.axiell.ehub.consumer.ContentProviderConsumer"/>
+        <mapping class="com.axiell.ehub.language.Language"/>
+        <mapping class="com.axiell.ehub.provider.ContentProvider"/>
+        <mapping class="com.axiell.ehub.provider.record.format.FormatDecoration"/>
+        <mapping class="com.axiell.ehub.provider.record.format.FormatTextBundle"/>
+        <mapping class="com.axiell.ehub.loan.EhubLoan"/>
+        <mapping class="com.axiell.ehub.loan.ContentProviderLoanMetadata"/>
+        <mapping class="com.axiell.ehub.user.AdminUser"/>
+        <mapping class="com.axiell.ehub.version.Release"/>
+    </session-factory>
+</hibernate-configuration>

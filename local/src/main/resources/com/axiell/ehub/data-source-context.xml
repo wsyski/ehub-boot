@@ -8,13 +8,6 @@
 
     <util:properties id="hibernateProperties" location="classpath:hibernate.properties" />
 
-    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="showSql" value="#{systemProperties['hibernate.show_sql']?: hibernateProperties['hibernate.show_sql']}"/>
-        <property name="generateDdl" value="false"/>
-        <property name="database" value="ORACLE"/>
-        <property name="databasePlatform" value="#{hibernateProperties['hibernate.dialect']}"/>
-    </bean>
-
     <bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource">
         <property name="URL" value="#{systemProperties['hibernate.connection.url']?: hibernateProperties['hibernate.connection.url']}"/>
         <property name="user" value="#{systemProperties['hibernate.connection.username']?: hibernateProperties['hibernate.connection.username']}"/>
