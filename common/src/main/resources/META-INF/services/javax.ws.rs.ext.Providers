@@ -1,0 +1,2 @@
+com.axiell.ehub.logging.LoggingClientExecutionInterceptor
+com.axiell.ehub.logging.LoggingClientErrorInterceptor
