@@ -4,15 +4,11 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.Mock;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
