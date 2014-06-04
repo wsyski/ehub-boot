@@ -2,6 +2,7 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.language.Language;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
     protected ErrorCauseArgumentValue() {
     }
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     public Type getType() {
         return type;
@@ -25,8 +27,10 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
         this.type = type;
     }
 
-    @OneToMany(mappedBy = "argumentValue", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @MapKeyJoinColumn(name = "LANGUAGE_ID")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "ERROR_C_A_V_TEXT_BUNDLE", joinColumns = @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID"))
+    @MapKeyJoinColumn(name = "LANGUAGE_ID", nullable = false)
+    @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
     public Map<Language, ErrorCauseArgumentValueTextBundle> getTextBundles() {
         return textBundles;
     }

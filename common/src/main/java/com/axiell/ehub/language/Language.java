@@ -39,7 +39,7 @@ public class Language implements Serializable {
      * @return an  ISO 639 alpha-2 or alpha-3 language code
      */
     @Id
-    @Column(name = "LANGUAGE")
+    @Column(name = "ID")
     public String getId() {
         return id;
     }
