@@ -123,7 +123,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return the {@link ContentProvider} properties
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "CONTENT_PROVIDER_PROPERTY", joinColumns = @JoinColumn(name = "CONTENT_PROVIDER_ID"))
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)

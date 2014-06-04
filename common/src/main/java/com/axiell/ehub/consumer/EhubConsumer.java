@@ -193,7 +193,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      *
      * @return the {@link EhubConsumer} properties
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "EHUB_CONSUMER_PROPERTY", joinColumns = @JoinColumn(name = "EHUB_CONSUMER_ID"))
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)

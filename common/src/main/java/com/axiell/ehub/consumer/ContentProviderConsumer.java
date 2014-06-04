@@ -115,7 +115,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      *
      * @return the {@link ContentProviderConsumer} properties
      */
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "CONTENT_P_CONSUMER_PROPERTY", joinColumns = @JoinColumn(name = "CONTENT_PROVIDER_CONSUMER_ID"))
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)

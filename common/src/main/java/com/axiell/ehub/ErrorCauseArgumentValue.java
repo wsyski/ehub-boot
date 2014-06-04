@@ -27,7 +27,7 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
         this.type = type;
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "ERROR_C_A_V_TEXT_BUNDLE", joinColumns = @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID"))
     @MapKeyJoinColumn(name = "LANGUAGE_ID", nullable = false)
     @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
