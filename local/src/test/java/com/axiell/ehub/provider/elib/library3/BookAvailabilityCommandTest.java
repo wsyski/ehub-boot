@@ -113,11 +113,11 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenInternalErrorServerExceptionWithProductUnavailable() {
-        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, PRODUCT_UNAVAILABLE, language)).willReturn(internalServerErrorException);
+        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language)).willReturn(internalServerErrorException);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithProductUnavailable() {
-        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, PRODUCT_UNAVAILABLE, language);
+        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language);
     }
 
     private void givenLibraryLimitReachedInBookAvailability() {
@@ -125,15 +125,15 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenLibraryLimitReachedAsArgumentType() {
-        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, LIBRARY_LIMIT_REACHED, language)).willReturn(internalServerErrorException);
+        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, LIBRARY_LIMIT_REACHED, language)).willReturn(internalServerErrorException);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithLibraryLimitReached() {
-        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, LIBRARY_LIMIT_REACHED, language);
+        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, LIBRARY_LIMIT_REACHED, language);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithBorrowerLimitReached() {
-        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, BORROWER_LIMIT_REACHED, language);
+        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, BORROWER_LIMIT_REACHED, language);
     }
 
     private void givenBorrowerLimitReachedAsArgumentType() {
@@ -157,11 +157,11 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenInternalErrorServerExceptionWithMaxNoOfDownloadsReached() {
-        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, argValueType, language)).willReturn(internalServerErrorException);
+        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, argValueType, language)).willReturn(internalServerErrorException);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithMaxNoOfDownloadsReached() {
-        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
+        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
     }
 
     private void givenLibraryCard() {

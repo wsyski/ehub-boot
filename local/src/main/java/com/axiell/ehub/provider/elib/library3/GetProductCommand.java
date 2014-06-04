@@ -28,7 +28,7 @@ class GetProductCommand extends AbstractElib3Command<Elib3CommandData> {
             data.setAvailableFormats(availableFormats);
             forward(ACTIVE_PRODUCT_RETRIEVED, data);
         } else
-            exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, PRODUCT_INACTIVE, language);
+            exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_INACTIVE, language);
     }
 
     public static enum Result implements ICommandResult {

@@ -74,7 +74,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      * @return the {@link EhubConsumer}
      */
     @ManyToOne
-    @JoinColumn(name = "EHUB_CONSUMER_ID")
+    @JoinColumn(name = "EHUB_CONSUMER_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_C_EHUB_C")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
@@ -95,7 +95,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      * @return the {@link ContentProvider}
      */
     @ManyToOne
-    @JoinColumn(name = "CONTENT_PROVIDER_ID")
+    @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_C_CONTENT_P")
     public ContentProvider getContentProvider() {
         return contentProvider;

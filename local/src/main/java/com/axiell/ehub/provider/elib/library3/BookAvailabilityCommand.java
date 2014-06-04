@@ -39,16 +39,16 @@ class BookAvailabilityCommand extends AbstractElib3Command<CommandData> {
         if (bookAvailability.isProductAvailable(contentProviderRecordId))
             forward(PRODUCT_AVAILABLE, data);
         else if (bookAvailability.isMaxNumberOfDownloadsForProductReached())
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
         else if (bookAvailability.isBorrowerLimitReached())
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, BORROWER_LIMIT_REACHED, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, BORROWER_LIMIT_REACHED, language);
         else if (bookAvailability.isLibraryLimitReached())
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, LIBRARY_LIMIT_REACHED, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, LIBRARY_LIMIT_REACHED, language);
         else
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, PRODUCT_UNAVAILABLE, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language);
     }
 
     public static enum Result implements ICommandResult {
-        AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD, PRODUCT_AVAILABLE;
+        AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD, PRODUCT_AVAILABLE
     }
 }

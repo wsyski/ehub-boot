@@ -10,21 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
+import com.axiell.ehub.language.Language;
 import org.hibernate.annotations.ForeignKey;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
@@ -48,6 +36,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     private String secretKey;
     private Map<EhubConsumerPropertyKey, String> properties;
     private Set<ContentProviderConsumer> contentProviderConsumers;
+    private Language defaultLanguage;
 
     /**
      * Constructs a new empty {@link EhubConsumer}.
@@ -62,10 +51,11 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      * @param secretKey   the secret key of the {@link EhubConsumer}
      * @param properties  the {@link EhubConsumer} properties
      */
-    public EhubConsumer(final String description, final String secretKey, final Map<EhubConsumerPropertyKey, String> properties) {
+    public EhubConsumer(final String description, final String secretKey, final Map<EhubConsumerPropertyKey, String> properties, final String defaultLanguage) {
         this.description = description;
         this.secretKey = secretKey;
         this.properties = properties;
+        this.defaultLanguage = new Language(defaultLanguage);
     }
 
     /**
@@ -123,6 +113,17 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      */
     public void setContentProviderConsumers(final Set<ContentProviderConsumer> contentProviderConsumers) {
         this.contentProviderConsumers = contentProviderConsumers;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "DEFAULT_LANGUAGE_ID", nullable = false)
+    @ForeignKey(name = "FK_EHUB_CONSUMER_LANGUAGE")
+    public Language getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(final Language defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
     }
 
     /**

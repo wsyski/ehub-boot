@@ -45,7 +45,7 @@ public class FormatAdminController implements IFormatAdminController {
     @Transactional(readOnly = false)
     public void delete(final FormatDecoration formatDecoration) {
         final FormatDecoration initalizedDecoration = getFormatDecoration(formatDecoration.getId());
-        final Map<String, FormatTextBundle> textBundleMap = initalizedDecoration.getTextBundles();
+        final Map<Language, FormatTextBundle> textBundleMap = initalizedDecoration.getTextBundles();
         if (textBundleMap != null) {
             final Collection<FormatTextBundle> textBundles = textBundleMap.values();
             formatTextBundleRepository.delete(textBundles);

@@ -4,6 +4,7 @@
 package com.axiell.ehub.provider.record.format;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
+import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.ForeignKey;
@@ -26,7 +27,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private ContentDisposition contentDisposition;
     private int playerWidth;
     private int playerHeight;
-    private Map<String, FormatTextBundle> textBundles;
+    private Map<Language, FormatTextBundle> textBundles;
 
     /**
      * Empty constructor required by JPA.
@@ -180,9 +181,9 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return the {@link FormatTextBundle}s
      */
-    @OneToMany(mappedBy = "formatDecoration", fetch = FetchType.LAZY)
-    @MapKey(name = "language")
-    public Map<String, FormatTextBundle> getTextBundles() {
+    @OneToMany(mappedBy = "formatDecoration", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @MapKeyJoinColumn(name = "LANGUAGE_ID")
+    public Map<Language, FormatTextBundle> getTextBundles() {
 	return textBundles;
     }
 
@@ -192,7 +193,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @param textBundles
      *            the {@link FormatTextBundle}s to set
      */
-    public void setTextBundles(Map<String, FormatTextBundle> textBundles) {
+    public void setTextBundles(Map<Language, FormatTextBundle> textBundles) {
 	this.textBundles = textBundles;
     }
 
@@ -211,20 +212,20 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     @Transient
     public FormatTextBundle getTextBundle(final String language) {
 	Validate.notNull(language, "The language can't be null");
-	final Map<String, FormatTextBundle> bundles = getTextBundles();
+	final Map<Language, FormatTextBundle> bundles = getTextBundles();
 
 	if (bundles == null) {
 	    return null;
 	}
 
 	final String lowerCaseLanguage = language.toLowerCase();
-	final FormatTextBundle textBundle = bundles.get(lowerCaseLanguage);
+	final FormatTextBundle textBundle = bundles.get(new Language(lowerCaseLanguage));
 
 	if (textBundle == null) {
 	    // Get the default text in English if no text bundle exists in the
 	    // chosen language
 	    final String defaultLanguage = Locale.ENGLISH.getLanguage();
-	    return bundles.get(defaultLanguage);
+	    return bundles.get(new Language(defaultLanguage));
 	} else {
 	    return textBundle;
 	}
@@ -241,6 +242,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
 	/**
 	 * Indicates that the content will be streamed.
 	 */
-	STREAMING;
+	STREAMING
     }
 }

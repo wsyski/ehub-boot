@@ -1,8 +1,10 @@
 package com.axiell.ehub;
 
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProviderName;
 
 public interface IEhubExceptionFactory {
 
-    InternalServerErrorException createInternalServerErrorExceptionWithContentProviderNameAndStatus(ContentProviderName contentProviderName, ErrorCauseArgumentValue.Type argValueType, String language);
+    InternalServerErrorException createInternalServerErrorExceptionWithContentProviderNameAndStatus(ContentProviderConsumer contentProviderConsumer,
+                                                                                                    ErrorCauseArgumentValue.Type argValueType, String language);
 }

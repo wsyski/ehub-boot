@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.language.ILanguageAdminController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,10 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     @Autowired
     private IEhubLoanRepository underTest;
 
+    @Autowired
+    private ILanguageAdminController languageAdminController;
+
+
     private EhubLoan expectedEhubLoan;
     private FormatDecoration formatDecoration;
     private EhubLoan actualEhubLoan;
@@ -49,7 +54,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
      */
     @Override
     protected LoanDevelopmentData initDevelopmentData() {
-	return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest);
+	return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest, languageAdminController);
     }
 
     /**

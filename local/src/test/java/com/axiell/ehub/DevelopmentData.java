@@ -5,10 +5,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.axiell.ehub.language.ILanguageAdminController;
+import com.axiell.ehub.language.Language;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -48,24 +51,28 @@ public class DevelopmentData {
     public static final String ELIB_RETAIL_ORDER_NUMBER = "4820127";
     public static final int ELIB_PLAYER_WIDTH = 600;
     public static final int ELIB_PLAYER_HEIGHT = 215;
+    public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
 
     protected IContentProviderAdminController contentProviderAdminController;
     protected IFormatAdminController formatAdminController;
     protected IConsumerAdminController consumerAdminController;
+    protected ILanguageAdminController languageAdminController;
 
     // Global data
     private Long ehubConsumerId;
     private EhubConsumer ehubConsumer;
     private ContentProvider elibProvider;
 
-    public DevelopmentData(final IContentProviderAdminController contentProviderAdminController,
-            final IFormatAdminController formatAdminController, final IConsumerAdminController consumerAdminController) {
+    public DevelopmentData(final IContentProviderAdminController contentProviderAdminController, final IFormatAdminController formatAdminController,
+                           final IConsumerAdminController consumerAdminController, final ILanguageAdminController languageAdminController) {
         this.contentProviderAdminController = contentProviderAdminController;
         this.formatAdminController = formatAdminController;
         this.consumerAdminController = consumerAdminController;
+        this.languageAdminController = languageAdminController;
     }
 
     public void init() throws Exception {
+        initLanguage();
         elibProvider = initElibProvider();
         ehubConsumer = initEhubConsumer();
         initElibConsumer(getEhubConsumer(), getElibProvider());
@@ -134,6 +141,10 @@ public class DevelopmentData {
     public ContentProvider getElibProvider() {
         return elibProvider;
     }
+
+    private void initLanguage() {
+        languageAdminController.save(new Language(DEFAULT_LANGUAGE));
+    }
     
     private ContentProvider initElibProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
@@ -186,7 +197,7 @@ public class DevelopmentData {
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
-        EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties);
+        EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DEFAULT_LANGUAGE);
         return ehubConsumer;
     }
 }

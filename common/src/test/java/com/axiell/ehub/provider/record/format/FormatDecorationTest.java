@@ -4,6 +4,7 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.Map;
 
+import com.axiell.ehub.language.Language;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +14,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FormatDecorationTest {
-    private static final String SWEDISH = "sv";
-    private static final String ENGLISH = "en";
+    private static final Language LANGUAGE_SWEDISH = new Language("sv");
+    private static final Language LANGUAGE_ENGLISH = new Language("en");
     private FormatDecoration underTest;    
     
     @Mock
-    private Map<String, FormatTextBundle> textBundles;    
+    private Map<Language, FormatTextBundle> textBundles;
     @Mock
     private FormatTextBundle swedishTextBundle;
     @Mock
@@ -39,7 +40,7 @@ public class FormatDecorationTest {
     }
 
     private void whenGetTextBundle() {
-	actualTextBundle = underTest.getTextBundle(SWEDISH);
+	actualTextBundle = underTest.getTextBundle(LANGUAGE_SWEDISH.getId());
     }
 
     private void thenActualTextBundleIsNull() {
@@ -60,7 +61,7 @@ public class FormatDecorationTest {
     }
 
     private void givenSwedishTextBundle() {
-	given(textBundles.get(SWEDISH)).willReturn(swedishTextBundle);
+	given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(swedishTextBundle);
     }
 
     private void thenActualTextBundleIsNotNull() {
@@ -82,11 +83,11 @@ public class FormatDecorationTest {
     }
 
     private void givenNoSwedishTextBundle() {
-	given(textBundles.get(SWEDISH)).willReturn(null);
+	given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(null);
     }
     
     private void givenDefaultTextBundle() {
-	given(textBundles.get(ENGLISH)).willReturn(defaultTextBundle);
+	given(textBundles.get(LANGUAGE_ENGLISH)).willReturn(defaultTextBundle);
 	
     }
 

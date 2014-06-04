@@ -11,7 +11,7 @@ import com.axiell.ehub.language.Language;
 
 abstract class AbstractTextModel implements IModel<String> {
     private final IModel<FormatDecoration> formModel;
-    private final String language;
+    private final Language language;
     
     @SpringBean(name = "formatAdminController") 
     private IFormatAdminController formatAdminController;
@@ -19,7 +19,7 @@ abstract class AbstractTextModel implements IModel<String> {
     protected AbstractTextModel(final IModel<FormatDecoration> formModel, final Language language) {
 	InjectorHolder.getInjector().inject(this);
         this.formModel = formModel;
-        this.language = language.getId();
+        this.language = language;
     }
 
     abstract String getText(FormatTextBundle textBundle);
@@ -29,7 +29,7 @@ abstract class AbstractTextModel implements IModel<String> {
     @Override
     public final String getObject() {
         final FormatDecoration formatDecoration = formModel.getObject();
-        final Map<String, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
+        final Map<Language, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
         final FormatTextBundle textBundle = textBundles == null ? null : textBundles.get(language);
         return textBundle == null ? null : getText(textBundle);
     }
@@ -37,7 +37,7 @@ abstract class AbstractTextModel implements IModel<String> {
     @Override
     public final void setObject(String value) {
         final FormatDecoration formatDecoration = formModel.getObject();
-        Map<String, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
+        Map<Language, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
 
         if (textBundles == null) {
             textBundles = new HashMap<>();
