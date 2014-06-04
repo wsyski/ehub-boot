@@ -27,13 +27,11 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     }
 
     private void configureFirstCommand() {
-        // TODO: handle note retrieved
-//        firstCommand.on(AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD, )
-        firstCommand.on(PRODUCT_AVAILABLE, createContentCommand);
+        firstCommand.next(createLoanCommand);
     }
 
     private void configureCreateLoanCommand() {
-        createLoanCommand.on(LOAN_CREATED, createContentCommand);
+        createLoanCommand.next(createContentCommand);
     }
 
     private void configureCreateContentCommand() {
