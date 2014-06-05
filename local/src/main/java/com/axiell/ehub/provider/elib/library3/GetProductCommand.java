@@ -7,8 +7,7 @@ import com.axiell.ehub.provider.ICommandResult;
 import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_INACTIVE;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
-import static com.axiell.ehub.provider.elib.library3.GetProductCommand.Result.ACTIVE_PRODUCT_RETRIEVED;
+import static com.axiell.ehub.provider.elib.library3.GetProductCommand.Result.PRODUCT_ACTIVE;
 
 class GetProductCommand extends AbstractElib3Command<Elib3CommandData> {
 
@@ -26,12 +25,12 @@ class GetProductCommand extends AbstractElib3Command<Elib3CommandData> {
         if (product.isActive()) {
             final List<Product.AvailableFormat> availableFormats = product.getFormats();
             data.setAvailableFormats(availableFormats);
-            forward(ACTIVE_PRODUCT_RETRIEVED, data);
+            forward(PRODUCT_ACTIVE, data);
         } else
-            exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_INACTIVE, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_INACTIVE, language);
     }
 
     public static enum Result implements ICommandResult {
-        ACTIVE_PRODUCT_RETRIEVED
+        PRODUCT_ACTIVE
     }
 }

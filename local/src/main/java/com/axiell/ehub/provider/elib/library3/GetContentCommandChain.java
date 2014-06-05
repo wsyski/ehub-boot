@@ -8,11 +8,11 @@ import com.axiell.ehub.provider.IContentFactory;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoanCommand.Result.ACTIVE_LOAN_RETRIEVED;
 
-class GetLoanCommandChain extends AbstractElib3CommandChain<IContent, CommandData> {
+class GetContentCommandChain extends AbstractElib3CommandChain<IContent, CommandData> {
     private final GetLoanCommand firstCommand;
     private final CreateContentCommand createContentCommand;
 
-    GetLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentFactory contentFactory) {
+    GetContentCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentFactory contentFactory) {
         super(elibFacade, exceptionFactory);
         firstCommand = new GetLoanCommand(elibFacade, exceptionFactory);
         createContentCommand = new CreateContentCommand(contentFactory);

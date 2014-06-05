@@ -3,7 +3,6 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ICommandResult;
@@ -12,7 +11,6 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
 
 class CreateLoanCommand extends AbstractElib3Command<CommandData> {
@@ -29,7 +27,7 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         final String language = data.getLanguage();
         final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, libraryCard);
         final String contentUrl = createdLoan.getFirstContentUrl();
-        
+
         if (contentUrl == null)
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
         else {
