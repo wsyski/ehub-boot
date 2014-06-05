@@ -2,7 +2,6 @@ package com.axiell.ehub.provider.elib.library3;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.util.AssertionErrors;
 
 import static org.junit.Assert.assertNotNull;
 
