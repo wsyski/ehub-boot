@@ -23,17 +23,17 @@ public class ElibResourceFactoryTest {
     @Test
     public void create() {
         givenContentProviderFromContentProviderConsumer();
-        givenApiBaseUrlProperty();
+        givenApiBaseUrlPropertyFromContentProvider();
         whenCreate();
         thenElibResourceIsCreated();
-        thenApiBaseUrlPropertyIsUsed();
+        thenApiBaseUrlPropertyIsRetrievedFromContentProvider();
     }
 
     private void givenContentProviderFromContentProviderConsumer() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
     }
 
-    private void givenApiBaseUrlProperty() {
+    private void givenApiBaseUrlPropertyFromContentProvider() {
         given(contentProvider.getProperty(API_BASE_URL)).willReturn("baseUrl");
     }
 
@@ -45,7 +45,7 @@ public class ElibResourceFactoryTest {
         Assert.assertNotNull(elibResource);
     }
 
-    private void thenApiBaseUrlPropertyIsUsed() {
+    private void thenApiBaseUrlPropertyIsRetrievedFromContentProvider() {
         verify(contentProvider).getProperty(API_BASE_URL);
     }
 }
