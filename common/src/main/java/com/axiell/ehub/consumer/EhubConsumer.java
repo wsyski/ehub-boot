@@ -171,7 +171,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      * @return a list of {@link ContentProvider}s
      */
     @Transient
-    List<ContentProvider> getRemainingContentProviders(final List<ContentProvider> allContentProviders) {
+    public List<ContentProvider> getRemainingContentProviders(final List<ContentProvider> allContentProviders) {
         final Set<ContentProviderConsumer> consumers = getContentProviderConsumers();
         final Set<ContentProvider> providers = new HashSet<>();
         for (ContentProviderConsumer consumer : consumers) {
