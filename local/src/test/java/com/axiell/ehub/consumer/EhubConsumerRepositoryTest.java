@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.axiell.ehub.language.ILanguageAdminController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,12 +40,15 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
     @Autowired
     private IEhubConsumerRepository ehubConsumerRepository;
 
+    @Autowired
+    private ILanguageAdminController languageAdminController;
+
     /**
      * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
      */
     @Override
     protected DevelopmentData initDevelopmentData() {
-        return new DevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController);
+        return new DevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController);
     }
     
     /**
@@ -71,7 +75,7 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, DevelopmentData.ARENA_PALMA_URL);
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
-        EhubConsumer expEhubConsumer2 = new EhubConsumer("Description1", DevelopmentData.EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties);
+        EhubConsumer expEhubConsumer2 = new EhubConsumer("Description1", DevelopmentData.EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DevelopmentData.DEFAULT_LANGUAGE);
         ehubConsumerRepository.save(expEhubConsumer2);
         
         List<EhubConsumer> ehubConsumers = ehubConsumerRepository.findAllOrderedByDescription();

@@ -4,6 +4,8 @@ import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.IEhubExceptionFactory;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.AssertCommand;
 import com.axiell.ehub.provider.CommandData;
@@ -17,6 +19,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Locale;
+
+import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static junit.framework.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -24,7 +29,7 @@ import static org.mockito.Matchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractElib3CommandTest {
     protected static final String PRODUCT_ID = "id";
-    protected static final String LANGUAGE = "en";
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     @Mock
     protected IElibFacade elibFacade;
     @Mock
@@ -41,6 +46,10 @@ public abstract class AbstractElib3CommandTest {
     private ContentProvider contentProvider;
     @Mock
     private FormatDecoration formatDecoration;
+
+    @Mock
+    private EhubConsumer ehubConsumer;
+
     protected ErrorCauseArgumentValue.Type argValueType;
     protected String language;
     protected AssertCommand next;
@@ -51,8 +60,19 @@ public abstract class AbstractElib3CommandTest {
         next = new AssertCommand();
     }
 
+    @Before
+    public void setUpContentProviderConsumer() {
+       givenContentProviderConsumer();
+    }
+
     protected void givenBasicCommandData() {
         data = CommandData.newInstance(contentProviderConsumer, libraryCard).setPendingLoan(pendingLoan).setLanguage(language);
+    }
+
+    private void givenContentProviderConsumer() {
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+        given(contentProvider.getName()).willReturn(ELIB3);
+        given(ehubConsumer.getDefaultLanguage()).willReturn(new Language(LANGUAGE));
     }
 
     protected void thenCommandIsInvoked() {

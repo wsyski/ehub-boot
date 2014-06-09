@@ -1,0 +1,2 @@
+com.axiell.ehub.logging.LoggingPreProcessInterceptor
+com.axiell.ehub.logging.LoggingPostProcessInterceptor

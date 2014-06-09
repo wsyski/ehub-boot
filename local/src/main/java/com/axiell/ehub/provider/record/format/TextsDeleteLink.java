@@ -31,9 +31,8 @@ final class TextsDeleteLink extends ConfirmationLink<Void> {
 
     private void deleteTexts() {
 	final FormatDecoration formatDecoration = formModel.getObject();
-        final Map<String, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
-        final String languageId = language.getId();
-        final FormatTextBundle textBundle = textBundles.get(languageId);
+        final Map<Language, FormatTextBundle> textBundles = formatDecoration.getTextBundles();
+        final FormatTextBundle textBundle = textBundles.get(language);
 
         if (textBundle != null) {
             formatAdminController.delete(textBundle);

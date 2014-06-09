@@ -37,6 +37,7 @@
                    <build>
                        <plugins>
                            <plugin>
+                               <groupId>org.apache.maven.plugins</groupId>
                                <artifactId>maven-failsafe-plugin</artifactId>
                                <executions>
                                    <execution>
@@ -46,6 +47,11 @@
                                        </goals>
                                    </execution>
                                </executions>
+                               <configuration>
+                                   <includes>
+                                       <include>%regex[.*IT(_.*)?]</include>
+                                   </includes>
+                               </configuration>
                            </plugin>
                            <plugin>
                                <groupId>org.eclipse.jetty</groupId>

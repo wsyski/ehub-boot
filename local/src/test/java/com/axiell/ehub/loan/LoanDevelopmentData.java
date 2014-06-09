@@ -8,6 +8,7 @@ import java.util.Date;
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerAdminController;
+import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
@@ -26,8 +27,8 @@ public class LoanDevelopmentData extends DevelopmentData {
      * @param consumerAdminController
      */
     public LoanDevelopmentData(IContentProviderAdminController contentProviderAdminController, IFormatAdminController formatAdminController,
-                               IConsumerAdminController consumerAdminController, IEhubLoanRepository ehubLoanRepository) {
-        super(contentProviderAdminController, formatAdminController, consumerAdminController);
+                               IConsumerAdminController consumerAdminController, IEhubLoanRepository ehubLoanRepository, ILanguageAdminController languageAdminController) {
+        super(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController);
         this.ehubLoanRepository = ehubLoanRepository;
     }
 

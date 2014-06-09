@@ -29,7 +29,7 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
         if (loan.isActive()) {
             final String contentUrl = loan.getFirstContentUrl();
             if (contentUrl == null)
-                throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, MISSING_CONTENT_IN_LOAN, langauge);
+                throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, langauge);
             else {
                 final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
                 data.setContentUrl(contentUrl);
@@ -37,7 +37,7 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
                 forward(ACTIVE_LOAN_RETRIEVED, data);
             }
         } else
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, INACTIVE_LOAN, langauge);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, INACTIVE_LOAN, langauge);
     }
 
     public static enum Result implements ICommandResult {

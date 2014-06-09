@@ -3,6 +3,8 @@ package com.axiell.ehub.test;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerAdminController;
+import com.axiell.ehub.language.ILanguageAdminController;
+import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.IEhubLoanRepository;
@@ -21,10 +23,7 @@ import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
@@ -55,6 +54,7 @@ public class TestDataResource implements ITestDataResource {
     private static final int ELIB_PLAYER_HEIGHT = 215;
     private static final String ELIB_LIBRARY_CARD = "909265910";
     private static final String ELIB_LIBRARY_CARD_PIN = "4447";
+    private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
@@ -64,9 +64,13 @@ public class TestDataResource implements ITestDataResource {
     private IConsumerAdminController consumerAdminController;
     @Autowired
     private IEhubLoanRepository ehubLoanRepository;
+    @Autowired
+    private ILanguageAdminController languageAdminController;
+
 
     @Override
     public TestData init() {
+        initLanguage();
         final ContentProvider elibProvider = initElibProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initElibConsumer(ehubConsumer, elibProvider);
@@ -97,6 +101,10 @@ public class TestDataResource implements ITestDataResource {
         @SuppressWarnings("resource")
         ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/data-source-context.xml"});
         return (DataSource) springContext.getBean("dataSource");
+    }
+
+    private void initLanguage() {
+        languageAdminController.save(new Language(DEFAULT_LANGUAGE));
     }
 
     private ContentProvider initElibProvider() {
@@ -135,7 +143,7 @@ public class TestDataResource implements ITestDataResource {
         Map<EhubConsumerPropertyKey, String> properties = new HashMap<>();
         properties.put(EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
         properties.put(EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
-        return new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, properties);
+        return new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, properties, DEFAULT_LANGUAGE);
     }
 
     private ContentProviderConsumer initElibConsumer(EhubConsumer ehubConsumer, ContentProvider elibProvider) {

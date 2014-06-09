@@ -11,7 +11,7 @@ public class CommandData implements ICommandData {
     private final String libraryCard;
     private String language;
     private String contentProviderRecordId;
-    private PendingLoan pendingLoan;
+    private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private FormatDecoration formatDecoration;
     private String contentUrl;
@@ -52,12 +52,13 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public PendingLoan getPendingLoan() {
-        return pendingLoan;
+    public String getContentProviderFormatId() {
+        return contentProviderFormatId;
     }
 
-    public CommandData setPendingLoan(PendingLoan pendingLoan) {
-        this.pendingLoan = pendingLoan;
+    public CommandData setPendingLoan(final PendingLoan pendingLoan) {
+        this.contentProviderRecordId = pendingLoan.getContentProviderRecordId();
+        this.contentProviderFormatId = pendingLoan.getContentProviderFormatId();
         return this;
     }
 
@@ -104,11 +105,11 @@ public class CommandData implements ICommandData {
                 ", libraryCard=" + libraryCard +
                 ", language=" + language +
                 ", contentProviderRecordId=" + contentProviderRecordId +
-                ", pendingLoan=" + pendingLoan +
+                ", contentProviderFormatId=" + contentProviderFormatId +
                 ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
                 ", formatDecoration=" + formatDecoration +
                 ", contentUrl=" + contentUrl +
-                ", content=" + contentUrl +
+                ", content=" + content +
                 "}";
     }
 }

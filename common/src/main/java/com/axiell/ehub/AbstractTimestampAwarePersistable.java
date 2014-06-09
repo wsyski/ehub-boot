@@ -3,13 +3,11 @@
  */
 package com.axiell.ehub;
 
+import com.axiell.ehub.util.TimestampAwareEntityListener;
 import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,11 +17,12 @@ import java.util.Date;
  * @param <PK> the type of the auditing type's identifier
  */
 @MappedSuperclass
+@EntityListeners({TimestampAwareEntityListener.class})
 public abstract class AbstractTimestampAwarePersistable<PK extends Serializable> extends AbstractPersistable<PK> implements ITimestampAware<PK> {
     private static final long serialVersionUID = 141481953116476081L;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATE_DATETIME", nullable = false)
+    @Column(name = "CREATE_DATETIME", nullable = false, updatable = false)
     private Date createdDate;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -34,7 +33,7 @@ public abstract class AbstractTimestampAwarePersistable<PK extends Serializable>
      * Gets the created date
      */
     public DateTime getCreatedDate() {
-        return createdDate==null ? null : new DateTime(createdDate);
+        return createdDate == null ? null : new DateTime(createdDate);
     }
 
     /**
@@ -43,14 +42,14 @@ public abstract class AbstractTimestampAwarePersistable<PK extends Serializable>
      * @param createdDate created date.
      */
     public void setCreatedDate(final DateTime createdDate) {
-        this.createdDate = createdDate == null ?  null :createdDate.toDate();
+        this.createdDate = createdDate == null ? null : createdDate.toDate();
     }
 
     /*
      * Gets the modified date.
      */
     public DateTime getModifiedDate() {
-        return modifiedDate==null ? null : new DateTime(modifiedDate);
+        return modifiedDate == null ? null : new DateTime(modifiedDate);
     }
 
     /**
@@ -59,6 +58,6 @@ public abstract class AbstractTimestampAwarePersistable<PK extends Serializable>
      * @param modifiedDate modified date.
      */
     public void setModifiedDate(final DateTime modifiedDate) {
-        this.modifiedDate = modifiedDate == null ?  null : modifiedDate.toDate();
+        this.modifiedDate = modifiedDate == null ? null : modifiedDate.toDate();
     }
 }

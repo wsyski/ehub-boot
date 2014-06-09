@@ -22,7 +22,7 @@ import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
  */
 public abstract class AbstractContentProviderDataAccessor implements IContentProviderDataAccessor {
     @Autowired(required = true)
-    protected IContentFactory contentFactory;
+    private IContentFactory contentFactory;
 
     protected final IContent createContent(final String contentUrl, final FormatDecoration formatDecoration) {
         return contentFactory.create(contentUrl, formatDecoration);

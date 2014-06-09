@@ -21,4 +21,9 @@ public class EndCommand implements ICommand<CommandData> {
     public ICommand on(final ICommandResult result, final ICommand next) {
         throw new IllegalArgumentException("You are not allowed to configure on on an end command");
     }
+
+    @Override
+    public String toString() {
+        return "EndCommand";
+    }
 }

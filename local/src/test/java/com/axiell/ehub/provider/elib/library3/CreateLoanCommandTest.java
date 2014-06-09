@@ -2,6 +2,8 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -42,10 +44,10 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
 
     @Test
     public void loanCreated() {
+        givenProductIdInPendingLoan();
         givenBasicCommandData();
         givenCreatedLoan();
         givenContentProviderFromContentProviderConsumer();
-        givenProductIdInPendingLoan();
         givenContentUrlInCreatedLoan();
         givenExpirationDateInCreatedLoan();
         givenFormatDecorationForFormatId();
@@ -80,11 +82,11 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenInternalErrorServerExceptionWithMissingContentInLoan() {
-        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, argValueType, language)).willReturn(internalServerErrorException);
+        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, argValueType, language)).willReturn(internalServerErrorException);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithMissingContentInLoan() {
-        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(ELIB3, MISSING_CONTENT_IN_LOAN, language);
+        verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
     }
 
     private void whenRun() {

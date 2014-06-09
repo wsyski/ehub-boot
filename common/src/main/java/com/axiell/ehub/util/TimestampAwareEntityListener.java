@@ -7,8 +7,6 @@ import com.axiell.ehub.ITimestampAware;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.support.CurrentDateTimeProvider;
-import org.springframework.data.jpa.domain.support.DateTimeProvider;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -29,7 +27,6 @@ import javax.persistence.PreUpdate;
  */
 public class TimestampAwareEntityListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimestampAwareEntityListener.class);
-    private DateTimeProvider dateTimeProvider = CurrentDateTimeProvider.INSTANCE;
 
     /**
      * Sets modification and creation date and auditor on the target object in case it implements {@link ITimestampAware} on
@@ -67,11 +64,11 @@ public class TimestampAwareEntityListener {
      * Touches the timestamp aware regarding modification and created date. Created date is only set on new timestamp aware.
      *
      * @param timeStampAware time stamp aware entity.
-     * @param isNew true if a new entity.
+     * @param isNew          true if a new entity.
      * @return the touched timestamp.
      */
     private DateTime touchDate(final ITimestampAware<?> timeStampAware, final boolean isNew) {
-        DateTime now = dateTimeProvider.getDateTime();
+        DateTime now = DateTime.now();
         if (isNew) {
             timeStampAware.setCreatedDate(now);
         }

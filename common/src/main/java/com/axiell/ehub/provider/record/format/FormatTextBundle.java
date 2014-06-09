@@ -3,16 +3,10 @@
  */
 package com.axiell.ehub.provider.record.format;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
+import com.axiell.ehub.language.Language;
 import org.hibernate.annotations.ForeignKey;
 
 import com.axiell.ehub.provider.ContentProvider;
@@ -21,12 +15,12 @@ import com.axiell.ehub.provider.ContentProvider;
  * Contains language specific texts related to a specific format at a {@link ContentProvider}.
  */
 @Entity
-@Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE"}))
+@Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE_ID"}))
 @Access(AccessType.PROPERTY)
 public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 8478816548440529433L;
     private FormatDecoration formatDecoration;
-    private String language;
+    private Language language;
     private String name;
     private String description;
 
@@ -45,7 +39,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @param name the name of the format in the specified language
      * @param description the description of the format in the specified language
      */
-    public FormatTextBundle(FormatDecoration formatDecoration, String language, String name, String description) {
+    public FormatTextBundle(FormatDecoration formatDecoration, Language language, String name, String description) {
         this.formatDecoration = formatDecoration;
         this.language = language;
         this.name = name;
@@ -79,8 +73,10 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return a language code
      */
-    @Column(name = "LANGUAGE", nullable = false)
-    public String getLanguage() {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "LANGUAGE_ID", nullable = false)
+    @ForeignKey(name = "FK_FORMAT_TEXT_B_LANGUAGE")
+    public Language getLanguage() {
         return language;
     }
 
@@ -90,7 +86,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @param language the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3
      * language code to set
      */
-    protected void setLanguage(String language) {
+    protected void setLanguage(final Language language) {
         this.language = language;
     }
 
