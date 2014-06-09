@@ -1,25 +1,20 @@
 WHENEVER SQLERROR EXIT FAILURE
 
-insert into CONTENT_PROVIDER_NAME(NAME) values('ELIB');
-insert into CONTENT_PROVIDER_NAME(NAME) values('ELIBU');
-insert into CONTENT_PROVIDER_NAME(NAME) values('PUBLIT');
-insert into CONTENT_PROVIDER_NAME(NAME) values('ASKEWS');
-insert into CONTENT_PROVIDER_NAME(NAME) values('OVERDRIVE');
-
 insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(1, 'ELIB', systimestamp, systimestamp);
 insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(2, 'ELIBU', systimestamp, systimestamp);
 insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(3, 'PUBLIT', systimestamp, systimestamp);
 insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(4, 'ASKEWS', systimestamp, systimestamp);
 insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(5, 'OVERDRIVE', systimestamp, systimestamp);
+insert into CONTENT_PROVIDER(id, NAME, CREATE_DATETIME, MODIFY_DATETIME) VALUES(6, 'ELIB3', systimestamp, systimestamp);
 
 insert into CONTENT_DISPOSITION(CONTENT_DISPOSITION) VALUES('DOWNLOADABLE');
 insert into CONTENT_DISPOSITION(CONTENT_DISPOSITION) VALUES('STREAMING');
 
-insert into CONTENT_P_FORMAT_LANGUAGE(LANGUAGE) VALUES('da');
-insert into CONTENT_P_FORMAT_LANGUAGE(LANGUAGE) VALUES('en');
-insert into CONTENT_P_FORMAT_LANGUAGE(LANGUAGE) VALUES('fi');
-insert into CONTENT_P_FORMAT_LANGUAGE(LANGUAGE) VALUES('pl');
-insert into CONTENT_P_FORMAT_LANGUAGE(LANGUAGE) VALUES('sv');
+insert into LANGUAGE(ID) VALUES('da');
+insert into LANGUAGE(ID) VALUES('en');
+insert into LANGUAGE(ID) VALUES('fi');
+insert into LANGUAGE(ID) VALUES('pl');
+insert into LANGUAGE(ID) VALUES('sv');
 
 insert into CONTENT_P_FORMAT_DECORATION (ID,CONTENT_DISPOSITION,FORMAT_ID,CONTENT_PROVIDER_ID,PLAYER_WIDTH,PLAYER_HEIGHT, CREATE_DATETIME, MODIFY_DATETIME) VALUES (3,'DOWNLOADABLE','1',1,600,215, systimestamp, systimestamp);
 insert into CONTENT_P_FORMAT_DECORATION (ID,CONTENT_DISPOSITION,FORMAT_ID,CONTENT_PROVIDER_ID,PLAYER_WIDTH,PLAYER_HEIGHT, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4,'DOWNLOADABLE','2',1,600,215, systimestamp, systimestamp);
@@ -69,29 +64,29 @@ insert into CONTENT_P_FORMAT_DECORATION (ID,CONTENT_DISPOSITION,FORMAT_ID,CONTEN
 insert into CONTENT_P_FORMAT_DECORATION (ID,CONTENT_DISPOSITION,FORMAT_ID,CONTENT_PROVIDER_ID,PLAYER_WIDTH,PLAYER_HEIGHT, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1311,'DOWNLOADABLE','video-wmv', 5, 0, 0, systimestamp, systimestamp);
 insert into CONTENT_P_FORMAT_DECORATION (ID,CONTENT_DISPOSITION,FORMAT_ID,CONTENT_PROVIDER_ID,PLAYER_WIDTH,PLAYER_HEIGHT, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1312,'DOWNLOADABLE','video-wmv-mobile', 5, 0, 0, systimestamp, systimestamp);
 
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1001,'E-audiobook in streaming Flash. The format works on Windows, Mac and Linux operating systems.','en','Audiobook (Flash)',1001, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1002,'E-ljudbok i formatet Flash. Formatet fungerar p'||CHR(229)||' operativsystemen Windows, Mac och Linux.','sv','Ljudbok (Flash)',1001, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (2001,'E-audiobook in streaming HTTP. Streaming to devices supporting Apple HTTP Live Streaming, for example iPhones, iPads and iPods or devices with the Android opertating system.','en','Audiobook (HLS)',1002, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (2002,'E-ljudbok i formatet HTTP. Formatet fungerar p'||CHR(229)||' enheter som har st'||CHR(246)||' f'||CHR(246)||'r Apple HTTP Live Streaming, exempelvis iPhones, iPads and iPods, eller enheter med Android som operativsystem','sv','Ljudbok (HLS)',1002, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (3001,'E-book in EPUB. The format works on most computers, tablets and mobile phones. You must have an account with Adobe, or create it in the next step.','en','E-book (EPUB)',1003, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (3002,'E-bok i formatet EPUB. Formatet kan l'||CHR(228)||'sas p'||CHR(229)||' de flesta datorer, l'||CHR(228)||'splattor och mobiltelefoner. Du m'||CHR(229)||'ste ha ett konto hos Adobe, eller s'||CHR(229)||' kan du skapa det i n'||CHR(228)||'sta steg.','sv','E-bok (EPUB)',1003, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4001,'E-book in PDF. The format is designed for a screen that is at least 10 inches. You must have an account with Adobe or create it in the next step.','en','E-book (PDF)',1004, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4002,'E-bok i formatet PDF. Formatet '||CHR(228)||'r anpassat f'||CHR(246)||'r en sk'||CHR(228)||'rm som '||CHR(228)||'r minst 10 tum. Du m'||CHR(229)||'ste ha ett konto hos Adobe eller skapa det i n'||CHR(228)||'sta steg.','sv','E-bok (PDF)',1004, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4101,'Nedladdningsbar E-bok','sv','E-bok',1101, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4102,'Downloadable E-book','en','E-book',1101, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4201,'Downloadable E-book','en','E-book',1201, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4301,'Kindle Book','en','Kindle Book', 1301, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4302,'OverDrive Read eBook (browser-based)','en','OverDrive Read eBook', 1302, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4303,'DRM protected Adobe EPUB eBook','en','Adobe EPUB eBook', 1303, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4304,'DRM free Open EPUB eBook','en','Open EPUB eBook', 1304, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4305,'DRM protected Adobe PDF eBook','en','Adobe PDF eBook', 1305, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4306,'DRM free Open PDF eBook','en','Open PDF eBook', 1306, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4307,'Interactive Disney eBook (browser-based)','en','Interactive Disney eBook', 1307, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4308,'DRM protected WMA audiobook','en','WMA audiobook', 1308, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4309,'DRM free MP3 audiobook','en','MP3 audiobook', 1309, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4310,'DRM protected WMA music file','en','WMA music file', 1310, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4311,'DRM protected WMV video file','en','WMV video file', 1311, systimestamp, systimestamp);
-insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4312,'DRM protected WMV mobile video file','en','WMV mobile video file', 1312, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1001,'E-audiobook in streaming Flash. The format works on Windows, Mac and Linux operating systems.','en','Audiobook (Flash)',1001, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1002,'E-ljudbok i formatet Flash. Formatet fungerar p'||CHR(229)||' operativsystemen Windows, Mac och Linux.','sv','Ljudbok (Flash)',1001, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (2001,'E-audiobook in streaming HTTP. Streaming to devices supporting Apple HTTP Live Streaming, for example iPhones, iPads and iPods or devices with the Android opertating system.','en','Audiobook (HLS)',1002, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (2002,'E-ljudbok i formatet HTTP. Formatet fungerar p'||CHR(229)||' enheter som har st'||CHR(246)||' f'||CHR(246)||'r Apple HTTP Live Streaming, exempelvis iPhones, iPads and iPods, eller enheter med Android som operativsystem','sv','Ljudbok (HLS)',1002, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (3001,'E-book in EPUB. The format works on most computers, tablets and mobile phones. You must have an account with Adobe, or create it in the next step.','en','E-book (EPUB)',1003, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (3002,'E-bok i formatet EPUB. Formatet kan l'||CHR(228)||'sas p'||CHR(229)||' de flesta datorer, l'||CHR(228)||'splattor och mobiltelefoner. Du m'||CHR(229)||'ste ha ett konto hos Adobe, eller s'||CHR(229)||' kan du skapa det i n'||CHR(228)||'sta steg.','sv','E-bok (EPUB)',1003, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4001,'E-book in PDF. The format is designed for a screen that is at least 10 inches. You must have an account with Adobe or create it in the next step.','en','E-book (PDF)',1004, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4002,'E-bok i formatet PDF. Formatet '||CHR(228)||'r anpassat f'||CHR(246)||'r en sk'||CHR(228)||'rm som '||CHR(228)||'r minst 10 tum. Du m'||CHR(229)||'ste ha ett konto hos Adobe eller skapa det i n'||CHR(228)||'sta steg.','sv','E-bok (PDF)',1004, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4101,'Nedladdningsbar E-bok','sv','E-bok',1101, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4102,'Downloadable E-book','en','E-book',1101, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4201,'Downloadable E-book','en','E-book',1201, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4301,'Kindle Book','en','Kindle Book', 1301, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4302,'OverDrive Read eBook (browser-based)','en','OverDrive Read eBook', 1302, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4303,'DRM protected Adobe EPUB eBook','en','Adobe EPUB eBook', 1303, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4304,'DRM free Open EPUB eBook','en','Open EPUB eBook', 1304, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4305,'DRM protected Adobe PDF eBook','en','Adobe PDF eBook', 1305, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4306,'DRM free Open PDF eBook','en','Open PDF eBook', 1306, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4307,'Interactive Disney eBook (browser-based)','en','Interactive Disney eBook', 1307, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4308,'DRM protected WMA audiobook','en','WMA audiobook', 1308, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4309,'DRM free MP3 audiobook','en','MP3 audiobook', 1309, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4310,'DRM protected WMA music file','en','WMA music file', 1310, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4311,'DRM protected WMV video file','en','WMV video file', 1311, systimestamp, systimestamp);
+insert into CONTENT_P_FORMAT_TEXT_BUNDLE (ID,DESCRIPTION,LANGUAGE_ID,NAME,CONTENT_P_FORMAT_DECORATION_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (4312,'DRM protected WMV mobile video file','en','WMV mobile video file', 1312, systimestamp, systimestamp);
 
 insert into EHUB_CONSUMER_PROPERTY_KEY(PROPERTY_KEY) VALUES('ARENA_PALMA_URL');
 insert into EHUB_CONSUMER_PROPERTY_KEY(PROPERTY_KEY) VALUES('ARENA_AGENCY_M_IDENTIFIER');
@@ -145,5 +140,13 @@ insert into CONTENT_PROVIDER_PROPERTY (CONTENT_PROVIDER_ID, PROPERTY_KEY, PROPER
 
 -- Admin user with password !gogetit1
 insert into EHUB_ADMIN_USER (ID, NAME, SALT, PASSWORD, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1, 'admin', '4223126763863898', '9WHZhWaKsSgik7E+Mq9xYIXSqEM=', systimestamp, systimestamp);
+
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (1,'BORROWER_LIMIT_REACHED', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (2,'INACTIVE_LOAN', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (3,'LIBRARY_LIMIT_REACHED', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (4,'MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (5,'MISSING_CONTENT_IN_LOAN', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (6,'PRODUCT_INACTIVE', systimestamp, systimestamp);
+insert into ERROR_CAUSE_ARGUMENT_VALUE (id, type, CREATE_DATETIME,MODIFY_DATETIME) VALUES (7,'PRODUCT_UNAVAILABLE', systimestamp, systimestamp);
 
 commit;

@@ -34,5 +34,5 @@ public interface ILanguageAdminController {
      * 
      * @param language the {@link Language} to be deleted
      */
-    void delete(Language language);
+    void delete(Language language) throws LanguageReferencedException;
 }

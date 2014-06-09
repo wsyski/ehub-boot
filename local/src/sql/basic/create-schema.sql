@@ -24,6 +24,8 @@ GRANT connect TO &&user_name;
 GRANT resource TO &&user_name;
 grant execute on  dbms_aq to &&user_name;
 grant create view to &&user_name;
+grant create type to &&user_name;
+grant create job to &&user_name;
 
 exit;
 

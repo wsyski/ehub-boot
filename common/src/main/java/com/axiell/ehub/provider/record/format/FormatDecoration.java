@@ -18,7 +18,7 @@ import java.util.Map;
  * {@link ContentProvider}. These decorations are kept in the eHUB.
  */
 @Entity
-@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = { "CONTENT_PROVIDER_ID", "FORMAT_ID" }))
+@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = { "CONTENT_PROVIDER_ID", "FORMAT_ID" }, name="UK_CONTENT_P_FORMAT_DECORATION"))
 @Access(AccessType.PROPERTY)
 public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1562910983744673362L;

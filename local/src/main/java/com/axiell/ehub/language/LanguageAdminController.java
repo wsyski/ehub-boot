@@ -5,6 +5,8 @@ package com.axiell.ehub.language;
 
 import java.util.List;
 
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.consumer.IEhubConsumerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,9 @@ public class LanguageAdminController implements ILanguageAdminController {
 
     @Autowired
     private IFormatAdminController formatAdminController;
+
+    @Autowired
+    private IEhubConsumerRepository ehubConsumerRepository;
     
     /**
      * @see com.axiell.ehub.language.ILanguageAdminController#getLanguages()
@@ -43,8 +48,12 @@ public class LanguageAdminController implements ILanguageAdminController {
      */
     @Override
     @Transactional(readOnly = false)
-    public void delete(Language language) {
-        formatAdminController.deleteFormatTextBundles(language);
+    public void delete(final Language language) throws LanguageReferencedException {
+        List<EhubConsumer> ehubConsumers=ehubConsumerRepository.findByDefaultLanguage(language);
+        if (!ehubConsumers.isEmpty()) {
+           throw new LanguageReferencedException(language, ehubConsumers);
+        }
+        //formatAdminController.deleteFormatTextBundles(language);
         languageRepository.delete(language);
     }
 }

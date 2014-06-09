@@ -2,6 +2,7 @@ package com.axiell.ehub.consumer;
 
 import java.util.List;
 
+import com.axiell.ehub.language.Language;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -29,4 +30,6 @@ public interface IEhubConsumerRepository extends CrudRepository<EhubConsumer, Lo
      */
     @Query("SELECT e FROM EhubConsumer e ORDER BY LOWER(e.description) ASC")
     List<EhubConsumer> findAllOrderedByDescription();
+
+    List<EhubConsumer> findByDefaultLanguage(Language defaultLanguage);
 }

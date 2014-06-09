@@ -53,7 +53,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_D")
+    @ForeignKey(name = "FK_C_P_F_T_B_CONTENT_P_F_D")
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;
     }
@@ -73,7 +73,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return a language code
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade=CascadeType.REMOVE)
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_F_T_B_LANGUAGE")
     public Language getLanguage() {

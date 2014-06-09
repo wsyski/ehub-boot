@@ -6,13 +6,9 @@ package com.axiell.ehub.language;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Defines a supported language in the eHUB.
@@ -76,6 +72,11 @@ public class Language implements Serializable {
         }
         Language rhs = (Language) obj;
         return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
+    }
+
+    @Transient
+    public String getDisplayName(final Locale locale) {
+        return id==null ? null : new Locale(id).getDisplayName(locale);
     }
 
     @Override

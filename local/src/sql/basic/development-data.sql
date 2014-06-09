@@ -1,6 +1,6 @@
 WHENEVER SQLERROR EXIT FAILURE
 
-insert into EHUB_CONSUMER (id, SECRET_KEY, DESCRIPTION, CREATE_DATETIME, MODIFY_DATETIME) values (1, 'secret1', 'Axiell Ehub Consumer', systimestamp, systimestamp);
+insert into EHUB_CONSUMER (id, SECRET_KEY, DESCRIPTION, DEFAULT_LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) values (1, 'secret1', 'Axiell Ehub Consumer', 'en', systimestamp, systimestamp);
 
 insert into EHUB_CONSUMER_PROPERTY (EHUB_CONSUMER_ID, PROPERTY_KEY, PROPERTY_VALUE) values (1, 'ARENA_PALMA_URL', 'http://localhost:16521/arena.pa.palma');
 insert into EHUB_CONSUMER_PROPERTY (EHUB_CONSUMER_ID, PROPERTY_KEY, PROPERTY_VALUE) values (1, 'ARENA_AGENCY_M_IDENTIFIER', 'MSE000001');
