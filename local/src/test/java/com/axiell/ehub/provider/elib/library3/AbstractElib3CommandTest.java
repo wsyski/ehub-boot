@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.ErrorCauseArgumentValue;
-import com.axiell.ehub.IEhubExceptionFactory;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -10,13 +10,10 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.AssertCommand;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Locale;

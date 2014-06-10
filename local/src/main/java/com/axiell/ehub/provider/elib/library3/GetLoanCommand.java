@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.IEhubExceptionFactory;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.CommandData;
@@ -9,7 +9,6 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INACTIVE_LOAN;
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static com.axiell.ehub.provider.elib.library3.GetLoanCommand.Result.ACTIVE_LOAN_RETRIEVED;
 
 class GetLoanCommand extends AbstractElib3Command<CommandData> {

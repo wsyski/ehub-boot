@@ -11,22 +11,20 @@
 	        		<table class="table">	        				
 	        			<tr>
 		        			<td>
-			       				<label wicket:for="language">
-			       					<wicket:message key="fldLanguage.label"/>
-			       				</label>
-			       				<input wicket:id="language" type="text" wicket:message="title:fldLanguage.title"></input>
+                                <div><wicket:message key="fldLanguage.label"/></div>
+			       				<div wicket:id="language"/>
 			       			</td>
 	       					<td>
 			       				<label wicket:for="name">
 			       					<wicket:message key="fldName.label"/>
 			       				</label>
-			       				<input wicket:id="name" type="text" wicket:message="title:fldName.title"></input>
+			       				<input wicket:id="name" type="text" wicket:message="title:fldName.title"/>
 			       			</td>	
 	       					<td>
 			       				<label wicket:for="description">
 			       					<wicket:message key="fldDescription.label"/>
 			       				</label>
-			       				<input wicket:id="description" type="text" wicket:message="title:fldDescription.title"></input>
+			       				<input wicket:id="description" type="text" wicket:message="title:fldDescription.title"/>
 			       			</td>
 			       			<td>
 			       				<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
@@ -37,7 +35,7 @@
 	       			</table>
        			</div>
        			<div>
-       				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"></input>
+       				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"/>
        			</div>
 	        </form>
         </wicket:panel>

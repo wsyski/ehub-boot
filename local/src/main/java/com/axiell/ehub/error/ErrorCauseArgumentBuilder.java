@@ -1,4 +1,7 @@
-package com.axiell.ehub;
+package com.axiell.ehub.error;
+
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentValue;
 
 public class ErrorCauseArgumentBuilder {
     private final IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository;

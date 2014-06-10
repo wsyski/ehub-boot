@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.IEhubExceptionFactory;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;

@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+            <div>
+                <h4><wicket:message key="txtTextsHeader"/></h4>
+            </div>
+            <form wicket:id="textsForm">
+                <div wicket:id="texts">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <div><wicket:message key="fldLanguage.label"/></div>
+                                <div wicket:id="language"/>
+                            </td>
+                            <td>
+                                <label wicket:for="text">
+                                    <wicket:message key="fldText.label"/>
+                                </label>
+                                <input wicket:id="text" type="text" wicket:message="title:fldText.title"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <input class="btn btn-primary" wicket:id="save" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"/>
+                </div>
+            </form>
+        </wicket:panel>
+    </body>
+</html>

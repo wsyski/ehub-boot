@@ -1,15 +1,12 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.IEhubExceptionFactory;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.CreateContentCommand;
 import com.axiell.ehub.provider.IContentFactory;
-
-import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
-import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
 
 class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLoan, CommandData> {
     private final BookAvailabilityCommand firstCommand;
