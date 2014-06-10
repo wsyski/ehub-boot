@@ -24,7 +24,7 @@ public class ErrorCauseArgumentValueTextBundle extends AbstractTimestampAwarePer
 
     @ManyToOne
     @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID", nullable = false)
-    @ForeignKey(name = "FK_ERROR_C_A_V_ERROR_C_A_V_T_B")
+    @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
     public ErrorCauseArgumentValue getArgumentValue() {
         return argumentValue;
     }
