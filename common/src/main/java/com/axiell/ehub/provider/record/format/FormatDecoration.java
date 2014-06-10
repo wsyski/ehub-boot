@@ -181,8 +181,9 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return the {@link FormatTextBundle}s
      */
-    @OneToMany(mappedBy = "formatDecoration", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "formatDecoration", cascade = CascadeType.REMOVE)
     @MapKeyJoinColumn(name = "LANGUAGE_ID")
+    @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_T")
     public Map<Language, FormatTextBundle> getTextBundles() {
 	return textBundles;
     }

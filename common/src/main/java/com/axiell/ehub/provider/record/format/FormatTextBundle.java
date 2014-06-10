@@ -73,7 +73,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * 
      * @return a language code
      */
-    @ManyToOne(cascade=CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_F_T_B_LANGUAGE")
     public Language getLanguage() {

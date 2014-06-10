@@ -53,7 +53,7 @@ public class LanguageAdminController implements ILanguageAdminController {
         if (!ehubConsumers.isEmpty()) {
            throw new LanguageReferencedException(language, ehubConsumers);
         }
-        //formatAdminController.deleteFormatTextBundles(language);
+        formatAdminController.deleteFormatTextBundles(language);
         languageRepository.delete(language);
     }
 }

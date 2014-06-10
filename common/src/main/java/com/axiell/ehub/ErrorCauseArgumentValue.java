@@ -2,8 +2,6 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.language.Language;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -29,10 +27,9 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
         this.type = type;
     }
 
-    @ElementCollection
-    @CollectionTable(name = "ERROR_C_A_V_TEXT_BUNDLE", joinColumns = @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID"))
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID")
     @MapKeyJoinColumn(name = "LANGUAGE_ID", nullable = false)
-    @Cascade(CascadeType.REMOVE)
     @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
     public Map<Language, ErrorCauseArgumentValueTextBundle> getTextBundles() {
         return textBundles;
@@ -67,6 +64,6 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
 
     public static enum Type {
         BORROWER_LIMIT_REACHED, INACTIVE_LOAN, LIBRARY_LIMIT_REACHED, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, MISSING_CONTENT_IN_LOAN,
-        PRODUCT_INACTIVE,PRODUCT_UNAVAILABLE
+        PRODUCT_INACTIVE, PRODUCT_UNAVAILABLE
     }
 }
