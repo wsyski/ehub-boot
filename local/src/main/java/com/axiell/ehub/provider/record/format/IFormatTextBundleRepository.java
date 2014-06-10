@@ -5,10 +5,11 @@ package com.axiell.ehub.provider.record.format;
 
 import java.util.List;
 
+import com.axiell.ehub.language.Language;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * Simple CRUD Repository interface for {@link ContentProviderFormatTextBundle} instances. The interface is used to
+ * Simple CRUD Repository interface for {@link FormatTextBundle} instances. The interface is used to
  * declare so called query methods, methods to retrieve single entities or collections of them.
  * 
  * <p>
@@ -28,5 +29,5 @@ public interface IFormatTextBundleRepository extends CrudRepository<FormatTextBu
      * @param language a ISO 639 alpha-2 or alpha-3 language code
      * @return a list of {@link FormatTextBundle}s
      */
-    List<FormatTextBundle> findByLanguage(String language);
+    List<FormatTextBundle> findByLanguage(Language language);
 }

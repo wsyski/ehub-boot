@@ -3,6 +3,7 @@ package com.axiell.ehub.error;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.google.common.collect.Lists;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,18 @@ class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValue
         return argumentValueRepository.save(argumentValue);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteErrorCauseArgumentValueTextBundles(final Language language) {
+        final List<ErrorCauseArgumentValueTextBundle> textBundles = textBundleRepository.findByLanguage(language);
+        textBundleRepository.delete(textBundles);
+    }
+
     private ErrorCauseArgumentValue initialize(ErrorCauseArgumentValue argumentValue) {
         Hibernate.initialize(argumentValue);
         Hibernate.initialize(argumentValue.getTextBundles());
         return argumentValue;
     }
+
+
 }
