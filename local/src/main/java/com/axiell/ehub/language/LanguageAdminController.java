@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IEhubConsumerRepository;
+import com.axiell.ehub.error.IErrorCauseArgumentValueAdminController;
+import com.axiell.ehub.error.IErrorCauseArgumentValueRepository;
+import com.axiell.ehub.error.IErrorCauseArgumentValueTextBundleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +27,10 @@ public class LanguageAdminController implements ILanguageAdminController {
 
     @Autowired
     private IEhubConsumerRepository ehubConsumerRepository;
-    
+
+    @Autowired
+    private IErrorCauseArgumentValueAdminController errorCauseArgumentValueAdminController;
+
     /**
      * @see com.axiell.ehub.language.ILanguageAdminController#getLanguages()
      */
@@ -54,6 +60,7 @@ public class LanguageAdminController implements ILanguageAdminController {
            throw new LanguageReferencedException(language, ehubConsumers);
         }
         formatAdminController.deleteFormatTextBundles(language);
+        errorCauseArgumentValueAdminController.deleteErrorCauseArgumentValueTextBundles(language);
         languageRepository.delete(language);
     }
 }

@@ -75,8 +75,7 @@ public class FormatAdminController implements IFormatAdminController {
     @Override
     @Transactional(readOnly = false)
     public void deleteFormatTextBundles(Language language) {
-        final String languageId = language.getId();
-        final List<FormatTextBundle> textBundles = formatTextBundleRepository.findByLanguage(languageId);
+        final List<FormatTextBundle> textBundles = formatTextBundleRepository.findByLanguage(language);
         formatTextBundleRepository.delete(textBundles);
     }
 
