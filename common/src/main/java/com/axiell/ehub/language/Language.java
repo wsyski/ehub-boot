@@ -3,11 +3,15 @@
  */
 package com.axiell.ehub.language;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -22,7 +26,7 @@ public class Language implements Serializable {
     /**
      * Default constructor required by JPA.
      */
-    protected Language() {                
+    public Language() {
     }
 
     public Language(final String id) {
@@ -39,7 +43,7 @@ public class Language implements Serializable {
     public String getId() {
         return id;
     }
-    
+
     /**
      * Sets the ID of the {@link Language}, i.e. the ISO 639 alpha-2 or alpha-3 language code.
      *
@@ -48,12 +52,24 @@ public class Language implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-    
+
+    @Transient
+    public String getDisplayName(final Locale locale) {
+        return id == null ? null : new Locale(id).getDisplayName(locale);
+    }
+
+
+    public static List<Language> sort(final List<Language> languages, final Locale locale) {
+        List<Language> sortedLanguages = Lists.newArrayList(languages);
+        Collections.sort(sortedLanguages, new LanguageComparator(locale));
+        return sortedLanguages;
+    }
+
     /**
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString() {        
+    public String toString() {
         return id;
     }
 
@@ -74,13 +90,21 @@ public class Language implements Serializable {
         return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
     }
 
-    @Transient
-    public String getDisplayName(final Locale locale) {
-        return id==null ? null : new Locale(id).getDisplayName(locale);
-    }
-
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 31).append(getId()).toHashCode();
+    }
+
+    private static class LanguageComparator implements Comparator<Language> {
+        private Locale locale;
+
+        private LanguageComparator(final Locale locale) {
+            this.locale = locale;
+        }
+
+        @Override
+        public int compare(final Language language1, final Language language2) {
+            return language1.getDisplayName(locale).compareTo(language2.getDisplayName(locale));
+        }
     }
 }

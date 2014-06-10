@@ -25,19 +25,6 @@ public class LanguagesModel extends LoadableDetachableModel<List<Language>> {
     @Override
     protected List<Language> load() {
         final List<Language> languages = languageAdminController.getLanguages();
-        return getLanguagesListSortedBy(languages);
-    }
-
-    private List<Language> getLanguagesListSortedBy(List<Language> languages) {
-        List<Language> sortedLanguages = Lists.newArrayList(languages);
-        Collections.sort(sortedLanguages, new LocaleAwareLanguageComparator());
-        return sortedLanguages;
-    }
-
-    private class LocaleAwareLanguageComparator implements Comparator<Language> {
-        @Override
-        public int compare(final Language language1, final Language language2) {
-            return language1.getDisplayName(locale).compareTo(language2.getDisplayName(locale));
-        }
+        return Language.sort(languages, locale);
     }
 }
