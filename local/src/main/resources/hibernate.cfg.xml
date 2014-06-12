@@ -11,6 +11,7 @@
         <mapping class="com.axiell.ehub.provider.ContentProvider"/>
         <mapping class="com.axiell.ehub.provider.record.format.FormatDecoration"/>
         <mapping class="com.axiell.ehub.provider.record.format.FormatTextBundle"/>
+        <mapping class="com.axiell.ehub.provider.routing.RoutingRule"/>
         <mapping class="com.axiell.ehub.loan.EhubLoan"/>
         <mapping class="com.axiell.ehub.loan.ContentProviderLoanMetadata"/>
         <mapping class="com.axiell.ehub.user.AdminUser"/>

@@ -1,13 +1,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
     <body>
         <wicket:panel>
+            <h4><wicket:message key="txtContentProvidersHeader"/></h4>
         	<div wicket:id="contentProviders">
-        		<h4>
-				<a wicket:id="contentProviderLink" wicket:message="title:lnkContentProvider.title">
-        			<span wicket:id="contentProviderLinkLabel"></span>
-        		</a>
-				</h4>
+        		<div>
+                    <a wicket:id="contentProviderLink" wicket:message="title:lnkContentProvider.title">
+                        <span wicket:id="contentProviderLinkLabel"></span>
+                    </a>
+				</div>
         	</div>
+            <h4>
+                <a wicket:id="routingRulesLink" wicket:message="title:lnkRoutingRules.title">
+                    <wicket:message key="lnkRoutingRules.label"/>
+                </a>
+            </h4>
         </wicket:panel>
     </body>
 </html>

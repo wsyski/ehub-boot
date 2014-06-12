@@ -10,9 +10,13 @@ import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.IEhubLoanRepository;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.routing.IRoutingAdminController;
+import com.axiell.ehub.provider.routing.RoutingRule;
+import com.axiell.ehub.provider.routing.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -66,10 +70,13 @@ public class TestDataResource implements ITestDataResource {
     private IEhubLoanRepository ehubLoanRepository;
     @Autowired
     private ILanguageAdminController languageAdminController;
+    @Autowired
+    private IRoutingAdminController routingAdminController;
 
 
     @Override
     public TestData init() {
+        initElibRoutingRule();
         initLanguage();
         final ContentProvider elibProvider = initElibProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
@@ -88,6 +95,15 @@ public class TestDataResource implements ITestDataResource {
         } catch (SQLException e) {
             return Response.serverError().entity("Could not restart database: " + e.getMessage()).build();
         }
+    }
+
+    private void initElibRoutingRule() {
+        final Source source = new Source("ELIB");
+        final ContentProviderName target = ContentProviderName.ELIB;
+        final RoutingRule routingRule = new RoutingRule();
+        routingRule.setSource(source);
+        routingRule.setTarget(target);
+        routingAdminController.save(routingRule);
     }
 
     private void executeStatement(Connection connection) throws SQLException {
