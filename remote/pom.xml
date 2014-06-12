@@ -80,69 +80,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.1.2.v20140210</version>
-                <executions>
-                    <execution>
-                        <id>start-jetty</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                            <goal>deploy-war</goal>
-                        </goals>
-                        <configuration>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                            <daemon>true</daemon>
-                            <war>${project.basedir}/../local/target/ehub-local-1.0-SNAPSHOT.war</war>
-                            <webApp>
-                                <contextPath>/</contextPath>
-                            </webApp>
-                            <systemProperties>
-                                <systemProperty>
-                                    <name>hibernate.connection.username</name>
-                                    <value>${ehubUser}</value>
-                                </systemProperty>
-                                <systemProperty>
-                                    <name>hibernate.connection.password</name>
-                                    <value>${ehubPassword}</value>
-                                </systemProperty>
-                                <systemProperty>
-                                    <name>hibernate.connection.url</name>
-                                    <value>
-                                        jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub.ccxrprzmpauo.eu-west-1.rds.amazonaws.com)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))
-                                    </value>
-                                </systemProperty>
-                            </systemProperties>
-
-                            <stopKey>STOP</stopKey>
-                            <stopPort>5005</stopPort>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-jetty</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scanTargetPatterns>
-                        <scanTargetPattern>
-                            <directory>${project.basedir}/../local/src/main/resources</directory>
-                            <includes>
-                                <include>**/*.xml</include>
-                                <include>**/*.properties</include>
-                            </includes>
-                        </scanTargetPattern>
-                    </scanTargetPatterns>
-                    <stopKey>STOP</stopKey>
-                    <stopPort>5005</stopPort>
-                </configuration>
-
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <configuration>
