@@ -26,7 +26,7 @@ public final class ContentProvidersResource implements IContentProvidersResource
     /**
      * Sets the {@link IFormatBusinessController}.
      *
-     * @param contentProviderBusinessController the {@link IContentProviderBusinessController} to set
+     * @param contentProviderBusinessController the {@link com.axiell.ehub.provider.routing.IRoutingBusinessController} to set
      */
     @Required
     public void setFormatBusinessController(IFormatBusinessController contentProviderBusinessController) {

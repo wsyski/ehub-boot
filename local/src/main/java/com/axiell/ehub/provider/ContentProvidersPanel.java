@@ -3,14 +3,17 @@
  */
 package com.axiell.ehub.provider;
 
-import java.util.List;
-
+import com.axiell.ehub.provider.routing.RoutingRulesPanelFactory;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanelLink;
+import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * A Panel that displays all available {@link ContentProvider}s in the eHUB.
@@ -25,6 +28,13 @@ final class ContentProvidersPanel extends BreadCrumbPanel {
         super(panelId, breadCrumbModel);
         this.contentProvidersView = new ContentProvidersListView("contentProviders", breadCrumbModel);
         add(contentProvidersView);
+        addRoutingRulesLink(breadCrumbModel);
+    }
+
+    private void addRoutingRulesLink(final IBreadCrumbModel breadCrumbModel) {
+        final IBreadCrumbPanelFactory factory = new RoutingRulesPanelFactory();
+        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("routingRulesLink", breadCrumbModel, factory);
+        add(link);
     }
 
     @Override

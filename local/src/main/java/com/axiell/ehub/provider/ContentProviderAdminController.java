@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.routing.IRoutingRuleRepository;
+import com.axiell.ehub.provider.routing.RoutingRule;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

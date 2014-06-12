@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
  * <p>
  * <b>NOTE:</b> Even though this interface is public it should only be used within the package
  * <code>com.axiell.axiell.provider</code>. Access to this repository outside this package should be done through the
- * {@link IContentProviderBusinessController}.
+ * {@link com.axiell.ehub.provider.routing.IRoutingBusinessController}.
  * </p>
  * <p>
  * The reason why it is public when it should have been package private is due to that the proxy functionality of the

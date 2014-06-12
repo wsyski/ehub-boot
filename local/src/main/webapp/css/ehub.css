@@ -39,3 +39,28 @@ h1 {
 .contentFormatCell {
 	min-width: 50px;
 }
+
+div.wicket-modal div.w_content {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    padding: 15px;
+    width: 100%;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.language-header {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.routing-rule-description {
+    font-size: 12px;
+    font-weight: normal;
+}

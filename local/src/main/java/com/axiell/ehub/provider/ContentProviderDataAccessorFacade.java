@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.routing.IRoutingBusinessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +15,22 @@ import com.axiell.ehub.provider.record.format.Formats;
 
 @Component
 public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {
-    @Autowired(required = true)
+    @Autowired
+    private IRoutingBusinessController routingBusinessController;
+    @Autowired
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
 
     @Override
     public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderName, String libraryCard, String contentProviderRecordId, String language) {
-        final ContentProviderName nameEnum = ContentProviderName.fromString(contentProviderName);
-        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(nameEnum);
-        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(nameEnum);
+        final ContentProviderName name = routingBusinessController.getTarget(contentProviderName);
+        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         return dataAccessor.getFormats(consumer, libraryCard, contentProviderRecordId, language);
     }
 
     @Override
     public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language) {
-        final ContentProviderName name = pendingLoan.getContentProviderNameEnum();
+        final ContentProviderName name = routingBusinessController.getTarget(pendingLoan.getContentProviderName());
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         return dataAccessor.createLoan(consumer, libraryCard, pin, pendingLoan, language);
