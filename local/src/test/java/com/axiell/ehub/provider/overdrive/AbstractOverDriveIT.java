@@ -1,19 +1,18 @@
 package com.axiell.ehub.provider.overdrive;
 
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PATRON_API_BASE_URL;
-import static org.mockito.BDDMockito.given;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.mockito.Mock;
-
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
+import org.junit.Assert;
+import org.junit.Before;
+import org.mockito.Mock;
 
-public class AbstractOverDriveIT extends AbstractContentProviderIT {
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PATRON_API_BASE_URL;
+import static org.mockito.BDDMockito.given;
+
+public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     // Product #1
     // protected static final String PRODUCT_ID = "08f7d7e6-423f-45a6-9a1e-5ae9122c82e7";
 
