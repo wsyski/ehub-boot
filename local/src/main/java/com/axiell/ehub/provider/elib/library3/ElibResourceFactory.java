@@ -15,8 +15,6 @@ final class ElibResourceFactory {
     public static IElibResource create(final ContentProviderConsumer contentProviderConsumer) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
-        final IElibResource elibResource = ProxyFactory.create(IElibResource.class, baseUrl);
-        CacheFactory.makeCacheable(elibResource);
-        return elibResource;
+        return ProxyFactory.create(IElibResource.class, baseUrl);
     }
 }

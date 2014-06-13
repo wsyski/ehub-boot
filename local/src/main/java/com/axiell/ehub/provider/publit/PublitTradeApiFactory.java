@@ -9,7 +9,8 @@ import org.jboss.resteasy.client.cache.CacheFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor;
 
 abstract class PublitTradeApiFactory {
-    public static IPublitTradeApi getApi(final String userName, final String password, final String endpointUrl) {    
+
+    public static IPublitTradeApi getApi(final String userName, final String password, final String endpointUrl) {
         Credentials credentials = new UsernamePasswordCredentials(userName, password);
         DefaultHttpClient httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
         httpClient.getCredentialsProvider().setCredentials(org.apache.http.auth.AuthScope.ANY, credentials);

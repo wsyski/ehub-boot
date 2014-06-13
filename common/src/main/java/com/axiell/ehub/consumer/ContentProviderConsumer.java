@@ -6,20 +6,15 @@ package com.axiell.ehub.consumer;
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
-
 import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
-
 import java.util.*;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB;
-import static com.axiell.ehub.provider.ContentProviderName.ELIBU;
-import static com.axiell.ehub.provider.ContentProviderName.PUBLIT;
-import static com.axiell.ehub.provider.ContentProviderName.ASKEWS;
-import static com.axiell.ehub.provider.ContentProviderName.OVERDRIVE;
+import static com.axiell.ehub.provider.ContentProviderName.*;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Represents a consumer of a specific {@link ContentProvider}. It holds the
@@ -33,15 +28,13 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     private static final Map<ContentProviderName, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
     static {
-        VALID_PROPERTY_KEYS.put(ELIB, new HashSet<>(Arrays.asList(ELIB_RETAILER_ID, ELIB_RETAILER_KEY)));
-        VALID_PROPERTY_KEYS.put(ELIBU, new HashSet<>(Arrays.asList(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID)));
-        VALID_PROPERTY_KEYS.put(PUBLIT, new HashSet<>(Arrays.asList(PUBLIT_USERNAME, PUBLIT_PASSWORD)));
-        VALID_PROPERTY_KEYS.put(ASKEWS, new HashSet<>(Arrays.asList(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE)));
-        VALID_PROPERTY_KEYS.put(
-                OVERDRIVE,
-                new HashSet<>(Arrays.asList(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
-                        OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
-        );
+        VALID_PROPERTY_KEYS.put(ELIB, newHashSet(ELIB_RETAILER_ID, ELIB_RETAILER_KEY));
+        VALID_PROPERTY_KEYS.put(ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID));
+        VALID_PROPERTY_KEYS.put(PUBLIT, newHashSet(PUBLIT_USERNAME, PUBLIT_PASSWORD));
+        VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE));
+        VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
+                OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME));
+        VALID_PROPERTY_KEYS.put(ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY));
     }
 
     private EhubConsumer ehubConsumer;
