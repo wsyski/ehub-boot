@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.IContentFactory;
+import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +16,14 @@ class Elib3CommandChainFactory implements IElib3CommandChainFactory {
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Autowired(required = true)
-    protected IContentFactory contentFactory;
+    private IContentFactory contentFactory;
+
+    @Autowired
+    private IFormatFactory formatFactory;
 
     @Override
     public GetFormatsCommandChain createGetFormatsCommandChain() {
-        return new GetFormatsCommandChain(elibFacade, ehubExceptionFactory);
+        return new GetFormatsCommandChain(elibFacade, ehubExceptionFactory, formatFactory);
     }
 
     @Override

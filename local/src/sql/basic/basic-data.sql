@@ -191,14 +191,9 @@ insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LA
 insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1010, 5, 'L'||CHR(229 USING NCHAR_CS)||'net saknar inneh'||CHR(229 USING NCHAR_CS)||'ll', 'sv', systimestamp, systimestamp);
 insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1011, 6, 'The book is inactive and is therefore unavailable to loan', 'en', systimestamp, systimestamp);
 insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1012, 6, 'Boken '||CHR(228 USING NCHAR_CS)||'r inaktiv och '||CHR(228 USING NCHAR_CS)||'r d'||CHR(228 USING NCHAR_CS)||'rf'||CHR(246 USING NCHAR_CS)||'r inte tillg'||CHR(228 USING NCHAR_CS)||'nglig f'||CHR(246 USING NCHAR_CS)||'r utl'||CHR(229 USING NCHAR_CS)||'n', 'sv', systimestamp, systimestamp);
-insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1013, 7, 'The book is unavailable when it lacks a valid business model', 'en', systimestamp, systimestamp);
-insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1014, 7, 'Boken '||CHR(228 USING NCHAR_CS)||'r inte tillg'||CHR(228 USING NCHAR_CS)||'nglig d'||CHR(229 USING NCHAR_CS)||' den saknar en giltig aff'||CHR(228 USING NCHAR_CS)||'rsmodell', 'sv', systimestamp, systimestamp);
+insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1013, 7, 'The book is unavailable to loan when it lacks a valid business model ', 'en', systimestamp, systimestamp);
+insert into ERROR_C_A_V_TEXT_BUNDLE (ID, ERROR_CAUSE_ARGUMENT_VALUE_ID, TEXT, LANGUAGE_ID, CREATE_DATETIME, MODIFY_DATETIME) VALUES (1014, 7, 'Boken '||CHR(228 USING NCHAR_CS)||'r inte tillg'||CHR(228 USING NCHAR_CS)||'nglig f'||CHR(246 USING NCHAR_CS)||'r utl'||CHR(229 USING NCHAR_CS)||'n d'||CHR(229 USING NCHAR_CS)||' den saknar en giltig aff'||CHR(228 USING NCHAR_CS)||'rsmodell', 'sv', systimestamp, systimestamp);
 
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (1, systimestamp, systimestamp, 'ELIB', 'ELIB');
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (2, systimestamp, systimestamp, 'ELIBU', 'ELIBU');
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (3, systimestamp, systimestamp, 'PUBLIT', 'PUBLIT');
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (4, systimestamp, systimestamp, 'ASKEWS', 'ASKEWS');
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (5, systimestamp, systimestamp, 'OVERDRIVE', 'OVERDRIVE');
-insert into CONTENT_PROVIDER_ROUTING_RULE (ID, CREATE_DATETIME, MODIFY_DATETIME, SOURCE, TARGET) values (6, systimestamp, systimestamp, 'ELIB3', 'ELIB3');
+
 
 commit;

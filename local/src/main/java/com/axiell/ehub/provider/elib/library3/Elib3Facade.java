@@ -1,17 +1,12 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProvider;
-import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
 @Component
 class Elib3Facade implements IElibFacade {
-
 
     @Override
     public BookAvailability getBookAvailability(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
@@ -50,7 +45,10 @@ class Elib3Facade implements IElibFacade {
 
     @Override
     public LibraryProduct getLibraryProduct(ContentProviderConsumer contentProviderConsumer, String elibProductId) {
-        // TODO: implement
-        return null;
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(elibProductId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        final LibraryProductResponse response = elibResource.getLibraryProduct(serviceId, checksum, elibProductId);
+        return response.getLibraryProduct();
     }
 }

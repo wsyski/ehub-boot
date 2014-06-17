@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.elib.library3;
 
 import javax.ws.rs.*;
@@ -30,4 +27,9 @@ public interface IElibResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("loans/{loanId}")
     GetLoanResponse getLoan(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @PathParam("loanId") String loanId);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("libraryproducts/{productId}")
+    LibraryProductResponse getLibraryProduct(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @PathParam("productId") String elibProductId);
 }

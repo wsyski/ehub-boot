@@ -27,8 +27,8 @@ public final class LoansResource implements ILoansResource {
     }
 
 //    @Override
-//    public ReadyLoan getLoan(@HeaderParam("Authorization") AuthInfo authInfo, Long readyLoanId) {
-//        return getLoan(authInfo, readyLoanId, null);
+//    public ReadyLoan getLibraryProduct(@HeaderParam("Authorization") AuthInfo authInfo, Long readyLoanId) {
+//        return getLibraryProduct(authInfo, readyLoanId, null);
 //    }
 
     /**
@@ -40,8 +40,8 @@ public final class LoansResource implements ILoansResource {
     }
 
 //    @Override
-//    public ReadyLoan getLoan(@HeaderParam("Authorization") AuthInfo authInfo, String lmsLoanId) {
-//        return getLoan(authInfo, lmsLoanId, null);
+//    public ReadyLoan getLibraryProduct(@HeaderParam("Authorization") AuthInfo authInfo, String lmsLoanId) {
+//        return getLibraryProduct(authInfo, lmsLoanId, null);
 //    }
 
     /**
