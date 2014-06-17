@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "ERROR_C_A_V_TEXT_BUNDLE")
 @Access(AccessType.PROPERTY)
 public class ErrorCauseArgumentValueTextBundle extends AbstractTimestampAwarePersistable<Long> {
+    public static final int MAX_TEXT_LENGTH = 255;
     private ErrorCauseArgumentValue argumentValue;
     private Language language;
     private String text;
@@ -44,7 +45,7 @@ public class ErrorCauseArgumentValueTextBundle extends AbstractTimestampAwarePer
         this.language = language;
     }
 
-    @Column(name = "TEXT")
+    @Column(name = "TEXT", length = MAX_TEXT_LENGTH)
     public String getText() {
         return text;
     }

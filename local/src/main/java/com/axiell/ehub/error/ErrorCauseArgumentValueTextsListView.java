@@ -37,12 +37,12 @@ class ErrorCauseArgumentValueTextsListView extends ListView<Language> {
         final LanguageLabel languageLabel = new LanguageLabel("language", language, getLocale());
         item.add(languageLabel);
 
-        final TextField<String> valueTextField = makeErrorCauseArgumentValueTextField(language);
+        final ErrorCauseArgumentValueTextField valueTextField = makeErrorCauseArgumentValueTextField(language);
         item.add(valueTextField);
     }
 
-    private TextField<String> makeErrorCauseArgumentValueTextField(final Language language) {
+    private ErrorCauseArgumentValueTextField makeErrorCauseArgumentValueTextField(final Language language) {
         final IModel<String> textModel = new ErrorCauseArgumentValueTextModel(formModel, language);
-        return new TextField<>("text", textModel);
+        return new ErrorCauseArgumentValueTextField("text", textModel);
     }
 }
