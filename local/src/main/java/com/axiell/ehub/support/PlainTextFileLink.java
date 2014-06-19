@@ -13,7 +13,7 @@ class PlainTextFileLink extends ResourceLink<Void> {
         addLabel(file);
     }
 
-    private void addLabel(File file) {
+    private void addLabel(final File file) {
         final String fileName = file.getName();
         final Label fileLabel = new Label("fileName", fileName);
         add(fileLabel);

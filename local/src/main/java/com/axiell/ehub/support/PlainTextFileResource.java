@@ -8,7 +8,7 @@ import java.io.File;
 class PlainTextFileResource extends DynamicWebResource {
     private final File file;
 
-    PlainTextFileResource(File file) {
+    PlainTextFileResource(final File file) {
         this.file = file;
     }
 
