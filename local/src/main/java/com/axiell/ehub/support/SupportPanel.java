@@ -9,10 +9,17 @@ class SupportPanel extends BreadCrumbPanel {
 
     SupportPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
-        addAuthenticationHeaderPanelLink(breadCrumbModel);
+        addLogFilesPanelLink(breadCrumbModel);
+        addRequestsGeneratorPanelLink(breadCrumbModel);
     }
 
-    private void addAuthenticationHeaderPanelLink(IBreadCrumbModel breadCrumbModel) {
+    private void addLogFilesPanelLink(IBreadCrumbModel breadCrumbModel) {
+        final IBreadCrumbPanelFactory factory = new LogFilesPanelFactory();
+        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("logFilesLink", breadCrumbModel, factory);
+        add(link);
+    }
+
+    private void addRequestsGeneratorPanelLink(IBreadCrumbModel breadCrumbModel) {
         final IBreadCrumbPanelFactory factory = new RequestsGeneratorPanelFactory();
         final BreadCrumbPanelLink link = new BreadCrumbPanelLink("requestsGeneratorLink", breadCrumbModel, factory);
         add(link);
