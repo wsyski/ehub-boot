@@ -34,7 +34,7 @@
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${catalina.base}/logs/eHub.log</file>
+        <file>${catalina.base}/logs/ehub.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>eHub.%d{yyyy-MM-dd}.log</fileNamePattern>
