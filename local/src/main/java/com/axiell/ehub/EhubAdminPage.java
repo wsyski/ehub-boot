@@ -8,6 +8,7 @@ import com.axiell.ehub.error.ErrorCausesBreadCrumbBarPanel;
 import com.axiell.ehub.home.HomePanel;
 import com.axiell.ehub.language.LanguagesBreadCrumbBarPanel;
 import com.axiell.ehub.provider.ContentProvidersBreadCrumbBarPanel;
+import com.axiell.ehub.support.SupportBreadCrumbBarPanel;
 import com.axiell.ehub.user.AdminUser;
 import com.axiell.ehub.user.LogoutPanel;
 import com.axiell.ehub.version.VersionBreadCrumbBarPanel;
@@ -62,6 +63,8 @@ public class EhubAdminPage extends AbstractBasePage {
                     return new ErrorCausesBreadCrumbBarPanel(panelId);
                 case LANGUAGES:
                     return new LanguagesBreadCrumbBarPanel(panelId);
+                case SUPPORT:
+                    return new SupportBreadCrumbBarPanel(panelId);
                 case VERSION:
                     return new VersionBreadCrumbBarPanel(panelId);
                 default:
@@ -84,6 +87,7 @@ public class EhubAdminPage extends AbstractBasePage {
                 case CONTENT_PROVIDERS:
                 case ERROR_CAUSES:
                 case LANGUAGES:
+                case SUPPORT:
                 case VERSION:
                     titleKey = identifier.toString();
                     break;
@@ -100,6 +104,6 @@ public class EhubAdminPage extends AbstractBasePage {
      * Represents a tab in the tabbed panel.
      */
     private static enum Tab {
-        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, VERSION;
+        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, SUPPORT, VERSION;
     }
 }

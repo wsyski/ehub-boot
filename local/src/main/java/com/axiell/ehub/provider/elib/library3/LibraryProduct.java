@@ -5,8 +5,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.List;
 
 public class LibraryProduct {
+    @JsonProperty("ProductID")
+    private String productId;
+
     @JsonProperty("ModelAvailabilities")
     private List<ModelAvailability> models;
+
+    public String getProductId() {
+        return productId;
+    }
 
     public boolean hasAvailableModel() {
         if (hasNoModels())

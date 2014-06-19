@@ -7,10 +7,16 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-@JsonIgnoreProperties(value = {"ProductID", "CreatedDate", "Supplements", "CoverImage", "Active", "Title"})
+@JsonIgnoreProperties(value = {"CreatedDate", "Supplements", "CoverImage", "Active", "Title"})
 public class CreatedLoan {
+    @JsonProperty("ProductID")
+    private String productId;
     @JsonProperty("LoanID")
     private String loanId;
+
+    public String getProductId() {
+        return productId;
+    }
 
     @JsonProperty(value = "ExpiryDate")
     private Date expirationDate;

@@ -17,7 +17,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     private static final String ELIB_SERVICE_ID_VALUE = "1873";
     private static final String ELIB_SERVICE_KEY_VALUE = "Vm3qh9eZijFdMDxAEpn5PzyfC0S4sBGOvXtJrIYw1Ukl8cuoR2";
     private static final String ELIB_PRODUCT_ID_VALUE = "1002446";
-    private static final String ELIB_LOAN_ID_VALUE = "4598611";
+    private static final String ELIB_LOAN_ID_VALUE = "4802146";
     private static final String LIBRARY_CARD = "1";
     private Elib3Facade underTest;
 
@@ -25,6 +25,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     private Product product;
     private CreatedLoan createdLoan;
     private Loan loan;
+    private LibraryProduct libraryProduct;
 
     @Before
     public void setElibFacade() {
@@ -44,17 +45,18 @@ public class Elib3IT extends AbstractContentProviderIT {
         givenApiBaseUrl();
         givenElibCredentials();
         whenGetProduct();
-        // TODO: verify response
-        assertNotNull(product);
+        thenProductIsNotNull();
+        thenProductHasExpectedProductId();
     }
 
     @Test
     public void createLoan() {
         givenApiBaseUrl();
         givenElibCredentials();
-        createdLoan = underTest.createLoan(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE, LIBRARY_CARD);
-        // TODO: verify response
-        assertNotNull(createdLoan);
+        whenCreateLoan();
+        thenCreatedLoanIsNotNull();
+        thenCreatedLoanHasExpectedProductId();
+        thenCreatedLoanHasContent();
     }
 
     @Test
@@ -62,10 +64,64 @@ public class Elib3IT extends AbstractContentProviderIT {
         givenApiBaseUrl();
         givenElibCredentials();
         whenGetLoan();
-        // TODO: verify response
+        thenRetrievedLoanIsNotNull();
+        thenRetrievedLoanHasExpectedLoanId();
+        thenRetrievedLoanHasContentIfLoanIsActive();
+    }
+
+    @Test
+    public void getLibraryProduct() {
+        givenApiBaseUrl();
+        givenElibCredentials();
+        whenGetLibraryProduct();
+        thenLibraryProductIsNotNull();
+        thenLibraryProductContainsExpectedProductId();
+        thenLibraryProductHasAvailableModel();
+    }
+
+    private void thenProductHasExpectedProductId() {
+        assertEquals(ELIB_PRODUCT_ID_VALUE, product.getProductId());
+    }
+
+    private void thenCreatedLoanHasExpectedProductId() {
+        assertEquals(ELIB_PRODUCT_ID_VALUE, createdLoan.getProductId());
+    }
+
+    private void thenProductIsNotNull() {
+        assertNotNull(product);
+    }
+
+    private void thenRetrievedLoanIsNotNull() {
         assertNotNull(loan);
+    }
+
+    private void thenRetrievedLoanHasExpectedLoanId() {
         assertEquals(ELIB_LOAN_ID_VALUE, loan.getLoanId());
-        assertNotNull(loan.getFirstContentUrl());
+    }
+
+    private void thenRetrievedLoanHasContentIfLoanIsActive() {
+        if (loan.isActive())
+            assertNotNull(loan.getFirstContentUrl());
+    }
+
+    private void whenGetLibraryProduct() {
+        libraryProduct = underTest.getLibraryProduct(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE);
+    }
+
+    private void thenLibraryProductIsNotNull() {
+        assertNotNull(libraryProduct);
+    }
+
+    private void thenLibraryProductContainsExpectedProductId() {
+        assertEquals(ELIB_PRODUCT_ID_VALUE, libraryProduct.getProductId());
+    }
+
+    private void thenCreatedLoanHasContent() {
+        assertNotNull(createdLoan.getFirstContentUrl());
+    }
+
+    private void thenLibraryProductHasAvailableModel() {
+        assertTrue(libraryProduct.hasAvailableModel());
     }
 
     private void givenApiBaseUrl() {
@@ -106,5 +162,13 @@ public class Elib3IT extends AbstractContentProviderIT {
 
     private void whenGetLoan() {
         loan = underTest.getLoan(contentProviderConsumer, ELIB_LOAN_ID_VALUE);
+    }
+
+    private void whenCreateLoan() {
+        createdLoan = underTest.createLoan(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE, LIBRARY_CARD);
+    }
+
+    private void thenCreatedLoanIsNotNull() {
+        assertNotNull(createdLoan);
     }
 }
