@@ -3,9 +3,6 @@ package com.axiell.ehub.support.request;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.protocol.http.WebRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 class RequestsGeneratorForm extends Form<RequestArguments> {
 
