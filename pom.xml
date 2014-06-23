@@ -691,7 +691,7 @@
         <saxon.version>9.1.0.8</saxon.version>
         <jcabi-manifests.version>0.8</jcabi-manifests.version>
 
-        <ehub.release.version>0.8_6</ehub.release.version>
+        <ehub.release.version>0.8_7</ehub.release.version>
         <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
