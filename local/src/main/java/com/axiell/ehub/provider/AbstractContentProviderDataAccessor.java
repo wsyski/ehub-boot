@@ -3,18 +3,9 @@
  */
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.*;
-import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.StreamingContent;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static com.axiell.ehub.ErrorCause.CONTENT_PROVIDER_ERROR;
-import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME;
-import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
 
 /**
  * Skeletal implementation of an {@link IContentProviderDataAccessor}. It should be sub-classed to provide the data

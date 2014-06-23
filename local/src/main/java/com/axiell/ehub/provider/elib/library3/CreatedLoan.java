@@ -29,7 +29,7 @@ public class CreatedLoan {
     }
 
     public Date getExpirationDate() {
-        return expirationDate;
+        return new Date(expirationDate.getTime());
     }
 
     String getFirstContentUrl() {

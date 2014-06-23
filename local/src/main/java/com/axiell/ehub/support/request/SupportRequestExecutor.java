@@ -27,15 +27,13 @@ class SupportRequestExecutor {
         try {
             AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            try {
-                final ClientExecutor clientExecutor = new SupportClientExecutor(supportRequest);
-                final IContentProvidersResource contentProvidersResource = ProxyFactory.create(IContentProvidersResource.class, baseUri, clientExecutor);
-                final IRecordsResource recordsResource = contentProvidersResource.getRecords(contentProviderName);
-                final Formats formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
-                return makeSupportResponse(supportRequest, STATUS_OK, formats);
-            } catch (ClientResponseFailure crf) {
-                return handleClientResponseFailure(supportRequest, crf);
-            }
+            final ClientExecutor clientExecutor = new SupportClientExecutor(supportRequest);
+            final IContentProvidersResource contentProvidersResource = ProxyFactory.create(IContentProvidersResource.class, baseUri, clientExecutor);
+            final IRecordsResource recordsResource = contentProvidersResource.getRecords(contentProviderName);
+            final Formats formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
+            return makeSupportResponse(supportRequest, STATUS_OK, formats);
+        } catch (ClientResponseFailure crf) {
+            return handleClientResponseFailure(supportRequest, crf);
         } catch (EhubException e) {
             final EhubError ehubError = e.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
@@ -46,7 +44,7 @@ class SupportRequestExecutor {
         final EhubConsumer ehubConsumer = arguments.getEhubConsumer();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return  new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).libraryCard(libraryCard).pin(pin).build();
+        return new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).libraryCard(libraryCard).pin(pin).build();
     }
 
     private static SupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {

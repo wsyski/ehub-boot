@@ -1,23 +1,19 @@
 package com.axiell.ehub.provider.elib.library;
 
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.springframework.stereotype.Component;
+
+import java.util.Locale;
+
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
 import static com.axiell.ehub.util.Md5Function.md5Hex;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
-
-import org.jboss.resteasy.client.ProxyFactory;
-import org.springframework.stereotype.Component;
-
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-
 @Component
 class ElibFacade implements IElibFacade {
-    private static final String UTF8 = "UTF-8";
     private static final String ENGLISH = Locale.ENGLISH.getLanguage();
     private static final String CREATE_LOAN_MOBI_POCKET_ID = "X";
 

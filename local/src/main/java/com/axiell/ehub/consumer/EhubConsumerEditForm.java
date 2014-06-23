@@ -3,7 +3,6 @@ package com.axiell.ehub.consumer;
 import com.axiell.ehub.DisabledTextField;
 import com.axiell.ehub.TranslatedKeys;
 import com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
-import com.axiell.ehub.language.LanguageChoice;
 import org.apache.wicket.markup.html.form.Button;
 
 class EhubConsumerEditForm extends AbstractEhubConsumerForm {

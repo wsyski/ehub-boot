@@ -1,7 +1,5 @@
 package com.axiell.ehub.error;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
-import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import static com.axiell.ehub.ErrorCauseArgumentValueTextBundle.MAX_TEXT_LENGTH;

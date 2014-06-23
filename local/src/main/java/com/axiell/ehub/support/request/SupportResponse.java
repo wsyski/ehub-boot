@@ -5,7 +5,7 @@ class SupportResponse {
     private final String status;
     private final String body;
 
-    SupportResponse(SupportRequest request, String status, String body) {
+    SupportResponse(final SupportRequest request, final String status, final String body) {
         this.request = request;
         this.status = status;
         this.body = body;

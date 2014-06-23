@@ -22,36 +22,36 @@ import java.io.Serializable;
 
 /**
  * Interface for timestamp aware entities. Allows storing and retrieving creation and modification information.
- * 
- * @param <ID> the type of the timestamp aware type's idenifier
+ *
+ * @param <I> the type of the timestamp aware type's idenifier
  */
-public interface ITimestampAware<ID extends Serializable> extends Persistable<ID> {
+public interface ITimestampAware<I extends Serializable> extends Persistable<I> {
 
-	/**
-	 * Returns the creation date of the entity.
-	 * 
-	 * @return the createdDate
-	 */
-	DateTime getCreatedDate();
+    /**
+     * Returns the creation date of the entity.
+     *
+     * @return the createdDate
+     */
+    DateTime getCreatedDate();
 
-	/**
-	 * Sets the creation date of the entity.
-	 * 
-	 * @param createdDate the creation date to set
-	 */
-	void setCreatedDate(final DateTime createdDate);
+    /**
+     * Sets the creation date of the entity.
+     *
+     * @param createdDate the creation date to set
+     */
+    void setCreatedDate(final DateTime createdDate);
 
-	/**
-	 * Returns the date of the last modification.
-	 * 
-	 * @return the modifiedDate
-	 */
-	DateTime getModifiedDate();
+    /**
+     * Returns the date of the last modification.
+     *
+     * @return the modifiedDate
+     */
+    DateTime getModifiedDate();
 
-	/**
-	 * Sets the date of the last modification.
-	 * 
-	 * @param modifiedDate the date of the last modification to set
-	 */
-	void setModifiedDate(final DateTime modifiedDate);
+    /**
+     * Sets the date of the last modification.
+     *
+     * @param modifiedDate the date of the last modification to set
+     */
+    void setModifiedDate(final DateTime modifiedDate);
 }

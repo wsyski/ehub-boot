@@ -10,24 +10,6 @@ class RequestsGeneratorPanel extends BreadCrumbPanel {
     RequestsGeneratorPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
         addGetFormatsRequestsPanelLink(breadCrumbModel);
-
-
-
-//        final RequestsGeneratorMediator mediator = new RequestsGeneratorMediator();
-//
-//        final EmptyPanel responsePanel = new EmptyPanel("responsePanel");
-//        responsePanel.setOutputMarkupId(true);
-//        mediator.registerResponsePanel(responsePanel);
-//        add(responsePanel);
-//
-//        final Form<?> form = new Form<>("requestsGeneratorForm", new CompoundPropertyModel<>(new RequestArguments()));
-//        add(form);
-//
-//
-//
-//
-//        final AbstractRequestGeneratorButton generatorButton = new AbstractRequestGeneratorButton("generatorButton", mediator);
-//        form.add(generatorButton);
     }
 
     private void addGetFormatsRequestsPanelLink(IBreadCrumbModel breadCrumbModel) {

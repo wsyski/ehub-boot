@@ -1,11 +1,12 @@
 package com.axiell.ehub.support.log;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.wicket.markup.html.DynamicWebResource;
 
 import java.io.*;
 
-class PlainTextFileResourceState extends DynamicWebResource.ResourceState {
+import static org.apache.wicket.markup.html.DynamicWebResource.ResourceState;
+
+class PlainTextFileResourceState extends ResourceState {
     private final File file;
 
     PlainTextFileResourceState(final File file) {
@@ -14,7 +15,7 @@ class PlainTextFileResourceState extends DynamicWebResource.ResourceState {
 
     @Override
     public byte[] getData() {
-        try (InputStream is = new FileInputStream(file);) {
+        try (InputStream is = new FileInputStream(file)) {
             return IOUtils.toByteArray(is);
         } catch (FileNotFoundException e) {
             return new byte[0];

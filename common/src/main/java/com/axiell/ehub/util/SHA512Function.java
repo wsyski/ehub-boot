@@ -5,9 +5,8 @@ import org.apache.commons.codec.binary.Hex;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 
-import static com.axiell.ehub.util.StringConverter.*;
+import static com.axiell.ehub.util.StringConverter.getBytesInUtf8;
 
 public class SHA512Function {
 

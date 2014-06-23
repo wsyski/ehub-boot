@@ -37,7 +37,7 @@ class RequestsGeneratorForm extends Form<RequestArguments> {
         addTextField("language", false);
     }
 
-    private void addTextField(String id, final boolean required) {
+    private void addTextField(final String id, final boolean required) {
         final TextField<String> field = new TextField<>(id);
         field.setRequired(required);
         add(field);

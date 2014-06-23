@@ -9,7 +9,8 @@ class InvisibleLink extends Link<Void> {
     }
     
     @Override
-    public void onClick() {   
+    public void onClick() {
+        // Do nothing because this method will never be invoked
     }
     
     @Override

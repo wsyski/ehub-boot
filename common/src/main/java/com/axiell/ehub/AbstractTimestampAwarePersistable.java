@@ -14,11 +14,11 @@ import java.util.Date;
 /**
  * Abstract eHub base class for persistent entities. Stores the audition values in persistent fields.
  *
- * @param <PK> the type of the auditing type's identifier
+ * @param <P> the type of the auditing type's identifier
  */
 @MappedSuperclass
 @EntityListeners({TimestampAwareEntityListener.class})
-public abstract class AbstractTimestampAwarePersistable<PK extends Serializable> extends AbstractPersistable<PK> implements ITimestampAware<PK> {
+public abstract class AbstractTimestampAwarePersistable<P extends Serializable> extends AbstractPersistable<P> implements ITimestampAware<P> {
     private static final long serialVersionUID = 141481953116476081L;
 
     @Temporal(TemporalType.TIMESTAMP)

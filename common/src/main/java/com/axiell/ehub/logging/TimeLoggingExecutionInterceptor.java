@@ -17,7 +17,7 @@ import javax.ws.rs.ext.Provider;
 public class TimeLoggingExecutionInterceptor implements ClientExecutionInterceptor {
     private static final String INVOCATION_TRAIL_NOT_AVAILABLE = "INVOCATION_TRAIL_NOT_AVAILABLE";
     private static final String SEPARATOR = "; ";
-    private final Logger timeLog = LoggerFactory.getLogger("time");
+    private static final Logger TIME_LOG = LoggerFactory.getLogger("time");
 
     @Override
     public ClientResponse execute(final ClientExecutionContext ctx) throws Exception {
@@ -45,7 +45,7 @@ public class TimeLoggingExecutionInterceptor implements ClientExecutionIntercept
 
     private void logTime(final ClientExecutionContext ctx, final StopWatch stopWatch, final Exception exception, final ClientResponse response) throws
             Exception {
-        timeLog.info(createLogMessage(ctx, stopWatch.getTime(), response, exception));
+        TIME_LOG.info(createLogMessage(ctx, stopWatch.getTime(), response, exception));
     }
 
     private String createLogMessage(final ClientExecutionContext executionContext, final long elapsedTime, final ClientResponse httpResponse, final Exception exception) throws

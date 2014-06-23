@@ -13,11 +13,6 @@ import javax.ws.rs.HeaderParam;
 public final class LoansResource implements ILoansResource {
     private ILoanBusinessController loanBusinessController;
 
-//    @Override
-//    public ReadyLoan createLoan(@HeaderParam("Authorization") AuthInfo authInfo, PendingLoan pendingLoan) {
-//        return createLoan(authInfo, null, pendingLoan);
-//    }
-
     /**
      * @see ILoansResource#createLoan(com.axiell.ehub.security.AuthInfo, String, PendingLoan)
      */
@@ -26,11 +21,6 @@ public final class LoansResource implements ILoansResource {
         return loanBusinessController.createLoan(authInfo, pendingLoan, language);
     }
 
-//    @Override
-//    public ReadyLoan getLibraryProduct(@HeaderParam("Authorization") AuthInfo authInfo, Long readyLoanId) {
-//        return getLibraryProduct(authInfo, readyLoanId, null);
-//    }
-
     /**
      * @see ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, Long, String)
      */
@@ -38,11 +28,6 @@ public final class LoansResource implements ILoansResource {
     public ReadyLoan getLoan(AuthInfo authInfo, Long readyLoanId, String language) {
         return loanBusinessController.getReadyLoan(authInfo, readyLoanId, language);
     }
-
-//    @Override
-//    public ReadyLoan getLibraryProduct(@HeaderParam("Authorization") AuthInfo authInfo, String lmsLoanId) {
-//        return getLibraryProduct(authInfo, lmsLoanId, null);
-//    }
 
     /**
      * @see ILoansResource#getLoan(com.axiell.ehub.security.AuthInfo, String, String)
