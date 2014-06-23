@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
@@ -11,11 +11,11 @@ abstract class AbstractRequestsGeneratorPanel extends BreadCrumbPanel {
     protected AbstractRequestsGeneratorPanel(String id, IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
         this.mediator = new RequestsGeneratorMediator();
+        addRequestForm();
         addResponsePanel();
-        addForm();
     }
 
-    private void addForm() {
+    private void addRequestForm() {
         form = new RequestsGeneratorForm("requestsGeneratorForm");
         add(form);
     }

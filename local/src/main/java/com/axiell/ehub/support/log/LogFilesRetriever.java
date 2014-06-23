@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.log;
 
 import com.google.common.collect.Lists;
 

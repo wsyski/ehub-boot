@@ -1,12 +1,13 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.security.AuthInfo;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.Component;
+import org.apache.wicket.protocol.http.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-class RequestParameters implements Serializable {
+class RequestArguments implements Serializable {
     private EhubConsumer ehubConsumer;
     private String libraryCard;
     private String pin;
@@ -14,7 +15,10 @@ class RequestParameters implements Serializable {
     private String contentProviderRecordId;
     private String language;
     private String baseUri;
-    private String absoluteUri;
+
+    RequestArguments(Component component) {
+        setBaseUri(component);
+    }
 
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
@@ -68,15 +72,12 @@ class RequestParameters implements Serializable {
         return baseUri;
     }
 
-    public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
-    }
-
-    public String getAbsoluteUri() {
-        return absoluteUri;
-    }
-
-    public void setAbsoluteUri(String absoluteUri) {
-        this.absoluteUri = absoluteUri;
+    private void setBaseUri(Component component) {
+        WebRequest webRequest = (WebRequest) component.getRequest();
+        HttpServletRequest httpServletRequest = webRequest.getHttpServletRequest();
+        int port = httpServletRequest.getServerPort();
+        String serverName = httpServletRequest.getServerName();
+        String scheme = httpServletRequest.getScheme();
+        baseUri = scheme + "://" + serverName + ":" + port;
     }
 }

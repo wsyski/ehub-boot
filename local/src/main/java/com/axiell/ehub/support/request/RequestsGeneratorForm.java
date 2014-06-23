@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -7,7 +7,7 @@ import org.apache.wicket.protocol.http.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
-class RequestsGeneratorForm extends Form<RequestParameters> {
+class RequestsGeneratorForm extends Form<RequestArguments> {
 
     RequestsGeneratorForm(final String id) {
         super(id);
@@ -23,9 +23,8 @@ class RequestsGeneratorForm extends Form<RequestParameters> {
     }
 
     private void setFormModel() {
-        final RequestParameters reqParams = new RequestParameters();
-        reqParams.setBaseUri(getBaseUri());
-        final CompoundPropertyModel<RequestParameters> model = new CompoundPropertyModel<>(reqParams);
+        final RequestArguments arguments = new RequestArguments(this);
+        final CompoundPropertyModel<RequestArguments> model = new CompoundPropertyModel<>(arguments);
         setModel(model);
     }
 
@@ -45,14 +44,5 @@ class RequestsGeneratorForm extends Form<RequestParameters> {
         final TextField<String> field = new TextField<>(id);
         field.setRequired(required);
         add(field);
-    }
-
-    private String getBaseUri() {
-        WebRequest webRequest = (WebRequest) getRequest();
-        HttpServletRequest httpServletRequest = webRequest.getHttpServletRequest();
-        int port = httpServletRequest.getServerPort();
-        String serverName = httpServletRequest.getServerName();
-        String scheme = httpServletRequest.getScheme();
-        return scheme + "://" + serverName + ":" + port;
     }
 }

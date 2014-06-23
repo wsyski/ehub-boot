@@ -1,10 +1,10 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 
-class GetFormatsRequestsPanelFactory implements IBreadCrumbPanelFactory {
+public class GetFormatsRequestsPanelFactory implements IBreadCrumbPanelFactory {
 
     @Override
     public BreadCrumbPanel create(String componentId, IBreadCrumbModel breadCrumbModel) {

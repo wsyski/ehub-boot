@@ -1,6 +1,5 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.log;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ResourceLink;
 

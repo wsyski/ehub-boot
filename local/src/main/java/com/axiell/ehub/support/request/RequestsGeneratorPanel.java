@@ -1,13 +1,9 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanelLink;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
-import org.apache.wicket.model.CompoundPropertyModel;
 
 class RequestsGeneratorPanel extends BreadCrumbPanel {
 
@@ -24,7 +20,7 @@ class RequestsGeneratorPanel extends BreadCrumbPanel {
 //        mediator.registerResponsePanel(responsePanel);
 //        add(responsePanel);
 //
-//        final Form<?> form = new Form<>("requestsGeneratorForm", new CompoundPropertyModel<>(new RequestParameters()));
+//        final Form<?> form = new Form<>("requestsGeneratorForm", new CompoundPropertyModel<>(new RequestArguments()));
 //        add(form);
 //
 //

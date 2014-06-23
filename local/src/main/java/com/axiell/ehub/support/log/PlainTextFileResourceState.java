@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.log;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.wicket.markup.html.DynamicWebResource;

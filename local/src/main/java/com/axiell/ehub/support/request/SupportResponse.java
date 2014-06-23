@@ -1,6 +1,4 @@
-package com.axiell.ehub.support;
-
-import com.axiell.ehub.security.AuthInfo;
+package com.axiell.ehub.support.request;
 
 class SupportResponse {
     private final SupportRequest request;

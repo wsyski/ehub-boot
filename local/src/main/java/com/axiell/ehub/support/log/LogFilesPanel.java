@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.log;
 
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;

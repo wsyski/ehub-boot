@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -12,7 +12,7 @@ class RequestsGeneratorMediator implements Serializable {
         this.responsePanel = authInfoPanel;
     }
 
-    void afterResponseWasGenerated(final SupportResponse response, final AjaxRequestTarget target) {
+    void afterResponseWasReceived(final SupportResponse response, final AjaxRequestTarget target) {
         replaceResponsePanel(response, target);
         submitResponseBodyForm(target);
     }

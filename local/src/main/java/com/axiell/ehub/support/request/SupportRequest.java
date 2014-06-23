@@ -1,4 +1,4 @@
-package com.axiell.ehub.support;
+package com.axiell.ehub.support.request;
 
 import com.axiell.ehub.security.AuthInfo;
 
@@ -8,7 +8,7 @@ class SupportRequest {
     private String uri;
 
     String getAuthInfo() {
-        return authInfo.toString();
+        return authInfo == null ? null : authInfo.toString();
     }
 
     void setAuthInfo(AuthInfo authInfo) {
