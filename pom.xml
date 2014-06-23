@@ -31,7 +31,7 @@
         <repository>
             <id>Axiell maven repository</id>
             <name>Arena Project-releases</name>
-            <url>http://nexus.dmz:8090/artifactory/libs-release-local</url>
+            <url>http://buildserver/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
