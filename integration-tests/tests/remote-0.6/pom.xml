@@ -4,10 +4,10 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub-it-tests</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.8_17</version>
     </parent>
     <artifactId>ehub-it-remote-0.6</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.8_17</version>
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
