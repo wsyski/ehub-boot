@@ -549,22 +549,22 @@
                         <phase>process-classes</phase>
                         <configuration>
                             <target>
-                                <property name="maven_compile_classpath" refid="maven.compile.classpath"/>
-                                <property name="maven_test_classpath" refid="maven.test.classpath"/>
+                                <property name="maven_compile_classpath" refid="maven.compile.classpath" />
+                                <property name="maven_test_classpath" refid="maven.test.classpath" />
                                 <path id="hibernatetool.path">
-                                    <pathelement path="${maven_compile_classpath}"/>
-                                    <pathelement path="${maven_test_classpath}"/>
-                                    <pathelement location="${project.build.directory}/classes"/>
+                                    <pathelement path="${maven_compile_classpath}" />
+                                    <pathelement path="${maven_test_classpath}" />
+                                    <pathelement location="${project.build.directory}/classes" />
                                 </path>
-                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.path"/>
+                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.path" />
 
-                                <property name="hibernatetool.dir" value="${project.basedir}/src/sql/basic"/>
-                                <mkdir dir="${hibernatetool.dir}"/>
+                                <property name="hibernatetool.dir" value="${project.basedir}/src/sql/basic" />
+                                <mkdir dir="${hibernatetool.dir}" />
 
                                 <hibernatetool destdir="${hibernatetool.dir}">
-                                    <classpath refid="hibernatetool.path"></classpath>
-                                    <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"></jpaconfiguration>
-                                    <hbm2ddl export="false" format="true" outputfilename="schema.sql"></hbm2ddl>
+                                    <classpath refid="hibernatetool.path" />
+                                    <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties" />
+                                    <hbm2ddl export="false" format="true" outputfilename="schema.sql" />
                                 </hibernatetool>
                             </target>
                         </configuration>
