@@ -10,6 +10,6 @@ public class RemoteFormatIT_10Snapshot extends AbstractRemoteFormatIT {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME, DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
+        actualFormats = ehubService.getFormats(authInfo, "Distributör: Elib", DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }

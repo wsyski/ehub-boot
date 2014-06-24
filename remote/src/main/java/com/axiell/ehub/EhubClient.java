@@ -12,6 +12,8 @@ import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.security.AuthInfo;
 import org.springframework.beans.factory.annotation.Required;
 
+import static com.axiell.ehub.util.EhubUrlCodec.encode;
+
 /**
  * The eHUB client is the only publicly accessible component of the {@link IEhubService}.
  */
@@ -22,7 +24,8 @@ public final class EhubClient implements IEhubService {
     @Override
     public Formats getFormats(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) throws
             EhubException {
-        final IRecordsResource recordsResource = contentProvidersResource.getRecords(contentProviderName);
+        final String encodedContentProviderName = encode(contentProviderName);
+        final IRecordsResource recordsResource = contentProvidersResource.getRecords(encodedContentProviderName);
         return recordsResource.getFormats(authInfo, contentProviderRecordId, language);
     }
 
