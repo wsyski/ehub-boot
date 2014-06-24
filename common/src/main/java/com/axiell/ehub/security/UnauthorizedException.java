@@ -3,43 +3,42 @@
  */
 package com.axiell.ehub.security;
 
-import javax.ws.rs.core.Response.Status;
-
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 
+import javax.ws.rs.core.Response.Status;
+
 /**
- * Indicates that the request requires user authentication. It will result in an error response with status code 401. 
+ * Indicates that the request requires user authentication. It will result in an error response with status code 401.
  */
 public final class UnauthorizedException extends EhubRuntimeException {
-    private static final long serialVersionUID = -1117793762143940898L;
 
     /**
      * Constructs a new {@link UnauthorizedException}.
-     * 
+     *
      * @param cause the cause
      */
     public UnauthorizedException(final ErrorCause cause) {
         this(cause.toEhubError().getMessage(), cause);
     }
-    
+
     /**
      * Constructs a new {@link UnauthorizedException}.
-     * 
+     *
      * @param message the formatted error message to be written in the server log
-     * @param cause the cause
+     * @param cause   the cause
      */
-    public UnauthorizedException(final String message, final ErrorCause casue) {
-        super(Status.UNAUTHORIZED.getStatusCode(), message, casue);
+    public UnauthorizedException(final String message, final ErrorCause cause) {
+        super(Status.UNAUTHORIZED.getStatusCode(), message, cause);
         final String headerValue = new StringBuilder(AuthInfo.EHUB_SCHEME).append(" ").append(AuthInfo.EHUB_REALM).toString();
         addHeader("WWW-Authenticate", headerValue);
     }
-    
+
     /**
      * Constructs a new {@link UnauthorizedException}.
-     * 
-     * @param cause the cause
+     *
+     * @param cause     the cause
      * @param arguments an array of {@link ErrorCauseArgument}s
      */
     public UnauthorizedException(final ErrorCause cause, final ErrorCauseArgument... arguments) {

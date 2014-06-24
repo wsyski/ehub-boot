@@ -5,6 +5,7 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.spi.interception.ClientExecutionContext;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
+@Ignore
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({LoggerFactory.class, TimeLoggingExecutionInterceptor.class, Status.class})
 public class TimeLoggingExecutionInterceptorTest {

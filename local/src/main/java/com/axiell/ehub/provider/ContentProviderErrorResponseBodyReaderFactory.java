@@ -5,6 +5,9 @@ import com.axiell.ehub.provider.elib.library3.Elib3ErrorResponseBodyReader;
 
 class ContentProviderErrorResponseBodyReaderFactory {
 
+    private ContentProviderErrorResponseBodyReaderFactory() {
+    }
+
     static IContentProviderErrorResponseBodyReader create(final ContentProvider contentProvider) {
         if (contentProvider == null)
             return new DefaultContentProviderErrorResponseBodyReader();
