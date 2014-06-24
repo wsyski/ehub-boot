@@ -708,7 +708,7 @@
         <jcabi-manifests.version>0.8</jcabi-manifests.version>
         <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 
-        <ehub.release.version>0.8_16</ehub.release.version>
+        <ehub.release.version>0.8_17</ehub.release.version>
         <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
