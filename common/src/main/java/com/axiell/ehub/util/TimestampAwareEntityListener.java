@@ -56,7 +56,16 @@ public class TimestampAwareEntityListener {
         }
         ITimestampAware<?> timestampAware = (ITimestampAware<?>) target;
         DateTime now = touchDate(timestampAware, isNew);
-        LOGGER.debug("Touched {} - date at {} by {}", timestampAware, now);
+        logTime(isNew, timestampAware, now);
+    }
+
+    private void logTime(boolean isNew, ITimestampAware<?> timestampAware, DateTime now) {
+        if (LOGGER.isDebugEnabled()) {
+            if (isNew)
+                LOGGER.debug("Pre-persist {} - at {}", timestampAware, now);
+            else
+                LOGGER.debug("Pre-update {} - at {}", timestampAware, now);
+        }
     }
 
 
