@@ -218,6 +218,16 @@
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
                 <version>${resteasy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -685,7 +695,7 @@
         <commons-lang.version>3.1</commons-lang.version>
         <commons-codec.version>1.7</commons-codec.version>
         <commons.io.version>2.4</commons.io.version>
-        <oracle.version>11.2.0.3</oracle.version>
+        <oracle.version>11.2.0.4</oracle.version>
         <jetty.version>9.2.0.M1</jetty.version>
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.7.2</slf4j.version>
@@ -698,7 +708,7 @@
         <jcabi-manifests.version>0.8</jcabi-manifests.version>
         <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 
-        <ehub.release.version>0.8_12</ehub.release.version>
+        <ehub.release.version>0.8_13</ehub.release.version>
         <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
