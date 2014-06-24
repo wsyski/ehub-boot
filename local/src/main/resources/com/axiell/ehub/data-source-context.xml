@@ -8,9 +8,19 @@
 
     <util:properties id="hibernateProperties" location="classpath:hibernate.properties" />
 
-    <bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource">
+    <bean id="dataSource" class="oracle.ucp.jdbc.PoolDataSourceFactory" factory-method="getPoolDataSource">
         <property name="URL" value="#{systemProperties['hibernate.connection.url']?: hibernateProperties['hibernate.connection.url']}"/>
         <property name="user" value="#{systemProperties['hibernate.connection.username']?: hibernateProperties['hibernate.connection.username']}"/>
         <property name="password" value="#{systemProperties['hibernate.connection.password']?: hibernateProperties['hibernate.connection.password']}"/>
+        <property name="connectionFactoryClassName" value="oracle.jdbc.pool.OracleDataSource" />
+        <property name="description" value="eHub data source" />
+        <property name="connectionPoolName" value="UCPEhub" />
+        <property name="minPoolSize" value="8" />
+        <property name="maxPoolSize" value="256" />
+        <property name="initialPoolSize" value="8" />
+        <property name="inactiveConnectionTimeout" value="60" />
+        <property name="abandonedConnectionTimeout" value="30" />
+        <property name="validateConnectionOnBorrow" value="true" />
+        <property name="SQLForValidateConnection" value="select 1 from dual" />
     </bean>
 </beans>
