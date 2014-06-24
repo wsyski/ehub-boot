@@ -2,8 +2,6 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,7 +9,6 @@ import org.mockito.Mock;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -62,7 +59,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenContentUrlInCreatedLoan() {
-        given(createdLoan.getFirstContentUrl()).willReturn(URL);
+        given(createdLoan.getContentUrlFor(any(String.class))).willReturn(URL);
     }
 
     private void givenExpirationDateInCreatedLoan() {

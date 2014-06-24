@@ -76,7 +76,8 @@ public class TestDataResource implements ITestDataResource {
 
     @Override
     public TestData init() {
-        initElibRoutingRule();
+        saveRoutingRule("ELIB", ContentProviderName.ELIB);
+        saveRoutingRule("Distributör: Elib", ContentProviderName.ELIB);
         initLanguage();
         final ContentProvider elibProvider = initElibProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
@@ -97,9 +98,8 @@ public class TestDataResource implements ITestDataResource {
         }
     }
 
-    private void initElibRoutingRule() {
-        final Source source = new Source("ELIB");
-        final ContentProviderName target = ContentProviderName.ELIB;
+    private void saveRoutingRule(String sourceValue, ContentProviderName target) {
+        final Source source = new Source(sourceValue);
         final RoutingRule routingRule = new RoutingRule();
         routingRule.setSource(source);
         routingRule.setTarget(target);

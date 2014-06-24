@@ -21,7 +21,6 @@ import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetContentCommandChainTest {
-
     private static final String LOAN_ID = "loanId";
     private static final String CONTENT_URL = "contentUrl";
     private GetContentCommandChain underTest;
@@ -37,6 +36,8 @@ public class GetContentCommandChainTest {
     private ContentProvider contentProvider;
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
+    @Mock
+    private FormatDecoration formatDecoration;
     @Mock
     private Loan loan;
     @Mock
@@ -60,7 +61,7 @@ public class GetContentCommandChainTest {
 
     private void givenActiveLoanWithContentUrl() {
         given(loan.isActive()).willReturn(true);
-        given(loan.getFirstContentUrl()).willReturn(CONTENT_URL);
+        given(loan.getContentUrlFor(any(String.class))).willReturn(CONTENT_URL);
         given(elibFacade.getLoan(any(ContentProviderConsumer.class), any(String.class))).willReturn(loan);
     }
 
@@ -81,6 +82,7 @@ public class GetContentCommandChainTest {
     private void givenCommandData() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getId()).willReturn(LOAN_ID);
+        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
         data = CommandData.newInstance(contentProviderConsumer, "libraryCard").setContentProviderLoanMetadata(loanMetadata);
     }
 }

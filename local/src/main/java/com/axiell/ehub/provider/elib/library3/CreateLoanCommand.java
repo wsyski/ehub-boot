@@ -25,15 +25,15 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String libraryCard = data.getLibraryCard();
         final String language = data.getLanguage();
+        final String formatId = data.getContentProviderFormatId();
         final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, libraryCard);
-        final String contentUrl = createdLoan.getFirstContentUrl();
+        final String contentUrl = createdLoan.getContentUrlFor(formatId);
 
         if (contentUrl == null)
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
         else {
             final Date expirationDate = createdLoan.getExpirationDate();
             final String contentProviderLoanId = createdLoan.getLoanId();
-            final String formatId = data.getContentProviderFormatId();
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
             final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
             final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();

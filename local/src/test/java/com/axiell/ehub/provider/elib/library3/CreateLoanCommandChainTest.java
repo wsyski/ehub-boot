@@ -101,7 +101,7 @@ public class CreateLoanCommandChainTest {
     }
 
     private void givenCreatedLoan() {
-        given(createdLoan.getFirstContentUrl()).willReturn(CONTENT_URL);
+        given(createdLoan.getContentUrlFor(any(String.class))).willReturn(CONTENT_URL);
         given(createdLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(createdLoan.getLoanId()).willReturn(CP_LOAN_ID);
         given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(createdLoan);
