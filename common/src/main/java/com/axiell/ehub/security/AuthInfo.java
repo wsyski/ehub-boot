@@ -41,7 +41,7 @@ public final class AuthInfo {
     /**
      * Constructs a new {@link AuthInfo}.
      * 
-     * @param ehubConsumer the ID of the {@link EhubConsumer}
+     * @param ehubConsumerId the ID of the {@link EhubConsumer}
      * @param libraryCard the library card of a user, can be <code>null</code>
      * @param pin the pin of the library card, can be <code>null</code>
      * @param signature a {@link Signature}
@@ -97,10 +97,19 @@ public final class AuthInfo {
      * @throws UnauthorizedException if the library card is <code>null</code>, i.e. it wasn't included in the
      * Authorization header
      */
-    public String getLibraryCard() {
+    public String getRequiredLibraryCard() {
         if (libraryCard == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_LIBRARY_CARD);
         }
+        return libraryCard;
+    }
+
+    /**
+     * Returns a library card identifying a user.
+     *
+     * @return  a library card, <code>null</code> if it wasn't included in the Authorization header
+     */
+    public String getOptionalLibraryCard() {
         return libraryCard;
     }
 

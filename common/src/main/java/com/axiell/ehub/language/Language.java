@@ -6,13 +6,8 @@ package com.axiell.ehub.language;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -100,7 +95,7 @@ public class Language implements Serializable {
         return new HashCodeBuilder(17, 31).append(getId()).toHashCode();
     }
 
-    private static class LanguageComparator implements Comparator<Language> {
+    private static class LanguageComparator implements Comparator<Language>, Serializable {
         private Locale locale;
 
         private LanguageComparator(final Locale locale) {

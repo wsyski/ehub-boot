@@ -1,6 +1,7 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.loan.*;
+import com.axiell.ehub.security.AuthInfo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,6 +15,11 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     protected String lmsLoanId;
     protected Long readyLoanId;
     protected ReadyLoan actualReadyLoan;
+
+    @Override
+    protected void initAuthInfo() throws EhubException {
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+    }
 
     @Test
     public final void createLoan() throws EhubException {

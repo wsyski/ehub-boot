@@ -36,6 +36,4 @@ public class Loan {
         final Iterator<Link> itr = links.iterator();
         return itr.hasNext() ? itr.next() : null;
     }
-
-
 }

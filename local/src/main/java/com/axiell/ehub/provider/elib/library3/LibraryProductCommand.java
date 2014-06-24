@@ -5,6 +5,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 
+import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
 import static com.axiell.ehub.provider.elib.library3.LibraryProductCommand.Result.MODEL_AVAILABLE;
 
 class LibraryProductCommand extends  AbstractElib3Command<CommandData> {
@@ -17,12 +18,13 @@ class LibraryProductCommand extends  AbstractElib3Command<CommandData> {
     public void run(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
+        final String language = data.getLanguage();
         final LibraryProduct libraryProduct = elibFacade.getLibraryProduct(contentProviderConsumer, contentProviderRecordId);
 
         if (libraryProduct.hasAvailableModel())
             forward(MODEL_AVAILABLE, data);
-//        else // TODO:
-
+        else
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language);
     }
 
     public static enum Result implements ICommandResult {

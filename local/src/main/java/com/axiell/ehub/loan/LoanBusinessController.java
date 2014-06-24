@@ -38,7 +38,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Transactional(readOnly = false)
     public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final String libraryCard = authInfo.getLibraryCard();
+        final String libraryCard = authInfo.getRequiredLibraryCard();
         final String pin = authInfo.getPin();
         final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, libraryCard, pin);
         final Result result = checkoutTestAnalysis.getResult();
@@ -72,7 +72,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
-        final String libraryCard = authInfo.getLibraryCard();
+        final String libraryCard = authInfo.getRequiredLibraryCard();
         final String pin = authInfo.getPin();
         return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan, language);
     }
@@ -81,7 +81,7 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Transactional(readOnly = true)
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final String libraryCard = authInfo.getLibraryCard();
+        final String libraryCard = authInfo.getRequiredLibraryCard();
         final String pin = authInfo.getPin();
         return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId, language);
     }

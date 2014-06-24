@@ -1,6 +1,5 @@
 package com.axiell.ehub.provider.routing;
 
-import com.axiell.ehub.provider.ContentProviderName;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;

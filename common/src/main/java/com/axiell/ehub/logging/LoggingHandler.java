@@ -1,5 +1,6 @@
 package com.axiell.ehub.logging;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
     }
 
     private String writeLogHeading(final boolean request) {
-        return (request ? "SOAP request:" : "SOAP response:");
+        return request ? "SOAP request:" : "SOAP response:";
     }
 
     private Boolean isMessageContextARequest(final SOAPMessageContext soapMessageContext) {
@@ -48,10 +49,11 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext c) {
+        // Do nothing because logging the close event is not necessary
     }
 
     @Override
     public Set<QName> getHeaders() {
-        return null;
+        return Sets.newHashSet();
     }
 }

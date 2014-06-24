@@ -25,13 +25,14 @@
         <connection>scm:git:git@github.com:axiell/eHub.git</connection>
         <url>scm:git:git@github.com:axiell/eHub.git</url>
         <developerConnection>scm:git:git@github.com:axiell/eHub.git</developerConnection>
-    </scm>
+      <tag>${ehub.release.version}</tag>
+  </scm>
 
     <distributionManagement>
         <repository>
             <id>Axiell maven repository</id>
             <name>Arena Project-releases</name>
-            <url>http://nexus.dmz:8090/artifactory/libs-release-local</url>
+            <url>http://buildserver/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
@@ -449,6 +450,12 @@
                 <version>${guava.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
             <!-- Test dependencies -->
             <dependency>
                 <groupId>net.sf.saxon</groupId>
@@ -689,8 +696,9 @@
         <xmlunit.version>1.5</xmlunit.version>
         <saxon.version>9.1.0.8</saxon.version>
         <jcabi-manifests.version>0.8</jcabi-manifests.version>
+        <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
 
-        <ehub.release.version>0.7</ehub.release.version>
+        <ehub.release.version>0.8_12</ehub.release.version>
         <ehub.snapshot.version>1.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 

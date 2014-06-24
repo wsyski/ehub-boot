@@ -61,9 +61,7 @@ public abstract class AbstractRemoteIT {
 
     protected abstract void castBeanToIEhubService(Object bean);
 
-    protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
-    }
+    protected abstract void initAuthInfo() throws EhubException;
 
     @After
     public void tearDown() throws Exception {

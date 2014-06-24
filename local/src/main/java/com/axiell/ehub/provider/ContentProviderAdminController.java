@@ -3,8 +3,6 @@
  */
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.routing.IRoutingRuleRepository;
-import com.axiell.ehub.provider.routing.RoutingRule;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +47,7 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
     /**
      * Initializes the {@link ContentProvider}, which includes initializing all its FormatDecorations and
      * all its properties.
-     * 
+     *
      * @param contentProvider the {@link ContentProvider} to initialize
      * @return a completely initialized {@link ContentProvider}
      */

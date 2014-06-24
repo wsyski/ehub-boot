@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+            <h3>Request</h3>
+            <table class="table">
+                <tr>
+                    <th>
+                        URI
+                    </th>
+                    <td>
+                        <span wicket:id="uri"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Method
+                    </th>
+                    <td>
+                        <span wicket:id="httpMethod"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Headers
+                    </th>
+                    <td>
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Authorization
+                                </td>
+                                <td>
+                                    <code wicket:id="authInfo"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <h3>Response</h3>
+            <form id="reponse-body-form" action="http://xmlprettyprint.com/xml-pretty-printer.php" method="post" target="reponse-body-frame">
+                <input type="hidden" name="xml_data" wicket:id="unformattedResponseBody"/>
+            </form>
+            <table class="table">
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <td>
+                        <span wicket:id="status"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Body
+                    </th>
+                    <td>
+                        <iframe name="reponse-body-frame" src="http://xmlprettyprint.com/xml-pretty-printer.php" width="900" height="150" frameborder="0"/>
+                    </td>
+                </tr>
+            </table>
+        </wicket:panel>
+    </body>
+</html>

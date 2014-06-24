@@ -3,19 +3,18 @@
  */
 package com.axiell.ehub.provider;
 
-import javax.ws.rs.core.Response.Status;
-
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgument.Type;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ErrorCauseArgument.Type;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
+import javax.ws.rs.core.Response.Status;
 
 /**
  * This Aspect converts {@link ClientResponseFailure}s thrown by the {@link IContentProviderDataAccessor}s to
@@ -37,8 +36,9 @@ public class ContentProviderResponseFailureAspect {
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.provider.IContentProviderDataAccessor.*(..))", throwing = "crf")
     public void toInternalServerErrorException(final JoinPoint joinPoint, final ClientResponseFailure crf) {
         final ClientResponse<?> response = crf.getResponse();
-        final String message = getMessage(response);
-        final ErrorCauseArgument nameArg = makeContentProviderNameErrorCauseArgument(joinPoint);
+        final ContentProvider contentProvider = getContentProvider(joinPoint);
+        final String message = getMessage(contentProvider, response);
+        final ErrorCauseArgument nameArg = makeContentProviderNameErrorCauseArgument(contentProvider);
         final ErrorCauseArgument statusArg = makeStatusCodeErrorCauseArgument(response);
         throw new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, nameArg, statusArg);
     }
@@ -53,21 +53,9 @@ public class ContentProviderResponseFailureAspect {
         return status == null ? UNKNOWN_STATUS_CODE : status.getStatusCode();
     }
 
-    /**
-     * Returns an {@link ErrorCauseArgument} containing the name of the {@link ContentProvider} that caused the
-     * {@link ClientResponseFailure}.
-     *
-     * @param joinPoint the {@link JoinPoint} to use
-     * @return an {@link ErrorCauseArgument}
-     */
-    private ErrorCauseArgument makeContentProviderNameErrorCauseArgument(final JoinPoint joinPoint) {
-        Object contentProviderName = getContentProviderName(joinPoint);
+    private ErrorCauseArgument makeContentProviderNameErrorCauseArgument(final ContentProvider contentProvider) {
+        final Object contentProviderName = contentProvider == null ? UNKNOWN_CONTENT_PROVIDER : contentProvider.getName();
         return new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, contentProviderName);
-    }
-
-    private Object getContentProviderName(JoinPoint joinPoint) {
-        ContentProvider contentProvider = getContentProvider(joinPoint);
-        return contentProvider == null ? UNKNOWN_CONTENT_PROVIDER : contentProvider.getName();
     }
 
     private ContentProvider getContentProvider(JoinPoint joinPoint) {
@@ -83,21 +71,13 @@ public class ContentProviderResponseFailureAspect {
         return null;
     }
 
-    /**
-     * Gets the error message from the {@link ClientResponse}. If the {@link ClientResponse} doesn't contain a message
-     * the default message is returned instead.
-     *
-     * @param response the {@link ClientResponse} to get the message from
-     * @return an error message
-     */
-    private String getMessage(final ClientResponse<?> response) {
+    private String getMessage(final ContentProvider contentProvider, final ClientResponse<?> response) {
         response.resetStream();
-        final String message = response.getEntity(String.class);
-
-        if (message == null) {
+        final IContentProviderErrorResponseBodyReader reader = ContentProviderErrorResponseBodyReaderFactory.create(contentProvider);
+        final String message = reader.read(response);
+        if (message == null)
             return DEFAULT_MESSAGE;
-        } else {
+        else
             return message;
-        }
     }
 }

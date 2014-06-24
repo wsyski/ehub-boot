@@ -1,7 +1,6 @@
 package com.axiell.ehub.error;
 
 
-import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.model.IModel;

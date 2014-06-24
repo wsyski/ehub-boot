@@ -3,7 +3,6 @@ package com.axiell.ehub.error;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import com.axiell.ehub.language.Language;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.google.common.collect.Lists;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,6 @@ import com.axiell.ehub.provider.ContentProviderName;
 import com.google.common.collect.Lists;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import java.util.List;

@@ -3,10 +3,7 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 
 import java.util.List;
 
@@ -16,9 +13,11 @@ class GetFormatsCommandChain extends AbstractElib3CommandChain<Formats, Elib3Com
     private final GetProductCommand firstCommand;
     private final BookAvailabilityCommand bookAvailabilityCommand;
     private final LibraryProductCommand libraryProductCommand;
+    private final IFormatFactory formatFactory;
 
-    GetFormatsCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory) {
+    GetFormatsCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IFormatFactory formatFactory) {
         super(elibFacade, exceptionFactory);
+        this.formatFactory = formatFactory;
         firstCommand = new GetProductCommand(elibFacade, exceptionFactory);
         bookAvailabilityCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
         libraryProductCommand = new LibraryProductCommand(elibFacade, exceptionFactory);
@@ -43,10 +42,10 @@ class GetFormatsCommandChain extends AbstractElib3CommandChain<Formats, Elib3Com
     @Override
     public Formats execute(final Elib3CommandData data) {
         firstCommand.run(data);
-        return getFormats(data);
+        return makeFormats(data);
     }
 
-    private Formats getFormats(final Elib3CommandData data) {
+    private Formats makeFormats(final Elib3CommandData data) {
         final List<AvailableFormat> availableFormats = data.getAvailableFormats();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -54,19 +53,11 @@ class GetFormatsCommandChain extends AbstractElib3CommandChain<Formats, Elib3Com
         final Formats formats = new Formats();
 
         for (AvailableFormat availableFormat : availableFormats) {
-            final Format format = makeFormat(contentProvider, language, availableFormat);
+            final String formatId = availableFormat.getId();
+            final Format format = formatFactory.create(contentProvider, formatId, language);
             formats.addFormat(format);
         }
 
         return formats;
-    }
-
-    private Format makeFormat(final ContentProvider contentProvider, final String language, final AvailableFormat availableFormat) {
-        final String formatId = availableFormat.getId();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
-        final String name = textBundle == null ? formatId : textBundle.getName();
-        final String description = textBundle == null ? formatId : textBundle.getDescription();
-        return new Format(formatId, name, description, null);
     }
 }

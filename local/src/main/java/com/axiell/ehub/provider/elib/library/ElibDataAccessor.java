@@ -3,28 +3,6 @@
  */
 package com.axiell.ehub.provider.elib.library;
 
-import static com.axiell.ehub.provider.elib.library.ElibUtils.generateIsbn13or10;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_STATUS_CODE_OK;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_DATE_FORMAT;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.JAXBElement;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import se.elib.library.orderlist.Response.Data.Orderitem;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData;
-import se.elib.library.orderlist.Response.Data.Orderitem.Book.BookData.UrlData;
-
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -60,10 +38,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_DATE_FORMAT;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_PRODUCT_OK_ID;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.ELIB_STATUS_CODE_OK;
-import static com.axiell.ehub.provider.elib.library.ElibUtils.generateIsbn13or10;
+import static com.axiell.ehub.provider.elib.library.ElibUtils.*;
 
 /**
  * The Elib integration.
@@ -150,8 +125,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
                                           final PendingLoan pendingLoan, String language) {
-	    final String elibRecordId = pendingLoan.getContentProviderRecordId();
-	    final String formatId = pendingLoan.getContentProviderFormatId();
+        final String elibRecordId = pendingLoan.getContentProviderRecordId();
+        final String formatId = pendingLoan.getContentProviderFormatId();
 
         final se.elib.library.loan.Response response = elibFacade.createLoan(contentProviderConsumer, elibRecordId, formatId, libraryCard, pin);
         final se.elib.library.loan.Response.Status status = response.getStatus();
@@ -212,7 +187,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private boolean requestRecordIdEqualsOrderRecordId(String reqRecordId, final String orderRecordId) {
-	/*
+    /*
 	 * The id elib uses is the isbn, when we make a loan with ISBN13, they
 	 * return the loan as ISBN10, so let's compare both ISBN10 and ISBN13 to
 	 * make sure we don't miss it
@@ -228,8 +203,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
                                final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
-	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
-	final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
+        final String contentProviderLoanId = contentProviderLoanMetadata.getId();
+        final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
 
         for (Orderitem orderItem : orderItems) {
             if (contentProviderLoanIdEqualsOrderNumber(contentProviderLoanId, orderItem)) {

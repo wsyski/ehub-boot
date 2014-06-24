@@ -8,11 +8,16 @@ public class LanguageChoiceRenderer extends ChoiceRenderer<Language> {
     private final Locale locale;
 
     public LanguageChoiceRenderer(final Locale locale) {
-	this.locale = locale;
+        this.locale = locale;
+    }
+
+    @Override
+    public String getIdValue(final Language language, int index) {
+        return language.getId();
     }
 
     @Override
     public Object getDisplayValue(final Language language) {
-	return language.getDisplayName(locale);
+        return language.getDisplayName(locale);
     }
 }

@@ -1,24 +1,17 @@
 package com.axiell.ehub.provider.elib.elibu;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.ContentProvider;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.springframework.stereotype.Component;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
 import static com.axiell.ehub.util.Md5Function.md5Hex;
 
-import java.io.UnsupportedEncodingException;
-
-import org.jboss.resteasy.client.ProxyFactory;
-import org.springframework.stereotype.Component;
-
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProvider;
-
 @Component
 class ElibUFacade implements IElibUFacade {
-    private static final String UTF8 = "UTF-8";
 
     @Override
     public Response getProduct(ContentProviderConsumer contentProviderConsumer, String elibuRecordId) {

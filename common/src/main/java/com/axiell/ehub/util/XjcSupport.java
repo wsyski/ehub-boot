@@ -153,6 +153,9 @@ public final class XjcSupport {
          */
         private static final JAXBContext JAXB_CONTEXT = createContext();
 
+        private JaxbContextHolder() {
+        }
+
         /**
          * Creates a new instance of {@link javax.xml.bind.JAXBContext}.
          *

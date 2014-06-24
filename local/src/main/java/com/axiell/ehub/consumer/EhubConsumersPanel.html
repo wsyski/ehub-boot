@@ -18,6 +18,12 @@
         				</label>
         				<input wicket:id="description" type="text" wicket:message="title:fldDescription.title"></input>
         			</div>
+                    <div>
+                        <label wicket:for="defaultLanguage">
+                            <wicket:message key="fldDefaultLanguage.label"/>
+                        </label>
+                        <select wicket:id="defaultLanguage" wicket:message="title:fldDefaultLanguage.title"/><span/>
+                    </div>
         			<div wicket:id="ecProperties">
         				<label wicket:for="property">
         					<span wicket:id="propertyLabel"></span>

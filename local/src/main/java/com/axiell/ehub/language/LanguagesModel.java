@@ -1,20 +1,16 @@
 package com.axiell.ehub.language;
 
-import com.google.common.collect.Lists;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 public class LanguagesModel extends LoadableDetachableModel<List<Language>> {
     private final Locale locale;
 
-    @SpringBean(name="languageAdminController")
+    @SpringBean(name = "languageAdminController")
     private ILanguageAdminController languageAdminController;
 
     public LanguagesModel(final Locale locale) {

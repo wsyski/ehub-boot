@@ -3,6 +3,7 @@ package com.axiell.ehub.logging;
 import com.axiell.ehub.logging.ToString;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyNoMoreInteractions;
 
+@Ignore
 @RunWith(PowerMockRunner.class)
 public class LoggingHandlerTest {
     private boolean actualResult;

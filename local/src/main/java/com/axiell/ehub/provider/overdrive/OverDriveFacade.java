@@ -1,14 +1,12 @@
 package com.axiell.ehub.provider.overdrive;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
-
-import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
-import org.springframework.stereotype.Component;
-
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
 import com.axiell.ehub.util.EhubAddress;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.springframework.stereotype.Component;
+
+import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {
