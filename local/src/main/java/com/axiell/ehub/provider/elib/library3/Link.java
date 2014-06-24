@@ -6,10 +6,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.Iterator;
 import java.util.List;
 
-@JsonIgnoreProperties(value = {"FormatID"})
 public class Link {
+    @JsonProperty(value = "FormatID")
+    private String formatId;
     @JsonProperty(value = "Contents")
     private List<Content> contents;
+
+    boolean isLinkForFormat(final String formatIdInRequest) {
+        return formatId.equals(formatIdInRequest);
+    }
 
     String getFirstContentUrl() {
         if (contents == null)

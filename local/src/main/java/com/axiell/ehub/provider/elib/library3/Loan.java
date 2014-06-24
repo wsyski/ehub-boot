@@ -12,7 +12,7 @@ public class Loan {
     private String loanId;
 
     @JsonProperty("Links")
-    private List<Link> links;
+    private Links links;
 
     @JsonProperty("Active")
     private Boolean active;
@@ -25,15 +25,7 @@ public class Loan {
         return active;
     }
 
-    String getFirstContentUrl() {
-        final Link firstLink = getFirstLink();
-        return firstLink == null ? null : firstLink.getFirstContentUrl();
-    }
-
-    private Link getFirstLink() {
-        if (links == null)
-            return null;
-        final Iterator<Link> itr = links.iterator();
-        return itr.hasNext() ? itr.next() : null;
+    String getContentUrlFor(final String formatId) {
+        return links.getContentUrlFor(formatId);
     }
 }

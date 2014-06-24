@@ -18,6 +18,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     private static final String ELIB_SERVICE_KEY_VALUE = "Vm3qh9eZijFdMDxAEpn5PzyfC0S4sBGOvXtJrIYw1Ukl8cuoR2";
     private static final String ELIB_PRODUCT_ID_VALUE = "1002446";
     private static final String ELIB_LOAN_ID_VALUE = "4802146";
+    private static final String ELIB_FORMAT_ID_VALUE = "4101";
     private static final String LIBRARY_CARD = "1";
     private Elib3Facade underTest;
 
@@ -101,7 +102,7 @@ public class Elib3IT extends AbstractContentProviderIT {
 
     private void thenRetrievedLoanHasContentIfLoanIsActive() {
         if (loan.isActive())
-            assertNotNull(loan.getFirstContentUrl());
+            assertNotNull(loan.getContentUrlFor(ELIB_FORMAT_ID_VALUE));
     }
 
     private void whenGetLibraryProduct() {
@@ -117,7 +118,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenCreatedLoanHasContent() {
-        assertNotNull(createdLoan.getFirstContentUrl());
+        assertNotNull(createdLoan.getContentUrlFor(ELIB_FORMAT_ID_VALUE));
     }
 
     private void thenLibraryProductHasAvailableModel() {
