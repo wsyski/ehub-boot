@@ -243,7 +243,7 @@ public class ToStringTest {
     }
 
     private void thenSoapMessageIsWrittenToOutputStream() throws SOAPException, IOException {
-        verify(soapMessage).writeTo(any(StringBufferOutputStream.class));
+        verify(soapMessage).writeTo(any(StringBuilderOutputStream.class));
     }
 
     private String whenSoapMessageIsProcessed() {

@@ -88,7 +88,7 @@ public final class ToString {
 
     public static String soapMessageToString(final SOAPMessage soapMessageToProcess) {
         StringBuilder soapMessageStringBuilder = newStringBuilder();
-        StringBufferOutputStream soapMessageStream = new StringBufferOutputStream();
+        StringBuilderOutputStream soapMessageStream = new StringBuilderOutputStream();
         appendSoapMessage(soapMessageToProcess, soapMessageStringBuilder, soapMessageStream);
         return soapMessageStringBuilder.toString();
     }
@@ -232,12 +232,12 @@ public final class ToString {
     }
 
 
-    private static void appendSoapMessage(final SOAPMessage soapMessageToProcess, final StringBuilder soapMessageStringBuilder, final StringBufferOutputStream soapMessageStream) {
+    private static void appendSoapMessage(final SOAPMessage soapMessageToProcess, final StringBuilder soapMessageStringBuilder, final StringBuilderOutputStream soapMessageStream) {
         readSoapMessage(soapMessageToProcess, soapMessageStream);
         soapMessageStringBuilder.append(soapMessageStream.toString());
     }
 
-    private static void readSoapMessage(final SOAPMessage soapMessageToProcess, final StringBufferOutputStream soapMessageStream) {
+    private static void readSoapMessage(final SOAPMessage soapMessageToProcess, final StringBuilderOutputStream soapMessageStream) {
         try {
             soapMessageToProcess.writeTo(soapMessageStream);
         } catch (SOAPException | IOException ex) {

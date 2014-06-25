@@ -9,8 +9,8 @@ import java.io.IOException;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StringBufferOutputStreamTest {
-    private StringBufferOutputStream stream = new StringBufferOutputStream();
+public class StringBuilderOutputStreamTest {
+    private StringBuilderOutputStream underTest = new StringBuilderOutputStream();
 
     @Test
     public void writeAndRead() throws IOException {
@@ -23,28 +23,28 @@ public class StringBufferOutputStreamTest {
     }
 
     private void thenStreamIsEmpty() {
-        assertEquals("", stream.toString());
+        assertEquals("", underTest.toString());
     }
 
     private void whenStreamIsCleared() {
-        stream.clear();
+        underTest.clear();
     }
 
     private void thenStramContainsCorrectData() {
-        assertEquals("JAVA > CHAI", stream.toString());
+        assertEquals("JAVA > CHAI", underTest.toString());
     }
 
     private void whenStreamIsWrittenTo() throws IOException {
-        stream.write(74);
-        stream.write(65);
-        stream.write(86);
-        stream.write(65);
-        stream.write(32);
-        stream.write(62);
-        stream.write(32);
-        stream.write(67);
-        stream.write(72);
-        stream.write(65);
-        stream.write(73);
+        underTest.write(74);
+        underTest.write(65);
+        underTest.write(86);
+        underTest.write(65);
+        underTest.write(32);
+        underTest.write(62);
+        underTest.write(32);
+        underTest.write(67);
+        underTest.write(72);
+        underTest.write(65);
+        underTest.write(73);
     }
 }
