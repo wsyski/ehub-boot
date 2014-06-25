@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.routing.RoutingRulesPanelFactory;
+import com.axiell.ehub.provider.alias.AliasesPanelFactory;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
@@ -28,12 +28,12 @@ final class ContentProvidersPanel extends BreadCrumbPanel {
         super(panelId, breadCrumbModel);
         this.contentProvidersView = new ContentProvidersListView("contentProviders", breadCrumbModel);
         add(contentProvidersView);
-        addRoutingRulesLink(breadCrumbModel);
+        addAliasesLink(breadCrumbModel);
     }
 
-    private void addRoutingRulesLink(final IBreadCrumbModel breadCrumbModel) {
-        final IBreadCrumbPanelFactory factory = new RoutingRulesPanelFactory();
-        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("routingRulesLink", breadCrumbModel, factory);
+    private void addAliasesLink(final IBreadCrumbModel breadCrumbModel) {
+        final IBreadCrumbPanelFactory factory = new AliasesPanelFactory();
+        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("aliasesLink", breadCrumbModel, factory);
         add(link);
     }
 

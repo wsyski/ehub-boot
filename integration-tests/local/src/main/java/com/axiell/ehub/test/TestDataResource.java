@@ -12,11 +12,11 @@ import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.IContentProviderAdminController;
+import com.axiell.ehub.provider.alias.Alias;
+import com.axiell.ehub.provider.alias.IAliasAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
-import com.axiell.ehub.provider.routing.IRoutingAdminController;
-import com.axiell.ehub.provider.routing.RoutingRule;
-import com.axiell.ehub.provider.routing.Source;
+import com.axiell.ehub.provider.alias.AliasMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -71,13 +71,13 @@ public class TestDataResource implements ITestDataResource {
     @Autowired
     private ILanguageAdminController languageAdminController;
     @Autowired
-    private IRoutingAdminController routingAdminController;
+    private IAliasAdminController aliasAdminController;
 
 
     @Override
     public TestData init() {
-        saveRoutingRule("ELIB", ContentProviderName.ELIB);
-        saveRoutingRule("Distributör: Elib", ContentProviderName.ELIB);
+        saveAlias("ELIB", ContentProviderName.ELIB);
+        saveAlias("Distributör: Elib", ContentProviderName.ELIB);
         initLanguage();
         final ContentProvider elibProvider = initElibProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
@@ -98,12 +98,12 @@ public class TestDataResource implements ITestDataResource {
         }
     }
 
-    private void saveRoutingRule(String sourceValue, ContentProviderName target) {
-        final Source source = new Source(sourceValue);
-        final RoutingRule routingRule = new RoutingRule();
-        routingRule.setSource(source);
-        routingRule.setTarget(target);
-        routingAdminController.save(routingRule);
+    private void saveAlias(final String aliasValue, final ContentProviderName name) {
+        final Alias alias = Alias.newInstance(aliasValue);
+        final AliasMapping aliasMapping = new AliasMapping();
+        aliasMapping.setAlias(alias);
+        aliasMapping.setName(name);
+        aliasAdminController.save(aliasMapping);
     }
 
     private void executeStatement(Connection connection) throws SQLException {
