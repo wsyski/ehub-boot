@@ -3,17 +3,14 @@
  */
 package com.axiell.ehub.language;
 
-import java.util.List;
-
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IEhubConsumerRepository;
 import com.axiell.ehub.error.IErrorCauseArgumentValueAdminController;
-import com.axiell.ehub.error.IErrorCauseArgumentValueRepository;
-import com.axiell.ehub.error.IErrorCauseArgumentValueTextBundleRepository;
+import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import java.util.List;
 
 /**
  * Default implementation of the {@link ILanguageAdminController}.
@@ -39,7 +36,7 @@ public class LanguageAdminController implements ILanguageAdminController {
     public List<Language> getLanguages() {
         return languageRepository.findAllOrderedByLanguage();
     }
-    
+
     /**
      * @see com.axiell.ehub.language.ILanguageAdminController#save(com.axiell.ehub.language.Language)
      */
@@ -48,16 +45,16 @@ public class LanguageAdminController implements ILanguageAdminController {
     public Language save(Language language) {
         return languageRepository.save(language);
     }
-    
+
     /**
      * @see com.axiell.ehub.language.ILanguageAdminController#delete(com.axiell.ehub.language.Language)
      */
     @Override
     @Transactional(readOnly = false)
     public void delete(final Language language) throws LanguageReferencedException {
-        List<EhubConsumer> ehubConsumers=ehubConsumerRepository.findByDefaultLanguage(language);
+        List<EhubConsumer> ehubConsumers = ehubConsumerRepository.findByDefaultLanguage(language);
         if (!ehubConsumers.isEmpty()) {
-           throw new LanguageReferencedException(language, ehubConsumers);
+            throw new LanguageReferencedException(language, ehubConsumers);
         }
         formatAdminController.deleteFormatTextBundles(language);
         errorCauseArgumentValueAdminController.deleteErrorCauseArgumentValueTextBundles(language);

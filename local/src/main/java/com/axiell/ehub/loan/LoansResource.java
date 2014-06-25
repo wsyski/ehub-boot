@@ -5,8 +5,6 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.security.AuthInfo;
 
-import javax.ws.rs.HeaderParam;
-
 /**
  * Default implementation of the {@link ILoansResource}.
  */

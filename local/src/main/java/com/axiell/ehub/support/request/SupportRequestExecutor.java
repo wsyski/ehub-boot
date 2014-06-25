@@ -30,7 +30,6 @@ class SupportRequestExecutor {
             supportRequest.setAuthInfo(authInfo);
             final ClientExecutor clientExecutor = new SupportClientExecutor(supportRequest);
             final IContentProvidersResource contentProvidersResource = ProxyFactory.create(IContentProvidersResource.class, baseUri, clientExecutor);
-//            final IRecordsResource recordsResource = contentProvidersResource.getRecords(contentProviderName);
             final IRecordsResource recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
             final Formats formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
             return makeSupportResponse(supportRequest, STATUS_OK, formats);
