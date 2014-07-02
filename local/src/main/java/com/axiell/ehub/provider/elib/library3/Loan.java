@@ -3,9 +3,6 @@ package com.axiell.ehub.provider.elib.library3;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Iterator;
-import java.util.List;
-
 @JsonIgnoreProperties(value = {"ProductID", "ExpiryDate", "CreatedDate", "Supplements", "CoverImage", "Title"})
 public class Loan {
     @JsonProperty("LoanID")

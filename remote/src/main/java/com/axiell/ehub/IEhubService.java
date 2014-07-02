@@ -26,6 +26,9 @@ public interface IEhubService {
      */
     Formats getFormats(AuthInfo authInfo, String contentProviderName, String contentProviderRecordId, String language) throws EhubException;
 
+    @Deprecated
+    ReadyLoan createLoan(AuthInfo authInfo, PendingLoan pendingLoan) throws EhubException;
+
     /**
      * Creates a loan both in the LMS and at the {@link ContentProvider}.
      *
@@ -47,6 +50,9 @@ public interface IEhubService {
      * @throws EhubException if an exception occurred when trying to get a loan
      */
     ReadyLoan getReadyLoan(AuthInfo authInfo, Long readyLoanId, String language) throws EhubException;
+
+    @Deprecated
+    ReadyLoan getReadyLoan(AuthInfo authInfo, String lmsLoanId) throws EhubException;
 
     /**
      * Gets a {@link ReadyLoan} for the provided {@link AuthInfo} and LMS loan ID.

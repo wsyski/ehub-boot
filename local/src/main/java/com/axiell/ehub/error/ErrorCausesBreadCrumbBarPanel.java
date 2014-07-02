@@ -3,7 +3,6 @@ package com.axiell.ehub.error;
 
 import com.axiell.ehub.AbstractBreadCrumbBarPanel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
-import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 
 public class ErrorCausesBreadCrumbBarPanel extends AbstractBreadCrumbBarPanel<ErrorCausesPanel> {
 

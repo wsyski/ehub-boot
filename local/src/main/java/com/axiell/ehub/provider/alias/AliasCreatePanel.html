@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+            <form wicket:id="createForm">
+                <div wicket:id="feedback"/>
+                <div>
+                    <label wicket:for="alias">
+                        <wicket:message key="fldAlias.label"/>
+                    </label>
+                    <input wicket:id="alias" type="text" wicket:message="title:fldAlias.title"/>
+                    <!--<div class="routing-rule-description">-->
+                        <!--<wicket:message key="txtAliasDescription"/>-->
+                    <!--</div>-->
+                </div>
+                <div>
+                    <label wicket:for="contentProvider">
+                        <wicket:message key="fldContentProvider.label"/>
+                    </label>
+                    <select wicket:id="contentProvider" wicket:message="title:fldContentProvider.title"/>
+                    <!--<div class="routing-rule-description">-->
+                        <!--<wicket:message key="txtNameDescription"/>-->
+                    <!--</div>-->
+                </div>
+                <div>
+                    <input class="btn btn-primary" wicket:id="createButton" type="submit" wicket:message="value:btnCreateAlias.label,title:btnCreateAlias.title"/>
+                </div>
+            </form>
+        </wicket:panel>
+    </body>
+</html>

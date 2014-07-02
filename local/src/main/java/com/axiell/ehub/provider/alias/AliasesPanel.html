@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+            <div wicket:id="aliasModalWindow"></div>
+            <h4>
+                <wicket:message key="txtAliasesHeader"/>
+            </h4>
+            <table class="table">
+                <tr>
+                    <th><wicket:message key="txtAliasHeader"/></th>
+                    <th><wicket:message key="txtContentProviderHeader"/></th>
+                    <th></th>
+                </tr>
+                <div wicket:id="aliases">
+                    <tr>
+                        <td>
+                            <span wicket:id="alias"/>
+                        </td>
+                        <td>
+                            <span wicket:id="contentProvider"/>
+                        </td>
+                        <td>
+                            <a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+                                <i class="icon-remove"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+            </table>
+        </wicket:panel>
+    </body>
+</html>

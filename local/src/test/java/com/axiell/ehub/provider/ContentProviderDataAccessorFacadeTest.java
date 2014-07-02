@@ -3,7 +3,7 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.*;
-import com.axiell.ehub.provider.routing.IRoutingBusinessController;
+import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +19,10 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
-    private static final String CONTENT_PROVIDER_NAME = ContentProviderName.ELIB.toString();
+    private static final String CONTENT_PROVIDER_ALIAS = ContentProviderName.ELIB.toString();
     private IContentProviderDataAccessorFacade underTest;
     @Mock
-    private IRoutingBusinessController routingBusinessController;
+    private IAliasBusinessController aliasBusinessController;
     @Mock
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
     @Mock
@@ -45,13 +45,13 @@ public class ContentProviderDataAccessorFacadeTest {
     @Before
     public void setUpContentProviderDataAccessorFacade() {
         underTest = new ContentProviderDataAccessorFacade();
-        ReflectionTestUtils.setField(underTest, "routingBusinessController", routingBusinessController);
+        ReflectionTestUtils.setField(underTest, "aliasBusinessController", aliasBusinessController);
         ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFactory", contentProviderDataAccessorFactory);
     }
 
     @Before
     public void setUpContentProviderBusinessController() {
-        given(routingBusinessController.getTarget(any(String.class))).willReturn(ContentProviderName.ELIB);
+        given(aliasBusinessController.getName(any(String.class))).willReturn(ContentProviderName.ELIB);
     }
 
     @Before
@@ -61,7 +61,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpPendingLoan() {
-        given(pendingLoan.getContentProviderName()).willReturn(CONTENT_PROVIDER_NAME);
+        given(pendingLoan.getContentProviderName()).willReturn(CONTENT_PROVIDER_ALIAS);
     }
 
     @Before
@@ -86,11 +86,11 @@ public class ContentProviderDataAccessorFacadeTest {
     public void createLoan() {
         whenCreateLoan();
         thenLoanIsCreatedByContentProvider();
-        thenContentProviderNameIsRetrievedFromContentProviderBusinessController();
+        thenContentProviderNameIsRetrievedFromAliasBusinessController();
     }
 
-    private void thenContentProviderNameIsRetrievedFromContentProviderBusinessController() {
-        verify(routingBusinessController).getTarget(CONTENT_PROVIDER_NAME);
+    private void thenContentProviderNameIsRetrievedFromAliasBusinessController() {
+        verify(aliasBusinessController).getName(CONTENT_PROVIDER_ALIAS);
     }
 
     private void whenCreateLoan() {
@@ -123,11 +123,11 @@ public class ContentProviderDataAccessorFacadeTest {
     public void getFormats() {
         whenGetFormats();
         thenFormatsAreRetrievedFromContentProvider();
-        thenContentProviderNameIsRetrievedFromContentProviderBusinessController();
+        thenContentProviderNameIsRetrievedFromAliasBusinessController();
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_NAME, "card", "contentProviderRecordId", "language");
+        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, "card", "contentProviderRecordId", "language");
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {

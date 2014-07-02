@@ -30,6 +30,11 @@ public final class EhubClient implements IEhubService {
     }
 
     @Override
+    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan) throws EhubException {
+        return createLoan(authInfo, pendingLoan, null);
+    }
+
+    @Override
     public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) throws EhubException {
         return loansResource.createLoan(authInfo, language, pendingLoan);
     }
@@ -37,6 +42,11 @@ public final class EhubClient implements IEhubService {
     @Override
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) throws EhubException {
         return loansResource.getLoan(authInfo, readyLoanId, language);
+    }
+
+    @Override
+    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId) throws EhubException {
+        return getReadyLoan(authInfo, lmsLoanId, null);
     }
 
     @Override
