@@ -21,7 +21,7 @@ import com.axiell.ehub.util.EhubCharsets;
 /**
  * Represents the signature of a request to the Axiell eHUB.
  */
-final class Signature {
+public final class Signature {
     private static final Logger LOGGER = LoggerFactory.getLogger(Signature.class);    
     private final byte[] digest;
 
@@ -30,7 +30,7 @@ final class Signature {
      * 
      * @param base64EncodedSignature the base64 encoded signature
      */
-    Signature(String base64EncodedSignature) {
+    public Signature(String base64EncodedSignature) {
         this.digest = decodeBase64(base64EncodedSignature);
     }
 
@@ -43,7 +43,7 @@ final class Signature {
      * @param libraryCard the library card, can be <code>null</code>
      * @param pin the pin, can be <code>null</code>
      */
-    Signature(final Long ehubConsumerId, final String ehubConsumerSecretKey, final String libraryCard, final String pin) {
+    public Signature(final Long ehubConsumerId, final String ehubConsumerSecretKey, final String libraryCard, final String pin) {
         final StringBuilder builder = new StringBuilder().append(ehubConsumerId);
 
         if (libraryCard != null) {
@@ -86,7 +86,7 @@ final class Signature {
      * 
      * @return the digest of this {@link Signature}
      */
-    byte[] getDigest() {
+    public byte[] getDigest() {
         return digest;
     }
 
@@ -97,7 +97,7 @@ final class Signature {
      * @return <code>true</code> if and only if the digest of this {@link Signature} is equal to the digest of the
      * provided {@link Signature}, <code>false</code> otherwise
      */
-    boolean isValid(Signature expectedSignature) {
+    public boolean isValid(Signature expectedSignature) {
 	logSignatures(expectedSignature);
         byte[] expectedDigest = expectedSignature.getDigest();
         return MessageDigest.isEqual(expectedDigest, digest);

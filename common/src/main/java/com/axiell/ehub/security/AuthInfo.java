@@ -47,7 +47,7 @@ public final class AuthInfo {
      * @param signature a {@link Signature}
      * @throws UnauthorizedException if the ID of the {@link EhubConsumer} or the signature is <code>null</code>
      */
-    AuthInfo(final Long ehubConsumerId, final String libraryCard, final String pin, final Signature signature) {
+    public AuthInfo(final Long ehubConsumerId, final String libraryCard, final String pin, final Signature signature) {
         if (ehubConsumerId == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
         }
