@@ -11,7 +11,6 @@ import com.axiell.ehub.provider.ContentProvidersBreadCrumbBarPanel;
 import com.axiell.ehub.support.SupportBreadCrumbBarPanel;
 import com.axiell.ehub.user.AdminUser;
 import com.axiell.ehub.user.LogoutPanel;
-import com.axiell.ehub.version.VersionBreadCrumbBarPanel;
 import org.apache.commons.lang3.Validate;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -65,8 +64,6 @@ public class EhubAdminPage extends AbstractBasePage {
                     return new LanguagesBreadCrumbBarPanel(panelId);
                 case SUPPORT:
                     return new SupportBreadCrumbBarPanel(panelId);
-                case VERSION:
-                    return new VersionBreadCrumbBarPanel(panelId);
                 default:
                     throw new IllegalArgumentException("Unknown tab identifier '" + identifier + "'");
             }
@@ -79,22 +76,7 @@ public class EhubAdminPage extends AbstractBasePage {
 
         @Override
         protected String getTitle(final Tab identifier) {
-            final String titleKey;
-
-            switch (identifier) {
-                case HOME:
-                case EHUB_CONSUMERS:
-                case CONTENT_PROVIDERS:
-                case ERROR_CAUSES:
-                case LANGUAGES:
-                case SUPPORT:
-                case VERSION:
-                    titleKey = identifier.toString();
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown tab identifier '" + identifier + "'");
-            }
-
+            final String titleKey = identifier.toString();
             final StringResourceModel titleModel = new StringResourceModel(titleKey, ehubAdminPage, new Model<>());
             return titleModel.getString();
         }
@@ -104,6 +86,6 @@ public class EhubAdminPage extends AbstractBasePage {
      * Represents a tab in the tabbed panel.
      */
     private static enum Tab {
-        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, SUPPORT, VERSION;
+        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, SUPPORT;
     }
 }

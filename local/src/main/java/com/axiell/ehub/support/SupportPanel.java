@@ -1,5 +1,6 @@
 package com.axiell.ehub.support;
 
+import com.axiell.ehub.support.about.AboutPanelFactory;
 import com.axiell.ehub.support.log.LogFilesPanelFactory;
 import com.axiell.ehub.support.request.RequestsGeneratorPanelFactory;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
@@ -11,8 +12,15 @@ class SupportPanel extends BreadCrumbPanel {
 
     SupportPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
+        addAboutPanelLink(breadCrumbModel);
         addLogFilesPanelLink(breadCrumbModel);
         addRequestsGeneratorPanelLink(breadCrumbModel);
+    }
+
+    private void addAboutPanelLink(IBreadCrumbModel breadCrumbModel) {
+        final IBreadCrumbPanelFactory factory = new AboutPanelFactory();
+        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("aboutLink", breadCrumbModel, factory);
+        add(link);
     }
 
     private void addLogFilesPanelLink(IBreadCrumbModel breadCrumbModel) {

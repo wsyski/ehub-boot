@@ -1,7 +1,6 @@
-package com.axiell.ehub.version;
+package com.axiell.ehub.support.about;
 
-import javax.servlet.ServletContext;
-
+import com.jcabi.manifests.Manifests;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,78 +9,79 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.jcabi.manifests.Manifests;
+import javax.servlet.ServletContext;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WarFileManifestTest {    
+public class WarFileManifestTest {
     private static byte[] manifests;
     private WarFileManifest underTest;
     private String implementationVersion;
     private String buildTime;
-    
+
     @Mock
-    private ServletContext servletContext;       
-    
+    private ServletContext servletContext;
+
     @Before
     public void takeSnapshot() {
-	WarFileManifestTest.manifests = Manifests.snapshot();
+        WarFileManifestTest.manifests = Manifests.snapshot();
     }
 
     @After
     public void revertSnapshot() {
-	Manifests.revert(WarFileManifestTest.manifests);
+        Manifests.revert(WarFileManifestTest.manifests);
     }
-    
+
     private void whenGetBuildTime() throws ManifestException {
-	setUpWarFileManifest();
-	buildTime = underTest.getBuildTime();
+        setUpWarFileManifest();
+        buildTime = underTest.getBuildTime();
     }
+
     private void setUpWarFileManifest() throws ManifestException {
-	underTest = WarFileManifest.read(servletContext);
+        underTest = WarFileManifest.read(servletContext);
     }
-    
+
     @Test
     public void getNoBuildTime() throws ManifestException {
-	whenGetBuildTime();
-	thenBuildTimeIsNull();
+        whenGetBuildTime();
+        thenBuildTimeIsNull();
     }
-    
+
     private void thenBuildTimeIsNull() {
-	Assert.assertNull(buildTime);	
+        Assert.assertNull(buildTime);
     }
-    
+
     @Test
     public void getBuildTime() throws ManifestException {
-	givenBuildTime();
-	whenGetBuildTime();
-	thenBuildTimeIsNotNull();
+        givenBuildTime();
+        whenGetBuildTime();
+        thenBuildTimeIsNotNull();
     }
-    
+
     private void givenBuildTime() {
-	Manifests.inject("Build-Time", "value");
+        Manifests.inject("Build-Time", "value");
     }
-    
+
     private void thenBuildTimeIsNotNull() {
-	Assert.assertNotNull(buildTime);
+        Assert.assertNotNull(buildTime);
     }
 
     @Test
     public void getImplementationVersion() throws ManifestException {
-	givenImplementationVersion();
-	whenGetImplementationVersion();
-	thenImplementationVersionIsNotNull();
+        givenImplementationVersion();
+        whenGetImplementationVersion();
+        thenImplementationVersionIsNotNull();
     }
 
     private void givenImplementationVersion() {
-	Manifests.inject("Implementation-Version", "value");
+        Manifests.inject("Implementation-Version", "value");
     }
-    
+
     private void thenImplementationVersionIsNotNull() {
-	Assert.assertNotNull(implementationVersion);
+        Assert.assertNotNull(implementationVersion);
     }
-    
+
     private void whenGetImplementationVersion() throws ManifestException {
-	setUpWarFileManifest();
-	implementationVersion = underTest.getImplementationVersion();
+        setUpWarFileManifest();
+        implementationVersion = underTest.getImplementationVersion();
     }
 }
