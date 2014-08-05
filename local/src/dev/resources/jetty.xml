@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+    <New id="DSTest" class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg></Arg>
+        <Arg>jdbc/ehub</Arg>
+        <Arg>
+            <New class="oracle.jdbc.pool.OracleDataSource">
+                <Set name="DriverType">thin</Set>
+                <Set name="URL"><SystemProperty name="hibernate.connection.url"/></Set>
+                <Set name="User"><SystemProperty name="hibernate.connection.username"/></Set>
+                <Set name="Password"><SystemProperty name="hibernate.connection.password"/></Set>
+                <Set name="connectionCachingEnabled">true</Set>
+                <Set name="connectionCacheProperties">
+                    <New class="java.util.Properties">
+                        <Call name="setProperty">
+                            <Arg>MinLimit</Arg>
+                            <Arg>10</Arg>
+                        </Call>
+                        <Call name="setProperty">
+                            <Arg>InactivityTimeout</Arg>
+                            <Arg>600</Arg>
+                        </Call>
+                    </New>
+                </Set>
+            </New>
+        </Arg>
+    </New>
+</Configure>
