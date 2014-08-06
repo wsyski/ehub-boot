@@ -31,17 +31,17 @@ public class WarFileManifestTest {
         Manifests.revert(WarFileManifestTest.manifests);
     }
 
-    private void whenGetBuildTime() throws ManifestException {
+    private void whenGetBuildTime() {
         setUpWarFileManifest();
         buildTime = underTest.getBuildTime();
     }
 
-    private void setUpWarFileManifest() throws ManifestException {
+    private void setUpWarFileManifest() {
         underTest = WarFileManifest.read(servletContext);
     }
 
     @Test
-    public void getNoBuildTime() throws ManifestException {
+    public void getNoBuildTime() {
         whenGetBuildTime();
         thenBuildTimeIsNull();
     }
@@ -51,7 +51,7 @@ public class WarFileManifestTest {
     }
 
     @Test
-    public void getBuildTime() throws ManifestException {
+    public void getBuildTime() {
         givenBuildTime();
         whenGetBuildTime();
         thenBuildTimeIsNotNull();
@@ -66,7 +66,7 @@ public class WarFileManifestTest {
     }
 
     @Test
-    public void getImplementationVersion() throws ManifestException {
+    public void getImplementationVersion() {
         givenImplementationVersion();
         whenGetImplementationVersion();
         thenImplementationVersionIsNotNull();
@@ -80,7 +80,7 @@ public class WarFileManifestTest {
         Assert.assertNotNull(implementationVersion);
     }
 
-    private void whenGetImplementationVersion() throws ManifestException {
+    private void whenGetImplementationVersion() {
         setUpWarFileManifest();
         implementationVersion = underTest.getImplementationVersion();
     }

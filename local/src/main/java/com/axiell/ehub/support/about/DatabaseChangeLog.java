@@ -16,6 +16,9 @@ public class DatabaseChangeLog {
     @Column(name = "FILENAME", nullable = false)
     private String fileName;
 
+    @Column(name = "AUTHOR", nullable = false)
+    private String author;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATEEXECUTED", nullable = false)
     private Date dateExecuted;
@@ -31,6 +34,10 @@ public class DatabaseChangeLog {
 
     public String getId() {
         return id;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public String getFileName() {

@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import java.io.IOException;
 
 public class WarFileManifest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WarFileManifest.class);
     private final String implementationVersion;
     private final String buildTime;
 
@@ -24,7 +25,7 @@ public class WarFileManifest {
         return buildTime;
     }
 
-    static WarFileManifest read(final ServletContext servletContext) throws ManifestException {
+    static WarFileManifest read(final ServletContext servletContext) {
         return new Builder(servletContext).implementationVersion().buildTime().build();
     }
 
@@ -35,11 +36,11 @@ public class WarFileManifest {
         private String implementationVersion;
         private String buildTime;
 
-        private Builder(final ServletContext servletContext) throws ManifestException {
+        private Builder(final ServletContext servletContext) {
             try {
                 Manifests.append(servletContext);
             } catch (IOException e) {
-                throw new ManifestException(e);
+                LOGGER.error("Could not append ServletContext to Manifests", e);
             }
         }
 
