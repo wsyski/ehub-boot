@@ -23,10 +23,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.axiell.ehub.util.XjcSupport;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ClientResponseFailureAspectTest {
+public class EhubClientExceptionAspectTest {
     private static final String INVALID_ENTITY = "xml";
     private static final ErrorCause BAD_REQUEST = ErrorCause.BAD_REQUEST;
-    private ClientResponseFailureAspect underTest;
+    private EhubClientExceptionAspect underTest;
     @Mock
     private JoinPoint joinPoint;
     @Mock
@@ -40,7 +40,7 @@ public class ClientResponseFailureAspectTest {
 
     @Before
     public void setUp() {
-	underTest = new ClientResponseFailureAspect();
+	underTest = new EhubClientExceptionAspect();
     }
 
     @Test

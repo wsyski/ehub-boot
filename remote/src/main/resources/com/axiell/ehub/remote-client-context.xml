@@ -57,6 +57,6 @@
     </bean>
 
     <aop:aspectj-autoproxy/>
-    <bean id="failureAspect" class="com.axiell.ehub.ClientResponseFailureAspect"/>
+    <bean id="ehubClientExceptionAspect" class="com.axiell.ehub.EhubClientExceptionAspect"/>
 
 </beans>

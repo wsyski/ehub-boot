@@ -22,13 +22,11 @@ import org.slf4j.LoggerFactory;
 import com.axiell.ehub.util.XjcSupport;
 
 /**
- * This Aspect converts {@link ClientResponseFailure}s thrown by the
- * {@link EhubClient} to {@link EhubException}s and {@link EhubRuntimeException}
- * s thrown by the {@link EhubClient} to {@link EhubException}s.
+ * This Aspect converts exceptions thrown by the {@link EhubClient} to {@link EhubException}s.
  */
 @Aspect
-public class ClientResponseFailureAspect {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientResponseFailureAspect.class);
+public class EhubClientExceptionAspect {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EhubClientExceptionAspect.class);
 
     /**
      * Converts the {@link ClientResponseFailure} to an {@link EhubException}.
@@ -78,7 +76,7 @@ public class ClientResponseFailureAspect {
 
     private EhubError unmarshal(final String xml) {
     /*
-	 * Must use this "manual" unmarshaller and not
+     * Must use this "manual" unmarshaller and not
 	 * 'response.getEntity(EhubError.class)' since the type of the
 	 * entity in the response is String
 	 */
