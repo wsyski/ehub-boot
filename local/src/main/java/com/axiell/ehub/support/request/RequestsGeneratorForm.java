@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-class RequestsGeneratorForm extends Form<RequestArguments> {
+public class RequestsGeneratorForm extends Form<RequestArguments> {
 
     RequestsGeneratorForm(final String id) {
         super(id);
@@ -25,16 +25,28 @@ class RequestsGeneratorForm extends Form<RequestArguments> {
         setModel(model);
     }
 
-    protected void addContentProviderNameField() {
+    public void addContentProviderNameField() {
         addTextField("contentProviderName", true);
     }
 
-    protected void addContentProviderRecordIdField() {
+    public void addContentProviderRecordIdField() {
         addTextField("contentProviderRecordId", true);
     }
 
-    protected void addLangaugeField() {
+    public void addLangaugeField() {
         addTextField("language", false);
+    }
+
+    public void addLmsRecordIdField() {
+        addTextField("lmsRecordId", false);
+    }
+
+    public void addFormatIdField() {
+        addTextField("formatId", false);
+    }
+
+    public void addLmsLoanIdField() {
+        addTextField("lmsLoanId", false);
     }
 
     private void addTextField(final String id, final boolean required) {

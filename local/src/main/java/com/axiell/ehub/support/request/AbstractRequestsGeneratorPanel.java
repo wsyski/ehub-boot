@@ -4,7 +4,7 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 
-abstract class AbstractRequestsGeneratorPanel extends BreadCrumbPanel {
+public abstract class AbstractRequestsGeneratorPanel extends BreadCrumbPanel {
     protected RequestsGeneratorForm form;
     protected RequestsGeneratorMediator mediator;
 

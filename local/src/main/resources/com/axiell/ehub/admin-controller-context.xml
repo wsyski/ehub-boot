@@ -14,4 +14,8 @@
 	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>
     <bean id="databaseChangeLogAdminController" class="com.axiell.ehub.support.about.DatabaseChangeLogAdminController"/>
 	<bean id="loanAdminController" class="com.axiell.ehub.loan.LoanAdminController"/>
+
+    <bean id="supportRequestAdminController" class="com.axiell.ehub.support.request.SupportRequestAdminController">
+        <property name="sslHttpClient" ref="sslHttpClient"/>
+    </bean>
 </beans>

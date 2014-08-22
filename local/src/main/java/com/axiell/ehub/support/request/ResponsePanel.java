@@ -17,18 +17,13 @@ class ResponsePanel extends Panel {
         addLabel("httpMethod", request.getHttpMethod());
         addLabel("authInfo", request.getAuthInfo());
         addLabel("status", response.getStatus());
-        addField("unformattedResponseBody", response.getBody());
+        addLabel("requestBody", request.getBody());
+        addLabel("responseBody", response.getBody());
     }
 
     private void addLabel(final String id, String value) {
         final Label label = new Label(id, value);
+        label.setVisible(value != null);
         add(label);
-    }
-
-    private void addField(final String fieldId, final String value) {
-        final AttributeModifier attributeModifier = new AttributeModifier("value", true, new Model<>(value));
-        final Label hiddenField = new Label(fieldId);
-        hiddenField.add(attributeModifier);
-        add(hiddenField);
     }
 }

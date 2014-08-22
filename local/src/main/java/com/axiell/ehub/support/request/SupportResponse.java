@@ -1,6 +1,6 @@
 package com.axiell.ehub.support.request;
 
-class SupportResponse {
+public class SupportResponse {
     private final SupportRequest request;
     private final String status;
     private final String body;

@@ -1,4 +1,4 @@
-package com.axiell.ehub;
+package com.axiell.ehub.security;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

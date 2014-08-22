@@ -1,5 +1,7 @@
-package com.axiell.ehub.support.request;
+package com.axiell.ehub.support.request.format;
 
+import com.axiell.ehub.support.request.AbstractRequestsGeneratorPanel;
+import com.axiell.ehub.support.request.format.GetFormatsButton;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 
 class GetFormatsRequestsPanel extends AbstractRequestsGeneratorPanel {

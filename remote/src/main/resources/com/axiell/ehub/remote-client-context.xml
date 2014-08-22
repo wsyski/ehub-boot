@@ -9,9 +9,6 @@
     <import resource="common-context.xml"/>
 
     <util:properties id="remoteProperties" location="classpath:remote-client.properties"/>
-    <bean id="sslHttpClient" class="com.axiell.ehub.SslHttpClientBuilder" factory-method="createSelfSignedCertSSLCapableHttpConnector">
-        <constructor-arg type="int" value="443"/>
-    </bean>
 
     <bean id="clientExecutor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
         <constructor-arg ref="sslHttpClient"/>
