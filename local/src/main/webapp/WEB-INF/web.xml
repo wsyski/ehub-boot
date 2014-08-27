@@ -4,6 +4,32 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<display-name>Axiell eHUB</display-name>
 
+    <resource-ref>
+        <description>My Liquibase DataSource Reference</description>
+        <res-ref-name>jdbc/ehub</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <context-param>
+        <param-name>liquibase.changelog</param-name>
+        <param-value>com/axiell/ehub/db/changelog/changelog-master.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.datasource</param-name>
+        <param-value>java:comp/env/jdbc/ehub</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>liquibase.onerror.fail</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+    </listener>
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:/com/axiell/ehub/application-context.xml</param-value>

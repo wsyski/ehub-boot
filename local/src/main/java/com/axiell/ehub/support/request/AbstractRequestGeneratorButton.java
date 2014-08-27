@@ -3,11 +3,15 @@ package com.axiell.ehub.support.request;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-abstract class AbstractRequestGeneratorButton extends IndicatingAjaxButton {
+public abstract class AbstractRequestGeneratorButton extends IndicatingAjaxButton {
     private final RequestsGeneratorMediator mediator;
 
-    AbstractRequestGeneratorButton(final String id, final RequestsGeneratorMediator mediator) {
+    @SpringBean(name = "supportRequestAdminController")
+    protected ISupportRequestAdminController supportRequestAdminController;
+
+    protected AbstractRequestGeneratorButton(final String id, final RequestsGeneratorMediator mediator) {
         super(id);
         this.mediator = mediator;
     }

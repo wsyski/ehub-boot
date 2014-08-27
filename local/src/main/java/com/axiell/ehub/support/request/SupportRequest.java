@@ -6,6 +6,7 @@ class SupportRequest {
     private AuthInfo authInfo;
     private String httpMethod;
     private String uri;
+    private String body;
 
     String getAuthInfo() {
         return authInfo == null ? null : authInfo.toString();
@@ -29,5 +30,13 @@ class SupportRequest {
 
     void setUri(String uri) {
         this.uri = uri;
+    }
+
+    String getBody() {
+        return body;
+    }
+
+    void setBody(String body) {
+        this.body = body;
     }
 }

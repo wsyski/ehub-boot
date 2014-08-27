@@ -44,28 +44,39 @@
                         </table>
                     </td>
                 </tr>
+                <wicket:enclosure>
+                    <tr>
+                        <th>
+                            Body
+                        </th>
+                        <td>
+                            <pre class="prettyprint" wicket:id="requestBody"/>
+                        </td>
+                    </tr>
+                </wicket:enclosure>
             </table>
             <h3>Response</h3>
-            <form id="reponse-body-form" action="http://xmlprettyprint.com/xml-pretty-printer.php" method="post" target="reponse-body-frame">
-                <input type="hidden" name="xml_data" wicket:id="unformattedResponseBody"/>
-            </form>
             <table class="table">
-                <tr>
-                    <th>
-                        Status
-                    </th>
-                    <td>
-                        <span wicket:id="status"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Body
-                    </th>
-                    <td>
-                        <iframe name="reponse-body-frame" src="http://xmlprettyprint.com/xml-pretty-printer.php" width="900" height="150" frameborder="0"/>
-                    </td>
-                </tr>
+                <wicket:enclosure>
+                    <tr>
+                        <th>
+                            Status
+                        </th>
+                        <td>
+                            <span wicket:id="status"/>
+                        </td>
+                    </tr>
+                </wicket:enclosure>
+                <wicket:enclosure>
+                    <tr>
+                        <th>
+                            Body
+                        </th>
+                        <td>
+                            <pre class="prettyprint" wicket:id="responseBody"/>
+                        </td>
+                    </tr>
+                </wicket:enclosure>
             </table>
         </wicket:panel>
     </body>

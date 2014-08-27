@@ -165,6 +165,16 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+        </dependency>
+
         <!-- Test dependencies -->
         <dependency>
             <groupId>xmlunit</groupId>
@@ -347,6 +357,7 @@
                     <webApp>
                         <contextPath>/</contextPath>
                     </webApp>
+                    <jettyConfig>src/dev/resources/jetty.xml</jettyConfig>
                     <systemProperties>
                         <systemProperty>
                             <name>hibernate.connection.username</name>
@@ -375,6 +386,13 @@
                               </scanTargetPattern>
                             </scanTargetPatterns>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>oracle</groupId>
+                        <artifactId>ojdbc6</artifactId>
+                        <version>${oracle.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.cxf</groupId>

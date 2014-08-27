@@ -14,7 +14,7 @@
         <mapping class="com.axiell.ehub.provider.alias.AliasMapping"/>
         <mapping class="com.axiell.ehub.loan.EhubLoan"/>
         <mapping class="com.axiell.ehub.loan.ContentProviderLoanMetadata"/>
+        <mapping class="com.axiell.ehub.support.about.DatabaseChangeLog"/>
         <mapping class="com.axiell.ehub.user.AdminUser"/>
-        <mapping class="com.axiell.ehub.version.Release"/>
     </session-factory>
 </hibernate-configuration>

@@ -11,7 +11,11 @@
 	<bean id="languageAdminController" class="com.axiell.ehub.language.LanguageAdminController"/>
 	<bean id="contentProviderAdminController" class="com.axiell.ehub.provider.ContentProviderAdminController"/>
 	<bean id="formatAdminController" class="com.axiell.ehub.provider.record.format.FormatAdminController"/>
-	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>	
-	<bean id="releaseAdminController" class="com.axiell.ehub.version.ReleaseAdminController"/>
+	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>
+    <bean id="databaseChangeLogAdminController" class="com.axiell.ehub.support.about.DatabaseChangeLogAdminController"/>
 	<bean id="loanAdminController" class="com.axiell.ehub.loan.LoanAdminController"/>
+
+    <bean id="supportRequestAdminController" class="com.axiell.ehub.support.request.SupportRequestAdminController">
+        <property name="sslHttpClient" ref="sslHttpClient"/>
+    </bean>
 </beans>

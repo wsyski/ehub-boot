@@ -7,7 +7,7 @@ import org.apache.wicket.protocol.http.WebRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
-class RequestArguments implements Serializable {
+public class RequestArguments implements Serializable {
     private EhubConsumer ehubConsumer;
     private String libraryCard;
     private String pin;
@@ -15,6 +15,9 @@ class RequestArguments implements Serializable {
     private String contentProviderRecordId;
     private String language;
     private String baseUri;
+    private String lmsRecordId;
+    private String formatId;
+    private String lmsLoanId;
 
     RequestArguments(Component component) {
         setBaseUri(component);
@@ -66,6 +69,30 @@ class RequestArguments implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getFormatId() {
+        return formatId;
+    }
+
+    public void setFormatId(String formatId) {
+        this.formatId = formatId;
+    }
+
+    public String getLmsRecordId() {
+        return lmsRecordId;
+    }
+
+    public void setLmsRecordId(String lmsRecordId) {
+        this.lmsRecordId = lmsRecordId;
+    }
+
+    public String getLmsLoanId() {
+        return lmsLoanId;
+    }
+
+    public void setLmsLoanId(String lmsLoanId) {
+        this.lmsLoanId = lmsLoanId;
     }
 
     public String getBaseUri() {

@@ -35,6 +35,6 @@ class ExceptionContentProviderDataAccessor implements IContentProviderDataAccess
     @Override
     public IContent getContent(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin,
                                ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
-	throw new NotImplementedException("getContent has not been implemented");
+	throw new NotImplementedException("getLoan has not been implemented");
     }
 }
