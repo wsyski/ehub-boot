@@ -74,14 +74,6 @@ public class AlmaExportParseExternalUrlsTest {
     }
 
     @Test
-    public void evaluateElibShortContentProviderName() throws XpathException, IOException, SAXException, XPathException {
-        givenAlmaExportIsParsedForFieldName("contentProviderName");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-elib-short.xml");
-        whenXQueryIsEvaluated();
-        thenXQueryReturnValueIsExtracted("elib");
-    }
-
-    @Test
     public void evaluatePublitContentProviderName() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderName");
         givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-publit.xml");
@@ -109,14 +101,6 @@ public class AlmaExportParseExternalUrlsTest {
     public void evaluateElibUppercaseContentProviderRecordId() throws XpathException, IOException, SAXException, XPathException {
         givenAlmaExportIsParsedForFieldName("contentProviderRecordId");
         givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-elib-uppercase.xml");
-        whenXQueryIsEvaluated();
-        thenXQueryReturnValueIsExtracted("918501120X");
-    }
-
-    @Test
-    public void evaluateElibShortContentProviderRecordId() throws XpathException, IOException, SAXException, XPathException {
-        givenAlmaExportIsParsedForFieldName("contentProviderRecordId");
-        givenAlmaExportCatalogueIsParsed(ALMA_INDEX_CLASSPATH + "/alma-export-catalogue-elib-short.xml");
         whenXQueryIsEvaluated();
         thenXQueryReturnValueIsExtracted("918501120X");
     }

@@ -617,7 +617,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!-- mvn cargo:redeploy -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>

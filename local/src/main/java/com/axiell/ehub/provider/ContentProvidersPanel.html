@@ -2,13 +2,18 @@
     <body>
         <wicket:panel>
             <h4><wicket:message key="txtContentProvidersHeader"/></h4>
-        	<div wicket:id="contentProviders">
-        		<div>
+			
+			<table class="table table-bordered table-striped">
+			
+			<tr wicket:id="contentProviders">
+        		<td>
                     <a wicket:id="contentProviderLink" wicket:message="title:lnkContentProvider.title">
                         <span wicket:id="contentProviderLinkLabel"></span>
                     </a>
-				</div>
-        	</div>
+				</td>
+        	</tr>
+			</table>
+			
             <h4>
                 <a wicket:id="aliasesLink" wicket:message="title:lnkAliases.title">
                     <wicket:message key="lnkAliases.label"/>
