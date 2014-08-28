@@ -9,7 +9,7 @@
 		        		<label wicket:for="property">
        						<span wicket:id="propertyLabel"></span>
        					</label>
-       					<input class="input-block-level" wicket:id="property" type="text"></input>
+       					<input wicket:id="property" type="text"></input>
 		        	</div>
 		        	<div>
         				<input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
@@ -23,25 +23,25 @@
 			
         	<div wicket:id="decorationFormPanel"></div>
         	
-        	<h4>
+        	<div>
         		<wicket:message key="txtFormatsHeader"/>
-        	</h4>        	
-			
-			<table class="table table-bordered table-striped">	
-				<tr wicket:id="decorations">        		
-					<td class="contentFormatCell">
-			       		<a wicket:id="decorationLink" wicket:message="title:lnkDecoration.title">
-			       			<span wicket:id="decorationLinkLabel"></span>
-			       		</a>
-			       	</td>
-			       	<td>
-						<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
-							<i class="icon-remove"></i>
-						</a>
-					</td>
-        	</tr>
-			</table>
-
+        	</div>        	
+        	<div wicket:id="decorations">        		
+        		<table class="table">
+        			<tr>
+        				<td class="contentFormatCell">
+			        		<a wicket:id="decorationLink" wicket:message="title:lnkDecoration.title">
+			        			<span wicket:id="decorationLinkLabel"></span>
+			        		</a>
+			        	</td>
+			        	<td>
+							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+								<i class="icon-remove"></i>
+							</a>
+						</td>
+			        </tr>		
+        		</table>
+        	</div>
         </wicket:panel>
     </body>
 </html>

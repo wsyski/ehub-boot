@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AlmaMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="file:///home/wos/.m2/repository/com/axiell/arena/arena-alma-binding/2.6-SNAPSHOT/arena-alma-binding-2.6-SNAPSHOT.jar!/AlmaMessage.xsd">
+    <exportCatalogueRecordsResponse>
+        <status value="ok"/>
+        <nofRecords>1</nofRecords>
+        <nofRecordsTotal>1</nofRecordsTotal>
+        <startNo>1</startNo>
+        <stopNo>1</stopNo>
+        <exportCatalogueRecord id="id">
+            <facet/>
+            <index/>
+            <uberkey/>
+            <view>
+                <authors>
+                    <author value="author"/>
+                </authors>
+                <externalUrls>
+                    <externalUrl value="http://www.elib.se/ebook_detail.asp?id_type=ISBN&amp;id=918501120X&amp;lib=45" linkText="Loan e-book from Elib"/>
+                </externalUrls>
+            </view>
+        </exportCatalogueRecord>
+    </exportCatalogueRecordsResponse>
+</AlmaMessage>

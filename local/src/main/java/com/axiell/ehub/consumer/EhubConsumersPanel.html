@@ -43,16 +43,15 @@
         		<h4><wicket:message key="txtEhubConsumersHeader"/></h4>
         	</div>
         
-
-    		<table class="table table-striped table-bordered">
-			<!--<div wicket:id="ehubConsumers"> -->
-        			<tr wicket:id="ehubConsumers">
+        	<div wicket:id="ehubConsumers">
+        		<table class="table table-striped">
+        			<tr>
         				<td>
 							<a wicket:id="ehubConsumerLink" wicket:message="title:lnkEhubConsumer.title">
 								<span wicket:id="ehubConsumerLinkLabel"></span>
 							</a>
 						</td>
-						<td class="text-center">
+						<td>
 							<i class="icon-remove"></i>
 							<a wicket:id="deleteLink" wicket:message="title:lnkDelete.title" onclick="">
 								<wicket:message key="lnkDelete.label"/>
@@ -60,7 +59,7 @@
 						</td>
 					</tr>		
 				</table>	
-        	<!--</div>-->
+        	</div>
         </wicket:panel>
     </body>
 </html>
