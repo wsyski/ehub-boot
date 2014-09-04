@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://ehub.axiell.com" xmlns:ehub="http://ehub.axiell.com" xmlns:tns="http://ehub.axiell.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="contentProviderFormats" type="tns:formats"/>
+
+  <xs:element name="error" type="tns:ehubError"/>
+
+  <xs:element name="pendingLoan" type="tns:pendingLoan"/>
+
+  <xs:element name="readyLoan" type="tns:readyLoan"/>
+
+  <xs:complexType name="ehubError">
+    <xs:sequence>
+      <xs:element name="arguments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="argument" type="tns:errorCauseArgument" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="cause" type="tns:errorCause" use="required"/>
+    <xs:attribute name="message" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="errorCauseArgument">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="type" type="tns:type" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="pendingLoan">
+    <xs:sequence/>
+    <xs:attribute name="contentProviderFormatId" type="xs:string" use="required"/>
+    <xs:attribute name="contentProviderName" type="xs:string" use="required"/>
+    <xs:attribute name="contentProviderRecordId" type="xs:string" use="required"/>
+    <xs:attribute name="lmsRecordId" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="readyLoan">
+    <xs:sequence>
+      <xs:element name="contentProviderLoan" type="tns:contentProviderLoan"/>
+      <xs:element name="lmsLoan" type="tns:lmsLoan"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="contentProviderLoan">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="downloadableContent" type="tns:downloadableContent"/>
+        <xs:element name="streamingContent" type="tns:streamingContent"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="expirationDate" type="xs:dateTime" use="required"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="downloadableContent">
+    <xs:sequence/>
+    <xs:attribute name="url" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="streamingContent" final="extension restriction">
+    <xs:sequence/>
+    <xs:attribute name="height" type="xs:int" use="required"/>
+    <xs:attribute name="url" type="xs:string" use="required"/>
+    <xs:attribute name="width" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="lmsLoan">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="formats">
+    <xs:sequence>
+      <xs:element name="contentProviderFormat" type="tns:format" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="format">
+    <xs:sequence/>
+    <xs:attribute name="description" type="xs:string"/>
+    <xs:attribute name="iconUrl" type="xs:string"/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EHUB_CONSUMER_PROPERTY_VALUE"/>
+      <xs:enumeration value="EHUB_CONSUMER_PROPERTY_KEY"/>
+      <xs:enumeration value="LIBRARY_CARD"/>
+      <xs:enumeration value="CONTENT_PROVIDER_RECORD_ID"/>
+      <xs:enumeration value="FORMAT_ID"/>
+      <xs:enumeration value="CONTENT_PROVIDER_LOAN_ID"/>
+      <xs:enumeration value="CONTENT_PROVIDER_STATUS"/>
+      <xs:enumeration value="EHUB_CONSUMER_ID"/>
+      <xs:enumeration value="CONTENT_PROVIDER_NAME"/>
+      <xs:enumeration value="LMS_STATUS"/>
+      <xs:enumeration value="LMS_RECORD_ID"/>
+      <xs:enumeration value="LMS_LOAN_ID"/>
+      <xs:enumeration value="READY_LOAN_ID"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="errorCause">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NOT_IMPLEMENTED"/>
+      <xs:enumeration value="LMS_ERROR"/>
+      <xs:enumeration value="LMS_RECORD_NOT_FOUND"/>
+      <xs:enumeration value="LMS_INVALID_PIN_CODE"/>
+      <xs:enumeration value="LMS_INVALID_LIBRARY_CARD"/>
+      <xs:enumeration value="LMS_INVALID_ACCOUNT_CARD"/>
+      <xs:enumeration value="LMS_LIBRARY_CARD_NOT_FOUND"/>
+      <xs:enumeration value="LMS_BLOCKED_LIBRARY_CARD"/>
+      <xs:enumeration value="LMS_CHECKOUT_DENIED"/>
+      <xs:enumeration value="CONTENT_PROVIDER_ERROR"/>
+      <xs:enumeration value="INTERNAL_SERVER_ERROR"/>
+      <xs:enumeration value="CONTENT_PROVIDER_CONSUMER_NOT_FOUND"/>
+      <xs:enumeration value="CONTENT_PROVIDER_RECORD_NOT_FOUND"/>
+      <xs:enumeration value="FORMAT_NOT_FOUND"/>
+      <xs:enumeration value="MISSING_CONTENT_PROVIDER_LOAN_ID"/>
+      <xs:enumeration value="CONTENT_PROVIDER_LOAN_NOT_FOUND"/>
+      <xs:enumeration value="LOAN_BY_ID_NOT_FOUND"/>
+      <xs:enumeration value="LOAN_BY_LMS_LOAN_ID_NOT_FOUND"/>
+      <xs:enumeration value="UNKNOWN_CONTENT_PROVIDER"/>
+      <xs:enumeration value="MISSING_SECRET_KEY"/>
+      <xs:enumeration value="EHUB_CONSUMER_INVALID_PROPERTY"/>
+      <xs:enumeration value="EHUB_CONSUMER_NOT_FOUND"/>
+      <xs:enumeration value="INVALID_SIGNATURE"/>
+      <xs:enumeration value="MISSING_FORMAT"/>
+      <xs:enumeration value="MISSING_PIN"/>
+      <xs:enumeration value="MISSING_LIBRARY_CARD"/>
+      <xs:enumeration value="MISSING_SIGNATURE"/>
+      <xs:enumeration value="MISSING_EHUB_CONSUMER_ID"/>
+      <xs:enumeration value="MISSING_AUTHORIZATION_HEADER"/>
+      <xs:enumeration value="MISSING_CONTENT_PROVIDER_NAME"/>
+      <xs:enumeration value="BAD_REQUEST"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

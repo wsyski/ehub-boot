@@ -302,7 +302,7 @@
                 </executions>
                 <configuration>
                     <srcdir>${project.basedir}/../common/src/main/java</srcdir>
-                    <destdir>${project.basedir}/src/main/webapp/xsd/v1</destdir>
+                    <destdir>${project.basedir}/src/main/webapp/dev/docs/xsd/v1</destdir>
                     <includes>
                         <include>**/Formats.java</include>
                         <include>**/PendingLoan.java</include>
