@@ -6,8 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class WarFileManifest {
+public class WarFileManifest implements Serializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(WarFileManifest.class);
     private final String implementationVersion;
     private final String buildTime;
