@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.9_2</version>
     </parent>
     <artifactId>ehub-local</artifactId>
     <name>${project.artifactId}</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.9_2</version>
     <packaging>war</packaging>
 
     <dependencies>
