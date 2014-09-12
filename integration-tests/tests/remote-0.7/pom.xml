@@ -37,14 +37,6 @@
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local</artifactId>
             <version>0.7</version>
-            <classifier>classes</classifier>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ehub-local</artifactId>
-            <version>0.7</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
@@ -73,6 +65,4 @@
 
 
     </dependencies>
-
-
 </project>
