@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -41,7 +42,7 @@ public class GetFormatsCommandChainTest {
     private ContentProvider contentProvider;
     @Mock
     private BookAvailability bookAvailability;
-    private Elib3CommandData commandData;
+    private Elib3CommandData elib3CommandData;
     @Mock
     private Product product;
     @Mock
@@ -51,6 +52,8 @@ public class GetFormatsCommandChainTest {
     private Set<Format> actualFormatSet;
     @Mock
     private Format expFormat;
+    @Mock
+    private CommandData commandData;
     private Format actualFormat;
 
     @Before
@@ -95,7 +98,8 @@ public class GetFormatsCommandChainTest {
 
     private void givenCommandData() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
-        commandData = Elib3CommandData.newInstance(contentProviderConsumer, "libraryCard", CP_RECORD_ID, "en");
+        given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 
     private void givenProductWithAvailableFormats() {
@@ -115,7 +119,7 @@ public class GetFormatsCommandChainTest {
     }
 
     private void whenExecute() {
-        final Formats actualFormats = underTest.execute(commandData);
+        final Formats actualFormats = underTest.execute(elib3CommandData);
         actualFormatSet = actualFormats.getFormats();
         Iterator<Format> itr = actualFormatSet.iterator();
         actualFormat = itr.hasNext() ? actualFormatSet.iterator().next() : null;

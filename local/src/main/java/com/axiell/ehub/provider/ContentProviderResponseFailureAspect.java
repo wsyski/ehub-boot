@@ -64,9 +64,14 @@ public class ContentProviderResponseFailureAspect {
     }
 
     private ContentProviderConsumer getContentProviderConsumer(JoinPoint joinPoint) {
+        final CommandData commandData = getCommandData(joinPoint);
+        return commandData == null ? null : commandData.getContentProviderConsumer();
+    }
+
+    private CommandData getCommandData(JoinPoint joinPoint) {
         for (Object arg : joinPoint.getArgs()) {
-            if (arg instanceof ContentProviderConsumer)
-                return (ContentProviderConsumer) arg;
+            if (arg instanceof CommandData)
+                return (CommandData) arg;
         }
         return null;
     }

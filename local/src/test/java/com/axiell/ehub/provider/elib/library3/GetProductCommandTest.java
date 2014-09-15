@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.CommandData;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,9 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
     private Product product;
     @Mock
     private Product.AvailableFormat availableFormat;
-    private Elib3CommandData commandData;
+    @Mock
+    private CommandData commandData;
+    private Elib3CommandData elib3CommandData;
 
     @Before
     public void setUpUnderTest() {
@@ -66,7 +69,8 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenCommandData() {
-        commandData = Elib3CommandData.newInstance(contentProviderConsumer, libraryCard, elibProductId, language);
+        given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 
     private void givenAvailableFormats() {
@@ -88,6 +92,6 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
     }
 
     private void whenRun() {
-        underTest.run(commandData);
+        underTest.run(elib3CommandData);
     }
 }

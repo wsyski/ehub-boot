@@ -663,21 +663,37 @@
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>generate-sources-askews</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
+                        <configuration>
+                            <extension>true</extension>
+                            <verbose>true</verbose>
+                            <packageName>com.askews.api</packageName>
+                            <sourceDestDir>${project.build.directory}/generated-sources/askews</sourceDestDir>
+                            <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>askews.wsdl</wsdlFile>
+                            </wsdlFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-sources-f1</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <extension>true</extension>
+                            <verbose>true</verbose>
+                            <packageName>se.forlagett.api</packageName>
+                            <sourceDestDir>${project.build.directory}/generated-sources/f1</sourceDestDir>
+                            <wsdlUrls>
+                                <wsdlUrl>http://194.68.86.40/F1Service.asmx?WSDL</wsdlUrl>
+                            </wsdlUrls>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <extension>true</extension>
-                    <verbose>true</verbose>
-                    <packageName>com.askews.api</packageName>
-                    <sourceDestDir>${project.build.directory}/generated-sources/askews</sourceDestDir>
-                    <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
-                    <wsdlFiles>
-                        <wsdlFile>askews.wsdl</wsdlFile>
-                    </wsdlFiles>
-                </configuration>
             </plugin>
         </plugins>
     </build>

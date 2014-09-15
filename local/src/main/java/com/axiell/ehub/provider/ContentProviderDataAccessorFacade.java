@@ -25,7 +25,8 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        return dataAccessor.getFormats(consumer, libraryCard, contentProviderRecordId, language);
+        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
+        return dataAccessor.getFormats(commandData);
     }
 
     @Override
@@ -33,7 +34,8 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = aliasBusinessController.getName(pendingLoan.getContentProviderName());
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        return dataAccessor.createLoan(consumer, libraryCard, pin, pendingLoan, language);
+        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setPin(pin).setPendingLoan(pendingLoan).setLanguage(language);
+        return dataAccessor.createLoan(commandData);
     }
 
     @Override
@@ -42,10 +44,11 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        return dataAccessor.getContent(consumer, libraryCard, pin, metadata, language);
+        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setPin(pin).setContentProviderLoanMetadata(metadata).setLanguage(language);
+        return dataAccessor.getContent(commandData);
     }
 
-    private ContentProviderName getContentProviderName(ContentProviderLoanMetadata metadata) {
+    private ContentProviderName getContentProviderName(final ContentProviderLoanMetadata metadata) {
         final ContentProvider contentProvider = metadata.getContentProvider();
         return contentProvider.getName();
     }

@@ -33,8 +33,6 @@ import com.axiell.ehub.provider.record.format.FormatTextBundle;
  *
  */
 public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTest {
-    private static final String RECORD_ID = "1";
-    private static final String FORMAT_ID = "1";
     private static final Integer LICENSE_ID = 1;
     private static final String CONTENT_URL = "url";
 
@@ -73,6 +71,9 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void getFormats() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenResult();
         givenStatus();
@@ -116,23 +117,13 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
-    }
-
-    private void thenFormatSetContainsOneFormat() {
-        Set<Format> formatSet = thenFormatSetIsNotNull();
-        Assert.assertTrue(formatSet.size() == 1);
-    }
-
-    private Set<Format> thenFormatSetIsNotNull() {
-        Assert.assertNotNull(actualFormats);
-        Set<Format> formatSet = actualFormats.getFormats();
-        Assert.assertNotNull(formatSet);
-        return formatSet;
+        actualFormats = underTest.getFormats(commandData);
     }
 
     @Test
     public void getFormatsWhenNoFormatId() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
         givenProductResponse();
         givenResult();
         givenStatus();
@@ -143,13 +134,10 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         thenFormatSetIsEmpty();
     }
 
-    private void thenFormatSetIsEmpty() {
-        Set<Format> formatSet = thenFormatSetIsNotNull();
-        Assert.assertTrue(formatSet.isEmpty());
-    }
-
     @Test
     public void getFormatsWhenProductHasNotBeenRetrieved() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
         givenProductResponse();
         givenResult();
         givenStatus();
@@ -167,13 +155,15 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void createLoan() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
@@ -202,14 +192,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     private void givenLicenseId() {
         given(result.getLicense()).willReturn(license);
         given(license.getLicenseId()).willReturn(LICENSE_ID);
-    }
-
-    private void givenRecordIdInPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-    }
-
-    private void givenFormatIdInPendingLoan() {
-        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenConsumeProductResponse() {
@@ -243,17 +225,19 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     @Test
     public void createLoanWhenMissingFormat() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenRecordIdInPendingLoan();
         try {
             whenCreateLoan();
         } catch (BadRequestException e) {
@@ -267,6 +251,9 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void createLoanWhenLicenseIsNotConsumed() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -284,13 +271,15 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void createLoanWhenProductIsNotConsumed() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
@@ -310,13 +299,15 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void createLoanWhenNoConsumedProductFormats() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
@@ -334,13 +325,15 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void createLoanWhenNotSameFormat() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
@@ -364,12 +357,15 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     @Test
     public void getContent() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenContentProviderRecordId();
+        givenContentProviderRecordIdInLoanMetadata();
         givenConsumeProductResponse();
         givenResult();
         givenStatus();
@@ -386,11 +382,11 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         thenActualContentContainsDownloadUrl();
     }
 
-    private void givenContentProviderRecordId() {
+    private void givenContentProviderRecordIdInLoanMetadata() {
         given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 }

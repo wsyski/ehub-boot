@@ -19,21 +19,18 @@ public class ContentProviderResponseFailureAspectTest {
 
     @Autowired
     private ExceptionContentProviderDataAccessor underTest;
-    private ContentProviderConsumer contentProviderConsumer;
+    private CommandData commandData;
 
     @Before
-    public void setUpContentProviderConsumer() {
-        ContentProviderName name = CONTENT_PROVIDER_NAME;
-        ContentProvider contentProvider = new ContentProvider();
-        contentProvider.setName(name);
-        contentProviderConsumer = new ContentProviderConsumer();
-        contentProviderConsumer.setContentProvider(contentProvider);
+    public void setUpCommandData() {
+        final ContentProviderConsumer contentProviderConsumer = makeContentProviderConsumer();
+        commandData = CommandData.newInstance(contentProviderConsumer, "libraryCard").setContentProviderRecordId("contentProviderRecordId").setLanguage("language");
     }
 
     @Test
     public void clientResponseFailureToInternalServerErrorException() {
         try {
-            underTest.getFormats(contentProviderConsumer, "libraryCard", "contentProviderRecordId", "language");
+            underTest.getFormats(commandData);
             Assert.fail("An InternalServerErrorException should have been thrown");
         } catch (InternalServerErrorException e) {
             thenInternalServerErrorExceptionMessageContainsExpectedContentProviderName(e);
@@ -46,5 +43,14 @@ public class ContentProviderResponseFailureAspectTest {
         Assert.assertNotNull(ehubError);
         String actualMessage = ehubError.getMessage();
         Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME.toString()));
+    }
+
+    private ContentProviderConsumer makeContentProviderConsumer() {
+        final ContentProviderName name = CONTENT_PROVIDER_NAME;
+        ContentProvider contentProvider = new ContentProvider();
+        contentProvider.setName(name);
+        final ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer();
+        contentProviderConsumer.setContentProvider(contentProvider);
+        return contentProviderConsumer;
     }
 }

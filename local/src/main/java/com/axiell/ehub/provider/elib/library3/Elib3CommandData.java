@@ -12,7 +12,11 @@ public class Elib3CommandData extends CommandData {
         super(contentProviderConsumer, libraryCard);
     }
 
-    public static Elib3CommandData newInstance(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String contentProviderRecordId, final String language) {
+    public static Elib3CommandData newInstance(final CommandData commandData) {
+        final ContentProviderConsumer contentProviderConsumer = commandData.getContentProviderConsumer();
+        final String libraryCard = commandData.getLibraryCard();
+        final String language = commandData.getLanguage();
+        final String contentProviderRecordId = commandData.getContentProviderRecordId();
         final Elib3CommandData data = new Elib3CommandData(contentProviderConsumer, libraryCard);
         data.setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
         return data;

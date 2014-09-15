@@ -1,19 +1,5 @@
 package com.axiell.ehub.provider.overdrive;
 
-import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
-import static org.mockito.BDDMockito.given;
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates;
@@ -21,6 +7,18 @@ import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.Downlo
 import com.axiell.ehub.provider.overdrive.DownloadLink.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLink.Links.ContentLink;
 import com.axiell.ehub.provider.record.format.Format;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
+import static org.mockito.BDDMockito.given;
 
 public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
@@ -65,6 +63,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void getFormatsWithOverDriveFormatNameWhenNoTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProduct();
         givenDiscoveryFormat();
         givenContentProvider();
@@ -93,12 +94,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
-    }
-
-    private void thenFormatSetContainsOneFormat() {
-        Set<Format> formatSet = thenFormatSetIsNotNull();
-        Assert.assertTrue(formatSet.size() == 1);
+        actualFormats = underTest.getFormats(commandData);
     }
 
     private void thenFormatHasOverDriveName() {
@@ -107,15 +103,11 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.getName());
     }
 
-    private Set<Format> thenFormatSetIsNotNull() {
-        Assert.assertNotNull(actualFormats);
-        Set<Format> formatSet = actualFormats.getFormats();
-        Assert.assertNotNull(formatSet);
-        return formatSet;
-    }
-
     @Test
     public void getFormatsWithEhubNameAndDescription() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProduct();
         givenDiscoveryFormat();
         givenContentProvider();
@@ -128,6 +120,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void getFormatsWithOverDriveFormatNameWhenTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProduct();
         givenDiscoveryFormat();
         givenContentProvider();
@@ -145,9 +140,12 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void createLoan() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
+        givenPinInCommandData();
         givenPatronAccessToken();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenCheckout();
         givenExpirationDateInCheckout();
         givenCirculationFormats();
@@ -217,27 +215,22 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         given(contentLink.getHref()).willReturn(DOWNLOAD_URL);
     }
 
-    private void givenRecordIdInPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-    }
-
-    private void givenFormatIdInPendingLoan() {
-        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
-    }
-
-    public void givenFormatIdFromFormatDecoration() {
+    private void givenFormatIdFromFormatDecoration() {
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     @Test
     public void createLoanWhenNotSameFormat() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
+        givenPinInCommandData();
         givenPatronAccessToken();
-        givenRecordIdInPendingLoan();
-        givenFormatIdInPendingLoan();
         givenCheckout();
         givenExpirationDateInCheckout();
         givenCirculationFormats();
@@ -251,6 +244,10 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void getContent() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
+        givenPinInCommandData();
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
@@ -286,11 +283,16 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     public void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 
     @Test
     public void getContentWhenNoDownloadLinkTemplate() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
+        givenPinInCommandData();
+        givenLanguageInCommandData();
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();

@@ -1,47 +1,44 @@
 package com.axiell.ehub.provider;
 
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-
-import java.util.Date;
-
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.loan.*;
+import com.axiell.ehub.provider.record.format.*;
 import junit.framework.Assert;
-
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.DownloadableContent;
-import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import java.util.Date;
+import java.util.Set;
+
+import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderDataAccessorTest {
+    protected static final String RECORD_ID = "1";
+    protected static final String FORMAT_ID = "1";
     protected static final String DOWNLOAD_URL = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String CARD = "card";
     protected static final String PIN = "pin";
     protected static final String EHUB_FORMAT_NAME = "ehubFormatName";
     protected static final String EHUB_FORMAT_DESCRIPTION = "ehubFormatDescription";
+    private static final Date EXPIRATION_DATE = new Date();
     private static final int ERROR_STATUS = 500;
 
     @Mock
     protected IContentFactory contentFactory;
     @Mock
     protected DownloadableContent downloadableContent;
-    @Mock
-    protected PendingLoan pendingLoan;
+//    @Mock
+//    protected PendingLoan pendingLoan;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
@@ -53,14 +50,48 @@ public abstract class AbstractContentProviderDataAccessorTest {
     @Mock
     protected ContentProviderLoanMetadata loanMetadata;
     @Mock
-    protected IExpirationDateFactory expirationDateFactory;
-    @Mock
     protected ClientResponseFailure failure;
     @Mock
     protected ClientResponse<?> response;
+    @Mock
+    protected IFormatFactory formatFactory;
+    @Mock
+    protected IExpirationDateFactory expirationDateFactory;
+    @Mock
+    private PendingLoan pendingLoan;
+    @Mock
+    protected CommandData commandData;
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
+
+    protected void givenContentProviderConsumerInCommandData() {
+        given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+    }
+
+    protected void givenLibraryCardInCommandData() {
+        given(commandData.getLibraryCard()).willReturn(CARD);
+    }
+
+    protected void givenPinInCommandData() {
+        given(commandData.getPin()).willReturn(PIN);
+    }
+
+    protected void givenContentProviderRecordIdInCommandData() {
+        given(commandData.getContentProviderRecordId()).willReturn(RECORD_ID);
+    }
+
+    protected void givenContentProviderFormatIdInCommandData() {
+        given(commandData.getContentProviderFormatId()).willReturn(FORMAT_ID);
+    }
+
+    protected void givenLanguageInCommandData() {
+        given(commandData.getLanguage()).willReturn(LANGUAGE);
+    }
+
+    protected void givenContentProviderLoanMetadataInCommandData() {
+        given(commandData.getContentProviderLoanMetadata()).willReturn(loanMetadata);
+    }
 
     protected void givenTextBundle() {
         givenContentProvider();
@@ -90,7 +121,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void givenExpirationDate() {
-        given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(new Date());
+        given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(EXPIRATION_DATE);
     }
 
     protected void givenClientResponse() {
@@ -124,4 +155,27 @@ public abstract class AbstractContentProviderDataAccessorTest {
         Assert.assertEquals(EHUB_FORMAT_NAME, actualFormat.getName());
         Assert.assertEquals(EHUB_FORMAT_DESCRIPTION, actualFormat.getDescription());
     }
+
+    protected Set<Format> thenFormatSetIsNotNull() {
+        Assert.assertNotNull(actualFormats);
+        Set<Format> formatSet = actualFormats.getFormats();
+        Assert.assertNotNull(formatSet);
+        return formatSet;
+    }
+
+    protected void thenFormatSetContainsOneFormat() {
+        Set<Format> formatSet = thenFormatSetIsNotNull();
+        Assert.assertTrue(formatSet.size() == 1);
+    }
+
+    protected void thenFormatSetIsEmpty() {
+        Set<Format> formatSet = thenFormatSetIsNotNull();
+        assertTrue(formatSet.isEmpty());
+    }
+
+    protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
+        assertEquals(EXPIRATION_DATE, actualLoan.getExpirationDate());
+    }
+//
+
 }

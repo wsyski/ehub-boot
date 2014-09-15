@@ -30,12 +30,10 @@ import static org.mockito.Matchers.any;
  * Elib Data Accessor Test
  */
 public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTest {
-    private static final String RECORD_ID = "9789173892377";
     private static final short STATUS_CODE_OK = 101;
     private static final short STATUS_CODE_NOT_OK = 0;
     private static final String ELIB_FORMAT_NAME = "elibFormatName";
     private static final String ELIB_FORMAT_DESCRIPTION = "elibFormatDescription";
-    private static final String FORMAT_ID = "12";
     private static final String CONTENT_PROVIDER_LOAN_ID = "1";
     private static final short ELIB_PRODUCT_OK_ID = 9;
     private static final short ELIB_PRODUCT_NOT_OK_ID = 8;
@@ -86,6 +84,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWhenNoDataInProductReponse() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusOk();
         whenGetFormats();
@@ -103,7 +104,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(commandData);
     }
 
     private void thenNoFormats() {
@@ -112,6 +113,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWithElibFormatNameAndDescriptionWhenNoTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
@@ -158,6 +162,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
@@ -170,6 +177,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsProductIdNotOk() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
@@ -182,6 +192,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWithElibFormatNameAndDescriptionWhenTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusOk();
         givenProductFormats();
@@ -193,6 +206,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWhenStatusNotOk() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProductResponse();
         givenProductResponseStatusNotOk();
         try {
@@ -211,7 +227,10 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void createLoan() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -229,11 +248,6 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenCreatedDownloadableContent();
         whenCreateLoan();
         thenActualLoanContainsDownloadUrl();
-    }
-
-    private void givenPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenLoanResponse() {
@@ -289,7 +303,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     @Test
@@ -311,7 +325,10 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void createLoanWhenOrderListResponseStatusNotOk() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -332,7 +349,10 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void createLoanWhenNoOrderItems() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -354,7 +374,10 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void createLoanWhenNoMatchingRecordIdAndFormatId() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -382,6 +405,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getContent() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();
@@ -403,7 +429,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 
     private void givenExpectedOrderId() {
@@ -426,6 +452,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getContentWhenNoOrderItems() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenEmptyOrderList();
@@ -439,6 +468,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getContentWhenUnexpectedOrderId() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();
@@ -458,6 +490,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getContentWhenNoContent() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenLibraryCardInCommandData();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();

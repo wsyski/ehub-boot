@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
+import com.axiell.ehub.provider.f1.F1DataAccessor;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -19,24 +20,20 @@ import com.axiell.ehub.provider.publit.PublitDataAccessor;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFactoryTest {
     private IContentProviderDataAccessorFactory underTest;
-
     @Mock
     private ElibDataAccessor elibDataAccessor;
-
     @Mock
     private ElibUDataAccessor elibUDataAccessor;
-
     @Mock
     private PublitDataAccessor publitDataAccessor;
-
     @Mock
     private AskewsDataAccessor askewsDataAccessor;
-
     @Mock
     private OverDriveDataAccessor overDriveDataAccessor;
-
     @Mock
     private Elib3DataAccessor elib3DataAccessor;
+    @Mock
+    private F1DataAccessor f1DataAccessor;
 
     private ContentProviderName contentProviderName;
     private IContentProviderDataAccessor actualContentProviderDataAccessor;
@@ -50,6 +47,7 @@ public class ContentProviderDataAccessorFactoryTest {
         ReflectionTestUtils.setField(underTest, "askewsDataAccessor", askewsDataAccessor);
         ReflectionTestUtils.setField(underTest, "overDriveDataAccessor", overDriveDataAccessor);
         ReflectionTestUtils.setField(underTest, "elib3DataAccessor", elib3DataAccessor);
+        ReflectionTestUtils.setField(underTest, "f1DataAccessor", f1DataAccessor);
     }
 
     @Test
@@ -144,5 +142,20 @@ public class ContentProviderDataAccessorFactoryTest {
 
     private void thenElib3DataAccessorIsReturned() {
         Assert.assertTrue(actualContentProviderDataAccessor instanceof Elib3DataAccessor);
+    }
+
+    @Test
+    public void getF1DataAccessor() {
+        givenF1AsContentProviderName();
+        whenGetContentProviderDataAccessor();
+        thenF1DataAccessorIsReturned();
+    }
+
+    private void givenF1AsContentProviderName() {
+        contentProviderName = ContentProviderName.F1;
+    }
+
+    private void thenF1DataAccessorIsReturned() {
+        Assert.assertTrue(actualContentProviderDataAccessor instanceof F1DataAccessor);
     }
 }

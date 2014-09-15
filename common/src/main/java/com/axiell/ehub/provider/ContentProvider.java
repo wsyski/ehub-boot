@@ -22,6 +22,7 @@ import java.util.*;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProviderName.*;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Represents a Content Provider. It contains the common parameters for a certain Content Provider, e.g. the base URL of
@@ -35,12 +36,13 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     private static final Map<ContentProviderName, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
     static {
-        VALID_PROPERTY_KEYS.put(ELIB, Sets.newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL));
-        VALID_PROPERTY_KEYS.put(ELIB3, Sets.newHashSet(API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(ELIBU, Sets.newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
-        VALID_PROPERTY_KEYS.put(PUBLIT, Sets.newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS));
-        VALID_PROPERTY_KEYS.put(ASKEWS, Sets.newHashSet(LOAN_EXPIRATION_DAYS));
-        VALID_PROPERTY_KEYS.put(OVERDRIVE, Sets.newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(ELIB, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL));
+        VALID_PROPERTY_KEYS.put(ELIB3, newHashSet(API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
+        VALID_PROPERTY_KEYS.put(PUBLIT, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS));
+        VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
+        VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
     }
 
     private ContentProviderName name;

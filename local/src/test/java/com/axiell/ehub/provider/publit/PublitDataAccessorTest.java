@@ -46,6 +46,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getFormatsWithPublitFormatNameWhenNoTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProducts();
         givenContentProvider();
         givenFormatId();
@@ -65,7 +68,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(commandData);
     }
 
     private Format thenOneFormatIsReturned() {
@@ -87,6 +90,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProducts();
         givenContentProvider();
         givenFormatId();
@@ -98,6 +104,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getFormatsWithPublitFormatNameWhenTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenProducts();
         givenContentProvider();
         givenFormatId();
@@ -110,6 +119,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getFormatsWhenClientResponseFailureIsThrown() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenClientResponseFailureInGetProduct();
         givenClientResponse();
         givenClientResponseStatus();
@@ -126,7 +138,10 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void createLoan() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenShopCustomerOrder();
         givenShopCustomerOrderId();
         givenShopOrderUrl();
@@ -139,11 +154,6 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenCreatedDownloadableContent();
         whenCreateLoan();
         thenActualLoanContainsDownloadUrl();
-    }
-
-    private void givenPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenShopCustomerOrder() {
@@ -168,12 +178,15 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     @Test
     public void createLoanWhenClientResponseFailureIsThrown() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
         givenClientResponseFailureInCreateShopOrder();
         givenClientResponse();
         givenClientResponseStatus();
@@ -190,6 +203,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getContent() {
+        givenContentProviderConsumerInCommandData();
+        givenLibraryCardInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenShopOrderUrl();
         givenDownloadItems();
@@ -207,11 +223,14 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 
     @Test
     public void getContentWhenEmptyListOfDownloadItems() {
+        givenContentProviderConsumerInCommandData();
+        givenLibraryCardInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenShopOrderUrl();
         givenEmptyListOfDownloadItems();
@@ -229,6 +248,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getContentWhenClientResponseFailureIsThrown() {
+        givenContentProviderConsumerInCommandData();
+        givenLibraryCardInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenClientResponseFailureInGetShopOrderUrl();
         givenClientResponse();

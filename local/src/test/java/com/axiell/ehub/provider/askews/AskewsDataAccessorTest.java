@@ -1,19 +1,5 @@
 package com.axiell.ehub.provider.askews;
 
-import static org.mockito.BDDMockito.given;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.LoanDetails;
 import com.askews.api.LoanRequestResult;
@@ -21,6 +7,18 @@ import com.askews.api.UserLookupResult;
 import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
 
 public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
@@ -54,7 +52,11 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void createLoan() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
+        givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestSuccess();
         givenLoanId();
@@ -68,11 +70,6 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenExpirationDate();
         whenCreateLoan();
         thenActualLoanContainsDownloadUrl();
-    }
-
-    private void givenPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(RECORD_ID);
-        given(pendingLoan.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void givenProcessLoan() {
@@ -103,12 +100,13 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     @Test
     public void createLoanWhenStatusIsNotSuccess() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
         givenProcessLoan();
         givenLoanRequestIsNotSucess();
         givenLoanRequestResultErrorDesc();
@@ -130,7 +128,11 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void createLoanHasFailed() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
+        givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestSuccess();
         givenLoanId();
@@ -155,7 +157,11 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void createLoanWasNotSuccessful() {
-        givenPendingLoan();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
+        givenLibraryCardInCommandData();
+        givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestIsNotSucess();
         givenLoanRequestResultErrorDesc();
@@ -169,8 +175,10 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getContent() {
+        givenContentProviderConsumerInCommandData();
         givenContentProviderLoanId();
         givenContentProvider();
+        givenContentProviderLoanMetadataInCommandData();
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenDownloadableContentDisposition();
         givenLoanDetails();
@@ -190,11 +198,14 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 
     @Test
     public void getFormatsWhenNoFormatDecoration() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenContentProvider();
         try {
             whenGetFormats();
@@ -205,11 +216,14 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(commandData);
     }
 
     @Test
     public void getFormatsWhenNoTextBundle() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         try {
@@ -222,6 +236,9 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
 
     @Test
     public void getFormats() {
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenTextBundle();

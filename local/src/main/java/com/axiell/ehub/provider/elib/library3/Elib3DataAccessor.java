@@ -15,22 +15,20 @@ public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
     private IElib3CommandChainFactory commandChainFactory;
 
     @Override
-    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String contentProviderRecordId, final String language) {
-        final Elib3CommandData data = Elib3CommandData.newInstance(contentProviderConsumer, libraryCard, contentProviderRecordId, language);
+    public Formats getFormats(final CommandData commandData) {
+        final Elib3CommandData data = Elib3CommandData.newInstance(commandData);
         final GetFormatsCommandChain commandChain = commandChainFactory.createGetFormatsCommandChain();
         return commandChain.execute(data);
     }
 
     @Override
-    public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin, final PendingLoan pendingLoan, final String language) {
-        final CommandData data = CommandData.newInstance(contentProviderConsumer, libraryCard).setPendingLoan(pendingLoan).setLanguage(language);
+    public ContentProviderLoan createLoan(final CommandData data) {
         final CreateLoanCommandChain commandChain = commandChainFactory.createCreateLoanCommandChain();
         return commandChain.execute(data);
     }
 
     @Override
-    public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin, final ContentProviderLoanMetadata contentProviderLoanMetadata, final String language) {
-        final CommandData data = CommandData.newInstance(contentProviderConsumer, libraryCard).setContentProviderLoanMetadata(contentProviderLoanMetadata).setLanguage(language);
+    public IContent getContent(final CommandData data) {
         final GetContentCommandChain commandChain = commandChainFactory.createGetContentCommandChain();
         return commandChain.execute(data);
     }

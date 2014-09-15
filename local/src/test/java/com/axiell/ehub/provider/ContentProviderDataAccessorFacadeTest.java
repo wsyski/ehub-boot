@@ -7,19 +7,25 @@ import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
     private static final String CONTENT_PROVIDER_ALIAS = ContentProviderName.ELIB.toString();
+    public static final String LIBRARY_CARD = "libraryCard";
+    public static final String PIN = "pin";
+    public static final String LANGUAGE = "language";
+    public static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
+    public static final String CONTENT_PROVIDER_FORMAT_ID = "contentProviderFormatdId";
     private IContentProviderDataAccessorFacade underTest;
     @Mock
     private IAliasBusinessController aliasBusinessController;
@@ -32,6 +38,8 @@ public class ContentProviderDataAccessorFacadeTest {
     @Mock
     private PendingLoan pendingLoan;
     @Mock
+    private ContentProviderConsumer contentProviderConsumer;
+    @Mock
     private EhubLoan ehubLoan;
     @Mock
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
@@ -43,6 +51,11 @@ public class ContentProviderDataAccessorFacadeTest {
     private IContent content;
 
     @Before
+    public void setUpEhubConsumer() {
+        given(ehubConsumer.getContentProviderConsumer(any(ContentProviderName.class))).willReturn(contentProviderConsumer);
+    }
+
+    @Before
     public void setUpContentProviderDataAccessorFacade() {
         underTest = new ContentProviderDataAccessorFacade();
         ReflectionTestUtils.setField(underTest, "aliasBusinessController", aliasBusinessController);
@@ -51,16 +64,18 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContentProviderBusinessController() {
-        given(aliasBusinessController.getName(any(String.class))).willReturn(ContentProviderName.ELIB);
+        given(aliasBusinessController.getName(anyString())).willReturn(ContentProviderName.ELIB);
     }
 
     @Before
     public void setUpContentProviderDataAccessor() {
-        given(contentProviderDataAccessorFactory.getInstance(ContentProviderName.ELIB)).willReturn(contentProviderDataAccessor);
+        given(contentProviderDataAccessorFactory.getInstance(any(ContentProviderName.class))).willReturn(contentProviderDataAccessor);
     }
 
     @Before
     public void setUpPendingLoan() {
+        given(pendingLoan.getContentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
+        given(pendingLoan.getContentProviderFormatId()).willReturn(CONTENT_PROVIDER_FORMAT_ID);
         given(pendingLoan.getContentProviderName()).willReturn(CONTENT_PROVIDER_ALIAS);
     }
 
@@ -73,50 +88,12 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContentProviderLoan() {
-        given(contentProviderDataAccessor.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class))).willReturn(
-                contentProviderLoan);
+        given(contentProviderDataAccessor.createLoan(any(CommandData.class))).willReturn(contentProviderLoan);
     }
 
     @Before
     public void setUpContent() {
-        given(contentProviderDataAccessor.getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class), any(String.class))).willReturn(content);
-    }
-
-    @Test
-    public void createLoan() {
-        whenCreateLoan();
-        thenLoanIsCreatedByContentProvider();
-        thenContentProviderNameIsRetrievedFromAliasBusinessController();
-    }
-
-    private void thenContentProviderNameIsRetrievedFromAliasBusinessController() {
-        verify(aliasBusinessController).getName(CONTENT_PROVIDER_ALIAS);
-    }
-
-    private void whenCreateLoan() {
-        underTest.createLoan(ehubConsumer, "libraryCard", "pin", pendingLoan, "language");
-    }
-
-    private void thenLoanIsCreatedByContentProvider() {
-        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-        inOrder.verify(contentProviderDataAccessor).createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class));
-    }
-
-    @Test
-    public void getContent() {
-        whenGetContent();
-        thenContentIsRetrievedFromContentProvider();
-    }
-
-    private void whenGetContent() {
-        underTest.getContent(ehubConsumer, ehubLoan, "libraryCard", "pin", "language");
-    }
-
-    private void thenContentIsRetrievedFromContentProvider() {
-        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-        inOrder.verify(contentProviderDataAccessor).getContent(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(ContentProviderLoanMetadata.class), any(String.class));
+        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(content);
     }
 
     @Test
@@ -126,13 +103,92 @@ public class ContentProviderDataAccessorFacadeTest {
         thenContentProviderNameIsRetrievedFromAliasBusinessController();
     }
 
+    @Test
+    public void createLoan() {
+        whenCreateLoan();
+        thenLoanIsCreatedByContentProvider();
+        thenContentProviderNameIsRetrievedFromAliasBusinessController();
+    }
+
+    @Test
+    public void getContent() {
+        whenGetContent();
+        thenContentIsRetrievedFromContentProvider();
+    }
+
+    private void thenContentProviderNameIsRetrievedFromAliasBusinessController() {
+        verify(aliasBusinessController).getName(CONTENT_PROVIDER_ALIAS);
+    }
+
+    private void whenCreateLoan() {
+        underTest.createLoan(ehubConsumer, LIBRARY_CARD, PIN, pendingLoan, LANGUAGE);
+    }
+
+    private void thenLoanIsCreatedByContentProvider() {
+        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessor).createLoan(argThat(new CreateLoanCommandData()));
+    }
+
+    private void whenGetContent() {
+        underTest.getContent(ehubConsumer, ehubLoan, LIBRARY_CARD, PIN, LANGUAGE);
+    }
+
+    private void thenContentIsRetrievedFromContentProvider() {
+        InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessor).getContent(argThat(new GetContentCommandData()));
+    }
+
     private void whenGetFormats() {
-        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, "card", "contentProviderRecordId", "language");
+        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, LIBRARY_CARD, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
         inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
-        inOrder.verify(contentProviderDataAccessor).getFormats(any(ContentProviderConsumer.class), any(String.class), any(String.class), any(String.class));
+        inOrder.verify(contentProviderDataAccessor).getFormats(argThat(new GetFormatsCommandData()));
+    }
+
+    private class GetFormatsCommandData extends ArgumentMatcher<CommandData> {
+
+        @Override
+        public boolean matches(Object argument) {
+            if (argument instanceof CommandData) {
+                final CommandData data = (CommandData) argument;
+                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
+                        && helper.isExpectedContentProviderRecordId(CONTENT_PROVIDER_RECORD_ID) && helper.isExpectedLanguage(LANGUAGE);
+            }
+            return false;
+        }
+    }
+
+    private class CreateLoanCommandData extends ArgumentMatcher<CommandData> {
+
+        @Override
+        public boolean matches(Object argument) {
+            if (argument instanceof CommandData) {
+                final CommandData data = (CommandData) argument;
+                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
+                        && helper.isExpectedPin(PIN) && helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
+            }
+            return false;
+        }
+    }
+
+    private class GetContentCommandData extends ArgumentMatcher<CommandData> {
+
+        @Override
+        public boolean matches(Object argument) {
+            if (argument instanceof CommandData) {
+                final CommandData data = (CommandData) argument;
+                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
+                        && helper.isExpectedPin(PIN) && helper.isExpectedContentProviderLoanMetadata(contentProviderLoanMetadata) && helper.isExpectedLanguage(LANGUAGE);
+            }
+            return false;
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
     private final String libraryCard;
+    private String pin;
     private String language;
     private String contentProviderRecordId;
     private String contentProviderFormatId;
@@ -32,6 +33,15 @@ public class CommandData implements ICommandData {
 
     public String getLibraryCard() {
         return libraryCard;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public CommandData setPin(String pin) {
+        this.pin = pin;
+        return this;
     }
 
     public String getContentProviderRecordId() {
@@ -103,6 +113,7 @@ public class CommandData implements ICommandData {
         return "CommandData{" +
                 "contentProviderConsumer=" + contentProviderConsumer +
                 ", libraryCard=" + libraryCard +
+                ", pin=" + pin +
                 ", language=" + language +
                 ", contentProviderRecordId=" + contentProviderRecordId +
                 ", contentProviderFormatId=" + contentProviderFormatId +

@@ -14,6 +14,7 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
+import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.record.format.Format;
@@ -51,7 +52,10 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private IElibFacade elibFacade;
 
     @Override
-    public Formats getFormats(ContentProviderConsumer contentProviderConsumer, String libraryCard, String contentProviderRecordId, String language) {
+    public Formats getFormats(final CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final String language = data.getLanguage();
         final se.elib.library.product.Response response = elibFacade.getProduct(contentProviderConsumer, contentProviderRecordId, language);
         final se.elib.library.product.Response.Status status = response.getStatus();
         final short statusCode = status.getCode();
@@ -123,10 +127,12 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-                                          final PendingLoan pendingLoan, String language) {
-        final String elibRecordId = pendingLoan.getContentProviderRecordId();
-        final String formatId = pendingLoan.getContentProviderFormatId();
+    public ContentProviderLoan createLoan(final CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String libraryCard = data.getLibraryCard();
+        final String pin = data.getPin();
+        final String elibRecordId = data.getContentProviderRecordId();
+        final String formatId = data.getContentProviderFormatId();
 
         final se.elib.library.loan.Response response = elibFacade.createLoan(contentProviderConsumer, elibRecordId, formatId, libraryCard, pin);
         final se.elib.library.loan.Response.Status status = response.getStatus();
@@ -136,7 +142,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
             return makeContentProviderLoan(contentProviderConsumer, libraryCard, elibRecordId, formatId, response);
         }
 
-        throw makeInternalServerErrorException("Could not create loan", String.valueOf(statusCode));
+        throw makeInternalServerErrorException("Could not getInstance loan", String.valueOf(statusCode));
     }
 
     private ContentProviderLoan makeContentProviderLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard,
@@ -201,8 +207,10 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
+    public IContent getContent(final CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final String libraryCard = data.getLibraryCard();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();
         final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
 

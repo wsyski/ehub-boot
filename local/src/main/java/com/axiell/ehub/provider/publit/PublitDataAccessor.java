@@ -1,13 +1,5 @@
 package com.axiell.ehub.provider.publit;
 
-import java.util.Date;
-import java.util.List;
-
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
@@ -16,16 +8,19 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.IExpirationDateFactory;
+import com.axiell.ehub.provider.*;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import com.axiell.ehub.provider.record.format.Formats;
+import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ClientResponseFailure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.List;
 
 @Component
 public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
@@ -37,116 +32,120 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
     private IExpirationDateFactory expirationDateFactory;
 
     @Override
-    public Formats getFormats(final ContentProviderConsumer contentProviderConsumer, String libraryCard, final String contentProviderRecordId, final String language) {
-	final Formats formats = new Formats();
-	final List<Product> products = getProducts(contentProviderConsumer, contentProviderRecordId);
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+    public Formats getFormats(final CommandData data) {
+        final Formats formats = new Formats();
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final List<Product> products = getProducts(contentProviderConsumer, data.getContentProviderRecordId());
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 
-	for (Product product : products) {
-	    final Format format = makeFormat(contentProvider, product, language);
-	    formats.addFormat(format);
-	}
+        for (Product product : products) {
+            final Format format = makeFormat(contentProvider, product, data.getLanguage());
+            formats.addFormat(format);
+        }
 
-	return formats;
+        return formats;
     }
 
     private List<Product> getProducts(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId) {
-	try {
-	    return publitFacade.getProduct(contentProviderConsumer, contentProviderRecordId);
-	} catch (ClientResponseFailure failure) {
-	    throw makeInternalServerErrorException(failure);
-	}
+        try {
+            return publitFacade.getProduct(contentProviderConsumer, contentProviderRecordId);
+        } catch (ClientResponseFailure failure) {
+            throw makeInternalServerErrorException(failure);
+        }
     }
 
     private InternalServerErrorException makeInternalServerErrorException(final ClientResponseFailure failure) {
-	final String status = getStatus(failure);
-	final String errorMessage = failure.getMessage();
-	return makeInternalServerErrorException(errorMessage, status);
+        final String status = getStatus(failure);
+        final String errorMessage = failure.getMessage();
+        return makeInternalServerErrorException(errorMessage, status);
     }
 
     private InternalServerErrorException makeInternalServerErrorException(final String errorMessage, String status) {
-	final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.PUBLIT);
-	final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, status);
-	return new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.PUBLIT);
+        final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, status);
+        return new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 
     private String getStatus(final ClientResponseFailure failure) {
-	final ClientResponse<?> response = failure.getResponse();
-	final int status = response.getStatus();
-	return String.valueOf(status);
+        final ClientResponse<?> response = failure.getResponse();
+        final int status = response.getStatus();
+        return String.valueOf(status);
     }
 
     private Format makeFormat(final ContentProvider contentProvider, final Product product, final String language) {
-	final String formatId = product.getType();
+        final String formatId = product.getType();
 
-	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-	final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
 
-	final String name;
-	final String description;
+        final String name;
+        final String description;
 
-	if (textBundle == null) {
-	    name = formatId;
-	    description = null;
-	} else {
-	    name = textBundle.getName() == null ? formatId : textBundle.getName();
-	    description = textBundle.getDescription();
-	}
+        if (textBundle == null) {
+            name = formatId;
+            description = null;
+        } else {
+            name = textBundle.getName() == null ? formatId : textBundle.getName();
+            description = textBundle.getDescription();
+        }
 
-	return new Format(formatId, name, description, null);
+        return new Format(formatId, name, description, null);
     }
 
     @Override
-    public ContentProviderLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-                                          final PendingLoan pendingLoan, String language) {
-	final String contentProviderRecordId = pendingLoan.getContentProviderRecordId();
-	final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, contentProviderRecordId);
-	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-	final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(pendingLoan.getContentProviderFormatId());
-	final IContent content = createContent(contentUrl, formatDecoration);
-	final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
-	final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
-		formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
-	return new ContentProviderLoan(metadata, content);
+    public ContentProviderLoan createLoan(final CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final String contentProviderFormatId = data.getContentProviderFormatId();
+        final String libraryCard = data.getLibraryCard();
+        final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, contentProviderRecordId);
+        final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
+        final IContent content = createContent(contentUrl, formatDecoration);
+        final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
+                formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+        return new ContentProviderLoan(metadata, content);
     }
 
     private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String contentProviderRecordId) {
-	final ShopCustomerOrder shopCustomerOrder;
+        final ShopCustomerOrder shopCustomerOrder;
 
-	try {
-	    shopCustomerOrder = publitFacade.createShopOrder(contentProviderConsumer, contentProviderRecordId, libraryCard);
-	} catch (ClientResponseFailure failure) {
-	    throw makeInternalServerErrorException(failure);
-	}
-	return shopCustomerOrder.getId().toString();
+        try {
+            shopCustomerOrder = publitFacade.createShopOrder(contentProviderConsumer, contentProviderRecordId, libraryCard);
+        } catch (ClientResponseFailure failure) {
+            throw makeInternalServerErrorException(failure);
+        }
+        return shopCustomerOrder.getId().toString();
     }
 
     private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId) {
-	final ShopOrderUrl shopOrderUrl = getShopOrderUrl(contentProviderConsumer, contentProviderLoanId);
-	final List<DownloadItem> downloadItems = shopOrderUrl.getDownloadItems();
+        final ShopOrderUrl shopOrderUrl = getShopOrderUrl(contentProviderConsumer, contentProviderLoanId);
+        final List<DownloadItem> downloadItems = shopOrderUrl.getDownloadItems();
 
-	if (downloadItems.isEmpty())
-	    throw makeInternalServerErrorException("No download items in shop order URL response", "No download items in shop order with ID "
-		    + contentProviderLoanId);
+        if (downloadItems.isEmpty())
+            throw makeInternalServerErrorException("No download items in shop order URL response", "No download items in shop order with ID "
+                    + contentProviderLoanId);
 
-	DownloadItem downloadItem = downloadItems.get(0);
-	return downloadItem.getUrl();
+        DownloadItem downloadItem = downloadItems.get(0);
+        return downloadItem.getUrl();
     }
 
     private ShopOrderUrl getShopOrderUrl(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId) {
-	try {
-	    return publitFacade.getShopOrderUrl(contentProviderConsumer, contentProviderLoanId);
-	} catch (ClientResponseFailure failure) {
-	    throw makeInternalServerErrorException(failure);
-	}
+        try {
+            return publitFacade.getShopOrderUrl(contentProviderConsumer, contentProviderLoanId);
+        } catch (ClientResponseFailure failure) {
+            throw makeInternalServerErrorException(failure);
+        }
     }
 
     @Override
-    public IContent getContent(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String pin,
-                               final ContentProviderLoanMetadata contentProviderLoanMetadata, String language) {
-	final String contentProviderLoanId = contentProviderLoanMetadata.getId();
-	final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
-	return createContent(contentUrl, contentProviderLoanMetadata.getFormatDecoration());
+    public IContent getContent(final CommandData data) {
+        final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String contentProviderLoanId = contentProviderLoanMetadata.getId();
+        final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
+        return createContent(contentUrl, contentProviderLoanMetadata.getFormatDecoration());
     }
 }

@@ -20,7 +20,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 /**
- * This class provides the possibility to create new instances of
+ * This class provides the possibility to getInstance new instances of
  * AjaxTabbedPanel. It should be sub-classed to provide the specific content
  * panels.
  * 
@@ -127,7 +127,7 @@ public abstract class AbstractTabbedPanelBuilder<I> implements Serializable {
      * Gets the title of the tab represented by the provided identifier.
      * 
      * @param identifier
-     *            the identifier of the tab to create the title from
+     *            the identifier of the tab to getInstance the title from
      * @return the title of the tab
      */
     protected abstract String getTitle(I identifier);

@@ -10,5 +10,5 @@ import javax.xml.bind.annotation.XmlEnum;
  */
 @XmlEnum(String.class)
 public enum ContentProviderName {
-    ELIB, ELIBU, PUBLIT, ASKEWS, OVERDRIVE, ELIB3;
+    ELIB, ELIBU, PUBLIT, ASKEWS, OVERDRIVE, ELIB3, F1;
 }

@@ -4,13 +4,9 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.springframework.data.util.ReflectionUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -76,7 +72,7 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(contentProviderConsumer, CARD, PIN, loanMetadata, LANGUAGE);
+        actualContent = underTest.getContent(commandData);
     }
 
     private void thenActualContentEqualsExpectedContent() {
@@ -92,7 +88,7 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(contentProviderConsumer, CARD, PIN, pendingLoan, LANGUAGE);
+        actualLoan = underTest.createLoan(commandData);
     }
 
     private void thenActualLoanEqualsExpectedLoan() {
@@ -108,7 +104,7 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(contentProviderConsumer, CARD, RECORD_ID, LANGUAGE);
+        actualFormats = underTest.getFormats(commandData);
     }
 
     private void thenActualFormatsEqualsExpectedFormats() {

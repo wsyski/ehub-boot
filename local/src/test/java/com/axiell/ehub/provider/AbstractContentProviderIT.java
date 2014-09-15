@@ -25,8 +25,8 @@ public abstract class AbstractContentProviderIT {
 
     private static boolean isOnline() {
         final String onlineProperty = System.getProperty("online");
-        return onlineProperty == null ? false : Boolean.valueOf(onlineProperty);
-//        return true;
+//        return onlineProperty == null ? false : Boolean.valueOf(onlineProperty);
+        return true;
     }
 
     protected void givenContentProvider() {
