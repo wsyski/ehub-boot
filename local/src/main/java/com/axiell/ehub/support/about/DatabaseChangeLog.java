@@ -3,12 +3,13 @@ package com.axiell.ehub.support.about;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "DATABASECHANGELOG")
 @Access(AccessType.FIELD)
-public class DatabaseChangeLog {
+public class DatabaseChangeLog implements Serializable {
     @Id
     @Column(name = "ID")
     private String id;

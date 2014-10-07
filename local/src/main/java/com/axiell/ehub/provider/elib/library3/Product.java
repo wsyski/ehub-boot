@@ -8,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.List;
 
-@JsonIgnoreProperties(value = {"BookType", "Categories", "PublishedDate", "Contributors", "CoverImage", "CreatedDate", "Description", "DistributionRegions", "Language",
+@JsonIgnoreProperties(value = {"BookLength", "BookType", "Categories", "PublishedDate", "Contributors", "CoverImage", "CreatedDate", "Description", "DistributionRegions", "Language",
         "OrderableFormatGroups", "PublicIdentifiers", "PublishedDate", "Publisher", "Relations", "Teaser", "Title", "UpdatedDate"})
 public class Product {
     @JsonProperty("ProductId")

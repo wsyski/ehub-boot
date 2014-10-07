@@ -4,6 +4,7 @@ import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
@@ -16,10 +17,14 @@ public class Elib3IT extends AbstractContentProviderIT {
     private static final String API_BASE_URL_VALUE = "https://webservices.elib.se/library/v3.0";
     private static final String ELIB_SERVICE_ID_VALUE = "1873";
     private static final String ELIB_SERVICE_KEY_VALUE = "Vm3qh9eZijFdMDxAEpn5PzyfC0S4sBGOvXtJrIYw1Ukl8cuoR2";
-    private static final String ELIB_PRODUCT_ID_VALUE = "1002446";
+    private static final String EBOOK_PRODUCT_ID = "1002446";
+    private static final String AUDIOBOOK_PRODUCT_ID = "1023509";
     private static final String ELIB_LOAN_ID_VALUE = "4802146";
-    private static final String ELIB_FORMAT_ID_VALUE = "4101";
+    private static final String HTML5_FORMAT_ID = "4101";
+    private static final String FLASH_FORMAT_ID = "4002";
     private static final String LIBRARY_CARD = "1";
+    private String expectedFormatId;
+    private String productId;
     private Elib3Facade underTest;
 
     private BookAvailability bookAvailability;
@@ -42,12 +47,56 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     @Test
-    public void getProduct() {
+    public void getProduct_ebook() {
         givenApiBaseUrl();
         givenElibCredentials();
+        givenEbookProductId();
+        givenHtml5AsExpectedFormat();
         whenGetProduct();
         thenProductIsNotNull();
-        thenProductHasExpectedProductId();
+        thenProductHasEbookProductId();
+        thenProductHasExpectedFormat();
+    }
+
+    private void givenHtml5AsExpectedFormat() {
+        expectedFormatId = HTML5_FORMAT_ID;
+    }
+
+    private void givenEbookProductId() {
+        productId = EBOOK_PRODUCT_ID;
+    }
+
+    @Test
+    public void getProduct_audiobook() {
+        givenApiBaseUrl();
+        givenElibCredentials();
+        givenAudiobookProductId();
+        givenFlashAsExpectedFormat();
+        whenGetProduct();
+        thenProductIsNotNull();
+        thenProductHasAudiobookProductId();
+        thenProductHasExpectedFormat();
+    }
+
+    private void givenFlashAsExpectedFormat() {
+        expectedFormatId = FLASH_FORMAT_ID;
+    }
+
+    private void thenProductHasExpectedFormat() {
+        List<Product.AvailableFormat> formats = product.getFormats();
+        assertFalse(formats.isEmpty());
+
+        Iterator<Product.AvailableFormat> itr = formats.iterator();
+        boolean formatFound = false;
+        while (itr.hasNext() && !formatFound) {
+            Product.AvailableFormat format = itr.next();
+            formatFound = expectedFormatId.equals(format.getId());
+        }
+        assertTrue(formatFound);
+    }
+
+    private void givenAudiobookProductId() {
+        productId = AUDIOBOOK_PRODUCT_ID;
     }
 
     @Test
@@ -80,12 +129,16 @@ public class Elib3IT extends AbstractContentProviderIT {
         thenLibraryProductHasAvailableModel();
     }
 
-    private void thenProductHasExpectedProductId() {
-        assertEquals(ELIB_PRODUCT_ID_VALUE, product.getProductId());
+    private void thenProductHasEbookProductId() {
+        assertEquals(EBOOK_PRODUCT_ID, product.getProductId());
+    }
+
+    private void thenProductHasAudiobookProductId() {
+        assertEquals(AUDIOBOOK_PRODUCT_ID, product.getProductId());
     }
 
     private void thenCreatedLoanHasExpectedProductId() {
-        assertEquals(ELIB_PRODUCT_ID_VALUE, createdLoan.getProductId());
+        assertEquals(EBOOK_PRODUCT_ID, createdLoan.getProductId());
     }
 
     private void thenProductIsNotNull() {
@@ -102,11 +155,11 @@ public class Elib3IT extends AbstractContentProviderIT {
 
     private void thenRetrievedLoanHasContentIfLoanIsActive() {
         if (loan.isActive())
-            assertNotNull(loan.getContentUrlFor(ELIB_FORMAT_ID_VALUE));
+            assertNotNull(loan.getContentUrlFor(HTML5_FORMAT_ID));
     }
 
     private void whenGetLibraryProduct() {
-        libraryProduct = underTest.getLibraryProduct(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE);
+        libraryProduct = underTest.getLibraryProduct(contentProviderConsumer, EBOOK_PRODUCT_ID);
     }
 
     private void thenLibraryProductIsNotNull() {
@@ -114,11 +167,11 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenLibraryProductContainsExpectedProductId() {
-        assertEquals(ELIB_PRODUCT_ID_VALUE, libraryProduct.getProductId());
+        assertEquals(EBOOK_PRODUCT_ID, libraryProduct.getProductId());
     }
 
     private void thenCreatedLoanHasContent() {
-        assertNotNull(createdLoan.getContentUrlFor(ELIB_FORMAT_ID_VALUE));
+        assertNotNull(createdLoan.getContentUrlFor(HTML5_FORMAT_ID));
     }
 
     private void thenLibraryProductHasAvailableModel() {
@@ -136,7 +189,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenGetBookAvailability() {
-        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE, LIBRARY_CARD);
+        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, LIBRARY_CARD);
     }
 
     private void thenBookAvailabilityResponseContainsExpectedProduct() {
@@ -151,14 +204,14 @@ public class Elib3IT extends AbstractContentProviderIT {
         boolean expectedProductFound = false;
         for (BookAvailability.Product product : products) {
             final String productId = product.getProductId();
-            if (ELIB_PRODUCT_ID_VALUE.equals(productId))
+            if (EBOOK_PRODUCT_ID.equals(productId))
                 expectedProductFound = true;
         }
         return expectedProductFound;
     }
 
     private void whenGetProduct() {
-        product = underTest.getProduct(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE);
+        product = underTest.getProduct(contentProviderConsumer, productId);
     }
 
     private void whenGetLoan() {
@@ -166,7 +219,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenCreateLoan() {
-        createdLoan = underTest.createLoan(contentProviderConsumer, ELIB_PRODUCT_ID_VALUE, LIBRARY_CARD);
+        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, LIBRARY_CARD);
     }
 
     private void thenCreatedLoanIsNotNull() {
