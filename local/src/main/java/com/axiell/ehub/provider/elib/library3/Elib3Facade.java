@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.patron.Patron;
 import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
@@ -9,11 +10,12 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 class Elib3Facade implements IElibFacade {
 
     @Override
-    public BookAvailability getBookAvailability(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
+    public BookAvailability getBookAvailability(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final Patron patron) {
         final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
-        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(libraryCard).appendParameter(elibProductId).build();
+        final String patronId = patron.getId();
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(patronId).appendParameter(elibProductId).build();
         final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
-        return elibResource.getBookAvailability(serviceId, checksum, elibProductId, libraryCard);
+        return elibResource.getBookAvailability(serviceId, checksum, elibProductId, patronId);
     }
 
     @Override
@@ -26,11 +28,12 @@ class Elib3Facade implements IElibFacade {
     }
 
     @Override
-    public CreatedLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final String libraryCard) {
+    public CreatedLoan createLoan(final ContentProviderConsumer contentProviderConsumer, final String elibProductId, final Patron patron) {
         final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
-        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(libraryCard).appendParameter(elibProductId).build();
+        final String patronId = patron.getId();
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(patronId).appendParameter(elibProductId).build();
         final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
-        final CreateLoanResponse response = elibResource.createLoan(serviceId, libraryCard, elibProductId, checksum);
+        final CreateLoanResponse response = elibResource.createLoan(serviceId, patronId, elibProductId, checksum);
         return response.getCreatedLoan();
     }
 

@@ -1,5 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
+import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -21,10 +23,15 @@ public class F1IT extends AbstractContentProviderIT {
     private static final String F1_REGION_ID_VALUE = "87";
     private static final String CARD = "78654387";
     private static final String CP_RECORD_ID = "519";
-//    private static final String CP_RECORD_ID = "1084";
+    //    private static final String CP_RECORD_ID = "1084";
     private static final String LANGUAGE = "en";
+    private static final String CP_LOAN_ID = "48161";
     private static final String EXPECTED_VALID_TYPE_ID = "3";
     private F1Facade underTest;
+    @Mock
+    private ContentProviderLoanMetadata loanMetadata;
+    @Mock
+    private Patron patron;
     @Mock
     private CommandData data;
     private GetFormatResponse actualGetFormatResponse;
@@ -83,6 +90,7 @@ public class F1IT extends AbstractContentProviderIT {
         givenF1Credentials();
         givenContentProviderConsumerInCommandData();
         givenLanguageInCommandData();
+        givenContentProviderLoanIdInCommandData();
         givenLibraryCardInCommandData();
         givenValidContentProviderRecordIdInCommandData();
         givenValidFormatIdInCommandData();
@@ -90,8 +98,12 @@ public class F1IT extends AbstractContentProviderIT {
         thenActualLoanContentIsValid();
     }
 
+    private void givenContentProviderLoanIdInCommandData() {
+        given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
+        given(data.getContentProviderLoanMetadata()).willReturn(loanMetadata);
+    }
+
     private void thenActualLoanContentIsValid() {
-        System.out.println(actualGetLoanContentResponse.getValue());
         assertTrue(actualGetLoanContentResponse.isValidContent());
     }
 
@@ -104,6 +116,7 @@ public class F1IT extends AbstractContentProviderIT {
     }
 
     private void thenActualCreateLoanContainsValidLoanReference() {
+        System.out.println(actualCreateLoanResponse.getValue());
         assertTrue(actualCreateLoanResponse.isValidLoan());
     }
 
@@ -112,7 +125,9 @@ public class F1IT extends AbstractContentProviderIT {
     }
 
     private void givenLibraryCardInCommandData() {
-        given(data.getLibraryCard()).willReturn(CARD);
+        given(patron.getLibraryCard()).willReturn(CARD);
+        given(data.getPatron()).willReturn(patron);
+
     }
 
     private void thenActualFormatEqualsNoSuchFormat() {

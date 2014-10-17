@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -71,7 +72,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenCreatedLoan() {
-        given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(createdLoan);
+        given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(createdLoan);
     }
 
     private void givenMissingContentInLoanAsArgumentType() {

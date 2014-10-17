@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 
@@ -17,21 +18,19 @@ class BookAvailabilityCommand extends AbstractElib3Command<CommandData> {
 
     @Override
     public void run(final CommandData data) {
-        final String libraryCard = data.getLibraryCard();
-        if (libraryCard == null) {
+        final Patron patron = data.getPatron();
+        if (patron.hasId())
+            retriveBookAvailability(data);
+        else
             forward(AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD, data);
-            return;
-        }
-
-        retriveBookAvailability(data);
     }
 
     private void retriveBookAvailability(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
         final String language = data.getLanguage();
-        final BookAvailability bookAvailability = elibFacade.getBookAvailability(contentProviderConsumer, contentProviderRecordId, libraryCard);
+        final BookAvailability bookAvailability = elibFacade.getBookAvailability(contentProviderConsumer, contentProviderRecordId, patron);
 
         if (bookAvailability.isProductAvailable(contentProviderRecordId))
             forward(PRODUCT_AVAILABLE, data);

@@ -4,7 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="persistence-context.xml"/>
-	<import resource="factory-context.xml"/>
 	<import resource="facade-context.xml"/>
 
 	<!-- List only the Business Controllers here -->

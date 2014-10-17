@@ -3,6 +3,7 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.*;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +22,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
     private static final String CONTENT_PROVIDER_ALIAS = ContentProviderName.ELIB.toString();
-    public static final String LIBRARY_CARD = "libraryCard";
-    public static final String PIN = "pin";
+    //    public static final String LIBRARY_CARD = "libraryCard";
+//    public static final String PIN = "pin";
     public static final String LANGUAGE = "language";
     public static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
     public static final String CONTENT_PROVIDER_FORMAT_ID = "contentProviderFormatdId";
@@ -49,6 +50,8 @@ public class ContentProviderDataAccessorFacadeTest {
     private ContentProviderLoan contentProviderLoan;
     @Mock
     private IContent content;
+    @Mock
+    private Patron patron;
 
     @Before
     public void setUpEhubConsumer() {
@@ -121,7 +124,7 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenCreateLoan() {
-        underTest.createLoan(ehubConsumer, LIBRARY_CARD, PIN, pendingLoan, LANGUAGE);
+        underTest.createLoan(ehubConsumer, patron, pendingLoan, LANGUAGE);
     }
 
     private void thenLoanIsCreatedByContentProvider() {
@@ -131,7 +134,7 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenGetContent() {
-        underTest.getContent(ehubConsumer, ehubLoan, LIBRARY_CARD, PIN, LANGUAGE);
+        underTest.getContent(ehubConsumer, ehubLoan, patron, LANGUAGE);
     }
 
     private void thenContentIsRetrievedFromContentProvider() {
@@ -141,7 +144,7 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, LIBRARY_CARD, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
+        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, patron, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
@@ -157,7 +160,7 @@ public class ContentProviderDataAccessorFacadeTest {
             if (argument instanceof CommandData) {
                 final CommandData data = (CommandData) argument;
                 final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
                         && helper.isExpectedContentProviderRecordId(CONTENT_PROVIDER_RECORD_ID) && helper.isExpectedLanguage(LANGUAGE);
             }
             return false;
@@ -171,8 +174,7 @@ public class ContentProviderDataAccessorFacadeTest {
             if (argument instanceof CommandData) {
                 final CommandData data = (CommandData) argument;
                 final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
-                        && helper.isExpectedPin(PIN) && helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron) && helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
             }
             return false;
         }
@@ -185,8 +187,8 @@ public class ContentProviderDataAccessorFacadeTest {
             if (argument instanceof CommandData) {
                 final CommandData data = (CommandData) argument;
                 final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedLibraryCard(LIBRARY_CARD)
-                        && helper.isExpectedPin(PIN) && helper.isExpectedContentProviderLoanMetadata(contentProviderLoanMetadata) && helper.isExpectedLanguage(LANGUAGE);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
+                        && helper.isExpectedContentProviderLoanMetadata(contentProviderLoanMetadata) && helper.isExpectedLanguage(LANGUAGE);
             }
             return false;
         }

@@ -5,6 +5,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentFactory;
@@ -83,6 +84,6 @@ public class GetContentCommandChainTest {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getId()).willReturn(LOAN_ID);
         given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
-        data = CommandData.newInstance(contentProviderConsumer, "libraryCard").setContentProviderLoanMetadata(loanMetadata);
+        data = CommandData.newInstance(contentProviderConsumer, new Patron.Builder("card", "pin").build()).setContentProviderLoanMetadata(loanMetadata);
     }
 }

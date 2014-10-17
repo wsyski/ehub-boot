@@ -1,8 +1,12 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +17,7 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 import static junit.framework.Assert.*;
 import static org.mockito.BDDMockito.given;
 
+@RunWith(MockitoJUnitRunner.class)
 public class Elib3IT extends AbstractContentProviderIT {
     private static final String API_BASE_URL_VALUE = "https://webservices.elib.se/library/v3.0";
     private static final String ELIB_SERVICE_ID_VALUE = "1873";
@@ -22,10 +27,12 @@ public class Elib3IT extends AbstractContentProviderIT {
     private static final String ELIB_LOAN_ID_VALUE = "4802146";
     private static final String HTML5_FORMAT_ID = "4101";
     private static final String FLASH_FORMAT_ID = "4002";
-    private static final String LIBRARY_CARD = "1";
+    private static final String PATRON_ID = "2";
     private String expectedFormatId;
     private String productId;
     private Elib3Facade underTest;
+    @Mock
+    private Patron patron;
 
     private BookAvailability bookAvailability;
     private Product product;
@@ -36,6 +43,12 @@ public class Elib3IT extends AbstractContentProviderIT {
     @Before
     public void setElibFacade() {
         underTest = new Elib3Facade();
+    }
+
+    @Before
+    public void setUpPatron() {
+        given(patron.hasId()).willReturn(true);
+        given(patron.getId()).willReturn(PATRON_ID);
     }
 
     @Test
@@ -189,7 +202,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenGetBookAvailability() {
-        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, LIBRARY_CARD);
+        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, patron);
     }
 
     private void thenBookAvailabilityResponseContainsExpectedProduct() {
@@ -219,7 +232,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenCreateLoan() {
-        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, LIBRARY_CARD);
+        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, patron);
     }
 
     private void thenCreatedLoanIsNotNull() {

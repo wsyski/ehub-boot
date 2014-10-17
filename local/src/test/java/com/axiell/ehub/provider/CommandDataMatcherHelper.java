@@ -3,6 +3,7 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
 
 public class CommandDataMatcherHelper {
     private final CommandData data;
@@ -15,12 +16,8 @@ public class CommandDataMatcherHelper {
         return expectedConsumer.equals(data.getContentProviderConsumer());
     }
 
-    public boolean isExpectedLibraryCard(String expectedCard) {
-        return expectedCard.equals(data.getLibraryCard());
-    }
-
-    public boolean isExpectedPin(String expectedPin) {
-        return expectedPin.equals(data.getPin());
+    public boolean isExpectedPatron(Patron expectedPatron) {
+        return expectedPatron.equals(data.getPatron());
     }
 
     public boolean isExpectedLanguage(String expectedLanguage) {

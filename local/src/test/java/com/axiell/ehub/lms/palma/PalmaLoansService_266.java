@@ -9,10 +9,10 @@ import junit.framework.Assert;
 
 import javax.jws.WebService;
 
-@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.ehub.axiell.com/",
+@WebService(serviceName = "LoansPalmaService", portName = "loans", targetNamespace = "http://loans.palma.services.arena.axiell.com/",
         wsdlLocation = "com/axiell/ehub/lms/palma_266/loans.wsdl", endpointInterface = "com.axiell.arena.services.palma.loans.Loans")
-public class PalmaLoansService_266 extends AbstractPalmaLoansService implements Loans {
-    private static final String CONTEXT_PATH = "com.axiell.ehub.services.palma.loans";
+public class PalmaLoansService_266 extends AbstractPalmaService implements Loans {
+    private static final String CONTEXT_PATH = "com.axiell.arena.services.palma.loans";
 
     @Override
     public com.axiell.arena.services.palma.loans.CheckOutTestResponse checkOutTest(final CheckOutTest parameters) {

@@ -7,6 +7,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AssertCommand;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -33,7 +34,7 @@ public abstract class AbstractElib3CommandTest {
     protected IEhubExceptionFactory exceptionFactory;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
-    protected String libraryCard;
+    //protected String libraryCard;
     protected String elibProductId;
     @Mock
     protected PendingLoan pendingLoan;
@@ -43,6 +44,8 @@ public abstract class AbstractElib3CommandTest {
     private ContentProvider contentProvider;
     @Mock
     private FormatDecoration formatDecoration;
+    @Mock
+    protected Patron patron;
 
     @Mock
     private EhubConsumer ehubConsumer;
@@ -63,7 +66,7 @@ public abstract class AbstractElib3CommandTest {
     }
 
     protected void givenBasicCommandData() {
-        data = CommandData.newInstance(contentProviderConsumer, libraryCard).setPendingLoan(pendingLoan).setLanguage(language);
+        data = CommandData.newInstance(contentProviderConsumer, patron).setPendingLoan(pendingLoan).setLanguage(language);
     }
 
     private void givenContentProviderConsumer() {

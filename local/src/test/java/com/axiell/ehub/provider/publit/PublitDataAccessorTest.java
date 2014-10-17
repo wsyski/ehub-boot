@@ -1,6 +1,9 @@
 package com.axiell.ehub.provider.publit;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,7 +144,8 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronIdInPatron();
+        givenPatronInCommandData();
         givenShopCustomerOrder();
         givenShopCustomerOrderId();
         givenShopOrderUrl();
@@ -154,10 +158,20 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenCreatedDownloadableContent();
         whenCreateLoan();
         thenActualLoanContainsDownloadUrl();
+        thenGetIdFromPatronIsInvoked();
+        thenGetLibraryCardFromPatronIsNeverInvoked();
+    }
+
+    private void thenGetLibraryCardFromPatronIsNeverInvoked() {
+        verify(patron, never()).getLibraryCard();
+    }
+
+    private void thenGetIdFromPatronIsInvoked() {
+        verify(patron, times(1)).getId();
     }
 
     private void givenShopCustomerOrder() {
-        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willReturn(shopCustomerOrder);
+        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, PATRON_ID)).willReturn(shopCustomerOrder);
     }
 
     private void givenShopCustomerOrderId() {
@@ -186,7 +200,8 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronIdInPatron();
+        givenPatronInCommandData();
         givenClientResponseFailureInCreateShopOrder();
         givenClientResponse();
         givenClientResponseStatus();
@@ -195,16 +210,18 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         } catch (InternalServerErrorException e) {
             EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
         }
+        thenGetIdFromPatronIsInvoked();
+        thenGetLibraryCardFromPatronIsNeverInvoked();
     }
 
     private void givenClientResponseFailureInCreateShopOrder() {
-        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, CARD)).willThrow(failure);
+        given(publitFacade.createShopOrder(contentProviderConsumer, RECORD_ID, PATRON_ID)).willThrow(failure);
     }
 
     @Test
     public void getContent() {
         givenContentProviderConsumerInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenShopOrderUrl();
@@ -229,7 +246,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     @Test
     public void getContentWhenEmptyListOfDownloadItems() {
         givenContentProviderConsumerInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenShopOrderUrl();
@@ -249,7 +266,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     @Test
     public void getContentWhenClientResponseFailureIsThrown() {
         givenContentProviderConsumerInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanId();
         givenClientResponseFailureInGetShopOrderUrl();

@@ -9,6 +9,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -90,7 +91,8 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
         final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
         final String recordId = data.getContentProviderRecordId();
         final String formatId = data.getContentProviderFormatId();
@@ -110,7 +112,8 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public IContent getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
         final String recordId = contentProviderLoanMetadata.getRecordId();

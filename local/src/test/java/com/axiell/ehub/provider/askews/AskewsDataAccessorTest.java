@@ -55,7 +55,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestSuccess();
@@ -131,7 +131,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestSuccess();
@@ -160,7 +160,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenLibraryCardInPatron();
         givenLanguageInCommandData();
         givenProcessLoan();
         givenLoanRequestIsNotSucess();

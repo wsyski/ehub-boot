@@ -10,7 +10,6 @@ import static org.mockito.Matchers.any;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,7 +25,6 @@ import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
-import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 
 /**
@@ -158,7 +156,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -232,7 +231,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     public void createLoanWhenMissingFormat() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -253,7 +253,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     public void createLoanWhenLicenseIsNotConsumed() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -274,7 +275,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -302,7 +304,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -328,7 +331,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();
@@ -359,7 +363,8 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     public void getContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenConsumeLicenseResponse();
         givenResult();
         givenStatus();

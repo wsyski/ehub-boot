@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class F1FacadeTest {
     private static final String FORMAT_ID = "1";
     private static final String LOAN_ID = "loanId";
     private static final String CONTENT = "content";
+    public static final String CARD = "card";
     private F1Facade underTest;
     @Mock
     private CommandData commandData;
@@ -37,6 +39,8 @@ public class F1FacadeTest {
     private IF1SoapServiceParameterHelper f1SoapServiceParameterHelper;
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
+    @Mock
+    private Patron patron;
     private GetFormatResponse actualGetFormatResponse;
     private CreateLoanResponse actualCreateLoanResponse;
     private GetLoanContentResponse actualGetLoanContentResponse;
@@ -45,6 +49,8 @@ public class F1FacadeTest {
     public void setUpUnderTest() {
         underTest = new F1Facade();
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(patron.getLibraryCard()).willReturn(CARD);
+        given(commandData.getPatron()).willReturn(patron);
         given(f1ServiceSoapFactory.getInstance(contentProviderConsumer)).willReturn(f1ServiceSoap);
         ReflectionTestUtils.setField(underTest, "f1ServiceSoapFactory", f1ServiceSoapFactory);
         ReflectionTestUtils.setField(underTest, "f1SoapServiceParameterHelper", f1SoapServiceParameterHelper);
@@ -69,7 +75,7 @@ public class F1FacadeTest {
         thenGetContentProviderConsumerFromCommandDataIsInvoked();
         thenGetContentProviderRecordIdFromCommandDataIsInvoked();
         thenGetLanguageFromCommandDataIsInvoked();
-        thenGetLibraryCardFromCommandDataIsInvoked();
+        thenGetPatronInCommandDataIsInvoked();
     }
 
     @Test
@@ -82,7 +88,7 @@ public class F1FacadeTest {
         thenGetContentProviderConsumerFromCommandDataIsInvoked();
         thenGetContentProviderRecordIdFromCommandDataIsInvoked();
         thenGetLanguageFromCommandDataIsInvoked();
-        thenGetLibraryCardFromCommandDataIsInvoked();
+        thenGetPatronInCommandDataIsInvoked();
         thenGetContentProviderFormatIdFromCommanDataIsInvoked();
     }
 
@@ -106,8 +112,8 @@ public class F1FacadeTest {
         verify(commandData, times(1)).getContentProviderFormatId();
     }
 
-    private void thenGetLibraryCardFromCommandDataIsInvoked() {
-        verify(commandData, times(1)).getLibraryCard();
+    private void thenGetPatronInCommandDataIsInvoked() {
+        verify(commandData, times(1)).getPatron();
     }
 
     private void thenActualContentEqualsExpectedContent() {

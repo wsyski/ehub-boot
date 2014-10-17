@@ -1,14 +1,11 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -21,12 +18,12 @@ public class ChecksumBuilderTest {
 //    private static final String SERVICE_ID = "1";
 //    private static final String SERVICE_KEY = "secret";
 //    private static final String PRODUCT_ID = "10024451002443";
-//    private static final String LIBRARY_CARD = "12345";
+//    private static final String PATRON_ID = "12345";
 
     private static final String SERVICE_ID = "1873";
     private static final String SERVICE_KEY = "Vm3qh9eZijFdMDxAEpn5PzyfC0S4sBGOvXtJrIYw1Ukl8cuoR2";
     private static final String PRODUCT_ID = "1000001";
-    private static final String LIBRARY_CARD = "1";
+    private static final String PATRON_ID = "1";
     private static final String EXP_CHECSUM_GET_PRODUCT = "1C8A62AB7B32CB690A7EB95CF75DFBA79BB62AB3A2DDCBD402B96D5ABD9EA99167E78A7A2E7BACC889821783BCBBBE12FDC856576FB2A1D57AE118058DECA02A";
     private static final String EXP_CHECSUM_GET_PRODUCTS = "54cee6c58a7de58d661a03e91bc432cad6dda2e2c5f565b1e51249495a0aea16d13ecc26cfc9c31dda70f673ef28bfaaa829d48af617bba9cd2407d0ffc2af26";
 
@@ -57,7 +54,7 @@ public class ChecksumBuilderTest {
 
     @Test
     public void checksumForBookAvailability() {
-        underTest.appendParameter(LIBRARY_CARD).appendParameter(PRODUCT_ID);
+        underTest.appendParameter(PATRON_ID).appendParameter(PRODUCT_ID);
         whenBuildChecksum();
         System.out.println(actualChecksum);
     }

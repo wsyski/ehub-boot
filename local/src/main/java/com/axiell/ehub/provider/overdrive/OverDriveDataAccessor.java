@@ -5,6 +5,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -66,8 +67,9 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String libraryCard = data.getLibraryCard();
-        final String pin = data.getPin();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
+        final String pin = patron.getPin();
         final OAuthAccessToken patronAccessToken = overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
         final String productId = data.getContentProviderRecordId();
         final String formatType = data.getContentProviderFormatId();
@@ -105,8 +107,9 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public IContent getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String libraryCard = data.getLibraryCard();
-        final String pin = data.getPin();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
+        final String pin = patron.getPin();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final OAuthAccessToken patronAccessToken = overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
         final Checkouts checkouts = overDriveFacade.getCheckouts(contentProviderConsumer, patronAccessToken);

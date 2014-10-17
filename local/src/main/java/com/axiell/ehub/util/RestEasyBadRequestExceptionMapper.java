@@ -9,13 +9,11 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import com.axiell.ehub.*;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.EhubRuntimeException;
-import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.security.UnauthorizedException;
 
 /**
@@ -35,13 +33,23 @@ public final class RestEasyBadRequestExceptionMapper implements ExceptionMapper<
         final Throwable cause = exception.getCause();
 
         if (cause instanceof UnauthorizedException) {
-            final UnauthorizedException unauthorizedException = (UnauthorizedException) cause;
-            final EhubRuntimeExceptionMapper<EhubRuntimeException> ehubRuntimeExceptionMapper = new EhubRuntimeExceptionMapper<>();
-            return ehubRuntimeExceptionMapper.toResponse(unauthorizedException);
+            final UnauthorizedException ehubException = (UnauthorizedException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof ForbiddenException) {
+            final ForbiddenException ehubException = (ForbiddenException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof InternalServerErrorException) {
+            final InternalServerErrorException ehubException = (InternalServerErrorException) cause;
+            return handleEhubRuntimeException(ehubException);
         } else {
             LOGGER.error(exception.getMessage(), exception);
             final EhubError ehubError = ErrorCause.BAD_REQUEST.toEhubError();
             return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_XML).entity(ehubError).build();
         }
+    }
+
+    private Response handleEhubRuntimeException(EhubRuntimeException ehubException) {
+        final EhubRuntimeExceptionMapper<EhubRuntimeException> ehubRuntimeExceptionMapper = new EhubRuntimeExceptionMapper<>();
+        return ehubRuntimeExceptionMapper.toResponse(ehubException);
     }
 }

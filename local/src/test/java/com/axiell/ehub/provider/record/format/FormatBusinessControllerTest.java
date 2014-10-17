@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 
+import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +63,6 @@ public class FormatBusinessControllerTest {
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(consumerBusinessController, contentProviderDataAccessorFacade);
         inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
-        inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(String.class), any(String.class), any(String.class));
+        inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(Patron.class), any(String.class), any(String.class));
     }
 }

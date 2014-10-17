@@ -143,8 +143,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
-        givenPinInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
         givenPatronAccessToken();
         givenCheckout();
         givenExpirationDateInCheckout();
@@ -228,8 +229,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
-        givenPinInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
         givenPatronAccessToken();
         givenCheckout();
         givenExpirationDateInCheckout();
@@ -246,8 +248,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     public void getContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
-        givenPinInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
@@ -290,8 +293,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     public void getContentWhenNoDownloadLinkTemplate() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
-        givenPinInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
         givenLanguageInCommandData();
         givenPatronAccessToken();
         givenCheckouts();

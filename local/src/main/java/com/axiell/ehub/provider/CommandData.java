@@ -4,12 +4,12 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
-    private final String libraryCard;
-    private String pin;
+    private final Patron patron;
     private String language;
     private String contentProviderRecordId;
     private String contentProviderFormatId;
@@ -18,30 +18,21 @@ public class CommandData implements ICommandData {
     private String contentUrl;
     private IContent content;
 
-    protected CommandData(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
+    protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         this.contentProviderConsumer = contentProviderConsumer;
-        this.libraryCard = libraryCard;
+        this.patron = patron;
     }
 
-    public static CommandData newInstance(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
-        return new CommandData(contentProviderConsumer, libraryCard);
+    public static CommandData newInstance(final ContentProviderConsumer contentProviderConsumer, Patron patron) {
+        return new CommandData(contentProviderConsumer, patron);
     }
 
     public ContentProviderConsumer getContentProviderConsumer() {
         return contentProviderConsumer;
     }
 
-    public String getLibraryCard() {
-        return libraryCard;
-    }
-
-    public String getPin() {
-        return pin;
-    }
-
-    public CommandData setPin(String pin) {
-        this.pin = pin;
-        return this;
+    public Patron getPatron() {
+        return patron;
     }
 
     public String getContentProviderRecordId() {
@@ -112,8 +103,7 @@ public class CommandData implements ICommandData {
     public String toString() {
         return "CommandData{" +
                 "contentProviderConsumer=" + contentProviderConsumer +
-                ", libraryCard=" + libraryCard +
-                ", pin=" + pin +
+                ", patron=" + patron +
                 ", language=" + language +
                 ", contentProviderRecordId=" + contentProviderRecordId +
                 ", contentProviderFormatId=" + contentProviderFormatId +

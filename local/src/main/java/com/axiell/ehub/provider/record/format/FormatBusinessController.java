@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ public class FormatBusinessController implements IFormatBusinessController {
     @Transactional(readOnly = true)
     public Formats getFormats(AuthInfo authInfo, String contentProviderName, String contentProviderRecordId, String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final String libraryCard = authInfo.getOptionalLibraryCard();
-        return contentProviderDataAccessorFacade.getFormats(ehubConsumer, contentProviderName, libraryCard, contentProviderRecordId, language);
+        final Patron patron = authInfo.getPatron();
+        return contentProviderDataAccessorFacade.getFormats(ehubConsumer, contentProviderName, patron, contentProviderRecordId, language);
     }
 }

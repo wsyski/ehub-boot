@@ -230,7 +230,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -308,6 +309,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void createLoanWhenLoanResponseStatusNotOk() {
+        givenPatronInCommandData();
         givenLoanResponse();
         givenLoanResponseStatusNotOk();
         try {
@@ -328,7 +330,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -352,7 +355,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -377,7 +381,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenContentProvider();
         givenLoanResponse();
         givenLoanResponseStatusOk();
@@ -407,7 +412,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     public void getContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();
@@ -454,7 +460,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     public void getContentWhenNoOrderItems() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenEmptyOrderList();
@@ -470,7 +477,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     public void getContentWhenUnexpectedOrderId() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();
@@ -492,7 +500,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     public void getContentWhenNoContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenLibraryCardInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
         givenOrderListResponse();
         givenOrderListResponseStatusOk();
         givenOrderListData();

@@ -8,7 +8,7 @@ public interface IElibResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("books/availability/{productId}")
-    BookAvailability getBookAvailability(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @PathParam("productId") String elibProductId, @QueryParam("card") String libraryCard);
+    BookAvailability getBookAvailability(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @PathParam("productId") String elibProductId, @QueryParam("card") String patronId);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -19,7 +19,7 @@ public interface IElibResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("loans")
     CreateLoanResponse createLoan(@FormParam("ServiceID") String serviceId,
-                           @FormParam("Card") String libraryCard,
+                           @FormParam("Card") String patronId,
                            @FormParam("ProductID") String elibProductId,
                            @FormParam("Checksum") String checksum);
 

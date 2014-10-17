@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,8 @@ class F1Facade implements IF1Facade {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
         final int mediaId = f1SoapServiceParameterHelper.getMediaId(contentProviderConsumer, contentProviderRecordId, language);
         final String username = contentProviderConsumer.getProperty(F1_USERNAME);
         final String password = contentProviderConsumer.getProperty(F1_PASSWORD);
@@ -50,7 +52,8 @@ class F1Facade implements IF1Facade {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
         final String formatId = data.getContentProviderFormatId();
         final int mediaId = f1SoapServiceParameterHelper.getMediaId(contentProviderConsumer, contentProviderRecordId, language);
         final String username = contentProviderConsumer.getProperty(F1_USERNAME);

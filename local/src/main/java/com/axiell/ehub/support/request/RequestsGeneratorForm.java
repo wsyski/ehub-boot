@@ -10,6 +10,7 @@ public class RequestsGeneratorForm extends Form<RequestArguments> {
         super(id);
         setFormModel();
         addEhubConsumerChoice();
+        addTextField("patronId", false);
         addTextField("libraryCard", false);
         addTextField("pin", false);
     }

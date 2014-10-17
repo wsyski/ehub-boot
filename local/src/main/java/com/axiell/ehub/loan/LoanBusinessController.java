@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,32 +39,31 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Transactional(readOnly = false)
     public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final String libraryCard = authInfo.getRequiredLibraryCard();
-        final String pin = authInfo.getPin();
-        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, libraryCard, pin);
+        final Patron patron = authInfo.getPatron();
+        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron);
         final Result result = checkoutTestAnalysis.getResult();
 
         switch (result) {
             case NEW_LOAN:
-                final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, libraryCard, pin, pendingLoan, language);
-                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.getExpirationDate(), libraryCard, pin);
+                final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, patron, pendingLoan, language);
+                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.getExpirationDate(), patron);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 return readyLoanFactory.createReadyLoan(ehubLoan, contentProviderLoan);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
-                return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId, language);
+                return getReadyLoan(ehubConsumer, patron, lmsLoanId, language);
             default:
                 throw new NotImplementedException("Create loan where the result of the pre-checkout analysis is '" + result + "' has not been implemented");
         }
     }
 
-    private ReadyLoan getReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final String lmsLoanId, final String language) {
+    private ReadyLoan getReadyLoan(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String language) {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
-        return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan, language);
+        return makeReadyLoan(ehubConsumer, patron, ehubLoan, language);
     }
 
-    private ReadyLoan makeReadyLoan(final EhubConsumer ehubConsumer, final String libraryCard, final String pin, final EhubLoan ehubLoan, final String language) {
-        final IContent content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, libraryCard, pin, language);
+    private ReadyLoan makeReadyLoan(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final String language) {
+        final IContent content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
         return readyLoanFactory.createReadyLoan(ehubLoan, content);
     }
 
@@ -72,17 +72,15 @@ public class LoanBusinessController implements ILoanBusinessController {
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
-        final String libraryCard = authInfo.getRequiredLibraryCard();
-        final String pin = authInfo.getPin();
-        return makeReadyLoan(ehubConsumer, libraryCard, pin, ehubLoan, language);
+        final Patron patron = authInfo.getPatron();
+        return makeReadyLoan(ehubConsumer, patron, ehubLoan, language);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final String libraryCard = authInfo.getRequiredLibraryCard();
-        final String pin = authInfo.getPin();
-        return getReadyLoan(ehubConsumer, libraryCard, pin, lmsLoanId, language);
+        final Patron patron = authInfo.getPatron();
+        return getReadyLoan(ehubConsumer, patron, lmsLoanId, language);
     }
 }

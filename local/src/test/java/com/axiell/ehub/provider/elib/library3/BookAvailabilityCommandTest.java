@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,7 +25,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     @Test
-    public void noLibraryCard() {
+    public void noPatronId() {
         givenBasicCommandData();
         givenCommandOnNoCard();
         whenRun();
@@ -33,7 +34,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
 
     @Test
     public void availableProduct() {
-        givenLibraryCard();
+        givenPatronId();
         givenBasicCommandData();
         givenProductIsAvailable();
         givenBookAvailability();
@@ -45,7 +46,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     @Test
     public void maxNumberOfDownloadsForProductReached() {
         givenLanguage();
-        givenLibraryCard();
+        givenPatronId();
         givenBasicCommandData();
         givenMaxNoOfDownloadsReachedInBookAvailability();
         givenBookAvailability();
@@ -62,7 +63,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     @Test
     public void borrowerLimitReached() {
         givenLanguage();
-        givenLibraryCard();
+        givenPatronId();
         givenBasicCommandData();
         givenBorrowerLimitReachedInBookAvailability();
         givenBookAvailability();
@@ -79,7 +80,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     @Test
     public void libraryLimitReached() {
         givenLanguage();
-        givenLibraryCard();
+        givenPatronId();
         givenBasicCommandData();
         givenLibraryLimitReachedInBookAvailability();
         givenBookAvailability();
@@ -96,7 +97,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     @Test
     public void productUnavailable() {
         givenLanguage();
-        givenLibraryCard();
+        givenPatronId();
         givenBasicCommandData();
         givenBookAvailability();
         givenInternalErrorServerExceptionWithProductUnavailable();
@@ -160,8 +161,9 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         verify(exceptionFactory).createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
     }
 
-    private void givenLibraryCard() {
-        libraryCard = "card";
+    private void givenPatronId() {
+        given(patron.hasId()).willReturn(true);
+        given(patron.getId()).willReturn("id");
     }
 
     private void givenProductIsAvailable() {
@@ -169,7 +171,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenBookAvailability() {
-        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(bookAvailability);
+        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(bookAvailability);
     }
 
     private void givenCommandOnProductAvailable() {

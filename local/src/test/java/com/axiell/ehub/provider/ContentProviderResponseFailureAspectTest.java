@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.patron.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class ContentProviderResponseFailureAspectTest {
     @Before
     public void setUpCommandData() {
         final ContentProviderConsumer contentProviderConsumer = makeContentProviderConsumer();
-        commandData = CommandData.newInstance(contentProviderConsumer, "libraryCard").setContentProviderRecordId("contentProviderRecordId").setLanguage("language");
+        commandData = CommandData.newInstance(contentProviderConsumer, new Patron.Builder("card", "pin").build()).setContentProviderRecordId("contentProviderRecordId").setLanguage("language");
     }
 
     @Test

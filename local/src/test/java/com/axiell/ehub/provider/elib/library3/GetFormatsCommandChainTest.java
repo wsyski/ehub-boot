@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
@@ -54,6 +55,8 @@ public class GetFormatsCommandChainTest {
     private Format expFormat;
     @Mock
     private CommandData commandData;
+    @Mock
+    private Patron patron;
     private Format actualFormat;
 
     @Before
@@ -99,6 +102,7 @@ public class GetFormatsCommandChainTest {
     private void givenCommandData() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(commandData.getPatron()).willReturn(patron);
         elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 
@@ -127,7 +131,7 @@ public class GetFormatsCommandChainTest {
 
     private void givenAvailableProduct() {
         given(bookAvailability.isProductAvailable(any(String.class))).willReturn(true);
-        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(bookAvailability);
+        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(bookAvailability);
     }
 
     private void thenActualFormatSetIsEmpty() {

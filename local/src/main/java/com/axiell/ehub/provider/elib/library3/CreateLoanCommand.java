@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ICommandResult;
@@ -23,10 +24,10 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
     public void run(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
         final String language = data.getLanguage();
         final String formatId = data.getContentProviderFormatId();
-        final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, libraryCard);
+        final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, patron);
         final String contentUrl = createdLoan.getContentUrlFor(formatId);
 
         if (contentUrl == null)

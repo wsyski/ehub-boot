@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class RequestArguments implements Serializable {
     private EhubConsumer ehubConsumer;
+    private String patronId;
     private String libraryCard;
     private String pin;
     private String contentProviderName;
@@ -29,6 +30,14 @@ public class RequestArguments implements Serializable {
 
     public void setEhubConsumer(EhubConsumer ehubConsumer) {
         this.ehubConsumer = ehubConsumer;
+    }
+
+    public String getPatronId() {
+        return patronId;
+    }
+
+    public void setPatronId(String patronId) {
+        this.patronId = patronId;
     }
 
     public String getLibraryCard() {

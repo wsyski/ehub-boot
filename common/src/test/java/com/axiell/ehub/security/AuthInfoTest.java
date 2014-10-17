@@ -27,19 +27,23 @@ public class AuthInfoTest {
     private String expEhubConsumerSecretKey1 = "secret1";
     private long expEhubConsumerId2 = 2L;
     private String expEhubConsumerSecretKey2 = "secret2";
+    private String expPatronId = "abc123";
     private String expLibraryCard1 = "12345";
     private String expPin1 = "1111";
     private String expSignature1 = "w7DHxJ11oSuSH9u8%2BY3GY6iebrw%3D";
     private String expSignature2 = "PUkG2RlaMQkr3jtPKKJf5Sm2oJo%3D";
+    private String expSignature3 = "NID2sX1Fw7XcIfzVpnOgo1xlces%3D";
     private String expInfoValue1;
     private String expInfoValue2;
-    
+    private String expInfoValue3;
 
     @Before
     public void setUp() {
         expInfoValue1 = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
                 expEhubConsumerId1, expLibraryCard1, expPin1, expSignature1);
         expInfoValue2 = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_signature=\"{1}\"", expEhubConsumerId2, expSignature2);
+        expInfoValue3 = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
+                expEhubConsumerId1, expPatronId, expLibraryCard1, expPin1, expSignature3);
     }
 
     /**
@@ -56,9 +60,9 @@ public class AuthInfoTest {
         String actInfoValue2 = expInfo2.toString();
         Assert.assertEquals(expInfoValue2, actInfoValue2);
 
-        AuthInfo expInfo3 = new AuthInfo.Builder(10000L, "4CWXdU1852").libraryCard("909265910").pin("4447").build();
+        AuthInfo expInfo3 = new AuthInfo.Builder(expEhubConsumerId1, expEhubConsumerSecretKey1).patronId(expPatronId).libraryCard(expLibraryCard1).pin(expPin1).build();
         String actInfoValue3 = expInfo3.toString();
-        System.out.println(actInfoValue3);
+        Assert.assertEquals(expInfoValue3, actInfoValue3);
     }
     
     /**

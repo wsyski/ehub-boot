@@ -2,6 +2,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.*;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import junit.framework.Assert;
 import org.jboss.resteasy.client.ClientResponse;
@@ -26,6 +27,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String FORMAT_ID = "1";
     protected static final String DOWNLOAD_URL = "url";
     protected static final String LANGUAGE = "sv";
+    protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
     protected static final String PIN = "pin";
     protected static final String EHUB_FORMAT_NAME = "ehubFormatName";
@@ -61,6 +63,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
     private PendingLoan pendingLoan;
     @Mock
     protected CommandData commandData;
+    @Mock
+    protected Patron patron;
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
@@ -69,12 +73,20 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
     }
 
-    protected void givenLibraryCardInCommandData() {
-        given(commandData.getLibraryCard()).willReturn(CARD);
+    protected void givenPatronInCommandData() {
+        given(commandData.getPatron()).willReturn(patron);
     }
 
-    protected void givenPinInCommandData() {
-        given(commandData.getPin()).willReturn(PIN);
+    protected void givenPatronIdInPatron() {
+        given(patron.getId()).willReturn(PATRON_ID);
+    }
+
+    protected void givenLibraryCardInPatron() {
+        given(patron.getLibraryCard()).willReturn(CARD);
+    }
+
+    protected void givenPinInPatron() {
+        given(patron.getPin()).willReturn(PIN);
     }
 
     protected void givenContentProviderRecordIdInCommandData() {

@@ -33,9 +33,9 @@ class PublitFacade implements IPublitFacade {
     }
 
     @Override
-    public ShopCustomerOrder createShopOrder(ContentProviderConsumer contentProviderConsumer, String publitRecordId, String libraryCard) {
+    public ShopCustomerOrder createShopOrder(ContentProviderConsumer contentProviderConsumer, String publitRecordId, String patronId) {
         final IPublitTradeApi api = getCreateLoanApi(contentProviderConsumer);
-        return api.createShopOrder(libraryCard, FIRST_NAME, LAST_NAME, EMAIL, STREET, ZIP_CODE, CITY, PAYMENT_METHOD, ORDER_TYPE, publitRecordId, CALLBACK);
+        return api.createShopOrder(patronId, FIRST_NAME, LAST_NAME, EMAIL, STREET, ZIP_CODE, CITY, PAYMENT_METHOD, ORDER_TYPE, publitRecordId, CALLBACK);
     }
 
     @Override

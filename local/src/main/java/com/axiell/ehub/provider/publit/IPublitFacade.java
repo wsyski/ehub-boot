@@ -8,7 +8,7 @@ interface IPublitFacade {
 
     List<Product> getProduct(ContentProviderConsumer contentProviderConsumer, String publitRecordId);
     
-    ShopCustomerOrder createShopOrder(ContentProviderConsumer contentProviderConsumer, String publitRecordId, String libraryCard);
+    ShopCustomerOrder createShopOrder(ContentProviderConsumer contentProviderConsumer, String publitRecordId, String patronId);
     
     ShopOrderUrl getShopOrderUrl(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId);
 }

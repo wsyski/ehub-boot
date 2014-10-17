@@ -6,6 +6,7 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentFactory;
@@ -57,6 +58,8 @@ public class CreateLoanCommandChainTest {
     private ContentProviderLoanMetadata loanMetadata;
     @Mock
     private DownloadableContent downloadableContent;
+    @Mock
+    private Patron patron;
 
     private ContentProviderLoan actualLoan;
 
@@ -92,19 +95,20 @@ public class CreateLoanCommandChainTest {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(pendingLoan.getContentProviderRecordId()).willReturn(CP_RECORD_ID);
-        commandData = CommandData.newInstance(contentProviderConsumer, "libraryCard").setPendingLoan(pendingLoan);
+        given(patron.hasId()).willReturn(true);
+        commandData = CommandData.newInstance(contentProviderConsumer, patron).setPendingLoan(pendingLoan);
     }
 
     private void givenProductIsAvailable() {
         given(bookAvailability.isProductAvailable(any(String.class))).willReturn(true);
-        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(bookAvailability);
+        given(elibFacade.getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(bookAvailability);
     }
 
     private void givenCreatedLoan() {
         given(createdLoan.getContentUrlFor(any(String.class))).willReturn(CONTENT_URL);
         given(createdLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(createdLoan.getLoanId()).willReturn(CP_LOAN_ID);
-        given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(String.class))).willReturn(createdLoan);
+        given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(createdLoan);
     }
 
     private void givenCreatedDownloadableContent() {

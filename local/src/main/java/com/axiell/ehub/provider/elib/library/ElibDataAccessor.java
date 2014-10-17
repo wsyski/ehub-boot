@@ -13,6 +13,7 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -129,8 +130,9 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String libraryCard = data.getLibraryCard();
-        final String pin = data.getPin();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
+        final String pin = patron.getPin();
         final String elibRecordId = data.getContentProviderRecordId();
         final String formatId = data.getContentProviderFormatId();
 
@@ -210,7 +212,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     public IContent getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
-        final String libraryCard = data.getLibraryCard();
+        final Patron patron = data.getPatron();
+        final String libraryCard = patron.getLibraryCard();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();
         final List<Orderitem> orderItems = getOrderItems(contentProviderConsumer, libraryCard);
 

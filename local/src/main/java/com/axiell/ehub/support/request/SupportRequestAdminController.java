@@ -112,9 +112,10 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
 
     private AuthInfo makeAuthInfo(final RequestArguments arguments) throws EhubException {
         final EhubConsumer ehubConsumer = arguments.getEhubConsumer();
+        final String patronId = arguments.getPatronId();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).libraryCard(libraryCard).pin(pin).build();
+        return new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
     }
 
     private SupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {

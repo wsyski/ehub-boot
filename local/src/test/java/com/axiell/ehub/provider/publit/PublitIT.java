@@ -27,7 +27,7 @@ public class PublitIT extends AbstractContentProviderIT {
     private static final String PUBLIT_URL = "http://www.publit.se/";
     private static final String PUBLIT_RECORD_0_ID = "9789175758411";
     
-    private static final String PUBLIT_LIBRARY_CARD = "12345";    
+    private static final String PATRON_ID = "12345";
     private IPublitFacade underTest;
    
     private List<Product> actualProducts;
@@ -84,7 +84,7 @@ public class PublitIT extends AbstractContentProviderIT {
     }
     
     private void whenCreateShopOrder() {
-	actualShopCustomerOrder = underTest.createShopOrder(contentProviderConsumer, PUBLIT_RECORD_0_ID, PUBLIT_LIBRARY_CARD);
+	actualShopCustomerOrder = underTest.createShopOrder(contentProviderConsumer, PUBLIT_RECORD_0_ID, PATRON_ID);
     }
     
     private void thenShopCustomerOrderContainsId() {

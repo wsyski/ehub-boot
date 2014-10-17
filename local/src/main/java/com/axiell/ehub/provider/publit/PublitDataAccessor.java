@@ -8,6 +8,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.*;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 import com.axiell.ehub.provider.record.format.Format;
@@ -97,8 +98,9 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final String libraryCard = data.getLibraryCard();
-        final String contentProviderLoanId = createShopOrder(contentProviderConsumer, libraryCard, contentProviderRecordId);
+        final Patron patron = data.getPatron();
+        final String patronId = patron.getId();
+        final String contentProviderLoanId = createShopOrder(contentProviderConsumer, patronId, contentProviderRecordId);
         final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
@@ -109,11 +111,11 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
         return new ContentProviderLoan(metadata, content);
     }
 
-    private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String libraryCard, final String contentProviderRecordId) {
+    private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String patronId, final String contentProviderRecordId) {
         final ShopCustomerOrder shopCustomerOrder;
 
         try {
-            shopCustomerOrder = publitFacade.createShopOrder(contentProviderConsumer, contentProviderRecordId, libraryCard);
+            shopCustomerOrder = publitFacade.createShopOrder(contentProviderConsumer, contentProviderRecordId, patronId);
         } catch (ClientResponseFailure failure) {
             throw makeInternalServerErrorException(failure);
         }

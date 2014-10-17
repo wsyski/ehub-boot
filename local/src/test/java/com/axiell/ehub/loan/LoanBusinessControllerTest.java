@@ -9,6 +9,7 @@ import static org.mockito.Mockito.inOrder;
 
 import java.util.Date;
 
+import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,7 +98,7 @@ public class LoanBusinessControllerTest {
 
     @Before
     public void setUpContentProviderLoan() {
-        given(contentProviderDataAccessorFacade.createLoan(any(EhubConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class))).willReturn(
+        given(contentProviderDataAccessorFacade.createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class))).willReturn(
                 contentProviderLoan);
     }
 
@@ -115,7 +116,7 @@ public class LoanBusinessControllerTest {
 
     private void givenNewLoanAsPreCheckoutAnalysisResult() {
         CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.NEW_LOAN, null);
-        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class))).willReturn(
+        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(
                 preCheckoutAnalysis);
     }
 
@@ -126,9 +127,9 @@ public class LoanBusinessControllerTest {
     private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
         InOrder inOrder = inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
         inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
-        inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class));
-        inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(String.class), any(String.class), any(PendingLoan.class), any(String.class));
-        inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(String.class), any(String.class));
+        inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class));
+        inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class));
+        inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class));
         inOrder.verify(ehubLoanRepositoryFacade).saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class));
     }
 
@@ -145,7 +146,7 @@ public class LoanBusinessControllerTest {
 
     private void givenActiveLoanAsPreCheckoutAnalysisResult() {
         CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.ACTIVE_LOAN, "lmsLoanId");
-        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(String.class), any(String.class))).willReturn(
+        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(
                 preCheckoutAnalysis);
     }
 
@@ -161,7 +162,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void thenContentIsRetrievedFromContentProvider(InOrder inOrder) {
-        inOrder.verify(contentProviderDataAccessorFacade).getContent(any(EhubConsumer.class), any(EhubLoan.class), any(String.class), any(String.class), any(String.class));
+        inOrder.verify(contentProviderDataAccessorFacade).getContent(any(EhubConsumer.class), any(EhubLoan.class), any(Patron.class), any(String.class));
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,30 +22,30 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
 
     @Override
-    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderAlias, String libraryCard, String contentProviderRecordId, String language) {
+    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderAlias, Patron patron, String contentProviderRecordId, String language) {
         final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron).setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
         return dataAccessor.getFormats(commandData);
     }
 
     @Override
-    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, String libraryCard, String pin, PendingLoan pendingLoan, String language) {
+    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language) {
         final ContentProviderName name = aliasBusinessController.getName(pendingLoan.getContentProviderName());
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setPin(pin).setPendingLoan(pendingLoan).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron).setPendingLoan(pendingLoan).setLanguage(language);
         return dataAccessor.createLoan(commandData);
     }
 
     @Override
-    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, String libraryCard, String pin, String language) {
+    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
         final ContentProviderName name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, libraryCard).setPin(pin).setContentProviderLoanMetadata(metadata).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron).setContentProviderLoanMetadata(metadata).setLanguage(language);
         return dataAccessor.getContent(commandData);
     }
 
