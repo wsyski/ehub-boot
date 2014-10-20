@@ -56,6 +56,7 @@ public class TestDataResource implements ITestDataResource {
     private static final String ELIB_FORMAT_2_ID = "elibFormat2";
     private static final int ELIB_PLAYER_WIDTH = 600;
     private static final int ELIB_PLAYER_HEIGHT = 215;
+    private static final String PATRON_ID = "abc123";
     private static final String ELIB_LIBRARY_CARD = "909265910";
     private static final String ELIB_LIBRARY_CARD_PIN = "4447";
     private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
@@ -83,7 +84,7 @@ public class TestDataResource implements ITestDataResource {
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initElibConsumer(ehubConsumer, elibProvider);
         final Long ehubLoanId = initELibEhubLoan(ehubConsumer, elibProvider);
-        return new TestData(ehubConsumer.getId(), EHUB_CONSUMER_SECRET_KEY, ehubLoanId, ELIB_LIBRARY_CARD, ELIB_LIBRARY_CARD_PIN);
+        return new TestData(ehubConsumer.getId(), EHUB_CONSUMER_SECRET_KEY, ehubLoanId, PATRON_ID, ELIB_LIBRARY_CARD, ELIB_LIBRARY_CARD_PIN);
     }
 
     @Override

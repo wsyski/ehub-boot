@@ -4,7 +4,7 @@ import com.axiell.ehub.security.AuthInfo;
 import junit.framework.Assert;
 import org.junit.Test;
 
-public class RemoteFormatIT_10Snapshot extends AbstractRemoteFormatIT {
+public class RemoteFormatIT_Snapshot extends AbstractRemoteFormatIT {
     private IEhubService ehubService;
     private AuthInfo invalidAuthInfo;
 

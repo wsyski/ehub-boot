@@ -18,7 +18,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
 
     @Override
     protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).patronId(testData.getPatronId()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
     }
 
     @Test

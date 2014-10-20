@@ -2,7 +2,7 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.loan.PendingLoan;
 
-public class RemoteLoanIT_10Snapshot extends AbstractRemoteLoanIT {
+public class RemoteLoanIT_Snapshot extends AbstractRemoteLoanIT {
     private IEhubService ehubService;
     private PendingLoan pendingLoan;
 

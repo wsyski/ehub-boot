@@ -11,16 +11,18 @@ public class TestData {
     private Long ehubConsumerId;
     private String ehubConsumerSecretKey;
     private Long ehubLoanId;
+    private String patronId;
     private String libraryCard;
     private String pin;
 
     protected TestData() {
     }
 
-    public TestData(Long ehubConsumerId, String ehubConsumerSecretKey, Long ehubLoanId, String libraryCard, String pin) {
+    public TestData(Long ehubConsumerId, String ehubConsumerSecretKey, Long ehubLoanId, String patronId, String libraryCard, String pin) {
         this.ehubConsumerId = ehubConsumerId;
         this.ehubConsumerSecretKey = ehubConsumerSecretKey;
         this.ehubLoanId = ehubLoanId;
+        this.patronId = patronId;
         this.libraryCard = libraryCard;
         this.pin = pin;
     }
@@ -50,6 +52,15 @@ public class TestData {
 
     public void setEhubLoanId(Long ehubLoanId) {
         this.ehubLoanId = ehubLoanId;
+    }
+
+    @XmlAttribute(name = "patronId", required = true)
+    public String getPatronId() {
+        return patronId;
+    }
+
+    public void setPatronId(String patronId) {
+        this.patronId = patronId;
     }
 
     @XmlAttribute(name = "libraryCard", required = true)
