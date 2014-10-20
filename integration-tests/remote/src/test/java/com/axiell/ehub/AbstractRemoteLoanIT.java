@@ -24,7 +24,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     @Test
     public final void createLoan() throws EhubException {
         givenPendingLoan();
-        givenPalmaWsdl();
+        givenPalmaLoanWsdl();
         givenCheckoutTestOkResponse();
         givenGetLibraryUserOrderList();
         givenCheckoutResponse();
@@ -35,7 +35,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
 
     protected abstract void givenPendingLoan();
 
-    private void givenPalmaWsdl() {
+    private void givenPalmaLoanWsdl() {
         stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("loans.wsdl")));
     }
 
@@ -113,7 +113,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     @Test
     public final void ehubException() {
         givenPendingLoan();
-        givenPalmaWsdl();
+        givenPalmaLoanWsdl();
         givenCheckoutTestErrorResponse();
         try {
             whenCreateLoan();

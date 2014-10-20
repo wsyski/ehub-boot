@@ -18,6 +18,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.core.Response;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
 public abstract class AbstractRemoteIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteIT.class);
     private static final int PORT_NO = 16518;

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPMessage;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
@@ -30,6 +31,8 @@ public class LoggingHandler implements SOAPHandler<SOAPMessageContext> {
     private void doHandleMessage(final SOAPMessageContext soapMessageContext) {
         boolean isRequest = isMessageContextARequest(soapMessageContext);
         SOAPMessage soapMessage = soapMessageContext.getMessage();
+        String url = (String) soapMessageContext.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
+        LOGGER.debug("SOAP URL: " + url);
         LOGGER.debug(writeLogHeading(isRequest) + lineFeed() + soapMessageToString(soapMessage));
     }
 

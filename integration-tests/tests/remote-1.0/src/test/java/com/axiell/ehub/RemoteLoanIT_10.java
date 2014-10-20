@@ -7,7 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 
-public class RemoteLoanIT_08 extends AbstractRemoteLoanIT {
+public class RemoteLoanIT_10 extends AbstractRemoteLoanIT {
     private IEhubService ehubService;
     private PendingLoan pendingLoan;
 
