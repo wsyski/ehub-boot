@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
-@JsonIgnoreProperties(value = {"ExpiryDate", "CreatedDate", "Supplements", "CoverImage", "Title"})
+@JsonIgnoreProperties(value = {"CreatedDate", "Supplements", "CoverImage", "Title"})
 public class Loan {
     @JsonProperty("LoanID")
     private String loanId;

@@ -258,6 +258,11 @@ public class Elib3IT extends AbstractContentProviderIT {
         thenGetLoansResponseIsNotNull();
         thenLoanWithExpectedProductIdExists();
         thenRetrievedLoanHasContentIfLoanIsActive();
+        thenLoanExpirationDateIsNotNull();
+    }
+
+    private void thenLoanExpirationDateIsNotNull() {
+        assertNotNull(loan.getExpirationDate());
     }
 
     private void givenPatron1() {
