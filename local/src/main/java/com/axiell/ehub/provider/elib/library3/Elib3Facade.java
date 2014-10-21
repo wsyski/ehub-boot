@@ -47,6 +47,15 @@ class Elib3Facade implements IElibFacade {
     }
 
     @Override
+    public GetLoansResponse getLoans(ContentProviderConsumer contentProviderConsumer, Patron patron) {
+        final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
+        final String patronId = patron.getId();
+        final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(patronId).build();
+        final IElibResource elibResource = ElibResourceFactory.create(contentProviderConsumer);
+        return elibResource.getLoans(serviceId, checksum, patronId, true);
+    }
+
+    @Override
     public LibraryProduct getLibraryProduct(final ContentProviderConsumer contentProviderConsumer, final String elibProductId) {
         final String serviceId = contentProviderConsumer.getProperty(ELIB_SERVICE_ID);
         final String checksum = new ChecksumBuilder(serviceId, contentProviderConsumer).appendParameter(elibProductId).build();

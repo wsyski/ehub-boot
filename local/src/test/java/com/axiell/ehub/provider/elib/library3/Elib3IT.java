@@ -27,18 +27,22 @@ public class Elib3IT extends AbstractContentProviderIT {
     private static final String ELIB_LOAN_ID_VALUE = "4802146";
     private static final String HTML5_FORMAT_ID = "4101";
     private static final String FLASH_FORMAT_ID = "4002";
-    private static final String PATRON_ID = "2";
+    private static final String PATRON_ID_0 = "0";
+    private static final String PATRON_ID_1 = "1";
     private String expectedFormatId;
     private String productId;
     private Elib3Facade underTest;
     @Mock
+    private Patron patron0;
+    @Mock
+    private Patron patron1;
     private Patron patron;
-
     private BookAvailability bookAvailability;
     private Product product;
     private CreatedLoan createdLoan;
     private Loan loan;
     private LibraryProduct libraryProduct;
+    private GetLoansResponse getLoansResponse;
 
     @Before
     public void setElibFacade() {
@@ -46,9 +50,15 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     @Before
-    public void setUpPatron() {
-        given(patron.hasId()).willReturn(true);
-        given(patron.getId()).willReturn(PATRON_ID);
+    public void setUpPatron0() {
+        given(patron0.hasId()).willReturn(true);
+        given(patron0.getId()).willReturn(PATRON_ID_0);
+    }
+
+    @Before
+    public void setUpPatron1() {
+        given(patron1.hasId()).willReturn(true);
+        given(patron1.getId()).willReturn(PATRON_ID_1);
     }
 
     @Test
@@ -202,7 +212,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenGetBookAvailability() {
-        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, patron);
+        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, patron0);
     }
 
     private void thenBookAvailabilityResponseContainsExpectedProduct() {
@@ -232,10 +242,56 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenCreateLoan() {
-        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, patron);
+        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, patron0);
     }
 
     private void thenCreatedLoanIsNotNull() {
         assertNotNull(createdLoan);
+    }
+
+    @Test
+    public void getLoans_hasLoans() {
+        givenApiBaseUrl();
+        givenElibCredentials();
+        givenPatron1();
+        whenGetLoans();
+        thenGetLoansResponseIsNotNull();
+        thenLoanWithExpectedProductIdExists();
+        thenRetrievedLoanHasContentIfLoanIsActive();
+    }
+
+    private void givenPatron1() {
+        patron = patron1;
+    }
+
+    private void thenGetLoansResponseIsNotNull() {
+        assertNotNull(getLoansResponse);
+    }
+
+    private void thenLoanWithExpectedProductIdExists() {
+        assertNotNull(loan);
+    }
+
+    private void whenGetLoans() {
+        getLoansResponse = underTest.getLoans(contentProviderConsumer, patron);
+        loan = getLoansResponse.getLoanWithProductId(EBOOK_PRODUCT_ID);
+    }
+
+    @Test
+    public void getLoans_noLoans() {
+        givenApiBaseUrl();
+        givenElibCredentials();
+        givenPatron0();
+        whenGetLoans();
+        thenGetLoansResponseIsNotNull();
+        thenLoanWithExpectedProductIdDoesNotExist();
+    }
+
+    private void givenPatron0() {
+        patron = patron0;
+    }
+
+    private void thenLoanWithExpectedProductIdDoesNotExist() {
+        assertNull(loan);
     }
 }

@@ -13,5 +13,7 @@ interface IElibFacade {
 
     Loan getLoan(ContentProviderConsumer contentProviderConsumer, String loanId);
 
+    GetLoansResponse getLoans(ContentProviderConsumer contentProviderConsumer, Patron patron);
+
     LibraryProduct getLibraryProduct(ContentProviderConsumer contentProviderConsumer, String elibProductId);
 }

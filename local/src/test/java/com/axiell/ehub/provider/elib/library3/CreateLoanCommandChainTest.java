@@ -23,6 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateLoanCommandChainTest {
@@ -53,13 +54,17 @@ public class CreateLoanCommandChainTest {
     @Mock
     private FormatDecoration formatDecoration;
     @Mock
-    private ContentProviderLoan loan;
+    private ContentProviderLoan contentProviderLoan;
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
     @Mock
     private DownloadableContent downloadableContent;
     @Mock
     private Patron patron;
+    @Mock
+    private GetLoansResponse getLoansResponse;
+    @Mock
+    private Loan loan;
 
     private ContentProviderLoan actualLoan;
 
@@ -70,25 +75,30 @@ public class CreateLoanCommandChainTest {
 
     @Before
     public void setUpContentProviderLoanWithDefaultData() {
-        given(loan.getExpirationDate()).willReturn(EXPIRATION_DATE);
+        given(contentProviderLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(downloadableContent.getUrl()).willReturn(CONTENT_URL);
-        given(loan.getContent()).willReturn(downloadableContent);
+        given(contentProviderLoan.getContent()).willReturn(downloadableContent);
         given(loanMetadata.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
         given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(loanMetadata.getRecordId()).willReturn(CP_RECORD_ID);
-        given(loan.getMetadata()).willReturn(loanMetadata);
+        given(contentProviderLoan.getMetadata()).willReturn(loanMetadata);
     }
 
     @Test
-    public void execute() {
+    public void execute_patronHasNoLoanWithProductId() {
+        givenGetLoansResponse();
         givenCommandData();
         givenProductIsAvailable();
         givenCreatedLoan();
         givenCreatedDownloadableContent();
         whenExecute();
         thenActualLoanEqualsToExpectedLoan();
+    }
+
+    private void givenGetLoansResponse() {
+        given(elibFacade.getLoans(any(ContentProviderConsumer.class), any(Patron.class))).willReturn(getLoansResponse);
     }
 
     private void givenCommandData() {
@@ -120,12 +130,29 @@ public class CreateLoanCommandChainTest {
     }
 
     private void thenActualLoanEqualsToExpectedLoan() {
-        assertThat(actualLoan.getContent(), is(loan.getContent()));
-        assertThat(actualLoan.getExpirationDate(), is(loan.getExpirationDate()));
-        assertThat(actualLoan.getMetadata().getContentProvider(), is(loan.getMetadata().getContentProvider()));
-        assertThat(actualLoan.getMetadata().getExpirationDate(), is(loan.getMetadata().getExpirationDate()));
-        assertThat(actualLoan.getMetadata().getFormatDecoration(), is(loan.getMetadata().getFormatDecoration()));
-        assertThat(actualLoan.getMetadata().getId(), is(loan.getMetadata().getId()));
-        assertThat(actualLoan.getMetadata().getRecordId(), is(loan.getMetadata().getRecordId()));
+        assertThat(actualLoan.getContent(), is(contentProviderLoan.getContent()));
+        assertThat(actualLoan.getExpirationDate(), is(contentProviderLoan.getExpirationDate()));
+        assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));
+        assertThat(actualLoan.getMetadata().getExpirationDate(), is(contentProviderLoan.getMetadata().getExpirationDate()));
+        assertThat(actualLoan.getMetadata().getFormatDecoration(), is(contentProviderLoan.getMetadata().getFormatDecoration()));
+        assertThat(actualLoan.getMetadata().getId(), is(contentProviderLoan.getMetadata().getId()));
+        assertThat(actualLoan.getMetadata().getRecordId(), is(contentProviderLoan.getMetadata().getRecordId()));
+    }
+
+    @Test
+    public void execute_patronHasLoanWithProductId() {
+        givenLoanWithProductIdInGetLoansResponse();
+        givenGetLoansResponse();
+        givenCommandData();
+        givenCreatedDownloadableContent();
+        whenExecute();
+        thenActualLoanEqualsToExpectedLoan();
+    }
+
+    private void givenLoanWithProductIdInGetLoansResponse() {
+        given(loan.getLoanId()).willReturn(CP_LOAN_ID);
+        given(loan.getProductId()).willReturn(CP_RECORD_ID);
+        given(loan.getExpirationDate()).willReturn(EXPIRATION_DATE);
+        given(getLoansResponse.getLoanWithProductId(anyString())).willReturn(loan);
     }
 }

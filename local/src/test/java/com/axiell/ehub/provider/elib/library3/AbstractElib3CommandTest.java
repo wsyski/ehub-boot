@@ -34,14 +34,13 @@ public abstract class AbstractElib3CommandTest {
     protected IEhubExceptionFactory exceptionFactory;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
-    //protected String libraryCard;
     protected String elibProductId;
     @Mock
     protected PendingLoan pendingLoan;
     @Mock
     protected InternalServerErrorException internalServerErrorException;
     @Mock
-    private ContentProvider contentProvider;
+    protected ContentProvider contentProvider;
     @Mock
     private FormatDecoration formatDecoration;
     @Mock

@@ -9,22 +9,30 @@ import com.axiell.ehub.provider.CreateContentCommand;
 import com.axiell.ehub.provider.IContentFactory;
 
 class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLoan, CommandData> {
-    private final BookAvailabilityCommand firstCommand;
+    private final GetLoansCommand firstCommand;
+    private final BookAvailabilityCommand bookAvailabilityCommand;
     private final CreateLoanCommand createLoanCommand;
     private final CreateContentCommand createContentCommand;
 
     CreateLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentFactory contentFactory) {
         super(elibFacade, exceptionFactory);
-        firstCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
+        firstCommand = new GetLoansCommand(elibFacade, exceptionFactory);
+        bookAvailabilityCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
         createLoanCommand = new CreateLoanCommand(elibFacade, exceptionFactory);
         createContentCommand = new CreateContentCommand(contentFactory);
         configureFirstCommand();
+        configureBookAvailabilityCommand();
         configureCreateLoanCommand();
         configureCreateContentCommand();
     }
 
     private void configureFirstCommand() {
-        firstCommand.on(BookAvailabilityCommand.Result.PRODUCT_AVAILABLE, createLoanCommand);
+        firstCommand.on(GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID, createContentCommand);
+        firstCommand.on(GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, bookAvailabilityCommand);
+    }
+
+    private void configureBookAvailabilityCommand() {
+        bookAvailabilityCommand.on(BookAvailabilityCommand.Result.PRODUCT_AVAILABLE, createLoanCommand);
     }
 
     private void configureCreateLoanCommand() {

@@ -30,6 +30,11 @@ public interface IElibResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("loans")
+    GetLoansResponse getLoans(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @QueryParam("card") String patronId, @QueryParam("onlyactive") Boolean onlyActive);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("libraryproducts/{productId}")
     LibraryProductResponse getLibraryProduct(@QueryParam("serviceid") String serviceId, @QueryParam("checksum") String checksum, @PathParam("productId") String elibProductId);
 }

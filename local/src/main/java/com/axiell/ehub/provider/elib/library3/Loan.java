@@ -3,10 +3,18 @@ package com.axiell.ehub.provider.elib.library3;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-@JsonIgnoreProperties(value = {"ProductID", "ExpiryDate", "CreatedDate", "Supplements", "CoverImage", "Title"})
+import java.util.Date;
+
+@JsonIgnoreProperties(value = {"ExpiryDate", "CreatedDate", "Supplements", "CoverImage", "Title"})
 public class Loan {
     @JsonProperty("LoanID")
     private String loanId;
+
+    @JsonProperty("ProductID")
+    private String productId;
+
+    @JsonProperty("ExpiryDate")
+    private Date expirationDate;
 
     @JsonProperty("Links")
     private Links links;
@@ -16,6 +24,14 @@ public class Loan {
 
     public String getLoanId() {
         return loanId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public Date getExpirationDate() {
+        return new Date(expirationDate.getTime());
     }
 
     public Boolean isActive() {
