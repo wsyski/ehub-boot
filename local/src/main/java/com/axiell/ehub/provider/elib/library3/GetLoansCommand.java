@@ -14,7 +14,7 @@ import java.util.Date;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
 
-class GetLoansCommand extends AbstractElib3Command<CommandData>{
+class GetLoansCommand extends AbstractElib3Command<CommandData> {
 
     GetLoansCommand(IElibFacade elibFacade, IEhubExceptionFactory exceptionFactory) {
         super(elibFacade, exceptionFactory);
@@ -22,31 +22,40 @@ class GetLoansCommand extends AbstractElib3Command<CommandData>{
 
     @Override
     public void run(final CommandData data) {
-        final String contentProviderRecordId = data.getContentProviderRecordId();
+
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final Loan loan = getLoanWithProductId(data, contentProviderRecordId, contentProviderConsumer);
+        final Loan loan = getLoanWithProductId(data, contentProviderConsumer);
         if (loan == null)
             forward(PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, data);
         else {
-            ContentProviderLoanMetadata metadata = makeContentProviderLoanMetadata(data, contentProviderConsumer, contentProviderRecordId, loan);
-            data.setContentProviderLoanMetadata(metadata);
+            populateContentUrlInCommandData(data, loan);
+            populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, loan);
             forward(PATRON_HAS_LOAN_WITH_PRODUCT_ID, data);
         }
     }
 
-    private Loan getLoanWithProductId(CommandData data, String contentProviderRecordId, ContentProviderConsumer contentProviderConsumer) {
+    private Loan getLoanWithProductId(final CommandData data, final ContentProviderConsumer contentProviderConsumer) {
+        final String contentProviderRecordId = data.getContentProviderRecordId();
         final Patron patron = data.getPatron();
         final GetLoansResponse getLoansResponse = elibFacade.getLoans(contentProviderConsumer, patron);
         return getLoansResponse.getLoanWithProductId(contentProviderRecordId);
     }
 
-    private ContentProviderLoanMetadata makeContentProviderLoanMetadata(CommandData data, ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, Loan loan) {
+    private void populateContentUrlInCommandData(final CommandData data, final Loan loan) {
+        final String formatId = data.getContentProviderFormatId();
+        final String contentUrl = loan.getContentUrlFor(formatId);
+        data.setContentUrl(contentUrl);
+    }
+
+    private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final Loan loan) {
+        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final String formatId = data.getContentProviderFormatId();
         final Date expirationDate = loan.getExpirationDate();
         final String contentProviderLoanId = loan.getLoanId();
-        final String formatId = data.getContentProviderFormatId();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        return new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+        data.setContentProviderLoanMetadata(metadata);
     }
 
     static enum Result implements ICommandResult {
