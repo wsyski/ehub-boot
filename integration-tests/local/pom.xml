@@ -4,10 +4,10 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub-it</artifactId>
-        <version>1.1_4</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>ehub-it-local</artifactId>
-    <version>1.1_4</version>
+    <version>1.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>war</packaging>
     <build>
