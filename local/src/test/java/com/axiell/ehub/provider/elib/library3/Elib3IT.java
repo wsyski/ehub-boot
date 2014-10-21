@@ -253,7 +253,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     public void getLoans_hasLoans() {
         givenApiBaseUrl();
         givenElibCredentials();
-        givenPatron1();
+        givenPatronWithLoans();
         whenGetLoans();
         thenGetLoansResponseIsNotNull();
         thenLoanWithExpectedProductIdExists();
@@ -265,7 +265,7 @@ public class Elib3IT extends AbstractContentProviderIT {
         assertNotNull(loan.getExpirationDate());
     }
 
-    private void givenPatron1() {
+    private void givenPatronWithLoans() {
         patron = patron1;
     }
 
@@ -286,13 +286,13 @@ public class Elib3IT extends AbstractContentProviderIT {
     public void getLoans_noLoans() {
         givenApiBaseUrl();
         givenElibCredentials();
-        givenPatron0();
+        givenPatronWithoutLoans();
         whenGetLoans();
         thenGetLoansResponseIsNotNull();
         thenLoanWithExpectedProductIdDoesNotExist();
     }
 
-    private void givenPatron0() {
+    private void givenPatronWithoutLoans() {
         patron = patron0;
     }
 
