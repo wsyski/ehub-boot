@@ -5,10 +5,10 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub-it</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1_2</version>
     </parent>
     <artifactId>ehub-it-tests</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1_2</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
