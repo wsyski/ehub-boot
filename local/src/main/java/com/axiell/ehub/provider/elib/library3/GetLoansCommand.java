@@ -29,6 +29,7 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
             forward(PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, data);
         else {
             populateContentUrlInCommandData(data, loan);
+            populateFormatDecorationInCommandData(data, contentProviderConsumer);
             populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, loan);
             forward(PATRON_HAS_LOAN_WITH_PRODUCT_ID, data);
         }
@@ -47,13 +48,19 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
         data.setContentUrl(contentUrl);
     }
 
+    private void populateFormatDecorationInCommandData(final CommandData data, ContentProviderConsumer contentProviderConsumer) {
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final String formatId = data.getContentProviderFormatId();
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        data.setFormatDecoration(formatDecoration);
+    }
+
     private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final Loan loan) {
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final String formatId = data.getContentProviderFormatId();
         final Date expirationDate = loan.getExpirationDate();
         final String contentProviderLoanId = loan.getLoanId();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
         data.setContentProviderLoanMetadata(metadata);
     }

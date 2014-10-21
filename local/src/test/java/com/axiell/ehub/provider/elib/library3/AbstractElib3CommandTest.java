@@ -42,7 +42,7 @@ public abstract class AbstractElib3CommandTest {
     @Mock
     protected ContentProvider contentProvider;
     @Mock
-    private FormatDecoration formatDecoration;
+    protected FormatDecoration formatDecoration;
     @Mock
     protected Patron patron;
 

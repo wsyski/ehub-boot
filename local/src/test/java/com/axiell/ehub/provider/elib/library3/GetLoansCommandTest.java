@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private Loan loan;
     private ContentProviderLoanMetadata loanMetadata;
     private String contentUrl;
+    private FormatDecoration actualFormatDecoration;
 
     @Before
     public void setUp() {
@@ -39,9 +41,11 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         givenGetLoansResponse();
         givenCommandOnPatronHasLoanWithProductId();
         whenRun();
-        thenContentProviderLoanMetdataHasExpectedLoanId();
-        thenContentProviderLoanMetdataHasExpectedRecordId();
+        thenContentProviderLoanMetadataHasExpectedLoanId();
+        thenContentProviderLoanMetadataHasExpectedRecordId();
+        thenContentProviderLoanMetadataHasExpectedFormatDecoration();
         thenActualContentUrlEqualsExpectedUrl();
+        thenActualFormatDecorationEqualsExpectedFormatDecoration();
         thenCommandIsInvoked();
     }
 
@@ -53,16 +57,24 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         underTest.on(PATRON_HAS_LOAN_WITH_PRODUCT_ID, next);
     }
 
-    private void thenContentProviderLoanMetdataHasExpectedRecordId() {
+    private void thenContentProviderLoanMetadataHasExpectedRecordId() {
         assertEquals(PRODUCT_ID, loanMetadata.getRecordId());
     }
 
-    private void thenContentProviderLoanMetdataHasExpectedLoanId() {
+    private void thenContentProviderLoanMetadataHasExpectedLoanId() {
         assertEquals(LOAN_ID, loanMetadata.getId());
+    }
+
+    private void thenContentProviderLoanMetadataHasExpectedFormatDecoration() {
+        assertEquals(formatDecoration, loanMetadata.getFormatDecoration());
     }
 
     private void thenActualContentUrlEqualsExpectedUrl() {
         assertEquals(CONTENT_URL, contentUrl);
+    }
+
+    private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
+        assertEquals(formatDecoration, actualFormatDecoration);
     }
 
     private void givenLoanWithProductId() {
@@ -81,6 +93,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         underTest.run(data);
         loanMetadata = data.getContentProviderLoanMetadata();
         contentUrl = data.getContentUrl();
+        actualFormatDecoration = data.getFormatDecoration();
     }
 
     @Test
