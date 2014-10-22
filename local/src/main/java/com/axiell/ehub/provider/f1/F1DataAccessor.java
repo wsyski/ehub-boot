@@ -76,11 +76,27 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private ContentProviderLoan makeContentProviderLoan(final CommandData data, final CreateLoanResponse createLoanResponse) {
+        ContentProviderLoanMetadata loanMetadata = populateContentProviderLoanMetadataInCommandData(data, createLoanResponse);
         final GetLoanContentResponse getLoanContentResponse = f1Facade.getLoanContent(data);
 
         if (getLoanContentResponse.isValidContent())
-            return makeContentForNewLoan(data, createLoanResponse, getLoanContentResponse);
+            return makeContentForNewLoan(loanMetadata, getLoanContentResponse);
         throw makeMissingContentException(data, getLoanContentResponse);
+    }
+
+    private ContentProviderLoanMetadata populateContentProviderLoanMetadataInCommandData(CommandData data, CreateLoanResponse createLoanResponse) {
+        final String loanId = createLoanResponse.getValue();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
+        final String contentProviderFormatId = data.getContentProviderFormatId();
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
+
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
+                formatDecoration).contentProviderLoanId(loanId).build();
+        data.setContentProviderLoanMetadata(metadata);
+        return metadata;
     }
 
     private IContent makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
@@ -90,19 +106,11 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
         return createContent(contentUrl, formatDecoration);
     }
 
-    private ContentProviderLoan makeContentForNewLoan(CommandData data, CreateLoanResponse createLoanResponse, GetLoanContentResponse getLoanContentResponse) {
-        final String loanId = createLoanResponse.getValue();
-        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String contentProviderRecordId = data.getContentProviderRecordId();
-        final String contentProviderFormatId = data.getContentProviderFormatId();
+    private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, GetLoanContentResponse getLoanContentResponse) {
+        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final String contentUrl = getLoanContentResponse.getValue();
-        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
         final IContent content = createContent(contentUrl, formatDecoration);
-        final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
-                formatDecoration).contentProviderLoanId(loanId).build();
-        return new ContentProviderLoan(metadata, content);
+        return new ContentProviderLoan(loanMetadata, content);
     }
 
     private InternalServerErrorException makeCreateLoanFailedException(final CommandData data, final CreateLoanResponse createLoanResponse) {

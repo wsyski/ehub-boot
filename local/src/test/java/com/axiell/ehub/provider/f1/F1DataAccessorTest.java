@@ -85,14 +85,13 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     @Test
     public void createLoan_success() {
+        givenFormatDecorationFromContentProvider();
+        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
-        givenFormatIdFromFormatDecoration();
-        givenFormatDecorationFromContentProvider();
         givenExpirationDate();
-        givenContentProvider();
         givenDownloadableContentDisposition();
         givenLoanIdFromF1Facade();
         givenValidLoanContentFromGetLoanContentResponse();
@@ -116,6 +115,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     @Test(expected = InternalServerErrorException.class)
     public void createLoan_missingContent() {
+        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -146,7 +146,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
     }
 
     private void givenInternalServerErrorException() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class),         anyString())).willReturn(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class), anyString())).willReturn(internalServerErrorException);
     }
 
     private void givenCreateLoanFailedFromF1Facade() {
@@ -180,10 +180,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     private void thenActualLoanHasExpectedId() {
         assertEquals(LOAN_ID, actualLoan.getId());
-    }
-
-    private void givenFormatIdFromFormatDecoration() {
-        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
     private void whenCreateLoan() {

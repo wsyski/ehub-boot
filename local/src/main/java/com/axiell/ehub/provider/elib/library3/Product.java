@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.util.HashCodeBuilderFactory;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -15,6 +17,7 @@ public class Product {
     private String productId;
     @JsonProperty("AvailableFormats")
     private List<AvailableFormat> formats;
+    private FormatFilter formatFilter = new FormatFilter();
 
     public String getProductId() {
         return productId;
@@ -24,7 +27,7 @@ public class Product {
     private List<Status> statuses;
 
     public List<AvailableFormat> getFormats() {
-        return formats;
+        return formatFilter.applyFilter(formats);
     }
 
     public boolean isActive() {
@@ -32,7 +35,7 @@ public class Product {
             if (status.isActive())
                 return true;
         }
-        return  false;
+        return false;
     }
 
     @JsonIgnoreProperties(value = {"SizeInBytes", "Name"})
@@ -40,8 +43,30 @@ public class Product {
         @JsonProperty("FormatId")
         private String id;
 
+        public AvailableFormat() {
+        }
+
+        public AvailableFormat(String id) {
+            this.id = id;
+        }
+
         public String getId() {
             return id;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this)
+                return true;
+            if (!(obj instanceof AvailableFormat))
+                return false;
+            AvailableFormat rhs = (AvailableFormat) obj;
+            return new EqualsBuilder().append(id, rhs.getId()).isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilderFactory.create().append(id).toHashCode();
         }
     }
 
