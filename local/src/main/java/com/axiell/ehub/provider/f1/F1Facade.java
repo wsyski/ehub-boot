@@ -50,7 +50,8 @@ class F1Facade implements IF1Facade {
     @Override
     public GetLoanContentResponse getLoanContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
+        final String contentProviderRecordId = loanMetadata.getRecordId();
         final String language = data.getLanguage();
         final Patron patron = data.getPatron();
         final String libraryCard = patron.getLibraryCard();
@@ -60,7 +61,6 @@ class F1Facade implements IF1Facade {
         final String password = contentProviderConsumer.getProperty(F1_PASSWORD);
         final int regionId = f1SoapServiceParameterHelper.getRegionId(contentProviderConsumer, language);
         final int typeId = f1SoapServiceParameterHelper.getTypeId(contentProviderConsumer, formatId, language);
-        final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();
         final int contentProviderLoanIdValue = f1SoapServiceParameterHelper.getLoanId(contentProviderConsumer, contentProviderLoanId, language);
         final F1ServiceSoap f1ServiceSoap = f1ServiceSoapFactory.getInstance(contentProviderConsumer);

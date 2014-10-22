@@ -90,7 +90,7 @@ public class F1IT extends AbstractContentProviderIT {
         givenF1Credentials();
         givenContentProviderConsumerInCommandData();
         givenLanguageInCommandData();
-        givenContentProviderLoanIdInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
         givenLibraryCardInCommandData();
         givenValidContentProviderRecordIdInCommandData();
         givenValidFormatIdInCommandData();
@@ -98,7 +98,8 @@ public class F1IT extends AbstractContentProviderIT {
         thenActualLoanContentIsValid();
     }
 
-    private void givenContentProviderLoanIdInCommandData() {
+    private void givenContentProviderLoanMetadataInCommandData() {
+        given(loanMetadata.getRecordId()).willReturn(CP_RECORD_ID);
         given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(data.getContentProviderLoanMetadata()).willReturn(loanMetadata);
     }
