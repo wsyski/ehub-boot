@@ -86,10 +86,14 @@ public class F1FacadeTest {
         whenGetLoanContent();
         thenActualContentEqualsExpectedContent();
         thenGetContentProviderConsumerFromCommandDataIsInvoked();
-        thenGetContentProviderRecordIdFromCommandDataIsInvoked();
+        thenGetRecordIdFromContentProviderLoanMetadataIsInvoked();
         thenGetLanguageFromCommandDataIsInvoked();
         thenGetPatronInCommandDataIsInvoked();
         thenGetContentProviderFormatIdFromCommanDataIsInvoked();
+    }
+
+    private void thenGetRecordIdFromContentProviderLoanMetadataIsInvoked() {
+        verify(loanMetadata, times(1)).getRecordId();
     }
 
     private void givenContentProviderLoanMetadata() {

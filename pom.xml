@@ -757,7 +757,7 @@
             <id>jrebel</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
-            </activation>
+            </activation1F11
             <build>
                 <plugins>
                     <plugin>
