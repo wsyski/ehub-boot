@@ -4,6 +4,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -39,6 +41,8 @@ public class F1FacadeTest {
     private IF1SoapServiceParameterHelper f1SoapServiceParameterHelper;
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
+    @Mock
+    private FormatDecoration formatDecoration;
     @Mock
     private Patron patron;
     private GetFormatResponse actualGetFormatResponse;
@@ -80,6 +84,7 @@ public class F1FacadeTest {
 
     @Test
     public void getLoanContent() {
+        givenFormatDecorationInLoanMetadata();
         givenContentProviderLoanMetadata();
         givenF1ContentProviderConsumerProperties();
         givenLoanContentFromSoapService();
@@ -87,9 +92,23 @@ public class F1FacadeTest {
         thenActualContentEqualsExpectedContent();
         thenGetContentProviderConsumerFromCommandDataIsInvoked();
         thenGetRecordIdFromContentProviderLoanMetadataIsInvoked();
+        thenGetFormatDecorationFromContentProviderLoanMetadataIsInvoked();
+        thenGetContentProviderFormatIdFromFormatDecorationIsInvoked();
         thenGetLanguageFromCommandDataIsInvoked();
         thenGetPatronInCommandDataIsInvoked();
-        thenGetContentProviderFormatIdFromCommanDataIsInvoked();
+        thenGetContentProviderFormatIdFromCommanDataIsNeverInvoked();
+    }
+
+    private void thenGetContentProviderFormatIdFromFormatDecorationIsInvoked() {
+        verify(formatDecoration, times(1)).getContentProviderFormatId();
+    }
+
+    private void givenFormatDecorationInLoanMetadata() {
+        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+    }
+
+    private void thenGetFormatDecorationFromContentProviderLoanMetadataIsInvoked() {
+        verify(loanMetadata, times(1)).getFormatDecoration();
     }
 
     private void thenGetRecordIdFromContentProviderLoanMetadataIsInvoked() {
@@ -112,8 +131,8 @@ public class F1FacadeTest {
         verify(commandData, times(1)).getLanguage();
     }
 
-    private void thenGetContentProviderFormatIdFromCommanDataIsInvoked() {
-        verify(commandData, times(1)).getContentProviderFormatId();
+    private void thenGetContentProviderFormatIdFromCommanDataIsNeverInvoked() {
+        verify(commandData, never()).getContentProviderFormatId();
     }
 
     private void thenGetPatronInCommandDataIsInvoked() {
