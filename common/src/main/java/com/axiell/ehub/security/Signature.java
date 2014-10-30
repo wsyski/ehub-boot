@@ -4,6 +4,7 @@
 package com.axiell.ehub.security;
 
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.patron.Patron;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,18 +27,18 @@ public final class Signature {
         digest = decodeBase64(base64EncodedSignature);
     }
 
-    public Signature(final Long ehubConsumerId, final String ehubConsumerSecretKey, final String patronId, final String libraryCard, final String pin) {
-        final String baseString = makeBaseString(ehubConsumerId, patronId, libraryCard, pin);
+    public Signature(final Long ehubConsumerId, final String ehubConsumerSecretKey, final Patron patron) {
+        final String baseString = makeBaseString(ehubConsumerId, patron);
         final byte[] input = getBytesInUtf8(baseString);
         final byte[] key = getBytesInUtf8(ehubConsumerSecretKey);
         digest = hmacSha1(input, key);
     }
 
-    private String makeBaseString(Long ehubConsumerId, String patronId, String libraryCard, String pin) {
+    private String makeBaseString(final Long ehubConsumerId, final Patron patron) {
         final StringBuilder builder = new StringBuilder().append(ehubConsumerId);
-        appendParam(patronId, builder);
-        appendParam(libraryCard, builder);
-        appendParam(pin, builder);
+        if (patron.hasLibraryCard())
+            appendParam(patron.getLibraryCard(), builder);
+        appendParam(patron.getPin(), builder);
         return builder.toString();
     }
 

@@ -6,11 +6,15 @@ import org.apache.wicket.markup.html.panel.EmptyPanel;
 
 public abstract class AbstractRequestsGeneratorPanel extends BreadCrumbPanel {
     protected RequestsGeneratorForm form;
-    protected RequestsGeneratorMediator mediator;
+    protected IRequestsGeneratorMediator mediator;
 
     protected AbstractRequestsGeneratorPanel(String id, IBreadCrumbModel breadCrumbModel) {
+        this(id, breadCrumbModel, new DefaultRequestsGeneratorMediator());
+    }
+
+    protected AbstractRequestsGeneratorPanel(String id, IBreadCrumbModel breadCrumbModel, IRequestsGeneratorMediator mediator) {
         super(id, breadCrumbModel);
-        this.mediator = new RequestsGeneratorMediator();
+        this.mediator = mediator;
         addRequestForm();
         addResponsePanel();
     }

@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 
@@ -15,7 +16,8 @@ public class CreateContentCommand extends AbstractCommand<CommandData> {
     @Override
     public void run(final CommandData data) {
         final String contentUrl = data.getContentUrl();
-        final FormatDecoration formatDecoration = data.getFormatDecoration();
+        final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final IContent content = contentFactory.create(contentUrl, formatDecoration);
         data.setContent(content);
         forward(CONTENT_CREATED, data);

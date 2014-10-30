@@ -25,7 +25,7 @@ public class ContentProviderResponseFailureAspectTest {
     @Before
     public void setUpCommandData() {
         final ContentProviderConsumer contentProviderConsumer = makeContentProviderConsumer();
-        commandData = CommandData.newInstance(contentProviderConsumer, new Patron.Builder("card", "pin").build()).setContentProviderRecordId("contentProviderRecordId").setLanguage("language");
+        commandData = CommandData.newInstance(contentProviderConsumer, new Patron.Builder("card", "pin").build(), "language").setContentProviderRecordId("contentProviderRecordId");
     }
 
     @Test

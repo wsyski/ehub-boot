@@ -26,7 +26,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, patron).setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId);
         return dataAccessor.getFormats(commandData);
     }
 
@@ -35,7 +35,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = aliasBusinessController.getName(pendingLoan.getContentProviderName());
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, patron).setPendingLoan(pendingLoan).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);
         return dataAccessor.createLoan(commandData);
     }
 
@@ -45,7 +45,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, patron).setContentProviderLoanMetadata(metadata).setLanguage(language);
+        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata);
         return dataAccessor.getContent(commandData);
     }
 

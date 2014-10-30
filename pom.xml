@@ -748,7 +748,7 @@
         <liquibase.core.version>3.2.0</liquibase.core.version>
         <liquibase.slf4j.version>1.2.1</liquibase.slf4j.version>
 
-        <ehub.release.version>1.1_7</ehub.release.version>
+        <ehub.release.version>1.1_8</ehub.release.version>
         <ehub.snapshot.version>2.0-SNAPSHOT</ehub.snapshot.version>
     </properties>
 

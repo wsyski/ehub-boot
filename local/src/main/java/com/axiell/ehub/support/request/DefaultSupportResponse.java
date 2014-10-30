@@ -1,11 +1,11 @@
 package com.axiell.ehub.support.request;
 
-public class SupportResponse {
+public class DefaultSupportResponse implements ISupportResponse {
     private final SupportRequest request;
     private final String status;
     private final String body;
 
-    SupportResponse(final SupportRequest request, final String status, final String body) {
+    public DefaultSupportResponse(final SupportRequest request, final String status, final String body) {
         this.request = request;
         this.status = status;
         this.body = body;
@@ -19,7 +19,7 @@ public class SupportResponse {
         return status;
     }
 
-    String getBody() {
+    public String getBody() {
         return body;
     }
 }

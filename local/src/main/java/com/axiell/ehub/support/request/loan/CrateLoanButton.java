@@ -1,18 +1,15 @@
 package com.axiell.ehub.support.request.loan;
 
-import com.axiell.ehub.support.request.AbstractRequestGeneratorButton;
-import com.axiell.ehub.support.request.RequestArguments;
-import com.axiell.ehub.support.request.RequestsGeneratorMediator;
-import com.axiell.ehub.support.request.SupportResponse;
+import com.axiell.ehub.support.request.*;
 
-class CrateLoanButton extends AbstractRequestGeneratorButton {
+class CrateLoanButton extends AbstractRequestGeneratorButton<DefaultSupportResponse> {
 
-    CrateLoanButton(final String id, final RequestsGeneratorMediator mediator) {
+    CrateLoanButton(final String id, final IRequestsGeneratorMediator mediator) {
         super(id, mediator);
     }
 
     @Override
-    protected SupportResponse getResponse(final RequestArguments arguments) {
+    protected DefaultSupportResponse getResponse(final RequestArguments arguments) {
         return supportRequestAdminController.createLoan(arguments);
     }
 }

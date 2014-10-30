@@ -1,13 +1,11 @@
 package com.axiell.ehub.support.request;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 
 class ResponsePanel extends Panel {
 
-    ResponsePanel(String id, final SupportResponse response) {
+    ResponsePanel(String id, final DefaultSupportResponse response) {
         super(id);
         setOutputMarkupId(true);
 

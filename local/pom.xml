@@ -423,13 +423,6 @@
                                         <extraarg>-verbose</extraarg>
                                     </extraargs>
                                 </wsdlOption>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_267/patron.wsdl</wsdl>
-                                    <extraargs>
-                                        <extraarg>-client</extraarg>
-                                        <extraarg>-verbose</extraarg>
-                                    </extraargs>
-                                </wsdlOption>
                             </wsdlOptions>
                         </configuration>
                         <goals>

@@ -9,15 +9,23 @@ public class RequestsGeneratorForm extends Form<RequestArguments> {
     RequestsGeneratorForm(final String id) {
         super(id);
         setFormModel();
-        addEhubConsumerChoice();
-        addTextField("patronId", false);
-        addTextField("libraryCard", false);
-        addTextField("pin", false);
     }
 
-    private void addEhubConsumerChoice() {
+    public void addEhubConsumerChoice() {
         final EhubConsumerChoice ehubConsumerChoice = new EhubConsumerChoice("ehubConsumer");
         add(ehubConsumerChoice);
+    }
+
+    public void addPatronId() {
+        addTextField("patronId", false);
+    }
+
+    public void addLibraryCard() {
+        addTextField("libraryCard", false);
+    }
+
+    public void addPin() {
+        addTextField("pin", false);
     }
 
     private void setFormModel() {

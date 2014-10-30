@@ -9,8 +9,8 @@ import java.util.List;
 public class Elib3CommandData extends CommandData {
     private List<Product.AvailableFormat> availableFormats;
 
-    private Elib3CommandData(ContentProviderConsumer contentProviderConsumer, Patron patron) {
-        super(contentProviderConsumer, patron);
+    private Elib3CommandData(ContentProviderConsumer contentProviderConsumer, Patron patron, String language) {
+        super(contentProviderConsumer, patron, language);
     }
 
     public static Elib3CommandData newInstance(final CommandData commandData) {
@@ -18,8 +18,8 @@ public class Elib3CommandData extends CommandData {
         final Patron patron = commandData.getPatron();
         final String language = commandData.getLanguage();
         final String contentProviderRecordId = commandData.getContentProviderRecordId();
-        final Elib3CommandData data = new Elib3CommandData(contentProviderConsumer, patron);
-        data.setContentProviderRecordId(contentProviderRecordId).setLanguage(language);
+        final Elib3CommandData data = new Elib3CommandData(contentProviderConsumer, patron, language);
+        data.setContentProviderRecordId(contentProviderRecordId);
         return data;
     }
 

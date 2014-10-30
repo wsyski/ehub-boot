@@ -5,6 +5,7 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,12 +23,20 @@ public class F1IT extends AbstractContentProviderIT {
     private static final String F1_PASSWORD_VALUE = "nF7yGX";
     private static final String F1_REGION_ID_VALUE = "87";
     private static final String CARD = "78654387";
-    private static final String CP_RECORD_ID = "519";
     //    private static final String CP_RECORD_ID = "1084";
     private static final String LANGUAGE = "en";
-    private static final String CP_LOAN_ID = "48161";
-    private static final String EXPECTED_VALID_TYPE_ID = "3";
+
+//    private static final String CP_LOAN_ID = "48161";
+//    private static final String EXPECTED_VALID_TYPE_ID = "3";
+//    private static final String CP_RECORD_ID = "519";
+
+    private static final String CP_RECORD_ID = "66";
+    private static final String CP_LOAN_ID = "49300";
+    private static final String EXPECTED_VALID_TYPE_ID = "1";
+
     private F1Facade underTest;
+    @Mock
+    private FormatDecoration formatDecoration;
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
     @Mock
@@ -93,12 +102,13 @@ public class F1IT extends AbstractContentProviderIT {
         givenContentProviderLoanMetadataInCommandData();
         givenLibraryCardInCommandData();
         givenValidContentProviderRecordIdInCommandData();
-        givenValidFormatIdInCommandData();
         whenGetLoanContent();
         thenActualLoanContentIsValid();
     }
 
     private void givenContentProviderLoanMetadataInCommandData() {
+        given(formatDecoration.getContentProviderFormatId()).willReturn(EXPECTED_VALID_TYPE_ID);
+        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
         given(loanMetadata.getRecordId()).willReturn(CP_RECORD_ID);
         given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(data.getContentProviderLoanMetadata()).willReturn(loanMetadata);
@@ -112,9 +122,9 @@ public class F1IT extends AbstractContentProviderIT {
         actualGetLoanContentResponse = underTest.getLoanContent(data);
     }
 
-    private void givenValidFormatIdInCommandData() {
-        given(data.getContentProviderFormatId()).willReturn(EXPECTED_VALID_TYPE_ID);
-    }
+//    private void givenValidFormatIdInCommandData() {
+//        given(data.getContentProviderFormatId()).willReturn(EXPECTED_VALID_TYPE_ID);
+//    }
 
     private void thenActualCreateLoanContainsValidLoanReference() {
         System.out.println(actualCreateLoanResponse.getValue());

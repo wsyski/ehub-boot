@@ -106,7 +106,7 @@ public class CreateLoanCommandChainTest {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(pendingLoan.getContentProviderRecordId()).willReturn(CP_RECORD_ID);
         given(patron.hasId()).willReturn(true);
-        commandData = CommandData.newInstance(contentProviderConsumer, patron).setPendingLoan(pendingLoan);
+        commandData = CommandData.newInstance(contentProviderConsumer, patron, "sv").setPendingLoan(pendingLoan);
     }
 
     private void givenProductIsAvailable() {

@@ -1,18 +1,15 @@
 package com.axiell.ehub.support.request.format;
 
-import com.axiell.ehub.support.request.AbstractRequestGeneratorButton;
-import com.axiell.ehub.support.request.RequestArguments;
-import com.axiell.ehub.support.request.RequestsGeneratorMediator;
-import com.axiell.ehub.support.request.SupportResponse;
+import com.axiell.ehub.support.request.*;
 
-class GetFormatsButton extends AbstractRequestGeneratorButton {
+class GetFormatsButton extends AbstractRequestGeneratorButton<DefaultSupportResponse> {
 
-    GetFormatsButton(final String id, final RequestsGeneratorMediator mediator) {
+    GetFormatsButton(final String id, final IRequestsGeneratorMediator mediator) {
         super(id, mediator);
     }
 
     @Override
-    protected SupportResponse getResponse(final RequestArguments arguments) {
+    protected DefaultSupportResponse getResponse(final RequestArguments arguments) {
         return supportRequestAdminController.getFormats(arguments);
     }
 }

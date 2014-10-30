@@ -5,7 +5,6 @@ import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.patron.Patron;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,9 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.text.MessageFormat;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthInfoResolverTest {
@@ -34,11 +31,12 @@ public class AuthInfoResolverTest {
     @Mock
     private IConsumerBusinessController consumerBusinessController;
     @Mock
-    private IPalmaDataAccessor palmaDataAccessor;
-    @Mock
     private EhubConsumer ehubConsumer;
     private Patron patron;
     private String patronId;
+    private String card;
+    private String pin;
+    private Signature expSignature;
     private String authorizationHeader;
     private AuthInfo actualAuthInfo;
 
@@ -48,26 +46,39 @@ public class AuthInfoResolverTest {
         given(ehubConsumer.getSecretKey()).willReturn(SECRET_KEY);
         given(consumerBusinessController.getEhubConsumer(anyLong())).willReturn(ehubConsumer);
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
-        ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
     }
 
     @Test
     public void validSignature_withPatronId() {
         givenPatronId();
+        givenCard();
+        givenPin();
         givenPatron();
-        givenValidSignatureInHeader();
+        givenValidSignature();
+        givenAuthorizationHeader();
         whenResolve();
         thenAuthInfoIsNotNull();
     }
 
-    private void givenValidSignatureInHeader() {
-        final Signature expSignature = new Signature(EHUB_CONSUMER_ID, SECRET_KEY, patronId, CARD, PIN);
+    private void givenCard() {
+        card = CARD;
+    }
+
+    private void givenPin() {
+        pin = PIN;
+    }
+
+    private void givenAuthorizationHeader() {
         AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron, expSignature);
         authorizationHeader = authInfo.toString();
     }
 
+    private void givenValidSignature() {
+        expSignature = new Signature(EHUB_CONSUMER_ID, SECRET_KEY, patron);
+    }
+
     private void givenPatron() {
-        patron = new Patron.Builder(CARD, PIN).id(patronId).build();
+        patron = new Patron.Builder(card, pin).id(patronId).build();
     }
 
     private void givenPatronId() {
@@ -84,10 +95,17 @@ public class AuthInfoResolverTest {
 
     @Test
     public void validSignature_withoutPatronId() {
+        givenCard();
+        givenPin();
         givenPatron();
-        givenValidSignatureInHeader();
+        givenValidSignature();
+        givenLegacyAuthorizationHeader();
         whenResolve();
         thenAuthInfoIsNotNull();
+    }
+
+    private void givenLegacyAuthorizationHeader() {
+        makeAuthorizationHeaderWithoutPatronIdButWithCardPin(expSignature.toString());
     }
 
     @Test
@@ -101,12 +119,12 @@ public class AuthInfoResolverTest {
     }
 
     private void givenInvalidSignatureInHeader() {
-        makeAuthorizationHeader("invalidSignature");
+        makeAuthorizationHeaderWithoutPatronIdButWithCardPin("invalidSignature");
     }
 
-    private void makeAuthorizationHeader(String signature) {
-        authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
-                EHUB_CONSUMER_ID, PATRON_ID, CARD, PIN, signature);
+    private void makeAuthorizationHeaderWithoutPatronIdButWithCardPin(String signature) {
+        authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
+                EHUB_CONSUMER_ID, CARD, PIN, signature);
     }
 
     private void thenActualErrorCauseEqualsExpectedErrorCause(EhubRuntimeException e, ErrorCause expectedErrorCause) {
@@ -117,5 +135,14 @@ public class AuthInfoResolverTest {
     private ErrorCause getActualErrorCause(EhubRuntimeException e) {
         EhubError ehubError = e.getEhubError();
         return ehubError.getCause();
+    }
+
+    @Test
+    public void validSignature_withoutPatronIdCardPin() {
+        givenPatron();
+        givenValidSignature();
+        givenAuthorizationHeader();
+        whenResolve();
+        thenAuthInfoIsNotNull();
     }
 }

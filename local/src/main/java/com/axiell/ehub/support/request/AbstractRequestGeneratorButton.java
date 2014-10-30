@@ -5,13 +5,13 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-public abstract class AbstractRequestGeneratorButton extends IndicatingAjaxButton {
-    private final RequestsGeneratorMediator mediator;
+public abstract class AbstractRequestGeneratorButton<R extends ISupportResponse> extends IndicatingAjaxButton {
+    private final IRequestsGeneratorMediator mediator;
 
     @SpringBean(name = "supportRequestAdminController")
     protected ISupportRequestAdminController supportRequestAdminController;
 
-    protected AbstractRequestGeneratorButton(final String id, final RequestsGeneratorMediator mediator) {
+    protected AbstractRequestGeneratorButton(final String id, final IRequestsGeneratorMediator mediator) {
         super(id);
         this.mediator = mediator;
     }
@@ -19,9 +19,9 @@ public abstract class AbstractRequestGeneratorButton extends IndicatingAjaxButto
     @Override
     protected final void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
         final RequestArguments requestArguments = (RequestArguments) form.getModelObject();
-        final SupportResponse response = getResponse(requestArguments);
+        final ISupportResponse response = getResponse(requestArguments);
         mediator.afterResponseWasReceived(response, target);
     }
 
-    protected abstract SupportResponse getResponse(RequestArguments requestArguments);
+    protected abstract R getResponse(RequestArguments requestArguments);
 }

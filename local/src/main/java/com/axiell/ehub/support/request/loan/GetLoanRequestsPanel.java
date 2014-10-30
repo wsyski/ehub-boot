@@ -7,6 +7,10 @@ class GetLoanRequestsPanel extends AbstractRequestsGeneratorPanel {
 
     GetLoanRequestsPanel(String id, IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
+        form.addEhubConsumerChoice();
+        form.addPatronId();
+        form.addLibraryCard();
+        form.addPin();
         form.addLangaugeField();
         form.addLmsLoanIdField();
         addGeneratorButton();

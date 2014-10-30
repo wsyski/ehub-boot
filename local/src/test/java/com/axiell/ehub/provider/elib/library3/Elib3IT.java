@@ -33,9 +33,9 @@ public class Elib3IT extends AbstractContentProviderIT {
     private String productId;
     private Elib3Facade underTest;
     @Mock
-    private Patron patron0;
+    private Patron patronWithoutLoans;
     @Mock
-    private Patron patron1;
+    private Patron patronWithLoans;
     private Patron patron;
     private BookAvailability bookAvailability;
     private Product product;
@@ -50,15 +50,15 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     @Before
-    public void setUpPatron0() {
-        given(patron0.hasId()).willReturn(true);
-        given(patron0.getId()).willReturn(PATRON_ID_0);
+    public void setUpPatronWithoutLoans() {
+        given(patronWithoutLoans.hasId()).willReturn(true);
+        given(patronWithoutLoans.getId()).willReturn(PATRON_ID_0);
     }
 
     @Before
-    public void setUpPatron1() {
-        given(patron1.hasId()).willReturn(true);
-        given(patron1.getId()).willReturn(PATRON_ID_1);
+    public void setUpPatronWithLoans() {
+        given(patronWithLoans.hasId()).willReturn(true);
+        given(patronWithLoans.getId()).willReturn(PATRON_ID_1);
     }
 
     @Test
@@ -212,7 +212,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenGetBookAvailability() {
-        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, patron0);
+        bookAvailability = underTest.getBookAvailability(contentProviderConsumer, EBOOK_PRODUCT_ID, patronWithoutLoans);
     }
 
     private void thenBookAvailabilityResponseContainsExpectedProduct() {
@@ -242,7 +242,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void whenCreateLoan() {
-        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, patron0);
+        createdLoan = underTest.createLoan(contentProviderConsumer, EBOOK_PRODUCT_ID, patronWithoutLoans);
     }
 
     private void thenCreatedLoanIsNotNull() {
@@ -266,7 +266,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void givenPatronWithLoans() {
-        patron = patron1;
+        patron = patronWithLoans;
     }
 
     private void thenGetLoansResponseIsNotNull() {
@@ -293,7 +293,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void givenPatronWithoutLoans() {
-        patron = patron0;
+        patron = patronWithoutLoans;
     }
 
     private void thenLoanWithExpectedProductIdDoesNotExist() {

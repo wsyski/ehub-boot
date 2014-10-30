@@ -17,8 +17,6 @@ import java.util.Date;
  */
 public interface IPalmaDataAccessor {
 
-    Patron authenticatePatron(EhubConsumer ehubConsumer, String patronId, String libraryCard, String pin);
-
     /**
      * Performs a pre-checkout analysis. It means that a check is made in the LMS to see if the end-user is allowed to
      * checkout the media at all, if the end-user already has borrowed the media or if it would be a new loan in the

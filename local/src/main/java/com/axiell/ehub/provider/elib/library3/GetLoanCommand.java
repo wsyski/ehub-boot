@@ -33,7 +33,6 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
                 throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
             else {
                 data.setContentUrl(contentUrl);
-                data.setFormatDecoration(formatDecoration);
                 forward(ACTIVE_LOAN_RETRIEVED, data);
             }
         } else

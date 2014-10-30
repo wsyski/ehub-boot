@@ -65,7 +65,7 @@ public abstract class AbstractElib3CommandTest {
     }
 
     protected void givenBasicCommandData() {
-        data = CommandData.newInstance(contentProviderConsumer, patron).setPendingLoan(pendingLoan).setLanguage(language);
+        data = CommandData.newInstance(contentProviderConsumer, patron, language).setPendingLoan(pendingLoan);
     }
 
     private void givenContentProviderConsumer() {

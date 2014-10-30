@@ -10,21 +10,21 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
     private final Patron patron;
-    private String language;
+    private final String language;
     private String contentProviderRecordId;
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
-    private FormatDecoration formatDecoration;
     private String contentUrl;
     private IContent content;
 
-    protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
+        this.language = language;
     }
 
-    public static CommandData newInstance(final ContentProviderConsumer contentProviderConsumer, Patron patron) {
-        return new CommandData(contentProviderConsumer, patron);
+    public static CommandData newInstance(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
+        return new CommandData(contentProviderConsumer, patron, language);
     }
 
     public ContentProviderConsumer getContentProviderConsumer() {
@@ -35,17 +35,12 @@ public class CommandData implements ICommandData {
         return patron;
     }
 
-    public String getContentProviderRecordId() {
-        return contentProviderRecordId;
-    }
-
     public String getLanguage() {
         return language;
     }
 
-    public CommandData setLanguage(String language) {
-        this.language = language;
-        return this;
+    public String getContentProviderRecordId() {
+        return contentProviderRecordId;
     }
 
     public CommandData setContentProviderRecordId(String contentProviderRecordId) {
@@ -69,15 +64,6 @@ public class CommandData implements ICommandData {
 
     public CommandData setContentProviderLoanMetadata(ContentProviderLoanMetadata contentProviderLoanMetadata) {
         this.contentProviderLoanMetadata = contentProviderLoanMetadata;
-        return this;
-    }
-
-    public FormatDecoration getFormatDecoration() {
-        return formatDecoration;
-    }
-
-    public CommandData setFormatDecoration(FormatDecoration formatDecoration) {
-        this.formatDecoration = formatDecoration;
         return this;
     }
 
@@ -108,7 +94,6 @@ public class CommandData implements ICommandData {
                 ", contentProviderRecordId=" + contentProviderRecordId +
                 ", contentProviderFormatId=" + contentProviderFormatId +
                 ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
-                ", formatDecoration=" + formatDecoration +
                 ", contentUrl=" + contentUrl +
                 ", content=" + content +
                 "}";

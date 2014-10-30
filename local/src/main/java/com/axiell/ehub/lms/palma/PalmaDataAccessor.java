@@ -17,8 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static com.axiell.arena.services.palma.v267.patron.AuthenticatePatronResponse.AuthenticatePatronResult;
-
 /**
  * Default implementation of the {@link IPalmaDataAccessor}.
  */
@@ -29,26 +27,7 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
     @Autowired
     private ILoansFacade loansFacade;
     @Autowired
-    private IPatronFacade patronFacade;
-    @Autowired
     private IResponseStatusChecker responseStatusChecker;
-
-    @Override
-    public Patron authenticatePatron(final EhubConsumer ehubConsumer, final String patronId, final String libraryCard, final String pin) {
-        Patron.Builder patronBuilder = new Patron.Builder(libraryCard, pin).id(patronId);
-
-        if (patronBuilder.hasCardButNoId())
-            propagatePatronId(ehubConsumer, libraryCard, pin, patronBuilder);
-
-        return patronBuilder.build();
-    }
-
-    private void propagatePatronId(EhubConsumer ehubConsumer, String libraryCard, String pin, Patron.Builder patronBuilder) {
-        final AuthenticatePatronResult authenticatePatronResult = patronFacade.authenticatePatron(ehubConsumer, libraryCard, pin);
-        responseStatusChecker.check267ResponseStatus(authenticatePatronResult.getStatus(), ehubConsumer, patronBuilder);
-        final String patronId = authenticatePatronResult.getPatronId();
-        patronBuilder.id(patronId);
-    }
 
     @Override
     public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron) {

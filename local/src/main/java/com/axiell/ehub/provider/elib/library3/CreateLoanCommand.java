@@ -33,16 +33,19 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         if (contentUrl == null)
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
         else {
-            final Date expirationDate = createdLoan.getExpirationDate();
-            final String contentProviderLoanId = createdLoan.getLoanId();
-            final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-            final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-            final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
             data.setContentUrl(contentUrl);
-            data.setFormatDecoration(formatDecoration);
-            data.setContentProviderLoanMetadata(metadata);
+            populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, contentProviderRecordId, formatId, createdLoan);
             forward(LOAN_CREATED, data);
         }
+    }
+
+    private void populateContentProviderLoanMetadataInCommandData(CommandData data, ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String formatId, CreatedLoan createdLoan) {
+        final Date expirationDate = createdLoan.getExpirationDate();
+        final String contentProviderLoanId = createdLoan.getLoanId();
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+        data.setContentProviderLoanMetadata(metadata);
     }
 
     public static enum Result implements ICommandResult {

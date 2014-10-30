@@ -2,6 +2,7 @@ package com.axiell.ehub.support;
 
 import com.axiell.ehub.support.about.AboutPanelFactory;
 import com.axiell.ehub.support.log.LogFilesPanelFactory;
+import com.axiell.ehub.support.request.patron.PatronIdGeneratorPanelFactory;
 import com.axiell.ehub.support.request.RequestsGeneratorPanelFactory;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;

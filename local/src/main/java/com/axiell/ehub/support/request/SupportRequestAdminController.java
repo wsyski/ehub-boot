@@ -24,7 +24,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     private DefaultHttpClient sslHttpClient;
 
     @Override
-    public SupportResponse getFormats(final RequestArguments arguments) {
+    public DefaultSupportResponse getFormats(final RequestArguments arguments) {
         final String baseUri = arguments.getBaseUri();
         final String contentProviderName = arguments.getContentProviderName();
         final String contentProviderRecordId = arguments.getContentProviderRecordId();
@@ -46,7 +46,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     }
 
     @Override
-    public SupportResponse createLoan(final RequestArguments arguments) {
+    public DefaultSupportResponse createLoan(final RequestArguments arguments) {
         final String baseUri = arguments.getBaseUri();
         final PendingLoan pendingLoan = makePendingLoan(arguments);
         final String language = arguments.getLanguage();
@@ -68,7 +68,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     }
 
     @Override
-    public SupportResponse getLoan(final RequestArguments arguments) {
+    public DefaultSupportResponse getLoan(final RequestArguments arguments) {
         final String baseUri = arguments.getBaseUri();
         final String lmsLoanId = arguments.getLmsLoanId();
         final String language = arguments.getLanguage();
@@ -118,15 +118,15 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         return new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
     }
 
-    private SupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {
+    private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {
         final String body = dto == null ? null : XjcSupport.marshal(dto);
-        return new SupportResponse(supportRequest, status, body);
+        return new DefaultSupportResponse(supportRequest, status, body);
     }
 
-    private SupportResponse makeSupportResponse(final SupportRequest supportRequest, final ClientResponseFailure crf) {
+    private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final ClientResponseFailure crf) {
         final ClientResponse<?> response = crf.getResponse();
         final String body = response == null ? null : response.getEntity(String.class);
         final String status = response == null ? null : String.valueOf(response.getStatus());
-        return new SupportResponse(supportRequest, status, body);
+        return new DefaultSupportResponse(supportRequest, status, body);
     }
 }

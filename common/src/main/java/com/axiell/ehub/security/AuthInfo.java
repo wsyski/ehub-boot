@@ -162,7 +162,7 @@ public class AuthInfo {
             }
 
             final Patron patron = new Patron.Builder(libraryCard, pin).id(patronId).build();
-            final Signature signature = new Signature(ehubConsumerId, ehubConsumerSecretKey, patronId, libraryCard, pin);
+            final Signature signature = new Signature(ehubConsumerId, ehubConsumerSecretKey, patron);
             return new AuthInfo(ehubConsumerId, patron, signature);
         }
     }

@@ -25,7 +25,6 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private Loan loan;
     private ContentProviderLoanMetadata loanMetadata;
     private String contentUrl;
-    private FormatDecoration actualFormatDecoration;
 
     @Before
     public void setUp() {
@@ -36,6 +35,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     public void patronHasLoanWithProductId() {
         givenProductIdInPendingLoan();
         givenFormatDecorationForFormatId();
+        givenContentProviderFromContentProviderConsumer();
         givenBasicCommandData();
         givenLoanWithProductId();
         givenGetLoansResponse();
@@ -74,7 +74,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
-        assertEquals(formatDecoration, actualFormatDecoration);
+        assertEquals(formatDecoration, loanMetadata.getFormatDecoration());
     }
 
     private void givenLoanWithProductId() {
@@ -93,7 +93,6 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         underTest.run(data);
         loanMetadata = data.getContentProviderLoanMetadata();
         contentUrl = data.getContentUrl();
-        actualFormatDecoration = data.getFormatDecoration();
     }
 
     @Test

@@ -11,12 +11,6 @@ public class RemoteLoanIT_10 extends AbstractRemoteLoanIT {
     private IEhubService ehubService;
     private PendingLoan pendingLoan;
 
-    @Before
-    public void givenPatronInAuthenticatePatronResponse() {
-        stubFor(get(urlEqualTo("/arena.pa.palma/v267/patron?wsdl")).willReturn(aResponse().withHeader("Content-Type", "application/xml").withBodyFile("patron.wsdl")));
-        stubFor(post(urlEqualTo("/arena.pa.palma/v267/patron")).withRequestBody(containing(":authenticatePatron xmlns")).willReturn(aResponse().withBodyFile("AuthenticatePatronResponse.xml").withStatus(200)));
-    }
-
     @Override
     protected void castBeanToIEhubService(Object bean) {
         ehubService = (IEhubService) bean;

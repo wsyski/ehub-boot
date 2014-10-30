@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,6 +12,8 @@ import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -52,6 +55,16 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
         givenCommandOnLoanCreated();
         whenRun();
         thenCommandIsInvoked();
+        thenCommandDataContainsContentUrl();
+        thenCommandDataContainsContentProviderLoanMetadata();
+    }
+
+    private void thenCommandDataContainsContentUrl() {
+        assertEquals(URL, data.getContentUrl());
+    }
+
+    private void thenCommandDataContainsContentProviderLoanMetadata() {
+        assertNotNull(data.getContentProviderLoanMetadata());
     }
 
     private void givenProductIdInPendingLoan() {

@@ -5,12 +5,11 @@ package com.axiell.ehub.security;
 
 import static org.junit.Assert.*;
 
+import com.axiell.ehub.patron.Patron;
 import org.junit.Test;
 
-/**
- * 
- */
 public class SignatureTest {
+    private static final String EXP_VALUE = "GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D";
     private Long ehubConsumerId;
     private String secret;
     private String patronId;
@@ -27,7 +26,11 @@ public class SignatureTest {
         givenPin();
         givenNewSignature();
         whenToString();
-        assertEquals("GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D", actValue);
+        thenActualSigntaureEqualsExpectedSignature();
+    }
+
+    private void thenActualSigntaureEqualsExpectedSignature() {
+        assertEquals(EXP_VALUE, actValue);
     }
 
     private void whenToString() {
@@ -51,7 +54,8 @@ public class SignatureTest {
     }
 
     private void givenNewSignature() {
-        underTest = new Signature(ehubConsumerId, secret, patronId, card , pin);
+        Patron patron = new Patron.Builder(card, pin).id(patronId).build();
+        underTest = new Signature(ehubConsumerId, secret, patron);
     }
 
     @Test
@@ -63,7 +67,7 @@ public class SignatureTest {
         givenPin();
         givenNewSignature();
         whenToString();
-        assertEquals("FXJVD5e14lkgq8lmY751Rf5XF%2BI%3D", actValue);
+        thenActualSigntaureEqualsExpectedSignature();
     }
 
     private void givenPatronId() {

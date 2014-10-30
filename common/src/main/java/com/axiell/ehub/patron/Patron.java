@@ -2,21 +2,30 @@ package com.axiell.ehub.patron;
 
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.security.UnauthorizedException;
-import org.apache.commons.lang3.StringUtils;
+
+import static com.axiell.ehub.util.SHA512Function.sha512Hex;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Patron {
-    private String id;
+    private final String id;
     private final String libraryCard;
     private final String pin;
 
     private Patron(String id, String libraryCard, String pin) {
-        this.id = id;
         this.libraryCard = libraryCard;
         this.pin = pin;
+        this.id = isBlank(id) ? generateId() : id;
+    }
+
+    private String generateId() {
+        if (hasLibraryCard())
+            return sha512Hex(libraryCard);
+        else
+            return null;
     }
 
     public boolean hasId() {
-        return !StringUtils.isBlank(id);
+        return !isBlank(id);
     }
 
     public String getId() {
@@ -25,7 +34,7 @@ public class Patron {
     }
 
     public boolean hasLibraryCard() {
-        return !StringUtils.isBlank(libraryCard);
+        return !isBlank(libraryCard);
     }
 
     public String getLibraryCard() {
@@ -56,10 +65,6 @@ public class Patron {
         public Builder id(String value) {
             id = value;
             return this;
-        }
-
-        public boolean hasCardButNoId() {
-            return id == null && libraryCard != null;
         }
 
         public Patron build() {

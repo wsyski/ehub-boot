@@ -48,11 +48,4 @@ class ResponseStatusChecker implements IResponseStatusChecker {
         final ErrorCauseArgument argStatus = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, statusMessage);
         throw new InternalServerErrorException(LMS_ERROR_MESSAGE, ErrorCause.LMS_ERROR, argStatus, argEhubConsumerId);
     }
-
-    @Override
-    public void check267ResponseStatus(com.axiell.arena.services.palma.util.v267.status.Status status, EhubConsumer ehubConsumer, Patron.Builder patronBuilder) {
-        String statusType = status.getType();
-        if (!STATUS_OK.equals(statusType))
-            throwException(status.getMessage(), ehubConsumer, patronBuilder.build());
-    }
 }

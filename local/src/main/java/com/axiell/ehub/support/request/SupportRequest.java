@@ -2,7 +2,7 @@ package com.axiell.ehub.support.request;
 
 import com.axiell.ehub.security.AuthInfo;
 
-class SupportRequest {
+public class SupportRequest {
     private AuthInfo authInfo;
     private String httpMethod;
     private String uri;
