@@ -32,7 +32,6 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "CONTENT_PROVIDER")
 @Access(AccessType.PROPERTY)
 public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
-    private static final long serialVersionUID = 3731023842900003678L;
     private static final Map<ContentProviderName, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
 
     static {
@@ -43,6 +42,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
         VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
         VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
         VALID_PROPERTY_KEYS.put(F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(OCD, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
     }
 
     private ContentProviderName name;

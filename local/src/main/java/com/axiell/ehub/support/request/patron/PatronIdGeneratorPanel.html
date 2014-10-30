@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:panel>
+    <div>
+        <form wicket:id="requestsGeneratorForm">
+            <div>
+                <label wicket:for="libraryCard">
+                    <wicket:message key="fldLibraryCard.label"/>
+                </label>
+                <input wicket:id="libraryCard" type="text" wicket:message="title:fldLibraryCard.title"/>
+            </div>
+            <div>
+                <input class="btn btn-primary" wicket:id="generatorButton" type="submit" wicket:message="value:btnGenerator.label,title:btnGenerator.title"/>
+            </div>
+        </form>
+        <div wicket:id="responsePanel"></div>
+    </div>
+</wicket:panel>
+</body>
+</html>
