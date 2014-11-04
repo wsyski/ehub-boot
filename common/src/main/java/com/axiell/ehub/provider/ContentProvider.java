@@ -42,7 +42,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
         VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
         VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
         VALID_PROPERTY_KEYS.put(F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(OCD, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(OCD, newHashSet(API_BASE_URL));
     }
 
     private ContentProviderName name;

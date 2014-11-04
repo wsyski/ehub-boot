@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.logging.ISoapLoggingHandlerAppender;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +19,13 @@ import static org.mockito.Matchers.any;
 public class F1ServiceSoap12FactoryTest {
     private F1ServiceSoap12Factory underTest;
     @Mock
-    private F1ServiceFactory f1ServiceFactory;
+    private IF1ServiceFactory f1ServiceFactory;
     @Mock
     private F1Service f1Service;
     @Mock
     private F1ServiceSoap expectedF1ServiceSoap;
+    @Mock
+    private ISoapLoggingHandlerAppender soapLoggingHandlerAppender;
     @Mock
     private ContentProviderConsumer contentProviderConsumer;
     private F1ServiceSoap actualF1ServiceSoap;
@@ -33,6 +36,7 @@ public class F1ServiceSoap12FactoryTest {
         given(f1ServiceFactory.create(any(ContentProviderConsumer.class))).willReturn(f1Service);
         underTest = new F1ServiceSoap12Factory();
         ReflectionTestUtils.setField(underTest, "f1ServiceFactory", f1ServiceFactory);
+        ReflectionTestUtils.setField(underTest, "soapLoggingHandlerAppender", soapLoggingHandlerAppender);
     }
 
     @Test

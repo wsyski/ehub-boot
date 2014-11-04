@@ -13,7 +13,7 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 
 @Component
 class F1Facade implements IF1Facade {
-    private static final String CONTINUE = "true";
+    private static final String CONTINUE = "false";
 
     @Autowired(required = true)
     private IF1ServiceSoapFactory f1ServiceSoapFactory;

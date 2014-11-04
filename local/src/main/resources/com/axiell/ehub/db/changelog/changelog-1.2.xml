@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="systimestamp" dbms="oracle"/>
+
+    <changeSet id="1" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER">
+            <column name="ID" value="8"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="NAME" value="OCD"/>
+        </insert>
+        <comment>Added 'OCD' as Content Provider</comment>
+    </changeSet>
+
+    <changeSet id="2" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_ALIAS">
+            <column name="ID" value="10"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="ALIAS" value="OCD"/>
+            <column name="NAME" value="OCD"/>
+        </insert>
+        <comment>Added 'OCD' as OCD alias</comment>
+    </changeSet>
+
+    <changeSet id="3" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_PROPERTY">
+            <column name="CONTENT_PROVIDER_ID" value="8"/>
+            <column name="PROPERTY_KEY" value="API_BASE_URL"/>
+            <column name="PROPERTY_VALUE" value="http://api.oneclickdigital.us"/>
+        </insert>
+        <comment>Added OCD Content Provider properties</comment>
+    </changeSet>
+
+    <changeSet id="4" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="OCD_LIBRARY_ID"/>
+        </insert>
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="OCD_BASIC_TOKEN"/>
+        </insert>
+        <comment>Added OCD Content Provider Consumer property keys</comment>
+    </changeSet>
+
+    <changeSet id="5" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1601"/>
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <column name="FORMAT_ID" value="eAudio"/>
+            <column name="CONTENT_PROVIDER_ID" value="8"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1602"/>
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <column name="FORMAT_ID" value="eBook"/>
+            <column name="CONTENT_PROVIDER_ID" value="8"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added F1 format decorations</comment>
+    </changeSet>
+
+    <changeSet id="6" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4601"/>
+            <column name="DESCRIPTION" value="Audio in MP3 format"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="eAudio"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1601"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4602"/>
+            <column name="DESCRIPTION" value="Book in EPUB format"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="eBook"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1602"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to the OCD format decorations</comment>
+    </changeSet>
+
+    <changeSet id="7" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
+            <column name="ID" value="13"/>
+            <column name="TYPE" value="CHECKOUT_NOT_FOUND"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added 1 new Error cause argument values</comment>
+    </changeSet>
+
+    <changeSet id="8" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1025"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="13"/>
+            <column name="TEXT" value="Your checkout for this title could not be found"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added 1 new text bundle to the new Error cause argument value</comment>
+    </changeSet>
+
+    <changeSet id="9" author="ehub" dbms="oracle">
+        <update tableName="CONTENT_P_FORMAT_DECORATION" >
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <where>ID=1501</where>
+        </update>
+        <comment>Changed content disposition to Downloadable for the F1 format audio</comment>
+    </changeSet>
+
+</databaseChangeLog>

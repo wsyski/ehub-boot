@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderDataAccessorTest {
@@ -151,9 +152,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     protected void thenActualLoanContainsDownloadUrl() {
         Assert.assertNotNull(actualLoan);
-        IContent content = actualLoan.getContent();
-        DownloadableContent downloadableContent = (DownloadableContent) content;
-        Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
+        actualContent = actualLoan.getContent();
+        thenActualContentContainsDownloadUrl();
     }
 
     protected void thenActualContentContainsDownloadUrl() {
@@ -188,6 +188,9 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
         assertEquals(EXPIRATION_DATE, actualLoan.getExpirationDate());
     }
-//
+
+    protected void thenSetContentProviderLoanMetadataInCommandDataHasBeenInvoked() {
+        verify(commandData).setContentProviderLoanMetadata(any(ContentProviderLoanMetadata.class));
+    }
 
 }

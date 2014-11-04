@@ -2,6 +2,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
+import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -34,6 +35,8 @@ public class ContentProviderDataAccessorFactoryTest {
     private Elib3DataAccessor elib3DataAccessor;
     @Mock
     private F1DataAccessor f1DataAccessor;
+    @Mock
+    private OcdDataAccessor ocdDataAccessor;
 
     private ContentProviderName contentProviderName;
     private IContentProviderDataAccessor actualContentProviderDataAccessor;
@@ -48,6 +51,7 @@ public class ContentProviderDataAccessorFactoryTest {
         ReflectionTestUtils.setField(underTest, "overDriveDataAccessor", overDriveDataAccessor);
         ReflectionTestUtils.setField(underTest, "elib3DataAccessor", elib3DataAccessor);
         ReflectionTestUtils.setField(underTest, "f1DataAccessor", f1DataAccessor);
+        ReflectionTestUtils.setField(underTest, "ocdDataAccessor", ocdDataAccessor);
     }
 
     @Test
@@ -157,5 +161,20 @@ public class ContentProviderDataAccessorFactoryTest {
 
     private void thenF1DataAccessorIsReturned() {
         Assert.assertTrue(actualContentProviderDataAccessor instanceof F1DataAccessor);
+    }
+
+    @Test
+    public void getOcdDataAccessor() {
+        givenOcdAsContentProviderName();
+        whenGetContentProviderDataAccessor();
+        thenOcdDataAccessorIsReturned();
+    }
+
+    private void givenOcdAsContentProviderName() {
+        contentProviderName = ContentProviderName.OCD;
+    }
+
+    private void thenOcdDataAccessorIsReturned() {
+        Assert.assertTrue(actualContentProviderDataAccessor instanceof OcdDataAccessor);
     }
 }

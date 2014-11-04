@@ -1,7 +1,5 @@
 package com.axiell.ehub.logging;
 
-import com.axiell.ehub.logging.ToString;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,7 +51,7 @@ public class LoggingHandlerTest {
 
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void handleResponseMessageWithDebugDisabled() {
         givenDebugLoggingIsDisabled();
@@ -63,7 +61,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void handleRequestMessageWithDebugDisabled() {
         givenDebugLoggingIsDisabled();
@@ -73,7 +71,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void handleResponseMessageWithDebugEnabled() {
         givenDebugLoggingIsEnabled();
@@ -83,7 +81,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void handleRequestMessageWithDebugEnabled() {
         givenDebugLoggingIsEnabled();
@@ -93,7 +91,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void handleFault() {
         whenfaultIsHandled();
@@ -101,7 +99,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({LoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
     @Test
     public void getHeaders() {
         whenHeadersAreRequested();
@@ -113,7 +111,7 @@ public class LoggingHandlerTest {
     }
 
     private void whenHeadersAreRequested() {
-        actualHeaders = new LoggingHandler().getHeaders();
+        actualHeaders = new SoapLoggingHandler().getHeaders();
     }
 
     private void thenResultOfMethodIsTrue() {
@@ -144,11 +142,11 @@ public class LoggingHandlerTest {
     }
 
     private void whenMessageIsHandled() {
-        actualResult = new LoggingHandler().handleMessage(messageContext);
+        actualResult = new SoapLoggingHandler().handleMessage(messageContext);
     }
 
     private void whenfaultIsHandled() {
-        actualResult = new LoggingHandler().handleFault(messageContext);
+        actualResult = new SoapLoggingHandler().handleFault(messageContext);
     }
 
     private void givenMessageIsARequest() {

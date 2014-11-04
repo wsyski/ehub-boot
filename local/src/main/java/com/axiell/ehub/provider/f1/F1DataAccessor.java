@@ -86,15 +86,11 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
 
     private ContentProviderLoanMetadata populateContentProviderLoanMetadataInCommandData(CommandData data, CreateLoanResponse createLoanResponse) {
         final String loanId = createLoanResponse.getValue();
-        final String contentProviderRecordId = data.getContentProviderRecordId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
-        final String contentProviderFormatId = data.getContentProviderFormatId();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
 
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
-                formatDecoration).contentProviderLoanId(loanId).build();
+        final ContentProviderLoanMetadata metadata = newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
         data.setContentProviderLoanMetadata(metadata);
         return metadata;
     }

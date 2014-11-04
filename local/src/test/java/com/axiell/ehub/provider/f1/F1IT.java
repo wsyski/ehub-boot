@@ -115,6 +115,7 @@ public class F1IT extends AbstractContentProviderIT {
     }
 
     private void thenActualLoanContentIsValid() {
+        System.out.println(actualGetLoanContentResponse.getValue());
         assertTrue(actualGetLoanContentResponse.isValidContent());
     }
 

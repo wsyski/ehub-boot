@@ -6,6 +6,7 @@ import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
+import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
 import com.axiell.ehub.provider.publit.PublitDataAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
     @Autowired(required = true)
     private F1DataAccessor f1DataAccessor;
 
+    @Autowired(required = true)
+    private OcdDataAccessor ocdDataAccessor;
+
     @Override
     public IContentProviderDataAccessor getInstance(final ContentProviderName contentProviderName) {
         switch (contentProviderName) {
@@ -51,6 +55,8 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
         	    return overDriveDataAccessor;
             case F1:
                 return f1DataAccessor;
+            case OCD:
+                return ocdDataAccessor;
             default:
                 throw new NotImplementedException("Content provider with name '" + contentProviderName
                         + "' has not been implemented");

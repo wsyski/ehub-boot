@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.logging.ISoapLoggingHandlerAppender;
 import com.axiell.ehub.util.FinalWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ class F1ServiceSoap12Factory implements IF1ServiceSoapFactory {
 
     @Autowired(required = true)
     private IF1ServiceFactory f1ServiceFactory;
+
+    @Autowired(required = true)
+    private ISoapLoggingHandlerAppender soapLoggingHandlerAppender;
 
     @Override
     public F1ServiceSoap getInstance(final ContentProviderConsumer contentProviderConsumer) {
@@ -32,6 +36,7 @@ class F1ServiceSoap12Factory implements IF1ServiceSoapFactory {
     private FinalWrapper<F1ServiceSoap> createF1ServiceSoap12Wrapper(final ContentProviderConsumer contentProviderConsumer) {
         final F1Service f1Service = f1ServiceFactory.create(contentProviderConsumer);
         final F1ServiceSoap f1ServiceSoap = f1Service.getF1ServiceSoap12();
+        soapLoggingHandlerAppender.addLoggingHandler(f1ServiceSoap);
         return new FinalWrapper<>(f1ServiceSoap);
     }
 }
