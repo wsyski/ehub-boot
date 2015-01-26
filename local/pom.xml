@@ -302,13 +302,14 @@
 
             <!-- Generates the eHUB schema from Java classes -->
             <plugin>
-                <groupId>com.sun.tools.jxc.maven2</groupId>
-                <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>schemagen</id>
                         <phase>generate-resources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>schemagen</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -319,8 +320,7 @@
                         <include>**/Formats.java</include>
                         <include>**/PendingLoan.java</include>
                         <include>**/ReadyLoan.java</include>
-                        <!-- TODO: enable when it works -->
-                        <!--<include>**/ReadyLoanMetadata.java</include>-->
+                        <include>**/ReadyLoanMetadata.java</include>
                         <include>**/EhubError.java</include>
                     </includes>
                     <schemas>
