@@ -20,6 +20,7 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.loan.ReadyLoan;
+import com.axiell.ehub.loan.ReadyLoanMetadata;
 import com.axiell.ehub.provider.record.format.Formats;
 
 /**
@@ -146,7 +147,7 @@ public final class XjcSupport {
          * The domain JAXB context path.
          */
         private static final Class<?>[] CONTEXT_PATH =
-                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ContentProviderLoan.class};
+                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ContentProviderLoan.class, ReadyLoanMetadata.class};
 
         /**
          * The domain {@link javax.xml.bind.JAXBContext} singleton.

@@ -4,6 +4,9 @@
 package com.axiell.ehub.provider.record.format;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
@@ -17,6 +20,7 @@ import com.axiell.ehub.provider.ContentProvider;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE_ID"}))
 @Access(AccessType.PROPERTY)
+@XmlAccessorType(XmlAccessType.NONE)
 public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 8478816548440529433L;
     private FormatDecoration formatDecoration;
@@ -96,6 +100,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @return the name of the format in the specified language
      */
     @Column(name = "NAME", nullable = false)
+    @XmlAttribute(name = "name", required = true)
     public String getName() {
         return name;
     }
@@ -115,6 +120,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @return the description of the format in the specified language
      */
     @Column(name = "DESCRIPTION", nullable = false)
+    @XmlAttribute(name = "description", required = true)
     public String getDescription() {
         return description;
     }

@@ -319,6 +319,8 @@
                         <include>**/Formats.java</include>
                         <include>**/PendingLoan.java</include>
                         <include>**/ReadyLoan.java</include>
+                        <!-- TODO: enable when it works -->
+                        <!--<include>**/ReadyLoanMetadata.java</include>-->
                         <include>**/EhubError.java</include>
                     </includes>
                     <schemas>

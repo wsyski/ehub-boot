@@ -10,6 +10,7 @@ import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 import java.util.Locale;
 import java.util.Map;
 
@@ -18,8 +19,10 @@ import java.util.Map;
  * {@link ContentProvider}. These decorations are kept in the eHUB.
  */
 @Entity
-@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = { "CONTENT_PROVIDER_ID", "FORMAT_ID" }, name="UK_CONTENT_P_FORMAT_DECORATION"))
+@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_PROVIDER_ID", "FORMAT_ID"}, name = "UK_CONTENT_P_FORMAT_DECORATION"))
 @Access(AccessType.PROPERTY)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlSeeAlso(FormatDecoration.ContentDisposition.class)
 public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1562910983744673362L;
     private ContentProvider contentProvider;
@@ -37,212 +40,204 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Constructs a new {@link FormatDecoration}
-     * 
-     * @param contentProvider
-     *            the {@link ContentProvider} this {@link FormatDecoration}
-     *            belongs to
+     *
+     * @param contentProvider the {@link ContentProvider} this {@link FormatDecoration}
+     *                        belongs to
      */
     public FormatDecoration(ContentProvider contentProvider) {
-	this.contentProvider = contentProvider;
+        this.contentProvider = contentProvider;
     }
 
     /**
      * Constructs a new {@link FormatDecoration}.
-     * 
-     * @param contentProvider
-     *            the {@link ContentProvider} this {@link FormatDecoration}
-     *            belongs to
-     * @param contentProviderFormatId
-     *            the ID of the format at the {@link ContentProvider}
-     * @param contentDisposition
-     *            the {@link ContentDisposition} for the specified format
-     * @param playerWidth
-     *            the width of the streaming player
-     * @param playerHeight
-     *            the height of the streaming player
+     *
+     * @param contentProvider         the {@link ContentProvider} this {@link FormatDecoration}
+     *                                belongs to
+     * @param contentProviderFormatId the ID of the format at the {@link ContentProvider}
+     * @param contentDisposition      the {@link ContentDisposition} for the specified format
+     * @param playerWidth             the width of the streaming player
+     * @param playerHeight            the height of the streaming player
      */
     public FormatDecoration(ContentProvider contentProvider, String contentProviderFormatId, ContentDisposition contentDisposition, int playerWidth,
-	    int playerHeight) {
-	this.contentProvider = contentProvider;
-	this.contentProviderFormatId = contentProviderFormatId;
-	this.contentDisposition = contentDisposition;
-	this.playerWidth = playerWidth;
-	this.playerHeight = playerHeight;
+                            int playerHeight) {
+        this.contentProvider = contentProvider;
+        this.contentProviderFormatId = contentProviderFormatId;
+        this.contentDisposition = contentDisposition;
+        this.playerWidth = playerWidth;
+        this.playerHeight = playerHeight;
     }
 
     /**
      * Gets the {@link ContentProvider} this {@link FormatDecoration} belongs
      * to.
-     * 
+     *
      * @return a {@link ContentProvider}
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_F_D_CONTENT_P")
     public ContentProvider getContentProvider() {
-	return contentProvider;
+        return contentProvider;
     }
 
     /**
      * Sets the {@link ContentProvider} this {@link FormatDecoration} belongs
      * to.
-     * 
-     * @param contentProvider
-     *            the {@link ContentProvider} this {@link FormatDecoration}
-     *            belongs to
+     *
+     * @param contentProvider the {@link ContentProvider} this {@link FormatDecoration}
+     *                        belongs to
      */
     protected void setContentProvider(ContentProvider contentProvider) {
-	this.contentProvider = contentProvider;
+        this.contentProvider = contentProvider;
     }
 
     /**
      * Returns the ID of the format at the {@link ContentProvider}.
-     * 
+     *
      * @return the ID of the format at the {@link ContentProvider}
      */
     @Column(name = "FORMAT_ID", nullable = false)
+    @XmlAttribute(name = "id", required = true)
     public String getContentProviderFormatId() {
-	return contentProviderFormatId;
+        return contentProviderFormatId;
     }
 
     /**
      * Sets the ID of the format at the {@link ContentProvider}.
-     * 
-     * @param contentProviderFormatId
-     *            the ID of the format at the {@link ContentProvider} to set
+     *
+     * @param contentProviderFormatId the ID of the format at the {@link ContentProvider} to set
      */
     protected void setContentProviderFormatId(String contentProviderFormatId) {
-	this.contentProviderFormatId = contentProviderFormatId;
+        this.contentProviderFormatId = contentProviderFormatId;
     }
 
     /**
      * Returns the {@link ContentDisposition} for the specified format.
-     * 
+     *
      * @return a {@link ContentDisposition}
      */
     @Column(name = "CONTENT_DISPOSITION", nullable = false)
     @Enumerated(EnumType.STRING)
+    @XmlAttribute(name = "contentDisposition", required = true)
     public ContentDisposition getContentDisposition() {
-	return contentDisposition;
+        return contentDisposition;
     }
 
     /**
      * Sets the {@link ContentDisposition} for the specified format.
-     * 
-     * @param contentDisposition
-     *            the {@link ContentDisposition} for the specified format to set
+     *
+     * @param contentDisposition the {@link ContentDisposition} for the specified format to set
      */
     protected void setContentDisposition(ContentDisposition contentDisposition) {
-	this.contentDisposition = contentDisposition;
+        this.contentDisposition = contentDisposition;
     }
 
     /**
      * Returns the width of the player in pixels.
-     * 
+     *
      * @return the number of pixels
      */
     @Column(name = "PLAYER_WIDTH", nullable = false)
+    @XmlAttribute(name = "playerWidth")
     public int getPlayerWidth() {
-	return playerWidth;
+        return playerWidth;
     }
 
     /**
      * Sets the width of the player in pixels.
-     * 
-     * @param playerWidth
-     *            the width of the player in pixels to set
+     *
+     * @param playerWidth the width of the player in pixels to set
      */
     public void setPlayerWidth(int playerWidth) {
-	this.playerWidth = playerWidth;
+        this.playerWidth = playerWidth;
     }
 
     /**
      * Returns the height of the player in pixels.
-     * 
+     *
      * @return the number of pixels
      */
     @Column(name = "PLAYER_HEIGHT", nullable = false)
+    @XmlAttribute(name = "playerHeight")
     public int getPlayerHeight() {
-	return playerHeight;
+        return playerHeight;
     }
 
     /**
      * Sets the height of the player in pixels
-     * 
-     * @param playerHeight
-     *            the height of the player in pixels to set
+     *
+     * @param playerHeight the height of the player in pixels to set
      */
     public void setPlayerHeight(int playerHeight) {
-	this.playerHeight = playerHeight;
+        this.playerHeight = playerHeight;
     }
 
     /**
      * Returns the {@link FormatTextBundle}s.
-     * 
+     *
      * @return the {@link FormatTextBundle}s
      */
     @OneToMany(mappedBy = "formatDecoration", cascade = CascadeType.REMOVE)
     @MapKeyJoinColumn(name = "LANGUAGE_ID")
     @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_T")
+    @XmlElementWrapper(name="texts")
     public Map<Language, FormatTextBundle> getTextBundles() {
-	return textBundles;
+        return textBundles;
     }
 
     /**
      * Sets the {@link FormatTextBundle}s.
-     * 
-     * @param textBundles
-     *            the {@link FormatTextBundle}s to set
+     *
+     * @param textBundles the {@link FormatTextBundle}s to set
      */
     public void setTextBundles(Map<Language, FormatTextBundle> textBundles) {
-	this.textBundles = textBundles;
+        this.textBundles = textBundles;
     }
 
     /**
      * Gets a {@link FormatTextBundle} in the specified language. If no
      * {@link FormatTextBundle} exists in the chosen language the
      * {@link FormatTextBundle} in the default language (English) is returned.
-     * 
-     * @param language
-     *            the language as an ISO 639 alpha-2 or alpha-3 language code to
-     *            get the {@link FormatTextBundle} in
+     *
+     * @param language the language as an ISO 639 alpha-2 or alpha-3 language code to
+     *                 get the {@link FormatTextBundle} in
      * @return a {@link FormatTextBundle}, <code>null</code> if no
-     *         {@link FormatTextBundle}s could be found for this
-     *         {@link FormatDecoration}
+     * {@link FormatTextBundle}s could be found for this
+     * {@link FormatDecoration}
      */
     @Transient
     public FormatTextBundle getTextBundle(final String language) {
-	Validate.notNull(language, "The language can't be null");
-	final Map<Language, FormatTextBundle> bundles = getTextBundles();
+        Validate.notNull(language, "The language can't be null");
+        final Map<Language, FormatTextBundle> bundles = getTextBundles();
 
-	if (bundles == null) {
-	    return null;
-	}
+        if (bundles == null) {
+            return null;
+        }
 
-	final String lowerCaseLanguage = language.toLowerCase();
-	final FormatTextBundle textBundle = bundles.get(new Language(lowerCaseLanguage));
+        final String lowerCaseLanguage = language.toLowerCase();
+        final FormatTextBundle textBundle = bundles.get(new Language(lowerCaseLanguage));
 
-	if (textBundle == null) {
-	    // Get the default text in English if no text bundle exists in the
-	    // chosen language
-	    final String defaultLanguage = Locale.ENGLISH.getLanguage();
-	    return bundles.get(new Language(defaultLanguage));
-	} else {
-	    return textBundle;
-	}
+        if (textBundle == null) {
+            // Get the default text in English if no text bundle exists in the
+            // chosen language
+            final String defaultLanguage = Locale.ENGLISH.getLanguage();
+            return bundles.get(new Language(defaultLanguage));
+        } else {
+            return textBundle;
+        }
     }
 
     /**
      * Defines the disposition of a content.
      */
     public static enum ContentDisposition {
-	/**
-	 * Indicates that the content will be downloaded.
-	 */
-	DOWNLOADABLE,
-	/**
-	 * Indicates that the content will be streamed.
-	 */
-	STREAMING
+        /**
+         * Indicates that the content will be downloaded.
+         */
+        DOWNLOADABLE,
+        /**
+         * Indicates that the content will be streamed.
+         */
+        STREAMING
     }
 }
