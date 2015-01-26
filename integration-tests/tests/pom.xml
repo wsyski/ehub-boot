@@ -17,6 +17,7 @@
         <module>remote-0.7</module>
         <module>remote-0.8</module>
         <module>remote-1.0</module>
+        <module>remote-1.2</module>
         <module>remote-1.0-SNAPSHOT</module>
 	</modules>
 
