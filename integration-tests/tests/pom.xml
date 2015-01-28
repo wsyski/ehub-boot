@@ -59,7 +59,7 @@
                            <plugin>
                                <groupId>org.eclipse.jetty</groupId>
                                <artifactId>jetty-maven-plugin</artifactId>
-                               <version>9.2.0.M1</version>
+                               <version>9.3.0.M1</version>
                                <executions>
                                    <execution>
                                        <id>start-jetty</id>
@@ -76,11 +76,13 @@
                                                </systemProperty>
                                            </systemProperties>
                                            <scanIntervalSeconds>0</scanIntervalSeconds>
-                                           <daemon>true</daemon>
                                            <httpConnector>
-
                                                <port>16518</port>
                                            </httpConnector>
+                                           <!--
+                                           <daemon>false</daemon>
+                                           -->
+                                           <daemon>true</daemon>
                                            <stopWait>30</stopWait>
                                            <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
                                            <webApp>
@@ -103,7 +105,6 @@
                                    <stopKey>STOP</stopKey>
                                    <stopPort>5005</stopPort>
                                </configuration>
-
                            </plugin>
                        </plugins>
                    </build>
@@ -120,7 +121,6 @@
                        <ajdtVersion>none</ajdtVersion>
                    </configuration>
                </plugin>
-
            </plugins>
        </build>
 </project>

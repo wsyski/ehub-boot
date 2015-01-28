@@ -47,7 +47,7 @@
 
     <bean id="restEasyProviderFactory2" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject">
-            <ref local="restEasyProviderFactory"/>
+            <ref bean="restEasyProviderFactory"/>
         </property>
         <property name="targetMethod" value="addClientExceptionMapper"/>
         <property name="arguments" ref="exceptionMapper"/>
