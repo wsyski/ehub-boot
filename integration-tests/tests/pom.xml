@@ -79,11 +79,13 @@
                                            <httpConnector>
                                                <port>16518</port>
                                            </httpConnector>
+
                                            <!--
                                            <daemon>false</daemon>
                                            -->
                                            <daemon>true</daemon>
                                            <stopWait>30</stopWait>
+
                                            <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
                                            <webApp>
                                                <contextPath>/</contextPath>
