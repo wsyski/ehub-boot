@@ -49,7 +49,7 @@ public final class RestEasyBadRequestExceptionMapper implements ExceptionMapper<
     }
 
     private Response handleEhubRuntimeException(EhubRuntimeException ehubException) {
-        final EhubRuntimeExceptionMapper<EhubRuntimeException> ehubRuntimeExceptionMapper = new EhubRuntimeExceptionMapper<>();
+        final EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper = new EhubRuntimeExceptionMapper();
         return ehubRuntimeExceptionMapper.toResponse(ehubException);
     }
 }

@@ -17,7 +17,7 @@ public abstract class AbstractRemoteFormatIT extends AbstractRemoteIT {
 
     @Override
     protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).patronId(testData.getPatronId()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
     }
 
     @Test
@@ -29,7 +29,8 @@ public abstract class AbstractRemoteFormatIT extends AbstractRemoteIT {
     }
 
     private void givenGetProductResponse() {
-        stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader(
+                "Content-Type", "application/xml").withStatus(200)));
     }
 
     protected abstract void whenGetFormats() throws EhubException;

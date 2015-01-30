@@ -1,6 +1,7 @@
 package com.axiell.ehub;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;

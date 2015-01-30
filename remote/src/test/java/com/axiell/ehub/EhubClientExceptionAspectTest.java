@@ -34,9 +34,9 @@ public class EhubClientExceptionAspectTest {
     @Mock
     private ClientResponse<?> clientResponse;
     @Mock
-    private MultivaluedMap<String, String> headers;
+    private MultivaluedMap<String, Object> headers;
     @Mock
-    private List<String> contentTypes;
+    private List<Object> contentTypes;
 
     @Before
     public void setUp() {

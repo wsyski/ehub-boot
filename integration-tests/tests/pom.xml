@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -8,121 +9,133 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>ehub-it-tests</artifactId>
-	<version>1.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
-	<modules>
+    <modules>
         <module>remote-0.6</module>
         <module>remote-0.7</module>
         <module>remote-0.8</module>
         <module>remote-1.0</module>
         <module>remote-1.2</module>
         <module>remote-1.0-SNAPSHOT</module>
-	</modules>
+    </modules>
 
     <dependencies>
-            <dependency>
-                <groupId>com.axiell.ehub</groupId>
-                <artifactId>ehub-it-local</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-                <scope>provided</scope>
-            </dependency>
-        </dependencies>
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-it-local</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-it-common</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <classifier>standalone</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <profiles>
-               <profile>
-                   <id>integration-test</id>
-                   <activation>
-                       <activeByDefault>false</activeByDefault>
-                   </activation>
-                   <build>
-                       <plugins>
-                           <plugin>
-                               <groupId>org.apache.maven.plugins</groupId>
-                               <artifactId>maven-failsafe-plugin</artifactId>
-                               <executions>
-                                   <execution>
-                                       <goals>
-                                           <goal>integration-test</goal>
-                                           <goal>verify</goal>
-                                       </goals>
-                                   </execution>
-                               </executions>
-                               <configuration>
-                                   <includes>
-                                       <include>%regex[.*IT(_.*)?]</include>
-                                   </includes>
-                               </configuration>
-                           </plugin>
-                           <plugin>
-                               <groupId>org.eclipse.jetty</groupId>
-                               <artifactId>jetty-maven-plugin</artifactId>
-                               <version>9.3.0.M1</version>
-                               <executions>
-                                   <execution>
-                                       <id>start-jetty</id>
-                                       <phase>pre-integration-test</phase>
-                                       <goals>
-                                           <goal>stop</goal>
-                                           <goal>deploy-war</goal>
-                                       </goals>
-                                       <configuration>
-                                           <systemProperties>
-                                               <systemProperty>
-                                                   <name>catalina.base</name>
-                                                   <value>target</value>
-                                               </systemProperty>
-                                           </systemProperties>
-                                           <scanIntervalSeconds>0</scanIntervalSeconds>
-                                           <httpConnector>
-                                               <port>16518</port>
-                                           </httpConnector>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includes>
+                                <include>%regex[.*IT(_.*)?]</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>9.3.0.M1</version>
+                        <executions>
+                            <execution>
+                                <id>start-jetty</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                    <goal>deploy-war</goal>
+                                </goals>
+                                <configuration>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <name>catalina.base</name>
+                                            <value>target</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                                    <httpConnector>
+                                        <port>16518</port>
+                                    </httpConnector>
 
-                                           <!--
-                                           <daemon>false</daemon>
-                                           -->
-                                           <daemon>true</daemon>
-                                           <stopWait>30</stopWait>
+                                    <!--
+                                    <daemon>false</daemon>
+                                    -->
+                                    <daemon>true</daemon>
+                                    <stopWait>30</stopWait>
 
-                                           <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
-                                           <webApp>
-                                               <contextPath>/</contextPath>
-                                           </webApp>
-                                           <stopKey>STOP</stopKey>
-                                           <stopPort>5005</stopPort>
-                                       </configuration>
-                                   </execution>
-                                   <execution>
-                                       <id>stop-jetty</id>
-                                       <phase>post-integration-test</phase>
-                                       <goals>
-                                           <goal>stop</goal>
-                                       </goals>
-                                   </execution>
-                               </executions>
-                               <configuration>
-                                   <stopWait>30</stopWait>
-                                   <stopKey>STOP</stopKey>
-                                   <stopPort>5005</stopPort>
-                               </configuration>
-                           </plugin>
-                       </plugins>
-                   </build>
+                                    <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
+                                    <webApp>
+                                        <contextPath>/</contextPath>
+                                    </webApp>
+                                    <stopKey>STOP</stopKey>
+                                    <stopPort>5005</stopPort>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-jetty</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <stopWait>30</stopWait>
+                            <stopKey>STOP</stopKey>
+                            <stopPort>5005</stopPort>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
 
-               </profile>
-           </profiles>
+        </profile>
+    </profiles>
 
-       <build>
-           <plugins>
-               <plugin>
-                   <groupId>org.apache.maven.plugins</groupId>
-                   <artifactId>maven-eclipse-plugin</artifactId>
-                   <configuration>
-                       <ajdtVersion>none</ajdtVersion>
-                   </configuration>
-               </plugin>
-           </plugins>
-       </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <ajdtVersion>none</ajdtVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

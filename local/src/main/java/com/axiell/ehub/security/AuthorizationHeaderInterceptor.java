@@ -6,12 +6,14 @@ package com.axiell.ehub.security;
 import com.axiell.ehub.ErrorCause;
 import org.jboss.resteasy.annotations.interception.Precedence;
 import org.jboss.resteasy.annotations.interception.ServerInterceptor;
-import org.jboss.resteasy.core.ResourceMethod;
+import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.spi.Failure;
 import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.AcceptedByMethod;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import java.lang.reflect.Method;
@@ -43,12 +45,12 @@ final class AuthorizationHeaderInterceptor implements PreProcessInterceptor, Acc
      * org.jboss.resteasy.core.ResourceMethod)
      */
     @Override
-    public ServerResponse preProcess(HttpRequest request, ResourceMethod resourceMethod)  {
-        final HttpHeaders headers = request.getHttpHeaders();
+    public ServerResponse preProcess(final HttpRequest httpRequest, final ResourceMethodInvoker resourceMethodInvoker) throws Failure, WebApplicationException {
+        final HttpHeaders headers = httpRequest.getHttpHeaders();
         final List<String> authorizationHeaders = headers.getRequestHeader("Authorization");
 
         if (authorizationHeaders == null || authorizationHeaders.isEmpty()) {
-            throw new UnauthorizedException("The method '" + resourceMethod.getMethod().getName() + "' in the resource '" + resourceMethod.getResourceClass()
+            throw new UnauthorizedException("The method '" + resourceMethodInvoker.getMethod().getName() + "' in the resource '" + resourceMethodInvoker.getResourceClass()
                     + "'expects an 'AuthInfo', but the request does not contain an Authorization header", ErrorCause.MISSING_AUTHORIZATION_HEADER);
         }
 

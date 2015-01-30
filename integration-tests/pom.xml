@@ -12,8 +12,6 @@
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
-
-
     <modules>
         <module>common</module>
         <module>local</module>

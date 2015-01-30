@@ -1,6 +1,9 @@
 package com.axiell.ehub;
 
-import com.axiell.ehub.loan.*;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.loan.LmsLoan;
+import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.security.AuthInfo;
 import org.junit.Assert;
 import org.junit.Test;

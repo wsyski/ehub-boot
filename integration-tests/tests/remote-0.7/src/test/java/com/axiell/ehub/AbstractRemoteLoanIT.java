@@ -1,6 +1,9 @@
 package com.axiell.ehub;
 
-import com.axiell.ehub.loan.*;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.IContent;
+import com.axiell.ehub.loan.LmsLoan;
+import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.security.AuthInfo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +21,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
 
     @Override
     protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).patronId(testData.getPatronId()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
     }
 
     @Test
@@ -124,7 +127,8 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     }
 
     private void givenCheckoutTestErrorResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(
+                "CheckOutTestResponse_error.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
     }
 
     protected void thenCustomEhubExceptionValidation(EhubException e) {

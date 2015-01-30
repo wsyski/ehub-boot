@@ -59,8 +59,8 @@ public class EhubClientExceptionAspect {
     }
 
     private boolean hasApplicationXmlAsContentType(ClientResponse<?> response) {
-        final MultivaluedMap<String, String> headers = response.getHeaders();
-        final List<String> contentTypes = headers.get(HttpHeaders.CONTENT_TYPE);
+        final MultivaluedMap<String, Object> headers = response.getHeaders();
+        final List<Object> contentTypes = headers.get(HttpHeaders.CONTENT_TYPE);
 
         if (contentTypes == null) {
             LOGGER.warn("No headers in Ehub client response");

@@ -10,9 +10,10 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.core.BaseClientResponse;
 import org.jboss.resteasy.client.core.BaseClientResponse.BaseClientResponseStreamFactory;
 import org.jboss.resteasy.core.ServerResponse;
-import org.jboss.resteasy.specimpl.HttpHeadersImpl;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
+import org.jboss.resteasy.specimpl.ResteasyHttpHeaders;
 import org.jboss.resteasy.spi.HttpRequest;
+import org.jboss.resteasy.spi.ResteasyUriInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito.BDDMyOngoingStubbing;
@@ -191,7 +192,7 @@ public class ToStringTest {
     public void testFromClientResponse() throws Exception {
         final BaseClientResponse response = mock(BaseClientResponse.class);
         final BaseClientResponseStreamFactory factory = mock(BaseClientResponseStreamFactory.class);
-        final MultivaluedMap<String, String> multivaluedMap = new MultivaluedMapImpl<>();
+        final MultivaluedMap<String, Object> multivaluedMap = new MultivaluedMapImpl<>();
         multivaluedMap.putSingle("key", "value");
         given(response.getResponseStatus()).willReturn(Status.fromStatusCode(200));
         given(response.getStatus()).willReturn(200);
@@ -205,17 +206,13 @@ public class ToStringTest {
     @Test
     public void testFromHttpRequest() throws Exception {
         final HttpRequest request = mock(HttpRequest.class);
-        final UriInfo uriinfo = mock(UriInfo.class);
+        final ResteasyUriInfo uriinfo = mock(ResteasyUriInfo.class);
         final MultivaluedMap<String, String> multivaluedMap = new MultivaluedMapImpl<>();
         multivaluedMap.putSingle("who", "me & bobby McGee");
 
         final MultivaluedMap<String, String> multivaluedMap2 = new MultivaluedMapImpl<>();
         multivaluedMap2.putSingle("requestheader", "value");
-        final HttpHeaders headers = new HttpHeadersImpl() {
-            {
-                this.setRequestHeaders(multivaluedMap2);
-            }
-        };
+        final HttpHeaders headers = new ResteasyHttpHeaders(multivaluedMap2);
 
         given(uriinfo.getRequestUri()).willReturn(URI.create("http://pretty.silly.me/a/uri?maybe=true"));
         given(request.getUri()).willReturn(uriinfo);

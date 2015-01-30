@@ -15,14 +15,14 @@ import javax.ws.rs.ext.Provider;
  * An {@link ExceptionMapper} that maps all {@link EhubRuntimeException}s to the {@link Response} of the {@link EhubRuntimeException}.
  */
 @Provider
-public final class EhubRuntimeExceptionMapper<E extends EhubRuntimeException> implements ExceptionMapper<E> {
+public final class EhubRuntimeExceptionMapper implements ExceptionMapper<EhubRuntimeException> {
     private static final Logger LOGGER = LoggerFactory.getLogger(EhubRuntimeExceptionMapper.class);
 
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
      */
     @Override
-    public Response toResponse(E exception) {
+    public Response toResponse(EhubRuntimeException exception) {
         LOGGER.error(exception.getMessage(), exception);        
         return exception.getResponse();
     }

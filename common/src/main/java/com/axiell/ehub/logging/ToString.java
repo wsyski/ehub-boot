@@ -157,7 +157,7 @@ public final class ToString {
         }
     }
 
-    private static void appendHeaders(final MultivaluedMap<String, String> headersToProcess, final StringBuilder sb) {
+    private static void appendHeaders(final MultivaluedMap<String, ?> headersToProcess, final StringBuilder sb) {
         if (thereAreValuesToAppendIn(headersToProcess)) {
             sb.append(lineFeed());
             sb.append(HEADERS_TITLE);
@@ -174,7 +174,7 @@ public final class ToString {
         }
     }
 
-    private static boolean thereAreValuesToAppendIn(final MultivaluedMap<String, String> mapToProcess) {
+    private static boolean thereAreValuesToAppendIn(final MultivaluedMap<String, ?> mapToProcess) {
         return mapToProcess != null && !mapToProcess.isEmpty();
     }
 
