@@ -5,6 +5,7 @@ import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.ReadyLoan;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -93,7 +94,7 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
     }
 
     private void givenLmsLoanId() {
-        lmsLoanId = DevelopmentData.LMS_LOAN_ID_1;
+        lmsLoanId =  TestDataConstants.LMS_LOAN_ID_1;
     }
 
     protected abstract void whenGetReadyLoanByLmsLoandId() throws EhubException;

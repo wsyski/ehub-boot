@@ -1,6 +1,7 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.test.TestDataConstants;
 
 public class RemoteLoanIT_12 extends AbstractRemoteLoanIT {
     private IEhubService ehubService;
@@ -13,7 +14,7 @@ public class RemoteLoanIT_12 extends AbstractRemoteLoanIT {
 
     @Override
     protected void givenPendingLoan() {
-        pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, CONTENT_PROVIDER_NAME, DevelopmentData.ELIB_RECORD_0_ID, DevelopmentData.ELIB_FORMAT_0_ID);
+        pendingLoan = new PendingLoan( TestDataConstants.LMS_RECORD_ID, CONTENT_PROVIDER_NAME,  TestDataConstants.ELIB_RECORD_0_ID,  TestDataConstants.ELIB_FORMAT_0_ID);
     }
 
     @Override

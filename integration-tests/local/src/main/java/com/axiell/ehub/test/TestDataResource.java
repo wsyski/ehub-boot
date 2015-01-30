@@ -40,26 +40,6 @@ import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDis
 
 @Component
 public class TestDataResource implements ITestDataResource {
-    private static final String EHUB_CONSUMER_SECRET_KEY = "secret1";
-    private static final String ELIB_PRODUCT_URL = "http://localhost:16521/webservices/GetProduct.asmx/GetProduct";
-    private static final String ELIB_CREATE_LOAN_URL = "http://localhost:16521/webservices/createloan.asmx/CreateLoan";
-    private static final String ELIB_ORDER_LIST_URL = "http://localhost:16521/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList";
-    private static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
-    private static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
-    private static final String ELIB_SERVICE_KEY = "hu81K8js";
-    private static final String ELIB_SERVICE_ID = "926";
-    private static final String CONTENT_PROVIDER_LOAN_ID = "5279700";
-    private static final String ELIB_RECORD_1_ID = "9127025500";
-    private static final String LMS_LOAN_ID_1 = "04479593";
-    private static final String ELIB_FORMAT_0_ID = "58";
-    private static final String ELIB_FORMAT_1_ID = "71";
-    private static final String ELIB_FORMAT_2_ID = "elibFormat2";
-    private static final int ELIB_PLAYER_WIDTH = 600;
-    private static final int ELIB_PLAYER_HEIGHT = 215;
-    private static final String PATRON_ID = "abc123";
-    private static final String ELIB_LIBRARY_CARD = "909265910";
-    private static final String ELIB_LIBRARY_CARD_PIN = "4447";
-    private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
@@ -84,7 +64,7 @@ public class TestDataResource implements ITestDataResource {
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initElibConsumer(ehubConsumer, elibProvider);
         final Long ehubLoanId = initELibEhubLoan(ehubConsumer, elibProvider);
-        return new TestData(ehubConsumer.getId(), EHUB_CONSUMER_SECRET_KEY, ehubLoanId, PATRON_ID, ELIB_LIBRARY_CARD, ELIB_LIBRARY_CARD_PIN);
+        return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID, TestDataConstants.ELIB_LIBRARY_CARD, TestDataConstants.ELIB_LIBRARY_CARD_PIN);
     }
 
     @Override
@@ -121,25 +101,25 @@ public class TestDataResource implements ITestDataResource {
     }
 
     private void initLanguage() {
-        languageAdminController.save(new Language(DEFAULT_LANGUAGE));
+        languageAdminController.save(new Language(TestDataConstants.DEFAULT_LANGUAGE));
     }
 
     private ContentProvider initElibProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
-        contentProviderProperties.put(PRODUCT_URL, ELIB_PRODUCT_URL);
-        contentProviderProperties.put(CREATE_LOAN_URL, ELIB_CREATE_LOAN_URL);
-        contentProviderProperties.put(ORDER_LIST_URL, ELIB_ORDER_LIST_URL);
+        contentProviderProperties.put(PRODUCT_URL, TestDataConstants.ELIB_PRODUCT_URL);
+        contentProviderProperties.put(CREATE_LOAN_URL, TestDataConstants.ELIB_CREATE_LOAN_URL);
+        contentProviderProperties.put(ORDER_LIST_URL, TestDataConstants.ELIB_ORDER_LIST_URL);
         ContentProvider elibProvider = new ContentProvider(ELIB, contentProviderProperties);
         elibProvider = contentProviderAdminController.save(elibProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 = new FormatDecoration(elibProvider, ELIB_FORMAT_0_ID, DOWNLOADABLE, ELIB_PLAYER_WIDTH, ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration1 = new FormatDecoration(elibProvider, ELIB_FORMAT_1_ID, STREAMING, ELIB_PLAYER_WIDTH, ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration2 = new FormatDecoration(elibProvider, ELIB_FORMAT_2_ID, STREAMING, ELIB_PLAYER_WIDTH, ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration0 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration1 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_1_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration2 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_2_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
 
-        formatDecorations.put(ELIB_FORMAT_0_ID, formatDecoration0);
-        formatDecorations.put(ELIB_FORMAT_1_ID, formatDecoration1);
-        formatDecorations.put(ELIB_FORMAT_2_ID, formatDecoration2);
+        formatDecorations.put(TestDataConstants.ELIB_FORMAT_0_ID, formatDecoration0);
+        formatDecorations.put(TestDataConstants.ELIB_FORMAT_1_ID, formatDecoration1);
+        formatDecorations.put(TestDataConstants.ELIB_FORMAT_2_ID, formatDecoration2);
         for (Map.Entry<String, FormatDecoration> entry : formatDecorations.entrySet()) {
             FormatDecoration value = formatAdminController.save(entry.getValue());
             formatDecorations.put(entry.getKey(), value);
@@ -158,15 +138,15 @@ public class TestDataResource implements ITestDataResource {
 
     private EhubConsumer createEhubConsumer() {
         Map<EhubConsumerPropertyKey, String> properties = new HashMap<>();
-        properties.put(EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
-        properties.put(EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
-        return new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, properties, DEFAULT_LANGUAGE);
+        properties.put(EhubConsumerPropertyKey.ARENA_PALMA_URL, TestDataConstants.ARENA_PALMA_URL);
+        properties.put(EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, TestDataConstants.ARENA_AGENCY_M_IDENTIFIER);
+        return new EhubConsumer("Ehub Consumer Description", TestDataConstants.EHUB_CONSUMER_SECRET_KEY, properties, TestDataConstants.DEFAULT_LANGUAGE);
     }
 
     private ContentProviderConsumer initElibConsumer(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
         Map<ContentProviderConsumerPropertyKey, String> properties = new HashMap<>();
-        properties.put(ELIB_RETAILER_KEY, ELIB_SERVICE_KEY);
-        properties.put(ELIB_RETAILER_ID, ELIB_SERVICE_ID);
+        properties.put(ELIB_RETAILER_KEY, TestDataConstants.ELIB_SERVICE_KEY);
+        properties.put(ELIB_RETAILER_ID, TestDataConstants.ELIB_SERVICE_ID);
         ContentProviderConsumer elibConsumer = new ContentProviderConsumer(ehubConsumer, elibProvider, properties);
         elibConsumer = consumerAdminController.save(elibConsumer);
         ehubConsumer.getContentProviderConsumers().add(elibConsumer);
@@ -175,9 +155,10 @@ public class TestDataResource implements ITestDataResource {
     }
 
     private Long initELibEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
-        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(ELIB_FORMAT_1_ID);
-        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(elibProvider, new Date(), ELIB_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(CONTENT_PROVIDER_LOAN_ID).build();
-        LmsLoan lmsLoan = new LmsLoan(LMS_LOAN_ID_1);
+        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(TestDataConstants.ELIB_FORMAT_1_ID);
+        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(elibProvider, new Date(), TestDataConstants.ELIB_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(
+                TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
+        LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID_1);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);
         return ehubLoan.getId();

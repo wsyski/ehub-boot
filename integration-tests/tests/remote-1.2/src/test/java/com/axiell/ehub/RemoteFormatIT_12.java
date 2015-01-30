@@ -1,6 +1,7 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.TestDataConstants;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class RemoteFormatIT_12 extends AbstractRemoteFormatIT {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, "Distributör: Elib", DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
+        actualFormats = ehubService.getFormats(authInfo, "Distributör: Elib",  TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 
     @Test(expected = EhubException.class)
@@ -33,6 +34,6 @@ public class RemoteFormatIT_12 extends AbstractRemoteFormatIT {
     }
 
     private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
-        ehubService.getFormats(invalidAuthInfo, "Distributör: Elib", DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
+        ehubService.getFormats(invalidAuthInfo, "Distributör: Elib",  TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }

@@ -36,6 +36,12 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-it-constants</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.github.tomakehurst</groupId>

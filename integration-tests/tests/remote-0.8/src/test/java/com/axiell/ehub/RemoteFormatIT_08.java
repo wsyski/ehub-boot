@@ -1,5 +1,6 @@
 package com.axiell.ehub;
 
+import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Before;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -16,6 +17,6 @@ public class RemoteFormatIT_08 extends AbstractRemoteFormatIT {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME, DevelopmentData.ELIB_RECORD_0_ID, LANGUAGE);
+        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME,  TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }
