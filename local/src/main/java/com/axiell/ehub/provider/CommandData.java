@@ -95,7 +95,7 @@ public class CommandData implements ICommandData {
                 ", contentProviderFormatId=" + contentProviderFormatId +
                 ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
                 ", contentUrl=" + contentUrl +
-                ", content=" + content +
+                ", getContent=" + content +
                 "}";
     }
 }

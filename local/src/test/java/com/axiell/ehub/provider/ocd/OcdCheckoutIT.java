@@ -13,7 +13,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OcdCheckoutIT extends AbstractOcdIT {
-    private static final String CARD = "12345";
+    private static final String CARD = "123456789";
     private static final String PIN = "1111";
     private BearerToken bearerToken;
     private String contentProviderRecordId;

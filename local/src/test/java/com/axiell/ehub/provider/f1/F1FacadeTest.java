@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 public class F1FacadeTest {
     private static final String FORMAT_ID = "1";
     private static final String LOAN_ID = "loanId";
-    private static final String CONTENT = "content";
+    private static final String CONTENT = "getContent";
     public static final String CARD = "card";
     private F1Facade underTest;
     @Mock

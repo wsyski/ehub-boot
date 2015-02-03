@@ -4,6 +4,7 @@ import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.StreamingContent;
+import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class ContentFactory implements IContentFactory {
 
     @Override
     public IContent create(final String contentUrl, final FormatDecoration formatDecoration) {
-        final FormatDecoration.ContentDisposition contentDisposition = formatDecoration.getContentDisposition();
+        final ContentDisposition contentDisposition = formatDecoration.getContentDisposition();
 
         switch (contentDisposition) {
             case DOWNLOADABLE:
@@ -22,7 +23,7 @@ public class ContentFactory implements IContentFactory {
                 final int height = formatDecoration.getPlayerHeight();
                 return new StreamingContent(contentUrl, width, height);
             default:
-                throw new NotImplementedException("Create content with content disposition '" + contentDisposition + "' has not been implemented");
+                throw new NotImplementedException("Create getContent with getContent disposition '" + contentDisposition + "' has not been implemented");
         }
     }
 }

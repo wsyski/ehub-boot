@@ -1,7 +1,6 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.security.AuthInfo;
 import org.junit.Assert;
 import org.junit.Test;

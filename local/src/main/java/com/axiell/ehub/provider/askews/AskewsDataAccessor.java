@@ -143,7 +143,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private LoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
         final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId);
         final List<LoanDetails> loanDetailsList = loanDetailsArray.getLoanDetails();
-        Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId
+        Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where getContent provider loan = ID '" + contentProviderLoanId
                 + "'");
         final LoanDetails loanDetails = loanDetailsList.get(0);
         validateLoanHasNotFailed(loanDetails);

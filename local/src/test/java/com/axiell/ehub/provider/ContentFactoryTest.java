@@ -10,8 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.STREAMING;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;

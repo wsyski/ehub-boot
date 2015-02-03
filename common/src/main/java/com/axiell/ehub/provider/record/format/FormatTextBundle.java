@@ -3,16 +3,12 @@
  */
 package com.axiell.ehub.provider.record.format;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.provider.ContentProvider;
 import org.hibernate.annotations.ForeignKey;
 
-import com.axiell.ehub.provider.ContentProvider;
+import javax.persistence.*;
 
 /**
  * Contains language specific texts related to a specific format at a {@link ContentProvider}.
@@ -20,7 +16,6 @@ import com.axiell.ehub.provider.ContentProvider;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE_ID"}))
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
 public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 8478816548440529433L;
     private FormatDecoration formatDecoration;
@@ -36,12 +31,12 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Constructs a new {@link FormatTextBundle}.
-     * 
+     *
      * @param formatDecoration the {@link FormatDecoration}
-     * @param language the language of the texts in this {@link FormatTextBundle} as an ISO 639 alpha-2
-     * or alpha-3 language code
-     * @param name the name of the format in the specified language
-     * @param description the description of the format in the specified language
+     * @param language         the language of the texts in this {@link FormatTextBundle} as an ISO 639 alpha-2
+     *                         or alpha-3 language code
+     * @param name             the name of the format in the specified language
+     * @param description      the description of the format in the specified language
      */
     public FormatTextBundle(FormatDecoration formatDecoration, Language language, String name, String description) {
         this.formatDecoration = formatDecoration;
@@ -52,7 +47,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns the {@link FormatDecoration}.
-     * 
+     *
      * @return the {@link FormatDecoration}
      */
     @ManyToOne
@@ -64,7 +59,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Sets the {@link FormatDecoration}.
-     * 
+     *
      * @param formatDecoration the {@link FormatDecoration} to set
      */
     protected void setFormatDecoration(FormatDecoration formatDecoration) {
@@ -74,7 +69,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     /**
      * Returns the language of the texts in this {@link FormatTextBundle} as an ISO 639 alpha-2 or
      * alpha-3 language code.
-     * 
+     *
      * @return a language code
      */
     @ManyToOne
@@ -86,9 +81,9 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Sets the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3 language code.
-     * 
+     *
      * @param language the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3
-     * language code to set
+     *                 language code to set
      */
     protected void setLanguage(final Language language) {
         this.language = language;
@@ -96,18 +91,17 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns the name of the format in the specified language.
-     * 
+     *
      * @return the name of the format in the specified language
      */
     @Column(name = "NAME", nullable = false)
-    @XmlAttribute(name = "name", required = true)
     public String getName() {
         return name;
     }
 
     /**
      * Sets the name of the format in the specified language.
-     * 
+     *
      * @param name the name of the format in the specified language to set
      */
     protected void setName(String name) {
@@ -116,18 +110,17 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
 
     /**
      * Returns the description of the format in the specified language.
-     * 
+     *
      * @return the description of the format in the specified language
      */
     @Column(name = "DESCRIPTION", nullable = false)
-    @XmlAttribute(name = "description", required = true)
     public String getDescription() {
         return description;
     }
 
     /**
      * Sets the description of the format in the specified language.
-     * 
+     *
      * @param description the description of the format in the specified language to set
      */
     protected void setDescription(String description) {

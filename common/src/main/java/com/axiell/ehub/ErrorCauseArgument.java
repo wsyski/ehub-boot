@@ -100,6 +100,7 @@ public class ErrorCauseArgument {
         CONTENT_PROVIDER_RECORD_ID,
         LIBRARY_CARD,
         EHUB_CONSUMER_PROPERTY_KEY,
-        EHUB_CONSUMER_PROPERTY_VALUE
+        EHUB_CONSUMER_PROPERTY_VALUE,
+        FIELD
     }
 }

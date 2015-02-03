@@ -12,7 +12,6 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
@@ -72,7 +71,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         if (data != null) {
             return data.getProduct().getStatus().getId() == ELIB_PRODUCT_OK_ID;
         } else {
-            LOGGER.warn("No data received in the get formats response where content provider record ID = '" + contentProviderRecordId + "'");
+            LOGGER.warn("No data received in the get formats response where getContent provider record ID = '" + contentProviderRecordId + "'");
             return false;
         }
     }
@@ -222,7 +221,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                 final String contentUrl = getContentUrl(orderItem);
 
                 if (contentUrl == null) {
-                    throw makeInternalServerErrorException("Can not determine the content url", String.valueOf(ELIB_STATUS_CODE_OK));
+                    throw makeInternalServerErrorException("Can not determine the getContent url", String.valueOf(ELIB_STATUS_CODE_OK));
                 } else {
                     final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
                     return createContent(contentUrl, formatDecorations);

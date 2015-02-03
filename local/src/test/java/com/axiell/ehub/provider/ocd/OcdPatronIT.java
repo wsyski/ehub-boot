@@ -7,8 +7,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 /**
- * This test is ignored, when it can only be run once and then an exception is thrown since the patron already exist.
- * If adding a patron should Remove the ignore annotation and change the card number and then run test.
+ * This test is ignored, when it can only be run once and then an exception is thrown since the patron already exists.
+ * Remove the ignore annotation, change the card number and then run the test if adding a patron should be tested.
  */
 @Ignore
 public class OcdPatronIT extends AbstractOcdIT {

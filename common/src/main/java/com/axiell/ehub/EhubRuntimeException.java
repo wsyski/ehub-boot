@@ -102,7 +102,7 @@ public abstract class EhubRuntimeException extends RuntimeException {
     /**
      * Returns a {@link Response}.
      * 
-     * @return a {@link Response} with the provided status, content type {@link MediaType#APPLICATION_XML} and an
+     * @return a {@link Response} with the provided status, getContent type {@link MediaType#APPLICATION_XML} and an
      * {@link EhubError} as entity
      */
     public final Response getResponse() {

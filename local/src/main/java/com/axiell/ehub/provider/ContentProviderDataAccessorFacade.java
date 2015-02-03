@@ -2,6 +2,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
+import com.axiell.ehub.provider.record.format.Formats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,6 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.provider.record.format.Formats;
 
 @Component
 public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {

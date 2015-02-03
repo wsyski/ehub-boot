@@ -64,18 +64,18 @@ public class ConsumedProduct {
         }
         
         /**
-         * Returns the content of a {@link ConsumedProduct}.
+         * Returns the getContent of a {@link ConsumedProduct}.
          *
-         * @return the content of a {@link ConsumedProduct}
+         * @return the getContent of a {@link ConsumedProduct}
          */
         public Content getContent() {
             return content;
         }
         
         /**
-         * Sets the content of a {@link ConsumedProduct}.
+         * Sets the getContent of a {@link ConsumedProduct}.
          *
-         * @param content the content of a {@link ConsumedProduct} to set
+         * @param content the getContent of a {@link ConsumedProduct} to set
          */
         public void setContent(Content content) {
             this.content = content;
@@ -93,7 +93,7 @@ public class ConsumedProduct {
     }
     
     /**
-     * Represents the content of a {@link ConsumedProduct} for a certain license and format.  
+     * Represents the getContent of a {@link ConsumedProduct} for a certain license and format.
      */
     @JsonIgnoreProperties(value = {"Part"})
     public static class Content {
@@ -101,18 +101,18 @@ public class ConsumedProduct {
         private String url;
         
         /**
-         * Returns the URL to the content.
+         * Returns the URL to the getContent.
          *
-         * @return the URL to the content
+         * @return the URL to the getContent
          */
         public String getUrl() {
             return url;
         }
         
         /**
-         * Sets the URL to the content.
+         * Sets the URL to the getContent.
          *
-         * @param url the URL to the content to set
+         * @param url the URL to the getContent to set
          */
         public void setUrl(String url) {
             this.url = url;

@@ -3,33 +3,37 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.security.AuthInfo;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
 
-/**
- * Default implementation of the {@link IContentProvidersResource}.
- */
-public final class ContentProvidersResource implements IContentProvidersResource {
-    private IFormatBusinessController formatBusinessController;
-    
-    /**
-     * @see com.axiell.ehub.contentprovider.IContentProvidersResource#getRecords(java.lang.String)
-     */
-    @Override
-    public IRecordsResource getRecords(String contentProviderName) {
-        return new RecordsResource(formatBusinessController, contentProviderName);
+import javax.xml.ws.Response;
+
+public class ContentProvidersResource implements IContentProvidersResource {
+    private final IFormatBusinessController formatBusinessController;
+    private final AuthInfo authInfo;
+
+    public ContentProvidersResource(IFormatBusinessController formatBusinessController, AuthInfo authInfo) {
+        this.formatBusinessController = formatBusinessController;
+        this.authInfo = authInfo;
     }
-    
-    /**
-     * Sets the {@link IFormatBusinessController}.
-     *
-     * @param contentProviderBusinessController the {@link com.axiell.ehub.provider.alias.IAliasBusinessController} to set
-     */
-    @Required
-    public void setFormatBusinessController(IFormatBusinessController contentProviderBusinessController) {
-        this.formatBusinessController = contentProviderBusinessController;
+
+    @Override
+    public ContentProvidersDTO root() {
+        throw new NotImplementedException("Root path in ContentProvidersResource has not been implemented yet");
+    }
+
+    @Override
+    public ContentProviderDTO getContentProvider(String contentProviderAlias) {
+        throw new NotImplementedException("Get content provider path in ContentProvidersResource has not been implemented yet");
+    }
+
+    @Override
+    public IRecordsResource records(String contentProviderAlias) {
+        return new RecordsResource(formatBusinessController, authInfo, contentProviderAlias);
     }
 }

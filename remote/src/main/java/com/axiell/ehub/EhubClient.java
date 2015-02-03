@@ -3,64 +3,41 @@
  */
 package com.axiell.ehub;
 
-import com.axiell.ehub.loan.ILoansResource;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.loan.ReadyLoan;
-import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.IRecordsResource;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 import org.springframework.beans.factory.annotation.Required;
-
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
 
 /**
  * The eHUB client is the only publicly accessible component of the {@link IEhubService}.
  */
 public final class EhubClient implements IEhubService {
-    private ILoansResource loansResource;
-    private IContentProvidersResource contentProvidersResource;
+    private IRootResource rootResource;
 
     @Override
-    public Formats getFormats(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) throws
-            EhubException {
-        final String encodedContentProviderName = encode(contentProviderName);
-        final IRecordsResource recordsResource = contentProvidersResource.getRecords(encodedContentProviderName);
-        return recordsResource.getFormats(authInfo, contentProviderRecordId, language);
+    public CheckoutMetadata findCheckoutByLmsLoanId(AuthInfo authInfo, String lmsLoanId, String language) {
+        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
+        SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = checkoutsResource.search(lmsLoanId, language);
+        CheckoutsSearchResult checkoutsSearchResult = new CheckoutsSearchResult(searchResultDTO);
+        return checkoutsSearchResult.findCheckoutByLmsLoanId(lmsLoanId);
     }
 
     @Override
-    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan) throws EhubException {
-        return createLoan(authInfo, pendingLoan, null);
+    public Checkout getCheckout(AuthInfo authInfo, Long ehubCheckoutId, String language) {
+        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
+        CheckoutDTO checkoutDTO = checkoutsResource.getCheckout(ehubCheckoutId, language);
+        return new Checkout(checkoutDTO);
     }
 
     @Override
-    public ReadyLoan createLoan(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) throws EhubException {
-        return loansResource.createLoan(authInfo, language, pendingLoan);
-    }
-
-    @Override
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final Long readyLoanId, final String language) throws EhubException {
-        return loansResource.getLoan(authInfo, readyLoanId, language);
-    }
-
-    @Override
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId) throws EhubException {
-        return getReadyLoan(authInfo, lmsLoanId, null);
-    }
-
-    @Override
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) throws EhubException {
-        return loansResource.getLoan(authInfo, lmsLoanId, language);
+    public Checkout checkout(AuthInfo authInfo, Fields fields, String language) {
+        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
+        CheckoutDTO checkoutDTO = checkoutsResource.checkout(fields.toDTO(), language);
+        return new Checkout(checkoutDTO);
     }
 
     @Required
-    public void setContentProvidersResource(final IContentProvidersResource contentProvidersResource) {
-        this.contentProvidersResource = contentProvidersResource;
-    }
-
-    @Required
-    public void setLoansResource(final ILoansResource loansResource) {
-        this.loansResource = loansResource;
+    public void setRootResource(IRootResource rootResource) {
+        this.rootResource = rootResource;
     }
 }

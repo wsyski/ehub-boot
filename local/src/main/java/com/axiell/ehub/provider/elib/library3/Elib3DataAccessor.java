@@ -1,6 +1,5 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.*;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;

@@ -7,7 +7,6 @@ import com.axiell.ehub.provider.record.format.*;
 import junit.framework.Assert;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -15,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Date;
 import java.util.Set;
 
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;

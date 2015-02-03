@@ -8,6 +8,7 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.Formats;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;

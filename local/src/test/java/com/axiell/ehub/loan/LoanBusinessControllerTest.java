@@ -65,7 +65,6 @@ public class LoanBusinessControllerTest {
     private EhubLoan newEhubLoan;
     @Mock
     private EhubLoan existingEhubLoan;
-    @Mock
     private ReadyLoan actualReadyLoan;
 
     @Before

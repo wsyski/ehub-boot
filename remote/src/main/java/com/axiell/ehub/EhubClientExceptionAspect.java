@@ -70,7 +70,7 @@ public class EhubClientExceptionAspect {
         if (contentTypes.contains(MediaType.APPLICATION_XML))
             return true;
 
-        LOGGER.warn("The content type headers does not contain '" + MediaType.APPLICATION_XML + "'");
+        LOGGER.warn("The getContent type headers does not contain '" + MediaType.APPLICATION_XML + "'");
         return false;
     }
 

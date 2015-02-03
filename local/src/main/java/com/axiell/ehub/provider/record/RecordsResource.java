@@ -3,38 +3,30 @@
  */
 package com.axiell.ehub.provider.record;
 
+import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
 import com.axiell.ehub.security.AuthInfo;
 
-import java.util.Locale;
-
-/**
- * Default implementation of the {@link IRecordsResource}.
- */
 public final class RecordsResource implements IRecordsResource {
-    private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
     private final IFormatBusinessController formatBusinessController;
+    private final AuthInfo authInfo;
     private final String contentProviderName;    
-    
-    /**
-     * Constructs a new {@link RecordsResource}.
-     * 
-     * @param formatBusinessController the {@link IFormatBusinessController}
-     * @param contentProviderName the name of the ContentProvider
-     */
-    public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderName) {
+
+    public RecordsResource(final IFormatBusinessController formatBusinessController, final AuthInfo authInfo, final String contentProviderAlias) {
         this.formatBusinessController = formatBusinessController;
-        this.contentProviderName = contentProviderName;
+        this.authInfo = authInfo;
+        this.contentProviderName = contentProviderAlias;
     }
-    
-    /**
-     * @see com.axiell.ehub.provider.record.IRecordsResource#getFormats(com.axiell.ehub.security.AuthInfo, java.lang.String, java.lang.String)
-     */
+
     @Override
-    public Formats getFormats(AuthInfo authInfo, String recordId, String language) {
-        if (language == null)
-            formatBusinessController.getFormats(authInfo, contentProviderName, recordId, DEFAULT_LANGUAGE);
-        return formatBusinessController.getFormats(authInfo, contentProviderName, recordId, language);
+    public RecordsDTO root() {
+        throw new NotImplementedException("Root path in RecordsResource has not been implemented yet");
+    }
+
+    @Override
+    public RecordDTO getRecord(String contentProviderRecordId, String language) {
+        Formats formats = formatBusinessController.getFormats(authInfo, contentProviderName, contentProviderRecordId, language);
+        return null;
     }
 }

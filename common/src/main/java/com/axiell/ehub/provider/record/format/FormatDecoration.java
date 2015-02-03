@@ -10,7 +10,6 @@ import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 import java.util.Locale;
 import java.util.Map;
 
@@ -21,8 +20,6 @@ import java.util.Map;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_PROVIDER_ID", "FORMAT_ID"}, name = "UK_CONTENT_P_FORMAT_DECORATION"))
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso(FormatDecoration.ContentDisposition.class)
 public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1562910983744673362L;
     private ContentProvider contentProvider;
@@ -97,7 +94,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @return the ID of the format at the {@link ContentProvider}
      */
     @Column(name = "FORMAT_ID", nullable = false)
-    @XmlAttribute(name = "id", required = true)
     public String getContentProviderFormatId() {
         return contentProviderFormatId;
     }
@@ -118,7 +114,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      */
     @Column(name = "CONTENT_DISPOSITION", nullable = false)
     @Enumerated(EnumType.STRING)
-    @XmlAttribute(name = "contentDisposition", required = true)
     public ContentDisposition getContentDisposition() {
         return contentDisposition;
     }
@@ -138,7 +133,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @return the number of pixels
      */
     @Column(name = "PLAYER_WIDTH", nullable = false)
-    @XmlAttribute(name = "playerWidth")
     public int getPlayerWidth() {
         return playerWidth;
     }
@@ -158,7 +152,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @return the number of pixels
      */
     @Column(name = "PLAYER_HEIGHT", nullable = false)
-    @XmlAttribute(name = "playerHeight")
     public int getPlayerHeight() {
         return playerHeight;
     }
@@ -180,7 +173,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     @OneToMany(mappedBy = "formatDecoration", cascade = CascadeType.REMOVE)
     @MapKeyJoinColumn(name = "LANGUAGE_ID")
     @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_T")
-    @XmlElementWrapper(name="texts")
     public Map<Language, FormatTextBundle> getTextBundles() {
         return textBundles;
     }
@@ -227,17 +219,4 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
         }
     }
 
-    /**
-     * Defines the disposition of a content.
-     */
-    public static enum ContentDisposition {
-        /**
-         * Indicates that the content will be downloaded.
-         */
-        DOWNLOADABLE,
-        /**
-         * Indicates that the content will be streamed.
-         */
-        STREAMING
-    }
 }

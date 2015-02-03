@@ -6,8 +6,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
-
 final class ContentDispositionDropDownChoice extends DropDownChoice<ContentDisposition> {
     private final IModel<FormatDecoration> formModel;
 

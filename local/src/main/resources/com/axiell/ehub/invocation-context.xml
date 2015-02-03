@@ -17,11 +17,16 @@
 
 	<!-- List only the JAX-RS root resources here -->
 
-	<bean id="contentProvidersResource" class="com.axiell.ehub.provider.ContentProvidersResource">
+    <bean id="rootResource" class="com.axiell.ehub.RootResource">
+        <property name="formatBusinessController" ref="formatBusinessController" />
+        <property name="loanBusinessController" ref="loanBusinessController" />
+    </bean>
+
+	<bean id="contentProvidersResourceV1" class="com.axiell.ehub.v1.provider.ContentProvidersResource_v1">
 		<property name="formatBusinessController" ref="formatBusinessController" />		
 	</bean>
 
-	<bean id="loansResource" class="com.axiell.ehub.loan.LoansResource">
+	<bean id="loansResourceV1" class="com.axiell.ehub.v1.loan.LoansResource_v1">
 		<property name="loanBusinessController" ref="loanBusinessController" />
 	</bean>
 </beans>

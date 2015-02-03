@@ -3,14 +3,14 @@ package com.axiell.ehub.support.request;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.loan.ILoansResource;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.IRecordsResource;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.v1.loan.ILoansResource_v1;
+import com.axiell.ehub.v1.loan.PendingLoan_v1;
+import com.axiell.ehub.v1.provider.IContentProvidersResource_v1;
+import com.axiell.ehub.v1.provider.record.IRecordsResource;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.XjcSupport;
+import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
@@ -33,9 +33,9 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final IContentProvidersResource contentProvidersResource = makeContentProvidersResource(baseUri, supportRequest);
+            final IContentProvidersResource_v1 contentProvidersResource = makeContentProvidersResource(baseUri, supportRequest);
             final IRecordsResource recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
-            final Formats formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
+            final Formats_v1 formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
             return makeSupportResponse(supportRequest, STATUS_OK, formats);
         } catch (ClientResponseFailure crf) {
             return makeSupportResponse(supportRequest, crf);
@@ -48,7 +48,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     @Override
     public DefaultSupportResponse createLoan(final RequestArguments arguments) {
         final String baseUri = arguments.getBaseUri();
-        final PendingLoan pendingLoan = makePendingLoan(arguments);
+        final PendingLoan_v1 pendingLoan = makePendingLoan(arguments);
         final String language = arguments.getLanguage();
         final SupportRequest supportRequest = new SupportRequest();
         final String requestBody = XjcSupport.marshal(pendingLoan);
@@ -56,7 +56,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final ILoansResource loansResource = makeLoansResource(baseUri, supportRequest);
+            final ILoansResource_v1 loansResource = makeLoansResource(baseUri, supportRequest);
             loansResource.createLoan(authInfo, language, pendingLoan);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
         } catch (EhubException e) {
@@ -76,7 +76,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final ILoansResource loansResource = makeLoansResource(baseUri, supportRequest);
+            final ILoansResource_v1 loansResource = makeLoansResource(baseUri, supportRequest);
             loansResource.getLoan(authInfo, lmsLoanId, language);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
         } catch (EhubException e) {
@@ -92,22 +92,22 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         this.sslHttpClient = sslHttpClient;
     }
 
-    private IContentProvidersResource makeContentProvidersResource(final String baseUri, final SupportRequest supportRequest) {
+    private IContentProvidersResource_v1 makeContentProvidersResource(final String baseUri, final SupportRequest supportRequest) {
         final ClientExecutor clientExecutor = new SupportClientExecutor(sslHttpClient, supportRequest);
-        return ProxyFactory.create(IContentProvidersResource.class, baseUri, clientExecutor);
+        return ProxyFactory.create(IContentProvidersResource_v1.class, baseUri, clientExecutor);
     }
 
-    private ILoansResource makeLoansResource(final String baseUri, final SupportRequest supportRequest) {
+    private ILoansResource_v1 makeLoansResource(final String baseUri, final SupportRequest supportRequest) {
         final NonExecutableClientExecutor clientExecutor = new NonExecutableClientExecutor(supportRequest);
-        return ProxyFactory.create(ILoansResource.class, baseUri, clientExecutor);
+        return ProxyFactory.create(ILoansResource_v1.class, baseUri, clientExecutor);
     }
 
-    private PendingLoan makePendingLoan(final RequestArguments arguments) {
+    private PendingLoan_v1 makePendingLoan(final RequestArguments arguments) {
         final String lmsRecordId = arguments.getLmsRecordId();
         final String formatId = arguments.getFormatId();
         final String contentProviderName = arguments.getContentProviderName();
         final String contentProviderRecordId = arguments.getContentProviderRecordId();
-        return new PendingLoan(lmsRecordId, contentProviderName, contentProviderRecordId, formatId);
+        return new PendingLoan_v1(lmsRecordId, contentProviderName, contentProviderRecordId, formatId);
     }
 
     private AuthInfo makeAuthInfo(final RequestArguments arguments) throws EhubException {

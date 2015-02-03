@@ -35,8 +35,8 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
 import static com.axiell.ehub.provider.ContentProviderName.ELIB;
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.DOWNLOADABLE;
-import static com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition.STREAMING;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 
 @Component
 public class TestDataResource implements ITestDataResource {

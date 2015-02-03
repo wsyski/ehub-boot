@@ -4,8 +4,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.IModel;
 
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
-
 public class PlayerContainer extends WebMarkupContainer {
     private final IModel<FormatDecoration> formModel;
 

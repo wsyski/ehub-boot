@@ -220,7 +220,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     }
 
     /**
-     * Enumeration for content provider property keys.
+     * Enumeration for getContent provider property keys.
      */
     public static enum ContentProviderPropertyKey {
         PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS, OAUTH_URL, API_BASE_URL, OAUTH_PATRON_URL, PATRON_API_BASE_URL

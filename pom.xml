@@ -619,7 +619,6 @@
                 <version>${commons-validator.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
@@ -639,6 +638,25 @@
                     </exclusion>
                 </exclusions>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
         </dependencies>
@@ -767,6 +785,7 @@
         <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
         <liquibase.core.version>3.2.0</liquibase.core.version>
         <liquibase.slf4j.version>1.2.1</liquibase.slf4j.version>
+        <jackson.version>2.1.2</jackson.version>
 
         <ehub.release.version>1.2_0</ehub.release.version>
         <ehub.snapshot.version>2.0-SNAPSHOT</ehub.snapshot.version>

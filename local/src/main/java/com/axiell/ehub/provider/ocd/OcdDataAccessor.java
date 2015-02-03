@@ -52,7 +52,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final Format format = formatFactory.create(contentProvider, formatId, language);
             formats.addFormat(format);
         } catch (MediaNotFoundException e) {
-            LOGGER.warn("No media found for content provider record ID = '" + contentProviderRecordId + "'");
+            LOGGER.warn("No media found for getContent provider record ID = '" + contentProviderRecordId + "'");
         }
         return formats;
     }

@@ -2,8 +2,6 @@ package com.axiell.ehub.provider.record.format;
 
 import org.apache.wicket.model.IModel;
 
-import com.axiell.ehub.provider.record.format.FormatDecoration.ContentDisposition;
-
 class ContentDispositionModel implements IModel<ContentDisposition> {
     private final IModel<FormatDecoration> formModel;
 

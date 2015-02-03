@@ -160,7 +160,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     }
 
     /**
-     * Enumeration for content provider consumer property keys.
+     * Enumeration for getContent provider consumer property keys.
      */
     public static enum ContentProviderConsumerPropertyKey {
         ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE,

@@ -1,27 +1,17 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.InternalServerErrorException;
+
+import javax.xml.bind.*;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.loan.ReadyLoan;
-import com.axiell.ehub.loan.ReadyLoanMetadata;
-import com.axiell.ehub.provider.record.format.Formats;
 
 /**
  * Provides the possibility to marshal and unmarshal XML documents.
@@ -101,19 +91,19 @@ public final class XjcSupport {
     public static XMLGregorianCalendar toXmlGregorianCalendar(final Date date) {
         if (date == null)
             return null;
-        
+
         final GregorianCalendar gregorianCalendar = newGregorianCalendar(date);
         return newXmlGregorianCalendar(gregorianCalendar);
     }
 
     private static GregorianCalendar newGregorianCalendar(final Date date) {
-	final GregorianCalendar calendar = new GregorianCalendar();
+        final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-	return calendar;
+        return calendar;
     }
 
     private static XMLGregorianCalendar newXmlGregorianCalendar(GregorianCalendar gregorianCalendar) {
-	final DatatypeFactory factory = newDatatypeFactory();
+        final DatatypeFactory factory = newDatatypeFactory();
         return factory.newXMLGregorianCalendar(gregorianCalendar);
     }
 
@@ -124,7 +114,7 @@ public final class XjcSupport {
             throw new InternalServerErrorException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Returns a {@link javax.xml.bind.JAXBContext}.
      * <p/>
@@ -147,7 +137,7 @@ public final class XjcSupport {
          * The domain JAXB context path.
          */
         private static final Class<?>[] CONTEXT_PATH =
-                {PendingLoan.class, ReadyLoan.class, Formats.class, EhubError.class, ContentProviderLoan.class, ReadyLoanMetadata.class};
+                {EhubError.class};
 
         /**
          * The domain {@link javax.xml.bind.JAXBContext} singleton.
@@ -165,7 +155,7 @@ public final class XjcSupport {
         private static JAXBContext createContext() {
             try {
                 return JAXBContext.newInstance(CONTEXT_PATH);
-            } catch (JAXBException ex) {        	
+            } catch (JAXBException ex) {
                 throw new InternalServerErrorException("Could not create a JAXB context for the context path '" + Arrays.toString(CONTEXT_PATH) + "'", ex);
             }
         }

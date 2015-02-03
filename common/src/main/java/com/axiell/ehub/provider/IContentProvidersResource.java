@@ -3,41 +3,24 @@
  */
 package com.axiell.ehub.provider;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Response;
 
 import com.axiell.ehub.provider.record.IRecordsResource;
 
-/**
- * Defines the content provider related resources that are accessible through the eHUB REST interface.
- * 
- * <p>
- * <b>NOTE:</b> Due to a bug in the RESTEasy client framework the root path is not included in the final path when using
- * sub-resources, therefore the root path of this resource can unfortunately not be anything else than <code>/</code>,
- * but all paths on method level in this class <b>must</b> start with <b><code>v1/content-providers</code></b>.
- * </p>
- */
-@Path("/")
-@Produces(MediaType.APPLICATION_XML)
 public interface IContentProvidersResource {
-    /**
-     * The root path of this resource.
-     */
-    String ROOT_PATH = "v1/content-providers";
 
-    /**
-     * Gets the {@link IRecordsResource} for a specific {@link ContentProviderName}.
-     * 
-     * <p>
-     * Example path: <code>/content-providers/elib/records</code>
-     * </p>
-     * 
-     * @param contentProviderName the name of the {@link ContentProvider}
-     * @return an {@link IRecordsResource}
-     * @throws
-     */
-    @Path(ROOT_PATH + "/{providerName}/records")
-    IRecordsResource getRecords(@PathParam("providerName") String contentProviderName);
+    @GET
+    ContentProvidersDTO root();
+
+    @GET
+    @Path("{alias}")
+    ContentProviderDTO getContentProvider(@PathParam("alias") String contentProviderAlias);
+
+    @Path("/{alias}/records")
+    IRecordsResource records(@PathParam("alias") String contentProviderAlias);
 }

@@ -145,8 +145,8 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     /**
      * Gets the {@link ContentProviderConsumer} for a given {@link ContentProviderName}.
      *
-     * @param contentProviderName content provider name.
-     * @return content consumer
+     * @param contentProviderName getContent provider name.
+     * @return getContent consumer
      * @throws NotFoundException if no {@link ContentProviderConsumer} could be found with the given provider name
      */
     @Transient
