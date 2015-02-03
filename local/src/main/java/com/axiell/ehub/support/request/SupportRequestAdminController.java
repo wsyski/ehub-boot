@@ -3,13 +3,14 @@ package com.axiell.ehub.support.request;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.v1.loan.ILoansResource_v1;
 import com.axiell.ehub.v1.loan.PendingLoan_v1;
 import com.axiell.ehub.v1.provider.IContentProvidersResource_v1;
-import com.axiell.ehub.v1.provider.record.IRecordsResource;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.XjcSupport;
+import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jboss.resteasy.client.ClientExecutor;
@@ -34,7 +35,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
             final IContentProvidersResource_v1 contentProvidersResource = makeContentProvidersResource(baseUri, supportRequest);
-            final IRecordsResource recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
+            final IRecordsResource_v1 recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
             final Formats_v1 formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
             return makeSupportResponse(supportRequest, STATUS_OK, formats);
         } catch (ClientResponseFailure crf) {

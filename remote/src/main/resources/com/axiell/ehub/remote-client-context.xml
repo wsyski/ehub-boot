@@ -14,29 +14,18 @@
         <constructor-arg ref="sslHttpClient"/>
     </bean>
 
-    <bean id="loansProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create" scope="prototype">
-        <constructor-arg index="0" type="java.lang.Class" value="com.axiell.ehub.loan.ILoansResource"/>
-        <constructor-arg index="1" type="java.net.URI" ref="ehubUri"/>
-        <constructor-arg index="2" ref="clientExecutor"/>
-        <constructor-arg index="3" ref="restEasyProviderFactory"/>
-    </bean>
-
-    <bean id="contentProvidersProxy" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create" scope="prototype">
-        <constructor-arg index="0" type="java.lang.Class" value="com.axiell.ehub.provider.IContentProvidersResource"/>
-        <constructor-arg index="1" type="java.net.URI" ref="ehubUri"/>
-        <constructor-arg index="2" ref="clientExecutor"/>
-        <constructor-arg index="3" ref="restEasyProviderFactory"/>
+    <bean id="rootResourceProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
+        <property name="serviceInterface" value="com.axiell.ehub.IRootResource"/>
+        <property name="baseUri" ref="ehubUri"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
-        <property name="loansResource" ref="loansProxy"/>
-        <property name="contentProvidersResource" ref="contentProvidersProxy"/>
-
+        <property name="rootResource" ref="rootResourceProxy"/>
     </bean>
+
     <bean id="exceptionMapper" class="org.jboss.resteasy.client.exception.mapper.ApacheHttpClient4ExceptionMapper"/>
 
-
-    <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" scope="singleton">
+    <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetClass" value="com.axiell.ehub.logging.TimeLoggingResteasyProviderFactory"/>
         <property name="targetMethod" value="getInstance"/>
     </bean>

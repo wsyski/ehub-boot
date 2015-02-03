@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.v1.provider;
 
-import com.axiell.ehub.v1.provider.record.IRecordsResource;
+import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,5 +39,5 @@ public interface IContentProvidersResource_v1 {
      * @throws
      */
     @Path(ROOT_PATH + "/{providerName}/records")
-    IRecordsResource getRecords(@PathParam("providerName") String contentProviderName);
+    IRecordsResource_v1 getRecords(@PathParam("providerName") String contentProviderName);
 }
