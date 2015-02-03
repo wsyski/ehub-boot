@@ -4,8 +4,8 @@
 package com.axiell.ehub.v1.provider;
 
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
-import com.axiell.ehub.v1.provider.record.IRecordsResource;
-import com.axiell.ehub.v1.provider.record.RecordsResource;
+import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
+import com.axiell.ehub.v1.provider.record.RecordsResource_v1;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -15,8 +15,8 @@ public final class ContentProvidersResource_v1 implements IContentProvidersResou
     private IFormatBusinessController formatBusinessController;
 
     @Override
-    public IRecordsResource getRecords(String contentProviderName) {
-        return new RecordsResource(formatBusinessController, contentProviderName);
+    public IRecordsResource_v1 getRecords(String contentProviderName) {
+        return new RecordsResource_v1(formatBusinessController, contentProviderName);
     }
 
     @Required
