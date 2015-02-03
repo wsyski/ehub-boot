@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Produces(MediaType.APPLICATION_XML)
-public interface IRecordsResource {
+public interface IRecordsResource_v1 {
 
     @GET
     @Path("{recordId}/formats")

@@ -11,12 +11,12 @@ import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 
 import java.util.Locale;
 
-public final class RecordsResource implements IRecordsResource {
+public final class RecordsResource_v1 implements IRecordsResource_v1 {
     private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
     private final IFormatBusinessController formatBusinessController;
     private final String contentProviderName;
 
-    public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderName) {
+    public RecordsResource_v1(final IFormatBusinessController formatBusinessController, final String contentProviderName) {
         this.formatBusinessController = formatBusinessController;
         this.contentProviderName = contentProviderName;
     }
