@@ -59,12 +59,6 @@
 
         <dependency>
             <groupId>com.axiell.ehub</groupId>
-            <artifactId>ehub-it-constants</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local</artifactId>
             <version>${project.version}</version>
             <classifier>classes</classifier>
@@ -78,6 +72,4 @@
             <type>war</type>
         </dependency>
     </dependencies>
-
-
 </project>
