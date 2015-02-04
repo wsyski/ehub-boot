@@ -43,15 +43,15 @@ public class LoggingHandlerTest {
     @Before
     public void init() {
         mockStatic(LoggerFactory.class);
-        mockStatic(ToString.class);
+        mockStatic(ToStringConverter.class);
         given(LoggerFactory.getLogger(any(Class.class))).willReturn(logger);
         given(messageContext.getMessage()).willReturn(soapMessage);
-        given(ToString.soapMessageToString(soapMessage)).willReturn("SoapMessageToString");
-        given(ToString.lineFeed()).willReturn("\n");
+        given(ToStringConverter.soapMessageToString(soapMessage)).willReturn("SoapMessageToString");
+        given(ToStringConverter.lineFeed()).willReturn("\n");
 
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void handleResponseMessageWithDebugDisabled() {
         givenDebugLoggingIsDisabled();
@@ -61,7 +61,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void handleRequestMessageWithDebugDisabled() {
         givenDebugLoggingIsDisabled();
@@ -71,7 +71,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void handleResponseMessageWithDebugEnabled() {
         givenDebugLoggingIsEnabled();
@@ -81,7 +81,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void handleRequestMessageWithDebugEnabled() {
         givenDebugLoggingIsEnabled();
@@ -91,7 +91,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void handleFault() {
         whenfaultIsHandled();
@@ -99,7 +99,7 @@ public class LoggingHandlerTest {
         thenResultOfMethodIsTrue();
     }
 
-    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToString.class})
+    @PrepareForTest({SoapLoggingHandler.class, LoggerFactory.class, ToStringConverter.class})
     @Test
     public void getHeaders() {
         whenHeadersAreRequested();

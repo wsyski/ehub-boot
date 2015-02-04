@@ -23,11 +23,11 @@ public class LoggingClientExecutionInterceptor implements ClientExecutionInterce
     public ClientResponse<?> execute(ClientExecutionContext ctx) throws Exception {
         ClientRequest clientRequest = ctx.getRequest();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(ToString.lineFeed() + ToString.clientRequestToString(clientRequest));
+            LOGGER.debug(ToStringConverter.lineFeed() + ToStringConverter.clientRequestToString(clientRequest));
         }
         ClientResponse<?> clientResponse = ctx.proceed();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(ToString.lineFeed() + ToString.clientResponseToString(clientResponse));
+            LOGGER.debug(ToStringConverter.lineFeed() + ToStringConverter.clientResponseToString(clientResponse));
         }
         return clientResponse;
     }

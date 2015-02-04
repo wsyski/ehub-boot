@@ -45,7 +45,7 @@ public abstract class AbstractRemoteIT {
     }
 
     private String getTestDataServiceBaseUri() {
-        return System.getProperty(EHUB_SERVER_URI) + "/v1/test-data";
+        return System.getProperty(EHUB_SERVER_URI) + "/v2/test-data";
     }
 
     private void setEhubServerUri() {

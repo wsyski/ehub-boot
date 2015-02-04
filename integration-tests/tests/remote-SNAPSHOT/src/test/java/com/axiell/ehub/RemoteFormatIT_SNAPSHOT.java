@@ -11,7 +11,7 @@ import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class FormatIT extends AbstractRemoteIT {
+public class RemoteFormatIT_SNAPSHOT extends AbstractRemoteIT {
     private AuthInfo invalidAuthInfo;
     private Record record;
 
@@ -52,7 +52,7 @@ public class FormatIT extends AbstractRemoteIT {
     }
 
     private void whenGetFormats() throws EhubException {
-        record = underTest.getRecord(authInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+        record = underTest.getRecord(authInfo, "Distribut\u00f6r: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 
     private void givenInvalidAuthInfo() {

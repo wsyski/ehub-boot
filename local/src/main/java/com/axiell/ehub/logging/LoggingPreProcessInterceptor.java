@@ -26,7 +26,7 @@ public final class LoggingPreProcessInterceptor implements PreProcessInterceptor
         stopWatch.start();
         httpRequest.setAttribute("stopWatch", stopWatch);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Request:" + ToString.lineFeed() + ToString.httpRequestToString(httpRequest));
+            LOGGER.debug("Request:" + ToStringConverter.lineFeed() + ToStringConverter.httpRequestToString(httpRequest));
         }
         return null;
     }

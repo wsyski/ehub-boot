@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.*;
 import java.util.Map.Entry;
 
-import static com.axiell.ehub.logging.ToString.dateToString;
+import static com.axiell.ehub.logging.ToStringConverter.dateToString;
 import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 
 class RecursiveToStringStyle extends ToStringStyle {

@@ -13,7 +13,7 @@ import java.util.Date;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class LoanIT extends AbstractRemoteIT {
+public class RemoteLoanIT_SNAPSHOT extends AbstractRemoteIT {
     private Fields fields;
     private String lmsLoanId;
     private Long readyLoanId;

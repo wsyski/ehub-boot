@@ -24,7 +24,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import java.io.IOException;
@@ -50,7 +49,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ToStringTest {
+public class ToStringConverterTest {
 
     @Mock
     private ServerResponse serverResponse;
@@ -75,16 +74,16 @@ public class ToStringTest {
         map1.put("oneKey", "oneValue");
         map1.put("twoKey", "twoValue");
         map1.put("threeKey", "threeValue");
-        String toString = ToString.mapToString(map1);
+        String toString = ToStringConverter.mapToString(map1);
         assertEquals("{oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}", toString);
         Map<String, Map<String, String>> map2 = new LinkedHashMap<>();
         map2.put("oneMap", map1);
         map2.put("twoMap", map1);
-        toString = ToString.mapToString(map2);
+        toString = ToStringConverter.mapToString(map2);
         assertEquals("{oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}",
                 toString);
         Collection<String> collection = Arrays.asList("col1", "col2", "col3");
-        toString = ToString.collectionToString(collection);
+        toString = ToStringConverter.collectionToString(collection);
         assertEquals("[col1, col2, col3]", toString);
         TestBean2 testBean2 = new TestBean2();
         testBean2.setField21(map2);
@@ -94,7 +93,7 @@ public class ToStringTest {
         testBean1.setField12(collection);
         testBean1.setField13(testBean2);
         testBean1.setField14(new Date(0L));
-        toString = ToString.objectToString(testBean1);
+        toString = ToStringConverter.objectToString(testBean1);
         assertEquals("[field11={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, " + SystemUtils.LINE_SEPARATOR +
                 "  field12=[col1, col2, col3], " + SystemUtils.LINE_SEPARATOR +
                 "  field13=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, " +
@@ -102,7 +101,7 @@ public class ToStringTest {
                 "  field22=[col1, col2, col3]], " + SystemUtils.LINE_SEPARATOR +
                 "  field14=1970-01-01 01:00:00]", toString);
         Map<String, TestBean2> map3 = Collections.singletonMap("oneBean", testBean2);
-        toString = ToString.mapToString(map3);
+        toString = ToStringConverter.mapToString(map3);
         assertEquals(
                 "{oneBean=[field21={oneMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}, twoMap={oneKey=oneValue, twoKey=twoValue, threeKey=threeValue}}, " +
                         SystemUtils.LINE_SEPARATOR +
@@ -179,7 +178,7 @@ public class ToStringTest {
                 .header("header1", "headerValue1")
                 .body(MediaType.APPLICATION_JSON, "{\"jsonData\":[\"jsonValue1\",\"jsonValue2\"]}");
 
-        final String toStringString = ToString.clientRequestToString(request);
+        final String toStringString = ToStringConverter.clientRequestToString(request);
         assertEquals("GET " + request.getUri() + LINE_SEPARATOR +
                 "Parameters: {formParameter1=[formValue1]}" + LINE_SEPARATOR +
                 "Parameters: {pathParameter1=[pathValue1]}" + LINE_SEPARATOR +
@@ -199,7 +198,7 @@ public class ToStringTest {
         given(response.getHeaders()).willReturn(multivaluedMap);
         given(factory.getInputStream()).willReturn(IOUtils.toInputStream("HELLO WORLD!!", "UTF-8"));
         given(response.getStreamFactory()).willReturn(factory);
-        final String toStringString = ToString.clientResponseToString(response);
+        final String toStringString = ToStringConverter.clientResponseToString(response);
         assertEquals("Response-Code: 200 OK" + LINE_SEPARATOR + "Headers: {key=[value]}" + LINE_SEPARATOR + "Payload: HELLO WORLD!!", toStringString);
     }
 
@@ -219,7 +218,7 @@ public class ToStringTest {
         given(request.getHttpMethod()).willReturn("GET");
         given(request.getDecodedFormParameters()).willReturn(multivaluedMap);
         given(request.getHttpHeaders()).willReturn(headers);
-        final String toStringString = ToString.httpRequestToString(request);
+        final String toStringString = ToStringConverter.httpRequestToString(request);
         assertEquals("GET http://pretty.silly.me/a/uri?maybe=true" + LINE_SEPARATOR + "Parameters: {who=[me & bobby McGee]}" + LINE_SEPARATOR +
                 "Headers: {requestheader=[value]}", toStringString);
     }
@@ -244,7 +243,7 @@ public class ToStringTest {
     }
 
     private String whenSoapMessageIsProcessed() {
-        return ToString.soapMessageToString(soapMessage);
+        return ToStringConverter.soapMessageToString(soapMessage);
     }
 
     private void thenResultingStringHasAppropriateData() {
@@ -252,7 +251,7 @@ public class ToStringTest {
     }
 
     private void whenServerResponseIsTransformedToString() {
-        actualResult = ToString.serverResponseToString(serverResponse);
+        actualResult = ToStringConverter.serverResponseToString(serverResponse);
     }
 
     private void givenServerResponseHasAnEntity() {

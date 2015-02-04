@@ -31,8 +31,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Converts objects to human readable strings. Useful with debugging.
  */
 
-public final class ToString {
-    private static final Logger LOGGER = getLogger(ToString.class);
+public final class ToStringConverter {
+    private static final Logger LOGGER = getLogger(ToStringConverter.class);
     private static final DateTimeFormatter DATE_FORMAT = forPattern("yyyy-MM-dd HH:mm:ss");
     private static final RecursiveToStringStyle RECURSIVE_TO_STRING_STYLE = new RecursiveToStringStyle();
     private static final String HEADERS_TITLE = "Headers: ";
@@ -46,7 +46,7 @@ public final class ToString {
     /**
      * Private constructor that prevents direct instantiation.
      */
-    private ToString() {
+    private ToStringConverter() {
     }
 
     public static String clientRequestToString(final ClientRequest clientRequestToProcess) {

@@ -47,7 +47,7 @@ public abstract class AbstractRemoteIT {
 
     private void initTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        TestData testData = testDataResource.init();
+        testData = testDataResource.init();
         LOGGER.info("Test data initialized: " + testData.toString());
     }
 
@@ -58,7 +58,7 @@ public abstract class AbstractRemoteIT {
     }
 
     private String getTestDataServiceBaseUri() {
-        return System.getProperty(EHUB_SERVER_URI) + "/v1/test-data";
+        return System.getProperty(EHUB_SERVER_URI);
     }
 
     private void setEhubServerUri() {

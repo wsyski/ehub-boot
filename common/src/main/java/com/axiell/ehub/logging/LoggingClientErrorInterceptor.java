@@ -21,6 +21,6 @@ public class LoggingClientErrorInterceptor implements ClientErrorInterceptor {
      */
     @Override
     public void handle(final ClientResponse<?> clientResponse) {
-        LOGGER.error(" Response:" + ToString.lineFeed() + ToString.clientResponseToString(clientResponse));
+        LOGGER.error(" Response:" + ToStringConverter.lineFeed() + ToStringConverter.clientResponseToString(clientResponse));
     }
 }

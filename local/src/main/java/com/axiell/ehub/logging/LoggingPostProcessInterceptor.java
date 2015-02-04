@@ -26,7 +26,7 @@ public final class LoggingPostProcessInterceptor implements PostProcessIntercept
     public void postProcess(final ServerResponse serverResponse) {
         if (LOGGER.isDebugEnabled()) {
             StopWatch stopWatch = (StopWatch) servletRequest.getAttribute("stopWatch");
-            LOGGER.debug("Response time: " + stopWatch.getTime() + ToString.lineFeed() + ToString.serverResponseToString(serverResponse));
+            LOGGER.debug("Response time: " + stopWatch.getTime() + ToStringConverter.lineFeed() + ToStringConverter.serverResponseToString(serverResponse));
         }
     }
 

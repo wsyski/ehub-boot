@@ -12,8 +12,8 @@ import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.Set;
 
-import static com.axiell.ehub.logging.ToString.lineFeed;
-import static com.axiell.ehub.logging.ToString.soapMessageToString;
+import static com.axiell.ehub.logging.ToStringConverter.lineFeed;
+import static com.axiell.ehub.logging.ToStringConverter.soapMessageToString;
 
 /**
  * SOAP Logging Handler
