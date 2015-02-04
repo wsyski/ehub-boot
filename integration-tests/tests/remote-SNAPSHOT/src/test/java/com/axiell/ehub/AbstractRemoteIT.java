@@ -17,14 +17,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.core.Response;
+import java.util.Locale;
 
 public abstract class AbstractRemoteIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRemoteIT.class);
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     protected static final String CONTENT_PROVIDER_NAME = "ELIB";
     protected TestData testData;
     protected AuthInfo authInfo;
+    protected IEhubService underTest;
 
     @Rule
     public WireMockRule httpMockRule = new WireMockRule(16521);
@@ -59,9 +62,14 @@ public abstract class AbstractRemoteIT {
         castBeanToIEhubService(bean);
     }
 
-    protected abstract void castBeanToIEhubService(Object bean);
+    protected void castBeanToIEhubService(Object bean) {
+        underTest = (IEhubService) bean;
+    }
 
-    protected abstract void initAuthInfo() throws EhubException;
+    protected void initAuthInfo() throws EhubException {
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
+                .pin(testData.getPin()).build();
+    }
 
     @After
     public void tearDown() throws Exception {

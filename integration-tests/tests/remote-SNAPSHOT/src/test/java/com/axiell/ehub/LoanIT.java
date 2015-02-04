@@ -3,25 +3,27 @@ package com.axiell.ehub;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
-import java.util.Locale;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
-    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    protected String lmsLoanId;
-    protected Long readyLoanId;
+public class LoanIT extends AbstractRemoteIT {
+    private Fields fields;
+    private String lmsLoanId;
+    private Long readyLoanId;
 
-    @Override
-    protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).build();
+    @Before
+    public void initFields() {
+        fields = new Fields();
+        fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
+        fields.addValue("contentProviderName", CONTENT_PROVIDER_NAME);
+        fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
+        fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
     }
 
     @Test
@@ -55,10 +57,9 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
         givenPalmaLoanWsdl();
         givenCheckoutTestErrorResponse();
         try {
-            Checkout checkout = whenCheckout();
+            whenCheckout();
         } catch (EhubException ex) {
             Assert.assertNotNull(ex);
-            thenCustomEhubExceptionValidation(ex);
         }
     }
 
@@ -121,13 +122,15 @@ public abstract class AbstractRemoteLoanIT extends AbstractRemoteIT {
                 "CheckOutTestResponse_error.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
     }
 
-    protected void thenCustomEhubExceptionValidation(EhubException e) {
-
+    private Checkout whenCheckout() throws EhubException {
+        return underTest.checkout(authInfo, fields, LANGUAGE);
     }
 
-    protected abstract CheckoutMetadata whenFindCheckoutMetadataByLmsLoandId() throws EhubException;
+    private CheckoutMetadata whenFindCheckoutMetadataByLmsLoandId() throws EhubException {
+        return underTest.findCheckoutByLmsLoanId(authInfo, lmsLoanId, LANGUAGE);
+    }
 
-    protected abstract Checkout whenGetCheckoutByLoanId() throws EhubException;
-
-    protected abstract Checkout whenCheckout() throws EhubException;
+    private Checkout whenGetCheckoutByLoanId() throws EhubException {
+        return underTest.getCheckout(authInfo, readyLoanId, LANGUAGE);
+    }
 }

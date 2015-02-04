@@ -3,38 +3,35 @@ package com.axiell.ehub;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Locale;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public abstract class AbstractRemoteFormatIT extends AbstractRemoteIT {
-    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    protected Record record;
-
-    @Override
-    protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).build();
-    }
+public class FormatIT extends AbstractRemoteIT {
+    private AuthInfo invalidAuthInfo;
+    private Record record;
 
     @Test
     public final void getFormats() throws EhubException {
         givenGetProductResponse();
         whenGetFormats();
         thenActualFormatsContainsExpectedComponents();
-        thenCustomFormatsValidation();
+    }
+
+    @Test(expected = EhubException.class)
+    public void unauthorized() throws EhubException {
+        givenInvalidAuthInfo();
+        whenGetFormatsWithInvalidAuthInfo();
     }
 
     private void givenGetProductResponse() {
         stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader(
                 "Content-Type", "application/xml").withStatus(200)));
     }
-
-    protected abstract void whenGetFormats() throws EhubException;
 
     private void thenActualFormatsContainsExpectedComponents() {
         Assert.assertNotNull(record);
@@ -54,6 +51,19 @@ public abstract class AbstractRemoteFormatIT extends AbstractRemoteIT {
         Assert.assertNotNull(name);
     }
 
-    protected void thenCustomFormatsValidation() {
+    private void whenGetFormats() throws EhubException {
+        record = underTest.getRecord(authInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+    }
+
+    private void givenInvalidAuthInfo() {
+        try {
+            invalidAuthInfo = new AuthInfo.Builder(0L, "invalidSecret").build();
+        } catch (EhubException e) {
+            junit.framework.Assert.fail("An EhubException should not be thrown when an invalid AuthInfo is built");
+        }
+    }
+
+    private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
+        underTest.getRecord(invalidAuthInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }
