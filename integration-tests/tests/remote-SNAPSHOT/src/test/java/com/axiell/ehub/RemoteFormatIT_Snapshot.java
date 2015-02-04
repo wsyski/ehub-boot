@@ -16,11 +16,11 @@ public class RemoteFormatIT_Snapshot extends AbstractRemoteFormatIT {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+        record = ehubService.getRecord(authInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 
     @Test(expected = EhubException.class)
-    public void unauthorized() throws EhubException{
+    public void unauthorized() throws EhubException {
         givenInvalidAuthInfo();
         whenGetFormatsWithInvalidAuthInfo();
     }
@@ -34,6 +34,6 @@ public class RemoteFormatIT_Snapshot extends AbstractRemoteFormatIT {
     }
 
     private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
-        ehubService.getFormats(invalidAuthInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+        ehubService.getRecord(invalidAuthInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 }

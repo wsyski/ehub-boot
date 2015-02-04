@@ -1,11 +1,22 @@
 package com.axiell.ehub;
 
-import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.checkout.Checkout;
+import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.test.TestDataConstants;
+import org.junit.Before;
 
 public class RemoteLoanIT_Snapshot extends AbstractRemoteLoanIT {
     private IEhubService ehubService;
-    private PendingLoan pendingLoan;
+    private Fields fields;
+
+    @Before
+    public void initFields() {
+        fields = new Fields();
+        fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
+        fields.addValue("contentProviderName", TestDataConstants.LMS_RECORD_ID);
+        fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
+        fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
+    }
 
     @Override
     protected void castBeanToIEhubService(Object bean) {
@@ -13,22 +24,17 @@ public class RemoteLoanIT_Snapshot extends AbstractRemoteLoanIT {
     }
 
     @Override
-    protected void givenPendingLoan() {
-        pendingLoan = new PendingLoan( TestDataConstants.LMS_RECORD_ID, CONTENT_PROVIDER_NAME,  TestDataConstants.ELIB_RECORD_0_ID,  TestDataConstants.ELIB_FORMAT_0_ID);
+    protected Checkout whenCheckout() throws EhubException {
+        return ehubService.checkout(authInfo, fields, LANGUAGE);
     }
 
     @Override
-    protected void whenCreateLoan() throws EhubException {
-        actualReadyLoan = ehubService.createLoan(authInfo, pendingLoan, LANGUAGE);
+    protected CheckoutMetadata whenFindCheckoutMetadataByLmsLoandId() throws EhubException {
+        return ehubService.findCheckoutByLmsLoanId(authInfo, lmsLoanId, LANGUAGE);
     }
 
     @Override
-    protected void whenGetReadyLoanByLmsLoandId() throws EhubException {
-        actualReadyLoan = ehubService.getReadyLoan(authInfo, lmsLoanId, LANGUAGE);
-    }
-
-    @Override
-    protected void whenGetReadyLoanByReadyLoanId() throws EhubException {
-        actualReadyLoan = ehubService.getReadyLoan(authInfo, readyLoanId, LANGUAGE);
+    protected Checkout whenGetCheckoutByLoanId() throws EhubException {
+        return ehubService.getCheckout(authInfo, readyLoanId, LANGUAGE);
     }
 }
