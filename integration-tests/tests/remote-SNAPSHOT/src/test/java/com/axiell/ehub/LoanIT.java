@@ -3,6 +3,7 @@ package com.axiell.ehub;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class LoanIT extends AbstractRemoteIT {
     public void initFields() {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
-        fields.addValue("contentProviderName", CONTENT_PROVIDER_NAME);
+        fields.addValue("contentProviderName", ContentProviderName.ELIB.name());
         fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
         fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
     }

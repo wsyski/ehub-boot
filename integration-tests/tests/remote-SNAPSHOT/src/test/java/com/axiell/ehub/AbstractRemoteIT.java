@@ -4,10 +4,12 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.ws.rs.core.Response;
 import java.util.Locale;
 
 public abstract class AbstractRemoteIT {
@@ -24,7 +25,6 @@ public abstract class AbstractRemoteIT {
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    protected static final String CONTENT_PROVIDER_NAME = "ELIB";
     protected TestData testData;
     protected AuthInfo authInfo;
     protected IEhubService underTest;
@@ -33,18 +33,28 @@ public abstract class AbstractRemoteIT {
     public WireMockRule httpMockRule = new WireMockRule(16521);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws EhubException {
         setEhubServerUri();
         setUpEhubClient();
         initTestData();
         initAuthInfo();
     }
 
-    private void initTestData() throws Exception {
-        final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
-        final ClientResponse<TestData> response = request.post(TestData.class);
-        testData = response.getEntity();
+    @After
+    public void tearDown() {
+        deleteTestData();
+    }
+
+    private void initTestData() {
+        ITestDataResource testDataResource = getTestDataResource();
+        TestData testData = testDataResource.init();
         LOGGER.info("Test data initialized: " + testData.toString());
+    }
+
+    private void deleteTestData() {
+        ITestDataResource testDataResource = getTestDataResource();
+        testDataResource.delete();
+        LOGGER.info("Test data deleted");
     }
 
     private String getTestDataServiceBaseUri() {
@@ -58,28 +68,17 @@ public abstract class AbstractRemoteIT {
     private void setUpEhubClient() {
         @SuppressWarnings("resource")
         ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/remote-client-context.xml"});
-        Object bean = springContext.getBean("ehubClient");
-        castBeanToIEhubService(bean);
+        underTest = IEhubService.class.cast(springContext.getBean("ehubClient"));
     }
 
-    protected void castBeanToIEhubService(Object bean) {
-        underTest = (IEhubService) bean;
-    }
-
-    protected void initAuthInfo() throws EhubException {
+    private void initAuthInfo() throws EhubException {
         authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
                 .pin(testData.getPin()).build();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
-        final ClientResponse<?> response = request.delete();
-        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-            LOGGER.info("Test data deleted");
-        } else {
-            final String reason = response.getEntity(String.class);
-            throw new IllegalStateException("Could not delete test data: " + reason);
-        }
+    private ITestDataResource getTestDataResource() {
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target(getTestDataServiceBaseUri());
+        return target.proxy(ITestDataResource.class);
     }
 }
