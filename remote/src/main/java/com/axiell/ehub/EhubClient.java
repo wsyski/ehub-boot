@@ -4,15 +4,16 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.provider.IContentProvidersResource;
+import com.axiell.ehub.provider.record.IRecordsResource;
+import com.axiell.ehub.provider.record.Record;
+import com.axiell.ehub.provider.record.RecordDTO;
+import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import java.util.Set;
 
 /**
  * The eHUB client is the only publicly accessible component of the {@link IEhubService}.
@@ -40,6 +41,14 @@ public final class EhubClient implements IEhubService {
         ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
         CheckoutDTO checkoutDTO = checkoutsResource.checkout(fields.toDTO(), language);
         return new Checkout(checkoutDTO);
+    }
+
+    @Override
+    public Record getRecord(AuthInfo authInfo, String contentProviderAlias, String contentProviderRecordId, String language) throws EhubException {
+        IContentProvidersResource contentProvidersResource = rootResource.contentProviders(authInfo);
+        IRecordsResource recordsResource = contentProvidersResource.records(contentProviderAlias);
+        RecordDTO recordDTO = recordsResource.getRecord(contentProviderRecordId, language);
+        return new Record(recordDTO);
     }
 
     @Required
