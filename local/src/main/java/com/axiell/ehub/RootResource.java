@@ -22,12 +22,12 @@ public class RootResource implements IRootResource {
     }
 
     @Override
-    public IContentProvidersResource contentProviders(@HeaderParam("Authorization") AuthInfo authInfo) {
+    public IContentProvidersResource contentProviders(AuthInfo authInfo) {
         return new ContentProvidersResource(formatBusinessController, authInfo);
     }
 
     @Override
-    public ICheckoutsResource checkouts(@HeaderParam("Authorization") AuthInfo authInfo) {
+    public ICheckoutsResource checkouts(AuthInfo authInfo) {
         return new CheckoutsResource(loanBusinessController, authInfo);
     }
 

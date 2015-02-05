@@ -7,6 +7,8 @@ import com.axiell.ehub.EhubRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -17,6 +19,9 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public final class EhubRuntimeExceptionMapper implements ExceptionMapper<EhubRuntimeException> {
     private static final Logger LOGGER = LoggerFactory.getLogger(EhubRuntimeExceptionMapper.class);
+
+    @Context
+    private HttpServletRequest request;
 
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
