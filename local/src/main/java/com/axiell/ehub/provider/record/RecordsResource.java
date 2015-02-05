@@ -31,12 +31,14 @@ public final class RecordsResource implements IRecordsResource {
     @Override
     public RecordDTO getRecord(AuthInfo authInfo, String contentProviderRecordId, String language) {
         Formats formats = formatBusinessController.getFormats(authInfo, contentProviderAlias, contentProviderRecordId, language);
-        List<FormatDTO> formatDTOs = Lists.transform(formats.asList(), new Function<Format, FormatDTO>() {
-            @Override
-            public FormatDTO apply(Format input) {
-                return input.toDTO();
-            }
-        });
+        List<FormatDTO> formatDTOs = Lists.transform(formats.asList(), new FormatToFormatDTOFunction());
         return new RecordDTO().id(contentProviderRecordId).formats(formatDTOs);
+    }
+
+    private static class FormatToFormatDTOFunction implements Function<Format, FormatDTO> {
+        @Override
+        public FormatDTO apply(Format format) {
+            return format.toDTO();
+        }
     }
 }

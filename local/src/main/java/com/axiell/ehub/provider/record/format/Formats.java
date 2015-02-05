@@ -3,9 +3,11 @@
  */
 package com.axiell.ehub.provider.record.format;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Formats {
@@ -18,5 +20,9 @@ public class Formats {
     public void addFormat(Format format) {
         Validate.notNull(format, "Can't add a ContentProviderFormat that is null");
         formats.add(format);
+    }
+
+    public List<Format> asList() {
+        return Lists.newArrayList(formats);
     }
 }

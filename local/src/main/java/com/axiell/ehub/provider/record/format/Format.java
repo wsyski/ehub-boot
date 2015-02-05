@@ -28,4 +28,9 @@ public class Format {
     public String getIconUrl() {
         return iconUrl;
     }
+
+    // TODO Fix hardcoded content disposition
+    public FormatDTO toDTO() {
+        return new FormatDTO().id(getId()).description(getDescription()).name(getName()).contentDisposition(ContentDisposition.DOWNLOADABLE);
+    }
 }
