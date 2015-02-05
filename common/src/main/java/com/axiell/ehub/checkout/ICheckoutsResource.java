@@ -5,7 +5,10 @@ import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface ICheckoutsResource {
 
     @GET

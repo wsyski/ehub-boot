@@ -6,11 +6,11 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.security.AuthInfo;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public interface IContentProvidersResource {
 
     @GET
