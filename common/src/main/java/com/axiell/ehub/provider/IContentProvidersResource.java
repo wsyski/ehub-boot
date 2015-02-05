@@ -3,14 +3,13 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.record.IRecordsResource;
+import com.axiell.ehub.security.AuthInfo;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.xml.ws.Response;
-
-import com.axiell.ehub.provider.record.IRecordsResource;
 
 public interface IContentProvidersResource {
 
@@ -19,7 +18,7 @@ public interface IContentProvidersResource {
 
     @GET
     @Path("{alias}")
-    ContentProviderDTO getContentProvider(@PathParam("alias") String contentProviderAlias);
+    ContentProviderDTO getContentProvider(@HeaderParam("Authorization") AuthInfo authInfo, @PathParam("alias") String contentProviderAlias);
 
     @Path("/{alias}/records")
     IRecordsResource records(@PathParam("alias") String contentProviderAlias);

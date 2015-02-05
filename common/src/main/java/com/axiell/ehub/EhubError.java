@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.Validate;
  * It is included in the body of all responses from the eHUB with status code > 399.
  * </p>
  */
+@JsonAutoDetect
 @XmlRootElement(name = "error")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso(ErrorCauseArgument.class)

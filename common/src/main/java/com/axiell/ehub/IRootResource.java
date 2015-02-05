@@ -2,7 +2,6 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.checkout.ICheckoutsResource;
 import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.security.AuthInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,8 +16,8 @@ public interface IRootResource {
     Response root();
 
     @Path("content-providers")
-    IContentProvidersResource contentProviders(@HeaderParam("Authorization") AuthInfo authInfo);
+    IContentProvidersResource contentProviders();
 
     @Path("checkouts")
-    ICheckoutsResource checkouts(@HeaderParam("Authorization") AuthInfo authInfo);
+    ICheckoutsResource checkouts();
 }

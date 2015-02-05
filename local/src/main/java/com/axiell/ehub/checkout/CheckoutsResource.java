@@ -7,26 +7,23 @@ import com.axiell.ehub.security.AuthInfo;
 
 public class CheckoutsResource implements ICheckoutsResource {
     private final ILoanBusinessController loanBusinessController;
-    private final AuthInfo authInfo;
 
-    public CheckoutsResource(ILoanBusinessController loanBusinessController, AuthInfo authInfo) {
+    public CheckoutsResource(ILoanBusinessController loanBusinessController) {
         this.loanBusinessController = loanBusinessController;
-        this.authInfo = authInfo;
     }
 
     @Override
-    public SearchResultDTO<CheckoutMetadataDTO> search(String lmsLoanId, String language) {
+    public SearchResultDTO<CheckoutMetadataDTO> search(AuthInfo authInfo, String lmsLoanId, String language) {
         return null;
     }
 
     @Override
-    public CheckoutDTO checkout(FieldsDTO fields, String language) {
-
+    public CheckoutDTO checkout(AuthInfo authInfo, FieldsDTO fields, String language) {
         return null;
     }
 
     @Override
-    public CheckoutDTO getCheckout(Long ehubCheckoutId, String language) {
+    public CheckoutDTO getCheckout(AuthInfo authInfo, Long ehubCheckoutId, String language) {
         return null;
     }
 }

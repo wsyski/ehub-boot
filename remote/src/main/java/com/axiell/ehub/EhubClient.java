@@ -24,32 +24,32 @@ public final class EhubClient implements IEhubService {
 
     @Override
     public CheckoutMetadata findCheckoutByLmsLoanId(AuthInfo authInfo, String lmsLoanId, String language) {
-        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
-        SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = checkoutsResource.search(lmsLoanId, language);
+        ICheckoutsResource checkoutsResource = rootResource.checkouts();
+        SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = checkoutsResource.search(authInfo,lmsLoanId, language);
         CheckoutsSearchResult checkoutsSearchResult = new CheckoutsSearchResult(searchResultDTO);
         return checkoutsSearchResult.findCheckoutByLmsLoanId(lmsLoanId);
     }
 
     @Override
     public Checkout getCheckout(AuthInfo authInfo, Long ehubCheckoutId, String language) {
-        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
-        CheckoutDTO checkoutDTO = checkoutsResource.getCheckout(ehubCheckoutId, language);
+        ICheckoutsResource checkoutsResource = rootResource.checkouts();
+        CheckoutDTO checkoutDTO = checkoutsResource.getCheckout(authInfo, ehubCheckoutId, language);
         return new Checkout(checkoutDTO);
     }
 
     @Override
     public Checkout checkout(AuthInfo authInfo, Fields fields, String language) {
-        ICheckoutsResource checkoutsResource = rootResource.checkouts(authInfo);
-        CheckoutDTO checkoutDTO = checkoutsResource.checkout(fields.toDTO(), language);
+        ICheckoutsResource checkoutsResource = rootResource.checkouts();
+        CheckoutDTO checkoutDTO = checkoutsResource.checkout(authInfo, fields.toDTO(), language);
         return new Checkout(checkoutDTO);
     }
 
     @Override
     public Record getRecord(AuthInfo authInfo, String contentProviderAlias, String contentProviderRecordId, String language) throws EhubException {
-        IContentProvidersResource contentProvidersResource = rootResource.contentProviders(authInfo);
+        IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
         final String encodedContentProviderAlias = EhubUrlCodec.encode(contentProviderAlias);
         IRecordsResource recordsResource = contentProvidersResource.records(encodedContentProviderAlias);
-        RecordDTO recordDTO = recordsResource.getRecord(contentProviderRecordId, language);
+        RecordDTO recordDTO = recordsResource.getRecord(authInfo, contentProviderRecordId, language);
         return new Record(recordDTO);
     }
 

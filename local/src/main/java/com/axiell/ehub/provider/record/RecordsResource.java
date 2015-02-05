@@ -10,12 +10,10 @@ import com.axiell.ehub.security.AuthInfo;
 
 public final class RecordsResource implements IRecordsResource {
     private final IFormatBusinessController formatBusinessController;
-    private final AuthInfo authInfo;
-    private final String contentProviderName;    
+    private final String contentProviderName;
 
-    public RecordsResource(final IFormatBusinessController formatBusinessController, final AuthInfo authInfo, final String contentProviderAlias) {
+    public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderAlias) {
         this.formatBusinessController = formatBusinessController;
-        this.authInfo = authInfo;
         this.contentProviderName = contentProviderAlias;
     }
 
@@ -25,7 +23,7 @@ public final class RecordsResource implements IRecordsResource {
     }
 
     @Override
-    public RecordDTO getRecord(String contentProviderRecordId, String language) {
+    public RecordDTO getRecord(AuthInfo authInfo, String contentProviderRecordId, String language) {
         Formats formats = formatBusinessController.getFormats(authInfo, contentProviderName, contentProviderRecordId, language);
         return null;
     }

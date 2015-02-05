@@ -15,11 +15,9 @@ import javax.xml.ws.Response;
 
 public class ContentProvidersResource implements IContentProvidersResource {
     private final IFormatBusinessController formatBusinessController;
-    private final AuthInfo authInfo;
 
-    public ContentProvidersResource(IFormatBusinessController formatBusinessController, AuthInfo authInfo) {
+    public ContentProvidersResource(IFormatBusinessController formatBusinessController) {
         this.formatBusinessController = formatBusinessController;
-        this.authInfo = authInfo;
     }
 
     @Override
@@ -28,12 +26,12 @@ public class ContentProvidersResource implements IContentProvidersResource {
     }
 
     @Override
-    public ContentProviderDTO getContentProvider(String contentProviderAlias) {
+    public ContentProviderDTO getContentProvider(AuthInfo authInfo, String contentProviderAlias) {
         throw new NotImplementedException("Get content provider path in ContentProvidersResource has not been implemented yet");
     }
 
     @Override
     public IRecordsResource records(String contentProviderAlias) {
-        return new RecordsResource(formatBusinessController, authInfo, contentProviderAlias);
+        return new RecordsResource(formatBusinessController, contentProviderAlias);
     }
 }

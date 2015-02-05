@@ -3,8 +3,9 @@
  */
 package com.axiell.ehub.provider.record;
 
+import com.axiell.ehub.security.AuthInfo;
+
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
 
 public interface IRecordsResource {
 
@@ -13,5 +14,6 @@ public interface IRecordsResource {
 
     @GET
     @Path("{id}")
-    RecordDTO getRecord(@PathParam("id") String contentProviderRecordId, @DefaultValue("en") @QueryParam("language") String language);
+    RecordDTO getRecord(@HeaderParam("Authorization") AuthInfo authInfo, @PathParam("id") String contentProviderRecordId,
+                        @DefaultValue("en") @QueryParam("language") String language);
 }
