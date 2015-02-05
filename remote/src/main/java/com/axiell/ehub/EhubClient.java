@@ -11,6 +11,7 @@ import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.util.EhubUrlCodec;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
@@ -46,7 +47,8 @@ public final class EhubClient implements IEhubService {
     @Override
     public Record getRecord(AuthInfo authInfo, String contentProviderAlias, String contentProviderRecordId, String language) throws EhubException {
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders(authInfo);
-        IRecordsResource recordsResource = contentProvidersResource.records(contentProviderAlias);
+        final String encodedContentProviderAlias = EhubUrlCodec.encode(contentProviderAlias);
+        IRecordsResource recordsResource = contentProvidersResource.records(encodedContentProviderAlias);
         RecordDTO recordDTO = recordsResource.getRecord(contentProviderRecordId, language);
         return new Record(recordDTO);
     }
