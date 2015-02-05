@@ -4,17 +4,23 @@
 package com.axiell.ehub.provider.record;
 
 import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
 import com.axiell.ehub.security.AuthInfo;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 public final class RecordsResource implements IRecordsResource {
     private final IFormatBusinessController formatBusinessController;
-    private final String contentProviderName;
+    private final String contentProviderAlias;
 
-    public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderAlias) {
+    public RecordsResource(final IFormatBusinessController formatBusinessController, final AuthInfo authInfo, final String contentProviderAlias) {
         this.formatBusinessController = formatBusinessController;
-        this.contentProviderName = contentProviderAlias;
+        this.contentProviderAlias = contentProviderAlias;
     }
 
     @Override
@@ -24,7 +30,13 @@ public final class RecordsResource implements IRecordsResource {
 
     @Override
     public RecordDTO getRecord(AuthInfo authInfo, String contentProviderRecordId, String language) {
-        Formats formats = formatBusinessController.getFormats(authInfo, contentProviderName, contentProviderRecordId, language);
-        return null;
+        Formats formats = formatBusinessController.getFormats(authInfo, contentProviderAlias, contentProviderRecordId, language);
+        List<FormatDTO> formatDTOs = Lists.transform(formats.asList(), new Function<Format, FormatDTO>() {
+            @Override
+            public FormatDTO apply(Format input) {
+                return input.toDTO();
+            }
+        });
+        return new RecordDTO().id(contentProviderRecordId).formats(formatDTOs);
     }
 }
