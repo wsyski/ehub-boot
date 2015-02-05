@@ -18,7 +18,7 @@ public final class RecordsResource implements IRecordsResource {
     private final IFormatBusinessController formatBusinessController;
     private final String contentProviderAlias;
 
-    public RecordsResource(final IFormatBusinessController formatBusinessController, final AuthInfo authInfo, final String contentProviderAlias) {
+    public RecordsResource(final IFormatBusinessController formatBusinessController, final String contentProviderAlias) {
         this.formatBusinessController = formatBusinessController;
         this.contentProviderAlias = contentProviderAlias;
     }
