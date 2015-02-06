@@ -1,19 +1,21 @@
 package com.axiell.ehub.checkout;
 
 public class Checkout {
-    private final CheckoutMetadata metadata;
-    private final ContentLink contentLink;
+    private final CheckoutDTO checkoutDTO;
+
+    public Checkout(CheckoutMetadata checkoutMetadata, ContentLink contentLink) {
+        this.checkoutDTO = new CheckoutDTO().metadata(checkoutMetadata.toDTO()).contentLink(contentLink.toDTO());
+    }
 
     public Checkout(final CheckoutDTO checkoutDTO) {
-        metadata = new CheckoutMetadata(checkoutDTO.getMetadata());
-        contentLink = new ContentLink(checkoutDTO.getContentLink());
+        this.checkoutDTO = checkoutDTO;
     }
 
     public CheckoutMetadata metadata() {
-        return metadata;
+        return new CheckoutMetadata(checkoutDTO.getMetadata());
     }
 
     public ContentLink contentLink() {
-        return contentLink;
+        return new ContentLink(checkoutDTO.getContentLink());
     }
 }

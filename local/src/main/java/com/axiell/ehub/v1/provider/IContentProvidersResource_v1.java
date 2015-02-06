@@ -11,12 +11,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * Defines the getContent provider related resources that are accessible through the eHUB REST interface.
+ * Defines the contentLink provider related resources that are accessible through the eHUB REST interface.
  * 
  * <p>
  * <b>NOTE:</b> Due to a bug in the RESTEasy client framework the root path is not included in the final path when using
  * sub-resources, therefore the root path of this resource can unfortunately not be anything else than <code>/</code>,
- * but all paths on method level in this class <b>must</b> start with <b><code>v1/getContent-providers</code></b>.
+ * but all paths on method level in this class <b>must</b> start with <b><code>v1/contentLink-providers</code></b>.
  * </p>
  */
 @Path("/")
@@ -31,7 +31,7 @@ public interface IContentProvidersResource_v1 {
      * Gets the {@link com.axiell.ehub.provider.record.IRecordsResource} for a specific {@link com.axiell.ehub.provider.ContentProviderName}.
      *
      * <p>
-     * Example path: <code>/getContent-providers/elib/records</code>
+     * Example path: <code>/contentLink-providers/elib/records</code>
      * </p>
      *
      * @param contentProviderName the name of the {@link com.axiell.ehub.provider.ContentProvider}

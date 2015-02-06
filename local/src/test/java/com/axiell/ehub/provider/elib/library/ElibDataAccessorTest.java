@@ -218,9 +218,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenLoanResponseData();
         givenDownloadUrl();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
     }
 
     private void givenLoanResponse() {
@@ -272,7 +272,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     private void givenDownloadUrl() {
-        given(loanData.getDownloadurl()).willReturn(DOWNLOAD_URL);
+        given(loanData.getDownloadurl()).willReturn(CONTENT_HREF);
     }
 
     private void whenCreateLoan() {
@@ -397,9 +397,9 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenUrlContent();
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     private void givenContentProviderLoanId() {
@@ -407,7 +407,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     private void givenExpectedOrderId() {
@@ -424,7 +424,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     private void givenUrlContent() {
         List<Serializable> content = new ArrayList<Serializable>();
-        content.add(DOWNLOAD_URL);
+        content.add(CONTENT_HREF);
         given(urlData.getContent()).willReturn(content);
     }
 

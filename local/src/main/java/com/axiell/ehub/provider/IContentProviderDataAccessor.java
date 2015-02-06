@@ -3,8 +3,8 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.record.format.Formats;
 
 /**
@@ -16,5 +16,5 @@ public interface IContentProviderDataAccessor {
 
     ContentProviderLoan createLoan(CommandData data);
 
-    IContent getContent(CommandData data);
+    ContentLink getContent(CommandData data);
 }

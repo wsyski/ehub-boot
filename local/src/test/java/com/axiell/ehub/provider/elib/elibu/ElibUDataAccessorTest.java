@@ -176,9 +176,9 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenIsSameFormat();
         givenContentUrl();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
     }
 
     private void givenConsumeLicenseResponse() {
@@ -383,9 +383,9 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenIsSameFormat();
         givenContentUrl();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     private void givenContentProviderRecordIdInLoanMetadata() {
@@ -393,6 +393,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 }

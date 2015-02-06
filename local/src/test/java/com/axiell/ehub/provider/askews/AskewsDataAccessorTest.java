@@ -66,10 +66,10 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         givenExpirationDate();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
     }
 
     private void givenProcessLoan() {
@@ -96,7 +96,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void givenDownloadUrlInLoanDetail() {
-        given(loanDetail.getDownloadURL()).willReturn(new JAXBElement<String>(new QName(""), String.class, DOWNLOAD_URL));
+        given(loanDetail.getDownloadURL()).willReturn(new JAXBElement<String>(new QName(""), String.class, CONTENT_HREF));
     }
 
     private void whenCreateLoan() {
@@ -184,9 +184,9 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenLoanDetails();
         givenLoanStatusIsTitleHasBeenProcessed();
         givenDownloadUrlInLoanDetail();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     private void givenContentProviderLoanId() {
@@ -198,7 +198,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     private void whenGetFormats() {

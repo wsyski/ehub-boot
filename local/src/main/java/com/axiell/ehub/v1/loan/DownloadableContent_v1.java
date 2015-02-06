@@ -6,7 +6,7 @@ package com.axiell.ehub.v1.loan;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * Represents a downloadable getContent.
+ * Represents a downloadable contentLink.
  */
 public class DownloadableContent_v1 implements IContent_v1 {
     private String url;
@@ -20,16 +20,16 @@ public class DownloadableContent_v1 implements IContent_v1 {
     /**
      * Constructs a new {@link DownloadableContent_v1}.
      * 
-     * @param url the URL of the getContent to be downloaded
+     * @param url the URL of the contentLink to be downloaded
      */
     public DownloadableContent_v1(String url) {
         this.url = url;
     }
     
     /**
-     * Returns the URL of the getContent to be downloaded.
+     * Returns the URL of the contentLink to be downloaded.
      * 
-     * @return the URL of the getContent to be downloaded
+     * @return the URL of the contentLink to be downloaded
      */
     @XmlAttribute(name = "url", required = true)
     public String getUrl() {
@@ -37,7 +37,7 @@ public class DownloadableContent_v1 implements IContent_v1 {
     }
 
     /**
-     * Sets the URL of the getContent to be downloaded.
+     * Sets the URL of the contentLink to be downloaded.
      * 
      * @param url the URL to set
      */

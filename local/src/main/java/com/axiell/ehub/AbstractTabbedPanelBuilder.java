@@ -21,7 +21,7 @@ import org.apache.wicket.model.Model;
 
 /**
  * This class provides the possibility to getInstance new instances of
- * AjaxTabbedPanel. It should be sub-classed to provide the specific getContent
+ * AjaxTabbedPanel. It should be sub-classed to provide the specific content
  * panels.
  * 
  * @param I
@@ -56,13 +56,13 @@ public abstract class AbstractTabbedPanelBuilder<I> implements Serializable {
     }
 
     /**
-     * Creates a getContent {@link Panel} to be included in a tab.
+     * Creates a contentLink {@link Panel} to be included in a tab.
      * 
      * @param panelId
      *            the ID of the panel
      * @param identifier
      *            the identifier of the tab
-     * @return a new getContent {@link Panel}
+     * @return a new contentLink {@link Panel}
      */
     public abstract Panel getContentPanel(String panelId, I identifier);
 

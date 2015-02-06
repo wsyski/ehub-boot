@@ -28,27 +28,27 @@ public class PendingLoan {
     }
 
     /**
-     * Returns the name of the getContent provider.
+     * Returns the name of the contentLink provider.
      *
-     * @return the name of the getContent provider
+     * @return the name of the contentLink provider
      */
     public String getContentProviderName() {
         return contentProviderName;
     }
 
     /**
-     * Returns the ID of the record to loan at the getContent provider.
+     * Returns the ID of the record to loan at the contentLink provider.
      *
-     * @return the ID of the record to loan at the getContent provider
+     * @return the ID of the record to loan at the contentLink provider
      */
     public String getContentProviderRecordId() {
         return contentProviderRecordId;
     }
 
     /**
-     * Returns the ID of the format at the getContent provider the record to loan should have.
+     * Returns the ID of the format at the contentLink provider the record to loan should have.
      *
-     * @return the ID of the format at the getContent provider the record to loan should have
+     * @return the ID of the format at the contentLink provider the record to loan should have
      */
     public String getContentProviderFormatId() {
         return contentProviderFormatId;

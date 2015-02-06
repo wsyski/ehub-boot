@@ -1,46 +1,58 @@
 package com.axiell.ehub.checkout;
 
 import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
-import com.axiell.ehub.loan.LmsLoan;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Date;
-
+import static com.axiell.ehub.checkout.CheckoutMetadataBuilder.checkoutMetadataWithDownloadableFormat;
+import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
+import static com.axiell.ehub.checkout.ContentLinkBuilder.defaultContentLink;
+import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CheckoutFactoryTest {
-    private static final Long EHUB_LOAN_ID = 2L;
-    private static final Date EXP_DATE = new Date();
-    public static final String CP_LOAN_ID = "cpLoanId";
-    public static final String LMS_LOAN_ID = "lmsLoanId";
+    private static final String LANGUAGE = "en";
     @Mock
     private EhubLoan ehubLoan;
-//    @Mock
-//    private ContentProviderLoan contentProviderLoan;
+    private ContentLink contentLink = defaultContentLink();
     @Mock
-    private ContentProviderLoanMetadata contentProviderLoanMetadata;
-    @Mock
-    private FormatDecoration formatDecoration;
-    @Mock
-    private LmsLoan lmsLoan;
+    private ICheckoutMetadataFactory checkoutMetadataFactory;
+    private CheckoutMetadata checkoutMetadata = checkoutMetadataWithDownloadableFormat();
+    private CheckoutFactory underTest;
     private Checkout actualCheckout;
+
+    @Before
+    public void setUpUnderTest() {
+        underTest = new CheckoutFactory();
+        ReflectionTestUtils.setField(underTest, "checkoutMetadataFactory", checkoutMetadataFactory);
+    }
 
     @Test
     public void createFromEhubLoan() throws Exception {
-        given(contentProviderLoanMetadata.getExpirationDate()).willReturn(EXP_DATE);
-        given(contentProviderLoanMetadata.getId()).willReturn(CP_LOAN_ID);
-//        given(contentProviderLoanMetadata.getFormatDecoration()).willReturn(formatDecoration);
-//        given(contentProviderLoan.getMetadata()).willReturn(contentProviderLoanMetadata);
-        given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
-        given(lmsLoan.getId()).willReturn(LMS_LOAN_ID);
-        given(ehubLoan.getLmsLoan()).willReturn(lmsLoan);
-        given(ehubLoan.getId()).willReturn(EHUB_LOAN_ID);
+        given(checkoutMetadataFactory.create(any(EhubLoan.class), anyString())).willReturn(checkoutMetadata);
+        whenCreate();
+        thenActualContentLinkEqualsExpected();
+        thenActualCheckoutMetadataEqualsExpected();
+    }
+
+    private void whenCreate() {
+        actualCheckout = underTest.create(ehubLoan, contentLink, LANGUAGE);
+    }
+
+    private void thenActualContentLinkEqualsExpected() {
+        assertThat(actualCheckout.contentLink(), matchesExpectedContentLink(contentLink));
+    }
+
+    private void thenActualCheckoutMetadataEqualsExpected() {
+        assertThat(actualCheckout.metadata().toDTO(), matchesExpectedCheckoutMetadataDTO(checkoutMetadata.toDTO()));
     }
 }

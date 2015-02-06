@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.*;
 import com.axiell.ehub.patron.Patron;
@@ -8,7 +9,6 @@ import junit.framework.Assert;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
-    protected static final String DOWNLOAD_URL = "url";
+    protected static final String CONTENT_HREF = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
@@ -38,8 +38,6 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     @Mock
     protected IContentFactory contentFactory;
-    @Mock
-    protected DownloadableContent downloadableContent;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
@@ -64,10 +62,12 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected CommandData commandData;
     @Mock
     protected Patron patron;
+    @Mock
+    protected ContentLink contentLink;
     protected Format format = FormatBuilder.downloadableFormat();
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
-    protected IContent actualContent;
+    protected ContentLink actualContentLink;
 
     protected void givenContentProviderConsumerInCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
@@ -139,24 +139,23 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(response.getStatus()).willReturn(ERROR_STATUS);
     }
 
-    protected void givenCreatedDownloadableContent() {
-        given(downloadableContent.getUrl()).willReturn(DOWNLOAD_URL);
-        given(contentFactory.create(DOWNLOAD_URL, formatDecoration)).willReturn(downloadableContent);
+    protected void givenContentLink() {
+        given(contentLink.href()).willReturn(CONTENT_HREF);
+        given(contentFactory.create(CONTENT_HREF, formatDecoration)).willReturn(contentLink);
     }
 
     protected void givenFormatFromFormatFactory() {
         given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(format);
     }
 
-    protected void thenActualLoanContainsDownloadUrl() {
+    protected void thenActualLoanContainsContentLinkHref() {
         Assert.assertNotNull(actualLoan);
-        actualContent = actualLoan.getContent();
-        thenActualContentContainsDownloadUrl();
+        actualContentLink = actualLoan.contentLink();
+        thenActualContentLinkContainsHref();
     }
 
-    protected void thenActualContentContainsDownloadUrl() {
-        DownloadableContent downloadableContent = (DownloadableContent) actualContent;
-        Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
+    protected void thenActualContentLinkContainsHref() {
+        Assert.assertEquals(CONTENT_HREF, actualContentLink.href());
     }
 
     protected void thenActualFormatEqualsExpected() {
@@ -183,7 +182,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
-        assertEquals(EXPIRATION_DATE, actualLoan.getExpirationDate());
+        assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
     }
 
     protected void thenSetContentProviderLoanMetadataInCommandDataHasBeenInvoked() {

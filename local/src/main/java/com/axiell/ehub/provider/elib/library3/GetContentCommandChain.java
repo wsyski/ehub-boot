@@ -1,14 +1,14 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.CreateContentCommand;
 import com.axiell.ehub.provider.IContentFactory;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoanCommand.Result.ACTIVE_LOAN_RETRIEVED;
 
-class GetContentCommandChain extends AbstractElib3CommandChain<IContent, CommandData> {
+class GetContentCommandChain extends AbstractElib3CommandChain<ContentLink, CommandData> {
     private final GetLoanCommand firstCommand;
     private final CreateContentCommand createContentCommand;
 
@@ -29,7 +29,7 @@ class GetContentCommandChain extends AbstractElib3CommandChain<IContent, Command
     }
 
     @Override
-    public IContent execute(final CommandData data) {
+    public ContentLink execute(final CommandData data) {
         firstCommand.run(data);
         return data.getContent();
     }

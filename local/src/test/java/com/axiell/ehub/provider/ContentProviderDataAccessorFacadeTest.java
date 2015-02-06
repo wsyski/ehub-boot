@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.*;
@@ -49,7 +50,7 @@ public class ContentProviderDataAccessorFacadeTest {
     @Mock
     private ContentProviderLoan contentProviderLoan;
     @Mock
-    private IContent content;
+    private ContentLink contentLink;
     @Mock
     private Patron patron;
 
@@ -96,7 +97,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContent() {
-        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(content);
+        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(contentLink);
     }
 
     @Test

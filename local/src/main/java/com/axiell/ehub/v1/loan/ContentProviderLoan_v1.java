@@ -28,7 +28,7 @@ public class ContentProviderLoan_v1 {
      * Constructs a new {@link ContentProviderLoan_v1}.
      *
      * @param metadata the metadata of the {@link ContentProviderLoan_v1}
-     * @param content the getContent of the {@link ContentProviderLoan_v1}
+     * @param content the contentLink of the {@link ContentProviderLoan_v1}
      */
     public ContentProviderLoan_v1(ContentProviderLoanMetadata_v1 metadata, IContent_v1 content) {
         Validate.notNull(metadata, "The ContentProviderLoanMetadata can't be null");

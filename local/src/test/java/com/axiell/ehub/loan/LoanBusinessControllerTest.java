@@ -50,8 +50,6 @@ public class LoanBusinessControllerTest {
     private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
     @Mock
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
-    @Mock
-    private IReadyLoanFactory readyLoanFactory;
     private AuthInfo authInfo;
     private PendingLoan pendingLoan;
     @Mock
@@ -63,7 +61,7 @@ public class LoanBusinessControllerTest {
     @Mock
     private LmsLoan lmsLoan;
     @Mock
-    private IContent content;
+    private ContentLink contentLink;
     @Mock
     private ContentProviderLoan contentProviderLoan;
     @Mock
@@ -74,8 +72,10 @@ public class LoanBusinessControllerTest {
     private EhubLoan existingEhubLoan;
     @Mock
     private ICheckoutMetadataFactory checkoutMetadataFactory;
+    @Mock
+    private ICheckoutFactory checkoutFactory;
     private CheckoutMetadata checkoutMetadata;
-    private ReadyLoan actualReadyLoan;
+    private Checkout actualCheckout;
     private CheckoutsSearchResult actualSearchResult;
 
     @Before
@@ -93,8 +93,8 @@ public class LoanBusinessControllerTest {
         ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
         ReflectionTestUtils.setField(underTest, "ehubLoanRepositoryFacade", ehubLoanRepositoryFacade);
         ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
-        ReflectionTestUtils.setField(underTest, "readyLoanFactory", readyLoanFactory);
         ReflectionTestUtils.setField(underTest, "checkoutMetadataFactory", checkoutMetadataFactory);
+        ReflectionTestUtils.setField(underTest, "checkoutFactory", checkoutFactory);
     }
 
     @Before
@@ -134,7 +134,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void whenCreateLoan() {
-        actualReadyLoan = underTest.createLoan(authInfo, pendingLoan, LANGUAGE);
+        actualCheckout = underTest.checkout(authInfo, pendingLoan, LANGUAGE);
     }
 
     private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
@@ -193,7 +193,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void whenGetReadyLoanByReadLoanId() {
-        actualReadyLoan = underTest.getReadyLoan(authInfo, READY_LOAN_ID, LANGUAGE);
+        actualCheckout = underTest.getCheckout(authInfo, READY_LOAN_ID, LANGUAGE);
     }
 
     private InOrder thenEhubLoanIsFoundInTheEhubDatabaseByReadyLoanId() {
@@ -204,7 +204,7 @@ public class LoanBusinessControllerTest {
     }
 
 //    private void whenGetReadyLoanByLmsLoanId() {
-//        actualReadyLoan = underTest.getReadyLoan(authInfo, LMS_LOAN_ID, LANGUAGE);
+//        actualCheckout = underTest.getCheckout(authInfo, LMS_LOAN_ID, LANGUAGE);
 //    }
 
 //    @Test

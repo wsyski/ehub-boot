@@ -3,9 +3,9 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +19,7 @@ public abstract class AbstractContentProviderDataAccessor implements IContentPro
     @Autowired(required = true)
     private IContentFactory contentFactory;
 
-    protected final IContent createContent(final String contentUrl, final FormatDecoration formatDecoration) {
+    protected final ContentLink createContent(final String contentUrl, final FormatDecoration formatDecoration) {
         return contentFactory.create(contentUrl, formatDecoration);
     }
 

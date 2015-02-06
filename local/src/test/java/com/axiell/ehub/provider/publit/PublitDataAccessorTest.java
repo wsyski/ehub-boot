@@ -104,9 +104,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
         thenGetIdFromPatronIsInvoked();
         thenGetLibraryCardFromPatronIsNeverInvoked();
     }
@@ -137,7 +137,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void givenDownloadUrl() {
-        given(downloadItem.getUrl()).willReturn(DOWNLOAD_URL);
+        given(downloadItem.getUrl()).willReturn(CONTENT_HREF);
     }
 
     private void whenCreateLoan() {
@@ -179,9 +179,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProvider();
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     private void givenContentProviderLoanId() {
@@ -189,7 +189,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     @Test

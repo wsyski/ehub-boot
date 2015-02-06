@@ -1,11 +1,10 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
@@ -15,7 +14,7 @@ public class CommandData implements ICommandData {
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private String contentUrl;
-    private IContent content;
+    private ContentLink contentLink;
 
     protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         this.contentProviderConsumer = contentProviderConsumer;
@@ -76,12 +75,12 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public IContent getContent() {
-        return content;
+    public ContentLink getContent() {
+        return contentLink;
     }
 
-    public CommandData setContent(IContent content) {
-        this.content = content;
+    public CommandData setContent(ContentLink contentLink) {
+        this.contentLink = contentLink;
         return this;
     }
 
@@ -95,7 +94,7 @@ public class CommandData implements ICommandData {
                 ", contentProviderFormatId=" + contentProviderFormatId +
                 ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
                 ", contentUrl=" + contentUrl +
-                ", getContent=" + content +
+                ", contentLink=" + contentLink +
                 "}";
     }
 }

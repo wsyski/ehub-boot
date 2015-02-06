@@ -1,11 +1,11 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -59,7 +59,7 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final CommandData data) {
+    public ContentLink getContent(final CommandData data) {
         final GetLoanContentResponse getLoanContentResponse = f1Facade.getLoanContent(data);
 
         if (getLoanContentResponse.isValidContent())
@@ -95,7 +95,7 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
         return metadata;
     }
 
-    private IContent makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
+    private ContentLink makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
         final String contentUrl = getLoanContentResponse.getValue();
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
@@ -105,8 +105,8 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
     private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, GetLoanContentResponse getLoanContentResponse) {
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final String contentUrl = getLoanContentResponse.getValue();
-        final IContent content = createContent(contentUrl, formatDecoration);
-        return new ContentProviderLoan(loanMetadata, content);
+        final ContentLink contentLink = createContent(contentUrl, formatDecoration);
+        return new ContentProviderLoan(loanMetadata, contentLink);
     }
 
     private InternalServerErrorException makeCreateLoanFailedException(final CommandData data, final CreateLoanResponse createLoanResponse) {

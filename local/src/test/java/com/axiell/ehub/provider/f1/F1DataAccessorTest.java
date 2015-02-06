@@ -6,7 +6,6 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.format.Format;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,9 +93,9 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         givenDownloadableContentDisposition();
         givenLoanIdFromF1Facade();
         givenValidLoanContentFromGetLoanContentResponse();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
         thenActualLoanHasExpectedId();
         thenActualLoanHasExpirationDateCreatedByExpirationDateFactory();
     }
@@ -130,9 +129,9 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenContentProviderLoanMetadataInCommandData();
         givenValidLoanContentFromGetLoanContentResponse();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     @Test(expected = InternalServerErrorException.class)
@@ -154,7 +153,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     private void givenLoanIdFromF1Facade() {
@@ -169,7 +168,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     private void givenValidLoanContentFromGetLoanContentResponse() {
         given(getLoanContentResponse.isValidContent()).willReturn(true);
-        given(getLoanContentResponse.getValue()).willReturn(DOWNLOAD_URL);
+        given(getLoanContentResponse.getValue()).willReturn(CONTENT_HREF);
         givenGetLoanContentResponseFromF1Facade();
     }
 
@@ -178,7 +177,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
     }
 
     private void thenActualLoanHasExpectedId() {
-        assertEquals(LOAN_ID, actualLoan.getId());
+        assertEquals(LOAN_ID, actualLoan.id());
     }
 
     private void whenCreateLoan() {

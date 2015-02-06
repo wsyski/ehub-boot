@@ -1,10 +1,10 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.DownloadableContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
@@ -58,7 +58,7 @@ public class CreateLoanCommandChainTest {
     @Mock
     private ContentProviderLoanMetadata loanMetadata;
     @Mock
-    private DownloadableContent downloadableContent;
+    private ContentLink contentLink;
     @Mock
     private Patron patron;
     @Mock
@@ -75,9 +75,9 @@ public class CreateLoanCommandChainTest {
 
     @Before
     public void setUpContentProviderLoanWithDefaultData() {
-        given(contentProviderLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
-        given(downloadableContent.getUrl()).willReturn(CONTENT_URL);
-        given(contentProviderLoan.getContent()).willReturn(downloadableContent);
+        given(contentProviderLoan.expirationDate()).willReturn(EXPIRATION_DATE);
+        given(contentLink.href()).willReturn(CONTENT_URL);
+        given(contentProviderLoan.contentLink()).willReturn(contentLink);
         given(loanMetadata.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
@@ -122,7 +122,7 @@ public class CreateLoanCommandChainTest {
     }
 
     private void givenCreatedDownloadableContent() {
-        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(downloadableContent);
+        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(contentLink);
     }
 
     private void whenExecute() {
@@ -130,8 +130,8 @@ public class CreateLoanCommandChainTest {
     }
 
     private void thenActualLoanEqualsToExpectedLoan() {
-        assertThat(actualLoan.getContent(), is(contentProviderLoan.getContent()));
-        assertThat(actualLoan.getExpirationDate(), is(contentProviderLoan.getExpirationDate()));
+        assertThat(actualLoan.contentLink(), is(contentProviderLoan.contentLink()));
+        assertThat(actualLoan.expirationDate(), is(contentProviderLoan.expirationDate()));
         assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));
         assertThat(actualLoan.getMetadata().getExpirationDate(), is(contentProviderLoan.getMetadata().getExpirationDate()));
         assertThat(actualLoan.getMetadata().getFormatDecoration(), is(contentProviderLoan.getMetadata().getFormatDecoration()));

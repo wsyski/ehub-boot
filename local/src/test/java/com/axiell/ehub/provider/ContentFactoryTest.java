@@ -1,8 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.loan.DownloadableContent;
-import com.axiell.ehub.loan.IContent;
-import com.axiell.ehub.loan.StreamingContent;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +22,7 @@ public class ContentFactoryTest {
     private ContentFactory underTest;
     @Mock
     private FormatDecoration formatDecoration;
-    private IContent actualContent;
+    private ContentLink actualContentLink;
 
     @Before
     public void setUp() {
@@ -32,27 +30,18 @@ public class ContentFactoryTest {
     }
 
     @Test
-    public void createDownloadableContent() {
+    public void create() {
         givenDownloadableFormatDecoration();
         whenCreate();
-        thenActualContentIsDownloadableContent();
-    }
-
-    @Test
-    public void createStreamingContent() {
-        givenStreamingFormatDecoration();
-        whenCreate();
-        thenActualContentIsStreamingContent();
+        thenActualContentLinkEqualsExpected();
     }
 
     private void givenDownloadableFormatDecoration() {
         given(formatDecoration.getContentDisposition()).willReturn(DOWNLOADABLE);
     }
 
-    private void thenActualContentIsDownloadableContent() {
-        assertTrue(actualContent instanceof DownloadableContent);
-        DownloadableContent downloadableContent = (DownloadableContent) actualContent;
-        assertEquals(URL, downloadableContent.getUrl());
+    private void thenActualContentLinkEqualsExpected() {
+        assertEquals(URL, actualContentLink.href());
     }
 
     private void givenStreamingFormatDecoration() {
@@ -62,14 +51,6 @@ public class ContentFactoryTest {
     }
 
     private void whenCreate() {
-        actualContent = underTest.create(URL, formatDecoration);
-    }
-
-    private void thenActualContentIsStreamingContent() {
-        assertTrue(actualContent instanceof StreamingContent);
-        StreamingContent streamingContent = (StreamingContent) actualContent;
-        assertEquals(URL, streamingContent.getUrl());
-        assertEquals(WIDTH, streamingContent.getWidth());
-        assertEquals(HEIGHT, streamingContent.getHeight());
+        actualContentLink = underTest.create(URL, formatDecoration);
     }
 }

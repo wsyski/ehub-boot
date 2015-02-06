@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -11,7 +12,6 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 
 @Component
@@ -40,7 +40,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     }
 
     @Override
-    public IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
+    public ContentLink getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
         final ContentProviderName name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);

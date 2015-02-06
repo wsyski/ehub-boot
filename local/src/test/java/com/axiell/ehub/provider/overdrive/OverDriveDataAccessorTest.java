@@ -126,15 +126,15 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenDownloadLinkTemplate();
         givenDownloadLink();
         givenLinks();
-        givenContentLink();
+        givenOvderDriveContentLink();
         givenDownloadUrl();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
     }
 
     private void givenCirculationFormats() {
@@ -178,12 +178,12 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         given(downloadLink.getLinks()).willReturn(links);
     }
 
-    private void givenContentLink() {
+    private void givenOvderDriveContentLink() {
         given(links.getContentLink()).willReturn(contentLink);
     }
 
     private void givenDownloadUrl() {
-        given(contentLink.getHref()).willReturn(DOWNLOAD_URL);
+        given(contentLink.getHref()).willReturn(CONTENT_HREF);
     }
 
     private void givenFormatIdFromFormatDecoration() {
@@ -233,13 +233,13 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenDownloadLinkTemplate();
         givenDownloadLink();
         givenLinks();
-        givenContentLink();
+        givenOvderDriveContentLink();
         givenDownloadUrl();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     public void givenCheckouts() {
@@ -256,7 +256,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     public void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     @Test

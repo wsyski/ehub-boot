@@ -6,7 +6,7 @@ package com.axiell.ehub.v1.loan;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * Represents a getContent that can be streamed, e.g. it can be a Flash player.
+ * Represents a contentLink that can be streamed, e.g. it can be a Flash player.
  */
 public final class StreamingContent_v1 implements IContent_v1 {
     private String url;
@@ -22,7 +22,7 @@ public final class StreamingContent_v1 implements IContent_v1 {
     /**
      * Constructs a new {@link StreamingContent_v1}.
      * 
-     * @param url the URL to the getContent to be streamed
+     * @param url the URL to the contentLink to be streamed
      * @param width the width of the player in pixels
      * @param height the height of the player in pixels 
      */
@@ -33,9 +33,9 @@ public final class StreamingContent_v1 implements IContent_v1 {
     }
 
     /**
-     * Returns the URL to the getContent to be streamed.
+     * Returns the URL to the contentLink to be streamed.
      * 
-     * @return the URL to the getContent
+     * @return the URL to the contentLink
      */
     @XmlAttribute(name = "url", required = true)
     public String getUrl() {
@@ -43,9 +43,9 @@ public final class StreamingContent_v1 implements IContent_v1 {
     }
 
     /**
-     * Sets the URL to the getContent to be streamed.
+     * Sets the URL to the contentLink to be streamed.
      * 
-     * @param url the URL to the getContent to be streamed to set
+     * @param url the URL to the contentLink to be streamed to set
      */
     protected void setUrl(String url) {
         this.url = url;

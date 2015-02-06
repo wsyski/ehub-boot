@@ -1,9 +1,9 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.EhubLoan;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -14,5 +14,5 @@ public interface IContentProviderDataAccessorFacade {
 
     ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language);
 
-    IContent getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language);
+    ContentLink getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language);
 }

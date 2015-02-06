@@ -4,10 +4,10 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.*;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
@@ -89,11 +89,11 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
-        final IContent content = createContent(contentUrl, formatDecoration);
+        final ContentLink contentLink = createContent(contentUrl, formatDecoration);
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
                 formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
-        return new ContentProviderLoan(metadata, content);
+        return new ContentProviderLoan(metadata, contentLink);
     }
 
     private String createShopOrder(final ContentProviderConsumer contentProviderConsumer, final String patronId, final String contentProviderRecordId) {
@@ -128,7 +128,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final CommandData data) {
+    public ContentLink getContent(final CommandData data) {
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();

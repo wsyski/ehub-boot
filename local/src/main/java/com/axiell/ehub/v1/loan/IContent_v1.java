@@ -4,7 +4,7 @@
 package com.axiell.ehub.v1.loan;
 
 /**
- * Defines the getContent of a loan.
+ * Defines the contentLink of a loan.
  */
 public interface IContent_v1 {
 }

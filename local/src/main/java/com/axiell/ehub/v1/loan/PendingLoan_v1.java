@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 
 /**
  * A Pending Loan should be created on the client side and then provided to the eHUB to create a loan both in the LMS
- * and at the getContent provider.
+ * and at the contentLink provider.
  */
 @XmlRootElement(name = "pendingLoan")
 @XmlAccessorType(XmlAccessType.NONE)
@@ -30,9 +30,9 @@ public class PendingLoan_v1 {
      * Constructs a new {@link PendingLoan_v1}.
      *
      * @param lmsRecordId             the ID of the record to loan in the LMS
-     * @param contentProviderName     the name of the getContent provider
-     * @param contentProviderRecordId the ID of the record to loan at the getContent provider
-     * @param contentProviderFormat   the getContent provider defined format of the record to loan
+     * @param contentProviderName     the name of the contentLink provider
+     * @param contentProviderRecordId the ID of the record to loan at the contentLink provider
+     * @param contentProviderFormat   the contentLink provider defined format of the record to loan
      */
     public PendingLoan_v1(final String lmsRecordId, final String contentProviderName, final String contentProviderRecordId, final String contentProviderFormat) {
         this.lmsRecordId = lmsRecordId;
@@ -61,9 +61,9 @@ public class PendingLoan_v1 {
     }
 
     /**
-     * Returns the name of the getContent provider.
+     * Returns the name of the contentLink provider.
      *
-     * @return the name of the getContent provider
+     * @return the name of the contentLink provider
      */
     @XmlAttribute(name = "contentProviderName", required = true)
     public String getContentProviderName() {
@@ -71,18 +71,18 @@ public class PendingLoan_v1 {
     }
 
     /**
-     * Sets the name of the getContent provider.
+     * Sets the name of the contentLink provider.
      *
-     * @param contentProviderName the name of the getContent provider to set
+     * @param contentProviderName the name of the contentLink provider to set
      */
     protected void setContentProviderName(String contentProviderName) {
         this.contentProviderName = contentProviderName;
     }
 
     /**
-     * Returns the ID of the record to loan at the getContent provider.
+     * Returns the ID of the record to loan at the contentLink provider.
      *
-     * @return the ID of the record to loan at the getContent provider
+     * @return the ID of the record to loan at the contentLink provider
      */
     @XmlAttribute(name = "contentProviderRecordId", required = true)
     public String getContentProviderRecordId() {
@@ -90,18 +90,18 @@ public class PendingLoan_v1 {
     }
 
     /**
-     * Sets the ID of the record to loan at the getContent provider.
+     * Sets the ID of the record to loan at the contentLink provider.
      *
-     * @param contentProviderRecordId the ID of the record to loan at the getContent provider to set
+     * @param contentProviderRecordId the ID of the record to loan at the contentLink provider to set
      */
     protected void setContentProviderRecordId(String contentProviderRecordId) {
         this.contentProviderRecordId = contentProviderRecordId;
     }
 
     /**
-     * Returns the ID of the format at the getContent provider the record to loan should have.
+     * Returns the ID of the format at the contentLink provider the record to loan should have.
      *
-     * @return the ID of the format at the getContent provider the record to loan should have
+     * @return the ID of the format at the contentLink provider the record to loan should have
      */
     @XmlAttribute(name = "contentProviderFormatId", required = true)
     public String getContentProviderFormatId() {
@@ -109,9 +109,9 @@ public class PendingLoan_v1 {
     }
 
     /**
-     * Sets the ID of the format at the getContent provider the record to loan should have.
+     * Sets the ID of the format at the contentLink provider the record to loan should have.
      *
-     * @param contentProviderFormatId the ID of the format at the getContent provider the record to loan should have to set
+     * @param contentProviderFormatId the ID of the format at the contentLink provider the record to loan should have to set
      */
     protected void setContentProviderFormatId(String contentProviderFormatId) {
         this.contentProviderFormatId = contentProviderFormatId;

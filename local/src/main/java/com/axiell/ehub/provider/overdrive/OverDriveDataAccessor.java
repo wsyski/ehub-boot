@@ -4,7 +4,6 @@ import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
@@ -72,10 +71,10 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
-        final IContent content = createContent(contentUrl, formatDecoration);
+        final com.axiell.ehub.checkout.ContentLink contentLink = createContent(contentUrl, formatDecoration);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
                 formatDecoration).build();
-        return new ContentProviderLoan(metadata, content);
+        return new ContentProviderLoan(metadata, contentLink);
     }
 
     private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
@@ -91,7 +90,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final CommandData data) {
+    public com.axiell.ehub.checkout.ContentLink getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String libraryCard = patron.getLibraryCard();

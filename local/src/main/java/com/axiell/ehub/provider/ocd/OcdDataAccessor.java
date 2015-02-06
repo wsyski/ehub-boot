@@ -1,11 +1,11 @@
 package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -52,7 +52,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final Format format = formatFactory.create(contentProvider, formatId, language);
             formats.addFormat(format);
         } catch (MediaNotFoundException e) {
-            LOGGER.warn("No media found for getContent provider record ID = '" + contentProviderRecordId + "'");
+            LOGGER.warn("No media found for content provider record ID = '" + contentProviderRecordId + "'");
         }
         return formats;
     }
@@ -66,8 +66,8 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
             final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final IContent content = makeContent(loanMetadata, checkout);
-            return new ContentProviderLoan(loanMetadata, content);
+            final ContentLink contentLink = makeContent(loanMetadata, checkout);
+            return new ContentProviderLoan(loanMetadata, contentLink);
         }
 
         throw makeCreateLoanFailedException(data);
@@ -79,7 +79,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private IContent makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
+    private ContentLink makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
         final String contentUrl = checkout.getDownloadUrl();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         return createContent(contentUrl, formatDecoration);
@@ -92,7 +92,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final CommandData data) {
+    public ContentLink getContent(final CommandData data) {
         final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();

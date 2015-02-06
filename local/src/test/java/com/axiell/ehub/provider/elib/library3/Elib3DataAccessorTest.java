@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
     @Mock
     private GetContentCommandChain getContentCommandChain;
     @Mock
-    private IContent expectedContent;
+    private ContentLink expectedContent;
 
     @Before
     public void setUpUnderTest() {
@@ -72,11 +72,11 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
     }
 
     private void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        assertThat(actualContent, is(expectedContent));
+        assertThat(actualContentLink, is(expectedContent));
     }
 
     private void givenExpectedLoan() {

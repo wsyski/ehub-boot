@@ -8,10 +8,10 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
@@ -71,7 +71,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
         if (data != null) {
             return data.getProduct().getStatus().getId() == ELIB_PRODUCT_OK_ID;
         } else {
-            LOGGER.warn("No data received in the get formats response where getContent provider record ID = '" + contentProviderRecordId + "'");
+            LOGGER.warn("No data received in the get formats response where content provider record ID = '" + contentProviderRecordId + "'");
             return false;
         }
     }
@@ -136,8 +136,8 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                 formatDecoration).contentProviderLoanId(elibLoan.id).build();
         final se.elib.library.loan.Response.Data data = loanResponse.getData();
         final String contentUrl = data.getDownloadurl();
-        final IContent content = createContent(contentUrl, formatDecoration);
-        return new ContentProviderLoan(metadata, content);
+        final ContentLink contentLink = createContent(contentUrl, formatDecoration);
+        return new ContentProviderLoan(metadata, contentLink);
     }
 
     protected List<Orderitem> getOrderItems(final ContentProviderConsumer contentProviderConsumer, final String libraryCard) {
@@ -188,7 +188,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public IContent getContent(final CommandData data) {
+    public ContentLink getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final Patron patron = data.getPatron();
@@ -201,7 +201,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
                 final String contentUrl = getContentUrl(orderItem);
 
                 if (contentUrl == null) {
-                    throw makeInternalServerErrorException("Can not determine the getContent url", String.valueOf(ELIB_STATUS_CODE_OK));
+                    throw makeInternalServerErrorException("Can not determine the content url", String.valueOf(ELIB_STATUS_CODE_OK));
                 } else {
                     final FormatDecoration formatDecorations = contentProviderLoanMetadata.getFormatDecoration();
                     return createContent(contentUrl, formatDecorations);

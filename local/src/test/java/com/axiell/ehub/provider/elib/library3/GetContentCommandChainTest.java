@@ -1,10 +1,9 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.loan.DownloadableContent;
-import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -42,9 +41,9 @@ public class GetContentCommandChainTest {
     @Mock
     private Loan loan;
     @Mock
-    private DownloadableContent downloadableContent;
+    private ContentLink contentLink;
     private CommandData data;
-    private IContent actualContent;
+    private ContentLink actualContentLink;
 
     @Before
     public void setUpUnderTest() {
@@ -67,17 +66,16 @@ public class GetContentCommandChainTest {
     }
 
     private void givenExpectedContent() {
-        given(downloadableContent.getUrl()).willReturn(CONTENT_URL);
-        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(downloadableContent);
+        given(contentLink.href()).willReturn(CONTENT_URL);
+        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(contentLink);
     }
 
     private void whenExecute() {
-        actualContent = underTest.execute(data);
+        actualContentLink = underTest.execute(data);
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        DownloadableContent actualDownloadableContent = (DownloadableContent) actualContent;
-        Assert.assertEquals(CONTENT_URL, actualDownloadableContent.getUrl());
+        Assert.assertEquals(CONTENT_URL, actualContentLink.href());
     }
 
     private void givenCommandData() {

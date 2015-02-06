@@ -7,7 +7,6 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.format.FormatBuilder;
-import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,9 +101,9 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         givenCheckoutIsSuccessful();
         givenCheckout();
         givenCompleteCheckout();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenCreateLoan();
-        thenActualLoanContainsDownloadUrl();
+        thenActualLoanContainsContentLinkHref();
     }
 
     private void givenBearerToken() {
@@ -121,7 +120,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
 
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
-        given(checkout.getDownloadUrl()).willReturn(DOWNLOAD_URL);
+        given(checkout.getDownloadUrl()).willReturn(CONTENT_HREF);
         given(ocdCheckoutHandler.getCompleteCheckout(any(BearerToken.class), any(CommandData.class), anyString())).willReturn(checkout);
     }
 
@@ -147,12 +146,12 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         givenCompleteCheckout();
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenContentProviderLoanMetadataInCommandData();
-        givenCreatedDownloadableContent();
+        givenContentLink();
         whenGetContent();
-        thenActualContentContainsDownloadUrl();
+        thenActualContentLinkContainsHref();
     }
 
     public void whenGetContent() {
-        actualContent = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData);
     }
 }
