@@ -1,48 +1,37 @@
 package com.axiell.ehub.v1.loan;
 
+import com.axiell.ehub.checkout.Checkout;
+import com.axiell.ehub.checkout.CheckoutMetadata;
+import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
+import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.loan.*;
+import com.axiell.ehub.provider.record.format.FormatBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReadyLoanV1ConverterTest {
-    private static final Long LOAN_ID = 1L;
-    private static final Date EXPIRATION_DATE = new Date();
     private static final String URL = "url";
-    private static final int HEIGHT = 1;
-    private static final int WIDTH = 2;
+    private CheckoutMetadata checkoutMetadataWithStreamingFormat = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
+    private CheckoutMetadata checkoutMetadataWithDownloadableFormat = CheckoutMetadataBuilder.checkoutMetadataWithDownloadableFormat();
     @Mock
-    private ReadyLoan readyLoan;
+    private Checkout checkout;
     @Mock
     private LmsLoan lmsLoan;
     @Mock
-    private ContentProviderLoan contentProviderLoan;
-    @Mock
-    private ContentProviderLoanMetadata contentProviderLoanMetadata;
-    @Mock
-    private StreamingContent streamingContent;
-    @Mock
-    private DownloadableContent downloadableContent;
+    private ContentLink contentLink;
     private ReadyLoan_v1 actualReadyLoan_v1;
     private ContentProviderLoan_v1 actualContentProviderLoan_v1;
 
     @Test
     public void convert_streamingContent() {
-        givenStreamingContent();
-        given(contentProviderLoanMetadata.getId()).willReturn(LOAN_ID.toString());
-        given(contentProviderLoanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
-        given(contentProviderLoan.getMetadata()).willReturn(contentProviderLoanMetadata);
-        given(readyLoan.getContentProviderLoan()).willReturn(contentProviderLoan);
-        given(lmsLoan.getId()).willReturn(LOAN_ID.toString());
-        given(readyLoan.getLmsLoan()).willReturn(lmsLoan);
-        given(readyLoan.getId()).willReturn(LOAN_ID);
+        givenContentLink();
+        given(checkout.metadata()).willReturn(checkoutMetadataWithStreamingFormat);
         whenConvert();
         thenActualReadyLoanIdEqualsExpected();
         thenActualContentProviderLoanEqualsExpected();
@@ -51,63 +40,50 @@ public class ReadyLoanV1ConverterTest {
         thenActualLmsLoanEqualsExpected();
     }
 
-    private void givenStreamingContent() {
-        given(streamingContent.getUrl()).willReturn(URL);
-        given(streamingContent.getHeight()).willReturn(HEIGHT);
-        given(streamingContent.getWidth()).willReturn(WIDTH);
-        given(contentProviderLoan.getContent()).willReturn(streamingContent);
+    private void givenContentLink() {
+        given(contentLink.href()).willReturn(URL);
+        given(checkout.contentLink()).willReturn(contentLink);
     }
 
     private void whenConvert() {
-        actualReadyLoan_v1 = ReadyLoanV1Converter.convert(readyLoan);
+        actualReadyLoan_v1 = ReadyLoanV1Converter.convert(checkout);
         actualContentProviderLoan_v1 = actualReadyLoan_v1.getContentProviderLoan();
     }
 
     private void thenActualReadyLoanIdEqualsExpected() {
-        assertEquals(LOAN_ID, actualReadyLoan_v1.getId());
+        assertEquals(CheckoutMetadataBuilder.ID, actualReadyLoan_v1.getId());
     }
 
     private void thenActualContentProviderLoanEqualsExpected() {
-        assertEquals(LOAN_ID.toString(), actualContentProviderLoan_v1.getId());
+        assertEquals(CheckoutMetadataBuilder.CONTENT_PROVIDER_LOAN_ID, actualContentProviderLoan_v1.getId());
     }
 
     private void thenActualExpirationDateEqualsExpectedExpirationDate() {
-        assertEquals(EXPIRATION_DATE, actualContentProviderLoan_v1.getExpirationDate());
+        assertEquals(CheckoutMetadataBuilder.EXPIRATION_DATE, actualContentProviderLoan_v1.getExpirationDate());
     }
 
     private void thenActualStreamingContentEqualsExpected() {
         StreamingContent_v1 actualContent = (StreamingContent_v1) actualContentProviderLoan_v1.getContent();
         assertEquals(URL, actualContent.getUrl());
-        assertEquals(HEIGHT, actualContent.getHeight());
-        assertEquals(WIDTH, actualContent.getWidth());
+        assertEquals(FormatBuilder.PLAYER_HEIGHT, actualContent.getHeight());
+        assertEquals(FormatBuilder.PLAYER_WIDTH, actualContent.getWidth());
     }
 
     private void thenActualLmsLoanEqualsExpected() {
         LmsLoan_v1 actualLmsLoan_v1 = actualReadyLoan_v1.getLmsLoan();
-        assertEquals(LOAN_ID.toString(), actualLmsLoan_v1.getId());
+        assertEquals(CheckoutMetadataBuilder.LMS_LOAN_ID, actualLmsLoan_v1.getId());
     }
 
     @Test
     public void convert_downloadableContent() {
-        givenDownloadableContent();
-        given(contentProviderLoanMetadata.getId()).willReturn(LOAN_ID.toString());
-        given(contentProviderLoanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
-        given(contentProviderLoan.getMetadata()).willReturn(contentProviderLoanMetadata);
-        given(readyLoan.getContentProviderLoan()).willReturn(contentProviderLoan);
-        given(lmsLoan.getId()).willReturn(LOAN_ID.toString());
-        given(readyLoan.getLmsLoan()).willReturn(lmsLoan);
-        given(readyLoan.getId()).willReturn(LOAN_ID);
+        givenContentLink();
+        given(checkout.metadata()).willReturn(checkoutMetadataWithDownloadableFormat);
         whenConvert();
         thenActualReadyLoanIdEqualsExpected();
         thenActualContentProviderLoanEqualsExpected();
         thenActualExpirationDateEqualsExpectedExpirationDate();
         thenActualDownloadableContentEqualsExpected();
         thenActualLmsLoanEqualsExpected();
-    }
-
-    private void givenDownloadableContent() {
-        given(downloadableContent.getUrl()).willReturn(URL);
-        given(contentProviderLoan.getContent()).willReturn(downloadableContent);
     }
 
     private void thenActualDownloadableContentEqualsExpected() {

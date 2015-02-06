@@ -8,7 +8,6 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.Formats;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,6 +80,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         underTest = new ElibDataAccessor();
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "elibFacade", elibFacade);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     @Test
@@ -112,20 +112,6 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         Assert.assertTrue(actualFormats.getFormats().isEmpty());
     }
 
-    @Test
-    public void getFormatsWithElibFormatNameAndDescriptionWhenNoTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProductResponse();
-        givenProductResponseStatusOk();
-        givenProductFormats();
-        givenNoTextBundle();
-        givenProductStatusIsOk();
-        whenGetFormats();
-        thenFormatHasElibFormatNameAndDescription();
-    }
-
     private void givenProductFormats() {
         List<se.elib.library.product.Response.Data.Product.Formats.Format> elibFormatList = Arrays.asList(elibFormat);
         given(productResponse.getData()).willReturn(productData);
@@ -143,8 +129,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
     private void thenFormatHasElibFormatNameAndDescription() {
         Assert.assertFalse(actualFormats.getFormats().isEmpty());
         Format actualFormat = actualFormats.getFormats().iterator().next();
-        Assert.assertEquals(ELIB_FORMAT_NAME, actualFormat.getName());
-        Assert.assertEquals(ELIB_FORMAT_DESCRIPTION, actualFormat.getDescription());
+        Assert.assertEquals(ELIB_FORMAT_NAME, actualFormat.name());
+        Assert.assertEquals(ELIB_FORMAT_DESCRIPTION, actualFormat.description());
     }
 
     private void givenProductStatusIsOk() {
@@ -163,6 +149,7 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
 
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
+        givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -171,9 +158,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenProductFormats();
         givenProductStatusIsOk();
         givenTextBundle();
-        givenEhubFormatNameAndDescription();
         whenGetFormats();
-        thenFormatHasEhubFormatNameAndDescription();
+        thenActualFormatEqualsExpected();
     }
 
     @Test
@@ -186,23 +172,8 @@ public class ElibDataAccessorTest extends AbstractContentProviderDataAccessorTes
         givenProductFormats();
         givenProductStatusIsNotOk();
         givenTextBundle();
-        givenEhubFormatNameAndDescription();
         whenGetFormats();
         thenNoFormats();
-    }
-
-    @Test
-    public void getFormatsWithElibFormatNameAndDescriptionWhenTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProductResponse();
-        givenProductResponseStatusOk();
-        givenProductFormats();
-        givenProductStatusIsOk();
-        givenTextBundle();
-        whenGetFormats();
-        thenFormatHasElibFormatNameAndDescription();
     }
 
     @Test

@@ -9,9 +9,6 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -22,7 +19,6 @@ import com.axiell.ehub.util.HashCodeBuilderFactory;
  */
 @Embeddable
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
 public class LmsLoan implements Serializable {
     private String id;
 
@@ -47,7 +43,6 @@ public class LmsLoan implements Serializable {
      * @return the ID of the loan in the LMS
      */
     @Column(name = "LMS_LOAN_ID", nullable = false)
-    @XmlAttribute(name = "id", required = true)
     public String getId() {
         return id;
     }

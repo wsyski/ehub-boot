@@ -13,10 +13,7 @@ import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
 import com.axiell.ehub.provider.overdrive.DownloadLink.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLink.Links.ContentLink;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +24,9 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired(required = true)
     private IOverDriveFacade overDriveFacade;
+
+    @Autowired
+    private IFormatFactory formatFactory;
 
     @Override
     public Formats getFormats(final CommandData data) {
@@ -47,21 +47,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
 
     private Format makeFormat(final String language, final ContentProvider contentProvider, DiscoveryFormat discoveryFormat) {
         final String formatId = discoveryFormat.getId();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
-
-        final String name;
-        final String description;
-
-        if (textBundle == null) {
-            name = discoveryFormat.getName();
-            description = null;
-        } else {
-            name = textBundle.getName() == null ? discoveryFormat.getName() : textBundle.getName();
-            description = textBundle.getDescription();
-        }
-
-        return new Format(formatId, name, description, null);
+        return formatFactory.create(contentProvider, formatId, language);
     }
 
     @Override

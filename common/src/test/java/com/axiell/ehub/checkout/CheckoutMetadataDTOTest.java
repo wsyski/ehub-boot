@@ -16,13 +16,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CheckoutMetadataDTOTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutMetadataDTOTest.class);
     private ObjectMapper mapper;
     private CheckoutMetadataDTO expCheckoutMetadataDTO1;
     private CheckoutMetadataDTO expCheckoutMetadataDTO2;
+    private FormatDTO expFormatDTO;
     private List<CheckoutMetadataDTO> expCheckoutsDTO;
     private String expJson;
     private List<CheckoutMetadataDTO> actDTO;
@@ -36,8 +39,8 @@ public class CheckoutMetadataDTOTest {
     public void setUpExpectedDTO() {
         expCheckoutMetadataDTO1 = new CheckoutMetadataDTO().id(1L);
 
-        FormatDTO formatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
-        expCheckoutMetadataDTO2 = new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2").format(formatDTO);
+        expFormatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
+        expCheckoutMetadataDTO2 = new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2").format(expFormatDTO);
         expCheckoutsDTO = new ArrayList<>();
         expCheckoutsDTO.add(expCheckoutMetadataDTO1);
         expCheckoutsDTO.add(expCheckoutMetadataDTO2);
@@ -68,9 +71,6 @@ public class CheckoutMetadataDTOTest {
         CheckoutMetadataDTO actCheckoutMetadataDTO1 = actDTO.get(0);
         assertEquals(expCheckoutMetadataDTO1.getId(), actCheckoutMetadataDTO1.getId());
         CheckoutMetadataDTO actCheckoutMetadataDTO2 = actDTO.get(1);
-        assertEquals(expCheckoutMetadataDTO2.getId(), actCheckoutMetadataDTO2.getId());
-        assertEquals(expCheckoutMetadataDTO2.getLmsLoanId(), actCheckoutMetadataDTO2.getLmsLoanId());
-        assertEquals(expCheckoutMetadataDTO2.getContentProviderLoanId(), actCheckoutMetadataDTO2.getContentProviderLoanId());
-        assertEquals(expCheckoutMetadataDTO2.getExpirationDate(), actCheckoutMetadataDTO2.getExpirationDate());
+        assertThat(actCheckoutMetadataDTO2, matchesExpectedCheckoutMetadataDTO(expCheckoutMetadataDTO2));
     }
 }

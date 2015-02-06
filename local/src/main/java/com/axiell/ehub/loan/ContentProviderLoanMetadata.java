@@ -10,7 +10,6 @@ import com.axiell.ehub.util.Validate;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,8 +18,6 @@ import java.util.Date;
  */
 @Embeddable
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({FormatDecoration.class})
 public class ContentProviderLoanMetadata implements Serializable {
     private String id;
     private ContentProvider contentProvider;
@@ -48,7 +45,6 @@ public class ContentProviderLoanMetadata implements Serializable {
      * @return the ID of the loan at a {@link com.axiell.ehub.provider.ContentProvider}
      */
     @Column(name = "CONTENT_PROVIDER_LOAN_ID", nullable = true)
-    @XmlAttribute(name = "id", required = true)
     public String getId() {
         return id;
     }
@@ -92,7 +88,6 @@ public class ContentProviderLoanMetadata implements Serializable {
      */
     @Temporal(TemporalType.DATE)
     @Column(name = "EXPIRATION_DATE", nullable = false)
-    @XmlAttribute(name = "expirationDate", required = true)
     public Date getExpirationDate() {
         return DateFactory.create(expirationDate);
     }
@@ -117,7 +112,6 @@ public class ContentProviderLoanMetadata implements Serializable {
     @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
     @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D")
     @ManyToOne
-    @XmlElement(name = "formatDecoration", required = true)
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;
     }

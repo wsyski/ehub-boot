@@ -9,7 +9,7 @@ public class FormatsV1Converter {
         Formats_v1 formats_v1 = new Formats_v1();
 
         for (Format format : formats.getFormats()) {
-            Format_v1 format_v1 = new Format_v1(format.getId(), format.getName(), format.getDescription(), format.getIconUrl());
+            Format_v1 format_v1 = new Format_v1(format.id(), format.name(), format.description(), null);
             formats_v1.addFormat(format_v1);
         }
 

@@ -3,9 +3,9 @@
  */
 package com.axiell.ehub.provider.record.format;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +23,6 @@ public class Formats {
     }
 
     public List<Format> asList() {
-        return Lists.newArrayList(formats);
+        return new ArrayList<>(formats);
     }
 }

@@ -104,7 +104,7 @@ public class RemoteLoanIT_SNAPSHOT extends AbstractRemoteIT {
 
     private void thenValidContentLink(final ContentLink contentLink) {
         Assert.assertNotNull(contentLink);
-        Assert.assertNotNull(contentLink.getHref());
+        Assert.assertNotNull(contentLink.href());
     }
 
 

@@ -6,8 +6,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatBuilder;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.google.common.collect.Lists;
 import org.junit.Before;
@@ -27,8 +26,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     @Mock
     private IOcdFacade ocdFacade;
     @Mock
-    private IFormatFactory formatFactory;
-    @Mock
     private IOcdAuthenticator ocdAuthenticator;
     @Mock
     private BearerToken bearerToken;
@@ -36,8 +33,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     private IOcdCheckoutHandler ocdCheckoutHandler;
     @Mock
     private MediaDTO mediaDTO;
-    @Mock
-    private Format format;
     @Mock
     private Checkout checkout;
     @Mock
@@ -49,40 +44,36 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     public void setUpUnderTest() {
         underTest = new OcdDataAccessor();
         ReflectionTestUtils.setField(underTest, "ocdFacade", ocdFacade);
-        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "ocdAuthenticator", ocdAuthenticator);
         ReflectionTestUtils.setField(underTest, "ocdCheckoutHandler", ocdCheckoutHandler);
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     @Test
     public void getFormats_success() {
-        givenContentProviderRecordIdInMedia();
+        givenLanguageInCommandData();
+        givenContentProviderRecordAndFormatIdInMedia();
         givenAllMedia();
         givenContentProviderRecordIdInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormat();
+        givenFormatFromFormatFactory();
         whenGetFormats();
         thenFormatSetContainsOneFormat();
-        thenFormatHasEhubFormatNameAndDescription();
+        thenActualFormatEqualsExpected();
     }
 
-    private void givenContentProviderRecordIdInMedia() {
+    private void givenContentProviderRecordAndFormatIdInMedia() {
         given(mediaDTO.getTitleId()).willReturn(RECORD_ID);
+        given(mediaDTO.getMediaType()).willReturn(FormatBuilder.FORMAT_ID);
     }
 
     private void givenAllMedia() {
         List<MediaDTO> allMedia = Lists.newArrayList(mediaDTO);
         given(ocdFacade.getAllMedia(contentProviderConsumer)).willReturn(allMedia);
-    }
-
-    private void givenFormat() {
-        given(format.getName()).willReturn(EHUB_FORMAT_NAME);
-        given(format.getDescription()).willReturn(EHUB_FORMAT_DESCRIPTION);
-        given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(format);
     }
 
     private void whenGetFormats() {
@@ -96,7 +87,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         givenFormatDecorationFromContentProvider();
         givenContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormat();
+        givenFormatFromFormatFactory();
         whenGetFormats();
         thenFormatSetIsEmpty();
     }

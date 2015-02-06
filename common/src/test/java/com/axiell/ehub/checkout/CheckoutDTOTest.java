@@ -14,9 +14,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Date;
 
+import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
 import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CheckoutDTOTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutDTOTest.class);
     private ObjectMapper mapper;
@@ -59,10 +60,7 @@ public class CheckoutDTOTest {
 
     private void thenActualCheckoutDTOEqualsExpectedCheckoutDTO() {
         CheckoutMetadataDTO actCheckoutMetadataDTO = actCheckoutDTO.getMetadata();
-        assertEquals(expCheckoutMetadataDTO.getId(), actCheckoutMetadataDTO.getId());
-        assertEquals(expCheckoutMetadataDTO.getLmsLoanId(), actCheckoutMetadataDTO.getLmsLoanId());
-        assertEquals(expCheckoutMetadataDTO.getContentProviderLoanId(), actCheckoutMetadataDTO.getContentProviderLoanId());
-        assertEquals(expCheckoutMetadataDTO.getExpirationDate(), actCheckoutMetadataDTO.getExpirationDate());
+        assertThat(actCheckoutMetadataDTO, matchesExpectedCheckoutMetadataDTO(expCheckoutMetadataDTO));
         ContentLinkDTO actContentLinkDTO = actCheckoutDTO.getContentLink();
         assertEquals(expContentLinkDTO.getHref(), actContentLinkDTO.getHref());
     }

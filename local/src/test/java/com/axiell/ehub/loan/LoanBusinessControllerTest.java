@@ -3,12 +3,18 @@
  */
 package com.axiell.ehub.loan;
 
+import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 
 import java.util.Date;
 
+import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +40,7 @@ import com.axiell.ehub.security.AuthInfo;
 public class LoanBusinessControllerTest {
     private static final Long READY_LOAN_ID = 0L;
     private static final String LANGUAGE = "en";
+    public static final String LMS_LOAN_ID = "lmsLoanId";
     private ILoanBusinessController underTest;
     @Mock
     private IConsumerBusinessController consumerBusinessController;
@@ -65,7 +72,11 @@ public class LoanBusinessControllerTest {
     private EhubLoan newEhubLoan;
     @Mock
     private EhubLoan existingEhubLoan;
+    @Mock
+    private ICheckoutMetadataFactory checkoutMetadataFactory;
+    private CheckoutMetadata checkoutMetadata;
     private ReadyLoan actualReadyLoan;
+    private CheckoutsSearchResult actualSearchResult;
 
     @Before
     public void setUpCommonArguments() throws EhubException {
@@ -75,12 +86,15 @@ public class LoanBusinessControllerTest {
 
     @Before
     public void setUpLoanBusinessController() {
+        checkoutMetadata = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
+        given(checkoutMetadataFactory.create(any(EhubLoan.class), anyString())).willReturn(checkoutMetadata);
         underTest = new LoanBusinessController();
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
         ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
         ReflectionTestUtils.setField(underTest, "ehubLoanRepositoryFacade", ehubLoanRepositoryFacade);
         ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
         ReflectionTestUtils.setField(underTest, "readyLoanFactory", readyLoanFactory);
+        ReflectionTestUtils.setField(underTest, "checkoutMetadataFactory", checkoutMetadataFactory);
     }
 
     @Before
@@ -144,7 +158,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void givenActiveLoanAsPreCheckoutAnalysisResult() {
-        CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.ACTIVE_LOAN, "lmsLoanId");
+        CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.ACTIVE_LOAN, LMS_LOAN_ID);
         given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(
                 preCheckoutAnalysis);
     }
@@ -189,17 +203,37 @@ public class LoanBusinessControllerTest {
         return inOrder;
     }
 
-    private void whenGetReadyLoanByLmsLoanId() {
-        actualReadyLoan = underTest.getReadyLoan(authInfo, "lmsLoanId", LANGUAGE);
-    }
+//    private void whenGetReadyLoanByLmsLoanId() {
+//        actualReadyLoan = underTest.getReadyLoan(authInfo, LMS_LOAN_ID, LANGUAGE);
+//    }
+
+//    @Test
+//    public void getReadyLoanByLmsLoanId() {
+//        givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+//        whenGetReadyLoanByLmsLoanId();
+//        InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+//        thenContentIsRetrievedFromContentProvider(inOrder);
+//    }
 
     @Test
-    public void getReadyLoanByLmsLoanId() {
+    public void search() {
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-
-        whenGetReadyLoanByLmsLoanId();
-
+        whenSearch();
         InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-        thenContentIsRetrievedFromContentProvider(inOrder);
+        thenContentIsNotRetrievedFromContentProvider(inOrder);
+        thenActualSearchResultEqualsExpected();
+    }
+
+    private void whenSearch() {
+        actualSearchResult = underTest.search(authInfo, LMS_LOAN_ID, LANGUAGE);
+    }
+
+    private void thenContentIsNotRetrievedFromContentProvider(InOrder inOrder) {
+        inOrder.verify(contentProviderDataAccessorFacade, never()).getContent(any(EhubConsumer.class), any(EhubLoan.class), any(Patron.class), any(String.class));
+    }
+
+    private void thenActualSearchResultEqualsExpected() {
+        CheckoutMetadata actualCheckoutMetadata = actualSearchResult.findCheckoutByLmsLoanId(LMS_LOAN_ID);
+        assertThat(actualCheckoutMetadata.toDTO(), matchesExpectedCheckoutMetadataDTO(checkoutMetadata.toDTO()));
     }
 }

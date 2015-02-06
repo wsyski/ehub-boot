@@ -7,7 +7,7 @@ public class ContentLink {
         this.contentLinkDTO = contentLinkDTO;
     }
 
-    public String getHref() {
+    public String href() {
         return contentLinkDTO.getHref();
     }
 }

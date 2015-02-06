@@ -65,10 +65,12 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         underTest = new ElibUDataAccessor();
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "elibUFacade", elibUFacade);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     @Test
     public void getFormats() {
+        givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -80,7 +82,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenAvailableFormats();
         givenFormatIdInAvailableFormat();
         givenTextBundle();
-        givenEhubFormatNameAndDescription();
         whenGetFormats();
         thenFormatSetContainsOneFormat();
     }

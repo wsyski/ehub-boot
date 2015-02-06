@@ -11,10 +11,7 @@ import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.*;
 import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,9 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired(required = true)
     private IExpirationDateFactory expirationDateFactory;
+
+    @Autowired
+    private IFormatFactory formatFactory;
 
     @Override
     public Formats getFormats(final CommandData data) {
@@ -75,22 +75,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
     private Format makeFormat(final ContentProvider contentProvider, final Product product, final String language) {
         final String formatId = product.getType();
-
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
-
-        final String name;
-        final String description;
-
-        if (textBundle == null) {
-            name = formatId;
-            description = null;
-        } else {
-            name = textBundle.getName() == null ? formatId : textBundle.getName();
-            description = textBundle.getDescription();
-        }
-
-        return new Format(formatId, name, description, null);
+        return formatFactory.create(contentProvider, formatId, language);
     }
 
     @Override

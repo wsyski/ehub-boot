@@ -5,13 +5,23 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.search.SearchResultDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutsSearchResult {
     private final List<CheckoutMetadataDTO> items;
 
+    public CheckoutsSearchResult() {
+        this(new SearchResultDTO<CheckoutMetadataDTO>().items(new ArrayList<CheckoutMetadataDTO>()));
+    }
+
     public CheckoutsSearchResult(SearchResultDTO<CheckoutMetadataDTO> searchResultDTO) {
         this.items = searchResultDTO.getItems();
+    }
+
+    public CheckoutsSearchResult addItem(CheckoutMetadata item) {
+        items.add(item.toDTO());
+        return this;
     }
 
     public CheckoutMetadata findCheckoutByLmsLoanId(final String lmsLoanId) {

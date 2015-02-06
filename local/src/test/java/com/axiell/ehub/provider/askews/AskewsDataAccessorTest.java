@@ -22,7 +22,6 @@ import static org.mockito.BDDMockito.given;
 
 public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
-    private static final String FORMAT_ID = "formatId";
     private static final Integer LOAN_ID = 1;
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
     private static final Integer LOAN_REQUEST_NOT_SUCCESS = -1;
@@ -48,6 +47,7 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "askewsFacade", askewsFacade);
         ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     @Test
@@ -201,49 +201,20 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         actualContent = underTest.getContent(commandData);
     }
 
-    @Test
-    public void getFormatsWhenNoFormatDecoration() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenContentProvider();
-        try {
-            whenGetFormats();
-            Assert.fail("An InternalServerErrorException should have been thrown");
-        } catch (InternalServerErrorException e) {
-            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-        }
-    }
-
     private void whenGetFormats() {
         actualFormats = underTest.getFormats(commandData);
     }
 
     @Test
-    public void getFormatsWhenNoTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenContentProvider();
-        givenFormatDecorationFromContentProvider();
-        try {
-            whenGetFormats();
-            Assert.fail("An InternalServerErrorException should have been thrown");
-        } catch (InternalServerErrorException e) {
-            EhubAssert.thenInternalServerErrorExceptionIsThrown(e);
-        }
-    }
-
-    @Test
     public void getFormats() {
+        givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenTextBundle();
-        givenEhubFormatNameAndDescription();
         whenGetFormats();
-        thenFormatHasEhubFormatNameAndDescription();
+        thenActualFormatEqualsExpected();
     }
 }

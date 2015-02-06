@@ -1,26 +1,20 @@
 package com.axiell.ehub.provider.publit;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Assert;
+import com.axiell.ehub.EhubAssert;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.axiell.ehub.EhubAssert;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
-import com.axiell.ehub.provider.publit.ShopOrderUrl.DownloadItem;
-import com.axiell.ehub.provider.record.format.Format;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
@@ -45,20 +39,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "publitFacade", publitFacade);
         ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
-    }
-
-    @Test
-    public void getFormatsWithPublitFormatNameWhenNoTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProducts();
-        givenContentProvider();
-        givenFormatId();
-        whenGetFormats();
-        Format format = thenOneFormatIsReturned();
-        thenFormatHasPublitFormatName(format);
-        thenFormatHasNoDescription(format);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     private void givenProducts() {
@@ -74,39 +55,9 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         actualFormats = underTest.getFormats(commandData);
     }
 
-    private Format thenOneFormatIsReturned() {
-        Assert.assertNotNull(actualFormats);
-        Set<Format> formatSet = actualFormats.getFormats();
-        Assert.assertFalse(formatSet.isEmpty());
-        return formatSet.iterator().next();
-    }
-
-    private void thenFormatHasNoDescription(Format format) {
-        String description = format.getDescription();
-        Assert.assertNull(description);
-    }
-
-    private void thenFormatHasPublitFormatName(Format format) {
-        String name = format.getName();
-        Assert.assertEquals(FORMAT_ID, name);
-    }
-
     @Test
     public void getFormatsWithEhubFormatNameAndDescription() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProducts();
-        givenContentProvider();
-        givenFormatId();
-        givenTextBundle();
-        givenEhubFormatNameAndDescription();
-        whenGetFormats();
-        thenFormatHasEhubFormatNameAndDescription();
-    }
-
-    @Test
-    public void getFormatsWithPublitFormatNameWhenTextBundle() {
+        givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -115,9 +66,7 @@ public class PublitDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenFormatId();
         givenTextBundle();
         whenGetFormats();
-        Format format = thenOneFormatIsReturned();
-        thenFormatHasPublitFormatName(format);
-        thenFormatHasNoDescription(format);
+        thenActualFormatEqualsExpected();
     }
 
     @Test

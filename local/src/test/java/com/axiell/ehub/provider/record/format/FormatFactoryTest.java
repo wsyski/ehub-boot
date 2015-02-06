@@ -8,17 +8,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static com.axiell.ehub.provider.record.format.FormatBuilder.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FormatFactoryTest {
-    private static final String FORMAT_ID = "FORMAT_ID";
-    private static final String FORMAT_NAME = "FORMAT_NAME";
-    private static final String FORMAT_DESC = "FORMAT_DESC";
     private static final String LANGUAGE = "en";
+    private static final ContentDisposition CONTENT_DISPOSITION = ContentDisposition.STREAMING;
     private FormatFactory underTest;
     @Mock
     private ContentProviderConsumer contentProviderConsumer;
@@ -35,51 +35,121 @@ public class FormatFactoryTest {
         underTest = new FormatFactory();
     }
 
+    @Before
+    public void setUpFormatDecoration() {
+        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
+        given(formatDecoration.getPlayerWidth()).willReturn(PLAYER_WIDTH);
+        given(formatDecoration.getPlayerHeight()).willReturn(PLAYER_HEIGHT);
+    }
+
     @Test
-    public void create_noAvailableTexts() {
-        whenCreate();
+    public void create_fromContentProviderAndFormatId_noAvailableTexts_noContentDisposition() {
+        whenCreateFromContentProviderAndFormatId();
         thenActualFormatIdEqualsExpectedFormatId();
         thenDescriptionEqualsFormatId();
         thenNameEqualsFormatId();
+        thenContentDispositionIsNull();
+        thenPlayerWidthIsZero();
+        thenPlayerHeightIsZero();
     }
 
-    private void whenCreate() {
+    private void whenCreateFromContentProviderAndFormatId() {
         actualFormat = underTest.create(contentProvider, FORMAT_ID, LANGUAGE);
     }
 
     @Test
-    public void create_availableTexts() {
+    public void create_fromContentProviderAndFormatId_availableTexts_contentDisposition() {
         givenNameAndDescriptionInFormatTextBundle();
-        whenCreate();
+        givenContentDisposition();
+        givenFormatDecoration();
+        whenCreateFromContentProviderAndFormatId();
         thenActualFormatIdEqualsExpectedFormatId();
         thenDescriptionEqualsExpectedDescription();
         thenNameEqualsExpectedName();
+        thenContentDispositionEqualsExpectedContentDisposition();
     }
 
     private void givenNameAndDescriptionInFormatTextBundle() {
         given(textBundle.getName()).willReturn(FORMAT_NAME);
-        given(textBundle.getDescription()).willReturn(FORMAT_DESC);
+        given(textBundle.getDescription()).willReturn(FORMAT_DESCRIPTION);
         given(formatDecoration.getTextBundle(any(String.class))).willReturn(textBundle);
+    }
+
+    private void givenContentDisposition() {
+        given(formatDecoration.getContentDisposition()).willReturn(CONTENT_DISPOSITION);
+    }
+
+    private void givenFormatDecoration() {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
     }
 
     private void thenDescriptionEqualsExpectedDescription() {
-        assertThat(FORMAT_DESC, is(actualFormat.getDescription()));
+        assertThat(actualFormat.description(), is(FORMAT_DESCRIPTION));
     }
 
     private void thenNameEqualsExpectedName() {
-        assertThat(FORMAT_NAME, is(actualFormat.getName()));
+        assertThat(actualFormat.name(), is(FORMAT_NAME));
     }
 
     private void thenActualFormatIdEqualsExpectedFormatId() {
-        assertThat(FORMAT_ID, is(actualFormat.getId()));
+        assertThat(actualFormat.id(),is(FORMAT_ID));
     }
 
     private void thenDescriptionEqualsFormatId() {
-        assertThat(FORMAT_ID, is(actualFormat.getDescription()));
+        assertThat(actualFormat.description(), is(FORMAT_ID));
     }
 
     private void thenNameEqualsFormatId() {
-        assertThat(FORMAT_ID, is(actualFormat.getName()));
+        assertThat(actualFormat.name(), is(FORMAT_ID));
+    }
+
+    private void thenContentDispositionEqualsExpectedContentDisposition() {
+        assertThat(actualFormat.contentDisposition(), is(CONTENT_DISPOSITION));
+    }
+
+    private void thenContentDispositionIsNull() {
+        assertThat(actualFormat.contentDisposition(), is(nullValue()));
+    }
+
+    private void thenPlayerWidthIsZero() {
+        assertThat(actualFormat.playerWidth(), is(0));
+    }
+
+    private void thenPlayerHeightIsZero() {
+        assertThat(actualFormat.playerHeight(), is(0));
+    }
+
+    @Test
+    public void create_fromFormatDecoration_availableTexts_contentDisposition() {
+        givenNameAndDescriptionInFormatTextBundle();
+        givenContentDisposition();
+        whenCreateFromFormatDecoration();
+        thenActualFormatIdEqualsExpectedFormatId();
+        thenDescriptionEqualsExpectedDescription();
+        thenNameEqualsExpectedName();
+        thenContentDispositionEqualsExpectedContentDisposition();
+        thenPlayerWidthEqualsExpected();
+        thenPlayerHeightEqualsExpected();
+    }
+
+    private void whenCreateFromFormatDecoration() {
+        actualFormat = underTest.create(formatDecoration, LANGUAGE);
+    }
+
+    private void thenPlayerWidthEqualsExpected() {
+        assertThat(actualFormat.playerWidth(), is(FormatBuilder.PLAYER_WIDTH));
+    }
+
+    private void thenPlayerHeightEqualsExpected() {
+        assertThat(actualFormat.playerHeight(), is(FormatBuilder.PLAYER_HEIGHT));
+    }
+
+    @Test
+    public void create_fromFormatDecoration_noAvailableTexts_noContentDisposition() {
+        whenCreateFromFormatDecoration();
+        thenActualFormatIdEqualsExpectedFormatId();
+        thenDescriptionEqualsFormatId();
+        thenNameEqualsFormatId();
+        thenContentDispositionIsNull();
     }
 }

@@ -3,6 +3,9 @@
  */
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.checkout.CheckoutMetadataDTO;
+import com.axiell.ehub.checkout.CheckoutsSearchResult;
+import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 
 /**
@@ -11,6 +14,8 @@ import com.axiell.ehub.security.AuthInfo;
  * <p>This interface should only be used by the resources of the eHUB REST interface or by other business controllers.</p>
  */
 public interface ILoanBusinessController {
+
+    CheckoutsSearchResult search(AuthInfo authInfo, String lmsLoanId, String language);
 
     /**
      * Creates a loan both in the LMS and at the ContentProvider.
@@ -43,5 +48,5 @@ public interface ILoanBusinessController {
      * @return a ReadyLoan
      * @throws UnauthorizedException
      */
-    ReadyLoan getReadyLoan(AuthInfo authInfo, String lmsLoanId, String language);
+//    ReadyLoan getReadyLoan(AuthInfo authInfo, String lmsLoanId, String language);
 }

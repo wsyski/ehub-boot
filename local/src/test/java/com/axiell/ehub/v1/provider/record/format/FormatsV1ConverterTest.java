@@ -28,9 +28,9 @@ public class FormatsV1ConverterTest {
 
     @Test
     public void convert() {
-        given(format.getDescription()).willReturn(DESCRIPTION);
-        given(format.getId()).willReturn(ID);
-        given(format.getName()).willReturn(NAME);
+        given(format.description()).willReturn(DESCRIPTION);
+        given(format.id()).willReturn(ID);
+        given(format.name()).willReturn(NAME);
         formatSet = Sets.newSet(format);
         given(formats.getFormats()).willReturn(formatSet);
         whenConvert();

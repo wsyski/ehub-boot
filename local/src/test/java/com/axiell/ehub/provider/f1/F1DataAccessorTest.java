@@ -22,7 +22,6 @@ import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest {
-    private static final String F1_FORMAT_NAME = "F1Format";
     private static final String LOAN_ID = "loanId";
     private F1DataAccessor underTest;
     @Mock
@@ -62,7 +61,7 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         givenFormatFromFormatFactory();
         whenGetFormats();
         thenFormatSetContainsOneFormat();
-        thenFormatHasF1Name();
+        thenActualFormatEqualsExpected();
     }
 
     @Test
@@ -186,11 +185,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         actualLoan = underTest.createLoan(commandData);
     }
 
-    private void givenFormatFromFormatFactory() {
-        given(format.getName()).willReturn(F1_FORMAT_NAME);
-        given(formatFactory.create(contentProvider, FORMAT_ID, LANGUAGE)).willReturn(format);
-    }
-
     private void givenFormatIdFromF1Facade() {
         given(getFormatResponse.isValidFormat()).willReturn(true);
         given(getFormatResponse.getValue()).willReturn(FORMAT_ID);
@@ -203,11 +197,5 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     private void whenGetFormats() {
         actualFormats = underTest.getFormats(commandData);
-    }
-
-    private void thenFormatHasF1Name() {
-        Assert.assertFalse(actualFormats.getFormats().isEmpty());
-        Format actualFormat = actualFormats.getFormats().iterator().next();
-        assertEquals(F1_FORMAT_NAME, actualFormat.getName());
     }
 }

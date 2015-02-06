@@ -10,8 +10,22 @@ class FormatFactory implements IFormatFactory {
     public Format create(final ContentProvider contentProvider, final String formatId, final String language) {
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
         final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
+        return makeFormat(formatId, formatDecoration, textBundle);
+    }
+
+    @Override
+    public Format create(FormatDecoration formatDecoration, String language) {
+        final FormatTextBundle textBundle = formatDecoration.getTextBundle(language);
+        final String formatId = formatDecoration.getContentProviderFormatId();
+        return makeFormat(formatId, formatDecoration, textBundle);
+    }
+
+    private Format makeFormat(String formatId, FormatDecoration formatDecoration, FormatTextBundle textBundle) {
         final String name = textBundle == null ? formatId : textBundle.getName();
         final String description = textBundle == null ? formatId : textBundle.getDescription();
-        return new Format(formatId, name, description, null);
+        final ContentDisposition contentDisposition = formatDecoration == null ? null : formatDecoration.getContentDisposition();
+        final int playerWidth = formatDecoration == null ? 0 : formatDecoration.getPlayerWidth();
+        final int playerHeight = formatDecoration == null ? 0 : formatDecoration.getPlayerHeight();
+        return new Format(formatId, name, description, contentDisposition, playerWidth, playerHeight);
     }
 }

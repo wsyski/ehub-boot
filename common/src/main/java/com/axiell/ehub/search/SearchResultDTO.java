@@ -1,32 +1,49 @@
 package com.axiell.ehub.search;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import java.util.List;
 
+@JsonAutoDetect
 public class SearchResultDTO<O> {
-    private List<O> items = new ArrayList<>();
-    private int pageNumber;
-    private int pageSize;
-    private long totalElements;
-    private int totalPages;
+    private List<O> items;
+    private int offset;
+    private int limit;
+    private long totalItems;
 
     public List<O> getItems() {
-        return null;
+        return items;
     }
 
-    public int getPageNumber() {
-        return 0;
+    public SearchResultDTO<O> items(List<O> items) {
+        this.items = items;
+        return this;
     }
 
-    public int getPageSize() {
-        return 0;
+    public int getOffset() {
+        return offset;
     }
 
-    public long getTotalElements() {
-        return 0;
+    public SearchResultDTO<O> offset(int offset) {
+        this.offset = offset;
+        return this;
     }
 
-    public int getTotalPages() {
-        return 0;
+    public int getLimit() {
+        return limit;
+    }
+
+    public SearchResultDTO<O> limit(int limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public long getTotalItems() {
+        return totalItems;
+    }
+
+    public SearchResultDTO<O> totalItems(long totalItems) {
+        this.totalItems = totalItems;
+        return this;
     }
 }

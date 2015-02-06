@@ -59,21 +59,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         underTest = new OverDriveDataAccessor();
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
-    }
-
-    @Test
-    public void getFormatsWithOverDriveFormatNameWhenNoTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProduct();
-        givenDiscoveryFormat();
-        givenContentProvider();
-        givenFormatIdInDiscoveryFormat();
-        givenFormatNameInDiscoveryFormat();
-        whenGetFormats();
-        thenFormatSetContainsOneFormat();
-        thenFormatHasOverDriveName();
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
 
     private void givenProduct() {
@@ -100,11 +86,12 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     private void thenFormatHasOverDriveName() {
         Assert.assertFalse(actualFormats.getFormats().isEmpty());
         Format actualFormat = actualFormats.getFormats().iterator().next();
-        Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.getName());
+        Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.name());
     }
 
     @Test
     public void getFormatsWithEhubNameAndDescription() {
+        givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -113,25 +100,8 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentProvider();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
-        givenEhubFormatNameAndDescription();
         whenGetFormats();
-        thenFormatHasEhubFormatNameAndDescription();
-    }
-
-    @Test
-    public void getFormatsWithOverDriveFormatNameWhenTextBundle() {
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProduct();
-        givenDiscoveryFormat();
-        givenContentProvider();
-        givenFormatIdInDiscoveryFormat();
-        givenFormatNameInDiscoveryFormat();
-        givenTextBundle();
-        whenGetFormats();
-        thenFormatSetContainsOneFormat();
-        thenFormatHasOverDriveName();
+        thenActualFormatEqualsExpected();
     }
 
     private void givenErrorDetails() {

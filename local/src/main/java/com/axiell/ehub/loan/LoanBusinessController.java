@@ -3,6 +3,9 @@
  */
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.checkout.CheckoutMetadata;
+import com.axiell.ehub.checkout.CheckoutsSearchResult;
+import com.axiell.ehub.checkout.ICheckoutMetadataFactory;
 import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,18 @@ public class LoanBusinessController implements ILoanBusinessController {
 
     @Autowired(required = true)
     private IReadyLoanFactory readyLoanFactory;
+
+    @Autowired(required = true)
+    private ICheckoutMetadataFactory checkoutMetadataFactory;
+
+    @Override
+    @Transactional(readOnly = true)
+    public CheckoutsSearchResult search(AuthInfo authInfo, String lmsLoanId, String language) {
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
+        final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, language);
+        return new CheckoutsSearchResult().addItem(checkoutMetadata);
+    }
 
     @Override
     @Transactional(readOnly = false)
@@ -76,11 +91,11 @@ public class LoanBusinessController implements ILoanBusinessController {
         return makeReadyLoan(ehubConsumer, patron, ehubLoan, language);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) {
-        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final Patron patron = authInfo.getPatron();
-        return getReadyLoan(ehubConsumer, patron, lmsLoanId, language);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public ReadyLoan getReadyLoan(final AuthInfo authInfo, final String lmsLoanId, final String language) {
+//        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+//        final Patron patron = authInfo.getPatron();
+//        return getReadyLoan(ehubConsumer, patron, lmsLoanId, language);
+//    }
 }

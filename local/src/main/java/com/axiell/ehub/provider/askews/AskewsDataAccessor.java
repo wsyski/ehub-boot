@@ -12,10 +12,7 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.IContent;
 import com.axiell.ehub.provider.*;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 import com.axiell.ehub.util.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,30 +39,18 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     @Autowired(required = true)
     private IExpirationDateFactory expirationDateFactory;
 
+    @Autowired
+    private IFormatFactory formatFactory;
+
     @Override
     public Formats getFormats(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String language = data.getLanguage();
-        final FormatTextBundle textBundle = getTextBundle(contentProviderConsumer, language);
-        final Format format = makeFormat(textBundle);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final Format format = formatFactory.create(contentProvider, ASKEWS_FORMAT_ID, language);
         final Formats formats = new Formats();
         formats.addFormat(format);
         return formats;
-    }
-
-    private FormatTextBundle getTextBundle(ContentProviderConsumer contentProviderConsumer, String language) {
-        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(ASKEWS_FORMAT_ID);
-        Validate.isNotNull(formatDecoration, "FormatDecoration is null for Askews format ID = '" + ASKEWS_FORMAT_ID + "'");
-        final FormatTextBundle textBundle = formatDecoration.getTextBundle(language);
-        Validate.isNotNull(textBundle, "FormatTextBundle is null for Askews format ID = '" + ASKEWS_FORMAT_ID + "'");
-        return textBundle;
-    }
-
-    private Format makeFormat(final FormatTextBundle textBundle) {
-        final String name = textBundle.getName();
-        final String description = textBundle.getDescription();
-        return new Format(ASKEWS_FORMAT_ID, name, description, null);
     }
 
     @Override

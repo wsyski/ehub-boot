@@ -17,10 +17,7 @@ import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -50,6 +47,9 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired(required = true)
     private IElibFacade elibFacade;
+
+    @Autowired
+    private IFormatFactory formatFactory;
 
     @Override
     public Formats getFormats(final CommandData data) {
@@ -97,27 +97,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private Format makeFormat(final String language, final ContentProvider contentProvider,
                               se.elib.library.product.Response.Data.Product.Formats.Format elibFormat) {
         final String formatId = String.valueOf(elibFormat.getFormatId());
-    /*
-     * First try to get the name and description from the eHUB database. If
-	 * there exist no FormatTextBundle for this format in this language use
-	 * the Elib translations instead.
-	 */
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final FormatTextBundle textBundle = formatDecoration == null ? null : formatDecoration.getTextBundle(language);
-
-        final String name;
-        final String description;
-
-        if (textBundle == null) {
-            name = elibFormat.getName();
-            description = elibFormat.getDescription();
-        } else {
-            name = textBundle.getName() == null ? elibFormat.getName() : textBundle.getName();
-            description = textBundle.getDescription() == null ? elibFormat.getDescription() : textBundle.getDescription();
-        }
-
-        final String iconUrl = elibFormat.getIcon();
-        return new Format(formatId, name, description, iconUrl);
+        return formatFactory.create(contentProvider, formatId, language);
     }
 
     private InternalServerErrorException makeInternalServerErrorException(String message, String statusCode) {

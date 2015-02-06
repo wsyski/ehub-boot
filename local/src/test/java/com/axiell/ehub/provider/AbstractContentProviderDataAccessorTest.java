@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -16,22 +17,22 @@ import java.util.Set;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String RECORD_ID = "1";
-    protected static final String FORMAT_ID = "1";
+    protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String DOWNLOAD_URL = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
     protected static final String PIN = "pin";
-    protected static final String EHUB_FORMAT_NAME = "ehubFormatName";
-    protected static final String EHUB_FORMAT_DESCRIPTION = "ehubFormatDescription";
     private static final Date EXPIRATION_DATE = new Date();
     private static final int ERROR_STATUS = 500;
 
@@ -39,8 +40,6 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected IContentFactory contentFactory;
     @Mock
     protected DownloadableContent downloadableContent;
-//    @Mock
-//    protected PendingLoan pendingLoan;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
@@ -65,6 +64,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected CommandData commandData;
     @Mock
     protected Patron patron;
+    protected Format format = FormatBuilder.downloadableFormat();
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected IContent actualContent;
@@ -119,11 +119,6 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
     }
 
-    protected void givenEhubFormatNameAndDescription() {
-        given(textBundle.getName()).willReturn(EHUB_FORMAT_NAME);
-        given(textBundle.getDescription()).willReturn(EHUB_FORMAT_DESCRIPTION);
-    }
-
     protected void givenDownloadableContentDisposition() {
         given(formatDecoration.getContentDisposition()).willReturn(DOWNLOADABLE);
     }
@@ -149,6 +144,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
         given(contentFactory.create(DOWNLOAD_URL, formatDecoration)).willReturn(downloadableContent);
     }
 
+    protected void givenFormatFromFormatFactory() {
+        given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(format);
+    }
+
     protected void thenActualLoanContainsDownloadUrl() {
         Assert.assertNotNull(actualLoan);
         actualContent = actualLoan.getContent();
@@ -160,11 +159,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
         Assert.assertEquals(DOWNLOAD_URL, downloadableContent.getUrl());
     }
 
-    protected void thenFormatHasEhubFormatNameAndDescription() {
+    protected void thenActualFormatEqualsExpected() {
         Assert.assertFalse(actualFormats.getFormats().isEmpty());
         Format actualFormat = actualFormats.getFormats().iterator().next();
-        Assert.assertEquals(EHUB_FORMAT_NAME, actualFormat.getName());
-        Assert.assertEquals(EHUB_FORMAT_DESCRIPTION, actualFormat.getDescription());
+        assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(format.toDTO()));
     }
 
     protected Set<Format> thenFormatSetIsNotNull() {

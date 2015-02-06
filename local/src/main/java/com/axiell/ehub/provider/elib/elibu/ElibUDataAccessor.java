@@ -16,10 +16,7 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,9 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired(required = true)
     private IElibUFacade elibUFacade;
+
+    @Autowired
+    private IFormatFactory formatFactory;
 
     @Override
     public Formats getFormats(final CommandData data) {
@@ -58,7 +58,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
                 if (formatId == null) {
                     LOGGER.warn("ElibU returned a format without ID - ignoring this one");
                 } else {
-                    final Format format = makeFormat(language, contentProvider, formatId);
+                    final Format format = formatFactory.create(contentProvider, formatId, language);
                     formats.addFormat(format);
                 }
             }
@@ -72,14 +72,6 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     private List<AvailableFormat> getAvailableFormats(final Result result) {
         final Product product = result.getProduct();
         return product.getFormats();
-    }
-
-    private Format makeFormat(String language, final ContentProvider contentProvider, final String formatId) {
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final FormatTextBundle formatTextBundle = formatDecoration.getTextBundle(language);
-        final String name = formatTextBundle.getName();
-        final String description = formatTextBundle.getDescription();
-        return new Format(formatId, name, description, null);
     }
 
     private InternalServerErrorException makeInternalServerErrorException(String message, Status status) {
