@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
  * Skeletal implementation of the eHUB {@link RuntimeException}. It should be sub-classed to provide the specific
  * exceptions.
  */
-public abstract class EhubRuntimeException extends RuntimeException {
+public class EhubRuntimeException extends RuntimeException {
     private static final long serialVersionUID = -3317131212182853837L;
     private final int status;
     private final EhubError ehubError;
@@ -30,6 +30,19 @@ public abstract class EhubRuntimeException extends RuntimeException {
         super();
         this.status = status;
         this.ehubError = cause.toEhubError();
+        this.message = ehubError.getMessage();
+    }
+
+    /**
+     * Constructs a new {@link EhubRuntimeException}.
+     *
+     * @param status the HTTP status code
+     * @param ehubError
+     */
+    public EhubRuntimeException(final int status, final EhubError ehubError) {
+        super();
+        this.status = status;
+        this.ehubError = ehubError;
         this.message = ehubError.getMessage();
     }
 
@@ -102,11 +115,10 @@ public abstract class EhubRuntimeException extends RuntimeException {
     /**
      * Returns a {@link Response}.
      * 
-     * @return a {@link Response} with the provided status, getContent type {@link MediaType#APPLICATION_XML} and an
-     * {@link EhubError} as entity
+     * @return a {@link Response} with the provided status and an {@link EhubError} as entity
      */
-    public final Response getResponse() {
-        final Response.ResponseBuilder builder = Response.status(status).type(MediaType.APPLICATION_XML).entity(ehubError);
+    public final Response getResponse(final MediaType mediaType) {
+        final Response.ResponseBuilder builder = Response.status(status).type(mediaType).entity(ehubError);
 
         for (Header header : headers) {
             final String name = header.name;

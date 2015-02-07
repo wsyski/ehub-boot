@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.ext.Provider;
 
-@Component
 @Provider
 @ClientInterceptor
 public class TimeLoggingExecutionInterceptor implements ClientExecutionInterceptor {
