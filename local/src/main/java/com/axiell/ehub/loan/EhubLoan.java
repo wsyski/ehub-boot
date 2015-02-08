@@ -22,10 +22,6 @@ import com.axiell.ehub.util.HashCodeBuilderFactory;
 /**
  * Represents an eHUB loan, which basically connects an LMS loan, a Content Provider loan and the eHUB consumer who
  * executed the loans.
- * <p/>
- * <p>
- * An ID of the public {@link ReadyLoan} is exactly the same as the ID the underlying {@link EhubLoan}.
- * </p>
  */
 @Entity
 @Table(name = "EHUB_LOAN", uniqueConstraints = @UniqueConstraint(columnNames = {"LMS_LOAN_ID", "EHUB_CONSUMER_ID"}))
