@@ -14,7 +14,6 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @ClientInterceptor
 public class TimeLoggingExecutionInterceptor implements ClientExecutionInterceptor {
-    private static final String INVOCATION_TRAIL_NOT_AVAILABLE = "INVOCATION_TRAIL_NOT_AVAILABLE";
     private static final String SEPARATOR = "; ";
     private static final Logger TIME_LOGGER = LoggerFactory.getLogger("time");
 
@@ -49,7 +48,7 @@ public class TimeLoggingExecutionInterceptor implements ClientExecutionIntercept
 
     private String createLogMessage(final ClientExecutionContext executionContext, final long elapsedTime, final ClientResponse httpResponse, final Exception exception) throws
             Exception {
-        return INVOCATION_TRAIL_NOT_AVAILABLE + SEPARATOR + executionContext.getRequest().getHttpMethod() + SEPARATOR + executionContext.getRequest().getUri() + SEPARATOR + elapsedTime + SEPARATOR
+        return executionContext.getRequest().getHttpMethod() + SEPARATOR + executionContext.getRequest().getUri() + SEPARATOR + elapsedTime + SEPARATOR
                 + (httpResponse != null ? httpResponse.getStatus() : (exception == null ? "" : exception.getClass().getName() + ": " + exception.getMessage()));
     }
 
