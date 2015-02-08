@@ -14,8 +14,8 @@ import javax.ws.rs.core.MediaType;
 /**
  * Client Exception Interceptor.
  */
-public class EhubExceptionUnmarshallerClientInterceptor implements ClientErrorInterceptor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EhubExceptionUnmarshallerClientInterceptor.class);
+public class EhubExceptionUnmarshallingClientInterceptor implements ClientErrorInterceptor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EhubExceptionUnmarshallingClientInterceptor.class);
 
     /**
      * @see org.jboss.resteasy.client.core.ClientErrorInterceptor#handle(org.jboss.resteasy.client.ClientResponse)

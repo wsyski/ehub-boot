@@ -6,7 +6,7 @@ public abstract class EhubClientResteasyProviderFactory extends ResteasyProvider
 
     public static ResteasyProviderFactory getInstance() {
         final ResteasyProviderFactory providerFactory = ResteasyProviderFactory.getInstance();
-        providerFactory.addClientErrorInterceptor(new EhubExceptionUnmarshallerClientInterceptor());
+        providerFactory.addClientErrorInterceptor(new EhubExceptionUnmarshallingClientInterceptor());
         return providerFactory;
     }
 
