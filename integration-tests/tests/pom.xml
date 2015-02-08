@@ -19,7 +19,7 @@
         <module>remote-0.8</module>
         <module>remote-1.0</module>
         <module>remote-1.2</module>
-        <module>remote-SNAPSHOT</module>
+        <module>remote</module>
     </modules>
 
     <dependencies>
@@ -64,7 +64,8 @@
                         </executions>
                         <configuration>
                             <includes>
-                                <include>%regex[.*IT(_.*)?]</include>
+                                <include>**/*IT.java</include>
+                                <include>**/*IT_*.java</include>
                             </includes>
                         </configuration>
                     </plugin>

@@ -8,12 +8,6 @@
     <!-- List the resolver beans used by the JAX-RS resources -->
     <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver"/>
 
-	<!-- List only the JAX-RS Providers here, e.g. exception mappers, interceptors, converters etc. -->
-    <!--
-	<bean class="com.axiell.ehub.util.RestEasyBadRequestExceptionMapper"/>
-	<bean class="com.axiell.ehub.util.EhubRuntimeExceptionMapper"/>
-    <bean class="com.axiell.ehub.util.RuntimeExceptionMapper"/>
-    -->
 	<bean class="com.axiell.ehub.security.AuthorizationHeaderInterceptor"/>
 	<bean class="com.axiell.ehub.security.AuthInfoConverter"/>
 
