@@ -2,6 +2,8 @@ package com.axiell.ehub.util;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ForbiddenException;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.security.UnauthorizedException;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.junit.Assert;
@@ -27,6 +29,7 @@ public class RestEasyBadRequestExceptionMapperTest {
     private HttpHeaders headers;
 
     private BadRequestException badRequestException;
+    private Response response;
 
     @Before
     public void setUp() {
@@ -36,26 +39,46 @@ public class RestEasyBadRequestExceptionMapperTest {
     }
 
     @Test
-    public void nullPointerException() throws Exception {
-        Exception originalEx = new NullPointerException();
-       badRequestException = new BadRequestException(EXCEPTION_MESSAGE, originalEx);
-        final Response response = underTest.toResponse(badRequestException);
-        Assert.assertNotNull(response);
-        Object entity = response.getEntity();
-        Assert.assertEquals(entity.getClass(), EhubError.class);
-        EhubError ehubError = EhubError.class.cast(entity);
-        Assert.assertEquals(ehubError.getCause(), ErrorCause.BAD_REQUEST);
+    public void nullPointerException() {
+        givenCreatedBadRequestException(new NullPointerException());
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.BAD_REQUEST);
     }
 
     @Test
-    public void unauthorizedException() throws Exception {
-        Exception originalEx = new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER);
-        badRequestException = new BadRequestException(EXCEPTION_MESSAGE, originalEx);
-        final Response response = underTest.toResponse(badRequestException);
+    public void unauthorizedException() {
+        givenCreatedBadRequestException(new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER));
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.MISSING_AUTHORIZATION_HEADER);
+    }
+
+    @Test
+    public void internalServerErrorException() {
+        givenCreatedBadRequestException(new InternalServerErrorException(ErrorCause.CONTENT_PROVIDER_ERROR));
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.CONTENT_PROVIDER_ERROR);
+    }
+
+    @Test
+    public void forbiddenException() {
+        givenCreatedBadRequestException(new ForbiddenException(ErrorCause.LMS_CHECKOUT_DENIED));
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.LMS_CHECKOUT_DENIED);
+    }
+
+    private void whenResponseGenerated() {
+        response = underTest.toResponse(badRequestException);
+    }
+
+    private void givenCreatedBadRequestException(final Exception exception) {
+        badRequestException = new BadRequestException(EXCEPTION_MESSAGE, exception);
+    }
+
+    private void thenValidResponse(final ErrorCause errorCause) {
         Assert.assertNotNull(response);
         Object entity = response.getEntity();
         Assert.assertEquals(entity.getClass(), EhubError.class);
         EhubError ehubError = EhubError.class.cast(entity);
-        Assert.assertEquals(ehubError.getCause(), ErrorCause.MISSING_AUTHORIZATION_HEADER);
+        Assert.assertEquals(ehubError.getCause(), errorCause);
     }
 }
