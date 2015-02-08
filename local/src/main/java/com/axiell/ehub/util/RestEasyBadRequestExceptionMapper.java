@@ -43,7 +43,7 @@ public final class RestEasyBadRequestExceptionMapper extends AbstractEhubExcepti
         }
     }
 
-    private Response handleEhubRuntimeException(EhubRuntimeException ehubException) {
+    private Response handleEhubRuntimeException(final EhubRuntimeException ehubException) {
         return ehubException.getResponse(getMediaType());
     }
 }
