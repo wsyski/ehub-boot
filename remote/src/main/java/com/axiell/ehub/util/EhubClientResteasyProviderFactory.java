@@ -1,12 +1,12 @@
-package com.axiell.ehub.logging;
+package com.axiell.ehub.util;
 
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-public abstract class TimeLoggingResteasyProviderFactory extends ResteasyProviderFactory {
+public abstract class EhubClientResteasyProviderFactory extends ResteasyProviderFactory {
 
     public static ResteasyProviderFactory getInstance() {
         final ResteasyProviderFactory providerFactory = ResteasyProviderFactory.getInstance();
-        providerFactory.registerProvider(TimeLoggingExecutionInterceptor.class);
+        providerFactory.addClientErrorInterceptor(new EhubExceptionUnmarshallingClientInterceptor());
         return providerFactory;
     }
 

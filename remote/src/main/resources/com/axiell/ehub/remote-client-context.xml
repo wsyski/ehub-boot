@@ -10,28 +10,37 @@
 
     <util:properties id="remoteProperties" location="classpath:remote-client.properties"/>
 
-    <bean id="clientExecutor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
-        <constructor-arg ref="sslHttpClient"/>
-    </bean>
-
     <bean id="rootResourceProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="com.axiell.ehub.IRootResource"/>
         <property name="baseUri" ref="ehubUri"/>
+        <property name="clientExecutor" ref="clientExecutor"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
         <property name="rootResource" ref="rootResourceProxy"/>
     </bean>
 
+    <bean id="ehubUri" class="java.net.URI">
+        <constructor-arg value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}/v2"/>
+    </bean>
+    <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="com.axiell.ehub.util.EhubClientResteasyProviderFactory"/>
+        <property name="targetMethod" value="getInstance"/>
+    </bean>
+
+    <bean id="clientExecutor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
+        <constructor-arg ref="sslHttpClient"/>
+    </bean>
+
+    <aop:aspectj-autoproxy/>
+    <bean id="ehubClientExceptionAspect" class="com.axiell.ehub.EhubClientExceptionAspect"/>
+
+    <!--
     <bean id="exceptionMapper" class="org.jboss.resteasy.client.exception.mapper.ApacheHttpClient4ExceptionMapper"/>
 
     <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetClass" value="com.axiell.ehub.logging.TimeLoggingResteasyProviderFactory"/>
         <property name="targetMethod" value="getInstance"/>
-    </bean>
-
-    <bean id="ehubUri" class="java.net.URI">
-        <constructor-arg value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}/v2"/>
     </bean>
 
     <bean id="restEasyProviderFactory2" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -41,8 +50,5 @@
         <property name="targetMethod" value="addClientExceptionMapper"/>
         <property name="arguments" ref="exceptionMapper"/>
     </bean>
-
-    <aop:aspectj-autoproxy/>
-    <bean id="ehubClientExceptionAspect" class="com.axiell.ehub.EhubClientExceptionAspect"/>
-
+    -->
 </beans>

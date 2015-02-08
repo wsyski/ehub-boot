@@ -5,7 +5,9 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
@@ -22,11 +24,18 @@ public class RemoteFormatIT_SNAPSHOT extends AbstractRemoteIT {
         thenActualFormatsContainsExpectedComponents();
     }
 
-    @Test(expected = EhubException.class)
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+    @Test
     public void unauthorized() throws EhubException {
         givenInvalidAuthInfo();
+        thrown.expect(EhubException.class);
+        thrown.expectMessage("An eHUB Consumer with ID 0 could not be found");
         whenGetFormatsWithInvalidAuthInfo();
     }
+
+    @Rule
+    public ExpectedException expectedExxeption = ExpectedException.none();
 
     private void givenGetProductResponse() {
         stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader(
@@ -55,12 +64,8 @@ public class RemoteFormatIT_SNAPSHOT extends AbstractRemoteIT {
         record = underTest.getRecord(authInfo, "Distribut\u00f6r: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 
-    private void givenInvalidAuthInfo() {
-        try {
-            invalidAuthInfo = new AuthInfo.Builder(0L, "invalidSecret").build();
-        } catch (EhubException e) {
-            junit.framework.Assert.fail("An EhubException should not be thrown when an invalid AuthInfo is built");
-        }
+    private void givenInvalidAuthInfo() throws EhubException {
+        invalidAuthInfo = new AuthInfo.Builder(0L, "invalidSecret").build();
     }
 
     private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
