@@ -6,8 +6,6 @@ import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 
-import java.util.List;
-
 public class CheckoutsResource implements ICheckoutsResource {
     private final ILoanBusinessController loanBusinessController;
 
@@ -15,7 +13,7 @@ public class CheckoutsResource implements ICheckoutsResource {
         this.loanBusinessController = loanBusinessController;
     }
 
-    @Override    
+    @Override
     public SearchResultDTO<CheckoutMetadataDTO> search(AuthInfo authInfo, String lmsLoanId, String language) {
         final CheckoutsSearchResult searchResult = loanBusinessController.search(authInfo, lmsLoanId, language);
         return searchResult.toDTO();
@@ -24,9 +22,8 @@ public class CheckoutsResource implements ICheckoutsResource {
     @Override
     public CheckoutDTO checkout(AuthInfo authInfo, FieldsDTO fieldsDTO, String language) {
         Fields fields = new Fields(fieldsDTO);
-
-//        Checkout checkout = loanBusinessController.checkout(authInfo, )
-        return null;
+        Checkout checkout = loanBusinessController.checkout(authInfo, fields, language);
+        return checkout.toDTO();
     }
 
     @Override

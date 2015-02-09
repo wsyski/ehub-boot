@@ -24,7 +24,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     public void initFields() {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
-        fields.addValue("contentProviderName", ContentProviderName.ELIB.name());
+        fields.addValue("contentProviderAlias", ContentProviderName.ELIB.name());
         fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
         fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
     }
