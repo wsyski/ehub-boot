@@ -54,6 +54,14 @@ public class RestEasyBadRequestExceptionMapperTest {
     }
 
     @Test
+    public void nullPointerExceptionText() {
+        givenMediaType(MediaType.TEXT_PLAIN_TYPE);
+        givenCreatedBadRequestException(new NullPointerException());
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.BAD_REQUEST);
+    }
+
+    @Test
     public void unauthorizedException() {
         givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER));
