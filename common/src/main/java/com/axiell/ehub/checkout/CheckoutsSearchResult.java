@@ -24,6 +24,10 @@ public class CheckoutsSearchResult {
         return this;
     }
 
+    public List<CheckoutMetadataDTO> items() {
+       return items;
+    }
+
     public CheckoutMetadata findCheckoutByLmsLoanId(final String lmsLoanId) {
         for (CheckoutMetadataDTO item : items) {
             if (lmsLoanId.equals(item.getLmsLoanId()))

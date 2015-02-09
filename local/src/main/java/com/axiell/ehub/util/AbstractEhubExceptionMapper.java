@@ -32,7 +32,7 @@ public abstract class AbstractEhubExceptionMapper<E extends Throwable> implement
     }
 
     private boolean isSupportedMediaType(final MediaType mediaType) {
-        return mediaType != null && (MediaType.APPLICATION_JSON_TYPE.equals(mediaType)) || MediaType.APPLICATION_XML_TYPE.equals(mediaType);
+        return MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || MediaType.APPLICATION_XML_TYPE.equals(mediaType);
     }
 
     void setHeaders(final HttpHeaders headers) {

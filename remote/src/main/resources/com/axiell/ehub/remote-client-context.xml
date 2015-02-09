@@ -34,21 +34,4 @@
 
     <aop:aspectj-autoproxy/>
     <bean id="ehubClientExceptionAspect" class="com.axiell.ehub.EhubClientExceptionAspect"/>
-
-    <!--
-    <bean id="exceptionMapper" class="org.jboss.resteasy.client.exception.mapper.ApacheHttpClient4ExceptionMapper"/>
-
-    <bean id="restEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="targetClass" value="com.axiell.ehub.logging.TimeLoggingResteasyProviderFactory"/>
-        <property name="targetMethod" value="getInstance"/>
-    </bean>
-
-    <bean id="restEasyProviderFactory2" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="targetObject">
-            <ref bean="restEasyProviderFactory"/>
-        </property>
-        <property name="targetMethod" value="addClientExceptionMapper"/>
-        <property name="arguments" ref="exceptionMapper"/>
-    </bean>
-    -->
 </beans>

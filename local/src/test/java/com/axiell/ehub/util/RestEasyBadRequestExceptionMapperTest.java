@@ -35,11 +35,27 @@ public class RestEasyBadRequestExceptionMapperTest {
     public void setUp() {
         underTest = new RestEasyBadRequestExceptionMapper();
         underTest.setHeaders(headers);
-        given(headers.getMediaType()).willReturn(MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
     public void nullPointerException() {
+        givenMediaType(MediaType.APPLICATION_JSON_TYPE);
+        givenCreatedBadRequestException(new NullPointerException());
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.BAD_REQUEST);
+    }
+
+    @Test
+    public void nullPointerExceptionXml() {
+        givenMediaType(MediaType.APPLICATION_XML_TYPE);
+        givenCreatedBadRequestException(new NullPointerException());
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.BAD_REQUEST);
+    }
+
+    @Test
+    public void nullPointerExceptionText() {
+        givenMediaType(MediaType.TEXT_PLAIN_TYPE);
         givenCreatedBadRequestException(new NullPointerException());
         whenResponseGenerated();
         thenValidResponse(ErrorCause.BAD_REQUEST);
@@ -47,6 +63,7 @@ public class RestEasyBadRequestExceptionMapperTest {
 
     @Test
     public void unauthorizedException() {
+        givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER));
         whenResponseGenerated();
         thenValidResponse(ErrorCause.MISSING_AUTHORIZATION_HEADER);
@@ -54,6 +71,7 @@ public class RestEasyBadRequestExceptionMapperTest {
 
     @Test
     public void internalServerErrorException() {
+        givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new InternalServerErrorException(ErrorCause.CONTENT_PROVIDER_ERROR));
         whenResponseGenerated();
         thenValidResponse(ErrorCause.CONTENT_PROVIDER_ERROR);
@@ -61,6 +79,7 @@ public class RestEasyBadRequestExceptionMapperTest {
 
     @Test
     public void forbiddenException() {
+        givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new ForbiddenException(ErrorCause.LMS_CHECKOUT_DENIED));
         whenResponseGenerated();
         thenValidResponse(ErrorCause.LMS_CHECKOUT_DENIED);
@@ -80,5 +99,10 @@ public class RestEasyBadRequestExceptionMapperTest {
         Assert.assertEquals(entity.getClass(), EhubError.class);
         EhubError ehubError = EhubError.class.cast(entity);
         Assert.assertEquals(ehubError.getCause(), errorCause);
+    }
+
+
+    private void givenMediaType(final MediaType mediaType) {
+        given(headers.getMediaType()).willReturn(mediaType);
     }
 }

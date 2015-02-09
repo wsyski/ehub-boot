@@ -211,9 +211,14 @@ public final class ToStringConverter {
 
     private static String readClientResponseStream(final ClientResponse<?> clientResponseToProcess) throws IOException {
         InputStream io = ((BaseClientResponse<?>) clientResponseToProcess).getStreamFactory().getInputStream();
-        final String body = IOUtils.toString(io, EhubCharsets.UTF_8);
-        clientResponseToProcess.resetStream();
-        return body;
+        if (io!=null) {
+            final String body = IOUtils.toString(io, EhubCharsets.UTF_8);
+            clientResponseToProcess.resetStream();
+            return body;
+        }
+        else {
+            return null;
+        }
     }
 
     private static void appendResponseReason(final ClientResponse<?> clientResponseToProcess, final StringBuilder clientResponseStringBuilder) {
