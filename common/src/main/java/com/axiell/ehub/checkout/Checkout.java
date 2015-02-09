@@ -18,4 +18,8 @@ public class Checkout {
     public ContentLink contentLink() {
         return new ContentLink(checkoutDTO.getContentLink());
     }
+
+    public CheckoutDTO toDTO() {
+        return checkoutDTO;
+    }
 }

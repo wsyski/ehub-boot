@@ -3,8 +3,6 @@
  */
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.provider.ContentProviderName;
-
 public class PendingLoan {
     private String lmsRecordId;
     private String contentProviderName;
