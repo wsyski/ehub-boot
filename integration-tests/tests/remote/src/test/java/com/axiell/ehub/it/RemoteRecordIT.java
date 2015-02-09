@@ -14,29 +14,29 @@ import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class RemoteFormatIT extends RemoteITFixture {
-    private AuthInfo invalidAuthInfo;
+public class RemoteRecordIT extends RemoteITFixture {
     private Record record;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
-    public final void getFormats() throws EhubException {
+    public final void getRecord() throws EhubException {
         givenGetProductResponse();
-        whenGetFormats();
+        whenGetRecord(authInfo);
         thenActualFormatsContainsExpectedComponents();
     }
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
     @Test
     public void unauthorized() throws EhubException {
-        givenInvalidAuthInfo();
-        thrown.expect(EhubException.class);
-        thrown.expectMessage("An eHUB Consumer with ID 0 could not be found");
-        whenGetFormatsWithInvalidAuthInfo();
+        AuthInfo invalidAuthInfo=givenInvalidAuthInfo();
+        whenGetRecord(invalidAuthInfo);
+        thenExpectedExceptionMessage();
     }
 
-    @Rule
-    public ExpectedException expectedExxeption = ExpectedException.none();
+    private void thenExpectedExceptionMessage() {
+        expectedException.expectMessage("An eHUB Consumer with ID 0 could not be found");
+    }
 
     private void givenGetProductResponse() {
         stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader(
@@ -61,15 +61,12 @@ public class RemoteFormatIT extends RemoteITFixture {
         Assert.assertNotNull(name);
     }
 
-    private void whenGetFormats() throws EhubException {
+    private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
         record = underTest.getRecord(authInfo, "Distribut\u00f6r: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
     }
 
-    private void givenInvalidAuthInfo() throws EhubException {
-        invalidAuthInfo = new AuthInfo.Builder(0L, "invalidSecret").build();
-    }
-
-    private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
-        underTest.getRecord(invalidAuthInfo, "Distributör: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+    private AuthInfo givenInvalidAuthInfo() throws EhubException {
+        expectedException.expect(EhubException.class);
+        return new AuthInfo.Builder(0L, "invalidSecret").build();
     }
 }
