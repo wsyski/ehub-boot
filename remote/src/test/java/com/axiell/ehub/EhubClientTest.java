@@ -6,13 +6,13 @@ import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubUrlCodec;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,7 +56,7 @@ public class EhubClientTest {
     }
 
     private void thenContentProvidersResourceIsCalledWithEncodedAlias(Record record) {
-        Assert.assertSame(recordDTO, record.toDTO());
+        assertSame(recordDTO, record.toDTO());
         verify(contentProvidersResource, times(1)).records(getEncodedContentProviderAlias());
     }
 
