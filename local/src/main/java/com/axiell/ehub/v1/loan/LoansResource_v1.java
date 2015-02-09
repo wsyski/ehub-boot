@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.v1.loan;
 
+import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.CheckoutsSearchResult;
@@ -14,8 +15,8 @@ public final class LoansResource_v1 implements ILoansResource_v1 {
 
     @Override
     public ReadyLoan_v1 createLoan(AuthInfo authInfo, String language, PendingLoan_v1 pendingLoan_v1) {
-        PendingLoan pendingLoan = PendingLoanV1Converter.convert(pendingLoan_v1);
-        Checkout checkout = loanBusinessController.checkout(authInfo, pendingLoan, language);
+        Fields fields = PendingLoanV1Converter.convert(pendingLoan_v1);
+        Checkout checkout = loanBusinessController.checkout(authInfo, fields, language);
         return ReadyLoanV1Converter.convert(checkout);
     }
 

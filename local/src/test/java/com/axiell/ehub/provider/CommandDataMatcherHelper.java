@@ -33,7 +33,7 @@ public class CommandDataMatcherHelper {
     }
 
     public boolean isExpectedPendingLoan(PendingLoan expectedPendingLoan) {
-        return expectedPendingLoan.getContentProviderFormatId().equals(data.getContentProviderFormatId()) &&
-                expectedPendingLoan.getContentProviderRecordId().equals(data.getContentProviderRecordId());
+        return expectedPendingLoan.contentProviderFormatId().equals(data.getContentProviderFormatId()) &&
+                expectedPendingLoan.contentProviderRecordId().equals(data.getContentProviderRecordId());
     }
 }

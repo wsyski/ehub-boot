@@ -9,31 +9,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutsSearchResult {
-    private final List<CheckoutMetadataDTO> items;
+    private final SearchResultDTO<CheckoutMetadataDTO> searchResultDTO;
 
     public CheckoutsSearchResult() {
         this(new SearchResultDTO<CheckoutMetadataDTO>().items(new ArrayList<CheckoutMetadataDTO>()));
     }
 
     public CheckoutsSearchResult(SearchResultDTO<CheckoutMetadataDTO> searchResultDTO) {
-        this.items = searchResultDTO.getItems();
+        this.searchResultDTO = searchResultDTO;
     }
 
     public CheckoutsSearchResult addItem(CheckoutMetadata item) {
-        items.add(item.toDTO());
+        searchResultDTO.getItems().add(item.toDTO());
         return this;
     }
 
-    public List<CheckoutMetadataDTO> items() {
-       return items;
-    }
-
     public CheckoutMetadata findCheckoutByLmsLoanId(final String lmsLoanId) {
+        List<CheckoutMetadataDTO> items = searchResultDTO.getItems();
         for (CheckoutMetadataDTO item : items) {
             if (lmsLoanId.equals(item.getLmsLoanId()))
                 return new CheckoutMetadata(item);
         }
         final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_LOAN_ID, lmsLoanId);
         throw new NotFoundException(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, argument);
+    }
+
+    SearchResultDTO<CheckoutMetadataDTO> toDTO() {
+        return searchResultDTO;
     }
 }

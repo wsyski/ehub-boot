@@ -1,6 +1,7 @@
 package com.axiell.ehub.lms.palma;
 
 import com.axiell.ehub.DevelopmentData;
+import com.axiell.ehub.Fields;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
@@ -21,8 +22,8 @@ public abstract class AbstractPalmaLoansIT<T> extends AbstractPalmaIT {
 
     @Override
     void customSetUp() {
-        pendingLoan = new PendingLoan(DevelopmentData.LMS_RECORD_ID, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID,
-                DevelopmentData.ELIB_FORMAT_0_ID);
+        Fields fields = new Fields().addValue("lmsRecordId", DevelopmentData.LMS_RECORD_ID).addValue("contentProviderAlias", ContentProviderName.ELIB.name()).addValue("contentProviderRecordId", DevelopmentData.ELIB_RECORD_0_ID).addValue("contentProviderFormatId", DevelopmentData.ELIB_FORMAT_0_ID);
+        pendingLoan = new PendingLoan(fields);
         patron = new Patron.Builder(DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
     }
 

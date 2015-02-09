@@ -3,7 +3,6 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -69,7 +68,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
 
     private void givenProductIdInPendingLoan() {
         elibProductId = PRODUCT_ID;
-        given(pendingLoan.getContentProviderRecordId()).willReturn(elibProductId);
+        given(pendingLoan.contentProviderRecordId()).willReturn(elibProductId);
     }
 
     private void givenContentUrlInCreatedLoan() {

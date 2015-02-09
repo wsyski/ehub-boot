@@ -32,7 +32,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
 
     @Override
     public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language) {
-        final ContentProviderName name = aliasBusinessController.getName(pendingLoan.getContentProviderName());
+        final ContentProviderName name = aliasBusinessController.getName(pendingLoan.contentProviderAlias());
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);

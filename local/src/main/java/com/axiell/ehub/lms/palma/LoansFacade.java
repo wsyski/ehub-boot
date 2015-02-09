@@ -32,9 +32,9 @@ class LoansFacade implements ILoansFacade {
                 new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
         CheckOutTestRequest checkOutTestRequest = checkoutTestRequestObjectFactory.createCheckOutTestRequest();
         checkOutTestRequest.setArenaMember(agencyMemberIdentifier);
-        checkOutTestRequest.setRecordId(pendingLoan.getLmsRecordId());
-        checkOutTestRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
-        checkOutTestRequest.setContentProviderName(pendingLoan.getContentProviderName());
+        checkOutTestRequest.setRecordId(pendingLoan.lmsRecordId());
+        checkOutTestRequest.setContentProviderFormatId(pendingLoan.contentProviderFormatId());
+        checkOutTestRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutTestRequest.setUser(patron.getLibraryCard());
         checkOutTestRequest.setPassword(patron.getPin());
         com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
@@ -56,10 +56,10 @@ class LoansFacade implements ILoansFacade {
                 new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
         CheckOutRequest checkOutRequest = checkoutTestRequestObjectFactory.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
-        checkOutRequest.setRecordId(pendingLoan.getLmsRecordId());
+        checkOutRequest.setRecordId(pendingLoan.lmsRecordId());
         checkOutRequest.setExpirationDate(XjcSupport.toXmlGregorianCalendar(expirationDate));
-        checkOutRequest.setContentProviderFormatId(pendingLoan.getContentProviderFormatId());
-        checkOutRequest.setContentProviderName(pendingLoan.getContentProviderName());
+        checkOutRequest.setContentProviderFormatId(pendingLoan.contentProviderFormatId());
+        checkOutRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutRequest.setUser(patron.getLibraryCard());
         checkOutRequest.setPassword(patron.getPin());
         com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();

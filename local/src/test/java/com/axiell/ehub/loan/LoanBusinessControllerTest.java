@@ -5,7 +5,9 @@ package com.axiell.ehub.loan;
 
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -14,6 +16,9 @@ import static org.mockito.Mockito.never;
 
 import java.util.Date;
 
+import com.axiell.ehub.Fields;
+import com.axiell.ehub.FieldsBuilder;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.patron.Patron;
 import org.junit.Before;
@@ -51,7 +56,7 @@ public class LoanBusinessControllerTest {
     @Mock
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
     private AuthInfo authInfo;
-    private PendingLoan pendingLoan;
+    private Fields fields = FieldsBuilder.defaultFields();
     @Mock
     private EhubConsumer ehubConsumer;
     @Mock
@@ -81,7 +86,6 @@ public class LoanBusinessControllerTest {
     @Before
     public void setUpCommonArguments() throws EhubException {
         authInfo = new AuthInfo.Builder(0L, "secret").libraryCard("libraryCard").pin("pin").build();
-        pendingLoan = new PendingLoan("lmsRecordId", ContentProviderName.ELIB.toString(), "contentProviderRecordId", "contentProviderFormat");
     }
 
     @Before
@@ -134,7 +138,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void whenCreateLoan() {
-        actualCheckout = underTest.checkout(authInfo, pendingLoan, LANGUAGE);
+        actualCheckout = underTest.checkout(authInfo, fields, LANGUAGE);
     }
 
     private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
@@ -203,20 +207,8 @@ public class LoanBusinessControllerTest {
         return inOrder;
     }
 
-//    private void whenGetReadyLoanByLmsLoanId() {
-//        actualCheckout = underTest.getCheckout(authInfo, LMS_LOAN_ID, LANGUAGE);
-//    }
-
-//    @Test
-//    public void getReadyLoanByLmsLoanId() {
-//        givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-//        whenGetReadyLoanByLmsLoanId();
-//        InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-//        thenContentIsRetrievedFromContentProvider(inOrder);
-//    }
-
     @Test
-    public void search() {
+    public void search_found() {
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
         whenSearch();
         InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
@@ -235,5 +227,25 @@ public class LoanBusinessControllerTest {
     private void thenActualSearchResultEqualsExpected() {
         CheckoutMetadata actualCheckoutMetadata = actualSearchResult.findCheckoutByLmsLoanId(LMS_LOAN_ID);
         assertThat(actualCheckoutMetadata.toDTO(), matchesExpectedCheckoutMetadataDTO(checkoutMetadata.toDTO()));
+    }
+
+    @Test
+    public void search_notFound() {
+        givenEhubLoanCanNotBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
+        whenSearch();
+        thenSearchResultDoesNotContainLoanWithExpectedLmsLoanId();
+    }
+
+    private void givenEhubLoanCanNotBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId() {
+        given(ehubLoanRepositoryFacade.findEhubLoan(any(EhubConsumer.class), anyString())).willReturn(null);
+    }
+
+    private void thenSearchResultDoesNotContainLoanWithExpectedLmsLoanId() {
+        try {
+            actualSearchResult.findCheckoutByLmsLoanId(LMS_LOAN_ID);
+            fail("A NotFoundException should have been thrown");
+        } catch (NotFoundException e) {
+            assertNotNull(e);
+        }
     }
 }

@@ -14,8 +14,9 @@ public class Fields {
         this.dto = dto;
     }
 
-    public void addValue(String key, String value) {
+    public Fields addValue(String key, String value) {
         dto.getFields().put(key, value);
+        return this;
     }
 
     public String getRequiredValue(String key) {

@@ -3,6 +3,8 @@
  */
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.Fields;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +45,20 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Transactional(readOnly = true)
     public CheckoutsSearchResult search(AuthInfo authInfo, String lmsLoanId, String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final CheckoutsSearchResult checkoutsSearchResult = new CheckoutsSearchResult();
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
-        final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, language);
-        return new CheckoutsSearchResult().addItem(checkoutMetadata);
+        if (ehubLoan != null) {
+            final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, language);
+            checkoutsSearchResult.addItem(checkoutMetadata);
+        }
+        return checkoutsSearchResult;
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Checkout checkout(final AuthInfo authInfo, final PendingLoan pendingLoan, final String language) {
+    public Checkout checkout(final AuthInfo authInfo, final Fields fields, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final PendingLoan pendingLoan = new PendingLoan(fields);
         final Patron patron = authInfo.getPatron();
         final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron);
         final Result result = checkoutTestAnalysis.getResult();

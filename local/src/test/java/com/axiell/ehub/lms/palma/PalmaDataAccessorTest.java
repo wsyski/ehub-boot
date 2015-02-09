@@ -5,6 +5,8 @@ import com.axiell.arena.services.palma.loans.CheckOutTestResponse;
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutErrorStatusType;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
 import com.axiell.arena.services.palma.util.ISOCurrencyCodeType;
+import com.axiell.ehub.Fields;
+import com.axiell.ehub.FieldsBuilder;
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -121,7 +123,7 @@ public class PalmaDataAccessorTest {
         underTest = new PalmaDataAccessor();
         ReflectionTestUtils.setField(underTest, "loansFacade", loansFacade);
         ReflectionTestUtils.setField(underTest, "responseStatusChecker", new ResponseStatusChecker());
-        pendingLoan = new PendingLoan(LMS_RECORD_ID, ContentProviderName.ELIB.name(), PROVIDER_RECORD_ID, PROVIDER_FORMAT_ID);
+        pendingLoan = new PendingLoan(FieldsBuilder.defaultFields());
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperies = new HashMap<>();
         ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, PALMA_URL);
         ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, AGENCY_M_IDENTIFIER);

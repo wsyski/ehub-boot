@@ -52,8 +52,8 @@ public class CommandData implements ICommandData {
     }
 
     public CommandData setPendingLoan(final PendingLoan pendingLoan) {
-        this.contentProviderRecordId = pendingLoan.getContentProviderRecordId();
-        this.contentProviderFormatId = pendingLoan.getContentProviderFormatId();
+        this.contentProviderRecordId = pendingLoan.contentProviderRecordId();
+        this.contentProviderFormatId = pendingLoan.contentProviderFormatId();
         return this;
     }
 

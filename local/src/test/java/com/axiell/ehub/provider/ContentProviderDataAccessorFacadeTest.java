@@ -78,9 +78,9 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
-        given(pendingLoan.getContentProviderFormatId()).willReturn(CONTENT_PROVIDER_FORMAT_ID);
-        given(pendingLoan.getContentProviderName()).willReturn(CONTENT_PROVIDER_ALIAS);
+        given(pendingLoan.contentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
+        given(pendingLoan.contentProviderFormatId()).willReturn(CONTENT_PROVIDER_FORMAT_ID);
+        given(pendingLoan.contentProviderAlias()).willReturn(CONTENT_PROVIDER_ALIAS);
     }
 
     @Before

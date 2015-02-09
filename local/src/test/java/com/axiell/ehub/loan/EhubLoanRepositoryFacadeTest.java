@@ -1,5 +1,6 @@
 package com.axiell.ehub.loan;
 
+import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
@@ -78,21 +79,20 @@ public class EhubLoanRepositoryFacadeTest {
     @Test
     public void ehubLoanNotFoundByLmsLoanId() {
         givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
+        whenGetReadyLoanByLmsLoanId();
+        thenActualEhubLoanIsNull();
+    }
 
-        try {
-            whenGetReadyLoanByLmsLoanId();
-            Assert.fail("A NotFoundException should have been thrown");
-        } catch (NotFoundException e) {
-            thenErrorCauseIsLoanByLmsIdNotFound(e);
-        }
+    private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId() {
+        given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(null);
     }
 
     private void whenGetReadyLoanByLmsLoanId() {
         actualEhubLoan = underTest.findEhubLoan(ehubConsumer, "lmsLoanId");
     }
 
-    private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId() {
-        given(ehubLoanRepository.findLoan(any(Long.class), any(String.class))).willReturn(null);
+    private void thenActualEhubLoanIsNull() {
+        assertNull(actualEhubLoan);
     }
 
     private void thenErrorCauseIsLoanByLmsIdNotFound(NotFoundException e) {

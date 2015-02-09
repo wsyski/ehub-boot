@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -50,7 +49,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenProductIdInPendingLoan() {
-        given(pendingLoan.getContentProviderRecordId()).willReturn(PRODUCT_ID);
+        given(pendingLoan.contentProviderRecordId()).willReturn(PRODUCT_ID);
     }
 
     private void givenCommandOnPatronHasLoanWithProductId() {
