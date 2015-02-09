@@ -8,7 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 

@@ -28,4 +28,8 @@ public class Record {
     public List<Format> formats() {
         return formats;
     }
+
+    public RecordDTO toDTO() {
+        return recordDTO;
+    }
 }
