@@ -30,7 +30,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     }
 
     @Test
-    public final void createLoan() throws EhubException {
+    public final void checkout() throws EhubException {
         givenPalmaLoanWsdl();
         givenCheckoutTestOkResponse();
         givenGetLibraryUserOrderList();

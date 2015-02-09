@@ -21,7 +21,7 @@ public class CheckoutsResource implements ICheckoutsResource {
         SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = new SearchResultDTO<>();
         List<CheckoutMetadataDTO> itemsDTO = checkoutsSearchResult.items();
         int size = itemsDTO.size();
-        searchResultDTO.items(itemsDTO).limit(size).offset(0).totalItems(size);
+        searchResultDTO.items(itemsDTO).offset(0).totalItems(size);
         return searchResultDTO;
     }
 
