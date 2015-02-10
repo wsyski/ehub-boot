@@ -23,7 +23,7 @@ public class EhubExceptionUnmarshallingClientInterceptor implements ClientErrorI
     @Override
     public void handle(final ClientResponse<?> clientResponse) throws EhubRuntimeException {
         MediaType mediaType = clientResponse.getMediaType();
-        if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || MediaType.APPLICATION_XML_TYPE.equals(mediaType)) {
+        if (isSupportedMediaClass(mediaType)) {
             EhubError ehubError = clientResponse.getEntity(EhubError.class);
             if (ehubError == null) {
                 ehubError = ErrorCause.INTERNAL_SERVER_ERROR.toEhubError();
@@ -33,5 +33,9 @@ public class EhubExceptionUnmarshallingClientInterceptor implements ClientErrorI
         } else {
             LOGGER.error(" Response:" + ToStringConverter.lineFeed() + ToStringConverter.clientResponseToString(clientResponse));
         }
+    }
+
+    private boolean isSupportedMediaClass(MediaType mediaType) {
+        return MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || MediaType.APPLICATION_XML_TYPE.equals(mediaType);
     }
 }
