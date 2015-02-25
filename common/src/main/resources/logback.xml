@@ -5,7 +5,8 @@
         <file>${catalina.base}/logs/ehub-time.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>time.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/logs/time.%d</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
 
         <encoder>
@@ -38,7 +39,8 @@
         <file>${catalina.base}/logs/ehub.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>eHub.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/logs/eHub.%d</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
 
         <encoder>
