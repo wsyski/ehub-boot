@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,6 +29,9 @@ public class RestEasyBadRequestExceptionMapperTest {
     @Mock
     private HttpHeaders headers;
 
+    @Mock
+    private HttpServletRequest request;
+
     private BadRequestException badRequestException;
     private Response response;
 
@@ -35,6 +39,7 @@ public class RestEasyBadRequestExceptionMapperTest {
     public void setUp() {
         underTest = new RestEasyBadRequestExceptionMapper();
         underTest.setHeaders(headers);
+        underTest.setRequest(request);
     }
 
     @Test
@@ -42,7 +47,7 @@ public class RestEasyBadRequestExceptionMapperTest {
         givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new NullPointerException());
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.BAD_REQUEST);
+        thenValidResponse(ErrorCause.BAD_REQUEST,MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
@@ -50,15 +55,25 @@ public class RestEasyBadRequestExceptionMapperTest {
         givenMediaType(MediaType.APPLICATION_XML_TYPE);
         givenCreatedBadRequestException(new NullPointerException());
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.BAD_REQUEST);
+        thenValidResponse(ErrorCause.BAD_REQUEST,MediaType.APPLICATION_XML_TYPE);
     }
 
     @Test
-    public void nullPointerExceptionText() {
-        givenMediaType(MediaType.TEXT_PLAIN_TYPE);
+    public void nullPointerExceptionV1() {
+        givenMediaType(null);
+        givenRequestUri("/v1/formats");
         givenCreatedBadRequestException(new NullPointerException());
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.BAD_REQUEST);
+        thenValidResponse(ErrorCause.BAD_REQUEST,MediaType.APPLICATION_XML_TYPE);
+    }
+
+    @Test
+    public void nullPointerExceptionV2() {
+        givenMediaType(null);
+        givenRequestUri("/v2/formats");
+        givenCreatedBadRequestException(new NullPointerException());
+        whenResponseGenerated();
+        thenValidResponse(ErrorCause.BAD_REQUEST,MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
@@ -66,7 +81,7 @@ public class RestEasyBadRequestExceptionMapperTest {
         givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER));
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.MISSING_AUTHORIZATION_HEADER);
+        thenValidResponse(ErrorCause.MISSING_AUTHORIZATION_HEADER,MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
@@ -74,7 +89,7 @@ public class RestEasyBadRequestExceptionMapperTest {
         givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new InternalServerErrorException(ErrorCause.CONTENT_PROVIDER_ERROR));
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.CONTENT_PROVIDER_ERROR);
+        thenValidResponse(ErrorCause.CONTENT_PROVIDER_ERROR,MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
@@ -82,7 +97,7 @@ public class RestEasyBadRequestExceptionMapperTest {
         givenMediaType(MediaType.APPLICATION_JSON_TYPE);
         givenCreatedBadRequestException(new ForbiddenException(ErrorCause.LMS_CHECKOUT_DENIED));
         whenResponseGenerated();
-        thenValidResponse(ErrorCause.LMS_CHECKOUT_DENIED);
+        thenValidResponse(ErrorCause.LMS_CHECKOUT_DENIED,MediaType.APPLICATION_JSON_TYPE);
     }
 
     private void whenResponseGenerated() {
@@ -93,16 +108,21 @@ public class RestEasyBadRequestExceptionMapperTest {
         badRequestException = new BadRequestException(EXCEPTION_MESSAGE, exception);
     }
 
-    private void thenValidResponse(final ErrorCause errorCause) {
+    private void thenValidResponse(final ErrorCause errorCause, final MediaType mediaType) {
         Assert.assertNotNull(response);
         Object entity = response.getEntity();
         Assert.assertEquals(entity.getClass(), EhubError.class);
         EhubError ehubError = EhubError.class.cast(entity);
         Assert.assertEquals(ehubError.getCause(), errorCause);
+        Assert.assertEquals(response.getMediaType(), mediaType);
     }
 
 
     private void givenMediaType(final MediaType mediaType) {
         given(headers.getMediaType()).willReturn(mediaType);
+    }
+
+    private void givenRequestUri(final String requestUri) {
+        given(request.getRequestURI()).willReturn(requestUri);
     }
 }

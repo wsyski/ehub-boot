@@ -6,6 +6,7 @@ package com.axiell.ehub.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -18,6 +19,9 @@ public abstract class AbstractEhubExceptionMapper<E extends Throwable> implement
     @Context
     private HttpHeaders headers;
 
+    @Context
+    private HttpServletRequest request;
+
     @Override
     public abstract Response toResponse(E exception);
 
@@ -27,7 +31,18 @@ public abstract class AbstractEhubExceptionMapper<E extends Throwable> implement
         if (isSupportedMediaType(mediaType)) {
             return mediaType;
         } else {
-            return MediaType.APPLICATION_JSON_TYPE;
+            String requestUri = request.getRequestURI();
+            if (requestUri != null) {
+                if (requestUri.startsWith("/v1")) {
+                    return MediaType.APPLICATION_XML_TYPE;
+                } else if (requestUri.startsWith("/v2")) {
+                    return MediaType.APPLICATION_JSON_TYPE;
+                } else {
+                    return MediaType.APPLICATION_JSON_TYPE;
+                }
+            } else {
+                return MediaType.APPLICATION_JSON_TYPE;
+            }
         }
     }
 
@@ -37,5 +52,9 @@ public abstract class AbstractEhubExceptionMapper<E extends Throwable> implement
 
     void setHeaders(final HttpHeaders headers) {
         this.headers = headers;
+    }
+
+    void setRequest(final HttpServletRequest request) {
+        this.request = request;
     }
 }
