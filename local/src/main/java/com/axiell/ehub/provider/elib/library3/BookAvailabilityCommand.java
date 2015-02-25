@@ -34,11 +34,11 @@ class BookAvailabilityCommand extends AbstractElib3Command<CommandData> {
 
         if (bookAvailability.isProductAvailable(contentProviderRecordId))
             forward(PRODUCT_AVAILABLE, data);
-        else if (bookAvailability.isMaxNumberOfDownloadsForProductReached())
+        else if (bookAvailability.isMaxNumberOfDownloadsForProductReached(contentProviderRecordId))
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, language);
-        else if (bookAvailability.isBorrowerLimitReached())
+        else if (bookAvailability.isBorrowerLimitReached(contentProviderRecordId))
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, BORROWER_LIMIT_REACHED, language);
-        else if (bookAvailability.isLibraryLimitReached())
+        else if (bookAvailability.isLibraryLimitReached(contentProviderRecordId))
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, LIBRARY_LIMIT_REACHED, language);
         else
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language);

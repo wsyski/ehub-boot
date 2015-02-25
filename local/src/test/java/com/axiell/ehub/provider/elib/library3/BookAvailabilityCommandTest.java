@@ -12,6 +12,7 @@ import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Res
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
@@ -118,7 +119,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenLibraryLimitReachedInBookAvailability() {
-        given(bookAvailability.isLibraryLimitReached()).willReturn(true);
+        given(bookAvailability.isLibraryLimitReached(anyString())).willReturn(true);
     }
 
     private void givenLibraryLimitReachedAsArgumentType() {
@@ -138,7 +139,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenBorrowerLimitReachedInBookAvailability() {
-        given(bookAvailability.isBorrowerLimitReached()).willReturn(true);
+        given(bookAvailability.isBorrowerLimitReached(anyString())).willReturn(true);
     }
 
     private void givenLanguage() {
@@ -146,7 +147,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenMaxNoOfDownloadsReachedInBookAvailability() {
-        given(bookAvailability.isMaxNumberOfDownloadsForProductReached()).willReturn(true);
+        given(bookAvailability.isMaxNumberOfDownloadsForProductReached(anyString())).willReturn(true);
     }
 
     private void givenMaxNoOfDownloadsReachedAsArgumentType() {

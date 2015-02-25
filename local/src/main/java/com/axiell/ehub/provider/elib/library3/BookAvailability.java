@@ -8,33 +8,44 @@ public class BookAvailability {
     @JsonProperty("Products")
     private List<Product> products;
 
-    @JsonProperty("Reason")
-    private String reason;
-
     public List<Product> getProducts() {
         return products;
     }
 
     boolean isProductAvailable(final String productId) {
-        if (products == null)
-            return false;
-        for (Product product : products) {
-            if (productId.equals(product.getProductId()))
+        return new ProductMatcher(products) {
+            @Override
+            boolean condition(Product product) {
                 return product.isAvailable();
-        }
-        return false;
+            }
+        }.matches(productId);
     }
 
-    public boolean isMaxNumberOfDownloadsForProductReached() {
-        return "product".equals(reason);
+    public boolean isMaxNumberOfDownloadsForProductReached(final String productId) {
+        return new ProductMatcher(products) {
+            @Override
+            boolean condition(Product product) {
+                return "product".equals(product.getReason());
+            }
+        }.matches(productId);
     }
 
-    public boolean isLibraryLimitReached() {
-        return "library".equals(reason);
+    public boolean isLibraryLimitReached(final String productId) {
+        return new ProductMatcher(products) {
+            @Override
+            boolean condition(Product product) {
+                return "library".equals(product.getReason());
+            }
+        }.matches(productId);
     }
 
-    public boolean isBorrowerLimitReached() {
-        return "borrower".equals(reason);
+    public boolean isBorrowerLimitReached(final String productId) {
+        return new ProductMatcher(products) {
+            @Override
+            boolean condition(Product product) {
+                return "borrower".equals(product.getReason());
+            }
+        }.matches(productId);
     }
 
     public static class Product {
@@ -44,12 +55,19 @@ public class BookAvailability {
         @JsonProperty("Available")
         private Boolean available;
 
+        @JsonProperty("Reason")
+        private String reason;
+
         public String getProductId() {
             return productId;
         }
 
         public Boolean isAvailable() {
             return available;
+        }
+
+        public String getReason() {
+            return reason;
         }
     }
 }
