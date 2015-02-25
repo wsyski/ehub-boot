@@ -65,6 +65,7 @@ public abstract class AbstractElib3CommandTest {
     }
 
     protected void givenBasicCommandData() {
+        given(pendingLoan.contentProviderFormatId()).willReturn("contentProviderFormatId");
         data = CommandData.newInstance(contentProviderConsumer, patron, language).setPendingLoan(pendingLoan);
     }
 

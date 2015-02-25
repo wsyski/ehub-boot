@@ -50,11 +50,13 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final Date expirationDate = loan.getExpirationDate();
         final String contentProviderLoanId = loan.getLoanId();
-        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String formatId = data.getContentProviderFormatId();
-        final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
-        data.setContentProviderLoanMetadata(metadata);
+        if (formatId != null) {
+            final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+            final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
+            final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+            data.setContentProviderLoanMetadata(metadata);
+        }
     }
 
     static enum Result implements ICommandResult {

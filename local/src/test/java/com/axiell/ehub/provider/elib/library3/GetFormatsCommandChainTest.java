@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +26,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetFormatsCommandChainTest {
@@ -57,6 +61,10 @@ public class GetFormatsCommandChainTest {
     private CommandData commandData;
     @Mock
     private Patron patron;
+    @Mock
+    private GetLoansResponse getLoansResponse;
+    @Mock
+    private Loan loan;
     private Format actualFormat;
 
     @Before
@@ -65,26 +73,57 @@ public class GetFormatsCommandChainTest {
     }
 
     @Test
-    public void makeFormats_noAvailableFormats() {
+    public void makeFormats_notOnLoan_noAvailableFormats() {
         givenCommandData();
         givenActiveProduct();
         givenAvailableProduct();
+        givenNoLoanForProductId();
         givenAvailableModel();
         whenExecute();
         thenActualFormatSetIsEmpty();
+        thenBookAvailabilityIsInvoked();
+        thenLibraryProductIsInvoked();
     }
 
     @Test
-    public void makeFormats_availableFormats() {
+    public void makeFormats_notOnLoan_availableFormats() {
         givenCommandData();
         givenProductWithAvailableFormats();
         givenActiveProduct();
         givenAvailableProduct();
+        givenNoLoanForProductId();
         givenAvailableModel();
         givenExpectedFormat();
         whenExecute();
         thenActualFormatSetIsNotEmpty();
         thenActualFormatEqualsExpectedFormat();
+        thenBookAvailabilityIsInvoked();
+        thenLibraryProductIsInvoked();
+    }
+
+    @Test
+    public void makeFormats_onLoan_noAvailableFormats() {
+        givenCommandData();
+        givenActiveProduct();
+        givenLoanForProductId();
+        whenExecute();
+        thenActualFormatSetIsEmpty();
+        thenBookAvailabilityIsNotInvoked();
+        thenLibraryProductIsNotInvoked();
+    }
+
+    @Test
+    public void makeFormats_onLoan_availableFormats() {
+        givenCommandData();
+        givenProductWithAvailableFormats();
+        givenActiveProduct();
+        givenLoanForProductId();
+        givenExpectedFormat();
+        whenExecute();
+        thenActualFormatSetIsNotEmpty();
+        thenActualFormatEqualsExpectedFormat();
+        thenBookAvailabilityIsNotInvoked();
+        thenLibraryProductIsNotInvoked();
     }
 
     private void thenActualFormatEqualsExpectedFormat() {
@@ -100,9 +139,11 @@ public class GetFormatsCommandChainTest {
     }
 
     private void givenCommandData() {
+        given(patron.hasId()).willReturn(true);
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
         given(commandData.getPatron()).willReturn(patron);
+        given(commandData.getContentProviderRecordId()).willReturn("contentProviderRecordId");
         elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 
@@ -115,6 +156,22 @@ public class GetFormatsCommandChainTest {
     private void givenActiveProduct() {
         given(product.isActive()).willReturn(true);
         given(elibFacade.getProduct(any(ContentProviderConsumer.class), any(String.class))).willReturn(product);
+    }
+
+    private void givenNoLoanForProductId() {
+        givenGetLoansResponse();
+    }
+
+    private void givenGetLoansResponse() {
+        given(elibFacade.getLoans(any(ContentProviderConsumer.class), any(Patron.class))).willReturn(getLoansResponse);
+    }
+
+    private void givenLoanForProductId() {
+        given(loan.getExpirationDate()).willReturn(new Date());
+        given(loan.getLoanId()).willReturn("loadId");
+        given(loan.getProductId()).willReturn("productId");
+        given(getLoansResponse.getLoanWithProductId(anyString())).willReturn(loan);
+        givenGetLoansResponse();
     }
 
     private void givenAvailableModel() {
@@ -136,5 +193,21 @@ public class GetFormatsCommandChainTest {
 
     private void thenActualFormatSetIsEmpty() {
         assertTrue(actualFormatSet.isEmpty());
+    }
+
+    private void thenLibraryProductIsInvoked() {
+        verify(elibFacade).getLibraryProduct(any(ContentProviderConsumer.class), any(String.class));
+    }
+
+    private void thenLibraryProductIsNotInvoked() {
+        verify(elibFacade, never()).getLibraryProduct(any(ContentProviderConsumer.class), any(String.class));
+    }
+
+    private void thenBookAvailabilityIsInvoked() {
+        verify(elibFacade).getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(Patron.class));
+    }
+
+    private void thenBookAvailabilityIsNotInvoked() {
+        verify(elibFacade, never()).getBookAvailability(any(ContentProviderConsumer.class), any(String.class), any(Patron.class));
     }
 }

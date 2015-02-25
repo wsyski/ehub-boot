@@ -12,6 +12,7 @@ import static com.axiell.ehub.provider.elib.library3.Product.AvailableFormat;
 class GetFormatsCommandChain extends AbstractElib3CommandChain<Formats, Elib3CommandData> {
     private final GetProductCommand firstCommand;
     private final BookAvailabilityCommand bookAvailabilityCommand;
+    private final GetLoansCommand getLoansCommand;
     private final LibraryProductCommand libraryProductCommand;
     private final IFormatFactory formatFactory;
 
@@ -19,16 +20,23 @@ class GetFormatsCommandChain extends AbstractElib3CommandChain<Formats, Elib3Com
         super(elibFacade, exceptionFactory);
         this.formatFactory = formatFactory;
         firstCommand = new GetProductCommand(elibFacade, exceptionFactory);
+        getLoansCommand = new GetLoansCommand(elibFacade, exceptionFactory);
         bookAvailabilityCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
         libraryProductCommand = new LibraryProductCommand(elibFacade, exceptionFactory);
 
         configureFirstCommand();
+        configureGetLoansCommand();
         configureBookAvailabilityCommand();
         configureLibraryProductCommand();
     }
 
     private void configureFirstCommand() {
-        firstCommand.next(bookAvailabilityCommand);
+        firstCommand.next(getLoansCommand);
+    }
+
+    private void configureGetLoansCommand() {
+        getLoansCommand.on(GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID, END_COMMAND);
+        getLoansCommand.on(GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, bookAvailabilityCommand);
     }
 
     private void configureBookAvailabilityCommand() {
