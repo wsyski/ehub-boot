@@ -39,7 +39,7 @@
         <file>${catalina.base}/logs/ehub.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/logs/eHub.%d</fileNamePattern>
+            <fileNamePattern>/logs/ehub.%d</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
