@@ -5,7 +5,7 @@
         <file>${catalina.base}/logs/ehub-time.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/ehub-time-%d.%i.log</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/ehub-time.%d.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>20MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -42,7 +42,7 @@
         <file>${catalina.base}/logs/ehub.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${catalina.base}/logs/ehub-%d.%i.log</fileNamePattern>
+            <fileNamePattern>${catalina.base}/logs/ehub.%d.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>20MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
