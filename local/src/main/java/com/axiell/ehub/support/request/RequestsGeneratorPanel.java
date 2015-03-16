@@ -4,6 +4,7 @@ import com.axiell.ehub.support.request.format.GetFormatsRequestsPanelFactory;
 import com.axiell.ehub.support.request.loan.CreateLoanRequestsPanelFactory;
 import com.axiell.ehub.support.request.loan.GetLoanRequestsPanelFactory;
 import com.axiell.ehub.support.request.patron.PatronIdGeneratorPanelFactory;
+import com.axiell.ehub.support.request.record.GetRecordRequestsPanelFactory;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanelLink;
@@ -13,10 +14,17 @@ class RequestsGeneratorPanel extends BreadCrumbPanel {
 
     RequestsGeneratorPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
+        addGetRecordRequestsPanelLink(breadCrumbModel);
         addGetFormatsRequestsPanelLink(breadCrumbModel);
         addCreateLoanRequestsPanelLink(breadCrumbModel);
         addGetLoanRequestsPanelLink(breadCrumbModel);
         addPatronIdGeneratorPanelLink(breadCrumbModel);
+    }
+
+    private void addGetRecordRequestsPanelLink(IBreadCrumbModel breadCrumbModel) {
+        final IBreadCrumbPanelFactory factory = new GetRecordRequestsPanelFactory();
+        final BreadCrumbPanelLink link = new BreadCrumbPanelLink("getRecordLink", breadCrumbModel, factory);
+        add(link);
     }
 
     private void addGetFormatsRequestsPanelLink(IBreadCrumbModel breadCrumbModel) {
