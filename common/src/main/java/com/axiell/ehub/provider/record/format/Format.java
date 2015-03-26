@@ -3,7 +3,9 @@
  */
 package com.axiell.ehub.provider.record.format;
 
-public class Format {
+import java.io.Serializable;
+
+public class Format implements Serializable {
     private final FormatDTO dto;
 
     public Format(FormatDTO formatDTO) {

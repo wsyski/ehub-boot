@@ -5,20 +5,16 @@ import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Record {
+public class Record implements Serializable {
     private final RecordDTO recordDTO;
     private final List<Format> formats;
 
     public Record(RecordDTO recordDTO) {
         this.recordDTO = recordDTO;
-        formats = Lists.transform(recordDTO.getFormats(), new Function<FormatDTO, Format>() {
-            @Override
-            public Format apply(FormatDTO input) {
-                return new Format(input);
-            }
-        });
+        formats = Lists.transform(recordDTO.getFormats(), new FormatDTOToFormatFunction());
     }
 
     public String id() {
@@ -31,5 +27,13 @@ public class Record {
 
     public RecordDTO toDTO() {
         return recordDTO;
+    }
+
+
+    private static class FormatDTOToFormatFunction implements Function<FormatDTO, Format>, Serializable {
+        @Override
+        public Format apply(FormatDTO formatDTO) {
+            return new Format(formatDTO);
+        }
     }
 }

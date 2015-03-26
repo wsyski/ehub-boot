@@ -2,8 +2,10 @@ package com.axiell.ehub.provider.record.format;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
+import java.io.Serializable;
+
 @JsonAutoDetect
-public class FormatDTO {
+public class FormatDTO implements Serializable {
     private String id;
     private String name;
     private String description;
