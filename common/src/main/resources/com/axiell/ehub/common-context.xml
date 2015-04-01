@@ -5,7 +5,7 @@
    
     <context:component-scan base-package="com.axiell.ehub"/>
 
-    <bean id="sslHttpClient" class="com.axiell.ehub.security.SslHttpClientBuilder" factory-method="createSelfSignedCertSSLCapableHttpConnector">
+    <bean id="ehubSslHttpClient" class="com.axiell.ehub.security.SslHttpClientBuilder" factory-method="createSelfSignedCertSSLCapableHttpConnector">
         <constructor-arg type="int" value="443"/>
     </bean>
 </beans>
