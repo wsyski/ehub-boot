@@ -1,14 +1,15 @@
 package com.axiell.ehub.provider.ocd;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import javax.ws.rs.core.Response;
 
 public class OcdDownloadUrlResolver {
     public static String resolve(final String url) {
-        Client client = ClientBuilder.newBuilder().build();
-        WebTarget target = client.target(url);
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target(url);
         Response response = target.request().get();
         DownloadUrlDTO downloadUrlDTO = response.readEntity(DownloadUrlDTO.class);
         response.close();
