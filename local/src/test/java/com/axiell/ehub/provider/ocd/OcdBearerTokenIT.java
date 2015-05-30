@@ -9,8 +9,8 @@ import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 
 public class OcdBearerTokenIT extends AbstractOcdIT {
-    private static final String UNKNOWN_CARD = "unknown";
-    private static final String UNKNOWN_PIN = "pin";
+    private static final String CARD = "unknown";
+    private static final String PIN = "pin";
 
     @Test
     public void newBearerToken_unknownCard() {
@@ -38,7 +38,7 @@ public class OcdBearerTokenIT extends AbstractOcdIT {
 
     private void givenUnknownCardPin() {
         given(patron.hasLibraryCard()).willReturn(true);
-        given(patron.getLibraryCard()).willReturn(UNKNOWN_CARD);
-        given(patron.getPin()).willReturn(UNKNOWN_PIN);
+        given(patron.getLibraryCard()).willReturn(CARD);
+        given(patron.getPin()).willReturn(PIN);
     }
 }

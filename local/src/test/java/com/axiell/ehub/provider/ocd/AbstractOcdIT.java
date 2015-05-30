@@ -17,10 +17,6 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String BASIC_TOKEN = "e61459ee-a96d-436a-91c8-e5313c47d9e4";
     protected static final String LIBRARY_ID = "504";
 
-    /* Bedfordshire */
-    //protected static final String BASIC_TOKEN = "e89cb7b3-82cf-48d0-9657-0437b5161d5e";
-    //protected static final String LIBRARY_ID = "3511";
-
     protected static final String EBOOK_TITLE_ID = "65690";
     protected static final String AUDIO_TITLE_ID = "223";
     protected OcdFacade underTest;
