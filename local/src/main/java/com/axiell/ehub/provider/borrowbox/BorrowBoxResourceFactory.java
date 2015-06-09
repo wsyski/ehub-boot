@@ -1,26 +1,27 @@
-package com.axiell.ehub.provider.ocd;
+package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.borrowbox.IBorrowBoxResource;
-import com.axiell.ehub.provider.elib.library3.IElibResource;
+import com.axiell.ehub.provider.ocd.IOcdResource;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import javax.ws.rs.core.Response;
+
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
-class OcdResourceFactory {
+class BorrowBoxResourceFactory {
 
-    private OcdResourceFactory() {
+    private BorrowBoxResourceFactory() {
     }
 
-    public static IOcdResource create(final ContentProviderConsumer contentProviderConsumer) {
+    public static IBorrowBoxResource create(final ContentProviderConsumer contentProviderConsumer) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target(baseUrl);
-        return target.proxy(IOcdResource.class);
+        return target.proxy(IBorrowBoxResource.class);
     }
 }
