@@ -1,13 +1,11 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.util.status.Status;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.util.Validate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,13 +20,20 @@ class ResponseStatusChecker implements IResponseStatusChecker {
     private static final String LMS_ERROR_MESSAGE = "Error in lms";
 
     @Override
-    public void checkResponseStatus(Status status, EhubConsumer ehubConsumer, Patron patron) {
+    public void checkResponseStatus(final com.axiell.arena.services.palma.util.status.Status status, final EhubConsumer ehubConsumer, final Patron patron) {
         String statusType = status.getType();
         if (!STATUS_OK.equals(statusType))
             throwException(status.getMessage(), ehubConsumer, patron);
     }
 
-    private void throwException(String statusMessage, EhubConsumer ehubConsumer, Patron patron) {
+    @Override
+    public void checkResponseStatus(final com.axiell.arena.services.palma.util.v267.status.Status status, final EhubConsumer ehubConsumer) {
+        String statusType = status.getType();
+        if (!STATUS_OK.equals(statusType))
+            throwException(status.getMessage(), ehubConsumer, null);
+    }
+
+    private void throwException(final String statusMessage, final EhubConsumer ehubConsumer, final Patron patron) {
         final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
         final ErrorCauseArgument argLibraryCard = new ErrorCauseArgument(ErrorCauseArgument.Type.LIBRARY_CARD, patron.getLibraryCard());
         if (statusMessage != null) {

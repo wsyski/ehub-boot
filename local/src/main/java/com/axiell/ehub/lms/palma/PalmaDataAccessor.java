@@ -5,6 +5,7 @@ package com.axiell.ehub.lms.palma;
 
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
+import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
@@ -12,6 +13,8 @@ import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +25,14 @@ import java.util.Date;
  */
 @Component
 class PalmaDataAccessor implements IPalmaDataAccessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PalmaDataAccessor.class);
+
     private static final String LMS_ERROR_MESSAGE = "Error in lms";
 
     @Autowired
     private ILoansFacade loansFacade;
+    @Autowired
+    private ICatalogueFacade catalogueFacade;
     @Autowired
     private IResponseStatusChecker responseStatusChecker;
 
@@ -43,6 +50,23 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
         CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
         responseStatusChecker.checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, patron);
         return getLmsLoan(ehubConsumer, pendingLoan, patron, checkOutResponse);
+    }
+
+    @Override
+    public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderName, final String contentProviderRecordId) {
+        SearchResponse.SearchResult searchResult = catalogueFacade.search(ehubConsumer, contentProviderName, contentProviderRecordId);
+        responseStatusChecker.checkResponseStatus(searchResult.getStatus(), ehubConsumer);
+        String mediaClass=null;
+        if (searchResult.getNofRecordsTotal()==0) {
+           LOGGER.error("Missing record contentProviderName: "+contentProviderName+" contentProviderRecordId: "+contentProviderRecordId);
+        }
+        else {
+            mediaClass=searchResult.getCatalogueRecords().getCatalogueRecord().get(0).getMediaClass();
+            if (searchResult.getNofRecordsTotal()>1) {
+                LOGGER.error("Duplicate records for contentProviderName: "+contentProviderName+" contentProviderRecordId: "+contentProviderRecordId);
+            }
+        }
+        return mediaClass;
     }
 
     private LmsLoan getLmsLoan(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron,

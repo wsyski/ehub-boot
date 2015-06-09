@@ -41,4 +41,6 @@ public interface IPalmaDataAccessor {
      * @throws ForbiddenException
      */
     LmsLoan checkout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron);
+
+    String getMediaClass(EhubConsumer ehubConsumer, String contentProviderRecordId, String contentProviderRecordName);
 }

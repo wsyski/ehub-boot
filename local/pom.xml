@@ -418,10 +418,29 @@
                 <artifactId>cxf-codegen-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>generate-sources-palma</id>
+                        <id>generate-sources-palma-catalogue</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <sourceRoot>${project.build.directory}/generated-sources/palma</sourceRoot>
+                            <sourceRoot>${project.build.directory}/generated-sources/palma-catalogue</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_267/catalogue.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                        <extraarg>-verbose</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-sources-palma-loans</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${project.build.directory}/generated-sources/palma-loans</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
                                     <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_266/loans.wsdl</wsdl>
@@ -539,7 +558,7 @@
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>elib-loan-generate</id>
+                        <id>generate-sources-elib-createloan</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -549,11 +568,11 @@
                                 <include>CreateLoan.xsd</include>
                             </schemaIncludes>
                             <generatePackage>se.elib.library.loan</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc1</generateDirectory>
+                            <generateDirectory>${project.build.directory}/generated-sources/elib-createloan</generateDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>elib-orderlist-generate</id>
+                        <id>generate-sources-elib-orderlist</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -563,7 +582,7 @@
                                 <include>GetLibraryUserOrderList.xsd</include>
                             </schemaIncludes>
                             <generatePackage>se.elib.library.orderlist</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc2</generateDirectory>
+                            <generateDirectory>${project.build.directory}/generated-sources/elib-orderlist</generateDirectory>
                             <bindingDirectory>src/main/bindings/se/elib/library</bindingDirectory>
                             <bindingIncludes>
                                 <include>GetLibraryUserOrderList.xjb</include>
@@ -572,7 +591,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>elib-product-generate</id>
+                        <id>generate-sources-elib-getproduct</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -583,7 +602,7 @@
                             </schemaIncludes>
                             <forceRegenerate>true</forceRegenerate>
                             <generatePackage>se.elib.library.product</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/xjc3</generateDirectory>
+                            <generateDirectory>${project.build.directory}/generated-sources/elib-getproduct</generateDirectory>
                         </configuration>
                     </execution>
                 </executions>
