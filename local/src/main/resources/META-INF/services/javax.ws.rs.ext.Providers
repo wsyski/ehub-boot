@@ -3,5 +3,6 @@ com.axiell.ehub.logging.LoggingPostProcessInterceptor
 com.axiell.ehub.util.RestEasyBadRequestExceptionMapper
 com.axiell.ehub.util.EhubRuntimeExceptionMapper
 com.axiell.ehub.util.RuntimeExceptionMapper
-com.axiell.ehub.logging.LoggingClientExecutionInterceptor
-com.axiell.ehub.logging.TimeLoggingExecutionInterceptor
+com.axiell.ehub.logging.LegacyTimeLoggingInterceptor
+com.axiell.ehub.logging.LegacyClientLoggingInterceptor
+com.axiell.ehub.logging.ClientLoggingInterceptor

@@ -1,2 +1,4 @@
-com.axiell.ehub.logging.LoggingClientExecutionInterceptor
-com.axiell.ehub.logging.TimeLoggingExecutionInterceptor
+com.axiell.ehub.logging.LegacyTimeLoggingInterceptor
+com.axiell.ehub.logging.LegacyClientLoggingInterceptor
+com.axiell.ehub.logging.ClientLoggingInterceptor
+

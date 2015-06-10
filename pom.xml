@@ -368,6 +368,12 @@
                 <groupId>com.jcabi</groupId>
                 <artifactId>jcabi-manifests</artifactId>
                 <version>${jcabi-manifests.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>log4j</artifactId>
+                        <groupId>log4j</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>

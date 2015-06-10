@@ -1,4 +1,4 @@
-<configuration scan="true">
+<configuration scan="true" debug="true">
 
     <appender name="TIME"
               class="ch.qos.logback.core.rolling.RollingFileAppender">

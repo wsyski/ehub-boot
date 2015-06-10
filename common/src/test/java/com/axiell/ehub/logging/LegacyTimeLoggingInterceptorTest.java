@@ -24,8 +24,8 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @Ignore
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LoggerFactory.class, TimeLoggingExecutionInterceptor.class, Status.class})
-public class TimeLoggingExecutionInterceptorTest {
+@PrepareForTest({LoggerFactory.class, LegacyTimeLoggingInterceptor.class, Status.class})
+public class LegacyTimeLoggingInterceptorTest {
     private static final String GET = "GET";
     private static final String URL = "http://ehub.com/some/request";
     private static final int STATUS_OK = 200;
@@ -33,7 +33,6 @@ public class TimeLoggingExecutionInterceptorTest {
     private static final int STATUS_SERVER_ERROR = 500;
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final String SEPARATOR = "; ";
-    private static final String INVOCATION_TRAIL_NOT_AVAILABLE = "INVOCATION_TRAIL_NOT_AVAILABLE";
     @Mock
     private Logger logger;
 
@@ -48,7 +47,7 @@ public class TimeLoggingExecutionInterceptorTest {
     @Mock
     private StopWatch stopWatch;
 
-    private TimeLoggingExecutionInterceptor underTest;
+    private LegacyTimeLoggingInterceptor underTest;
 
     @Before
     public void setUp() throws Exception {
@@ -56,7 +55,7 @@ public class TimeLoggingExecutionInterceptorTest {
         mockStatic(Status.class);
         whenNew(StopWatch.class).withNoArguments().thenReturn(stopWatch);
         given(LoggerFactory.getLogger("time")).willReturn(logger);
-        underTest = new TimeLoggingExecutionInterceptor();
+        underTest = new LegacyTimeLoggingInterceptor();
     }
 
     @Test
@@ -92,15 +91,15 @@ public class TimeLoggingExecutionInterceptorTest {
     }
 
     private void thenLogStatementIsTheExpectedOk() {
-        verify(logger).info(INVOCATION_TRAIL_NOT_AVAILABLE + SEPARATOR + GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + STATUS_OK);
+        verify(logger).info(GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + STATUS_OK);
     }
 
     private void thenLogStatementIsTheExpectedNotOk() {
-        verify(logger).info(INVOCATION_TRAIL_NOT_AVAILABLE + SEPARATOR + GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + STATUS_SERVER_ERROR);
+        verify(logger).info(GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + STATUS_SERVER_ERROR);
     }
 
     private void thenLogStatementIsTheExpectedException() {
-        verify(logger).info(INVOCATION_TRAIL_NOT_AVAILABLE + SEPARATOR + GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + RuntimeException.class.getName() + ": " + ERROR_MESSAGE);
+        verify(logger).info(GET + SEPARATOR + URL + SEPARATOR + ELAPSE + SEPARATOR + RuntimeException.class.getName() + ": " + ERROR_MESSAGE);
     }
 
     private void whenInterceptorIsTriggered() throws Exception {

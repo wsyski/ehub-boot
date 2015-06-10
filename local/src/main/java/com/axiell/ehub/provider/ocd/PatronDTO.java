@@ -1,12 +1,13 @@
 package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.util.Md5Function;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = {"libraryPin", "libraryId"})
 public class PatronDTO {
     private static final String NA = "N/A";
-    private static final String EMAIL_DOMAIN = "@dummy.se";
+    private static final String EMAIL_DOMAIN = "@axiell.com";
     private String patronId;
     private String libraryCardNumber;
     private String userName;
@@ -22,7 +23,8 @@ public class PatronDTO {
     PatronDTO(Patron patron) {
         libraryCardNumber = patron.getLibraryCard();
         userName = patron.getLibraryCard();
-        password = patron.getPin();
+        //password = patron.getPin();
+        password= Md5Function.md5Hex(patron.getLibraryCard());
         email = makeEmail();
         firstName = NA;
         lastName = NA;
