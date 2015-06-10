@@ -2,6 +2,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.*;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderDataAccessorTest {
+    protected static final String CONTENT_PROVIDER_ALIAS = "ocd";
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String CONTENT_HREF = "url";
@@ -38,6 +40,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     @Mock
     protected IContentFactory contentFactory;
+    @Mock
+    protected EhubConsumer ehubConsumer;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
@@ -71,6 +75,8 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     protected void givenContentProviderConsumerInCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(contentProviderConsumer.getEhubConsumer()).willReturn(ehubConsumer);
+
     }
 
     protected void givenPatronInCommandData() {
@@ -91,6 +97,9 @@ public abstract class AbstractContentProviderDataAccessorTest {
 
     protected void givenContentProviderRecordIdInCommandData() {
         given(commandData.getContentProviderRecordId()).willReturn(RECORD_ID);
+    }
+    protected void givenContentProviderAliasInCommandData() {
+        given(commandData.getContentProviderAlias()).willReturn(CONTENT_PROVIDER_ALIAS);
     }
 
     protected void givenContentProviderFormatIdInCommandData() {

@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -14,13 +15,13 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
 
@@ -29,8 +30,6 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(OcdDataAccessor.class);
     @Autowired
     private IOcdAuthenticator ocdAuthenticator;
-    @Autowired
-    private IOcdFacade ocdFacade;
     @Autowired
     private IPalmaDataAccessor palmaDataAccessor;
     @Autowired
@@ -43,19 +42,16 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public Formats getFormats(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final List<MediaDTO> allMedia = ocdFacade.getAllMedia(contentProviderConsumer);
+        final String contentProviderAlias = data.getContentProviderAlias();
         final String contentProviderRecordId = data.getContentProviderRecordId();
+        final EhubConsumer ehubConsumer = contentProviderConsumer.getEhubConsumer();
+        final String mediaClass = palmaDataAccessor.getMediaClass(ehubConsumer, contentProviderAlias, contentProviderRecordId);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final String language = data.getLanguage();
         final Formats formats = new Formats();
-        try {
-            final IMediaMatcher matcher = new ContentProviderRecordIdMediaMatcher(contentProviderRecordId);
-            final MediaDTO mediaDTO = MediaFinder.find(matcher, allMedia);
-            final String formatId = mediaDTO.getMediaType();
-            final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-            final String language = data.getLanguage();
-            final Format format = formatFactory.create(contentProvider, formatId, language);
+        if (!StringUtils.isBlank(mediaClass)) {
+            final Format format = formatFactory.create(contentProvider, mediaClass, language);
             formats.addFormat(format);
-        } catch (MediaNotFoundException e) {
-            LOGGER.warn("No media found for content provider record ID = '" + contentProviderRecordId + "'");
         }
         return formats;
     }
@@ -64,7 +60,6 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     public ContentProviderLoan createLoan(final CommandData data) {
         final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final Checkout checkout = ocdCheckoutHandler.checkout(bearerToken, data);
-
         if (checkout.isSuccessful()) {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
@@ -72,7 +67,6 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final ContentLink contentLink = makeContent(loanMetadata, checkout);
             return new ContentProviderLoan(loanMetadata, contentLink);
         }
-
         throw makeCreateLoanFailedException(data);
     }
 

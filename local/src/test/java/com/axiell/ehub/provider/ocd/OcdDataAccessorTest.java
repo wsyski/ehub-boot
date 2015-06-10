@@ -3,7 +3,9 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.format.FormatBuilder;
@@ -23,15 +25,13 @@ import static org.mockito.Matchers.anyString;
 public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private OcdDataAccessor underTest;
     @Mock
-    private IOcdFacade ocdFacade;
-    @Mock
     private IOcdAuthenticator ocdAuthenticator;
     @Mock
     private BearerToken bearerToken;
     @Mock
     private IOcdCheckoutHandler ocdCheckoutHandler;
     @Mock
-    private MediaDTO mediaDTO;
+    private IPalmaDataAccessor palmaDataAccessor;
     @Mock
     private Checkout checkout;
     @Mock
@@ -42,20 +42,20 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     @Before
     public void setUpUnderTest() {
         underTest = new OcdDataAccessor();
-        ReflectionTestUtils.setField(underTest, "ocdFacade", ocdFacade);
         ReflectionTestUtils.setField(underTest, "ocdAuthenticator", ocdAuthenticator);
         ReflectionTestUtils.setField(underTest, "ocdCheckoutHandler", ocdCheckoutHandler);
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
+        ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
     }
 
     @Test
     public void getFormats_success() {
         givenLanguageInCommandData();
-        givenContentProviderRecordAndFormatIdInMedia();
-        givenAllMedia();
+        givenPalmaDataAccessorReturnsMediaClass();
         givenContentProviderRecordIdInCommandData();
+        givenContentProviderAliasInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProvider();
         givenContentProviderConsumerInCommandData();
@@ -65,14 +65,8 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         thenActualFormatEqualsExpected();
     }
 
-    private void givenContentProviderRecordAndFormatIdInMedia() {
-        given(mediaDTO.getIsbn()).willReturn(RECORD_ID);
-        given(mediaDTO.getMediaType()).willReturn(FormatBuilder.FORMAT_ID);
-    }
-
-    private void givenAllMedia() {
-        List<MediaDTO> allMedia = Lists.newArrayList(mediaDTO);
-        given(ocdFacade.getAllMedia(contentProviderConsumer)).willReturn(allMedia);
+    private void givenPalmaDataAccessorReturnsMediaClass() {
+        given(palmaDataAccessor.getMediaClass(ehubConsumer, CONTENT_PROVIDER_ALIAS,RECORD_ID)).willReturn(FORMAT_ID);
     }
 
     private void whenGetFormats() {
@@ -81,7 +75,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
 
     @Test
     public void getFormats_MediaNotFound() {
-        givenAllMedia();
         givenContentProviderRecordIdInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProvider();
