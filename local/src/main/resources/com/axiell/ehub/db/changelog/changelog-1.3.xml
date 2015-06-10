@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="systimestamp" dbms="oracle"/>
+
+    <changeSet id="1" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER">
+            <column name="ID" value="9"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="NAME" value="BORROWBOX"/>
+        </insert>
+        <comment>Added BorrowBox as Content Provider</comment>
+    </changeSet>
+
+    <changeSet id="2" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_ALIAS">
+            <column name="ID" value="11"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="ALIAS" value="BORROWBOX"/>
+            <column name="NAME" value="BORROWBOX"/>
+        </insert>
+        <comment>Added BorrowBox as BorrowBox alias</comment>
+    </changeSet>
+
+    <changeSet id="3" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_PROPERTY">
+            <column name="CONTENT_PROVIDER_ID" value="9"/>
+            <column name="PROPERTY_KEY" value="API_BASE_URL"/>
+            <column name="PROPERTY_VALUE" value="http://api.borrowbox.com"/>
+        </insert>
+        <comment>Added BorrowBox Content Provider properties</comment>
+    </changeSet>
+
+    <changeSet id="4" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="BORROWBOX_LIBRARY_ID"/>
+        </insert>
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="BORROWBOX_SECRET_KEY"/>
+        </insert>
+        <comment>Added BorrowBox Content Provider Consumer property keys</comment>
+    </changeSet>
+
+    <changeSet id="5" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1701"/>
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <column name="FORMAT_ID" value="BorrowBox.eAudiobook"/>
+            <column name="CONTENT_PROVIDER_ID" value="9"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1702"/>
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <column name="FORMAT_ID" value="BorrowBox.eBook"/>
+            <column name="CONTENT_PROVIDER_ID" value="9"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added BorrowBox format decorations</comment>
+    </changeSet>
+
+    <changeSet id="6" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4701"/>
+            <column name="DESCRIPTION" value="eAudio format"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="eAudio"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1701"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4702"/>
+            <column name="DESCRIPTION" value="eBook format"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="eBook"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1702"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to the BorrowBox format decorations</comment>
+    </changeSet>
+</databaseChangeLog>

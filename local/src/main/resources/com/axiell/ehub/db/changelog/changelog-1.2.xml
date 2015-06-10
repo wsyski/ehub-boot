@@ -14,7 +14,7 @@
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
             <column name="NAME" value="OCD"/>
         </insert>
-        <comment>Added 'OCD' as Content Provider</comment>
+        <comment>Added OCD as Content Provider</comment>
     </changeSet>
 
     <changeSet id="2" author="ehub" dbms="oracle">
@@ -25,7 +25,7 @@
             <column name="ALIAS" value="OCD"/>
             <column name="NAME" value="OCD"/>
         </insert>
-        <comment>Added 'OCD' as OCD alias</comment>
+        <comment>Added OCD as OCD alias</comment>
     </changeSet>
 
     <changeSet id="3" author="ehub" dbms="oracle">
@@ -68,7 +68,7 @@
             <column name="CREATE_DATETIME" valueComputed="${now}"/>
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
         </insert>
-        <comment>Added F1 format decorations</comment>
+        <comment>Added OCD format decorations</comment>
     </changeSet>
 
     <changeSet id="6" author="ehub" dbms="oracle">
