@@ -1,14 +1,16 @@
 package com.axiell.ehub.provider.ocd;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value = {"description", "publisher", "narrators", "audience", "genres", "title", "authors", "language", "isbn", "images", "primaryGenre"})
+@JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MediaDTO {
-    private String titleId;
+    private String isbn;
     private String mediaType;
 
-    public String getTitleId() {
-        return titleId;
+    public String getIsbn() {
+        return isbn;
     }
 
     public String getMediaType() {

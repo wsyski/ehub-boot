@@ -1,18 +1,17 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.alias.IAliasBusinessController;
-import com.axiell.ehub.provider.record.format.Formats;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
+import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.alias.IAliasBusinessController;
+import com.axiell.ehub.provider.record.format.Formats;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {
@@ -26,13 +25,15 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId);
+        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
+                .setContentProviderAlias(contentProviderAlias);
         return dataAccessor.getFormats(commandData);
     }
 
     @Override
     public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language) {
-        final ContentProviderName name = aliasBusinessController.getName(pendingLoan.contentProviderAlias());
+        final String contentProviderAlias = pendingLoan.contentProviderAlias();
+        final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);

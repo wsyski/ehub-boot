@@ -66,7 +66,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     }
 
     private void givenContentProviderRecordAndFormatIdInMedia() {
-        given(mediaDTO.getTitleId()).willReturn(RECORD_ID);
+        given(mediaDTO.getIsbn()).willReturn(RECORD_ID);
         given(mediaDTO.getMediaType()).willReturn(FormatBuilder.FORMAT_ID);
     }
 

@@ -21,8 +21,8 @@ public interface IOcdResource {
     BearerToken newBearerToken(@HeaderParam("Authorization") BasicToken basicToken, PatronTokenDTO patronTokenDTO);
 
     @POST
-    @Path("v1/transactions/checkouts/{titleId}")
-    CheckoutDTO checkout(@HeaderParam("Authorization") BearerToken bearerToken, @HeaderParam("Accept-Media") String acceptMedia, @PathParam("titleId") String contentProviderRecordId);
+    @Path("v1/transactions/checkouts/{isbn}")
+    CheckoutDTO checkout(@HeaderParam("Authorization") BearerToken bearerToken, @HeaderParam("Accept-Media") String acceptMedia, @PathParam("isbn") String contentProviderRecordId);
 
     @DELETE
     @Path("v1/transactions/checkouts/{transactionId}")

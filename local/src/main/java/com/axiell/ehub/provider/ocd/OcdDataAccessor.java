@@ -4,6 +4,7 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
@@ -30,6 +31,8 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     private IOcdAuthenticator ocdAuthenticator;
     @Autowired
     private IOcdFacade ocdFacade;
+    @Autowired
+    private IPalmaDataAccessor palmaDataAccessor;
     @Autowired
     private IFormatFactory formatFactory;
     @Autowired

@@ -1,16 +1,17 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.ws.rs.NotAuthorizedException;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -19,10 +20,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OcdAuthenticatorTest {
-    @Mock
-    private ClientResponseFailure clientResponseFailure;
-    @Mock
-    private ClientResponse response;
     @Mock
     private IOcdFacade ocdFacade;
     @Mock
@@ -69,8 +66,6 @@ public class OcdAuthenticatorTest {
 
     @Test
     public void authenticate_unauthorized() {
-        givenUnauthorizedStatusCode();
-        givenClientResponseInClientResponseFailure();
         givenFirstClientResposneFailureThenBearerToken();
         whenAuthenticate();
         thenActualBearerTokenEqualsExpectedBearerToken();
@@ -78,16 +73,9 @@ public class OcdAuthenticatorTest {
         thenAddPatronInOcdFacadeIsInvokedOnce();
     }
 
-    private void givenUnauthorizedStatusCode() {
-        given(response.getStatus()).willReturn(401);
-    }
-
-    private void givenClientResponseInClientResponseFailure() {
-        given(clientResponseFailure.getResponse()).willReturn(response);
-    }
-
+    @SuppressWarnings("unchecked")
     private void givenFirstClientResposneFailureThenBearerToken() {
-        given(ocdFacade.newBearerToken(any(ContentProviderConsumer.class), any(Patron.class))).willThrow(clientResponseFailure).willReturn(bearerToken);
+        given(ocdFacade.newBearerToken(any(ContentProviderConsumer.class), any(Patron.class))).willThrow(NotAuthorizedException.class).willReturn(bearerToken);
     }
 
     private void thenNewBearerTokenInOcdFacadeIsInvokedTwice() {
@@ -98,21 +86,16 @@ public class OcdAuthenticatorTest {
         verify(ocdFacade).addPatron(any(ContentProviderConsumer.class), any(Patron.class));
     }
 
-    @Test(expected = ClientResponseFailure.class)
+    @Test(expected = InternalServerErrorException.class)
     public void authenticate_internalError() {
-        givenInternalErrorStatusCode();
-        givenClientResponseInClientResponseFailure();
-        givenFirstClientResponse();
+        givenFirstClientResponseInternalError();
         whenAuthenticate();
         thenNewBearerTokenInOcdFacadeIsInvokedOnce();
         thenAddPatronInOcdFacadeIsNeverInvoked();
     }
 
-    private void givenInternalErrorStatusCode() {
-        given(response.getStatus()).willReturn(500);
-    }
-
-    private void givenFirstClientResponse() {
-        given(ocdFacade.newBearerToken(any(ContentProviderConsumer.class), any(Patron.class))).willThrow(clientResponseFailure);
+    @SuppressWarnings("unchecked")
+    private void givenFirstClientResponseInternalError() {
+      given(ocdFacade.newBearerToken(any(ContentProviderConsumer.class), any(Patron.class))).willThrow(InternalServerErrorException.class);
     }
 }

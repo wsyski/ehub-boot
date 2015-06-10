@@ -15,8 +15,8 @@ public class OcdPatronIT extends AbstractOcdIT {
     private static final String PIN = "1234";
     private PatronDTO patronDTO;
 
-    @Ignore
     @Test
+    @Ignore
     public void addPatron() {
         givenApiBaseUrl();
         givenLibraryId();

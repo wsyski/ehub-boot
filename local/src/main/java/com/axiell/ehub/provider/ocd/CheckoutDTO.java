@@ -7,14 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(value = {"minutes", "encryptionKey", "size", "bookmarks", "hasBookmark", "dateAdded", "lastRead",
-        "description", "narrators", "images", "authors", "canRenew", "mediaType", "patronId", "libraryId", "isbn",
+        "description", "narrators", "images", "authors", "canRenew", "mediaType", "patronId", "libraryId", "titleId",
         "title", "publisher", "hasDrm"})
 public class CheckoutDTO {
     private String transactionId;
     @JsonProperty(value = "expiration")
     private Date expirationDate;
     private String downloadUrl;
-    private String titleId;
+    private String isbn;
     private List<FileDTO> files;
     private String output;
 
@@ -22,8 +22,8 @@ public class CheckoutDTO {
         return transactionId;
     }
 
-    public String getTitleId() {
-        return titleId;
+    public String getIsbn() {
+        return isbn;
     }
 
     public Date getExpirationDate() {

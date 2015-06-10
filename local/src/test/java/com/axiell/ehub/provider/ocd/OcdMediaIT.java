@@ -24,7 +24,7 @@ public class OcdMediaIT extends AbstractOcdIT {
     }
 
     private void givenAudioTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = AUDIO_TITLE_ID;
+        contentProviderRecordId = EAUDIO_ISBN;
     }
 
     private void whenFindMedia() throws MediaNotFoundException {
@@ -49,7 +49,7 @@ public class OcdMediaIT extends AbstractOcdIT {
     }
 
     private void givenBookTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = EBOOK_TITLE_ID;
+        contentProviderRecordId = EBOOK_ISBN;
     }
 
     private void thenActualMediaTypeIsEBook() {

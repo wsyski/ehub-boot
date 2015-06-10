@@ -9,7 +9,7 @@ class ContentProviderRecordIdMediaMatcher implements IMediaMatcher {
 
     @Override
     public boolean matches(MediaDTO mediaDTO) {
-        final String titleId = mediaDTO.getTitleId();
-        return contentProviderRecordId.equals(titleId);
+        final String isbn = mediaDTO.getIsbn();
+        return contentProviderRecordId.equals(isbn);
     }
 }

@@ -3,10 +3,10 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.provider.ResponseAnalyser;
-import org.jboss.resteasy.client.ClientResponseFailure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.NotAuthorizedException;
 
 @Component
 class OcdAuthenticator implements IOcdAuthenticator {
@@ -21,13 +21,9 @@ class OcdAuthenticator implements IOcdAuthenticator {
         BearerToken bearerToken;
         try {
             bearerToken = ocdFacade.newBearerToken(contentProviderConsumer, patron);
-        } catch (ClientResponseFailure crf) {
-            ResponseAnalyser responseAnalyser = ResponseAnalyser.from(crf);
-            if (responseAnalyser.isUnauthorized()) {
-                ocdFacade.addPatron(contentProviderConsumer, patron);
-                bearerToken = ocdFacade.newBearerToken(contentProviderConsumer, patron);
-            } else
-                throw crf;
+        } catch (NotAuthorizedException ex) {
+            ocdFacade.addPatron(contentProviderConsumer, patron);
+            bearerToken = ocdFacade.newBearerToken(contentProviderConsumer, patron);
         }
         return bearerToken;
     }

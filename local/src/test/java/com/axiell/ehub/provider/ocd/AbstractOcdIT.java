@@ -17,8 +17,8 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String BASIC_TOKEN = "e61459ee-a96d-436a-91c8-e5313c47d9e4";
     protected static final String LIBRARY_ID = "504";
 
-    protected static final String EBOOK_TITLE_ID = "65690";
-    protected static final String AUDIO_TITLE_ID = "223";
+    protected static final String EBOOK_ISBN = "9780312870676";
+    protected static final String EAUDIO_ISBN = "9781449868703";
     protected OcdFacade underTest;
     @Mock
     protected Patron patron;

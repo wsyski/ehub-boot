@@ -53,7 +53,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     }
 
     private void givenAudioTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = AUDIO_TITLE_ID;
+        contentProviderRecordId = EAUDIO_ISBN;
     }
 
     private void whenCheckout() {
@@ -96,7 +96,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     }
 
     private void givenEbookTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = EBOOK_TITLE_ID;
+        contentProviderRecordId = EBOOK_ISBN;
     }
 
     @After
