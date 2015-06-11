@@ -1,30 +1,30 @@
 package com.axiell.tools;
 
-import oracle.jdbc.pool.OracleDataSource;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class ApplicationLauncher {
     private static final int PORT_NO = 16518;
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("catalina.home", "src/main");
-        System.setProperty("hibernate.connection.username","ehub1");
-        System.setProperty("hibernate.connection.password","eehub1");
-        System.setProperty("hibernate.connection.url","jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))");
+        setSystemProperties();
 
         Server server = new Server();
         //Enable parsing of jndi-related parts of web.xml and jetty-env.xml
-        org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(server);
-        classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration", "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+        Configuration.ClassList classlist = Configuration.ClassList.setServerDefault(server);
+        classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration",
+                "org.eclipse.jetty.plus.webapp.PlusConfiguration");
         classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration");
         ServerConnector connector = new ServerConnector(server);
         connector.setSoLingerTime(-1);
@@ -41,15 +41,14 @@ public class ApplicationLauncher {
         handlers.setHandlers(new Handler[]{webAppContext, new DefaultHandler()});
         server.setHandler(handlers);
 
-        String[] configFileNames = {"src/dev/resources/jetty-env.xml"};
-        for(String configFileName : configFileNames) {
-            File configFile=new File(configFileName);
+        String[] configFileNames = {"config/jetty-env.xml"};
+        for (String configFileName : configFileNames) {
+            File configFile = new File(configFileName);
             if (configFile.exists() && configFile.isFile()) {
                 XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(configFile));
                 configuration.configure(server);
-            }
-            else {
-                System.err.println("Missing file: "+configFileName);
+            } else {
+                System.err.println("Missing file: " + configFileName);
             }
         }
 
@@ -61,10 +60,9 @@ public class ApplicationLauncher {
         //server.addHandler(portletContext);
 
         try {
-            System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
             server.start();
             while (System.in.available() == 0) {
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             }
             server.stop();
             server.join();
@@ -72,5 +70,18 @@ public class ApplicationLauncher {
             e.printStackTrace();
             System.exit(100);
         }
+    }
+
+    private static void setSystemProperties() throws IOException {
+        System.setProperty("catalina.home", "src/main");
+        final Properties properties = new Properties();
+        properties.load(new FileInputStream("src/main/resources/hibernate.properties"));
+        setSystemProperty(properties, "hibernate.connection.username");
+        setSystemProperty(properties, "hibernate.connection.password");
+        setSystemProperty(properties, "hibernate.connection.url");
+    }
+
+    private static void setSystemProperty(final Properties properties, final String key) {
+        System.setProperty(key, properties.getProperty(key));
     }
 }

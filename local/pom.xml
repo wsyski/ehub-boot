@@ -376,7 +376,7 @@
                     <webApp>
                         <contextPath>/</contextPath>
                     </webApp>
-                    <jettyConfig>src/dev/resources/jetty-env.xml</jettyConfig>
+                    <jettyConfig>config/jetty-env.xml</jettyConfig>
                     <systemProperties>
                         <systemProperty>
                             <name>hibernate.connection.username</name>

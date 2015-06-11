@@ -1,6 +1,7 @@
-<?xml version="1.0"?>
-<Configure id="Server" class="org.eclipse.jetty.server.Server">
-    <New id="DSTest" class="org.eclipse.jetty.plus.jndi.Resource">
+<?xml version="1.0"  encoding="UTF-8"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure id="dataSource" class="org.eclipse.jetty.server.Server">
+    <New id="dataSourceResource" class="org.eclipse.jetty.plus.jndi.Resource">
         <Arg></Arg>
         <Arg>jdbc/ehub</Arg>
         <Arg>
