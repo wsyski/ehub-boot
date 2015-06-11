@@ -1,5 +1,6 @@
 package com.axiell.tools;
 
+import oracle.jdbc.pool.OracleDataSource;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -9,13 +10,22 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.xml.XmlConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 public class ApplicationLauncher {
     private static final int PORT_NO = 16518;
 
     public static void main(String[] args) throws Exception {
         System.setProperty("catalina.home", "src/main");
+        System.setProperty("hibernate.connection.username","ehub1");
+        System.setProperty("hibernate.connection.password","eehub1");
+        System.setProperty("hibernate.connection.url","jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))");
+
         Server server = new Server();
+        //Enable parsing of jndi-related parts of web.xml and jetty-env.xml
+        org.eclipse.jetty.webapp.Configuration.ClassList classlist = org.eclipse.jetty.webapp.Configuration.ClassList.setServerDefault(server);
+        classlist.addAfter("org.eclipse.jetty.webapp.FragmentConfiguration", "org.eclipse.jetty.plus.webapp.EnvConfiguration", "org.eclipse.jetty.plus.webapp.PlusConfiguration");
+        classlist.addBefore("org.eclipse.jetty.webapp.JettyWebXmlConfiguration");
         ServerConnector connector = new ServerConnector(server);
         connector.setSoLingerTime(-1);
         connector.setPort(PORT_NO);
@@ -23,11 +33,6 @@ public class ApplicationLauncher {
 
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setServer(server);
-        String[] configFiles = {"src/dev/resources/jetty.xml"};
-        for(String configFile : configFiles) {
-            XmlConfiguration configuration = new XmlConfiguration(new File(configFile).toURI().toURL());
-            //configuration.configure(server);
-        }
 
         webAppContext.setContextPath("");
         webAppContext.setExtraClasspath("target/classes");
@@ -35,6 +40,18 @@ public class ApplicationLauncher {
         HandlerCollection handlers = new HandlerCollection();
         handlers.setHandlers(new Handler[]{webAppContext, new DefaultHandler()});
         server.setHandler(handlers);
+
+        String[] configFileNames = {"src/dev/resources/jetty-env.xml"};
+        for(String configFileName : configFileNames) {
+            File configFile=new File(configFileName);
+            if (configFile.exists() && configFile.isFile()) {
+                XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(configFile));
+                configuration.configure(server);
+            }
+            else {
+                System.err.println("Missing file: "+configFileName);
+            }
+        }
 
         // START JMX SERVER
         // MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();

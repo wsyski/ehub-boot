@@ -782,7 +782,7 @@
         <commons-codec.version>1.7</commons-codec.version>
         <commons.io.version>2.4</commons.io.version>
         <oracle.version>11.2.0.4</oracle.version>
-        <jetty.version>9.3.0.M1</jetty.version>
+        <jetty.version>9.3.0.M2</jetty.version>
         <wiremock.version>1.53</wiremock.version>
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.7.2</slf4j.version>
