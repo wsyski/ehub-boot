@@ -1,7 +1,5 @@
-package com.axiell.ehub.provider.elib.library3;
+package com.axiell.ehub.provider.overdrive;
 
-import junit.framework.Assert;
-import org.hamcrest.MatcherAssert;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,40 +13,40 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class Elib3ErrorResponseBodyReaderTest {
-    private static final String REASON = "reason1";
-    private Elib3ErrorResponseBodyReader underTest;
+public class LegacyOverdriveErrorResponseBodyReaderTest {
+    private static final String MESSAGE = "MSG1";
+    private LegacyOverdriveErrorResponseBodyReaderLegacy underTest;
     @Mock
     private ClientResponse<?> response;
     @Mock
-    private ErrorResponse errorResponse;
+    private ErrorDetails errorDetails;
     private String actualMessage;
 
     @Before
     public void setUpUnderTest() {
-        underTest = new Elib3ErrorResponseBodyReader();
+        underTest = new LegacyOverdriveErrorResponseBodyReaderLegacy();
     }
 
     @Test
-    public void noErrorResponse() {
+    public void noErrorDetails() {
         whenRead();
         thenActualMessageIsNull();
     }
 
     @Test
-    public void errorResponse() {
-        givenErrorResponseWithReason();
+    public void errorDetails() {
+        givenErrorDetailsWithMessage();
         whenRead();
         thenActualMessageIsReason();
     }
 
-    private void givenErrorResponseWithReason() {
-        given(errorResponse.getReason()).willReturn(REASON);
-        given(response.getEntity(ErrorResponse.class)).willReturn(errorResponse);
+    private void givenErrorDetailsWithMessage() {
+        given(errorDetails.getMessage()).willReturn(MESSAGE);
+        given(response.getEntity(ErrorDetails.class)).willReturn(errorDetails);
     }
 
     private void thenActualMessageIsReason() {
-        assertThat(actualMessage, is(REASON));
+        assertThat(actualMessage, is(MESSAGE));
     }
 
     private void thenActualMessageIsNull() {

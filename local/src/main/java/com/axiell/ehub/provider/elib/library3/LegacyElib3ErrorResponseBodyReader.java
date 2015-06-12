@@ -1,9 +1,9 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.provider.IContentProviderErrorResponseBodyReader;
+import com.axiell.ehub.provider.ILegacyContentProviderErrorResponseBodyReader;
 import org.jboss.resteasy.client.ClientResponse;
 
-public class Elib3ErrorResponseBodyReader implements IContentProviderErrorResponseBodyReader {
+public class LegacyElib3ErrorResponseBodyReader implements ILegacyContentProviderErrorResponseBodyReader {
 
     @Override
     public String read(final ClientResponse<?> response) {

@@ -19,6 +19,9 @@ class LoansFacade implements ILoansFacade {
     @Autowired
     private ILoansPortFactory loansPortFactory;
 
+    private static final com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory CHECKOUTREQUEST_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
+
     @Override
     public CheckOutTestResponse checkOutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron) {
         CheckOutTest checkOutTest = createCheckOutTest(ehubConsumer, pendingLoan, patron);
@@ -52,9 +55,7 @@ class LoansFacade implements ILoansFacade {
 
     private static CheckOut createCheckOut(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron) {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
-        com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory checkoutTestRequestObjectFactory =
-                new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
-        CheckOutRequest checkOutRequest = checkoutTestRequestObjectFactory.createCheckOutRequest();
+        CheckOutRequest checkOutRequest = CHECKOUTREQUEST_OBJECT_FACTORY.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.lmsRecordId());
         checkOutRequest.setExpirationDate(XjcSupport.toXmlGregorianCalendar(expirationDate));

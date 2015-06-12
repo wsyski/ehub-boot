@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-class SoapLoggingHandlerAppender implements ISoapLoggingHandlerAppender {
+public class SoapLoggingHandlerAppender implements ISoapLoggingHandlerAppender {
 
     @Override
     public void addLoggingHandler(Object soapService) {

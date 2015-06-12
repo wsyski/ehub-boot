@@ -1,8 +1,5 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"aspects-test.xml"})
-public class ContentProviderResponseFailureAspectTest {
-    private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.OCD;
+public class LegacyContentProviderResponseFailureAspectTest {
+    private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.PUBLIT;
 
     @Autowired
-    private ExceptionContentProviderDataAccessor underTest;
+    private LegacyExceptionContentProviderDataAccessor underTest;
     private CommandData commandData;
 
     @Before

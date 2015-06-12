@@ -18,7 +18,7 @@ class CataloguePortFactory extends AbstractPalmaPortFactory<Catalogue> implement
 
     @Override
     protected PalmaWsdlUrl makePalmaWsdlUrl(final EhubConsumer ehubConsumer) {
-        return new PalmaUrlBuilder(ehubConsumer).appendPath("/loans?wsdl").build();
+        return new PalmaUrlBuilder(ehubConsumer).appendPath("/v267/catalogue?wsdl").build();
     }
 
     @Override

@@ -7,22 +7,20 @@ import com.axiell.ehub.provider.record.format.Formats;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-
-import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.core.Response;
 
 
-class ExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
+class LegacyExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
 
     @Override
     public Formats getFormats(final CommandData commandData) {
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target("http://www.googleapis.com/calendar/v3/calendars/calendarId/events");
-        Response response = target.request().get();
-        throw new ClientErrorException(response);
+        ClientRequest request = new ClientRequest("http://www.googleapis.com/calendar/v3/calendars/calendarId/events");
+        ClientResponse<?> response;
+        try {
+            response = request.get();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
+        throw new ClientResponseFailure(response);
     }
 
     @Override

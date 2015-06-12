@@ -18,7 +18,7 @@ import static com.axiell.ehub.logging.ToStringConverter.soapMessageToString;
 /**
  * SOAP Logging Handler
  */
-class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
+public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SoapLoggingHandler.class);
 
     public boolean handleMessage(final SOAPMessageContext soapMessageContext) {

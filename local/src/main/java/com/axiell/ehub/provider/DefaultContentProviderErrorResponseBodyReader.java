@@ -1,11 +1,11 @@
 package com.axiell.ehub.provider;
 
-import org.jboss.resteasy.client.ClientResponse;
+import javax.ws.rs.core.Response;
 
 class DefaultContentProviderErrorResponseBodyReader implements IContentProviderErrorResponseBodyReader {
 
     @Override
-    public String read(final ClientResponse<?> response) {
-        return response.getEntity(String.class);
+    public String read(final Response response) {
+        return response.readEntity(String.class);
     }
 }

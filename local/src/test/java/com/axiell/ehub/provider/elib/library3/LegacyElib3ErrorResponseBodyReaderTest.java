@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.overdrive;
+package com.axiell.ehub.provider.elib.library3;
 
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Before;
@@ -13,40 +13,40 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OverdriveErrorResponseBodyReaderTest {
-    private static final String MESSAGE = "MSG1";
-    private OverdriveErrorResponseBodyReader underTest;
+public class LegacyElib3ErrorResponseBodyReaderTest {
+    private static final String REASON = "reason1";
+    private LegacyElib3ErrorResponseBodyReader underTest;
     @Mock
     private ClientResponse<?> response;
     @Mock
-    private ErrorDetails errorDetails;
+    private ErrorResponse errorResponse;
     private String actualMessage;
 
     @Before
     public void setUpUnderTest() {
-        underTest = new OverdriveErrorResponseBodyReader();
+        underTest = new LegacyElib3ErrorResponseBodyReader();
     }
 
     @Test
-    public void noErrorDetails() {
+    public void noErrorResponse() {
         whenRead();
         thenActualMessageIsNull();
     }
 
     @Test
-    public void errorDetails() {
-        givenErrorDetailsWithMessage();
+    public void errorResponse() {
+        givenErrorResponseWithReason();
         whenRead();
         thenActualMessageIsReason();
     }
 
-    private void givenErrorDetailsWithMessage() {
-        given(errorDetails.getMessage()).willReturn(MESSAGE);
-        given(response.getEntity(ErrorDetails.class)).willReturn(errorDetails);
+    private void givenErrorResponseWithReason() {
+        given(errorResponse.getReason()).willReturn(REASON);
+        given(response.getEntity(ErrorResponse.class)).willReturn(errorResponse);
     }
 
     private void thenActualMessageIsReason() {
-        assertThat(actualMessage, is(MESSAGE));
+        assertThat(actualMessage, is(REASON));
     }
 
     private void thenActualMessageIsNull() {

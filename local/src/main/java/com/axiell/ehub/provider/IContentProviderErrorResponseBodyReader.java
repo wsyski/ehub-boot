@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider;
 
-import org.jboss.resteasy.client.ClientResponse;
+import javax.ws.rs.core.Response;
 
 public interface IContentProviderErrorResponseBodyReader {
 
-    String read(ClientResponse<?> response);
+    String read(Response response);
 }

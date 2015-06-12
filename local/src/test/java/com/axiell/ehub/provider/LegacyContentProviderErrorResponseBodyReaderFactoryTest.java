@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.elib.library3.Elib3ErrorResponseBodyReader;
-import com.axiell.ehub.provider.overdrive.OverdriveErrorResponseBodyReader;
+import com.axiell.ehub.provider.elib.library3.LegacyElib3ErrorResponseBodyReader;
+import com.axiell.ehub.provider.overdrive.LegacyOverdriveErrorResponseBodyReaderLegacy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -12,8 +12,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ContentProviderErrorResponseBodyReaderFactoryTest {
-    private IContentProviderErrorResponseBodyReader actualReader;
+public class LegacyContentProviderErrorResponseBodyReaderFactoryTest {
+    private ILegacyContentProviderErrorResponseBodyReader actualReader;
     @Mock
     private ContentProvider contentProvider;
 
@@ -91,7 +91,7 @@ public class ContentProviderErrorResponseBodyReaderFactoryTest {
     }
 
     private void thenActualReaderIsElib3Reader() {
-        assertTrue(actualReader instanceof Elib3ErrorResponseBodyReader);
+        assertTrue(actualReader instanceof LegacyElib3ErrorResponseBodyReader);
     }
 
     private void givenElib3ContentProvider() {
@@ -99,14 +99,14 @@ public class ContentProviderErrorResponseBodyReaderFactoryTest {
     }
 
     private void thenActualReaderIsDefaultReader() {
-        assertTrue(actualReader instanceof DefaultContentProviderErrorResponseBodyReader);
+        assertTrue(actualReader instanceof LegacyDefaultContentProviderErrorResponseBodyReader);
     }
 
     private void whenCreate() {
-        actualReader = ContentProviderErrorResponseBodyReaderFactory.create(contentProvider);
+        actualReader = LegacyContentProviderErrorResponseBodyReaderFactory.create(contentProvider);
     }
 
     private void thenActualReaderIsOverdriveReader() {
-        assertTrue(actualReader instanceof OverdriveErrorResponseBodyReader);
+        assertTrue(actualReader instanceof LegacyOverdriveErrorResponseBodyReaderLegacy);
     }
 }

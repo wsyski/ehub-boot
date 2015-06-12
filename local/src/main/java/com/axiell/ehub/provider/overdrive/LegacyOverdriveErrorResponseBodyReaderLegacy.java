@@ -1,9 +1,9 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.provider.IContentProviderErrorResponseBodyReader;
+import com.axiell.ehub.provider.ILegacyContentProviderErrorResponseBodyReader;
 import org.jboss.resteasy.client.ClientResponse;
 
-public class OverdriveErrorResponseBodyReader implements IContentProviderErrorResponseBodyReader {
+public class LegacyOverdriveErrorResponseBodyReaderLegacy implements ILegacyContentProviderErrorResponseBodyReader {
 
     @Override
     public String read(ClientResponse<?> response) {
