@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.provider.elib.library3.LegacyElib3ErrorResponseBodyReader;
-import com.axiell.ehub.provider.overdrive.LegacyOverdriveErrorResponseBodyReaderLegacy;
+import com.axiell.ehub.provider.overdrive.LegacyOverdriveErrorResponseBodyReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -107,6 +107,6 @@ public class LegacyContentProviderErrorResponseBodyReaderFactoryTest {
     }
 
     private void thenActualReaderIsOverdriveReader() {
-        assertTrue(actualReader instanceof LegacyOverdriveErrorResponseBodyReaderLegacy);
+        assertTrue(actualReader instanceof LegacyOverdriveErrorResponseBodyReader);
     }
 }

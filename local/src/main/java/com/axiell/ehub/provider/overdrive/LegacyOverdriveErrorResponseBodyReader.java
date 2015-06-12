@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.overdrive;
 import com.axiell.ehub.provider.ILegacyContentProviderErrorResponseBodyReader;
 import org.jboss.resteasy.client.ClientResponse;
 
-public class LegacyOverdriveErrorResponseBodyReaderLegacy implements ILegacyContentProviderErrorResponseBodyReader {
+public class LegacyOverdriveErrorResponseBodyReader implements ILegacyContentProviderErrorResponseBodyReader {
 
     @Override
     public String read(ClientResponse<?> response) {

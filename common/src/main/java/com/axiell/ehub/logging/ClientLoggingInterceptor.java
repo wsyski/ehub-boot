@@ -1,5 +1,7 @@
 package com.axiell.ehub.logging;
 
+import com.axiell.ehub.util.EhubCharsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ public class ClientLoggingInterceptor implements ClientRequestFilter, ClientResp
             String headersMessage = getHeadersMessage(responseContext.getHeaders());
             LOGGER.debug(timeMessage);
             LOGGER.debug(headersMessage);
+            // LOGGER.debug(IOUtils.toString(responseContext.getEntityStream(), EhubCharsets.UTF_8));
         }
     }
 

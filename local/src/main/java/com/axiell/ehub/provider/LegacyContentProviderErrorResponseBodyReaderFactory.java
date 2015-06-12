@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.overdrive.LegacyOverdriveErrorResponseBodyReaderLegacy;
+import com.axiell.ehub.provider.overdrive.LegacyOverdriveErrorResponseBodyReader;
 import com.axiell.ehub.provider.elib.library3.LegacyElib3ErrorResponseBodyReader;
 
 class LegacyContentProviderErrorResponseBodyReaderFactory {
@@ -16,7 +16,7 @@ class LegacyContentProviderErrorResponseBodyReaderFactory {
 
         switch (name) {
             case OVERDRIVE:
-                return new LegacyOverdriveErrorResponseBodyReaderLegacy();
+                return new LegacyOverdriveErrorResponseBodyReader();
             case ELIB3:
                 return new LegacyElib3ErrorResponseBodyReader();
             default:

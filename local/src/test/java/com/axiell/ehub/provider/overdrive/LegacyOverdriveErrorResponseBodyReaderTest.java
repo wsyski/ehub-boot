@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class LegacyOverdriveErrorResponseBodyReaderTest {
     private static final String MESSAGE = "MSG1";
-    private LegacyOverdriveErrorResponseBodyReaderLegacy underTest;
+    private LegacyOverdriveErrorResponseBodyReader underTest;
     @Mock
     private ClientResponse<?> response;
     @Mock
@@ -24,7 +24,7 @@ public class LegacyOverdriveErrorResponseBodyReaderTest {
 
     @Before
     public void setUpUnderTest() {
-        underTest = new LegacyOverdriveErrorResponseBodyReaderLegacy();
+        underTest = new LegacyOverdriveErrorResponseBodyReader();
     }
 
     @Test
