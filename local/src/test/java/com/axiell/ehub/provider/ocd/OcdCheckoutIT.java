@@ -26,6 +26,38 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         newBearerToken();
     }
 
+    @Test
+    public void eAudio() throws CheckoutNotFoundException {
+        givenAudioTitleIdAsContentProviderRecordId();
+        whenCheckout();
+        thenCheckoutIsSuccessful();
+        thenPatronHasCheckoutInListOfCheckouts();
+        thenCheckoutHasTransactionId();
+        thenCheckoutHasExpirationDate();
+        thenCheckoutHasDownloadUrl();
+    }
+
+    @Test
+    public void eBook() throws CheckoutNotFoundException {
+        givenEbookTitleIdAsContentProviderRecordId();
+        whenCheckout();
+        thenCheckoutIsSuccessful();
+        thenPatronHasCheckoutInListOfCheckouts();
+        thenCheckoutHasTransactionId();
+        thenCheckoutHasExpirationDate();
+        thenCheckoutHasDownloadUrl();
+    }
+
+    @After
+    public void checkin() {
+        IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
+        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
+        //ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
+        for (CheckoutDTO checkoutDTO: checkoutsDTO) {
+            ocdResource.checkin(bearerToken, checkoutDTO.getTransactionId());
+        }
+    }
+
     private void newBearerToken() {
         givenApiBaseUrl();
         givenBasicToken();
@@ -41,16 +73,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         given(patron.getPin()).willReturn(PIN);
     }
 
-    @Test
-    public void checkout_audio() throws CheckoutNotFoundException {
-        givenAudioTitleIdAsContentProviderRecordId();
-        whenCheckout();
-        thenCheckoutIsSuccessful();
-        thenPatronHasCheckoutInListOfCheckouts();
-        thenCheckoutHasTransactionId();
-        thenCheckoutHasExpirationDate();
-        thenCheckoutHasDownloadUrl();
-    }
+
 
     private void givenAudioTitleIdAsContentProviderRecordId() {
         contentProviderRecordId = EAUDIO_ISBN;
@@ -84,27 +107,11 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         assertNotNull(checkout.getDownloadUrl());
     }
 
-    @Test
-    public void checkout_ebook() throws CheckoutNotFoundException {
-        givenEbookTitleIdAsContentProviderRecordId();
-        whenCheckout();
-        thenCheckoutIsSuccessful();
-        thenPatronHasCheckoutInListOfCheckouts();
-        thenCheckoutHasTransactionId();
-        thenCheckoutHasExpirationDate();
-        thenCheckoutHasDownloadUrl();
-    }
+
 
     private void givenEbookTitleIdAsContentProviderRecordId() {
         contentProviderRecordId = EBOOK_ISBN;
     }
 
-    @After
-//    @Test
-    public void checkin() {
-        IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
-        ocdResource.checkin(bearerToken, checkout.getTransactionId());
-//        ocdResource.checkin(bearerToken, "6868800");
-    }
+
 }

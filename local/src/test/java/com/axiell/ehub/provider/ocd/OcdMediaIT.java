@@ -29,6 +29,9 @@ public class OcdMediaIT extends AbstractOcdIT {
 
     private void whenFindMedia() throws MediaNotFoundException {
         List<MediaDTO> allMedia = underTest.getAllMedia(contentProviderConsumer);
+        //for(MediaDTO mediaDTO: allMedia) {
+        //    System.out.println(mediaDTO.getMediaType()+" "+mediaDTO.getIsbn());
+        //}
         IMediaMatcher matcher = new ContentProviderRecordIdMediaMatcher(contentProviderRecordId);
         actualMedia = MediaFinder.find(matcher, allMedia);
     }

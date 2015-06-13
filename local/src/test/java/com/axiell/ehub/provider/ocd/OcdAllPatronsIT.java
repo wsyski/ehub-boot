@@ -25,6 +25,9 @@ public class OcdAllPatronsIT extends AbstractOcdIT {
 
     private void whenGetAllPatrons() {
         allPatrons = underTest.getAllPatrons(contentProviderConsumer);
+        //for(PatronDTO patronDTO : allPatrons) {
+        //    System.out.println(patronDTO.getUserName());
+        //}
     }
 
     private void thenPatronIsFound() {
