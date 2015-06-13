@@ -4,6 +4,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 
 public class OcdDownloadUrlResolver {
@@ -11,8 +12,13 @@ public class OcdDownloadUrlResolver {
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target(url);
         Response response = target.request().get();
-        DownloadUrlDTO downloadUrlDTO = response.readEntity(DownloadUrlDTO.class);
-        response.close();
-        return downloadUrlDTO.getDownloadUrl();
+        if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
+            DownloadUrlDTO downloadUrlDTO = response.readEntity(DownloadUrlDTO.class);
+            response.close();
+            return downloadUrlDTO.getDownloadUrl();
+        }
+        else {
+            throw new ClientErrorException(response);
+        }
     }
 }

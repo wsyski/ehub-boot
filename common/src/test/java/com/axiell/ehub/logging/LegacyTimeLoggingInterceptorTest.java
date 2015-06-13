@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @Ignore
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LoggerFactory.class, LegacyTimeLoggingInterceptor.class, Status.class})
+@PrepareForTest({LoggerFactory.class, LegacyTimeLoggingClientFilter.class, Status.class})
 public class LegacyTimeLoggingInterceptorTest {
     private static final String GET = "GET";
     private static final String URL = "http://ehub.com/some/request";
@@ -47,7 +47,7 @@ public class LegacyTimeLoggingInterceptorTest {
     @Mock
     private StopWatch stopWatch;
 
-    private LegacyTimeLoggingInterceptor underTest;
+    private LegacyTimeLoggingClientFilter underTest;
 
     @Before
     public void setUp() throws Exception {
@@ -55,7 +55,7 @@ public class LegacyTimeLoggingInterceptorTest {
         mockStatic(Status.class);
         whenNew(StopWatch.class).withNoArguments().thenReturn(stopWatch);
         given(LoggerFactory.getLogger("time")).willReturn(logger);
-        underTest = new LegacyTimeLoggingInterceptor();
+        underTest = new LegacyTimeLoggingClientFilter();
     }
 
     @Test

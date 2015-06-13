@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class LegacyTimeLoggingInterceptor implements ClientExecutionInterceptor {
+public class LegacyTimeLoggingClientFilter implements ClientExecutionInterceptor {
     private static final String SEPARATOR = "; ";
     private static final Logger TIME_LOGGER = LoggerFactory.getLogger("time");
 

@@ -15,8 +15,8 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @ClientInterceptor
-public class LegacyClientLoggingInterceptor implements ClientExecutionInterceptor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LegacyClientLoggingInterceptor.class);
+public class LegacyLoggingClientFilter implements ClientExecutionInterceptor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LegacyLoggingClientFilter.class);
 
 
     @Override

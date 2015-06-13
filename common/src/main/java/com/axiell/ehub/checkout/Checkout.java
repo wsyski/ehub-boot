@@ -19,7 +19,7 @@ public class Checkout {
         return new ContentLink(checkoutDTO.getContentLink());
     }
 
-    CheckoutDTO toDTO() {
+    public CheckoutDTO toDTO() {
         return checkoutDTO;
     }
 }

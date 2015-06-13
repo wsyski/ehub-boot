@@ -16,6 +16,10 @@ public interface IOcdResource {
     @Path("v1/libraries/{libraryId}/patrons")
     PatronDTO addPatron(@HeaderParam("Authorization") BasicToken basicToken, @PathParam("libraryId") String libraryId, PatronDTO patronDTO);
 
+    @GET
+    @Path("v1/libraries/{libraryId}/patrons")
+    List<PatronDTO> getAllPatrons(@HeaderParam("Authorization") BasicToken basicToken, @PathParam("libraryId") String libraryId);
+
     @POST
     @Path("v1/tokens")
     BearerToken newBearerToken(@HeaderParam("Authorization") BasicToken basicToken, PatronTokenDTO patronTokenDTO);

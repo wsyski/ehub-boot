@@ -1,8 +1,7 @@
-com.axiell.ehub.logging.LoggingPreProcessInterceptor
-com.axiell.ehub.logging.LoggingPostProcessInterceptor
+com.axiell.ehub.logging.LoggingFilter
+com.axiell.ehub.logging.TimeLoggingClientFilter
 com.axiell.ehub.util.RestEasyBadRequestExceptionMapper
 com.axiell.ehub.util.EhubRuntimeExceptionMapper
 com.axiell.ehub.util.RuntimeExceptionMapper
-com.axiell.ehub.logging.LegacyTimeLoggingInterceptor
-com.axiell.ehub.logging.LegacyClientLoggingInterceptor
-com.axiell.ehub.logging.ClientLoggingInterceptor
+com.axiell.ehub.logging.LegacyTimeLoggingClientFilter
+com.axiell.ehub.logging.LegacyLoggingClientFilter
