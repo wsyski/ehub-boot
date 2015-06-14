@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
-class ContentProviderLoanIdCheckoutMatcher implements ICheckoutMatcher {
+import com.axiell.ehub.util.IMatcher;
+
+class ContentProviderLoanIdCheckoutMatcher implements IMatcher<CheckoutDTO> {
     private final String contentProviderLoanId;
 
     ContentProviderLoanIdCheckoutMatcher(String contentProviderLoanId) {

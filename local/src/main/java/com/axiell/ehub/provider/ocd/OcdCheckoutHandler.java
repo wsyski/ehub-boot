@@ -1,9 +1,11 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.CommandData;
+import com.axiell.ehub.util.CollectionFinder;
+import com.axiell.ehub.util.IFinder;
+import com.axiell.ehub.util.IMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,11 +32,11 @@ class OcdCheckoutHandler implements IOcdCheckoutHandler {
     public Checkout getCompleteCheckout(BearerToken bearerToken, CommandData data, String contentProviderLoanId) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final List<CheckoutDTO> checkouts = ocdFacade.getCheckouts(contentProviderConsumer, bearerToken);
-        final ICheckoutMatcher matcher = new ContentProviderLoanIdCheckoutMatcher(contentProviderLoanId);
+        final IMatcher<CheckoutDTO> matcher = new ContentProviderLoanIdCheckoutMatcher(contentProviderLoanId);
         try {
-            final CheckoutDTO checkoutDTO = CheckoutFinder.find(matcher, checkouts);
+            final CheckoutDTO checkoutDTO = new CollectionFinder<CheckoutDTO>().find(matcher, checkouts);
             return new Checkout(checkoutDTO);
-        } catch (CheckoutNotFoundException e) {
+        } catch (IFinder.NotFoundException ex) {
             final String language = data.getLanguage();
             throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CHECKOUT_NOT_FOUND, language);
         }

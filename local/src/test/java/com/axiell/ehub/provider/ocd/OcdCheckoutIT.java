@@ -1,5 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.util.CollectionFinder;
+import com.axiell.ehub.util.IFinder;
+import com.axiell.ehub.util.IMatcher;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +30,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     }
 
     @Test
-    public void eAudio() throws CheckoutNotFoundException {
+    public void eAudio() throws IFinder.NotFoundException {
         givenAudioTitleIdAsContentProviderRecordId();
         whenCheckout();
         thenCheckoutIsSuccessful();
@@ -38,7 +41,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     }
 
     @Test
-    public void eBook() throws CheckoutNotFoundException {
+    public void eBook() throws IFinder.NotFoundException {
         givenEbookTitleIdAsContentProviderRecordId();
         whenCheckout();
         thenCheckoutIsSuccessful();
@@ -88,10 +91,10 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         assertTrue(checkout.isSuccessful());
     }
 
-    private void thenPatronHasCheckoutInListOfCheckouts() throws CheckoutNotFoundException {
+    private void thenPatronHasCheckoutInListOfCheckouts() throws IFinder.NotFoundException {
         List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
-        ContentProviderLoanIdCheckoutMatcher matcher = new ContentProviderLoanIdCheckoutMatcher(checkout.getTransactionId());
-        CheckoutDTO foundCheckoutDTO = CheckoutFinder.find(matcher, checkoutsDTO);
+        IMatcher<CheckoutDTO> matcher = new ContentProviderLoanIdCheckoutMatcher(checkout.getTransactionId());
+        CheckoutDTO foundCheckoutDTO = new CollectionFinder<CheckoutDTO>().find(matcher, checkoutsDTO);
         checkout = new Checkout(foundCheckoutDTO);
     }
 

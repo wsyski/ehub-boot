@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
-class ContentProviderRecordIdMediaMatcher implements IMediaMatcher {
+import com.axiell.ehub.util.IMatcher;
+
+class ContentProviderRecordIdMediaMatcher implements IMatcher<MediaDTO> {
     private final String contentProviderRecordId;
 
     ContentProviderRecordIdMediaMatcher(String contentProviderRecordId) {

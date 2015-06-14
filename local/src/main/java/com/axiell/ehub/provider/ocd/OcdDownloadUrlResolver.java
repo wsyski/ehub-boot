@@ -7,7 +7,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 
-public class OcdDownloadUrlResolver {
+class OcdDownloadUrlResolver {
     public static String resolve(final String url) {
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target(url);
