@@ -91,6 +91,7 @@ public class TestDataResource implements ITestDataResource {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
             connection.commit();
+            connection.close();
         }
     }
 

@@ -5,7 +5,9 @@ package com.axiell.ehub.it12;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
@@ -66,6 +68,11 @@ public abstract class RemoteITFixture {
 
     @After
     public void tearDown() throws Exception {
+        deleteTestData();
+        WireMock.reset();
+    }
+
+    private void deleteTestData() throws Exception {
         final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
         final ClientResponse<?> response = request.delete();
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {

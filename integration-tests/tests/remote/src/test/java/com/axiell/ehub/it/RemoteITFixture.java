@@ -8,6 +8,7 @@ import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -45,6 +46,7 @@ public abstract class RemoteITFixture {
     @After
     public void tearDown() {
         deleteTestData();
+        WireMock.reset();
     }
 
     private void initTestData() {
