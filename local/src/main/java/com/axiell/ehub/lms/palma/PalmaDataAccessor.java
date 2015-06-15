@@ -53,17 +53,17 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
     }
 
     @Override
-    public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderName, final String contentProviderRecordId) {
-        SearchResponse.SearchResult searchResult = catalogueFacade.search(ehubConsumer, contentProviderName, contentProviderRecordId);
+    public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderAlias, final String contentProviderRecordId) {
+        SearchResponse.SearchResult searchResult = catalogueFacade.search(ehubConsumer, contentProviderAlias, contentProviderRecordId);
         responseStatusChecker.checkResponseStatus(searchResult.getStatus(), ehubConsumer);
         String mediaClass=null;
         if (searchResult.getNofRecordsTotal()==0) {
-           LOGGER.error("Missing record contentProviderName: "+contentProviderName+" contentProviderRecordId: "+contentProviderRecordId);
+           LOGGER.error("Missing record contentProviderAlias: "+ contentProviderAlias +" contentProviderRecordId: "+contentProviderRecordId);
         }
         else {
             mediaClass=searchResult.getCatalogueRecords().getCatalogueRecord().get(0).getMediaClass();
             if (searchResult.getNofRecordsTotal()>1) {
-                LOGGER.error("Duplicate records for contentProviderName: "+contentProviderName+" contentProviderRecordId: "+contentProviderRecordId);
+                LOGGER.error("Duplicate records for contentProviderAlias: "+ contentProviderAlias +" contentProviderRecordId: "+contentProviderRecordId);
             }
         }
         return mediaClass;
