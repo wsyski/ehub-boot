@@ -7,5 +7,5 @@ import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.ehub.consumer.EhubConsumer;
 
 public interface ICatalogueFacade {
-    SearchResponse.SearchResult search(EhubConsumer ehubConsumer, String contentProviderName, String contentProviderId);
+    SearchResponse.SearchResult search(EhubConsumer ehubConsumer, String contentProviderAlias, String contentProviderId);
 }

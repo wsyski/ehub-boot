@@ -4,8 +4,11 @@ import com.axiell.arena.services.palma.loans.CheckOutResponse;
 import com.axiell.arena.services.palma.loans.CheckOutTestResponse;
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutErrorStatusType;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
+import com.axiell.arena.services.palma.search.v267.searchresponse.CatalogueRecords;
+import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.arena.services.palma.util.ISOCurrencyCodeType;
-import com.axiell.ehub.Fields;
+import com.axiell.arena.services.palma.util.status.Status;
+import com.axiell.arena.services.palma.util.v267.cr.CatalogueRecord;
 import com.axiell.ehub.FieldsBuilder;
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.NotFoundException;
@@ -31,8 +34,8 @@ import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PalmaDataAccessorTest {
+    private static final String MEDIA_CLASS = "eAudio";
     private static final String LMS_RECORD_ID = "recordId";
-    private static final String PROVIDER_FORMAT_ID = "providerFormatId";
     private static final String PROVIDER_RECORD_ID = "providerRecordId";
     private static final String LIBRARY_CARD = "libraryCard";
     private static final String PIN = "pin";
@@ -41,14 +44,30 @@ public class PalmaDataAccessorTest {
     private static final String AGENCY_M_IDENTIFIER = "agencyMemberIdentifier";
     private static final long EHUB_CONSUMER_ID = 1L;
 
+    private static final com.axiell.arena.services.palma.search.v267.searchresponse.ObjectFactory SEARCH_RESPONSE_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.search.v267.searchresponse.ObjectFactory();
+    private static final com.axiell.arena.services.palma.search.v267.service.ObjectFactory SEARCH_SERVICE_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.search.v267.service.ObjectFactory();
+    private static final com.axiell.arena.services.palma.util.v267.cr.ObjectFactory CR_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.util.v267.cr.ObjectFactory();
+    private static final com.axiell.arena.services.palma.util.v267.status.ObjectFactory V267_STATUS_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.util.v267.status.ObjectFactory();
+    private static final com.axiell.arena.services.palma.loans.ObjectFactory LOANS_OBJECT_FACTORY = new com.axiell.arena.services.palma.loans.ObjectFactory();
+    private static final com.axiell.arena.services.palma.util.status.ObjectFactory STATUS_OBJECT_FACTORY =
+            new com.axiell.arena.services.palma.util.status.ObjectFactory();
+
     private PalmaDataAccessor underTest;
     @Mock
     private ILoansFacade loansFacade;
+    @Mock
+    private ICatalogueFacade catalogueFacade;
     @Mock
     private EhubConsumer ehubConsumer;
     private PendingLoan pendingLoan;
     private CheckoutTestAnalysis preCheckoutAnalysis;
     private LmsLoan lmsLoan;
+    private String mediaClass;
+
     @Mock
     private Patron patron;
 
@@ -80,7 +99,6 @@ public class PalmaDataAccessorTest {
             thenNotFoundExceptionIsThrown(ex);
         }
     }
-
 
     @Test
     public void checkOutTestNewLoan() {
@@ -118,10 +136,18 @@ public class PalmaDataAccessorTest {
         }
     }
 
+    @Test
+    public void getMediaClass() {
+        givenPalmaSearch();
+        whenGetMediaClass();
+        thenExpectedMediaClass();
+    }
+
     @Before
     public void setUp() throws Exception {
         underTest = new PalmaDataAccessor();
         ReflectionTestUtils.setField(underTest, "loansFacade", loansFacade);
+        ReflectionTestUtils.setField(underTest, "catalogueFacade", catalogueFacade);
         ReflectionTestUtils.setField(underTest, "responseStatusChecker", new ResponseStatusChecker());
         pendingLoan = new PendingLoan(FieldsBuilder.defaultFields());
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperies = new HashMap<>();
@@ -131,6 +157,11 @@ public class PalmaDataAccessorTest {
         given(patron.getPin()).willReturn(PIN);
         given(ehubConsumer.getProperties()).willReturn(ehubConsumerProperies);
         given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
+    }
+
+    private void givenPalmaSearch() {
+        SearchResponse.SearchResult searchResult = getSearchResult();
+        given(catalogueFacade.search(any(EhubConsumer.class), any(String.class), any(String.class))).willReturn(searchResult);
     }
 
     private void givenCheckOutResponseWithStatus(final CheckOutErrorStatusType checkOutStatus) {
@@ -155,6 +186,10 @@ public class PalmaDataAccessorTest {
         assertNull(preCheckoutAnalysis.getLmsLoanId());
     }
 
+    private void thenExpectedMediaClass() {
+        assertEquals(MEDIA_CLASS, mediaClass);
+    }
+
     private void thenForbiddenExceptionIsThrown(final ForbiddenException ex) {
         assertNotNull(ex.getMessage());
     }
@@ -164,11 +199,8 @@ public class PalmaDataAccessorTest {
     }
 
     private static CheckOutTestResponse getCheckOutTestResponse(final CheckOutTestErrorStatusType checkOutStatus) {
-        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
-        CheckOutTestResponse checkOutTest = loansObjectFactory.createCheckOutTestResponse();
-        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
-        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
-        status.setType("ok");
+        CheckOutTestResponse checkOutTest = LOANS_OBJECT_FACTORY.createCheckOutTestResponse();
+        Status status = getStatusOk();
         com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory checkouttestresponseObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory();
         com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
@@ -186,11 +218,8 @@ public class PalmaDataAccessorTest {
     }
 
     private static CheckOutResponse getCheckOutResponse(final CheckOutErrorStatusType errorStatus) {
-        com.axiell.arena.services.palma.loans.ObjectFactory loansObjectFactory = new com.axiell.arena.services.palma.loans.ObjectFactory();
-        CheckOutResponse checkOut = loansObjectFactory.createCheckOutResponse();
-        com.axiell.arena.services.palma.util.status.ObjectFactory statusObjectFactory = new com.axiell.arena.services.palma.util.status.ObjectFactory();
-        com.axiell.arena.services.palma.util.status.Status status = statusObjectFactory.createStatus();
-        status.setType("ok");
+        CheckOutResponse checkOut = LOANS_OBJECT_FACTORY.createCheckOutResponse();
+        com.axiell.arena.services.palma.util.status.Status status = getStatusOk();
         com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory checkoutresponseObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory();
         com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = checkoutresponseObjectFactory.createCheckOutResponse();
@@ -217,6 +246,35 @@ public class PalmaDataAccessorTest {
         return checkOut;
     }
 
+    private static Status getStatusOk() {
+        Status status = STATUS_OBJECT_FACTORY.createStatus();
+        status.setType("ok");
+        return status;
+    }
+
+    private static com.axiell.arena.services.palma.util.v267.status.Status getV267StatusOk() {
+        com.axiell.arena.services.palma.util.v267.status.Status status = V267_STATUS_OBJECT_FACTORY.createStatus();
+        status.setType("ok");
+        return status;
+    }
+
+    private static SearchResponse.SearchResult getSearchResult() {
+        com.axiell.arena.services.palma.util.v267.status.Status status = getV267StatusOk();
+        SearchResponse.SearchResult searchResult = SEARCH_SERVICE_OBJECT_FACTORY.createSearchResponseSearchResult();
+        searchResult.setStatus(status);
+        CatalogueRecord catalogueRecord = CR_OBJECT_FACTORY.createCatalogueRecord();
+        catalogueRecord.setMediaClass(MEDIA_CLASS);
+        catalogueRecord.setId(LMS_RECORD_ID);
+        CatalogueRecords catalogueRecords = SEARCH_RESPONSE_OBJECT_FACTORY.createCatalogueRecords();
+        catalogueRecords.getCatalogueRecord().add(catalogueRecord);
+        searchResult.setCatalogueRecords(catalogueRecords);
+        searchResult.setNofPages(1);
+        searchResult.setNofRecordsTotal(1);
+        searchResult.setNofRecordsPage(1);
+        searchResult.setCurrentPage(1);
+        return searchResult;
+    }
+
     private void givenCheckOutTestResponseFromAlmaWithStatus(final CheckOutTestErrorStatusType testStatus) {
         CheckOutTestResponse checkOutTestResponse = getCheckOutTestResponse(testStatus);
         given(loansFacade.checkOutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(checkOutTestResponse);
@@ -229,5 +287,9 @@ public class PalmaDataAccessorTest {
     private void whenCheckOut() {
         Date expirationDate = new Date();
         lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, patron);
+    }
+
+    private void whenGetMediaClass() {
+        mediaClass = underTest.getMediaClass(ehubConsumer, ContentProviderName.OCD.name(), PROVIDER_RECORD_ID);
     }
 }

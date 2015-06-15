@@ -23,17 +23,17 @@ class CatalogueFacade implements ICatalogueFacade {
     private ICataloguePortFactory cataloguePortFactory;
 
     @Override
-    public SearchResponse.SearchResult search(final EhubConsumer ehubConsumer, String contentProviderName, final String contentProviderRecordId) {
-        Search.SearchRequest searchRequest = createSearchRequest(ehubConsumer, contentProviderName, contentProviderRecordId);
+    public SearchResponse.SearchResult search(final EhubConsumer ehubConsumer, String contentProviderAlias, final String contentProviderRecordId) {
+        Search.SearchRequest searchRequest = createSearchRequest(ehubConsumer, contentProviderAlias, contentProviderRecordId);
         Catalogue catalogue = cataloguePortFactory.getInstance(ehubConsumer);
         return catalogue.search(searchRequest);
     }
 
-    private static Search.SearchRequest createSearchRequest(final EhubConsumer ehubConsumer, String contentProviderName, final String contentProviderRecordId) {
+    private static Search.SearchRequest createSearchRequest(final EhubConsumer ehubConsumer, String contentProviderAlias, final String contentProviderRecordId) {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
         Search.SearchRequest searchRequest = SERVICE_OBJECT_FACTORY.createSearchSearchRequest();
         searchRequest.setArenaMember(agencyMemberIdentifier);
-        searchRequest.setQuery("contentProviderRecordId_index: \"" + contentProviderRecordId + "\" AND contentProviderName_index: \""+contentProviderName+"\"");
+        searchRequest.setQuery("contentProviderRecordId_index: \"" + contentProviderRecordId + "\" AND contentProviderName_index: \""+ contentProviderAlias +"\"");
         searchRequest.setLanguage(LanguageType.fromValue(Locale.ENGLISH.getLanguage()));
         searchRequest.setPage(1);
         searchRequest.setPageSize(1);
