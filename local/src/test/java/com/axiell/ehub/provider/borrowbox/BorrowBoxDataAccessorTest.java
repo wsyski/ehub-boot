@@ -1,0 +1,114 @@
+package com.axiell.ehub.provider.borrowbox;
+
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Collections;
+import java.util.Date;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+
+public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+
+    private BorrowBoxDataAccessor underTest;
+    @Mock
+    private BorrowBoxFacade borrowBoxFacade;
+    @Mock
+    private InternalServerErrorException internalServerErrorException;
+    @Mock
+    private IEhubExceptionFactory ehubExceptionFactory;
+    @Mock
+    private FormatsDTO formats;
+    @Mock
+    private FormatsDTO.FormatDTO format;
+    @Mock
+    private CheckoutDTO checkout;
+
+    @Before
+    public void setUp() {
+        underTest = new BorrowBoxDataAccessor();
+        ReflectionTestUtils.setField(underTest, "borrowBoxFacade", borrowBoxFacade);
+        ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
+        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
+    }
+
+    @Test
+    public void getFormats() {
+        givenLanguageInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenContentProviderAliasInCommandData();
+        givenPatronInCommandData();
+        givenBorrowBoxFacadeReturnsFormats();
+        givenFormatDecorationFromContentProvider();
+        givenContentProvider();
+        givenContentProviderConsumerInCommandData();
+        givenFormatFromFormatFactory();
+        whenGetFormats();
+        thenFormatSetContainsOneFormat();
+        thenActualFormatEqualsExpected();
+    }
+
+    @Test
+    public void createLoan() {
+        givenContentProvider();
+        givenContentProviderConsumerInCommandData();
+        givenFormatDecorationFromContentProvider();
+        givenContentProviderRecordIdInCommandData();
+        givenCompleteCheckout();
+        givenCheckout();
+        givenContentLink();
+        whenCreateLoan();
+        thenActualLoanContainsContentLinkHref();
+    }
+
+    @Test
+    public void getContent() {
+        givenGetCheckout();
+        givenCompleteCheckout();
+        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenContentProviderLoanMetadataInCommandData();
+        givenContentLink();
+        whenGetContent();
+        thenActualContentLinkContainsHref();
+    }
+
+    private void givenBorrowBoxFacadeReturnsFormats() {
+        given(borrowBoxFacade.getFormats(contentProviderConsumer, patron, RECORD_ID)).willReturn(formats);
+        given(formats.getFormats()).willReturn(Collections.singletonList(format));
+        given(format.getFormatId()).willReturn(FORMAT_ID);
+    }
+
+    private void whenGetFormats() {
+        actualFormats = underTest.getFormats(commandData);
+    }
+
+    public void givenCheckout() {
+        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
+    }
+
+    public void givenGetCheckout() {
+        given(borrowBoxFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class))).willReturn(checkout);
+    }
+
+    public void givenCompleteCheckout() {
+        given(checkout.getExpirationDate()).willReturn(new Date());
+        given(checkout.getLoanId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
+        given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
+    }
+
+    private void whenCreateLoan() {
+        actualLoan = underTest.createLoan(commandData);
+    }
+
+    public void whenGetContent() {
+        actualContentLink = underTest.getContent(commandData);
+    }
+}

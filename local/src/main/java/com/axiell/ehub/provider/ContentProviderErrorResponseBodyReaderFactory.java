@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.borrowbox.BorrowBoxErrorResponseBodyReader;
 import com.axiell.ehub.provider.ocd.OcdErrorResponseBodyReader;
 
 class ContentProviderErrorResponseBodyReaderFactory {
@@ -16,6 +17,8 @@ class ContentProviderErrorResponseBodyReaderFactory {
         switch (name) {
             case OCD:
                 return new OcdErrorResponseBodyReader();
+            case BORROWBOX:
+                return new BorrowBoxErrorResponseBodyReader();
             default:
                 return new DefaultContentProviderErrorResponseBodyReader();
         }

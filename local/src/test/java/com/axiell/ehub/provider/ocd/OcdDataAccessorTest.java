@@ -48,7 +48,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     @Test
     public void getFormats_success() {
         givenLanguageInCommandData();
-        givenPalmaDataAccessorReturnsMediaClass();
+        givenFormatHandlerReturnsContentProviderFormat();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderAliasInCommandData();
         givenFormatDecorationFromContentProvider();
@@ -60,8 +60,8 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         thenActualFormatEqualsExpected();
     }
 
-    private void givenPalmaDataAccessorReturnsMediaClass() {
-        given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, CONTENT_PROVIDER_ALIAS,RECORD_ID)).willReturn(FORMAT_ID);
+    private void givenFormatHandlerReturnsContentProviderFormat() {
+        given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, CONTENT_PROVIDER_ALIAS, RECORD_ID)).willReturn(FORMAT_ID);
     }
 
     private void whenGetFormats() {

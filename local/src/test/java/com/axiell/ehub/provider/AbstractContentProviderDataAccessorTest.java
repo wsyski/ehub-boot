@@ -30,6 +30,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected static final String CONTENT_PROVIDER_ALIAS = "ocd";
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
+    protected static final String CONTENT_PROVIDER_LOAN_ID ="contentProviderLoanId";
     protected static final String CONTENT_HREF = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
@@ -98,6 +99,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected void givenContentProviderRecordIdInCommandData() {
         given(commandData.getContentProviderRecordId()).willReturn(RECORD_ID);
     }
+
     protected void givenContentProviderAliasInCommandData() {
         given(commandData.getContentProviderAlias()).willReturn(CONTENT_PROVIDER_ALIAS);
     }

@@ -1,21 +1,26 @@
-package com.axiell.ehub.provider.ocd;
+package com.axiell.ehub.provider.borrowbox;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorDetailsDTO {
+public class ErrorResponseDTO {
     private String message;
+    private String errorCode;
 
-    public ErrorDetailsDTO() {
+    public ErrorResponseDTO() {
     }
-    
-    public ErrorDetailsDTO(String message) {
+
+    public ErrorResponseDTO(String message) {
 	this.message = message;
     }
     
     public String getMessage() {
 	return message;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 }

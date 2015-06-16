@@ -1,9 +1,10 @@
-package com.axiell.ehub.provider.ocd;
+package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.provider.IContentProviderErrorResponseBodyReader;
+
 import javax.ws.rs.core.Response;
 
-public class OcdErrorResponseBodyReader implements IContentProviderErrorResponseBodyReader {
+public class BorrowBoxErrorResponseBodyReader implements IContentProviderErrorResponseBodyReader {
 
     @Override
     public String read(Response response) {

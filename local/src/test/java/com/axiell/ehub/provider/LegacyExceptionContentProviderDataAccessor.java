@@ -25,7 +25,7 @@ class LegacyExceptionContentProviderDataAccessor implements IContentProviderData
 
     @Override
     public ContentProviderLoan createLoan(final CommandData commandData) {
-        throw new NotImplementedException("createLoan_success has not been implemented");
+        throw new NotImplementedException("createLoan has not been implemented");
     }
 
     @Override
