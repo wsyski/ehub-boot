@@ -43,8 +43,8 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
         assertEquals(contentProviderFormatId, format.getFormatId());
     }
 
-    private void givenContentProviderRecordId(final String mediaType) {
-        if (FORMAT_ID_EAUDIO.equals(mediaType)) {
+    private void givenContentProviderRecordId(final String contentProviderFormatId) {
+        if (FORMAT_ID_EAUDIO.equals(contentProviderFormatId)) {
             contentProviderRecordId = RECORD_ID_EAUDIO;
         } else {
             contentProviderRecordId = RECORD_ID_EBOOK;

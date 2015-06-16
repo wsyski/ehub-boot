@@ -9,7 +9,7 @@ class Checkout {
     private static final String SUCCESS = "SUCCESS";
     private final CheckoutDTO checkoutDTO;
 
-    Checkout(CheckoutDTO checkoutDTO) {
+    Checkout(final CheckoutDTO checkoutDTO) {
         this.checkoutDTO = checkoutDTO;
     }
 

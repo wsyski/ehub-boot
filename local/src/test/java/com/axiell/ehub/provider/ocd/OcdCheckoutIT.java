@@ -21,7 +21,6 @@ public class OcdCheckoutIT extends AbstractOcdIT {
 
     private BearerToken bearerToken;
     private String contentProviderRecordId;
-    private CheckoutDTO checkoutDTO;
     private Checkout checkout;
 
     @Override
@@ -31,7 +30,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
 
     @Test
     public void eAudio() throws IFinder.NotFoundException {
-        givenAudioTitleIdAsContentProviderRecordId();
+        givenContentProviderRecordId(FORMAT_ID_EAUDIO);
         whenCheckout();
         thenCheckoutIsSuccessful();
         thenPatronHasCheckoutInListOfCheckouts();
@@ -42,7 +41,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
 
     @Test
     public void eBook() throws IFinder.NotFoundException {
-        givenEbookTitleIdAsContentProviderRecordId();
+        givenContentProviderRecordId(FORMAT_ID_EBOOK);
         whenCheckout();
         thenCheckoutIsSuccessful();
         thenPatronHasCheckoutInListOfCheckouts();
@@ -56,7 +55,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
         List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
         //ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
-        for (CheckoutDTO checkoutDTO: checkoutsDTO) {
+        for (CheckoutDTO checkoutDTO : checkoutsDTO) {
             ocdResource.checkin(bearerToken, checkoutDTO.getTransactionId());
         }
     }
@@ -66,24 +65,18 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         givenBasicToken();
         givenContentProvider();
         givenLibraryId();
-        givenCardPin();
+        givenPatron();
         bearerToken = underTest.newBearerToken(contentProviderConsumer, patron);
     }
 
-    private void givenCardPin() {
+    private void givenPatron() {
         given(patron.hasLibraryCard()).willReturn(true);
         given(patron.getLibraryCard()).willReturn(CARD);
         given(patron.getPin()).willReturn(PIN);
     }
 
-
-
-    private void givenAudioTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = RECORD_ID_EAUDIO;
-    }
-
     private void whenCheckout() {
-        checkoutDTO = underTest.checkout(contentProviderConsumer, bearerToken, contentProviderRecordId);
+        CheckoutDTO checkoutDTO = underTest.checkout(contentProviderConsumer, bearerToken, contentProviderRecordId);
         checkout = new Checkout(checkoutDTO);
     }
 
@@ -110,11 +103,11 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         assertNotNull(checkout.getDownloadUrl());
     }
 
-
-
-    private void givenEbookTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = RECORD_ID_EBOOK;
+    private void givenContentProviderRecordId(final String contentProviderFormatId) {
+        if (FORMAT_ID_EAUDIO.equals(contentProviderFormatId)) {
+            contentProviderRecordId = RECORD_ID_EAUDIO;
+        } else {
+            contentProviderRecordId = RECORD_ID_EBOOK;
+        }
     }
-
-
 }
