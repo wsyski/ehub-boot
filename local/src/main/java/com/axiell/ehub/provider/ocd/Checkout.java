@@ -36,7 +36,7 @@ class Checkout {
         if (noFiles(files))
             return null;
         FileDTO file = files.iterator().next();
-        return OcdDownloadUrlResolver.resolve(file.getDownloadUrl());
+        return OcdDownloadUrlHandler.resolve(file.getDownloadUrl());
     }
 
     private boolean noFiles(List<FileDTO> files) {

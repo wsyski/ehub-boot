@@ -3,12 +3,14 @@ package com.axiell.ehub.provider.ocd;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 
-class OcdDownloadUrlResolver {
-    public static String resolve(final String url) {
+class OcdDownloadUrlHandler {
+
+    static String resolve(final String url) {
         ResteasyClient client = new ResteasyClientBuilder().build();
         ResteasyWebTarget target = client.target(url);
         Response response = target.request().get();

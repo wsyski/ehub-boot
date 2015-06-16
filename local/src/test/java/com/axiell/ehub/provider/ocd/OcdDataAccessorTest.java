@@ -3,20 +3,15 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.provider.record.format.FormatBuilder;
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -31,7 +26,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     @Mock
     private IOcdCheckoutHandler ocdCheckoutHandler;
     @Mock
-    private IPalmaDataAccessor palmaDataAccessor;
+    private IOcdFormatHandler ocdFormatHandler;
     @Mock
     private Checkout checkout;
     @Mock
@@ -47,7 +42,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
-        ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
+        ReflectionTestUtils.setField(underTest, "ocdFormatHandler", ocdFormatHandler);
     }
 
     @Test
@@ -66,7 +61,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     }
 
     private void givenPalmaDataAccessorReturnsMediaClass() {
-        given(palmaDataAccessor.getMediaClass(ehubConsumer, CONTENT_PROVIDER_ALIAS,RECORD_ID)).willReturn(FORMAT_ID);
+        given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, CONTENT_PROVIDER_ALIAS,RECORD_ID)).willReturn(FORMAT_ID);
     }
 
     private void whenGetFormats() {
