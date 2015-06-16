@@ -27,11 +27,11 @@ public class AuthenticationToken {
     }
 
     private String getMessage() {
-        return String.format("{0}\n{1}", libraryId, libraryCard);
+        return String.format("%s\n%s", libraryId, libraryCard);
     }
 
     @Override
     public String toString() {
-        return String.format("Credential:{0}, Signature={1}", libraryId, HmacSha256Function.hash(secretKey, getMessage()));
+        return String.format("Credential:%s, Signature=%s", libraryId, HmacSha256Function.hash(secretKey, getMessage()));
     }
 }

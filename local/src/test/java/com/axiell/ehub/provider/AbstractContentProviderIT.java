@@ -1,14 +1,13 @@
 package com.axiell.ehub.provider;
 
-import static org.mockito.BDDMockito.given;
-
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderIT {
@@ -18,7 +17,7 @@ public abstract class AbstractContentProviderIT {
     protected ContentProvider contentProvider;
 
     @BeforeClass
-    public static final void setUpWheteherIntegrationTestShouldBeRun() {
+    public static void setUpWheteherIntegrationTestShouldBeRun() {
         boolean online = isOnline();
         Assume.assumeTrue(online);
     }

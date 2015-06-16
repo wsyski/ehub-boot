@@ -17,7 +17,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class OcdCheckoutIT extends AbstractOcdIT {
     protected static final String CARD = "4100000009";
-    protected static final String PIN = "1234";
+    protected static final String PIN = "1111";
 
     private BearerToken bearerToken;
     private String contentProviderRecordId;
@@ -79,7 +79,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
 
 
     private void givenAudioTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = EAUDIO_ISBN;
+        contentProviderRecordId = RECORD_ID_EAUDIO;
     }
 
     private void whenCheckout() {
@@ -113,7 +113,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
 
 
     private void givenEbookTitleIdAsContentProviderRecordId() {
-        contentProviderRecordId = EBOOK_ISBN;
+        contentProviderRecordId = RECORD_ID_EBOOK;
     }
 
 
