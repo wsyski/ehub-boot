@@ -6,16 +6,19 @@ import com.axiell.ehub.util.IMatcher;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
 
 public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
+    protected static final String CARD = "4100000009";
+
     private String contentProviderRecordId;
     private FormatsDTO formats;
 
     @Test
     public void eAudio() throws IFinder.NotFoundException {
+        givenPatron();
         givenApiBaseUrl();
-        givenSecretKey();
-        givenLibraryId();
+        givenContentProviderProperties();
         givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EAUDIO);
         whenGetFormats();
@@ -24,9 +27,9 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
 
     @Test
     public void eEbook() throws IFinder.NotFoundException {
+        givenPatron();
         givenApiBaseUrl();
-        givenSecretKey();
-        givenLibraryId();
+        givenContentProviderProperties();
         givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EBOOK);
         whenGetFormats();
@@ -49,5 +52,10 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
         } else {
             contentProviderRecordId = RECORD_ID_EBOOK;
         }
+    }
+
+    private void givenPatron() {
+        given(patron.hasLibraryCard()).willReturn(true);
+        given(patron.getLibraryCard()).willReturn(CARD);
     }
 }

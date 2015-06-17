@@ -42,7 +42,6 @@ public class BorrowBoxCheckoutIT extends AbstractBorrowBoxIT {
         given(patron.getLibraryCard()).willReturn(CARD);
     }
 
-
     private void whenCheckout(final String contentProviderFormatId) {
         checkout = underTest.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
     }

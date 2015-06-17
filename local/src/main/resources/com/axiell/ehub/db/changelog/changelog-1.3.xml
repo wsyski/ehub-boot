@@ -32,7 +32,7 @@
         <insert tableName="CONTENT_PROVIDER_PROPERTY">
             <column name="CONTENT_PROVIDER_ID" value="9"/>
             <column name="PROPERTY_KEY" value="API_BASE_URL"/>
-            <column name="PROPERTY_VALUE" value="http://api.borrowbox.com"/>
+            <column name="PROPERTY_VALUE" value="https://lms-axiell.bolindadigital.com"/>
         </insert>
         <comment>Added BorrowBox Content Provider properties</comment>
     </changeSet>

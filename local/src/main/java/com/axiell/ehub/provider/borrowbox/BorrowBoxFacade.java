@@ -9,26 +9,26 @@ class BorrowBoxFacade implements IBorrowBoxFacade {
 
     @Override
     public FormatsDTO getFormats(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
-        final AuthenticationToken authenticationToken = new AuthenticationToken(contentProviderConsumer, patron);
+        final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         return borrowBoxResource
-                .getFormats(authenticationToken, authenticationToken.getLibraryId(), authenticationToken.getLibraryCard(), contentProviderRecordId);
+                .getFormats(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), contentProviderRecordId);
     }
 
     @Override
     public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId,
                                 final String formatId) {
-        final AuthenticationToken authenticationToken = new AuthenticationToken(contentProviderConsumer, patron);
+        final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         final CheckoutRequestDTO checkoutRequest = new CheckoutRequestDTO(contentProviderRecordId, formatId);
-        return borrowBoxResource.checkout(authenticationToken, authenticationToken.getLibraryId(), authenticationToken.getLibraryCard(), checkoutRequest);
+        return borrowBoxResource.checkout(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), checkoutRequest);
     }
 
     @Override
     public CheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderLoanId) {
-        final AuthenticationToken authenticationToken = new AuthenticationToken(contentProviderConsumer, patron);
+        final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         return borrowBoxResource
-                .getCheckout(authenticationToken, authenticationToken.getLibraryId(), authenticationToken.getLibraryCard(), contentProviderLoanId);
+                .getCheckout(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), contentProviderLoanId);
     }
 }
