@@ -12,7 +12,7 @@ class BorrowBoxFacade implements IBorrowBoxFacade {
         final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         return borrowBoxResource
-                .getFormats(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), contentProviderRecordId);
+                .getFormats(authorizationToken, authorizationToken.getSiteId(), authorizationToken.getLibraryCard(), contentProviderRecordId);
     }
 
     @Override
@@ -21,7 +21,7 @@ class BorrowBoxFacade implements IBorrowBoxFacade {
         final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         final CheckoutRequestDTO checkoutRequest = new CheckoutRequestDTO(contentProviderRecordId, formatId);
-        return borrowBoxResource.checkout(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), checkoutRequest);
+        return borrowBoxResource.checkout(authorizationToken, authorizationToken.getSiteId(), authorizationToken.getLibraryCard(), checkoutRequest);
     }
 
     @Override
@@ -29,6 +29,6 @@ class BorrowBoxFacade implements IBorrowBoxFacade {
         final AuthorizationToken authorizationToken = new AuthorizationToken(contentProviderConsumer, patron);
         final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer);
         return borrowBoxResource
-                .getCheckout(authorizationToken, authorizationToken.getLibraryId(), authorizationToken.getLibraryCard(), contentProviderLoanId);
+                .getCheckout(authorizationToken, authorizationToken.getSiteId(), authorizationToken.getLibraryCard(), contentProviderLoanId);
     }
 }

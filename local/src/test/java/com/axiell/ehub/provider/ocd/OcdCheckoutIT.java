@@ -28,6 +28,16 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         newBearerToken();
     }
 
+    @After
+    public void checkin() {
+        IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
+        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
+        //ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
+        for (CheckoutDTO checkoutDTO : checkoutsDTO) {
+            ocdResource.checkin(bearerToken, checkoutDTO.getTransactionId());
+        }
+    }
+
     @Test
     public void eAudio() throws IFinder.NotFoundException {
         givenContentProviderRecordId(FORMAT_ID_EAUDIO);
@@ -48,16 +58,6 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
         thenCheckoutHasDownloadUrl();
-    }
-
-    @After
-    public void checkin() {
-        IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
-        //ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
-        for (CheckoutDTO checkoutDTO : checkoutsDTO) {
-            ocdResource.checkin(bearerToken, checkoutDTO.getTransactionId());
-        }
     }
 
     private void newBearerToken() {

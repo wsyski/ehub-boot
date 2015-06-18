@@ -18,6 +18,8 @@ public class BorrowBoxCheckoutIT extends AbstractBorrowBoxIT {
     @Test
     public void eAudio() throws IFinder.NotFoundException {
         givenPatron();
+        givenConfigurationProperties();
+        givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EAUDIO);
         whenCheckout(FORMAT_ID_EAUDIO);
         thenPatronHasCheckout();
@@ -29,6 +31,8 @@ public class BorrowBoxCheckoutIT extends AbstractBorrowBoxIT {
     @Test
     public void eBook() throws IFinder.NotFoundException {
         givenPatron();
+        givenConfigurationProperties();
+        givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EBOOK);
         whenCheckout(FORMAT_ID_EBOOK);
         thenPatronHasCheckout();

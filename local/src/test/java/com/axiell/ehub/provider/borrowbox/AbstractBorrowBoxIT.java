@@ -36,11 +36,8 @@ public class AbstractBorrowBoxIT extends AbstractContentProviderIT {
     protected void customSetUp() {
     }
 
-    protected void givenApiBaseUrl() {
+    protected void givenConfigurationProperties() {
         given(contentProvider.getProperty(API_BASE_URL)).willReturn(API_BASE_URL_VALUE);
-    }
-
-    protected void givenContentProviderProperties() {
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID)).willReturn(BORROWBOX_SITE_ID);
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_LIBRARY_ID)).willReturn(
                 BORROWBOX_LIBRARY_ID);

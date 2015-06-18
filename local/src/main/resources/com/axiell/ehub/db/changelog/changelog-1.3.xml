@@ -39,6 +39,9 @@
 
     <changeSet id="4" author="ehub" dbms="oracle">
         <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="BORROWBOX_SITE_ID"/>
+        </insert>
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
             <column name="PROPERTY_KEY" value="BORROWBOX_LIBRARY_ID"/>
         </insert>
         <insert tableName="CONTENT_P_CONSUMER_P_KEY">

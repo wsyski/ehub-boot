@@ -17,8 +17,7 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
     @Test
     public void eAudio() throws IFinder.NotFoundException {
         givenPatron();
-        givenApiBaseUrl();
-        givenContentProviderProperties();
+        givenConfigurationProperties();
         givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EAUDIO);
         whenGetFormats();
@@ -28,8 +27,7 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
     @Test
     public void eEbook() throws IFinder.NotFoundException {
         givenPatron();
-        givenApiBaseUrl();
-        givenContentProviderProperties();
+        givenConfigurationProperties();
         givenContentProvider();
         givenContentProviderRecordId(FORMAT_ID_EBOOK);
         whenGetFormats();
