@@ -10,7 +10,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BorrowBoxCheckoutIT extends AbstractBorrowBoxIT {
-    protected static final String CARD = "4100000009";
+    protected static final String CARD = "ehub1";
 
     private String contentProviderRecordId;
     private CheckoutDTO checkout;

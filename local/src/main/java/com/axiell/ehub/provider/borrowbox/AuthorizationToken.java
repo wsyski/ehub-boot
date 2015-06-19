@@ -12,31 +12,22 @@ public class AuthorizationToken {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationToken.class);
 
     private long time = new Date().getTime() / 1000;
+    //private long time = 1434616780;
+    private ContentProviderConsumer contentProviderConsumer;
+    private Patron patron;
+
 
     public AuthorizationToken(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
-        siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID);
-        libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_LIBRARY_ID);
-        secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SECRET_KEY);
-        libraryCard = patron.getLibraryCard();
-    }
-
-    private String siteId;
-    private String libraryId;
-
-    private String libraryCard;
-
-    private String secretKey;
-
-    public String getLibraryCard() {
-        return libraryCard;
-    }
-
-    public String getSiteId() {
-        return siteId;
+        this.contentProviderConsumer = contentProviderConsumer;
+        this.patron = patron;
     }
 
     @Override
     public String toString() {
+        String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID);
+        String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_LIBRARY_ID);
+        String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SECRET_KEY);
+        String libraryCard = patron.getLibraryCard();
         String data = String.format("%s\n%s\n%d", siteId, libraryCard, time);
         //LOGGER.debug(" secretKey: " + secretKey+" data: " + data);
         return String.format("Credential=%s, SignatureDate=%d, Signature=%s", libraryId, time, HmacSha256Function.hash(secretKey, data));

@@ -1,6 +1,7 @@
 package com.axiell.ehub.util;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.google.common.io.BaseEncoding;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -12,30 +13,16 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class HmacSha256Function {
+    private static final String ALGORITHM = "HmacSHA256";
 
     private HmacSha256Function() {
     }
 
-    public static String hash(final String secretKeyAsHexString, final String data) {
-        String algorithm = "HmacSHA256";
-        String charset = "UTF8";
-        byte[] secretKeyBytes;
-        try {
-            secretKeyBytes = Hex.decodeHex(secretKeyAsHexString.toCharArray());
-        } catch (DecoderException ex) {
-            throw new InternalServerErrorException("Could not parse hex string: " + secretKeyAsHexString, ex);
-        }
-        SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyBytes, algorithm);
-
-        byte[] dataBytes;
-        try {
-            dataBytes = data.getBytes(charset);
-        } catch (UnsupportedEncodingException ex) {
-            throw new InternalServerErrorException(ex.getMessage(), ex);
-        }
+    public static String hash(final String secretKey, final String data) {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(getBytesFromHexString(secretKey), ALGORITHM);
         Mac mac;
         try {
-            mac = Mac.getInstance(algorithm);
+            mac = Mac.getInstance(ALGORITHM);
         } catch (NoSuchAlgorithmException ex) {
             throw new InternalServerErrorException(ex.getMessage(), ex);
         }
@@ -44,7 +31,10 @@ public class HmacSha256Function {
         } catch (InvalidKeyException ex) {
             throw new InternalServerErrorException(ex.getMessage(), ex);
         }
-        return Base64.encodeBase64String(mac.doFinal(dataBytes));
+        return BaseEncoding.base64().encode(mac.doFinal(data.getBytes()));
     }
 
+    private static byte[] getBytesFromHexString(final String data) {
+        return BaseEncoding.base64().decode(data);
+    }
 }

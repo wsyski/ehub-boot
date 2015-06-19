@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ocd.IOcdResource;
 import org.jboss.resteasy.client.ProxyFactory;
@@ -17,10 +18,11 @@ class BorrowBoxResourceFactory {
     private BorrowBoxResourceFactory() {
     }
 
-    public static IBorrowBoxResource create(final ContentProviderConsumer contentProviderConsumer) {
+    public static IBorrowBoxResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
+        client.register(new BorrowBoxClientRequestFilter(contentProviderConsumer,patron));
         ResteasyWebTarget target = client.target(baseUrl);
         return target.proxy(IBorrowBoxResource.class);
     }
