@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.user;
 
-import static com.axiell.ehub.security.HmacSHA1HashFunction.hmacSha1;
+import static com.axiell.ehub.security.HmacSha1Function.hmacSha1;
 import static com.axiell.ehub.util.EhubCharsets.UTF_8;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 

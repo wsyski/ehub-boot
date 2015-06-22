@@ -1,0 +1,26 @@
+package com.axiell.ehub.provider.sdk;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ErrorResponseDTO {
+    private String message;
+    private String errorCode;
+
+    public ErrorResponseDTO() {
+    }
+
+    public ErrorResponseDTO(String message) {
+	this.message = message;
+    }
+    
+    public String getMessage() {
+	return message;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+}

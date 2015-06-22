@@ -3,14 +3,13 @@
  */
 package com.axiell.ehub.security;
 
-import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.patron.Patron;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
 
-import static com.axiell.ehub.security.HmacSHA1HashFunction.hmacSha1;
+import static com.axiell.ehub.security.HmacSha1Function.hmacSha1;
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
 import static com.axiell.ehub.util.StringConverter.getBytesInUtf8;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;

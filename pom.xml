@@ -13,6 +13,7 @@
         <module>local</module>
         <module>remote</module>
         <module>integration-tests</module>
+        <module>provider-sdk</module>
     </modules>
 
     <organization>
@@ -261,6 +262,12 @@
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-spring</artifactId>
                 <version>${resteasy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>resteasy-jettison-provider</artifactId>
+                        <groupId>org.jboss.resteasy</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
