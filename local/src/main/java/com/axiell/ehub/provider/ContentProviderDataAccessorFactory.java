@@ -2,6 +2,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.provider.askews.AskewsDataAccessor;
+import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
@@ -38,6 +39,9 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
     @Autowired(required = true)
     private OcdDataAccessor ocdDataAccessor;
 
+    @Autowired(required = true)
+    private BorrowBoxDataAccessor borrowBoxDataAccessor;
+
     @Override
     public IContentProviderDataAccessor getInstance(final ContentProviderName contentProviderName) {
         switch (contentProviderName) {
@@ -55,6 +59,8 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
         	    return overDriveDataAccessor;
             case F1:
                 return f1DataAccessor;
+            case BORROWBOX:
+                return borrowBoxDataAccessor;
             case OCD:
                 return ocdDataAccessor;
             default:
