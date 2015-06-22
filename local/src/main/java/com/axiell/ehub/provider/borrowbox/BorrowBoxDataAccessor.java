@@ -35,7 +35,7 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final FormatsDTO formatsDTO = borrowBoxFacade.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
+        final FormatsDTO formatsDTO = borrowBoxFacade.getFormats(contentProviderConsumer, patron, language, contentProviderRecordId);
         final Formats formats = new Formats();
         for (FormatsDTO.FormatDTO formatDTO : formatsDTO.getFormats()) {
             final Format format = formatFactory.create(contentProvider, formatDTO.getFormatId(), language);
@@ -50,7 +50,8 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final CheckoutDTO checkoutDTO = borrowBoxFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
+        final String language = data.getLanguage();
+        final CheckoutDTO checkoutDTO = borrowBoxFacade.checkout(contentProviderConsumer, patron, language, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
         final ContentLink contentLink = makeContent(loanMetadata, checkoutDTO);
         return new ContentProviderLoan(loanMetadata, contentLink);
@@ -62,7 +63,8 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final CheckoutDTO checkoutDTO = borrowBoxFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
+        final String language = data.getLanguage();
+        final CheckoutDTO checkoutDTO = borrowBoxFacade.getCheckout(contentProviderConsumer, patron, language, contentProviderLoanId);
         return makeContent(loanMetadata, checkoutDTO);
     }
 

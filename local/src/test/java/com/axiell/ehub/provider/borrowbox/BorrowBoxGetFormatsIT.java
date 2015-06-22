@@ -35,7 +35,7 @@ public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
     }
 
     private void whenGetFormats() {
-        formats = underTest.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
+        formats = underTest.getFormats(contentProviderConsumer, patron, LANGUAGE, contentProviderRecordId);
     }
 
     private void thenExpectedMediaType(final String contentProviderFormatId) throws IFinder.NotFoundException {

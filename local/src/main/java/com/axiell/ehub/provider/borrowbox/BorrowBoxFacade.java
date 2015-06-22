@@ -8,22 +8,25 @@ import org.springframework.stereotype.Component;
 class BorrowBoxFacade implements IBorrowBoxFacade {
 
     @Override
-    public FormatsDTO getFormats(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
-        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer,patron);
+    public FormatsDTO getFormats(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language,
+                                 final String contentProviderRecordId) {
+        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer, patron, language);
         return borrowBoxResource.getFormats(contentProviderRecordId);
     }
 
     @Override
-    public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId,
+    public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language,
+                                final String contentProviderRecordId,
                                 final String formatId) {
-        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer,patron);
+        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer, patron, language);
         final CheckoutRequestDTO checkoutRequest = new CheckoutRequestDTO(contentProviderRecordId, formatId);
         return borrowBoxResource.checkout(checkoutRequest);
     }
 
     @Override
-    public CheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderLoanId) {
-        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer,patron);
+    public CheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language,
+                                   final String contentProviderLoanId) {
+        final IBorrowBoxResource borrowBoxResource = BorrowBoxResourceFactory.create(contentProviderConsumer, patron, language);
         return borrowBoxResource.getCheckout(contentProviderLoanId);
     }
 }

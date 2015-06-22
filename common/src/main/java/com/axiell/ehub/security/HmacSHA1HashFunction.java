@@ -24,9 +24,9 @@ public final class HmacSHA1HashFunction {
     }
 
     /**
-     * Creates an HMAC-SHA1 hash from the given input.
+     * Creates an HMAC-SHA1 digest from the given input.
      *
-     * @param input the input to create the hash from
+     * @param input the input to create the digest from
      * @param key   the key to initialize the underlying {@link Mac} with
      * @return a HMAC-SHA1 digest
      */
@@ -37,7 +37,7 @@ public final class HmacSHA1HashFunction {
             mac.init(secretKey);
             return mac.doFinal(input);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw new InternalServerErrorException("Could not create an HMAC-SHA1 hash", e);
+            throw new InternalServerErrorException("Could not create an HMAC-SHA1 digest", e);
         }
     }
 

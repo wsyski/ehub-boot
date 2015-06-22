@@ -18,7 +18,7 @@ public class HmacSha256Function {
     private HmacSha256Function() {
     }
 
-    public static String hash(final String secretKey, final String data) {
+    public static String digest(final String secretKey, final String data) {
         SecretKeySpec secretKeySpec = new SecretKeySpec(getBytesFromHexString(secretKey), ALGORITHM);
         Mac mac;
         try {

@@ -3,11 +3,13 @@ package com.axiell.ehub.provider.borrowbox;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 
+import java.util.Locale;
+
 interface IBorrowBoxFacade {
 
-    FormatsDTO getFormats(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
+    FormatsDTO getFormats(ContentProviderConsumer contentProviderConsumer, Patron patron, String language, String contentProviderRecordId);
 
-    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId, String formatId);
+    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String language, String contentProviderRecordId, String formatId);
 
-    CheckoutDTO getCheckout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderLoanId);
+    CheckoutDTO getCheckout(ContentProviderConsumer contentProviderConsumer, Patron patron, String language, String contentProviderLoanId);
 }

@@ -47,11 +47,11 @@ public class BorrowBoxCheckoutIT extends AbstractBorrowBoxIT {
     }
 
     private void whenCheckout(final String contentProviderFormatId) {
-        checkout = underTest.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
+        checkout = underTest.checkout(contentProviderConsumer, patron, LANGUAGE, contentProviderRecordId, contentProviderFormatId);
     }
 
     private void thenPatronHasCheckout() throws IFinder.NotFoundException {
-        checkout = underTest.getCheckout(contentProviderConsumer, patron, checkout.getLoanId());
+        checkout = underTest.getCheckout(contentProviderConsumer, patron, LANGUAGE, checkout.getLoanId());
     }
 
     private void thenCheckoutHasTransactionId() {

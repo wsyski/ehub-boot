@@ -30,6 +30,6 @@ public class AuthorizationToken {
         String libraryCard = patron.getLibraryCard();
         String data = String.format("%s\n%s\n%d", siteId, libraryCard, time);
         //LOGGER.debug(" secretKey: " + secretKey+" data: " + data);
-        return String.format("Credential=%s, SignatureDate=%d, Signature=%s", libraryId, time, HmacSha256Function.hash(secretKey, data));
+        return String.format("Credential=%s, SignatureDate=%d, Signature=%s", libraryId, time, HmacSha256Function.digest(secretKey, data));
     }
 }

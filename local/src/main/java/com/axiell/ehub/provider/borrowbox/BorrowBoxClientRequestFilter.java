@@ -12,17 +12,19 @@ public class BorrowBoxClientRequestFilter implements ClientRequestFilter {
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
+    private String language;
 
-    public BorrowBoxClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public BorrowBoxClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
+        this.language = language;
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
         headers.add("Authorization", new AuthorizationToken(contentProviderConsumer, patron));
-        headers.add("Accept-Language", "en");
+        headers.add("Accept-Language", language);
         headers.add("X-BorrowBox-Site", contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID));
         headers.add("X-BorrowBox-User", patron.getLibraryCard());
     }

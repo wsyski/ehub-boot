@@ -81,7 +81,7 @@ public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenBorrowBoxFacadeReturnsFormats() {
-        given(borrowBoxFacade.getFormats(contentProviderConsumer, patron, RECORD_ID)).willReturn(formats);
+        given(borrowBoxFacade.getFormats(contentProviderConsumer, patron, LANGUAGE, RECORD_ID)).willReturn(formats);
         given(formats.getFormats()).willReturn(Collections.singletonList(format));
         given(format.getFormatId()).willReturn(FORMAT_ID);
     }
@@ -91,11 +91,11 @@ public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     public void givenCheckout() {
-        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
+        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenGetCheckout() {
-        given(borrowBoxFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class))).willReturn(checkout);
+        given(borrowBoxFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenCompleteCheckout() {

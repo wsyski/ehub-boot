@@ -18,7 +18,7 @@ public class HmacSha256FunctionTest {
     }
 
     private void whenHmacSha256Hash() {
-        actualHash = HmacSha256Function.hash(KEY, DATA);
+        actualHash = HmacSha256Function.digest(KEY, DATA);
     }
 
     private void thenActualHexEqualsExpectedHex() {

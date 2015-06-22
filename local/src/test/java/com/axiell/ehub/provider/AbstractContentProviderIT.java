@@ -11,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractContentProviderIT {
+    protected String LANGUAGE="en";
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
