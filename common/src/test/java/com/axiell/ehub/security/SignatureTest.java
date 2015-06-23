@@ -6,6 +6,7 @@ package com.axiell.ehub.security;
 import static org.junit.Assert.*;
 
 import com.axiell.ehub.patron.Patron;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 public class SignatureTest {
@@ -55,7 +56,7 @@ public class SignatureTest {
 
     private void givenNewSignature() {
         Patron patron = new Patron.Builder(card, pin).id(patronId).build();
-        underTest = new Signature(ehubConsumerId, secret, patron);
+        underTest = new Signature(AuthInfo.getSignatureItems(ehubConsumerId,patron), secret);
     }
 
     @Test

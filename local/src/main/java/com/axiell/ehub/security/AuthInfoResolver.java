@@ -25,7 +25,7 @@ class AuthInfoResolver implements IAuthInfoResolver {
 
         final Patron patron = makePatron(parser);
         final Signature actualSignature = parser.getActualSignature();
-        final Signature expectedSignature = new Signature(ehubConsumerId, ehubConsumer.getSecretKey(), patron);
+        final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), ehubConsumer.getSecretKey());
 
         if (actualSignature.isValid(expectedSignature))
             return new AuthInfo(ehubConsumerId, patron, actualSignature);

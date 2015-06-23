@@ -74,7 +74,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenValidSignature() {
-        expSignature = new Signature(EHUB_CONSUMER_ID, SECRET_KEY, patron);
+        expSignature = new Signature(AuthInfo.getSignatureItems(EHUB_CONSUMER_ID, patron), SECRET_KEY);
     }
 
     private void givenPatron() {

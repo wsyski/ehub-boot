@@ -3,11 +3,11 @@
  */
 package com.axiell.ehub.security;
 
-import com.axiell.ehub.patron.Patron;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.MessageDigest;
+import java.util.List;
 
 import static com.axiell.ehub.security.HmacSha1Function.hmacSha1;
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
@@ -22,22 +22,26 @@ public final class Signature {
     private static final Logger LOGGER = LoggerFactory.getLogger(Signature.class);
     private final byte[] digest;
 
-    public Signature(String base64EncodedSignature) {
+    public Signature(final String base64EncodedSignature) {
         digest = decodeBase64(base64EncodedSignature);
     }
 
-    public Signature(final Long ehubConsumerId, final String ehubConsumerSecretKey, final Patron patron) {
-        final String baseString = makeBaseString(ehubConsumerId, patron);
+    public Signature(final List<?> signatureItems, final String secretKey) {
+        final String baseString = makeBaseString(signatureItems);
         final byte[] input = getBytesInUtf8(baseString);
-        final byte[] key = getBytesInUtf8(ehubConsumerSecretKey);
+        final byte[] key = getBytesInUtf8(secretKey);
         digest = hmacSha1(input, key);
     }
 
-    private String makeBaseString(final Long ehubConsumerId, final Patron patron) {
-        final StringBuilder builder = new StringBuilder().append(ehubConsumerId);
-        if (patron.hasLibraryCard())
-            appendParam(patron.getLibraryCard(), builder);
-        appendParam(patron.getPin(), builder);
+    private String makeBaseString(final List<?> signatureItems) {
+        final StringBuilder builder = new StringBuilder();
+        for (final Object signatureItem : signatureItems) {
+            if (signatureItem instanceof String) {
+                appendParam(String.class.cast(signatureItem), builder);
+            } else {
+                builder.append(signatureItem);
+            }
+        }
         return builder.toString();
     }
 

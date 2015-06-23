@@ -3,13 +3,13 @@ package com.axiell.ehub.provider.borrowbox;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 
-public class Authorization {
+public class AuthInfo {
     private static final String AUTHORIZATION_HEADER_FORMAT = "Credential=%s, SignatureDate=%d, Signature=%s";
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
 
-    public Authorization(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public AuthInfo(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
     }

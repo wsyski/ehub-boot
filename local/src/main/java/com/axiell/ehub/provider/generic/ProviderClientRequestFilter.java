@@ -23,7 +23,7 @@ public class ProviderClientRequestFilter implements ClientRequestFilter {
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
-        headers.add("Authorization", new Authorization(contentProviderConsumer, patron));
+        headers.add("Authorization", new AuthInfo(contentProviderConsumer, patron));
         headers.add("Accept-Language", language);
     }
 }

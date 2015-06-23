@@ -12,6 +12,8 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.patron.Patron;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
 
@@ -162,8 +164,18 @@ public class AuthInfo {
             }
 
             final Patron patron = new Patron.Builder(libraryCard, pin).id(patronId).build();
-            final Signature signature = new Signature(ehubConsumerId, ehubConsumerSecretKey, patron);
+            final Signature signature = new Signature(getSignatureItems(ehubConsumerId,patron), ehubConsumerSecretKey);
             return new AuthInfo(ehubConsumerId, patron, signature);
         }
+    }
+
+    public static List<?> getSignatureItems(final long ehubConsumerId, final Patron patron) {
+        List<Object> signatureItems=new ArrayList<>();
+        signatureItems.add(ehubConsumerId);
+        if (patron.hasLibraryCard()) {
+            signatureItems.add(patron.getLibraryCard());
+            signatureItems.add(patron.getPin());
+        }
+        return signatureItems;
     }
 }
