@@ -14,11 +14,11 @@ class ProviderResourceFactory {
     private ProviderResourceFactory() {
     }
 
-    public static IProviderResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
+    public static IProviderResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
-        client.register(new ProviderClientRequestFilter(contentProviderConsumer, patron, language));
+        client.register(new ProviderClientRequestFilter(contentProviderConsumer, patron));
         ResteasyWebTarget target = client.target(baseUrl);
         return target.proxy(IProviderResource.class);
     }

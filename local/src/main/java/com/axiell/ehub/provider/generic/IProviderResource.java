@@ -10,12 +10,12 @@ public interface IProviderResource {
 
     @POST
     @Path("checkouts")
-    CheckoutDTO checkout(CheckoutRequestDTO checkoutRequest);
+    CheckoutDTO checkout(CheckoutRequestDTO checkoutRequest, @DefaultValue("en") @QueryParam("language") String language);
 
     @GET
     @Path("checkouts/{id}")
-    CheckoutDTO getCheckout(@PathParam("id") String checkoutId);
+    CheckoutDTO getCheckout(@PathParam("id") String checkoutId, @DefaultValue("en") @QueryParam("language") String language);
 
     @Path("records/{recordId}/formats")
-    FormatsDTO getFormats(@PathParam("recordId") String recordId);
+    FormatsDTO getFormats(@PathParam("recordId") String recordId, @DefaultValue("en") @QueryParam("language") String language);
 }

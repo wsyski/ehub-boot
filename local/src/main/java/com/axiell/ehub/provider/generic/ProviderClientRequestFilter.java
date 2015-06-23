@@ -12,18 +12,15 @@ public class ProviderClientRequestFilter implements ClientRequestFilter {
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
-    private String language;
 
-    public ProviderClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
+    public ProviderClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
-        this.language = language;
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
         headers.add("Authorization", new AuthInfo(contentProviderConsumer, patron));
-        headers.add("Accept-Language", language);
     }
 }
