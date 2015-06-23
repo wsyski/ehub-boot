@@ -10,7 +10,7 @@ public class ProviderErrorResponseBodyReader implements IContentProviderErrorRes
 
     @Override
     public String read(Response response) {
-        final EhubError ehubError = response.readEntity(EhubError.class);
-        return ehubError == null ? null : ehubError.getMessage();
+        final ProviderErrorDTO providerError = response.readEntity(ProviderErrorDTO.class);
+        return providerError == null ? null : providerError.getMessage();
     }
 }
