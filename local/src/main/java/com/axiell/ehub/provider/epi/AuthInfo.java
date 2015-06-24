@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.generic;
+package com.axiell.ehub.provider.epi;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -29,8 +29,8 @@ public class AuthInfo {
         String contentProviderName = contentProvider.getName().name();
         EhubConsumer ehubConsumer = contentProviderConsumer.getEhubConsumer();
         long ehubConsumerId = ehubConsumer.getId();
-        String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.GENERIC_SITE_ID);
-        String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.GENERIC_SECRET_KEY);
+        String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EPI_SITE_ID);
+        String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EPI_SECRET_KEY);
         String patronId = patron.getId();
         Signature signature = new Signature(getSignatureItems(contentProviderName, siteId, ehubConsumerId, patronId, timestamp), secretKey);
         return String.format(AUTHORIZATION_HEADER_FORMAT, contentProviderName, siteId, ehubConsumerId, patronId, timestamp, signature.toString());

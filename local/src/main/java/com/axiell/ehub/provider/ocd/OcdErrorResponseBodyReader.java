@@ -7,7 +7,7 @@ public class OcdErrorResponseBodyReader implements IContentProviderErrorResponse
 
     @Override
     public String read(Response response) {
-        final ErrorResponseDTO errorResponse = response.readEntity(ErrorResponseDTO.class);
+        final ErrorDTO errorResponse = response.readEntity(ErrorDTO.class);
         return errorResponse == null ? null : errorResponse.getMessage();
     }
 }

@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.generic;
+package com.axiell.ehub.provider.epi;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

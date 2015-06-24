@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.generic;
+package com.axiell.ehub.provider.epi;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;

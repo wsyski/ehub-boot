@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.generic;
+package com.axiell.ehub.provider.epi;
 
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
