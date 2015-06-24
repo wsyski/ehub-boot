@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProviderErrorDTO {
+public class ErrorDTO {
     private String message;
     private String cause;
 

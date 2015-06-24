@@ -4,6 +4,7 @@
 package com.axiell.ehub.loan;
 
 import com.axiell.ehub.Fields;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.patron.Patron;
@@ -80,6 +81,9 @@ public class LoanBusinessController implements ILoanBusinessController {
 
     private Checkout getCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String language) {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
+        if (ehubLoan == null) {
+            throw new InternalServerErrorException("Missing ehub loan lmsLoanId: '" + lmsLoanId + "'");
+        }
         return makeCheckout(ehubConsumer, patron, ehubLoan, language);
     }
 

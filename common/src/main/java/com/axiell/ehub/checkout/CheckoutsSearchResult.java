@@ -34,7 +34,7 @@ public class CheckoutsSearchResult {
         throw new NotFoundException(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, argument);
     }
 
-    SearchResultDTO<CheckoutMetadataDTO> toDTO() {
+    public SearchResultDTO<CheckoutMetadataDTO> toDTO() {
         return searchResultDTO;
     }
 }

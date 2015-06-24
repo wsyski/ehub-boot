@@ -1,8 +1,6 @@
 package com.axiell.ehub.provider.generic;
 
-import com.axiell.ehub.EhubError;
 import com.axiell.ehub.provider.IContentProviderErrorResponseBodyReader;
-import com.axiell.ehub.provider.borrowbox.ErrorResponseDTO;
 
 import javax.ws.rs.core.Response;
 
@@ -10,7 +8,7 @@ public class ProviderErrorResponseBodyReader implements IContentProviderErrorRes
 
     @Override
     public String read(Response response) {
-        final ProviderErrorDTO providerError = response.readEntity(ProviderErrorDTO.class);
+        final ErrorDTO providerError = response.readEntity(ErrorDTO.class);
         return providerError == null ? null : providerError.getMessage();
     }
 }

@@ -8,7 +8,7 @@ public class BorrowBoxErrorResponseBodyReader implements IContentProviderErrorRe
 
     @Override
     public String read(Response response) {
-        final ErrorResponseDTO errorResponse = response.readEntity(ErrorResponseDTO.class);
+        final ErrorDTO errorResponse = response.readEntity(ErrorDTO.class);
         return errorResponse == null ? null : errorResponse.getMessage();
     }
 }

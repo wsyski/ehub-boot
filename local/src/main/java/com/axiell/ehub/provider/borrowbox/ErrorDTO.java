@@ -5,14 +5,14 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorResponseDTO {
+public class ErrorDTO {
     private String message;
     private String errorCode;
 
-    public ErrorResponseDTO() {
+    public ErrorDTO() {
     }
 
-    public ErrorResponseDTO(String message) {
+    public ErrorDTO(String message) {
 	this.message = message;
     }
     

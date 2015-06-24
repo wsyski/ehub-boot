@@ -60,7 +60,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
             final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final ContentLink contentLink = makeContent(loanMetadata, checkout);
+            final ContentLink contentLink = makeContent(loanMetadata, completeCheckout);
             return new ContentProviderLoan(loanMetadata, contentLink);
         }
         throw makeCreateLoanFailedException(data);
