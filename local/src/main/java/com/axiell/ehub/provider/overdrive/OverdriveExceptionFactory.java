@@ -8,6 +8,10 @@ import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
 public class OverdriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
+    public static final String STATUS_NOT_FOUND = "NotFound";
+    public static final String STATUS_NO_COPIES_AVAILABLE = "NoCopiesAvailable";
+    public static final String STATUS_PATRON_CHECKOUT_LIMIT = "PatronHasExceededCheckoutLimit";
+
 
     public OverdriveExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                      final IEhubExceptionFactory ehubExceptionFactory) {
@@ -28,8 +32,12 @@ public class OverdriveExceptionFactory extends AbstractContentProviderExceptionF
     protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
         ErrorCauseArgumentValue.Type type = null;
         if (status != null) {
-            if ("NotFound".equals(status)) {
+            if (STATUS_NOT_FOUND.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+            } else if (STATUS_NO_COPIES_AVAILABLE.equals(status)) {
+                type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
+            } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(status)) {
+                type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
             }
         }
         return type;

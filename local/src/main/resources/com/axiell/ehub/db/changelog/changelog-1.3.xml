@@ -155,4 +155,40 @@
         </insert>
         <comment>Added text bundles to INVALID_PATRON error cause argument values</comment>
     </changeSet>
+
+    <changeSet id="11" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1503"/>
+            <column name="CONTENT_DISPOSITION" value="DOWNLOADABLE"/>
+            <column name="FORMAT_ID" value="audiobook-overdrive"/>
+            <column name="CONTENT_PROVIDER_ID" value="5"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added Overdrive audiobook-overdrive format decorations</comment>
+    </changeSet>
+
+    <changeSet id="12" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4505"/>
+            <column name="DESCRIPTION" value="OverDrive Listen"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="OverDrive Listen"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1503"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4506"/>
+            <column name="DESCRIPTION" value="OverDrive ljudbok"/>
+            <column name="LANGUAGE_ID" value="sv"/>
+            <column name="NAME" value="OverDrive ljudbok"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1503"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added Overdrive audiobook-overdrive format decoration text bundles</comment>
+    </changeSet>
 </databaseChangeLog>

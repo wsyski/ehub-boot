@@ -21,6 +21,4 @@ public class ErrorDTO {
     public String getToken() {
         return token;
     }
-
-
 }

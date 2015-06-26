@@ -13,7 +13,6 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class OverdriveExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
-    private static final String STATUS_NOT_FOUND = "NotFound";
 
     @Mock
     private ErrorDTO error;
@@ -32,10 +31,10 @@ public class OverdriveExceptionFactoryTest extends ContentProviderExceptionFacto
     }
 
     @Test
-    public void errorEntityWithMessageAndStatusProductNotFound() {
-        givenErrorEntityWithMessageAndStatus(MESSAGE, STATUS_NOT_FOUND);
+    public void errorEntityWithMessageAndStatusLibraryLimitReached() {
+        givenErrorEntityWithMessageAndStatus(MESSAGE, OverdriveExceptionFactory.STATUS_NO_COPIES_AVAILABLE);
         whenCreateExecuted();
-        internalServerErrorExceptionWithStatusProductUnavailable();
+        internalServerErrorExceptionWithLibraryLimitReached();
     }
 
     private void givenErrorEntityWithMessageAndStatus(final String message, final String status) {

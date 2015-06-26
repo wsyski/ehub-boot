@@ -13,7 +13,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
-    private static final String STATUS_NOT_FOUND = "notAvailable";
+    private static final String STATUS_NOT_AVAILABLE = "notAvailable";
 
     @Mock
     private ErrorDTO error;
@@ -33,7 +33,7 @@ public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFacto
 
     @Test
     public void errorEntityWithMessageAndStatusProductNotFound() {
-        givenErrorEntityWithMessageAndStatus(MESSAGE, STATUS_NOT_FOUND);
+        givenErrorEntityWithMessageAndStatus(MESSAGE, STATUS_NOT_AVAILABLE);
         whenCreateExecuted();
         internalServerErrorExceptionWithStatusProductUnavailable();
     }
