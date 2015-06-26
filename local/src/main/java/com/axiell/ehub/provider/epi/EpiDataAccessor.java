@@ -20,11 +20,11 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class ProviderDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDataAccessor.class);
+public class EpiDataAccessor extends AbstractContentProviderDataAccessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EpiDataAccessor.class);
 
     @Autowired
-    private IProviderFacade providerFacade;
+    private IEpiFacade epiFacade;
     @Autowired
     private IFormatFactory formatFactory;
 
@@ -35,10 +35,10 @@ public class ProviderDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final FormatsDTO formatsDTO = providerFacade.getFormats(contentProviderConsumer, patron, language, contentProviderRecordId);
+        final FormatsDTO formatsDTO = epiFacade.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
         final Formats formats = new Formats();
-        for (FormatsDTO.FormatDTO formatDTO : formatsDTO.getFormats()) {
-            final Format format = formatFactory.create(contentProvider, formatDTO.getFormatId(), language);
+        for (String formatId : formatsDTO.getFormats()) {
+            final Format format = formatFactory.create(contentProvider, formatId, language);
             formats.addFormat(format);
         }
         return formats;
@@ -50,8 +50,7 @@ public class ProviderDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final String language = data.getLanguage();
-        final CheckoutDTO checkoutDTO = providerFacade.checkout(contentProviderConsumer, patron, language, contentProviderRecordId, contentProviderFormatId);
+        final CheckoutDTO checkoutDTO = epiFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
         final ContentLink contentLink = makeContent(loanMetadata, checkoutDTO);
         return new ContentProviderLoan(loanMetadata, contentLink);
@@ -63,8 +62,7 @@ public class ProviderDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final String language = data.getLanguage();
-        final CheckoutDTO checkoutDTO = providerFacade.getCheckout(contentProviderConsumer, patron, language, contentProviderLoanId);
+        final CheckoutDTO checkoutDTO = epiFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
         return makeContent(loanMetadata, checkoutDTO);
     }
 

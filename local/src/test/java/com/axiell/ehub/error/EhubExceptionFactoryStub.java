@@ -1,0 +1,16 @@
+package com.axiell.ehub.error;
+
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+
+import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
+
+public class EhubExceptionFactoryStub extends AbstractEhubExceptionFactory implements IEhubExceptionFactory {
+
+    @Override
+    protected ErrorCauseArgument makeStatusArg(final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentValue.Type argValueType,
+                                               final String language) {
+        return new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, argValueType.name());
+    }
+}

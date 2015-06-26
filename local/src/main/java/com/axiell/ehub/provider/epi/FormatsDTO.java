@@ -8,24 +8,9 @@ import java.util.List;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FormatsDTO {
-    private String recordId;
-    private List<FormatDTO> formats;
+    private List<String> formats;
 
-    public String getRecordId() {
-        return recordId;
-    }
-
-    public List<FormatDTO> getFormats() {
+    public List<String> getFormats() {
         return formats;
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class FormatDTO {
-        private String formatId;
-
-        public String getFormatId() {
-            return formatId;
-        }
-
     }
 }

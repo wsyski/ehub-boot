@@ -95,4 +95,64 @@
         </insert>
         <comment>Added text bundles to the BorrowBox format decorations</comment>
     </changeSet>
+
+    <changeSet id="7" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
+            <column name="ID" value="14"/>
+            <column name="TYPE" value="ALREADY_ON_LOAN"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added ALREADY_ON_LOAN Error cause argument values</comment>
+    </changeSet>
+
+    <changeSet id="8" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1026"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="14"/>
+            <column name="TEXT" value="The record is already loaned to this patron"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1027"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="14"/>
+            <column name="TEXT" value="Posten är redan utlånat till låntagaren"/>
+            <column name="LANGUAGE_ID" value="sv"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to ALREADY_ON_LOAN Error cause argument values</comment>
+    </changeSet>
+
+    <changeSet id="9" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
+            <column name="ID" value="15"/>
+            <column name="TYPE" value="INVALID_PATRON"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added INVALID_PATRON error cause argument values</comment>
+    </changeSet>
+
+    <changeSet id="10" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1028"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="15"/>
+            <column name="TEXT" value="Invalid patron"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1029"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="15"/>
+            <column name="TEXT" value="Ogiltig låntagare"/>
+            <column name="LANGUAGE_ID" value="sv"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to INVALID_PATRON error cause argument values</comment>
+    </changeSet>
 </databaseChangeLog>

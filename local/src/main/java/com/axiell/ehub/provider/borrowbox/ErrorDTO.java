@@ -9,13 +9,6 @@ public class ErrorDTO {
     private String message;
     private String errorCode;
 
-    public ErrorDTO() {
-    }
-
-    public ErrorDTO(String message) {
-	this.message = message;
-    }
-    
     public String getMessage() {
 	return message;
     }

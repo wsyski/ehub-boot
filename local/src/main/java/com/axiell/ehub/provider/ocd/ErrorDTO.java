@@ -8,13 +8,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class ErrorDTO {
     private String message;
 
-    public ErrorDTO() {
-    }
-    
-    public ErrorDTO(String message) {
-	this.message = message;
-    }
-    
     public String getMessage() {
 	return message;
     }

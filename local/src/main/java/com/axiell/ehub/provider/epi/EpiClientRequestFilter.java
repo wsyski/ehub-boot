@@ -8,12 +8,12 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
-public class ProviderClientRequestFilter implements ClientRequestFilter {
+public class EpiClientRequestFilter implements ClientRequestFilter {
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
 
-    public ProviderClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public EpiClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
     }

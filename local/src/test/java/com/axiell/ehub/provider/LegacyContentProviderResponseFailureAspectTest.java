@@ -19,7 +19,7 @@ public class LegacyContentProviderResponseFailureAspectTest {
     private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.PUBLIT;
 
     @Autowired
-    private LegacyExceptionContentProviderDataAccessor underTest;
+    private LegacyExceptionContentProviderDataAccessorStub underTest;
     private CommandData commandData;
 
     @Before

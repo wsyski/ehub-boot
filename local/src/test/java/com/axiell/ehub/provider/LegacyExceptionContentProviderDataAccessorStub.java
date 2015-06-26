@@ -9,7 +9,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 
 
-class LegacyExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
+class LegacyExceptionContentProviderDataAccessorStub implements IContentProviderDataAccessor {
 
     @Override
     public Formats getFormats(final CommandData commandData) {

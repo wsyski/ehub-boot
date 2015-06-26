@@ -7,8 +7,9 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-	<bean class="com.axiell.ehub.provider.ExceptionContentProviderDataAccessor"/>
-	<bean class="com.axiell.ehub.provider.LegacyExceptionContentProviderDataAccessor"/>
+	<bean class="com.axiell.ehub.error.EhubExceptionFactoryStub"/>
+	<bean class="com.axiell.ehub.provider.ExceptionContentProviderDataAccessorStub"/>
+	<bean class="com.axiell.ehub.provider.LegacyExceptionContentProviderDataAccessorStub"/>
     <bean id="contentProviderResponseFailureAspect" class="com.axiell.ehub.provider.ContentProviderResponseFailureAspect"/>
     <bean id="legacyContentProviderResponseFailureAspect" class="com.axiell.ehub.provider.LegacyContentProviderResponseFailureAspect"/>
 </beans>

@@ -32,7 +32,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     @Mock
     private DiscoveryFormat discoveryFormat;
     @Mock
-    private ErrorDetails errorDetails;
+    private ErrorDTO errorDetails;
     @Mock
     private OAuthAccessToken accessToken;
     @Mock
@@ -105,7 +105,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenErrorDetails() {
-        given(response.getEntity(ErrorDetails.class)).willReturn(errorDetails);
+        given(response.getEntity(ErrorDTO.class)).willReturn(errorDetails);
     }
 
     @Test

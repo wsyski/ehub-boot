@@ -15,7 +15,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
 
 
-class ExceptionContentProviderDataAccessor implements IContentProviderDataAccessor {
+class ExceptionContentProviderDataAccessorStub implements IContentProviderDataAccessor {
 
     @Override
     public Formats getFormats(final CommandData commandData) {

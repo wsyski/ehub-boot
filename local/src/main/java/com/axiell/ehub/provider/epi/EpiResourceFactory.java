@@ -9,17 +9,17 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
-class ProviderResourceFactory {
+class EpiResourceFactory {
 
-    private ProviderResourceFactory() {
+    private EpiResourceFactory() {
     }
 
-    public static IProviderResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public static IEpiResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
-        client.register(new ProviderClientRequestFilter(contentProviderConsumer, patron));
+        client.register(new EpiClientRequestFilter(contentProviderConsumer, patron));
         ResteasyWebTarget target = client.target(baseUrl);
-        return target.proxy(IProviderResource.class);
+        return target.proxy(IEpiResource.class);
     }
 }

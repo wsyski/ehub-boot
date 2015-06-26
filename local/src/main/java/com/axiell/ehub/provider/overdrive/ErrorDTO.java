@@ -5,22 +5,22 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorDetails {
+public class ErrorDTO {
+    private String errorCode;
     private String message;
     private String token;
-    
-    public ErrorDetails() {	
+
+    public String getErrorCode() {
+        return errorCode;
     }
-    
-    public ErrorDetails(String message) {
-	this.message = message;
-    }
-    
+
     public String getMessage() {
-	return message;
+        return message;
     }
-    
+
     public String getToken() {
-	return token;
+        return token;
     }
+
+
 }

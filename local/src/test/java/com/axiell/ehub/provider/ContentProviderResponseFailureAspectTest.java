@@ -18,7 +18,7 @@ public class ContentProviderResponseFailureAspectTest {
     private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.OCD;
 
     @Autowired
-    private ExceptionContentProviderDataAccessor underTest;
+    private ExceptionContentProviderDataAccessorStub underTest;
     private CommandData commandData;
 
     @Before
