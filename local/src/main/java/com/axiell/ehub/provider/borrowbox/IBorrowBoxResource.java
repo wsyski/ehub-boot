@@ -6,17 +6,18 @@ import javax.ws.rs.core.MediaType;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface IBorrowBoxResource {
+@Path("/v1")
+interface IBorrowBoxResource {
     @GET
-    @Path("v1/products/{recordId}")
+    @Path("products/{recordId}")
     FormatsDTO getFormats(@PathParam("recordId") String recordId);
 
     @POST
-    @Path("v1/checkout")
+    @Path("checkout")
     CheckoutDTO checkout(CheckoutRequestDTO checkoutRequest);
 
     @GET
-    @Path("v1/loans/{loanId}")
+    @Path("loans/{loanId}")
     CheckoutDTO getCheckout(@PathParam("loanId") String loanId);
 
 }
