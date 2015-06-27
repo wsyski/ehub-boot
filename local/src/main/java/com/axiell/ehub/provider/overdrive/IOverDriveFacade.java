@@ -17,5 +17,5 @@ public interface IOverDriveFacade {
     
     DownloadLink getDownloadLink(ContentProviderConsumer contentProviderConsumer, OAuthAccessToken patronAccessToken, DownloadLinkTemplate downloadLinkTemplate);
     
-    void returnTitle(ContentProviderConsumer contentProviderConsumer, OAuthAccessToken patronAccessToken, String productId);
+    void checkin(ContentProviderConsumer contentProviderConsumer, OAuthAccessToken patronAccessToken, String productId);
 }

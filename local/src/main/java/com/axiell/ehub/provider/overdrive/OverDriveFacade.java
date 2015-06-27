@@ -69,7 +69,7 @@ class OverDriveFacade implements IOverDriveFacade {
     }
 
     @Override
-    public void returnTitle(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken, final String productId) {
+    public void checkin(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken, final String productId) {
         final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
         circulationResource.returnTitle(patronAccessToken, productId);
     }

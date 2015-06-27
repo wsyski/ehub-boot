@@ -12,10 +12,15 @@ import com.axiell.ehub.util.DateFactory;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Checkout {
+    private String reserveId;
     @JsonProperty(value = "expires")
     private Date expirationDate;
     private List<CirculationFormat> formats;
-    
+
+    public String getReserveId() {
+        return reserveId;
+    }
+
     public Date getExpirationDate() {
 	return DateFactory.create(expirationDate);
     }
