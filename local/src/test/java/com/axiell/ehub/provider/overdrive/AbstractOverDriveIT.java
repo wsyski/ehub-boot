@@ -29,16 +29,16 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     // private static final String PIN = "25581";
 
     // Card #2
-    // private static final String LIBRARY_CARD = "D4000000255248";
-    // private static final String PIN = "1277";
+    private static final String LIBRARY_CARD = "D4000000255248";
+    private static final String PIN = "1277";
 
     // Card #3
     // protected static final String LIBRARY_CARD = "D4000000416455";
     // protected static final String PIN = "2379";
 
     // Card #4
-    protected static final String LIBRARY_CARD = "D4000000358164";
-    protected static final String PIN = "1030";
+    // protected static final String LIBRARY_CARD = "D4000000358164";
+    // protected static final String PIN = "1030";
 
     protected static final String OAUTH_PATRON_URL = "https://oauth-patron.overdrive.com/patrontoken";
     protected static final String PATRON_BASE_URL = "http://patron.api.overdrive.com";

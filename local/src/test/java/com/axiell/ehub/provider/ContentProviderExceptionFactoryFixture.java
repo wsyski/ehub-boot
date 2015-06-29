@@ -4,6 +4,7 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.junit.Before;
@@ -60,36 +61,29 @@ public abstract class ContentProviderExceptionFactoryFixture<E> {
         thenInternalServerErrorExceptionHasMessage(message);
     }
 
+
+    protected void thenInternalServerErrorExceptionWithStatusUnknown() {
+        assertThat(internalServerErrorException, is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
+                        STATUS_UNKNOWN)));
+    }
+
+    protected void internalServerErrorExceptionWithStatusProductUnavailable() {
+        assertThat(internalServerErrorException,
+                is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
+                        ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name())));
+    }
+
+    protected void internalServerErrorExceptionWithLibraryLimitReached() {
+        assertThat(internalServerErrorException,is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
+                ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED.name())));
+    }
+
     private void thenValidContentProviderName(final ErrorCauseArgument errorCauseArgument) {
         assertThat(errorCauseArgument.getValue(), is(getContentProviderName().name()));
     }
 
     protected void thenInternalServerErrorExceptionHasMessage(final String message) {
         assertThat(internalServerErrorException.getMessage(), is(message));
-    }
-
-    protected void thenInternalServerErrorExceptionWithStatusUnknown() {
-        List<ErrorCauseArgument> errorCauseArguments = internalServerErrorException.getEhubError().getArguments();
-        assertThat(errorCauseArguments.size(), is(2));
-        thenValidContentProviderName(errorCauseArguments.get(0));
-        assertThat(errorCauseArguments.get(1).getType(), is(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS));
-        assertThat(errorCauseArguments.get(1).getValue(), is(STATUS_UNKNOWN));
-    }
-
-    protected void internalServerErrorExceptionWithStatusProductUnavailable() {
-        List<ErrorCauseArgument> errorCauseArguments = internalServerErrorException.getEhubError().getArguments();
-        assertThat(errorCauseArguments.size(), is(2));
-        thenValidContentProviderName(errorCauseArguments.get(0));
-        assertThat(errorCauseArguments.get(1).getType(), is(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS));
-        assertThat(errorCauseArguments.get(1).getValue(), is(ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
-    }
-
-    protected void internalServerErrorExceptionWithLibraryLimitReached() {
-        List<ErrorCauseArgument> errorCauseArguments = internalServerErrorException.getEhubError().getArguments();
-        assertThat(errorCauseArguments.size(), is(2));
-        thenValidContentProviderName(errorCauseArguments.get(0));
-        assertThat(errorCauseArguments.get(1).getType(), is(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS));
-        assertThat(errorCauseArguments.get(1).getValue(), is(ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED.name()));
     }
 
 

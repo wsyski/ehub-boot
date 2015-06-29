@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
@@ -18,13 +19,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+
 @Component
 public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
+    @Autowired(required = true)
+    private IEhubExceptionFactory ehubExceptionFactory;
 
     @Autowired(required = true)
     private IOverDriveFacade overDriveFacade;
 
-    @Autowired
+    @Autowired(required = true)
     private IFormatFactory formatFactory;
 
     @Override
@@ -33,14 +38,15 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
         final Product product = overDriveFacade.getProduct(contentProviderConsumer, contentProviderRecordId);
+        if (!product.isAvailable()) {
+            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE, language);
+        }
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final Formats formats = new Formats();
-
         for (DiscoveryFormat discoveryFormat : product.getFormats()) {
             final Format format = makeFormat(language, contentProvider, discoveryFormat);
             formats.addFormat(format);
         }
-
         return formats;
     }
 

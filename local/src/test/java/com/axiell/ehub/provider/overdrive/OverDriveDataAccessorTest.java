@@ -1,7 +1,13 @@
 package com.axiell.ehub.provider.overdrive;
 
+import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
+import com.axiell.ehub.error.EhubExceptionFactoryStub;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates;
 import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
 import com.axiell.ehub.provider.overdrive.DownloadLink.Links;
@@ -9,7 +15,9 @@ import com.axiell.ehub.provider.overdrive.DownloadLink.Links.ContentLink;
 import com.axiell.ehub.provider.record.format.Format;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -19,11 +27,15 @@ import java.util.List;
 
 import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
     private static final String FORMAT_ID = "1";
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
+
+    @Rule
+    public ExpectedException throwable = ExpectedException.none();
 
     @Mock
     private IOverDriveFacade overDriveFacade;
@@ -52,6 +64,8 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     private ContentLink contentLink;
     @Mock
     private Checkouts checkouts;
+    private IEhubExceptionFactory ehubExceptionFactory = new EhubExceptionFactoryStub();
+
     private OverDriveDataAccessor underTest;
 
     @Before
@@ -60,6 +74,46 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
+        ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
+    }
+
+    @Test
+    public void getFormatsForAvailableProduct() {
+        givenFormatFromFormatFactory();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
+        givenProduct();
+        givenProductAvailable(true);
+        givenDiscoveryFormat();
+        givenContentProvider();
+        givenFormatIdInDiscoveryFormat();
+        givenTextBundle();
+        whenGetFormats();
+        thenActualFormatEqualsExpected();
+    }
+
+    @Test
+    public void getFormatsForUnavailableProduct() {
+        givenContentProviderName();
+        givenFormatFromFormatFactory();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
+        givenProduct();
+        givenProductAvailable(false);
+        givenDiscoveryFormat();
+        givenContentProvider();
+        givenFormatIdInDiscoveryFormat();
+        givenTextBundle();
+        givenExpectedInternalServerException();
+        whenGetFormats();
+    }
+
+    private void givenExpectedInternalServerException() {
+        throwable.expect(InternalServerErrorException.class);
+        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProviderName.OVERDRIVE,
+                ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
     }
 
     private void givenProduct() {
@@ -71,11 +125,12 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         given(product.getFormats()).willReturn(discoveryFormats);
     }
 
-    private void givenFormatIdInDiscoveryFormat() {
-        given(discoveryFormat.getId()).willReturn(FORMAT_ID);
+    private void givenProductAvailable(final boolean isAvailable) {
+        given(product.isAvailable()).willReturn(isAvailable);
     }
 
-    private void givenFormatNameInDiscoveryFormat() {
+    private void givenFormatIdInDiscoveryFormat() {
+        given(discoveryFormat.getId()).willReturn(FORMAT_ID);
         given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
     }
 
@@ -87,21 +142,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         Assert.assertFalse(actualFormats.getFormats().isEmpty());
         Format actualFormat = actualFormats.getFormats().iterator().next();
         Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.name());
-    }
-
-    @Test
-    public void getFormatsWithEhubNameAndDescription() {
-        givenFormatFromFormatFactory();
-        givenContentProviderConsumerInCommandData();
-        givenContentProviderRecordIdInCommandData();
-        givenLanguageInCommandData();
-        givenProduct();
-        givenDiscoveryFormat();
-        givenContentProvider();
-        givenFormatIdInDiscoveryFormat();
-        givenTextBundle();
-        whenGetFormats();
-        thenActualFormatEqualsExpected();
     }
 
     private void givenErrorDetails() {
@@ -282,4 +322,11 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
             thenNotFoundExceptionIsThrown(e);
         }
     }
+
+    private void givenContentProviderName() {
+        given(contentProvider.getName()).willReturn(ContentProviderName.OVERDRIVE);
+    }
+
+
 }
+

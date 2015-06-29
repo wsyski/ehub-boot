@@ -24,5 +24,5 @@ interface ICirculationResource {
     
     @DELETE
     @Path("{productId}")
-    void returnTitle(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, @PathParam("productId") String productId);
+    void checkin(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, @PathParam("productId") String productId);
 }

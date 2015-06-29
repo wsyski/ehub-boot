@@ -24,9 +24,12 @@ class OverDriveFacade implements IOverDriveFacade {
     @Override
     public Product getProduct(final ContentProviderConsumer contentProviderConsumer, final String productId) {
         final IDiscoveryResource discoveryResource = DiscoveryResourceFactory.create(contentProviderConsumer);
+        final IAvailabilityResource availabilityResource = AvailabilityResourceFactory.create(contentProviderConsumer);
         final OAuthAccessToken accessToken = getOAuthAccessToken(contentProviderConsumer);
         final String collectionToken = getCollectionToken(contentProviderConsumer, discoveryResource, accessToken);
-        return discoveryResource.getProduct(accessToken, collectionToken, productId);
+        final ProductDTO productDTO = discoveryResource.getProduct(accessToken, collectionToken, productId);
+        final AvailabilityDTO availabilityDTO = availabilityResource.getAvailability(accessToken, collectionToken, productId);
+        return new Product(productDTO, availabilityDTO);
     }
 
     private String getCollectionToken(final ContentProviderConsumer contentProviderConsumer, final IDiscoveryResource discoveryResource,
@@ -71,6 +74,6 @@ class OverDriveFacade implements IOverDriveFacade {
     @Override
     public void checkin(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken, final String productId) {
         final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
-        circulationResource.returnTitle(patronAccessToken, productId);
+        circulationResource.checkin(patronAccessToken, productId);
     }
 }

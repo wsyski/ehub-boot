@@ -60,11 +60,6 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
     }
 
     private void thenCheckoutHasDownloadLinkTemplate() {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
         DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(PRODUCT_ID, FORMAT_TYPE);
         downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckout(checkout);
         Assert.assertNotNull(downloadLinkTemplate);

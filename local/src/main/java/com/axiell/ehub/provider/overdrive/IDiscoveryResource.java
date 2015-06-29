@@ -19,6 +19,6 @@ interface IDiscoveryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("collections/{collectionToken}/products/{productId}")
-    Product getProduct(@HeaderParam("Authorization") OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
+    ProductDTO getProduct(@HeaderParam("Authorization") OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
 	    @PathParam("productId") String productId);
 }
