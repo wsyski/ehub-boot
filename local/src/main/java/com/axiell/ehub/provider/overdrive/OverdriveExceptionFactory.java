@@ -8,14 +8,15 @@ import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
 public class OverdriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
-    public static final String STATUS_NOT_FOUND = "NotFound";
-    public static final String STATUS_NO_COPIES_AVAILABLE = "NoCopiesAvailable";
-    public static final String STATUS_PATRON_CHECKOUT_LIMIT = "PatronHasExceededCheckoutLimit";
+    static final String STATUS_NOT_FOUND = "NotFound";
+    static final String STATUS_NO_COPIES_AVAILABLE = "NoCopiesAvailable";
+    static final String STATUS_PATRON_CHECKOUT_LIMIT = "PatronHasExceededCheckoutLimit";
+    static final String STATUS_PATRON_EXCEEDED_CHURNING_LIMIT = "PatronHasExceededChurningLimit";
 
 
     public OverdriveExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                      final IEhubExceptionFactory ehubExceptionFactory) {
-        super(contentProviderConsumer, language, ehubExceptionFactory,ErrorDTO.class);
+        super(contentProviderConsumer, language, ehubExceptionFactory, ErrorDTO.class);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class OverdriveExceptionFactory extends AbstractContentProviderExceptionF
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status, final String message) {
         ErrorCauseArgumentValue.Type type = null;
         if (status != null) {
             if (STATUS_NOT_FOUND.equals(status)) {
@@ -37,6 +38,8 @@ public class OverdriveExceptionFactory extends AbstractContentProviderExceptionF
             } else if (STATUS_NO_COPIES_AVAILABLE.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(status)) {
+                type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
+            } else if (STATUS_PATRON_EXCEEDED_CHURNING_LIMIT.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
             }
         }

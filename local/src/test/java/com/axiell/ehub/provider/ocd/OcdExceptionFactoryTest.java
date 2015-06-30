@@ -13,7 +13,6 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class OcdExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
-    protected static final String MESSAGE_LIBRARY_LIMIT_REACHED = "No fulfillment copy available.";
 
     @Mock
     private ErrorDTO error;
@@ -32,7 +31,7 @@ public class OcdExceptionFactoryTest extends ContentProviderExceptionFactoryFixt
 
     @Test
     public void errorEntityWithMessageAndStatusLibraryLimitReached() {
-        givenErrorEntityWithMessageAndStatus(MESSAGE_LIBRARY_LIMIT_REACHED, null);
+        givenErrorEntityWithMessageAndStatus(OcdExceptionFactory.MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE, null);
         whenCreateExecuted();
         internalServerErrorExceptionWithLibraryLimitReached();
     }
