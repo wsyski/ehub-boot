@@ -12,7 +12,6 @@ import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
-import com.axiell.ehub.provider.record.format.Format;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +20,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -258,7 +256,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenLockFormat() {
-        given(overDriveFacade.lockFormat(contentProviderConsumer,accessToken,RECORD_ID,FORMAT_ID)).willReturn(circulationFormat);
+        given(overDriveFacade.lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(circulationFormat);
     }
 
     private void thenLockFormatIsExecuted() {
@@ -328,8 +326,8 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenGetCirculationFormats() {
-        CirculationFormatsDTO circulationFormats=new CirculationFormatsDTO();
-        ReflectionTestUtils.setField(circulationFormats,"formats",Collections.singletonList(circulationFormat));
+        CirculationFormatsDTO circulationFormats = new CirculationFormatsDTO();
+        ReflectionTestUtils.setField(circulationFormats, "formats", Collections.singletonList(circulationFormat));
         given(overDriveFacade.getCirculationFormats(contentProviderConsumer, accessToken, RECORD_ID)).willReturn(circulationFormats);
     }
 
