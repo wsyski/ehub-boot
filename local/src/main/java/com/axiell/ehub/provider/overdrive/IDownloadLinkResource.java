@@ -9,5 +9,5 @@ interface IDownloadLinkResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    DownloadLink getDownloadLink(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken);
+    DownloadLinkDTO getDownloadLink(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken);
 }

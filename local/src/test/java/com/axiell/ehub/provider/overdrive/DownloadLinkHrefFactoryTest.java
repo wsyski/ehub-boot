@@ -11,14 +11,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloadLinkHrefFactoryTest {
 
     @Mock
     private ContentProviderConsumer contentProviderConsumer;
-    private DownloadLinkTemplate downloadLinkTemplate;
+    private DownloadLinkTemplateDTO downloadLinkTemplate;
     private String errorPageUrl = "ErrorPageurl";
     private String readAuthUrl = "OdreadAuthUrl";
     private String expectedHref = "http://patron.api.overdrive.com/v1/patrons/me/checkouts/08F7D7E6-423F-45A6-9A1E-5AE9122C82E7/formats/ebook-overdrive/downloadlink?errorpageurl="
@@ -27,7 +27,7 @@ public class DownloadLinkHrefFactoryTest {
 
     @Before
     public void setUp() {
-	downloadLinkTemplate = new DownloadLinkTemplate();
+	downloadLinkTemplate = new DownloadLinkTemplateDTO();
 	downloadLinkTemplate.setHref("http://patron.api.overdrive.com/v1/patrons/me/checkouts/08F7D7E6-423F-45A6-9A1E-5AE9122C82E7/formats/ebook-overdrive/"
 		+ "downloadlink?errorpageurl={errorpageurl}&odreadauthurl={odreadauthurl}");
     }

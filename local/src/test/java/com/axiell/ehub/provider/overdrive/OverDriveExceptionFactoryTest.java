@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OverdriveExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
+public class OverDriveExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
 
     @Mock
@@ -19,7 +19,7 @@ public class OverdriveExceptionFactoryTest extends ContentProviderExceptionFacto
 
     @Before
     public void setUpUnderTest() {
-        underTest = new OverdriveExceptionFactory(contentProviderConsumer, LANGUAGE, ehubExceptionFactory);
+        underTest = new OverDriveExceptionFactory(contentProviderConsumer, LANGUAGE, ehubExceptionFactory);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class OverdriveExceptionFactoryTest extends ContentProviderExceptionFacto
 
     @Test
     public void errorEntityWithMessageAndStatusLibraryLimitReached() {
-        givenErrorEntityWithMessageAndStatus(MESSAGE, OverdriveExceptionFactory.STATUS_NO_COPIES_AVAILABLE);
+        givenErrorEntityWithMessageAndStatus(MESSAGE, OverDriveExceptionFactory.STATUS_NO_COPIES_AVAILABLE);
         whenCreateExecuted();
         internalServerErrorExceptionWithLibraryLimitReached();
     }

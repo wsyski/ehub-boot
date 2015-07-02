@@ -11,11 +11,13 @@ import com.axiell.ehub.util.DateFactory;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Checkout {
+public class CheckoutDTO {
     private String reserveId;
     @JsonProperty(value = "expires")
     private Date expirationDate;
-    private List<CirculationFormat> formats;
+    private boolean isFormatLocked;
+
+    private List<CirculationFormatDTO> formats;
 
     public String getReserveId() {
         return reserveId;
@@ -25,7 +27,11 @@ public class Checkout {
 	return DateFactory.create(expirationDate);
     }
     
-    public List<CirculationFormat> getFormats() {
+    public List<CirculationFormatDTO> getFormats() {
 	return formats;
+    }
+
+    public boolean isFormatLocked() {
+        return isFormatLocked;
     }
 }

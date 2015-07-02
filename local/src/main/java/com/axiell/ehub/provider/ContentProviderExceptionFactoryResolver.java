@@ -6,7 +6,7 @@ import com.axiell.ehub.provider.borrowbox.BorrowBoxExceptionFactory;
 import com.axiell.ehub.provider.elib.library3.Elib3ExceptionFactory;
 import com.axiell.ehub.provider.epi.EpiExceptionFactory;
 import com.axiell.ehub.provider.ocd.OcdExceptionFactory;
-import com.axiell.ehub.provider.overdrive.OverdriveExceptionFactory;
+import com.axiell.ehub.provider.overdrive.OverDriveExceptionFactory;
 
 class ContentProviderExceptionFactoryResolver {
 
@@ -25,7 +25,7 @@ class ContentProviderExceptionFactoryResolver {
             case ELIB3:
                 return new Elib3ExceptionFactory(contentProviderConsumer, language, ehubExceptionFactory);
             case OVERDRIVE:
-                return new OverdriveExceptionFactory(contentProviderConsumer, language, ehubExceptionFactory);
+                return new OverDriveExceptionFactory(contentProviderConsumer, language, ehubExceptionFactory);
             case ELIB:
             case ELIBU:
             case PUBLIT:

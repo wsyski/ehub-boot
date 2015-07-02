@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.util.IMatcher;
 
-class CheckoutMatcher implements IMatcher<Checkout> {
+class CheckoutMatcher implements IMatcher<CheckoutDTO> {
     private final String productId;
 
     CheckoutMatcher(final String productId) {
@@ -10,7 +10,7 @@ class CheckoutMatcher implements IMatcher<Checkout> {
     }
 
     @Override
-    public boolean matches(Checkout checkout) {
+    public boolean matches(CheckoutDTO checkout) {
         final String reserveId = checkout.getReserveId();
         return productId.equals(reserveId);
     }

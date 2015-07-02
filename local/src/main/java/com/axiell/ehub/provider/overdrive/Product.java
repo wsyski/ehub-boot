@@ -15,7 +15,7 @@ public class Product {
         return productDTO.getId();
     }
 
-    public List<DiscoveryFormat> getFormats() {
+    public List<DiscoveryFormatDTO> getFormats() {
         return productDTO.getFormats();
     }
 

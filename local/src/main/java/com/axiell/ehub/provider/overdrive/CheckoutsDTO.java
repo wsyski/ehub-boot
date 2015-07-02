@@ -1,19 +1,16 @@
 package com.axiell.ehub.provider.overdrive;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DiscoveryFormat {
-    private String id;
-    private String name;
+public class CheckoutsDTO {
+    private List<CheckoutDTO> checkouts;
     
-    public String getId() {
-	return id;
-    }
-    
-    public String getName() {
-	return name;
+    public List<CheckoutDTO> getCheckouts() {
+	return checkouts;
     }
 }

@@ -191,4 +191,35 @@
         </insert>
         <comment>Added Overdrive audiobook-overdrive format decoration text bundles</comment>
     </changeSet>
+
+    <changeSet id="13" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
+            <column name="ID" value="16"/>
+            <column name="TYPE" value="ANOTHER_FORMAT_LOCKED_IN"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added ANOTHER_FORMAT_LOCKED_IN error cause argument values</comment>
+    </changeSet>
+
+    <changeSet id="14" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1030"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="16"/>
+            <column name="TEXT" value="Another format has already been locked in"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1031"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="16"/>
+            <column name="TEXT" value="Ett annat format har redan låsts i"/>
+            <column name="LANGUAGE_ID" value="sv"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to ANOTHER_FORMAT_LOCKED_IN error cause argument values</comment>
+    </changeSet>
+
 </databaseChangeLog>

@@ -40,7 +40,7 @@ public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFacto
 
     private void givenErrorEntityWithMessageAndStatus(final String message, final String status) {
         given(error.getMessage()).willReturn(message);
-        given(error.getError()).willReturn(status);
+        given(error.getErrorCode()).willReturn(status);
         given(response.readEntity(ErrorDTO.class)).willReturn(error);
     }
 

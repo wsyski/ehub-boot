@@ -9,20 +9,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path("/v1/patrons/me/checkouts")
 interface ICirculationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    Checkouts getCheckouts(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken);
-    
+    CheckoutsDTO getCheckouts(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{productId}/formats")
+    CirculationFormatsDTO getCirculationFormats(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, @PathParam("productId") String productId);
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Checkout checkout(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, Fields fields);
-    
+    @Path("{productId}/formats")
+    CirculationFormatDTO lockFormat(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, @PathParam("productId") String productId, Fields fields);
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    CheckoutDTO checkout(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, Fields fields);
+
     @DELETE
     @Path("{productId}")
     void checkin(@HeaderParam("Authorization") OAuthAccessToken patronAccessToken, @PathParam("productId") String productId);
+
+
 }

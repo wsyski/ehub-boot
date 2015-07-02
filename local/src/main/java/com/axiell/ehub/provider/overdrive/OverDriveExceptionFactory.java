@@ -6,15 +6,17 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
-public class OverdriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
+public class OverDriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
     static final String STATUS_NOT_FOUND = "NotFound";
     static final String STATUS_NO_COPIES_AVAILABLE = "NoCopiesAvailable";
     static final String STATUS_PATRON_CHECKOUT_LIMIT = "PatronHasExceededCheckoutLimit";
     static final String STATUS_PATRON_EXCEEDED_CHURNING_LIMIT = "PatronHasExceededChurningLimit";
+    static final String STATUS_TITLE_ALREADY_CHECKED_OUT = "TitleAlreadyCheckedOut";
+    static final String STATUS_ANOTHER_FORMAT_LOCKED_IN = "AnotherFormatHasBeenLockedIn";
 
 
-    public OverdriveExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
+    public OverDriveExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                      final IEhubExceptionFactory ehubExceptionFactory) {
         super(contentProviderConsumer, language, ehubExceptionFactory, ErrorDTO.class);
     }
@@ -39,6 +41,8 @@ public class OverdriveExceptionFactory extends AbstractContentProviderExceptionF
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
+            } else if (STATUS_TITLE_ALREADY_CHECKED_OUT.equals(status)) {
+                type = ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
             } else if (STATUS_PATRON_EXCEEDED_CHURNING_LIMIT.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
             }

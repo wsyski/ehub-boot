@@ -31,28 +31,28 @@ public class OverDriveDiscoveryIT extends AbstractOverDriveIT {
     }
 
     private void thenProductHasFormats() {
-        List<DiscoveryFormat> formats = product.getFormats();
+        List<DiscoveryFormatDTO> formats = product.getFormats();
         thenFormatListIsNotNull(formats);
         thenFormatListIsNotEmpty(formats);
-        for (DiscoveryFormat format : formats) {
+        for (DiscoveryFormatDTO format : formats) {
             thenFormatHasId(format);
             thenFormatHasName(format);
         }
     }
 
-    private void thenFormatListIsNotNull(List<DiscoveryFormat> formats) {
+    private void thenFormatListIsNotNull(List<DiscoveryFormatDTO> formats) {
         Assert.assertNotNull(formats);
     }
 
-    private void thenFormatListIsNotEmpty(List<DiscoveryFormat> formats) {
+    private void thenFormatListIsNotEmpty(List<DiscoveryFormatDTO> formats) {
         Assert.assertFalse(formats.isEmpty());
     }
 
-    private void thenFormatHasId(DiscoveryFormat format) {
+    private void thenFormatHasId(DiscoveryFormatDTO format) {
         Assert.assertNotNull(format.getId());
     }
 
-    private void thenFormatHasName(DiscoveryFormat format) {
+    private void thenFormatHasName(DiscoveryFormatDTO format) {
         Assert.assertNotNull(format.getName());
     }
 

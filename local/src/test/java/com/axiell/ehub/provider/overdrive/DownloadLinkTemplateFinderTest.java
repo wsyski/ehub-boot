@@ -14,8 +14,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownloadLinkTemplateFinderTest {
@@ -23,16 +23,16 @@ public class DownloadLinkTemplateFinderTest {
     private static final String FORMAT_ID = "formatId";
     private DownloadLinkTemplateFinder underTest;
     @Mock
-    private Checkout checkout;
+    private CheckoutDTO checkout;
     @Mock
-    private CirculationFormat circulationFormat;
+    private CirculationFormatDTO circulationFormat;
     @Mock
-    private LinkTemplates linkTemplates;
+    private LinkTemplatesDTO linkTemplates;
     @Mock
-    private Checkouts checkouts;
+    private CheckoutsDTO checkouts;
     @Mock
-    private DownloadLinkTemplate downloadLinkTemplate;
-    private DownloadLinkTemplate actualDownloadLinkTemplate;
+    private DownloadLinkTemplateDTO downloadLinkTemplate;
+    private DownloadLinkTemplateDTO actualDownloadLinkTemplate;
 
     @Before
     public void setUp() {
@@ -51,7 +51,7 @@ public class DownloadLinkTemplateFinderTest {
     }
 
     private void givenCirculationFormats() {
-	final List<CirculationFormat> circulationFormats = Arrays.asList(circulationFormat);
+	final List<CirculationFormatDTO> circulationFormats = Arrays.asList(circulationFormat);
 	given(checkout.getFormats()).willReturn(circulationFormats);
     }
 
@@ -108,7 +108,7 @@ public class DownloadLinkTemplateFinderTest {
     }
 
     private void givenCheckoutList() {
-	final List<Checkout> checkoutList = Arrays.asList(checkout);
+	final List<CheckoutDTO> checkoutList = Arrays.asList(checkout);
 	given(checkouts.getCheckouts()).willReturn(checkoutList);
     }
     

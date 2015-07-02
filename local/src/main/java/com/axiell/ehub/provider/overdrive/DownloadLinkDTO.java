@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DownloadLink {
+public class DownloadLinkDTO {
     private Links links;
     
     public Links getLinks() {

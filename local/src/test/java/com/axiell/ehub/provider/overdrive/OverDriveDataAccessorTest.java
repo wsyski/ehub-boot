@@ -8,10 +8,10 @@ import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
 import com.axiell.ehub.provider.ContentProviderName;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
-import com.axiell.ehub.provider.overdrive.DownloadLink.Links;
-import com.axiell.ehub.provider.overdrive.DownloadLink.Links.ContentLink;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
+import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.provider.record.format.Format;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,7 +27,6 @@ import java.util.List;
 
 import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
 public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
@@ -42,28 +41,28 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     @Mock
     private Product product;
     @Mock
-    private DiscoveryFormat discoveryFormat;
+    private DiscoveryFormatDTO discoveryFormat;
     @Mock
     private ErrorDTO errorDetails;
     @Mock
     private OAuthAccessToken accessToken;
     @Mock
-    private Checkout checkout;
+    private CheckoutDTO checkout;
     @Mock
-    private CirculationFormat circulationFormat;
+    private CirculationFormatDTO circulationFormat;
     @Mock
-    private LinkTemplates linkTemplates;
+    private LinkTemplatesDTO linkTemplates;
 
     @Mock
-    private DownloadLinkTemplate downloadLinkTemplate;
+    private DownloadLinkTemplateDTO downloadLinkTemplate;
     @Mock
-    private DownloadLink downloadLink;
+    private DownloadLinkDTO downloadLink;
     @Mock
     private Links links;
     @Mock
     private ContentLink contentLink;
     @Mock
-    private Checkouts checkouts;
+    private CheckoutsDTO checkouts;
     private IEhubExceptionFactory ehubExceptionFactory = new EhubExceptionFactoryStub();
 
     private OverDriveDataAccessor underTest;
@@ -83,6 +82,10 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
+        givenPatronAccessToken();
         givenProduct();
         givenProductAvailable(true);
         givenDiscoveryFormat();
@@ -100,6 +103,10 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
+        givenPatronAccessToken();
         givenProduct();
         givenProductAvailable(false);
         givenDiscoveryFormat();
@@ -121,7 +128,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenDiscoveryFormat() {
-        List<DiscoveryFormat> discoveryFormats = Arrays.asList(discoveryFormat);
+        List<DiscoveryFormatDTO> discoveryFormats = Arrays.asList(discoveryFormat);
         given(product.getFormats()).willReturn(discoveryFormats);
     }
 
@@ -178,7 +185,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenCirculationFormats() {
-        List<CirculationFormat> circulationFormats = Arrays.asList(circulationFormat);
+        List<CirculationFormatDTO> circulationFormats = Arrays.asList(circulationFormat);
         given(checkout.getFormats()).willReturn(circulationFormats);
     }
 
@@ -291,7 +298,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenCheckoutList() {
-        List<Checkout> checkoutList = Arrays.asList(checkout);
+        List<CheckoutDTO> checkoutList = Arrays.asList(checkout);
         given(checkouts.getCheckouts()).willReturn(checkoutList);
     }
 

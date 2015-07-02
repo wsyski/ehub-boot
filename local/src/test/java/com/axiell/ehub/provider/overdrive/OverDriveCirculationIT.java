@@ -1,42 +1,32 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.provider.ocd.MediaDTO;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
-import com.axiell.ehub.provider.overdrive.DownloadLink.Links;
-import com.axiell.ehub.provider.overdrive.DownloadLink.Links.ContentLink;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
+import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
-import org.jboss.resteasy.client.ClientResponseFailure;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.BadRequestException;
 import java.util.Date;
 import java.util.List;
 
 public class OverDriveCirculationIT extends AbstractOverDriveIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(OverDriveCirculationIT.class);
 
-    private Checkout checkout;
-    private Checkouts checkouts;
-    private DownloadLinkTemplate downloadLinkTemplate;
-    private DownloadLink downloadLink;
+    private CheckoutDTO checkout;
+    private CheckoutsDTO checkouts;
+    private DownloadLinkTemplateDTO downloadLinkTemplate;
+    private DownloadLinkDTO downloadLink;
 
     @After
     public void afterTest() {
-        final Checkouts checkouts = underTest.getCheckouts(contentProviderConsumer, accessToken);
-        for (Checkout checkout: checkouts.getCheckouts()) {
-            try {
-                underTest.checkin(contentProviderConsumer, accessToken, checkout.getReserveId());
-            }
-            catch (ClientResponseFailure ex) {
-                LOGGER.error("Can not checkin product id: "+checkout.getReserveId());
-            }
-        }
-        //underTest.checkin(contentProviderConsumer, accessToken, PRODUCT_ID);
+        givenCheckinAll();
     }
 
     @Test
@@ -92,10 +82,10 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
 
     private void thenCheckoutListContainsCheckout() throws IFinder.NotFoundException {
         Assert.assertNotNull(checkouts);
-        final List<Checkout> checkoutList = checkouts.getCheckouts();
+        final List<CheckoutDTO> checkoutList = checkouts.getCheckouts();
         Assert.assertTrue(checkoutList.size() > 0);
-        IMatcher<Checkout> matcher=new CheckoutMatcher(PRODUCT_ID);
-        checkout = new CollectionFinder<Checkout>().find(matcher, checkoutList);
+        IMatcher<CheckoutDTO> matcher=new CheckoutMatcher(PRODUCT_ID);
+        checkout = new CollectionFinder<CheckoutDTO>().find(matcher, checkoutList);
     }
 
     @Test
@@ -123,4 +113,19 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
         final String contentLinkHref = contentLink.getHref();
         Assert.assertNotNull(contentLinkHref);
     }
+
+    private void givenCheckinAll() {
+        final CheckoutsDTO checkouts = underTest.getCheckouts(contentProviderConsumer, accessToken);
+        for (CheckoutDTO checkout: checkouts.getCheckouts()) {
+            try {
+                if (!checkout.isFormatLocked()) {
+                    underTest.checkin(contentProviderConsumer, accessToken, checkout.getReserveId());
+                }
+            }
+            catch (BadRequestException ex) {
+                LOGGER.error("Can not checkin product id: "+checkout.getReserveId());
+            }
+        }
+    }
+
 }

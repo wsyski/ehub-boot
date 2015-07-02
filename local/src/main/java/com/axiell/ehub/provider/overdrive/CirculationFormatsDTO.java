@@ -1,16 +1,16 @@
 package com.axiell.ehub.provider.overdrive;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import java.util.List;
+
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Checkouts {
-    private List<Checkout> checkouts;
+public class CirculationFormatsDTO {
+    private List<CirculationFormatDTO> formats;
     
-    public List<Checkout> getCheckouts() {
-	return checkouts;
+    public List<CirculationFormatDTO> getFormats() {
+	return formats;
     }
 }

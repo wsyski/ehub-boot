@@ -1,12 +1,16 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.overdrive.CirculationFormat.LinkTemplates.DownloadLinkTemplate;
+import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {
@@ -50,24 +54,40 @@ class OverDriveFacade implements IOverDriveFacade {
     }
 
     @Override
-    public Checkout checkout(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken, final String productId,
-                             final String formatType) {
+    public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken, final String productId,
+                                final String formatType) {
         final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
         final Fields fields = new Fields.Builder(productId).formatType(formatType).build();
         return circulationResource.checkout(patronAccessToken, fields);
     }
 
     @Override
-    public Checkouts getCheckouts(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken) {
+    public CheckoutsDTO getCheckouts(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken) {
         final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
         return circulationResource.getCheckouts(patronAccessToken);
     }
 
+    public CirculationFormatsDTO getCirculationFormats(ContentProviderConsumer contentProviderConsumer, OAuthAccessToken patronAccessToken,
+                                                            String productId) {
+        final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
+        return circulationResource.getCirculationFormats(patronAccessToken, productId);
+    }
+
     @Override
-    public DownloadLink getDownloadLink(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
-                                        final DownloadLinkTemplate downloadLinkTemplate) {
+    public CirculationFormatDTO lockFormat(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
+                                           final String productId, final String formatType) {
+        final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
+        final Fields fields = new Fields.Builder(productId).formatType(formatType).build();
+        return circulationResource.lockFormat(patronAccessToken, productId, fields);
+    }
+
+    @Override
+    public DownloadLinkDTO getDownloadLink(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
+                                           final DownloadLinkTemplateDTO downloadLinkTemplate) {
         final String downloadLinkHref = DownloadLinkHrefFactory.create(contentProviderConsumer, downloadLinkTemplate);
-        final IDownloadLinkResource downloadLinkResource = ProxyFactory.create(IDownloadLinkResource.class, downloadLinkHref);
+        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyWebTarget target = client.target(downloadLinkHref);
+        final IDownloadLinkResource downloadLinkResource = target.proxy(IDownloadLinkResource.class);
         return downloadLinkResource.getDownloadLink(patronAccessToken);
     }
 

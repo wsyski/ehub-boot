@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 public class BorrowBoxGetFormatsIT extends AbstractBorrowBoxIT {
-    protected static final String CARD = "ehub1";
+    protected static final String CARD = "D0200000000000";
 
     private String contentProviderRecordId;
     private FormatsDTO formats;

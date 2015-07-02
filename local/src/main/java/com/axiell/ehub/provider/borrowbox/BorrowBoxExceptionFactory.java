@@ -12,7 +12,7 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
     private static final String STATUS_UNAUTHORIZED = "Unauthorized";
     private static final String STATUS_NO_CREDITS_LEFT = "noCreditsLeft";
     private static final String STATUS_NOT_AVAILABLE = "notAvailable";
-    private static final String STATUS_NOT_COPY_AVAILABLE = "notCopyAvailable";
+    private static final String STATUS_NO_COPY_AVAILABLE = "noCopyAvailable";
     private static final String STATUS_ALREADY_ON_LOAN = "alreadyOnLoan";
 
     public BorrowBoxExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
@@ -22,7 +22,7 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
 
     @Override
     protected String getStatus(final ErrorDTO error) {
-        return error == null ? null : error.getError();
+        return error == null ? null : error.getErrorCode();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
             } else if (STATUS_NOT_AVAILABLE.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
-            } else if (STATUS_NOT_COPY_AVAILABLE.equals(status)) {
+            } else if (STATUS_NO_COPY_AVAILABLE.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_ALREADY_ON_LOAN.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
