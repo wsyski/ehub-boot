@@ -61,8 +61,8 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         }
     }
 
-    private <T> Formats makeFormats(final ContentProvider contentProvider, final String language,
-                                    final Collection<T> discoveryFormats, final IFormatExtractor<T> formatExtractor) {
+    private <T> Formats makeFormats(final ContentProvider contentProvider, final String language, final Collection<T> discoveryFormats,
+                                    final IFormatExtractor<T> formatExtractor) {
         final Formats formats = new Formats();
         for (T discoveryFormat : discoveryFormats) {
             final Format format = formatFactory.create(contentProvider, formatExtractor.getFormatId(discoveryFormat), language);
@@ -140,10 +140,6 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String libraryCard = patron.getLibraryCard();
         final String pin = patron.getPin();
         return overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
-    }
-
-    private Format makeFormat(final String language, final ContentProvider contentProvider, final String formatId) {
-        return formatFactory.create(contentProvider, formatId, language);
     }
 
     private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,

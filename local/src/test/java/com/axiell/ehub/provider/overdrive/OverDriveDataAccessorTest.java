@@ -22,11 +22,14 @@ import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccessorTest {
     private static final String RECORD_ID = "1";
@@ -97,6 +100,27 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     @Test
+    public void getFormatsForBorrowedProduct() {
+        givenFormatFromFormatFactory();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderRecordIdInCommandData();
+        givenLanguageInCommandData();
+        givenPatronInCommandData();
+        givenLibraryCardInPatron();
+        givenPinInPatron();
+        givenPatronAccessToken();
+        givenCheckouts();
+        givenCheckoutList();
+        givenGetCirculationFormats();
+        givenCirculationFormats();
+        givenCirculationFormatType();
+        givenContentProvider();
+        givenTextBundle();
+        whenGetFormats();
+        thenActualFormatEqualsExpected();
+    }
+
+    @Test
     public void getFormatsForUnavailableProduct() {
         givenContentProviderName();
         givenFormatFromFormatFactory();
@@ -117,44 +141,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         whenGetFormats();
     }
 
-    private void givenExpectedInternalServerException() {
-        throwable.expect(InternalServerErrorException.class);
-        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProviderName.OVERDRIVE,
-                ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
-    }
-
-    private void givenProduct() {
-        given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(product);
-    }
-
-    private void givenDiscoveryFormat() {
-        List<DiscoveryFormatDTO> discoveryFormats = Arrays.asList(discoveryFormat);
-        given(product.getFormats()).willReturn(discoveryFormats);
-    }
-
-    private void givenProductAvailable(final boolean isAvailable) {
-        given(product.isAvailable()).willReturn(isAvailable);
-    }
-
-    private void givenFormatIdInDiscoveryFormat() {
-        given(discoveryFormat.getId()).willReturn(FORMAT_ID);
-        given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
-    }
-
-    private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
-    }
-
-    private void thenFormatHasOverDriveName() {
-        Assert.assertFalse(actualFormats.getFormats().isEmpty());
-        Format actualFormat = actualFormats.getFormats().iterator().next();
-        Assert.assertEquals(OVERDRIVE_FORMAT_NAME, actualFormat.name());
-    }
-
-    private void givenErrorDetails() {
-        given(response.getEntity(ErrorDTO.class)).willReturn(errorDetails);
-    }
-
     @Test
     public void createLoan() {
         givenContentProviderConsumerInCommandData();
@@ -167,13 +153,13 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenCheckout();
         givenExpirationDateInCheckout();
         givenCirculationFormats();
-        givenFormatType();
-        givenReserveId();
-        givenLinkTemplates();
+        givenCirculationFormatType();
+        givenCirculationFormatReserveId();
+        givenCirculationFormatLinkTemplates();
         givenDownloadLinkTemplate();
         givenDownloadLink();
         givenLinks();
-        givenOvderDriveContentLink();
+        givenOverDriveContentLink();
         givenDownloadUrl();
         givenContentProvider();
         givenFormatDecorationFromContentProvider();
@@ -184,65 +170,8 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         thenActualLoanContainsContentLinkHref();
     }
 
-    private void givenCirculationFormats() {
-        List<CirculationFormatDTO> circulationFormats = Arrays.asList(circulationFormat);
-        given(checkout.getFormats()).willReturn(circulationFormats);
-    }
-
-    private void givenFormatType() {
-        given(circulationFormat.getFormatType()).willReturn(FORMAT_ID);
-    }
-
-    private void givenReserveId() {
-        given(circulationFormat.getReserveId()).willReturn(RECORD_ID);
-    }
-
-    private void givenLinkTemplates() {
-        given(circulationFormat.getLinkTemplates()).willReturn(linkTemplates);
-    }
-
-    private void givenDownloadLinkTemplate() {
-        given(linkTemplates.getDownloadLink()).willReturn(downloadLinkTemplate);
-    }
-
-    public void givenPatronAccessToken() {
-        given(overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, CARD, PIN)).willReturn(accessToken);
-    }
-
-    private void givenCheckout() {
-        given(overDriveFacade.checkout(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(checkout);
-    }
-
-    private void givenExpirationDateInCheckout() {
-        given(checkout.getExpirationDate()).willReturn(new Date());
-    }
-
-    private void givenDownloadLink() {
-        given(overDriveFacade.getDownloadLink(contentProviderConsumer, accessToken, downloadLinkTemplate)).willReturn(downloadLink);
-    }
-
-    private void givenLinks() {
-        given(downloadLink.getLinks()).willReturn(links);
-    }
-
-    private void givenOvderDriveContentLink() {
-        given(links.getContentLink()).willReturn(contentLink);
-    }
-
-    private void givenDownloadUrl() {
-        given(contentLink.getHref()).willReturn(CONTENT_HREF);
-    }
-
-    private void givenFormatIdFromFormatDecoration() {
-        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
-    }
-
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     @Test
-    public void createLoanWhenNotSameFormat() {
+    public void createLoanWhenWithNewFormat() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -250,15 +179,30 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenLibraryCardInPatron();
         givenPinInPatron();
         givenPatronAccessToken();
-        givenCheckout();
+        givenCheckouts();
+        givenCheckoutList();
+        givenGetCirculationFormats();
+        givenCirculationFormats();
+        givenCirculationFormatType();
         givenExpirationDateInCheckout();
         givenCirculationFormats();
-        try {
-            whenCreateLoan();
-            Assert.fail("A NotFoundException should have been thrown");
-        } catch (NotFoundException e) {
-            thenNotFoundExceptionIsThrown(e);
-        }
+        givenCirculationFormatLinkTemplates();
+        givenDownloadLinkTemplate();
+        givenLockFormat();
+        givenDownloadUrl();
+        givenDownloadLink();
+        givenFormatIdFromFormatDecoration();
+        givenDownloadableContentDisposition();
+        givenContentLink();
+        givenLinks();
+        givenOverDriveContentLink();
+        givenContentProvider();
+        givenFormatDecorationFromContentProvider();
+        givenFormatIdFromFormatDecoration();
+        givenDownloadableContentDisposition();
+        whenCreateLoan();
+        thenActualLoanContainsContentLinkHref();
+        thenLockFormatIsExecuted();
     }
 
     @Test
@@ -274,36 +218,19 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenCheckoutList();
         givenCirculationFormats();
-        givenFormatType();
-        givenReserveId();
-        givenLinkTemplates();
+        givenCirculationFormatType();
+        givenCirculationFormatReserveId();
+        givenCirculationFormatLinkTemplates();
         givenDownloadLinkTemplate();
         givenDownloadLink();
         givenLinks();
-        givenOvderDriveContentLink();
+        givenOverDriveContentLink();
         givenDownloadUrl();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
-    }
-
-    public void givenCheckouts() {
-        given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
-    }
-
-    public void givenRecordIdFromContentProviderLoanMetadata() {
-        given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
-    }
-
-    private void givenCheckoutList() {
-        List<CheckoutDTO> checkoutList = Arrays.asList(checkout);
-        given(checkouts.getCheckouts()).willReturn(checkoutList);
-    }
-
-    public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
     }
 
     @Test
@@ -330,10 +257,129 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         }
     }
 
+    private void givenLockFormat() {
+        given(overDriveFacade.lockFormat(contentProviderConsumer,accessToken,RECORD_ID,FORMAT_ID)).willReturn(circulationFormat);
+    }
+
+    private void thenLockFormatIsExecuted() {
+        verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID);
+    }
+
+    private void givenExpectedInternalServerException() {
+        throwable.expect(InternalServerErrorException.class);
+        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProviderName.OVERDRIVE,
+                ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
+    }
+
+    private void givenProduct() {
+        given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(product);
+    }
+
+    private void givenDiscoveryFormat() {
+        List<DiscoveryFormatDTO> discoveryFormats = Collections.singletonList(discoveryFormat);
+        given(product.getFormats()).willReturn(discoveryFormats);
+    }
+
+    private void givenProductAvailable(final boolean isAvailable) {
+        given(product.isAvailable()).willReturn(isAvailable);
+    }
+
+    private void givenFormatIdInDiscoveryFormat() {
+        given(discoveryFormat.getId()).willReturn(FORMAT_ID);
+        given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
+    }
+
+    private void whenGetFormats() {
+        actualFormats = underTest.getFormats(commandData);
+    }
+
+    private void givenErrorDetails() {
+        given(response.getEntity(ErrorDTO.class)).willReturn(errorDetails);
+    }
+
+    private void givenCirculationFormats() {
+        List<CirculationFormatDTO> circulationFormats = Collections.singletonList(circulationFormat);
+        given(checkout.getFormats()).willReturn(circulationFormats);
+        given(checkout.getReserveId()).willReturn(RECORD_ID);
+    }
+
+    private void givenCirculationFormatType() {
+        given(circulationFormat.getFormatType()).willReturn(FORMAT_ID);
+    }
+
+    private void givenCirculationFormatReserveId() {
+        given(circulationFormat.getReserveId()).willReturn(RECORD_ID);
+    }
+
+    private void givenCirculationFormatLinkTemplates() {
+        given(circulationFormat.getLinkTemplates()).willReturn(linkTemplates);
+    }
+
+    private void givenDownloadLinkTemplate() {
+        given(linkTemplates.getDownloadLink()).willReturn(downloadLinkTemplate);
+    }
+
+    public void givenPatronAccessToken() {
+        given(overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, CARD, PIN)).willReturn(accessToken);
+    }
+
+    private void givenCheckout() {
+        given(overDriveFacade.checkout(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(checkout);
+    }
+
+    private void givenGetCirculationFormats() {
+        CirculationFormatsDTO circulationFormats=new CirculationFormatsDTO();
+        ReflectionTestUtils.setField(circulationFormats,"formats",Collections.singletonList(circulationFormat));
+        given(overDriveFacade.getCirculationFormats(contentProviderConsumer, accessToken, RECORD_ID)).willReturn(circulationFormats);
+    }
+
+    private void givenExpirationDateInCheckout() {
+        given(checkout.getExpirationDate()).willReturn(new Date());
+    }
+
+    private void givenDownloadLink() {
+        given(overDriveFacade.getDownloadLink(contentProviderConsumer, accessToken, downloadLinkTemplate)).willReturn(downloadLink);
+    }
+
+    private void givenLinks() {
+        given(downloadLink.getLinks()).willReturn(links);
+    }
+
+    private void givenOverDriveContentLink() {
+        given(links.getContentLink()).willReturn(contentLink);
+    }
+
+    private void givenDownloadUrl() {
+        given(contentLink.getHref()).willReturn(CONTENT_HREF);
+    }
+
+    private void givenFormatIdFromFormatDecoration() {
+        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
+    }
+
+    private void whenCreateLoan() {
+        actualLoan = underTest.createLoan(commandData);
+    }
+
+    private void givenCheckouts() {
+        given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
+    }
+
+    private void givenRecordIdFromContentProviderLoanMetadata() {
+        given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
+    }
+
+    private void givenCheckoutList() {
+        List<CheckoutDTO> checkoutList = Collections.singletonList(checkout);
+        given(checkouts.getCheckouts()).willReturn(checkoutList);
+    }
+
+    private void whenGetContent() {
+        actualContentLink = underTest.getContent(commandData);
+    }
+
     private void givenContentProviderName() {
         given(contentProvider.getName()).willReturn(ContentProviderName.OVERDRIVE);
     }
-
-
 }
 
