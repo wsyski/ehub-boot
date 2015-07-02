@@ -45,6 +45,8 @@ public class OverDriveExceptionFactory extends AbstractContentProviderExceptionF
                 type = ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
             } else if (STATUS_PATRON_EXCEEDED_CHURNING_LIMIT.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
+            } else if (STATUS_ANOTHER_FORMAT_LOCKED_IN.equals(status)) {
+                type = ErrorCauseArgumentValue.Type.ANOTHER_FORMAT_LOCKED_IN;
             }
         }
         return type;
