@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 

@@ -1,8 +1,10 @@
 package com.axiell.ehub.provider.borrowbox;
 
+import com.axiell.ehub.util.JacksonTimestampDeserializer;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 import java.util.Date;
 
@@ -11,6 +13,7 @@ import java.util.Date;
 public class CheckoutDTO {
     private String loanId;
     private String contentUrl;
+    @JsonDeserialize(using = JacksonTimestampDeserializer.class)
     @JsonProperty(value = "endDate")
     private Date expirationDate;
 
@@ -25,4 +28,7 @@ public class CheckoutDTO {
     public Date getExpirationDate() {
         return expirationDate;
     }
+
+
 }
+

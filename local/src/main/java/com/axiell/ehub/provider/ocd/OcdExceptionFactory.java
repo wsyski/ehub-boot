@@ -8,7 +8,8 @@ import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
 public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
-    static final String MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE = "No fulfillment copy available.";
+    static final String MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE = "No fulfillment copy available";
+    static final String MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID = "PatronId and TitleId are invalid";
 
     public OcdExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                final IEhubExceptionFactory ehubExceptionFactory) {
@@ -29,8 +30,10 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
     protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
         ErrorCauseArgumentValue.Type type = null;
         if (message != null) {
-            if (MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE.equals(message)) {
+            if (message.contains(MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE)) {
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
+            } else if (message.contains(MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID)) {
+                type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
             }
         }
         return type;

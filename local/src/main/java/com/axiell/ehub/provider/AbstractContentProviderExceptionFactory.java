@@ -7,8 +7,10 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.jboss.resteasy.client.ClientResponse;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 
 public abstract class AbstractContentProviderExceptionFactory<E> implements IContentProviderExceptionFactory<E> {
@@ -19,7 +21,7 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
 
     public AbstractContentProviderExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                                    final IEhubExceptionFactory ehubExceptionFactory, final Class<E> clazz) {
-        this.clazz=clazz;
+        this.clazz = clazz;
         this.contentProviderConsumer = contentProviderConsumer;
         this.language = language;
         this.ehubExceptionFactory = ehubExceptionFactory;
@@ -31,15 +33,21 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
 
     @Override
     public InternalServerErrorException create(final Response response) {
-        E entity = readEntity(response);
-        String status = getStatus(entity);
-        String message = getMessage(entity);
+        String status = null;
+        String message;
+        try {
+            E entity = readEntity(response, clazz);
+            status = getStatus(entity);
+            message = getMessage(entity);
+        } catch (ProcessingException ex) {
+            message = readEntity(response, String.class);
+        }
         if (StringUtils.isBlank(message)) {
             message = DEFAULT_MESSAGE;
         }
-        ErrorCauseArgumentValue.Type type = getErrorCauseArgumentValueType(status,message);
+        ErrorCauseArgumentValue.Type type = getErrorCauseArgumentValueType(status, message);
         if (type != null) {
-            return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message,contentProviderConsumer, type, language);
+            return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
         }
         if (StringUtils.isBlank(status)) {
             status = String.valueOf(getStatusCode(response));
@@ -64,11 +72,10 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
     }
 
     @SuppressWarnings("unchecked")
-    private E readEntity(final Response response) {
+    private <T> T readEntity(final Response response, final Class<T> clazz) {
         if (response instanceof ClientResponse) {
-            return ((ClientResponse<E>)response).getEntity(clazz);
-        }
-        else {
+            return ((ClientResponse<T>) response).getEntity(clazz);
+        } else {
             return response.readEntity(clazz);
         }
     }

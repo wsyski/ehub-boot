@@ -100,7 +100,6 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
             default:
                 throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse);
         }
-        // return new CheckoutTestAnalysis(Result.NEW_LOAN, null);
         return new CheckoutTestAnalysis(result, lmsLoanId);
     }
 

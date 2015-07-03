@@ -14,6 +14,7 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
     private static final String STATUS_NOT_AVAILABLE = "notAvailable";
     private static final String STATUS_NO_COPY_AVAILABLE = "noCopyAvailable";
     private static final String STATUS_ALREADY_ON_LOAN = "alreadyOnLoan";
+    private static final String STATUS_PRODUCT_NOT_AVAILABLE_ON_SITE = "productNotAvailableOnSite";
 
     public BorrowBoxExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                      final IEhubExceptionFactory ehubExceptionFactory) {
@@ -40,7 +41,7 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
                 type = ErrorCauseArgumentValue.Type.INVALID_PATRON;
             } else if (STATUS_NO_CREDITS_LEFT.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
-            } else if (STATUS_NOT_AVAILABLE.equals(status)) {
+            } else if (STATUS_NOT_AVAILABLE.equals(status) || STATUS_PRODUCT_NOT_AVAILABLE_ON_SITE.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
             } else if (STATUS_NO_COPY_AVAILABLE.equals(status)) {
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
