@@ -4,7 +4,7 @@ import com.axiell.arena.services.palma.search.v267.service.Catalogue;
 import com.axiell.arena.services.palma.search.v267.service.Search.SearchRequest;
 import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 
 import javax.jws.WebService;
@@ -29,7 +29,7 @@ public class PalmaSearchService_267 extends AbstractPalmaService implements Cata
     @Override
     public com.axiell.arena.services.palma.search.v267.service.SearchResponse.SearchResult search(final SearchRequest searchRequest) {
         verifySearchRequest(searchRequest);
-        return ((SearchResponse)getFileResponseUnmarshaller().unmarshalFromFile(PALMA_SEARCH_RESPONSE_XML)).getSearchResult();
+        return ((SearchResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_SEARCH_RESPONSE_XML)).getSearchResult();
 
     }
 
@@ -42,8 +42,9 @@ public class PalmaSearchService_267 extends AbstractPalmaService implements Cata
     protected void verifySearchRequest(final SearchRequest searchRequest) {
         Assert.assertNotNull(searchRequest);
         Assert.assertEquals(searchRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
-        Assert.assertEquals(searchRequest.getQuery(), "contentProviderRecordId_index: \""+DevelopmentData.ELIB_RECORD_0_ID+"\" AND contentProviderName_index: \""+
-                ContentProviderName.ELIB+"\"");
+        Assert.assertEquals(searchRequest.getQuery(),
+                "contentProviderRecordId_index: \"" + DevelopmentData.ELIB_RECORD_0_ID + "\" AND contentProviderName_index: \"" +
+                        ContentProvider.CONTENT_PROVIDER_ELIB + "\"");
         Assert.assertEquals(searchRequest.getAvailability().getEnable(), "no");
         Assert.assertEquals(searchRequest.getFacets().getEnable(), "no");
         Assert.assertEquals(searchRequest.getPage().intValue(), 1);

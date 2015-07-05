@@ -79,7 +79,7 @@ public abstract class ContentProviderExceptionFactoryFixture<E> {
     }
 
     private void thenValidContentProviderName(final ErrorCauseArgument errorCauseArgument) {
-        assertThat(errorCauseArgument.getValue(), is(getContentProviderName().name()));
+        assertThat(errorCauseArgument.getValue(), is(getContentProviderName()));
     }
 
     protected void thenInternalServerErrorExceptionHasMessage(final String message) {
@@ -89,7 +89,7 @@ public abstract class ContentProviderExceptionFactoryFixture<E> {
 
     protected abstract void whenCreateExecuted();
 
-    protected abstract ContentProviderName getContentProviderName();
+    protected abstract String getContentProviderName();
 
     private void givenContentProviderConsumer() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);

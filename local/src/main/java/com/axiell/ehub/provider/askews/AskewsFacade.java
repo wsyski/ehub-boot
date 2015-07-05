@@ -20,7 +20,7 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
 @Component
@@ -88,7 +88,7 @@ public class AskewsFacade implements IAskewsFacade {
 	final JAXBElement<String> errorDesc = userLookupResult.getErrorDesc();
 	final String errorMessage = errorDesc.getValue();
 	final Integer errorCode = userLookupResult.getErrorCode();
-	ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ASKEWS);
+	ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ASKEWS);
 	ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(errorCode));
 	throw new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }

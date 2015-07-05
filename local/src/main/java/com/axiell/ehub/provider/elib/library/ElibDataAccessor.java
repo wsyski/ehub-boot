@@ -16,7 +16,7 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.record.format.*;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -101,7 +101,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private InternalServerErrorException makeInternalServerErrorException(String message, String statusCode) {
-        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ELIB);
         final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, statusCode);
         return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
@@ -247,7 +247,7 @@ public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
 
     private NotFoundException makeNotFoundException(final String contentProviderLoanId) {
         final ErrorCauseArgument argContentProviederLoanId = new ErrorCauseArgument(Type.CONTENT_PROVIDER_LOAN_ID, contentProviderLoanId);
-        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIB);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ELIB);
         return new NotFoundException(ErrorCause.CONTENT_PROVIDER_LOAN_NOT_FOUND, argContentProviederLoanId, argContentProviderName);
     }
 

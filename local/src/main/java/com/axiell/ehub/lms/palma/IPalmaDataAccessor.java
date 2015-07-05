@@ -8,7 +8,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.security.AuthInfo;
 
 import java.util.Date;

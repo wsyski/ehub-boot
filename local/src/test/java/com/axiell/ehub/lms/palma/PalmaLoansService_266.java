@@ -4,7 +4,8 @@ import com.axiell.arena.services.palma.loans.*;
 import com.axiell.arena.services.palma.patron.checkoutrequest.CheckOutRequest;
 import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
 import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.provider.ContentProviderName;
+
+import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 
 import javax.jws.WebService;
@@ -49,7 +50,7 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
         Assert.assertEquals(checkOutTestRequest.getUser(), DevelopmentData.ELIB_LIBRARY_CARD);
         Assert.assertEquals(checkOutTestRequest.getPassword(), DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         Assert.assertEquals(checkOutTestRequest.getContentProviderFormatId(), DevelopmentData.ELIB_FORMAT_0_ID);
-        Assert.assertEquals(checkOutTestRequest.getContentProviderName(), ContentProviderName.ELIB.name());
+        Assert.assertEquals(checkOutTestRequest.getContentProviderName(), ContentProvider.CONTENT_PROVIDER_ELIB);
     }
 
     protected void verifyCheckOut(final CheckOut checkOut) {
@@ -60,6 +61,6 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
         Assert.assertEquals(checkOutRequest.getUser(), DevelopmentData.ELIB_LIBRARY_CARD);
         Assert.assertEquals(checkOutRequest.getPassword(), DevelopmentData.ELIB_LIBRARY_CARD_PIN);
         Assert.assertEquals(checkOutRequest.getContentProviderFormatId(), DevelopmentData.ELIB_FORMAT_0_ID);
-        Assert.assertEquals(checkOutRequest.getContentProviderName(), ContentProviderName.ELIB.name());
+        Assert.assertEquals(checkOutRequest.getContentProviderName(), ContentProvider.CONTENT_PROVIDER_ELIB);
     }
 }

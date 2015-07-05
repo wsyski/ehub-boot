@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.v1.loan;
 
-import com.axiell.ehub.provider.ContentProviderName;
+
 
 import javax.xml.bind.annotation.*;
 
@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "pendingLoan")
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso(ContentProviderName.class)
 public class PendingLoan_v1 {
     private String lmsRecordId;
     private String contentProviderName;

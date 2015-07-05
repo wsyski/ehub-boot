@@ -7,7 +7,8 @@ import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
-import com.axiell.ehub.provider.ContentProviderName;
+
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
@@ -265,7 +266,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     private void givenExpectedInternalServerException() {
         throwable.expect(InternalServerErrorException.class);
-        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProviderName.OVERDRIVE,
+        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
                 ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
     }
 
@@ -377,7 +378,7 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
     }
 
     private void givenContentProviderName() {
-        given(contentProvider.getName()).willReturn(ContentProviderName.OVERDRIVE);
+        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_OVERDRIVE);
     }
 }
 

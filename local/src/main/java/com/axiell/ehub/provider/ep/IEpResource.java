@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.epi;
+package com.axiell.ehub.provider.ep;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -6,7 +6,7 @@ import javax.ws.rs.core.MediaType;
 @Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface IEpiResource {
+public interface IEpResource {
 
     @POST
     @Path("checkouts")

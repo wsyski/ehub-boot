@@ -25,12 +25,9 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
         return contentProviderRepository.findAllOrderedByName();
     }
 
-    /**
-     * @see com.axiell.ehub.provider.IContentProviderAdminController#getContentProvider(com.axiell.ehub.provider.ContentProviderName)
-     */
     @Override
     @Transactional(readOnly = true)
-    public ContentProvider getContentProvider(ContentProviderName contentProviderName) {
+    public ContentProvider getContentProvider(final String contentProviderName) {
         ContentProvider contentProvider = contentProviderRepository.findByName(contentProviderName);
         return initialize(contentProvider);
     }

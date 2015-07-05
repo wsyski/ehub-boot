@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.epi;
+package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -20,11 +20,11 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class EpiDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EpiDataAccessor.class);
+public class EpDataAccessor extends AbstractContentProviderDataAccessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EpDataAccessor.class);
 
     @Autowired
-    private IEpiFacade epiFacade;
+    private IEpFacade epiFacade;
     @Autowired
     private IFormatFactory formatFactory;
 

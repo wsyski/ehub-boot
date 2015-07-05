@@ -1,7 +1,9 @@
 package com.axiell.ehub.error;
 
-import com.axiell.ehub.*;
-import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.InternalServerErrorException;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -11,9 +13,9 @@ public class ContentProviderErrorExceptionMatcher extends TypeSafeMatcher<Throwa
 
     private final Class<? extends Throwable> clazz;
     private final String status;
-    private final ContentProviderName contentProviderName;
+    private final String contentProviderName;
 
-    public ContentProviderErrorExceptionMatcher(final Class<? extends Throwable> type, final ContentProviderName contentProviderName, final String status) {
+    public ContentProviderErrorExceptionMatcher(final Class<? extends Throwable> type, final String contentProviderName, final String status) {
         this.clazz = type;
         this.contentProviderName = contentProviderName;
         this.status = status;
@@ -24,23 +26,23 @@ public class ContentProviderErrorExceptionMatcher extends TypeSafeMatcher<Throwa
         if (!throwable.getClass().isAssignableFrom(clazz)) {
             return false;
         }
-        EhubError ehubError=InternalServerErrorException.class.cast(throwable).getEhubError();
-        ErrorCause errorCause=ehubError.getCause();
+        EhubError ehubError = InternalServerErrorException.class.cast(throwable).getEhubError();
+        ErrorCause errorCause = ehubError.getCause();
         if (!errorCause.equals(ErrorCause.CONTENT_PROVIDER_ERROR)) {
             return false;
         }
-        List<ErrorCauseArgument> arguments=ehubError.getArguments();
-        if (arguments.size()<2) {
+        List<ErrorCauseArgument> arguments = ehubError.getArguments();
+        if (arguments.size() < 2) {
             return false;
         }
-        ErrorCauseArgument errorCauseArgument=arguments.get(0);
+        ErrorCauseArgument errorCauseArgument = arguments.get(0);
         if (!errorCauseArgument.getType().equals(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME)) {
             return false;
         }
-        if (!errorCauseArgument.getValue().equals(contentProviderName.name())) {
+        if (!errorCauseArgument.getValue().equals(contentProviderName)) {
             return false;
         }
-        errorCauseArgument=arguments.get(1);
+        errorCauseArgument = arguments.get(1);
         if (!errorCauseArgument.getType().equals(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS)) {
             return false;
         }

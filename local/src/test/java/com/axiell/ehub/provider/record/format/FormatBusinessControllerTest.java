@@ -8,6 +8,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.security.AuthInfo;
 
@@ -57,7 +58,7 @@ public class FormatBusinessControllerTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(authInfo, ContentProviderName.ELIB.toString(), "contentProviderRecordId", "language");
+        underTest.getFormats(authInfo, ContentProvider.CONTENT_PROVIDER_ELIB, "contentProviderRecordId", "language");
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {

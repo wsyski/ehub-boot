@@ -19,7 +19,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerAdminController;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.ContentDisposition;
@@ -151,7 +151,7 @@ public class DevelopmentData {
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, ELIB_PRODUCT_URL);
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL, ELIB_CREATE_LOAN_URL);
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL, ELIB_ORDER_LIST_URL);
-        ContentProvider elibProvider = new ContentProvider(ContentProviderName.ELIB, contentProviderProperties);
+        ContentProvider elibProvider = new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, contentProviderProperties);
         elibProvider = contentProviderAdminController.save(elibProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();

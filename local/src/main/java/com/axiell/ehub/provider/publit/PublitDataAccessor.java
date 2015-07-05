@@ -62,7 +62,7 @@ public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private InternalServerErrorException makeInternalServerErrorException(final String errorMessage, String status) {
-        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.PUBLIT);
+        final ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_PUBLIT);
         final ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, status);
         return new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }

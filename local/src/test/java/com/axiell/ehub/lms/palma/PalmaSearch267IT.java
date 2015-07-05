@@ -2,7 +2,8 @@ package com.axiell.ehub.lms.palma;
 
 
 import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.provider.ContentProviderName;
+
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Test;
 
 import javax.xml.ws.Endpoint;
@@ -30,7 +31,7 @@ public class PalmaSearch267IT extends AbstractPalmaIT {
     }
 
     private String whenGetMediaClassExecuted() {
-        return palmaDataAccessor.getMediaClass(ehubConsumer, ContentProviderName.ELIB.name(), DevelopmentData.ELIB_RECORD_0_ID);
+        return palmaDataAccessor.getMediaClass(ehubConsumer, ContentProvider.CONTENT_PROVIDER_ELIB, DevelopmentData.ELIB_RECORD_0_ID);
     }
 
 

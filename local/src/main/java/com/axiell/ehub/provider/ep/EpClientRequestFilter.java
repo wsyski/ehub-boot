@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.epi;
+package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
@@ -8,12 +8,12 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
-public class EpiClientRequestFilter implements ClientRequestFilter {
+public class EpClientRequestFilter implements ClientRequestFilter {
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
 
-    public EpiClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public EpClientRequestFilter(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         this.contentProviderConsumer = contentProviderConsumer;
         this.patron = patron;
     }

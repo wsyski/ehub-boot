@@ -2,7 +2,7 @@ package com.axiell.ehub.v1.loan;
 
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.v1.XjcSupport;
@@ -45,7 +45,7 @@ public class ReadyLoanV1Test {
 
     private ContentProvider initContentProvider() {
         Map<ContentProviderPropertyKey, String> properties = Collections.singletonMap(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, "productUrl");
-        return new ContentProvider(ContentProviderName.ELIB, properties);
+        return new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, properties);
     }
 
     @Test

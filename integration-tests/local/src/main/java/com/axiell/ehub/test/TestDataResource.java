@@ -10,13 +10,12 @@ import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.IEhubLoanRepository;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.alias.Alias;
+import com.axiell.ehub.provider.alias.AliasMapping;
 import com.axiell.ehub.provider.alias.IAliasAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
-import com.axiell.ehub.provider.alias.AliasMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -27,14 +26,16 @@ import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
 import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
-import static com.axiell.ehub.provider.ContentProviderName.ELIB;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 
@@ -57,14 +58,15 @@ public class TestDataResource implements ITestDataResource {
 
     @Override
     public TestData init() {
-        saveAlias("ELIB", ContentProviderName.ELIB);
-        saveAlias("Distributör: Elib", ContentProviderName.ELIB);
+        saveAlias("ELIB", ContentProvider.CONTENT_PROVIDER_ELIB);
+        saveAlias("Distributör: Elib", ContentProvider.CONTENT_PROVIDER_ELIB);
         initLanguage();
         final ContentProvider elibProvider = initElibProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initElibConsumer(ehubConsumer, elibProvider);
         final Long ehubLoanId = initELibEhubLoan(ehubConsumer, elibProvider);
-        return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID, TestDataConstants.ELIB_LIBRARY_CARD, TestDataConstants.ELIB_LIBRARY_CARD_PIN);
+        return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
+                TestDataConstants.ELIB_LIBRARY_CARD, TestDataConstants.ELIB_LIBRARY_CARD_PIN);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class TestDataResource implements ITestDataResource {
         }
     }
 
-    private void saveAlias(final String aliasValue, final ContentProviderName name) {
+    private void saveAlias(final String aliasValue, final String name) {
         final Alias alias = Alias.newInstance(aliasValue);
         final AliasMapping aliasMapping = new AliasMapping();
         aliasMapping.setAlias(alias);
@@ -110,13 +112,19 @@ public class TestDataResource implements ITestDataResource {
         contentProviderProperties.put(PRODUCT_URL, TestDataConstants.ELIB_PRODUCT_URL);
         contentProviderProperties.put(CREATE_LOAN_URL, TestDataConstants.ELIB_CREATE_LOAN_URL);
         contentProviderProperties.put(ORDER_LIST_URL, TestDataConstants.ELIB_ORDER_LIST_URL);
-        ContentProvider elibProvider = new ContentProvider(ELIB, contentProviderProperties);
+        ContentProvider elibProvider = new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, contentProviderProperties);
         elibProvider = contentProviderAdminController.save(elibProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration1 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_1_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration2 = new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_2_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH, TestDataConstants.ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration0 =
+                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.ELIB_PLAYER_WIDTH,
+                        TestDataConstants.ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration1 =
+                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_1_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH,
+                        TestDataConstants.ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration2 =
+                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_2_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH,
+                        TestDataConstants.ELIB_PLAYER_HEIGHT);
 
         formatDecorations.put(TestDataConstants.ELIB_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TestDataConstants.ELIB_FORMAT_1_ID, formatDecoration1);
@@ -157,8 +165,10 @@ public class TestDataResource implements ITestDataResource {
 
     private Long initELibEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
         FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(TestDataConstants.ELIB_FORMAT_1_ID);
-        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(elibProvider, new Date(), TestDataConstants.ELIB_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(
-                TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
+        ContentProviderLoanMetadata contentProviderLoanMetadata =
+                new ContentProviderLoanMetadata.Builder(elibProvider, new Date(), TestDataConstants.ELIB_RECORD_1_ID, elibFormatDecoration1)
+                        .contentProviderLoanId(
+                                TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID_1);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);

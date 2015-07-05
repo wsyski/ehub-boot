@@ -1,9 +1,9 @@
-package com.axiell.ehub.provider.epi;
+package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 
-interface IEpiFacade {
+interface IEpFacade {
 
     FormatsDTO getFormats(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
 

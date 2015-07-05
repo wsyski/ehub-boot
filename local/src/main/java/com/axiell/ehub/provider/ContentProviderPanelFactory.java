@@ -13,7 +13,7 @@ final class ContentProviderPanelFactory implements IBreadCrumbPanelFactory {
 
     @Override
     public BreadCrumbPanel create(final String id, final IBreadCrumbModel model) {
-        final ContentProviderName contentProviderName = contentProvider.getName();
+        final String contentProviderName = contentProvider.getName();
         return new ContentProviderPanel(id, model, contentProviderName);
     }
 }

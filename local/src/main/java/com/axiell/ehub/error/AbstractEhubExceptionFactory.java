@@ -5,7 +5,7 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProviderName;
+
 
 import static com.axiell.ehub.ErrorCause.BAD_REQUEST;
 import static com.axiell.ehub.ErrorCause.CONTENT_PROVIDER_ERROR;
@@ -39,7 +39,7 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
     }
 
     private ErrorCauseArgument makeContentProviderNameArg(final ContentProviderConsumer contentProviderConsumer) {
-        final ContentProviderName contentProviderName = contentProviderConsumer.getContentProvider().getName();
+        final String contentProviderName = contentProviderConsumer.getContentProvider().getName();
         return new ErrorCauseArgument(CONTENT_PROVIDER_NAME, contentProviderName);
     }
 

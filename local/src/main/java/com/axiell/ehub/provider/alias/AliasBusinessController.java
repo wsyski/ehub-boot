@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.alias;
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ class AliasBusinessController implements IAliasBusinessController {
 
     @Override
     @Transactional(readOnly = true)
-    public ContentProviderName getName(final String alias) {
+    public String getName(final String alias) {
         validateAlias(alias);
         final AliasMapping aliasMapping = aliasMappingRepository.findByAlias(Alias.newInstance(alias));
         validateMapping(alias, aliasMapping);

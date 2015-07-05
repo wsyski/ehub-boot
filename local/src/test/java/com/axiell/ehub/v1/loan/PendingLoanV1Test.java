@@ -2,13 +2,14 @@ package com.axiell.ehub.v1.loan;
 
 import javax.xml.bind.JAXBException;
 
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.v1.XjcSupport;
 
 public class PendingLoanV1Test {
@@ -19,7 +20,7 @@ public class PendingLoanV1Test {
     
     @Before
     public void setUp() {
-        expPendingLoan = new PendingLoan_v1("lmsRecordId", ContentProviderName.ELIB.toString(), "9100128260", "58");
+        expPendingLoan = new PendingLoan_v1("lmsRecordId", ContentProvider.CONTENT_PROVIDER_ELIB, "9100128260", "58");
     }    
 
     @Test

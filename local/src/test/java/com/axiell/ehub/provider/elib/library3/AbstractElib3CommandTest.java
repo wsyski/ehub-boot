@@ -1,10 +1,10 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.ErrorCauseArgumentValue;
-import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
@@ -19,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Locale;
 
-import static com.axiell.ehub.provider.ContentProviderName.ELIB3;
 import static junit.framework.Assert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -61,7 +60,7 @@ public abstract class AbstractElib3CommandTest {
 
     @Before
     public void setUpContentProviderConsumer() {
-       givenContentProviderConsumer();
+        givenContentProviderConsumer();
     }
 
     protected void givenBasicCommandData() {
@@ -71,7 +70,7 @@ public abstract class AbstractElib3CommandTest {
 
     private void givenContentProviderConsumer() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
-        given(contentProvider.getName()).willReturn(ELIB3);
+        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB3);
         given(ehubConsumer.getDefaultLanguage()).willReturn(new Language(LANGUAGE));
     }
 

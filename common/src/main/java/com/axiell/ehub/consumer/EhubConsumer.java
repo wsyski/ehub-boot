@@ -3,25 +3,17 @@
  */
 package com.axiell.ehub.consumer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.*;
-
-import com.axiell.ehub.language.Language;
-import org.hibernate.annotations.ForeignKey;
-
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+import org.hibernate.annotations.ForeignKey;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Represents a consumer of the eHUB. An {@link EhubConsumer} can have many {@link ContentProviderConsumer}s, i.e.
@@ -133,24 +125,24 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      */
     @Transient
     public List<ContentProviderConsumer> getContentProviderConsumersAsList() {
-	if (contentProviderConsumers == null)
-	    return new ArrayList<ContentProviderConsumer>();
-	
-	final List<ContentProviderConsumer> contentProviderConsumerList = new ArrayList<ContentProviderConsumer>(contentProviderConsumers);
-	final ContentProviderConsumerComparator comparator = new ContentProviderConsumerComparator();
-	Collections.sort(contentProviderConsumerList, comparator);	
-	return contentProviderConsumerList;
+        if (contentProviderConsumers == null)
+            return new ArrayList<>();
+
+        final List<ContentProviderConsumer> contentProviderConsumerList = new ArrayList<>(contentProviderConsumers);
+        final ContentProviderConsumerComparator comparator = new ContentProviderConsumerComparator();
+        Collections.sort(contentProviderConsumerList, comparator);
+        return contentProviderConsumerList;
     }
 
     /**
-     * Gets the {@link ContentProviderConsumer} for a given {@link ContentProviderName}.
+     * Gets the {@link ContentProviderConsumer} for a given {@link String} content provider name.
      *
      * @param contentProviderName getContent provider name.
      * @return getContent consumer
      * @throws NotFoundException if no {@link ContentProviderConsumer} could be found with the given provider name
      */
     @Transient
-    public ContentProviderConsumer getContentProviderConsumer(final ContentProviderName contentProviderName) {
+    public ContentProviderConsumer getContentProviderConsumer(final String contentProviderName) {
         for (ContentProviderConsumer contentProviderConsumer : contentProviderConsumers) {
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
             if (contentProvider.getName().equals(contentProviderName)) {

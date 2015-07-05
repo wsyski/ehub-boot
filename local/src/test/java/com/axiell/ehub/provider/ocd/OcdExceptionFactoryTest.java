@@ -1,7 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +48,7 @@ public class OcdExceptionFactoryTest extends ContentProviderExceptionFactoryFixt
     }
 
     @Override
-    protected ContentProviderName getContentProviderName() {
-        return ContentProviderName.OCD;
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_OCD;
     }
 }

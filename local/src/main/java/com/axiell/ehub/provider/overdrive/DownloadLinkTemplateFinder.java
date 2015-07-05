@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.NotFoundExceptionFactory;
-import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 
@@ -37,6 +37,6 @@ class DownloadLinkTemplateFinder {
             if (downloadLinkTemplate != null)
                 return downloadLinkTemplate;
         }
-        throw NotFoundExceptionFactory.create(ContentProviderName.OVERDRIVE, providedFormat.getReserveId(), providedFormat.getFormatType());
+        throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_OVERDRIVE, providedFormat.getReserveId(), providedFormat.getFormatType());
     }
 }

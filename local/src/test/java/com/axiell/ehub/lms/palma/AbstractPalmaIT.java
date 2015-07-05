@@ -5,7 +5,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

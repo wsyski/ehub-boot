@@ -1,11 +1,7 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.consumer;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.annotations.ForeignKey;
 
@@ -13,7 +9,6 @@ import javax.persistence.*;
 import java.util.*;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;
-import static com.axiell.ehub.provider.ContentProviderName.*;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -25,19 +20,21 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "CONTENT_PROVIDER_CONSUMER")
 @Access(AccessType.PROPERTY)
 public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<Long> {
-    private static final Map<ContentProviderName, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    private static final Map<String, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(SITE_ID, SECRET_KEY);
 
     static {
-        VALID_PROPERTY_KEYS.put(ELIB, newHashSet(ELIB_RETAILER_ID, ELIB_RETAILER_KEY));
-        VALID_PROPERTY_KEYS.put(ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID));
-        VALID_PROPERTY_KEYS.put(PUBLIT, newHashSet(PUBLIT_USERNAME, PUBLIT_PASSWORD));
-        VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE));
-        VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
-                OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME));
-        VALID_PROPERTY_KEYS.put(ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY));
-        VALID_PROPERTY_KEYS.put(F1, newHashSet(F1_USERNAME, F1_PASSWORD, F1_REGION_ID));
-        VALID_PROPERTY_KEYS.put(OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN));
-        VALID_PROPERTY_KEYS.put(BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_ELIB, newHashSet(ELIB_RETAILER_ID, ELIB_RETAILER_KEY));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_PUBLIT, newHashSet(PUBLIT_USERNAME, PUBLIT_PASSWORD));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
+                newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
+                        OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_F1, newHashSet(F1_USERNAME, F1_PASSWORD, F1_REGION_ID));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN));
+        VALID_PROPERTY_KEYS.put(ContentProvider.CONTENT_PROVIDER_BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY));
     }
 
     private EhubConsumer ehubConsumer;
@@ -138,8 +135,8 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     @Transient
     public List<ContentProviderConsumerPropertyKey> getValidPropertyKeys() {
         Validate.notNull(contentProvider, "Content Provider can't be null");
-        Set<ContentProviderConsumerPropertyKey> keySet = VALID_PROPERTY_KEYS.get(contentProvider.getName());
-        return keySet == null ? new ArrayList<ContentProviderConsumerPropertyKey>() : new ArrayList<>(keySet);
+        Set<ContentProviderConsumerPropertyKey> keys = VALID_PROPERTY_KEYS.get(contentProvider.getName());
+        return new ArrayList<>(keys == null ? EP_VALID_PROPERTY_KEYS : keys);
     }
 
     /**
@@ -160,13 +157,12 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
         return getProperties().get(key);
     }
 
-    /**
-     * Enumeration for getContent provider consumer property keys.
-     */
-    public static enum ContentProviderConsumerPropertyKey {
-        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE,
-        OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
-        F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY, EPI_SITE_ID,
-        EPI_SECRET_KEY
+    public enum ContentProviderConsumerPropertyKey {
+        ELIB_RETAILER_ID, ELIB_RETAILER_KEY, ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID,
+        ASKEWS_TOKEN_KEY, ASKEWS_BARCODE,
+        OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID,
+        OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
+        F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY, SITE_ID,
+        SECRET_KEY
     }
 }

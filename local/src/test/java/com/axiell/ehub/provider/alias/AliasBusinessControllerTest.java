@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.provider.ContentProviderName;
+import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,14 +19,14 @@ import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AliasBusinessControllerTest {
-    private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.ELIB;
+    private static final String CONTENT_PROVIDER_NAME = ContentProvider.CONTENT_PROVIDER_ELIB;
     private AliasBusinessController underTest;
     @Mock
     private IAliasMappingRepository aliasMappingRepository;
     @Mock
     private AliasMapping aliasMapping;
     private String aliasValue;
-    private ContentProviderName actualContentProviderName;
+    private String actualContentProviderName;
 
     @Before
     public void setUpUnderTest() {
@@ -76,7 +76,7 @@ public class AliasBusinessControllerTest {
     }
 
     private void givenKnownAlias() {
-        aliasValue = CONTENT_PROVIDER_NAME.name();
+        aliasValue = CONTENT_PROVIDER_NAME;
     }
 
     private void givenNoAlias() {

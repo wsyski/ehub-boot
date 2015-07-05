@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.epi;
+package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -8,12 +8,12 @@ import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EpiExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
+public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EpiExceptionFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EpExceptionFactory.class);
 
-    public EpiExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
-                               final IEhubExceptionFactory ehubExceptionFactory) {
+    public EpExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
+                              final IEhubExceptionFactory ehubExceptionFactory) {
         super(contentProviderConsumer, language, ehubExceptionFactory, ErrorDTO.class);
     }
 

@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
-import com.axiell.ehub.provider.ContentProviderName;
 
 import javax.persistence.*;
 
@@ -10,7 +9,7 @@ import javax.persistence.*;
 @Access(AccessType.PROPERTY)
 public class AliasMapping extends AbstractTimestampAwarePersistable<Long> {
     private Alias alias;
-    private ContentProviderName name;
+    private String name;
 
     public AliasMapping() {
     }
@@ -24,13 +23,12 @@ public class AliasMapping extends AbstractTimestampAwarePersistable<Long> {
         this.alias = alias;
     }
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "NAME", nullable = false)
-    public ContentProviderName getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(ContentProviderName name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

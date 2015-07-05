@@ -13,7 +13,7 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
 import com.axiell.ehub.provider.record.format.*;
@@ -75,7 +75,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private InternalServerErrorException makeInternalServerErrorException(String message, Status status) {
-        final ErrorCauseArgument argument1 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProviderName.ELIBU);
+        final ErrorCauseArgument argument1 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ELIBU);
         final ErrorCauseArgument argument2 = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, status.getCode());
         return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, argument1, argument2);
     }
@@ -156,6 +156,6 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
             }
         }
 
-        throw NotFoundExceptionFactory.create(ContentProviderName.ELIBU, recordId, formatId);
+        throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
     }
 }

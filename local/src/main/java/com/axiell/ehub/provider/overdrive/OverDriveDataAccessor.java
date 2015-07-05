@@ -9,7 +9,6 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
@@ -93,7 +92,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         }
         final Date expirationDate = checkout.getExpirationDate();
         if (downloadLinkTemplate == null) {
-            throw NotFoundExceptionFactory.create(ContentProviderName.OVERDRIVE, productId, formatType);
+            throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_OVERDRIVE, productId, formatType);
         }
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();

@@ -38,7 +38,7 @@ public class ContentProviderDataAccessorFactoryTest {
     @Mock
     private OcdDataAccessor ocdDataAccessor;
 
-    private ContentProviderName contentProviderName;
+    private String contentProviderName;
     private IContentProviderDataAccessor actualContentProviderDataAccessor;
 
     @Before
@@ -62,7 +62,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenElibAsContentProviderName() {
-        contentProviderName = ContentProviderName.ELIB;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIB;
     }
 
     private void whenGetContentProviderDataAccessor() {
@@ -81,7 +81,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenElibUAsContentProviderName() {
-        contentProviderName = ContentProviderName.ELIBU;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIBU;
     }
 
     private void thenElibUDataAccessorIsReturned() {
@@ -96,7 +96,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenPublitAsContentProviderName() {
-        contentProviderName = ContentProviderName.PUBLIT;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_PUBLIT;
     }
 
     private void thenPublitDataAccessorIsReturned() {
@@ -111,7 +111,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenAskewsAsContentProviderName() {
-        contentProviderName = ContentProviderName.ASKEWS;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_ASKEWS;
     }
 
     private void thenAskewsDataAccessorIsReturned() {
@@ -126,7 +126,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenOverDriveAsContentProviderName() {
-        contentProviderName = ContentProviderName.OVERDRIVE;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_OVERDRIVE;
     }
 
     private void thenOverDriveDataAccessorIsReturned() {
@@ -141,7 +141,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenElib3AsContentProviderName() {
-        contentProviderName = ContentProviderName.ELIB3;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIB3;
     }
 
     private void thenElib3DataAccessorIsReturned() {
@@ -156,7 +156,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenF1AsContentProviderName() {
-        contentProviderName = ContentProviderName.F1;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_F1;
     }
 
     private void thenF1DataAccessorIsReturned() {
@@ -171,7 +171,7 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenOcdAsContentProviderName() {
-        contentProviderName = ContentProviderName.OCD;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_OCD;
     }
 
     private void thenOcdDataAccessorIsReturned() {

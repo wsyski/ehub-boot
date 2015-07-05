@@ -27,7 +27,7 @@ public interface IContentProviderRepository extends CrudRepository<ContentProvid
      * @param name the name of the {@link ContentProvider}
      * @return a {@link ContentProvider}
      */
-    ContentProvider findByName(ContentProviderName name);
+    ContentProvider findByName(String name);
 
     /**
      * Finds all available {@link ContentProvider}s in the eHUB. The returned list of {@link ContentProvider}s will be

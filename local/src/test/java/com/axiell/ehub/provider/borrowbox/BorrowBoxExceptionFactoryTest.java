@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.borrowbox;
 
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
-import com.axiell.ehub.provider.ContentProviderName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +50,7 @@ public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFacto
     }
 
     @Override
-    protected ContentProviderName getContentProviderName() {
-        return ContentProviderName.BORROWBOX;
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_BORROWBOX;
     }
 }

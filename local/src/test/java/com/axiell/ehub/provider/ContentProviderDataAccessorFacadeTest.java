@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
-    private static final String CONTENT_PROVIDER_ALIAS = ContentProviderName.ELIB.toString();
+    private static final String CONTENT_PROVIDER_ALIAS = ContentProvider.CONTENT_PROVIDER_ELIB.toString();
     //    public static final String LIBRARY_CARD = "libraryCard";
 //    public static final String PIN = "pin";
     public static final String LANGUAGE = "language";
@@ -56,7 +56,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpEhubConsumer() {
-        given(ehubConsumer.getContentProviderConsumer(any(ContentProviderName.class))).willReturn(contentProviderConsumer);
+        given(ehubConsumer.getContentProviderConsumer(any(String.class))).willReturn(contentProviderConsumer);
     }
 
     @Before
@@ -68,12 +68,12 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContentProviderBusinessController() {
-        given(aliasBusinessController.getName(anyString())).willReturn(ContentProviderName.ELIB);
+        given(aliasBusinessController.getName(anyString())).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
     }
 
     @Before
     public void setUpContentProviderDataAccessor() {
-        given(contentProviderDataAccessorFactory.getInstance(any(ContentProviderName.class))).willReturn(contentProviderDataAccessor);
+        given(contentProviderDataAccessorFactory.getInstance(any(String.class))).willReturn(contentProviderDataAccessor);
     }
 
     @Before
@@ -87,7 +87,7 @@ public class ContentProviderDataAccessorFacadeTest {
     public void setUpEhubLoan() {
         given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
-        given(contentProvider.getName()).willReturn(ContentProviderName.ELIB);
+        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
     }
 
     @Before
@@ -130,7 +130,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenLoanIsCreatedByContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
         inOrder.verify(contentProviderDataAccessor).createLoan(argThat(new CreateLoanCommandData()));
     }
 
@@ -140,7 +140,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenContentIsRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
         inOrder.verify(contentProviderDataAccessor).getContent(argThat(new GetContentCommandData()));
     }
 
@@ -150,7 +150,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProviderName.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
         inOrder.verify(contentProviderDataAccessor).getFormats(argThat(new GetFormatsCommandData()));
     }
 

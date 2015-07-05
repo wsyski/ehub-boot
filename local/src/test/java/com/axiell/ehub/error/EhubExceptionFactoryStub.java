@@ -2,7 +2,7 @@ package com.axiell.ehub.error;
 
 import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 

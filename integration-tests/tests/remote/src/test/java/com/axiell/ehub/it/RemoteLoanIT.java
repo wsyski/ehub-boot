@@ -5,7 +5,8 @@ import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.provider.ContentProviderName;
+
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     public void initFields() {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
-        fields.addValue("contentProviderAlias", ContentProviderName.ELIB.name());
+        fields.addValue("contentProviderAlias", ContentProvider.CONTENT_PROVIDER_ELIB);
         fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
         fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
     }

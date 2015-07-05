@@ -11,7 +11,6 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.util.HashCodeBuilderFactory;
 import com.eekboom.utils.Strings;
-import com.google.common.collect.Sets;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.annotations.ForeignKey;
@@ -21,7 +20,6 @@ import java.text.Collator;
 import java.util.*;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
-import static com.axiell.ehub.provider.ContentProviderName.*;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -32,21 +30,32 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "CONTENT_PROVIDER")
 @Access(AccessType.PROPERTY)
 public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
-    private static final Map<ContentProviderName, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    public static final String CONTENT_PROVIDER_ELIB = "ELIB";
+    public static final String CONTENT_PROVIDER_ELIB3 = "ELIB3";
+    public static final String CONTENT_PROVIDER_ELIBU = "ELIBU";
+    public static final String CONTENT_PROVIDER_PUBLIT = "PUBLIT";
+    public static final String CONTENT_PROVIDER_ASKEWS = "ASKEWS";
+    public static final String CONTENT_PROVIDER_OVERDRIVE = "OVERDRIVE";
+    public static final String CONTENT_PROVIDER_F1 = "F1";
+    public static final String CONTENT_PROVIDER_OCD = "OCD";
+    public static final String CONTENT_PROVIDER_BORROWBOX = "BORROWBOX";
+
+    private static final Map<String, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
 
     static {
-        VALID_PROPERTY_KEYS.put(ELIB, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL));
-        VALID_PROPERTY_KEYS.put(ELIB3, newHashSet(API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
-        VALID_PROPERTY_KEYS.put(PUBLIT, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS));
-        VALID_PROPERTY_KEYS.put(ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
-        VALID_PROPERTY_KEYS.put(OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(OCD, newHashSet(API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(BORROWBOX, newHashSet(API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIB, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_PUBLIT, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL));
+        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL));
     }
 
-    private ContentProviderName name;
+    private String name;
     private Map<ContentProviderPropertyKey, String> properties;
     private Map<String, FormatDecoration> formatDecorations;
 
@@ -62,7 +71,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * @param name       the name of the {@link ContentProvider}
      * @param properties the {@link ContentProvider} properties
      */
-    public ContentProvider(final ContentProviderName name, final Map<ContentProviderPropertyKey, String> properties) {
+    public ContentProvider(final String name, final Map<ContentProviderPropertyKey, String> properties) {
         this.name = name;
         this.properties = properties;
     }
@@ -73,8 +82,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * @return the name of the {@link ContentProvider}
      */
     @Column(name = "NAME", nullable = false, unique = true)
-    @Enumerated(EnumType.STRING)
-    public ContentProviderName getName() {
+    public String getName() {
         return name;
     }
 
@@ -83,7 +91,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param name the name of the {@link ContentProvider} to set
      */
-    protected void setName(final ContentProviderName name) {
+    protected void setName(final String name) {
         this.name = name;
     }
 
@@ -119,8 +127,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     @Transient
     public List<ContentProviderPropertyKey> getValidPropertyKeys() {
         Validate.notNull(name, "Content Provider name can not be null");
-        Set<ContentProviderPropertyKey> keySet = VALID_PROPERTY_KEYS.get(name);
-        return new ArrayList<>(keySet);
+        Set<ContentProviderPropertyKey> keys = VALID_PROPERTY_KEYS.get(name);
+        return new ArrayList<>(keys == null ? EP_VALID_PROPERTY_KEYS : keys);
     }
 
     /**
@@ -197,11 +205,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
         }
     }
 
-    /**
-     * @see org.springframework.data.jpa.domain.AbstractPersistable#equals(java.lang.Object)
-     */
     @Override
-    public final boolean equals(Object obj) {
+    public final boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
@@ -212,9 +217,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
         return new EqualsBuilder().append(name, rhs.getName()).isEquals();
     }
 
-    /**
-     * @see org.springframework.data.jpa.domain.AbstractPersistable#hashCode()
-     */
     @Override
     public final int hashCode() {
         return HashCodeBuilderFactory.create().append(name).toHashCode();

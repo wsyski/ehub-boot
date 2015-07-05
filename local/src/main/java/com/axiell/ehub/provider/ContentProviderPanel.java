@@ -16,7 +16,7 @@ import com.axiell.ehub.provider.record.format.FormatDecorationCreateLink;
 import com.axiell.ehub.provider.record.format.FormatDecorationsListView;
 
 final class ContentProviderPanel extends BreadCrumbPanel {
-    private final ContentProviderName contentProviderName;
+    private final String contentProviderName;
     private final ContentProviderEditForm contentProviderForm;
     private final FormatDecorationsListView formatDecorationsListView;
     
@@ -26,7 +26,7 @@ final class ContentProviderPanel extends BreadCrumbPanel {
     @SpringBean(name = "contentProviderAdminController") 
     private IContentProviderAdminController contentProviderAdminController;
     
-    ContentProviderPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final ContentProviderName contentProviderName) {
+    ContentProviderPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final String contentProviderName) {
         super(panelId, breadCrumbModel);
         final ContentProviderMediator contentProviderMediator = new ContentProviderMediator();
         contentProviderMediator.registerContentProviderPanel(this);

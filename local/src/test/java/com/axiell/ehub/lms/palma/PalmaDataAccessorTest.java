@@ -16,7 +16,8 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProviderName;
+
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -290,6 +291,6 @@ public class PalmaDataAccessorTest {
     }
 
     private void whenGetMediaClass() {
-        mediaClass = underTest.getMediaClass(ehubConsumer, ContentProviderName.OCD.name(), PROVIDER_RECORD_ID);
+        mediaClass = underTest.getMediaClass(ehubConsumer, ContentProvider.CONTENT_PROVIDER_OCD, PROVIDER_RECORD_ID);
     }
 }

@@ -25,7 +25,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
 
     @Override
     public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderAlias, Patron patron, String contentProviderRecordId, String language) {
-        final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
+        final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
@@ -36,7 +36,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     @Override
     public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language) {
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
-        final ContentProviderName name = aliasBusinessController.getName(contentProviderAlias);
+        final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);
@@ -46,14 +46,14 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     @Override
     public ContentLink getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
-        final ContentProviderName name = getContentProviderName(metadata);
+        final String name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata);
         return dataAccessor.getContent(commandData);
     }
 
-    private ContentProviderName getContentProviderName(final ContentProviderLoanMetadata metadata) {
+    private String getContentProviderName(final ContentProviderLoanMetadata metadata) {
         final ContentProvider contentProvider = metadata.getContentProvider();
         return contentProvider.getName();
     }

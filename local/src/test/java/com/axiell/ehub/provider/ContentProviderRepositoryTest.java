@@ -50,8 +50,8 @@ public class ContentProviderRepositoryTest extends AbstractEhubRepositoryTest<De
     @Test
     @Rollback(true)
     public void testElibContentProvider() {
-        ContentProvider contentProvider = contentProviderAdminController.getContentProvider(ContentProviderName.ELIB);
-        Assert.assertEquals(ContentProviderName.ELIB, contentProvider.getName());
+        ContentProvider contentProvider = contentProviderAdminController.getContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB);
+        Assert.assertEquals(ContentProvider.CONTENT_PROVIDER_ELIB, contentProvider.getName());
         Assert.assertEquals(3, contentProvider.getProperties().size());
     }
 }

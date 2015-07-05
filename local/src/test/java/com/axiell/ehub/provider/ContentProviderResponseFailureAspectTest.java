@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"aspects-test.xml"})
 public class ContentProviderResponseFailureAspectTest {
-    private static final ContentProviderName CONTENT_PROVIDER_NAME = ContentProviderName.OCD;
+    private static final String CONTENT_PROVIDER_NAME = ContentProvider.CONTENT_PROVIDER_OCD;
 
     @Autowired
     private ExceptionContentProviderDataAccessorStub underTest;
@@ -46,7 +46,7 @@ public class ContentProviderResponseFailureAspectTest {
     }
 
     private ContentProviderConsumer makeContentProviderConsumer() {
-        final ContentProviderName name = CONTENT_PROVIDER_NAME;
+        final String name = CONTENT_PROVIDER_NAME;
         ContentProvider contentProvider = new ContentProvider();
         contentProvider.setName(name);
         final ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer();

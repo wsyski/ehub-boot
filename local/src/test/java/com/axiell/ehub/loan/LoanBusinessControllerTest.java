@@ -36,7 +36,7 @@ import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.security.AuthInfo;
@@ -110,7 +110,7 @@ public class LoanBusinessControllerTest {
     public void setUpContentProviderNameFromExistingLoan() {
         given(existingEhubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
-        given(contentProvider.getName()).willReturn(ContentProviderName.ELIB);
+        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
     }
 
     @Before

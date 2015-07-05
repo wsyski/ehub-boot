@@ -1,7 +1,8 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
-import com.axiell.ehub.provider.ContentProviderName;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +43,7 @@ public class Elib3ExceptionFactoryTest extends ContentProviderExceptionFactoryFi
     }
 
     @Override
-    protected ContentProviderName getContentProviderName()  {
-       return ContentProviderName.ELIB3;
+    protected String getContentProviderName()  {
+       return ContentProvider.CONTENT_PROVIDER_ELIB3;
     }
 }

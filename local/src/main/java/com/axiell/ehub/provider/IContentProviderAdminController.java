@@ -29,7 +29,7 @@ public interface IContentProviderAdminController {
      * @param contentProviderName the name of the {@link ContentProvider} to get
      * @return a {@link ContentProvider}
      */
-    ContentProvider getContentProvider(ContentProviderName contentProviderName);
+    ContentProvider getContentProvider(String contentProviderName);
 
     /**
      * Saves the provided {@link ContentProvider}.

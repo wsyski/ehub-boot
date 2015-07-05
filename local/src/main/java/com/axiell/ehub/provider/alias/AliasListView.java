@@ -23,7 +23,7 @@ public class AliasListView extends ListView<AliasMapping> {
     protected void populateItem(final ListItem<AliasMapping> item) {
         final AliasMapping aliasMapping = item.getModelObject();
         final Label aliasLabel = new Label("alias", aliasMapping.getAlias().getValue());
-        final Label contentProviderLabel = new Label("contentProvider", aliasMapping.getName().name());
+        final Label contentProviderLabel = new Label("contentProvider", aliasMapping.getName());
         final AliasDeleteLink deleteLink = new AliasDeleteLink("deleteLink", aliasMapping, mediator);
         item.add(deleteLink);
         item.add(aliasLabel);
