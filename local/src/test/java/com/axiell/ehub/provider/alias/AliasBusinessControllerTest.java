@@ -19,7 +19,7 @@ import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AliasBusinessControllerTest {
-    private static final String CONTENT_PROVIDER_NAME = ContentProvider.CONTENT_PROVIDER_ELIB;
+    private static final String CONTENT_PROVIDER_NAME = "TEST_EP";
     private AliasBusinessController underTest;
     @Mock
     private IAliasMappingRepository aliasMappingRepository;

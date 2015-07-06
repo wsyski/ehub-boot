@@ -38,7 +38,7 @@ public class LoanDevelopmentData extends DevelopmentData {
     @Override
     public void init() throws Exception {
         super.init();
-        initELibEhubLoan(getEhubConsumer(), getElibProvider());
+        initELibEhubLoan(getEhubConsumer(), getContentProvider());
     }
 
     /**
@@ -64,10 +64,10 @@ public class LoanDevelopmentData extends DevelopmentData {
      * @param elibProvider
      */
     private void initELibEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
-        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(DevelopmentData.ELIB_FORMAT_1_ID);
+        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(DevelopmentData.TEST_EP_FORMAT_1_ID);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(elibProvider, new Date(),
-                DevelopmentData.ELIB_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(DevelopmentData.CONTENT_PROVIDER_LOAN_ID).build();
-        LmsLoan lmsLoan = new LmsLoan(DevelopmentData.LMS_LOAN_ID_1);
+                DevelopmentData.TEST_EP_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(DevelopmentData.CONTENT_PROVIDER_LOAN_ID).build();
+        LmsLoan lmsLoan = new LmsLoan(DevelopmentData.LMS_LOAN_ID);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);
         elibehubLoanId = ehubLoan.getId();

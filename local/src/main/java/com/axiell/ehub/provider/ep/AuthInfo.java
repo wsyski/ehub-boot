@@ -29,8 +29,8 @@ public class AuthInfo {
         String contentProviderName = contentProvider.getName();
         EhubConsumer ehubConsumer = contentProviderConsumer.getEhubConsumer();
         long ehubConsumerId = ehubConsumer.getId();
-        String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.SITE_ID);
-        String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.SECRET_KEY);
+        String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID);
+        String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY);
         String patronId = patron.getId();
         Signature signature = new Signature(getSignatureItems(contentProviderName, siteId, ehubConsumerId, patronId, timestamp), secretKey);
         return String.format(AUTHORIZATION_HEADER_FORMAT, contentProviderName, siteId, ehubConsumerId, patronId, timestamp, signature.toString());

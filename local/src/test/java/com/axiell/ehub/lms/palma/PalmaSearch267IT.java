@@ -31,7 +31,7 @@ public class PalmaSearch267IT extends AbstractPalmaIT {
     }
 
     private String whenGetMediaClassExecuted() {
-        return palmaDataAccessor.getMediaClass(ehubConsumer, ContentProvider.CONTENT_PROVIDER_ELIB, DevelopmentData.ELIB_RECORD_0_ID);
+        return palmaDataAccessor.getMediaClass(ehubConsumer, DevelopmentData.CONTENT_PROVIDER_TEST_EP, DevelopmentData.TEST_EP_RECORD_0_ID);
     }
 
 

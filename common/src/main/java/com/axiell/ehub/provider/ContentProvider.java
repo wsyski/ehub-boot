@@ -30,10 +30,8 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "CONTENT_PROVIDER")
 @Access(AccessType.PROPERTY)
 public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
-    public static final String CONTENT_PROVIDER_ELIB = "ELIB";
     public static final String CONTENT_PROVIDER_ELIB3 = "ELIB3";
     public static final String CONTENT_PROVIDER_ELIBU = "ELIBU";
-    public static final String CONTENT_PROVIDER_PUBLIT = "PUBLIT";
     public static final String CONTENT_PROVIDER_ASKEWS = "ASKEWS";
     public static final String CONTENT_PROVIDER_OVERDRIVE = "OVERDRIVE";
     public static final String CONTENT_PROVIDER_F1 = "F1";
@@ -44,10 +42,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
 
     static {
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIB, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL));
         VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL));
         VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_PUBLIT, newHashSet(PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, LOAN_EXPIRATION_DAYS));
         VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
         VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
         VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
@@ -226,6 +222,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * Enumeration for getContent provider property keys.
      */
     public static enum ContentProviderPropertyKey {
-        PRODUCT_URL, CREATE_LOAN_URL, ORDER_LIST_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS, OAUTH_URL, API_BASE_URL, OAUTH_PATRON_URL, PATRON_API_BASE_URL
+        PRODUCT_URL, CONSUME_LICENSE_URL, LOAN_EXPIRATION_DAYS, OAUTH_URL, API_BASE_URL, OAUTH_PATRON_URL, PATRON_API_BASE_URL
     }
 }

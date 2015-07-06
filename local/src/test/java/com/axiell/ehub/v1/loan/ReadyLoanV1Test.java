@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class ReadyLoanV1Test {
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     private static final Logger LOGGER = LoggerFactory.getLogger(ReadyLoanV1Test.class);
     private String expXml;
     private ReadyLoan_v1 expReadyLoan;
@@ -45,7 +46,7 @@ public class ReadyLoanV1Test {
 
     private ContentProvider initContentProvider() {
         Map<ContentProviderPropertyKey, String> properties = Collections.singletonMap(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, "productUrl");
-        return new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, properties);
+        return new ContentProvider(CONTENT_PROVIDER_TEST_EP, properties);
     }
 
     @Test

@@ -16,7 +16,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"aspects-test.xml"})
 public class LegacyContentProviderResponseFailureAspectTest {
-    private static final String CONTENT_PROVIDER_NAME = ContentProvider.CONTENT_PROVIDER_PUBLIT;
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
     @Autowired
     private LegacyExceptionContentProviderDataAccessorStub underTest;
@@ -43,11 +43,11 @@ public class LegacyContentProviderResponseFailureAspectTest {
         EhubError ehubError = e.getEhubError();
         Assert.assertNotNull(ehubError);
         String actualMessage = ehubError.getMessage();
-        Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME.toString()));
+        Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_TEST_EP));
     }
 
     private ContentProviderConsumer makeContentProviderConsumer() {
-        final String name = CONTENT_PROVIDER_NAME;
+        final String name = CONTENT_PROVIDER_TEST_EP;
         ContentProvider contentProvider = new ContentProvider();
         contentProvider.setName(name);
         final ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer();

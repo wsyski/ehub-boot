@@ -47,10 +47,10 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
         Assert.assertNotNull(checkOutTestRequest);
         Assert.assertEquals(checkOutTestRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
         Assert.assertEquals(checkOutTestRequest.getRecordId(), DevelopmentData.LMS_RECORD_ID);
-        Assert.assertEquals(checkOutTestRequest.getUser(), DevelopmentData.ELIB_LIBRARY_CARD);
-        Assert.assertEquals(checkOutTestRequest.getPassword(), DevelopmentData.ELIB_LIBRARY_CARD_PIN);
-        Assert.assertEquals(checkOutTestRequest.getContentProviderFormatId(), DevelopmentData.ELIB_FORMAT_0_ID);
-        Assert.assertEquals(checkOutTestRequest.getContentProviderName(), ContentProvider.CONTENT_PROVIDER_ELIB);
+        Assert.assertEquals(checkOutTestRequest.getUser(), DevelopmentData.LIBRARY_CARD);
+        Assert.assertEquals(checkOutTestRequest.getPassword(), DevelopmentData.PIN);
+        Assert.assertEquals(checkOutTestRequest.getContentProviderFormatId(), DevelopmentData.TEST_EP_FORMAT_0_ID);
+        Assert.assertEquals(checkOutTestRequest.getContentProviderName(), DevelopmentData.CONTENT_PROVIDER_TEST_EP);
     }
 
     protected void verifyCheckOut(final CheckOut checkOut) {
@@ -58,9 +58,9 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
         Assert.assertNotNull(checkOutRequest);
         Assert.assertEquals(checkOutRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
         Assert.assertEquals(checkOutRequest.getRecordId(), DevelopmentData.LMS_RECORD_ID);
-        Assert.assertEquals(checkOutRequest.getUser(), DevelopmentData.ELIB_LIBRARY_CARD);
-        Assert.assertEquals(checkOutRequest.getPassword(), DevelopmentData.ELIB_LIBRARY_CARD_PIN);
-        Assert.assertEquals(checkOutRequest.getContentProviderFormatId(), DevelopmentData.ELIB_FORMAT_0_ID);
-        Assert.assertEquals(checkOutRequest.getContentProviderName(), ContentProvider.CONTENT_PROVIDER_ELIB);
+        Assert.assertEquals(checkOutRequest.getUser(), DevelopmentData.LIBRARY_CARD);
+        Assert.assertEquals(checkOutRequest.getPassword(), DevelopmentData.PIN);
+        Assert.assertEquals(checkOutRequest.getContentProviderFormatId(), DevelopmentData.TEST_EP_FORMAT_0_ID);
+        Assert.assertEquals(checkOutRequest.getContentProviderName(), DevelopmentData.CONTENT_PROVIDER_TEST_EP);
     }
 }

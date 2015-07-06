@@ -43,8 +43,8 @@ public class PalmaSearchService_267 extends AbstractPalmaService implements Cata
         Assert.assertNotNull(searchRequest);
         Assert.assertEquals(searchRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
         Assert.assertEquals(searchRequest.getQuery(),
-                "contentProviderRecordId_index: \"" + DevelopmentData.ELIB_RECORD_0_ID + "\" AND contentProviderName_index: \"" +
-                        ContentProvider.CONTENT_PROVIDER_ELIB + "\"");
+                "contentProviderRecordId_index: \"" + DevelopmentData.TEST_EP_RECORD_0_ID + "\" AND contentProviderName_index: \"" +
+                        DevelopmentData.CONTENT_PROVIDER_TEST_EP + "\"");
         Assert.assertEquals(searchRequest.getAvailability().getEnable(), "no");
         Assert.assertEquals(searchRequest.getFacets().getEnable(), "no");
         Assert.assertEquals(searchRequest.getPage().intValue(), 1);

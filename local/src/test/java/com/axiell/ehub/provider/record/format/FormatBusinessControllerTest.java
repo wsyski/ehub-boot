@@ -25,6 +25,7 @@ import com.axiell.ehub.security.AuthInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FormatBusinessControllerTest {
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     private IFormatBusinessController underTest;
     @Mock
     private IConsumerBusinessController consumerBusinessController;
@@ -58,7 +59,7 @@ public class FormatBusinessControllerTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(authInfo, ContentProvider.CONTENT_PROVIDER_ELIB, "contentProviderRecordId", "language");
+        underTest.getFormats(authInfo, CONTENT_PROVIDER_TEST_EP, "contentProviderRecordId", "language");
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {

@@ -16,6 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public abstract class AbstractPalmaLoansIT<T> extends AbstractPalmaIT {
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+
     private PendingLoan pendingLoan;
     private Patron patron;
     private CheckoutTestAnalysis preCheckoutAnalysis;
@@ -23,10 +25,10 @@ public abstract class AbstractPalmaLoansIT<T> extends AbstractPalmaIT {
 
     @Override
     void customSetUp() {
-        Fields fields = new Fields().addValue("lmsRecordId", DevelopmentData.LMS_RECORD_ID).addValue("contentProviderAlias", ContentProvider.CONTENT_PROVIDER_ELIB).addValue(
-                "contentProviderRecordId", DevelopmentData.ELIB_RECORD_0_ID).addValue("contentProviderFormatId", DevelopmentData.ELIB_FORMAT_0_ID);
+        Fields fields = new Fields().addValue("lmsRecordId", DevelopmentData.LMS_RECORD_ID).addValue("contentProviderAlias", CONTENT_PROVIDER_TEST_EP).addValue(
+                "contentProviderRecordId", DevelopmentData.TEST_EP_RECORD_0_ID).addValue("contentProviderFormatId", DevelopmentData.TEST_EP_FORMAT_0_ID);
         pendingLoan = new PendingLoan(fields);
-        patron = new Patron.Builder(DevelopmentData.ELIB_LIBRARY_CARD, DevelopmentData.ELIB_LIBRARY_CARD_PIN).build();
+        patron = new Patron.Builder(DevelopmentData.LIBRARY_CARD, DevelopmentData.PIN).build();
     }
 
     @Override
@@ -48,13 +50,13 @@ public abstract class AbstractPalmaLoansIT<T> extends AbstractPalmaIT {
 
     private void thenLmsLoanIsReturned() {
         assertNotNull(lmsLoan);
-        assertEquals(DevelopmentData.LMS_LOAN_ID_1, lmsLoan.getId());
+        assertEquals(DevelopmentData.LMS_LOAN_ID, lmsLoan.getId());
     }
 
     private void thenActiveLoanReturned() {
         assertNotNull(preCheckoutAnalysis);
         assertEquals(CheckoutTestAnalysis.Result.ACTIVE_LOAN, preCheckoutAnalysis.getResult());
-        assertEquals(DevelopmentData.LMS_LOAN_ID_1, preCheckoutAnalysis.getLmsLoanId());
+        assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
     private void whenCheckOutTestExecuted() {

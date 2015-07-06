@@ -14,13 +14,14 @@ import com.axiell.ehub.v1.XjcSupport;
 
 public class PendingLoanV1Test {
     private static final Logger LOGGER = LoggerFactory.getLogger(PendingLoanV1Test.class);
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     private String expXml;
     private PendingLoan_v1 expPendingLoan;
     private PendingLoan_v1 actPendingLoan;
     
     @Before
     public void setUp() {
-        expPendingLoan = new PendingLoan_v1("lmsRecordId", ContentProvider.CONTENT_PROVIDER_ELIB, "9100128260", "58");
+        expPendingLoan = new PendingLoan_v1("lmsRecordId", CONTENT_PROVIDER_TEST_EP, "9100128260", "58");
     }    
 
     @Test

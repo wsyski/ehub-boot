@@ -22,7 +22,8 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
-    private static final String CONTENT_PROVIDER_ALIAS = ContentProvider.CONTENT_PROVIDER_ELIB.toString();
+    public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+    private static final String CONTENT_PROVIDER_ALIAS = CONTENT_PROVIDER_TEST_EP;
     //    public static final String LIBRARY_CARD = "libraryCard";
 //    public static final String PIN = "pin";
     public static final String LANGUAGE = "language";
@@ -68,7 +69,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContentProviderBusinessController() {
-        given(aliasBusinessController.getName(anyString())).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
+        given(aliasBusinessController.getName(anyString())).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
     @Before
@@ -87,7 +88,7 @@ public class ContentProviderDataAccessorFacadeTest {
     public void setUpEhubLoan() {
         given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
-        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
+        given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
     @Before

@@ -43,6 +43,8 @@ import com.axiell.ehub.security.AuthInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanBusinessControllerTest {
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+
     private static final Long READY_LOAN_ID = 0L;
     private static final String LANGUAGE = "en";
     public static final String LMS_LOAN_ID = "lmsLoanId";
@@ -110,7 +112,7 @@ public class LoanBusinessControllerTest {
     public void setUpContentProviderNameFromExistingLoan() {
         given(existingEhubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
-        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ELIB);
+        given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
     @Before

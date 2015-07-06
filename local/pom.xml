@@ -551,61 +551,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Generates Java classes from XML schemas -->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-sources-elib-createloan</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/xsd/se/elib/library</schemaDirectory>
-                            <schemaIncludes>
-                                <include>CreateLoan.xsd</include>
-                            </schemaIncludes>
-                            <generatePackage>se.elib.library.loan</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/elib-createloan</generateDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-sources-elib-orderlist</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/xsd/se/elib/library</schemaDirectory>
-                            <schemaIncludes>
-                                <include>GetLibraryUserOrderList.xsd</include>
-                            </schemaIncludes>
-                            <generatePackage>se.elib.library.orderlist</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/elib-orderlist</generateDirectory>
-                            <bindingDirectory>src/main/bindings/se/elib/library</bindingDirectory>
-                            <bindingIncludes>
-                                <include>GetLibraryUserOrderList.xjb</include>
-                            </bindingIncludes>
-                            <forceRegenerate>true</forceRegenerate>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-sources-elib-getproduct</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaDirectory>src/main/xsd/se/elib/library</schemaDirectory>
-                            <schemaIncludes>
-                                <include>GetProduct.xsd</include>
-                            </schemaIncludes>
-                            <forceRegenerate>true</forceRegenerate>
-                            <generatePackage>se.elib.library.product</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/elib-getproduct</generateDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

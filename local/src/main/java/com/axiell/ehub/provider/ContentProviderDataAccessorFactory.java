@@ -3,29 +3,22 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
-import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.ep.EpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
-import com.axiell.ehub.provider.publit.PublitDataAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContentProviderDataAccessorFactory implements IContentProviderDataAccessorFactory {
-    @Autowired
-    private ElibDataAccessor elibDataAccessor;
 
     @Autowired
     private Elib3DataAccessor elib3DataAccessor;
 
     @Autowired
     private ElibUDataAccessor elibUDataAccessor;
-
-    @Autowired
-    private PublitDataAccessor publitDataAccessor;
 
     @Autowired
     private AskewsDataAccessor askewsDataAccessor;
@@ -43,18 +36,14 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
     private BorrowBoxDataAccessor borrowBoxDataAccessor;
 
     @Autowired
-    private EpDataAccessor epiDataAccessor;
+    private EpDataAccessor epDataAccessor;
 
     @Override
     public IContentProviderDataAccessor getInstance(final String contentProviderName) {
-        if (ContentProvider.CONTENT_PROVIDER_ELIB.equals(contentProviderName)) {
-            return elibDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ELIB3.equals(contentProviderName)) {
+        if (ContentProvider.CONTENT_PROVIDER_ELIB3.equals(contentProviderName)) {
             return elib3DataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(contentProviderName)) {
             return elibUDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_PUBLIT.equals(contentProviderName)) {
-            return publitDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_ASKEWS.equals(contentProviderName)) {
             return askewsDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_OVERDRIVE.equals(contentProviderName)) {
@@ -66,7 +55,7 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
         } else if (ContentProvider.CONTENT_PROVIDER_OCD.equals(contentProviderName)) {
             return ocdDataAccessor;
         } else {
-            return epiDataAccessor;
+            return epDataAccessor;
         }
     }
 }

@@ -1,5 +1,18 @@
 package com.axiell.ehub;
 
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.consumer.IConsumerAdminController;
+import com.axiell.ehub.language.ILanguageAdminController;
+import com.axiell.ehub.language.Language;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.IContentProviderAdminController;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,50 +21,36 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import com.axiell.ehub.language.ILanguageAdminController;
-import com.axiell.ehub.language.Language;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.consumer.IConsumerAdminController;
-import com.axiell.ehub.provider.ContentProvider;
-
-import com.axiell.ehub.provider.IContentProviderAdminController;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.ContentDisposition;
-import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
+import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 
 public class DevelopmentData {
-    public static final String EHUB_CONSUMER_SECRET_KEY = "secret1";
-    public static final String ELIB_PRODUCT_URL = "http://localhost:16521/webservices/GetProduct.asmx/GetProduct";
-    public static final String ELIB_CREATE_LOAN_URL = "http://localhost:16521/webservices/createloan.asmx/CreateLoan";
-    public static final String ELIB_ORDER_LIST_URL = "http://localhost:16521/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList";
-    public static final String ARENA_PALMA_URL = "http://localhost:16521/ehub.pa.palma";
+    public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+
+    public static final String LMS_RECORD_ID = "lmsRecordId";
+    public static final String LMS_LOAN_ID = "lmsLoanId";
+    public static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
+    public static final String LIBRARY_CARD = "libraryCard";
+    public static final String PIN = "pin";
+    public static final String EHUB_CONSUMER_SECRET_KEY = "ehubConsumerSecretKey";
+    public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
-    public static final String ELIB_SERVICE_KEY = "hu81K8js";
-    public static final String ELIB_SERVICE_ID = "926";
-    public static final String CONTENT_PROVIDER_LOAN_ID = "5279700";
-    public static final String ELIB_RECORD_0_ID = "9100128260";
-    public static final String ELIB_RECORD_1_ID = "9127025500";
-    public static final String LMS_RECORD_ID = "0_1";
-    public static final String LMS_LOAN_ID_1 = "04479593";
-    public static final String LMS_LOAN_ID_2 = "4";
-    public static final String ELIB_FORMAT_0_ID = "58";
-    public static final String ELIB_FORMAT_0_NAME = "Epub with Adobe DRM for PC, Mac and e-book readers";
-    public static final String ELIB_FORMAT_1_ID = "71";
-    public static final String ELIB_FORMAT_1_NAME = "Audio book, streaming";
-    public static final String ELIB_FORMAT_2_ID = "elibFormat2";
-    public static final String ELIB_FORMAT_2_NAME = "elibFormat2Name";
-    public static final String ELIB_LIBRARY_CARD = "909265910";
-    public static final String ELIB_LIBRARY_CARD_PIN = "4447";
-    public static final String ELIB_RETAIL_ORDER_NUMBER = "4820127";
-    public static final int ELIB_PLAYER_WIDTH = 600;
-    public static final int ELIB_PLAYER_HEIGHT = 215;
+    public static final String PATRON_ID = "patronId";
     public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
+
+    public static final String TEST_EP_RECORD_0_ID = "recordId_0";
+    public static final String TEST_EP_RECORD_1_ID = "recordId_1";
+    public static final String TEST_EP_FORMAT_0_ID = "ebook";
+    public static final String TEST_EP_FORMAT_0_NAME = "eBook format";
+    public static final String TEST_EP_FORMAT_1_ID = "audio-stream";
+    public static final String TEST_EP_FORMAT_1_NAME = "eAudio stream format";
+    public static final String TEST_EP_FORMAT_2_ID = "audio-downloadable";
+    public static final String TEST_EP_FORMAT_2_NAME = "eAudio downloadable format";
+    public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
+    public static final String TEST_EP_SITE_ID = "siteId";
+    public static final String TEST_EP_SECRET_KEY = "testEpSecretKey";
+    public static final int TEST_EP_PLAYER_WIDTH = 600;
+    public static final int TEST_EP_PLAYER_HEIGHT = 215;
 
     protected IContentProviderAdminController contentProviderAdminController;
     protected IFormatAdminController formatAdminController;
@@ -61,7 +60,7 @@ public class DevelopmentData {
     // Global data
     private Long ehubConsumerId;
     private EhubConsumer ehubConsumer;
-    private ContentProvider elibProvider;
+    private ContentProvider contentProvider;
 
     public DevelopmentData(final IContentProviderAdminController contentProviderAdminController, final IFormatAdminController formatAdminController,
                            final IConsumerAdminController consumerAdminController, final ILanguageAdminController languageAdminController) {
@@ -73,19 +72,19 @@ public class DevelopmentData {
 
     public void init() throws Exception {
         initLanguage();
-        elibProvider = initElibProvider();
+        contentProvider = initContentProvider();
         ehubConsumer = initEhubConsumer();
-        initElibConsumer(getEhubConsumer(), getElibProvider());
+        initContentConsumer(getEhubConsumer(), getContentProvider());
     }
 
     public void destroy() throws Exception {
         destroy(null);
     }
-    
+
     /**
      * All table IDENTITY sequences and all SEQUENCE objects in the schema are reset to their start values, see <a
      * href="http://hsqldb.org/doc/2.0/guide/dataaccess-chapt.html#dac_truncate_statement">HSQL Documentation<a>.
-     * 
+     *
      * @param dataSource
      * @throws Exception
      */
@@ -93,7 +92,7 @@ public class DevelopmentData {
         if (dataSource == null) {
             dataSource = getDataSource();
         }
-        
+
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -109,27 +108,27 @@ public class DevelopmentData {
     }
 
     private DataSource getDataSource() {
-	@SuppressWarnings("resource")
-	ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/data-source-context.xml"});
-	return (DataSource) springContext.getBean("dataSource");
+        @SuppressWarnings("resource")
+        ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/data-source-context.xml"});
+        return (DataSource) springContext.getBean("dataSource");
     }
 
     private void executeStatement(Connection connection) throws SQLException {
-	Statement stmt = connection.createStatement();
-	try {
-	    stmt.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
-	    connection.commit();
-	} finally {
-	    stmt.close();
-	}
+        Statement stmt = connection.createStatement();
+        try {
+            stmt.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
+            connection.commit();
+        } finally {
+            stmt.close();
+        }
     }
 
     private void closeConnection(Connection connection) throws SQLException {
-	if (connection != null) {
-	    connection.close();
-	}
+        if (connection != null) {
+            connection.close();
+        }
     }
-    
+
     public Long getEhubConsumerId() {
         return ehubConsumerId;
     }
@@ -138,42 +137,41 @@ public class DevelopmentData {
         return ehubConsumer;
     }
 
-    public ContentProvider getElibProvider() {
-        return elibProvider;
+    public ContentProvider getContentProvider() {
+        return contentProvider;
     }
 
     private void initLanguage() {
         languageAdminController.save(new Language(DEFAULT_LANGUAGE));
     }
-    
-    private ContentProvider initElibProvider() {
+
+    private ContentProvider initContentProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
-        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.PRODUCT_URL, ELIB_PRODUCT_URL);
-        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.CREATE_LOAN_URL, ELIB_CREATE_LOAN_URL);
-        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.ORDER_LIST_URL, ELIB_ORDER_LIST_URL);
-        ContentProvider elibProvider = new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, contentProviderProperties);
-        elibProvider = contentProviderAdminController.save(elibProvider);
+        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TEST_EP_API_BASE_URL);
+        ContentProvider contentProvider = new ContentProvider(CONTENT_PROVIDER_TEST_EP, contentProviderProperties);
+        contentProvider = contentProviderAdminController.save(contentProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 = new FormatDecoration(elibProvider, ELIB_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE, ELIB_PLAYER_WIDTH,
-                ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration1 = new FormatDecoration(elibProvider, ELIB_FORMAT_1_ID, ContentDisposition.STREAMING, ELIB_PLAYER_WIDTH,
-                ELIB_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration2 = new FormatDecoration(elibProvider, ELIB_FORMAT_2_ID, ContentDisposition.STREAMING, ELIB_PLAYER_WIDTH,
-                ELIB_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration0 =
+                new FormatDecoration(contentProvider, TEST_EP_FORMAT_0_ID, DOWNLOADABLE, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration1 =
+                new FormatDecoration(contentProvider, TEST_EP_FORMAT_1_ID, STREAMING, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration2 =
+                new FormatDecoration(contentProvider, TEST_EP_FORMAT_2_ID, DOWNLOADABLE, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
 
-        formatDecorations.put(ELIB_FORMAT_0_ID, formatDecoration0);
-        formatDecorations.put(ELIB_FORMAT_1_ID, formatDecoration1);
-        formatDecorations.put(ELIB_FORMAT_2_ID, formatDecoration2);
+        formatDecorations.put(TEST_EP_FORMAT_0_ID, formatDecoration0);
+        formatDecorations.put(TEST_EP_FORMAT_1_ID, formatDecoration1);
+        formatDecorations.put(TEST_EP_FORMAT_2_ID, formatDecoration2);
+
         for (Map.Entry<String, FormatDecoration> entry : formatDecorations.entrySet()) {
             FormatDecoration value = formatAdminController.save(entry.getValue());
             formatDecorations.put(entry.getKey(), value);
         }
-        elibProvider.setFormatDecorations(formatDecorations);
-        elibProvider = contentProviderAdminController.save(elibProvider);
-        return elibProvider;
+        contentProvider.setFormatDecorations(formatDecorations);
+        contentProvider = contentProviderAdminController.save(contentProvider);
+        return contentProvider;
     }
-    
+
     private EhubConsumer initEhubConsumer() {
         EhubConsumer ehubConsumer = createEhubConsumer();
         ehubConsumer = consumerAdminController.save(ehubConsumer);
@@ -181,16 +179,16 @@ public class DevelopmentData {
         ehubConsumer.setContentProviderConsumers(new HashSet<ContentProviderConsumer>());
         return ehubConsumer;
     }
-    
-    private ContentProviderConsumer initElibConsumer(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
-        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> elibConsumerProperties = new HashMap<>();
-        elibConsumerProperties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY, ELIB_SERVICE_KEY);
-        elibConsumerProperties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID, ELIB_SERVICE_ID);
-        ContentProviderConsumer elibConsumer = new ContentProviderConsumer(ehubConsumer, elibProvider, elibConsumerProperties);
-        elibConsumer = consumerAdminController.save(elibConsumer);
-        ehubConsumer.getContentProviderConsumers().add(elibConsumer);
+
+    private ContentProviderConsumer initContentConsumer(EhubConsumer ehubConsumer, ContentProvider contentProvider) {
+        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> properties = new HashMap<>();
+        properties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TEST_EP_SECRET_KEY);
+        properties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID, TEST_EP_SITE_ID);
+        ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer(ehubConsumer, contentProvider, properties);
+        contentProviderConsumer = consumerAdminController.save(contentProviderConsumer);
+        ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);
         consumerAdminController.save(ehubConsumer);
-        return elibConsumer;
+        return contentProviderConsumer;
     }
 
     public static EhubConsumer createEhubConsumer() {

@@ -68,7 +68,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
 	whenFindLoanByLmsLoanId();
 
 	thenActualEhubLoanIsNotNull();
-	Assert.assertEquals(DevelopmentData.LMS_LOAN_ID_1, actualEhubLoan.getLmsLoan().getId());
+	Assert.assertEquals(DevelopmentData.LMS_LOAN_ID, actualEhubLoan.getLmsLoan().getId());
     }
 
     private void givenExpectedEhubLoan() {
@@ -79,7 +79,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
 
     private void whenFindLoanByLmsLoanId() {
 	EhubConsumer ehubConsumer = expectedEhubLoan.getEhubConsumer();
-	actualEhubLoan = underTest.findLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID_1);
+	actualEhubLoan = underTest.findLoan(ehubConsumer.getId(), DevelopmentData.LMS_LOAN_ID);
     }
 
     private void thenActualEhubLoanIsNotNull() {

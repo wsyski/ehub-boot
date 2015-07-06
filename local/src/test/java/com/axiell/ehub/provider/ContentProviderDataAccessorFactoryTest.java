@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
+import com.axiell.ehub.provider.ep.EpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import junit.framework.Assert;
@@ -14,19 +16,19 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
-import com.axiell.ehub.provider.elib.library.ElibDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
-import com.axiell.ehub.provider.publit.PublitDataAccessor;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFactoryTest {
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+
     private IContentProviderDataAccessorFactory underTest;
     @Mock
-    private ElibDataAccessor elibDataAccessor;
+    private EpDataAccessor epDataAccessor;
     @Mock
     private ElibUDataAccessor elibUDataAccessor;
     @Mock
-    private PublitDataAccessor publitDataAccessor;
+    private BorrowBoxDataAccessor borrowBoxDataAccessor;
     @Mock
     private AskewsDataAccessor askewsDataAccessor;
     @Mock
@@ -44,9 +46,9 @@ public class ContentProviderDataAccessorFactoryTest {
     @Before
     public void setUp() {
         underTest = new ContentProviderDataAccessorFactory();
-        ReflectionTestUtils.setField(underTest, "elibDataAccessor", elibDataAccessor);
+        ReflectionTestUtils.setField(underTest, "epDataAccessor", epDataAccessor);
         ReflectionTestUtils.setField(underTest, "elibUDataAccessor", elibUDataAccessor);
-        ReflectionTestUtils.setField(underTest, "publitDataAccessor", publitDataAccessor);
+        ReflectionTestUtils.setField(underTest, "borrowBoxDataAccessor", borrowBoxDataAccessor);
         ReflectionTestUtils.setField(underTest, "askewsDataAccessor", askewsDataAccessor);
         ReflectionTestUtils.setField(underTest, "overDriveDataAccessor", overDriveDataAccessor);
         ReflectionTestUtils.setField(underTest, "elib3DataAccessor", elib3DataAccessor);
@@ -55,22 +57,22 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     @Test
-    public void getElibDataAccessor() {
-        givenElibAsContentProviderName();
+    public void getEpDataAccessor() {
+        givenEpAsContentProviderName();
         whenGetContentProviderDataAccessor();
-        thenElibDataAccessorIsReturned();
+        thenEpDataAccessorIsReturned();
     }
 
-    private void givenElibAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIB;
+    private void givenEpAsContentProviderName() {
+        contentProviderName = CONTENT_PROVIDER_TEST_EP;
     }
 
     private void whenGetContentProviderDataAccessor() {
         actualContentProviderDataAccessor = underTest.getInstance(contentProviderName);
     }
 
-    private void thenElibDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof ElibDataAccessor);
+    private void thenEpDataAccessorIsReturned() {
+        Assert.assertTrue(actualContentProviderDataAccessor instanceof EpDataAccessor);
     }
 
     @Test
@@ -96,11 +98,11 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     private void givenPublitAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_PUBLIT;
+        contentProviderName = ContentProvider.CONTENT_PROVIDER_BORROWBOX;
     }
 
     private void thenPublitDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof PublitDataAccessor);
+        Assert.assertTrue(actualContentProviderDataAccessor instanceof BorrowBoxDataAccessor);
     }
 
     @Test

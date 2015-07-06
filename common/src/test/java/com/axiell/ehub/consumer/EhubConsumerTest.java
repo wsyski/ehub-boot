@@ -17,6 +17,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EhubConsumerTest {
+    private static final String CONTENT_PROVIDER_TEST_EP="TEST_EP";
     private EhubConsumer underTest;
 
     @Mock
@@ -24,13 +25,13 @@ public class EhubConsumerTest {
     @Mock
     private ContentProviderConsumer overDriveConsumer;
     @Mock
-    private ContentProviderConsumer publitConsumer;
+    private ContentProviderConsumer epConsumer;
     @Mock
     private ContentProvider askewsProvider;
     @Mock
     private ContentProvider overDriveProvider;
     @Mock
-    private ContentProvider publitProvider;
+    private ContentProvider epProvider;
     private List<ContentProviderConsumer> consumerList;
 
     @Before
@@ -61,14 +62,14 @@ public class EhubConsumerTest {
     }
 
     private void givenPublitContentProviderConsumer() {
-        given(publitConsumer.getContentProvider()).willReturn(publitProvider);
-        given(publitProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_PUBLIT);
+        given(epConsumer.getContentProvider()).willReturn(epProvider);
+        given(epProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
     private void givenContentProvderConsumers() {
         Set<ContentProviderConsumer> consumers = new HashSet<>();
         consumers.add(overDriveConsumer);
-        consumers.add(publitConsumer);
+        consumers.add(epConsumer);
         consumers.add(askewsConsumer);
         underTest.setContentProviderConsumers(consumers);
     }
@@ -89,7 +90,7 @@ public class EhubConsumerTest {
 
     private void thenThirdConsumerEqualsPublitConsumer() {
         ContentProviderConsumer consumer3 = consumerList.get(2);
-        Assert.assertEquals(publitConsumer, consumer3);
+        Assert.assertEquals(epConsumer, consumer3);
     }
 
     @Test
