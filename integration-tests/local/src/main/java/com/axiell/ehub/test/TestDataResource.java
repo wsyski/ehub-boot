@@ -32,10 +32,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_RETAILER_KEY;
 import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 
@@ -58,15 +55,15 @@ public class TestDataResource implements ITestDataResource {
 
     @Override
     public TestData init() {
-        saveAlias("ELIB", ContentProvider.CONTENT_PROVIDER_ELIB);
-        saveAlias("Distributör: Elib", ContentProvider.CONTENT_PROVIDER_ELIB);
+        saveAlias(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
+        saveAlias("Distribut\u00f6r: "+TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
         initLanguage();
-        final ContentProvider elibProvider = initElibProvider();
+        final ContentProvider contentProvider = initContentProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
-        initElibConsumer(ehubConsumer, elibProvider);
-        final Long ehubLoanId = initELibEhubLoan(ehubConsumer, elibProvider);
+        initContentProviderConsumer(ehubConsumer, contentProvider);
+        final Long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
         return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
-                TestDataConstants.ELIB_LIBRARY_CARD, TestDataConstants.ELIB_LIBRARY_CARD_PIN);
+                TestDataConstants.LIBRARY_CARD, TestDataConstants.PIN);
     }
 
     @Override
@@ -107,28 +104,26 @@ public class TestDataResource implements ITestDataResource {
         languageAdminController.save(new Language(TestDataConstants.DEFAULT_LANGUAGE));
     }
 
-    private ContentProvider initElibProvider() {
+    private ContentProvider initContentProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
-        contentProviderProperties.put(PRODUCT_URL, TestDataConstants.ELIB_PRODUCT_URL);
-        contentProviderProperties.put(CREATE_LOAN_URL, TestDataConstants.ELIB_CREATE_LOAN_URL);
-        contentProviderProperties.put(ORDER_LIST_URL, TestDataConstants.ELIB_ORDER_LIST_URL);
-        ContentProvider elibProvider = new ContentProvider(ContentProvider.CONTENT_PROVIDER_ELIB, contentProviderProperties);
+        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL);
+        ContentProvider elibProvider = new ContentProvider(TestDataConstants.CONTENT_PROVIDER_TEST_EP, contentProviderProperties);
         elibProvider = contentProviderAdminController.save(elibProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
         FormatDecoration formatDecoration0 =
-                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.ELIB_PLAYER_WIDTH,
-                        TestDataConstants.ELIB_PLAYER_HEIGHT);
+                new FormatDecoration(elibProvider, TestDataConstants.TEST_EP_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.TEST_EP_PLAYER_WIDTH,
+                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
         FormatDecoration formatDecoration1 =
-                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_1_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH,
-                        TestDataConstants.ELIB_PLAYER_HEIGHT);
+                new FormatDecoration(elibProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, STREAMING, TestDataConstants.TEST_EP_PLAYER_WIDTH,
+                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
         FormatDecoration formatDecoration2 =
-                new FormatDecoration(elibProvider, TestDataConstants.ELIB_FORMAT_2_ID, STREAMING, TestDataConstants.ELIB_PLAYER_WIDTH,
-                        TestDataConstants.ELIB_PLAYER_HEIGHT);
+                new FormatDecoration(elibProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, STREAMING, TestDataConstants.TEST_EP_PLAYER_WIDTH,
+                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
 
-        formatDecorations.put(TestDataConstants.ELIB_FORMAT_0_ID, formatDecoration0);
-        formatDecorations.put(TestDataConstants.ELIB_FORMAT_1_ID, formatDecoration1);
-        formatDecorations.put(TestDataConstants.ELIB_FORMAT_2_ID, formatDecoration2);
+        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_0_ID, formatDecoration0);
+        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_1_ID, formatDecoration1);
+        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_2_ID, formatDecoration2);
         for (Map.Entry<String, FormatDecoration> entry : formatDecorations.entrySet()) {
             FormatDecoration value = formatAdminController.save(entry.getValue());
             formatDecorations.put(entry.getKey(), value);
@@ -152,10 +147,10 @@ public class TestDataResource implements ITestDataResource {
         return new EhubConsumer("Ehub Consumer Description", TestDataConstants.EHUB_CONSUMER_SECRET_KEY, properties, TestDataConstants.DEFAULT_LANGUAGE);
     }
 
-    private ContentProviderConsumer initElibConsumer(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
+    private ContentProviderConsumer initContentProviderConsumer(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
         Map<ContentProviderConsumerPropertyKey, String> properties = new HashMap<>();
-        properties.put(ELIB_RETAILER_KEY, TestDataConstants.ELIB_SERVICE_KEY);
-        properties.put(ELIB_RETAILER_ID, TestDataConstants.ELIB_SERVICE_ID);
+        properties.put(ContentProviderConsumerPropertyKey.SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY);
+        properties.put(ContentProviderConsumerPropertyKey.SITE_ID, TestDataConstants.TEST_EP_SITE_ID);
         ContentProviderConsumer elibConsumer = new ContentProviderConsumer(ehubConsumer, elibProvider, properties);
         elibConsumer = consumerAdminController.save(elibConsumer);
         ehubConsumer.getContentProviderConsumers().add(elibConsumer);
@@ -163,13 +158,11 @@ public class TestDataResource implements ITestDataResource {
         return elibConsumer;
     }
 
-    private Long initELibEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
-        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(TestDataConstants.ELIB_FORMAT_1_ID);
-        ContentProviderLoanMetadata contentProviderLoanMetadata =
-                new ContentProviderLoanMetadata.Builder(elibProvider, new Date(), TestDataConstants.ELIB_RECORD_1_ID, elibFormatDecoration1)
-                        .contentProviderLoanId(
-                                TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
-        LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID_1);
+    private Long initEhubLoan(EhubConsumer ehubConsumer, ContentProvider elibProvider) {
+        FormatDecoration elibFormatDecoration1 = elibProvider.getFormatDecoration(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(elibProvider, new Date(),
+                TestDataConstants.TEST_EP_RECORD_1_ID, elibFormatDecoration1).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
+        LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);
         return ehubLoan.getId();

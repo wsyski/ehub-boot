@@ -33,10 +33,10 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private static final int MAX_RETRIES = 60;
     private static final Integer RETRY_WAIT_MILLIS = 1000;
 
-    @Autowired(required = true)
+    @Autowired
     private IAskewsFacade askewsFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private IExpirationDateFactory expirationDateFactory;
 
     @Autowired

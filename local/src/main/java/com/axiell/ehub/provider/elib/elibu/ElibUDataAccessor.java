@@ -32,7 +32,7 @@ import java.util.List;
 public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElibUDataAccessor.class);
 
-    @Autowired(required = true)
+    @Autowired
     private IElibUFacade elibUFacade;
 
     @Autowired

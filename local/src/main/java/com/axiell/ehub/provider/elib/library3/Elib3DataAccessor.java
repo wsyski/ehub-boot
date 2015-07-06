@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
 
-    @Autowired(required = true)
+    @Autowired
     private IElib3CommandChainFactory commandChainFactory;
 
     @Override

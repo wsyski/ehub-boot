@@ -9,7 +9,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
-    @Autowired(required = true)
+    @Autowired
     private IEhubLoanRepository ehubLoanRepository;
 
     @Override

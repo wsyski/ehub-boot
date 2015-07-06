@@ -16,7 +16,7 @@ import java.util.Date;
  * accessor for the specific Content Provider.
  */
 public abstract class AbstractContentProviderDataAccessor implements IContentProviderDataAccessor {
-    @Autowired(required = true)
+    @Autowired
     private IContentFactory contentFactory;
 
     protected final ContentLink createContent(final String contentUrl, final FormatDecoration formatDecoration) {

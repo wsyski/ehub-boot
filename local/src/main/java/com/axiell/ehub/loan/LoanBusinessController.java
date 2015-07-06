@@ -24,22 +24,22 @@ import com.axiell.ehub.security.AuthInfo;
  * Default implementation of the {@link ILoanBusinessController}.
  */
 public class LoanBusinessController implements ILoanBusinessController {
-    @Autowired(required = true)
+    @Autowired
     private IConsumerBusinessController consumerBusinessController;
 
-    @Autowired(required = true)
+    @Autowired
     private IPalmaDataAccessor palmaDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private ICheckoutMetadataFactory checkoutMetadataFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private ICheckoutFactory checkoutFactory;
 
     @Override

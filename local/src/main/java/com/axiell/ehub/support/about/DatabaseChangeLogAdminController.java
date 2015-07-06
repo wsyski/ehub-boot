@@ -10,7 +10,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 
 public class DatabaseChangeLogAdminController implements IDatabaseChangeLogAdminController {
 
-    @Autowired(required = true)
+    @Autowired
     private IDatabaseChangeLogRepository databaseChangeLogRepository;
 
     @Override

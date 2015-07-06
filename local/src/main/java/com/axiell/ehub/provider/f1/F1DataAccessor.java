@@ -25,16 +25,16 @@ import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LO
 @Component
 public class F1DataAccessor extends AbstractContentProviderDataAccessor {
 
-    @Autowired(required = true)
+    @Autowired
     private IF1Facade f1Facade;
 
-    @Autowired(required = true)
+    @Autowired
     private IFormatFactory formatFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private IExpirationDateFactory expirationDateFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override

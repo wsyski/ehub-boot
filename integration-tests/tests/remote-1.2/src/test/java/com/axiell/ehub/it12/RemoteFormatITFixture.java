@@ -4,6 +4,7 @@ import com.axiell.ehub.EhubException;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,14 +24,15 @@ public abstract class RemoteFormatITFixture extends RemoteITFixture {
 
     @Test
     public final void getFormats() throws EhubException {
-        givenGetProductResponse();
+        givenContentProviderGetFormatsResponse();
         whenGetFormats();
         thenActualFormatsContainsExpectedComponents();
         thenCustomFormatsValidation();
     }
 
-    private void givenGetProductResponse() {
-        stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
+    private void givenContentProviderGetFormatsResponse() {
+        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.TEST_EP_RECORD_0_ID + "/formats"))
+                .willReturn(aResponse().withBodyFile("getFormatsResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     protected abstract void whenGetFormats() throws EhubException;

@@ -15,7 +15,7 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class AuthInfoConverter implements StringConverter<AuthInfo> {
 
-    @Autowired(required = true)
+    @Autowired
     private IAuthInfoResolver authInfoResolver;
 
     @Override

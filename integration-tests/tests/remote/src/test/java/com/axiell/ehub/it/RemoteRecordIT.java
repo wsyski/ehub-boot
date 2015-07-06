@@ -22,14 +22,14 @@ public class RemoteRecordIT extends RemoteITFixture {
 
     @Test
     public final void getRecord() throws EhubException {
-        givenGetProductResponse();
+        givenContentProviderGetFormatsResponse();
         whenGetRecord(authInfo);
         thenActualFormatsContainsExpectedComponents();
     }
 
     @Test
     public void unauthorized() throws EhubException {
-        AuthInfo invalidAuthInfo=givenInvalidAuthInfo();
+        AuthInfo invalidAuthInfo = givenInvalidAuthInfo();
         whenGetRecord(invalidAuthInfo);
         thenExpectedExceptionMessage();
     }
@@ -38,9 +38,9 @@ public class RemoteRecordIT extends RemoteITFixture {
         expectedException.expectMessage("An eHUB Consumer with ID 0 could not be found");
     }
 
-    private void givenGetProductResponse() {
-        stubFor(post(urlEqualTo("/webservices/GetProduct.asmx/GetProduct")).willReturn(aResponse().withBodyFile("GetProductResponse.xml").withHeader(
-                "Content-Type", "application/xml").withStatus(200)));
+    private void givenContentProviderGetFormatsResponse() {
+        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.TEST_EP_RECORD_0_ID + "/formats"))
+                .willReturn(aResponse().withBodyFile("getFormatsResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     private void thenActualFormatsContainsExpectedComponents() {
@@ -62,7 +62,7 @@ public class RemoteRecordIT extends RemoteITFixture {
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
-        record = underTest.getRecord(authInfo, "Distribut\u00f6r: Elib", TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+        record = underTest.getRecord(authInfo, CONTENT_PROVIDER_ALIAS, TestDataConstants.TEST_EP_RECORD_0_ID, LANGUAGE);
     }
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {

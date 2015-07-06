@@ -16,7 +16,7 @@ import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
 
 @Component
 public class EhubExceptionFactory extends AbstractEhubExceptionFactory implements IEhubExceptionFactory {
-    @Autowired(required = true)
+    @Autowired
     private IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository;
 
     @Override

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 class AuthInfoResolver implements IAuthInfoResolver {
     private static Logger LOGGER = LoggerFactory.getLogger(AuthInfoResolver.class);
 
-    @Autowired(required = true)
+    @Autowired
     private IConsumerBusinessController consumerBusinessController;
 
     @Override

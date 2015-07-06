@@ -29,13 +29,13 @@ import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
 
 @Component
 public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
-    @Autowired(required = true)
+    @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private IOverDriveFacade overDriveFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private IFormatFactory formatFactory;
 
     @Override

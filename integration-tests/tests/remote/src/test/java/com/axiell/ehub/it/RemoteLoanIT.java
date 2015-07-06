@@ -6,7 +6,6 @@ import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
 
-import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,17 +24,18 @@ public class RemoteLoanIT extends RemoteITFixture {
     public void initFields() {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
-        fields.addValue("contentProviderAlias", ContentProvider.CONTENT_PROVIDER_ELIB);
-        fields.addValue("contentProviderRecordId", TestDataConstants.ELIB_RECORD_0_ID);
-        fields.addValue("contentProviderFormatId", TestDataConstants.ELIB_FORMAT_0_ID);
+        fields.addValue("contentProviderAlias", CONTENT_PROVIDER_ALIAS);
+        fields.addValue("contentProviderRecordId", TestDataConstants.TEST_EP_RECORD_0_ID);
+        fields.addValue("contentProviderFormatId", TestDataConstants.TEST_EP_FORMAT_0_ID);
     }
 
     @Test
     public final void checkout() throws EhubException {
         givenPalmaLoanWsdl();
-        givenCheckoutTestOkResponse();
-        givenGetLibraryUserOrderList();
-        givenCheckoutResponse();
+        givenPalmaCheckoutTestOkResponse();
+        givenContentProviderCheckoutResponse();
+        givenContentProviderGetCheckoutResponse();
+        givenPalmaCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout);
     }
@@ -43,7 +43,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     @Test
     public final void getReadyLoanByReadyLoanId() throws EhubException {
         givenReadyLoanId();
-        givenGetLibraryUserOrderList();
+        givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenGetCheckoutByLoanId();
         thenValidCheckout(checkout);
     }
@@ -51,7 +51,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     @Test
     public final void getReadyLoanByLmsLoanId() throws EhubException {
         givenLmsLoanId();
-        givenGetLibraryUserOrderList();
+        givenContentProviderGetCheckoutResponse();
         CheckoutMetadata checkoutMetadata = whenFindCheckoutMetadataByLmsLoandId();
         thenValidCheckoutMetadata(checkoutMetadata);
     }
@@ -72,21 +72,25 @@ public class RemoteLoanIT extends RemoteITFixture {
         stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "text/xml").withBodyFile("loans.wsdl")));
     }
 
-    private void givenCheckoutTestOkResponse() {
+    private void givenPalmaCheckoutTestOkResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns"))
                 .willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
-    private void givenGetLibraryUserOrderList() {
-        stubFor(post(urlEqualTo("/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList"))
-                .willReturn(aResponse().withBodyFile("GetLibraryUserOrderListResponse.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
-    }
-
-    private void givenCheckoutResponse() {
+    private void givenPalmaCheckoutResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns"))
                 .willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
+    private void givenContentProviderGetCheckoutResponse() {
+        stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(201)));
+    }
+
+    private void givenContentProviderCheckoutResponse() {
+        stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+    }
 
     private void thenValidCheckout(final Checkout checkout) {
         Assert.assertNotNull(checkout);
@@ -112,7 +116,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
 
     private void givenLmsLoanId() {
-        lmsLoanId = TestDataConstants.LMS_LOAN_ID_1;
+        lmsLoanId = TestDataConstants.LMS_LOAN_ID;
     }
 
 

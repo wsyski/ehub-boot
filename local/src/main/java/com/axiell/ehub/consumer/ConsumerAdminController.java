@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class ConsumerAdminController implements IConsumerAdminController {
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubConsumerRepository ehubConsumerRepository;
 
-    @Autowired(required = true)
+    @Autowired
     private IContentProviderConsumerRepository contentProviderConsumerRepository;
 
     /**

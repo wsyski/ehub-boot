@@ -14,6 +14,6 @@ public class RemoteFormatIT extends RemoteFormatITFixture {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_NAME,  TestDataConstants.ELIB_RECORD_0_ID, LANGUAGE);
+        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_ALIAS,  TestDataConstants.TEST_EP_RECORD_0_ID, LANGUAGE);
     }
 }

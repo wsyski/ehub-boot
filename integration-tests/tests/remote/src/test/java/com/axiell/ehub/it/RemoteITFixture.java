@@ -8,6 +8,7 @@ import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
+import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -27,6 +28,8 @@ public abstract class RemoteITFixture {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
+    protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
+
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     protected TestData testData;
     protected AuthInfo authInfo;

@@ -23,10 +23,10 @@ import java.util.List;
 @Component
 public class PublitDataAccessor extends AbstractContentProviderDataAccessor {
 
-    @Autowired(required = true)
+    @Autowired
     private IPublitFacade publitFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private IExpirationDateFactory expirationDateFactory;
 
     @Autowired

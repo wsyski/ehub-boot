@@ -15,10 +15,10 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 class F1Facade implements IF1Facade {
     private static final String CONTINUE = "false";
 
-    @Autowired(required = true)
+    @Autowired
     private IF1ServiceSoapFactory f1ServiceSoapFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private IF1SoapServiceParameterHelper f1SoapServiceParameterHelper;
 
     @Override

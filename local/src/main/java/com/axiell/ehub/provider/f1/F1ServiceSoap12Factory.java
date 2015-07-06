@@ -12,10 +12,10 @@ import se.forlagett.api.F1ServiceSoap;
 class F1ServiceSoap12Factory implements IF1ServiceSoapFactory {
     private FinalWrapper<F1ServiceSoap> f1ServiceSoapWrapper;
 
-    @Autowired(required = true)
+    @Autowired
     private IF1ServiceFactory f1ServiceFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private ISoapLoggingHandlerAppender soapLoggingHandlerAppender;
 
     @Override

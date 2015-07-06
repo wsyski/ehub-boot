@@ -15,34 +15,34 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContentProviderDataAccessorFactory implements IContentProviderDataAccessorFactory {
-    @Autowired(required = true)
+    @Autowired
     private ElibDataAccessor elibDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private Elib3DataAccessor elib3DataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private ElibUDataAccessor elibUDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private PublitDataAccessor publitDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private AskewsDataAccessor askewsDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private OverDriveDataAccessor overDriveDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private F1DataAccessor f1DataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private OcdDataAccessor ocdDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private BorrowBoxDataAccessor borrowBoxDataAccessor;
 
-    @Autowired(required = true)
+    @Autowired
     private EpDataAccessor epiDataAccessor;
 
     @Override

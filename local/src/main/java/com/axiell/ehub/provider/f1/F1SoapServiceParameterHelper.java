@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 @Component
 class F1SoapServiceParameterHelper implements IF1SoapServiceParameterHelper {
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override

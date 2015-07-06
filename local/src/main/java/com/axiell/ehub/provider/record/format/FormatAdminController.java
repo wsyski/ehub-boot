@@ -19,13 +19,13 @@ import com.axiell.ehub.loan.ILoanAdminController;
  */
 public class FormatAdminController implements IFormatAdminController {
 
-    @Autowired(required = true)
+    @Autowired
     private IFormatDecorationRepository formatDecorationRepository;
 
-    @Autowired(required = true)
+    @Autowired
     private IFormatTextBundleRepository formatTextBundleRepository;
     
-    @Autowired(required = true)
+    @Autowired
     private ILoanAdminController loanAdminController;
 
     @Override

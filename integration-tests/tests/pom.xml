@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>remote-0.6</module>
         <module>remote-0.7</module>
         <module>remote-0.8</module>
         <module>remote-1.0</module>
@@ -22,13 +21,6 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.axiell.ehub</groupId>
-            <artifactId>ehub-it-local</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-it-common</artifactId>
@@ -48,6 +40,15 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.axiell.ehub</groupId>
+                    <artifactId>ehub-it-local</artifactId>
+                    <version>${project.version}</version>
+                    <type>war</type>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>

@@ -13,7 +13,7 @@ import java.util.List;
  * Default implementation of the {@link IContentProviderAdminController}.
  */
 public class ContentProviderAdminController implements IContentProviderAdminController {
-    @Autowired(required = true)
+    @Autowired
     private IContentProviderRepository contentProviderRepository;
 
     /**

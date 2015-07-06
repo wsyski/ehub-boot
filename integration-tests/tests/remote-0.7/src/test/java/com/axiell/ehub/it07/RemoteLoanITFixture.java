@@ -23,7 +23,8 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     @Override
     protected void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard()).pin(testData.getPin()).build();
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
+                .pin(testData.getPin()).build();
     }
 
     @Test
@@ -31,11 +32,44 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
         givenPendingLoan();
         givenPalmaLoanWsdl();
         givenCheckoutTestOkResponse();
-        givenGetLibraryUserOrderList();
+        givenContentProviderCheckoutResponse();
+        givenContentProviderGetCheckoutResponse();
         givenCheckoutResponse();
         whenCreateLoan();
         thenActualReadyLoanContainsExpectedComponents();
         thenCustomReadyLoanValidation();
+    }
+
+    @Test
+    public final void getReadyLoanByLmsLoanId() throws EhubException {
+        givenLmsLoanId();
+        givenContentProviderGetCheckoutResponse();
+        whenGetReadyLoanByLmsLoandId();
+        thenActualReadyLoanContainsExpectedComponents();
+        thenCustomReadyLoanValidation();
+    }
+
+
+    @Test
+    public final void getReadyLoanByReadyLoanId() throws EhubException {
+        givenReadyLoanId();
+        givenContentProviderGetCheckoutResponse();
+        whenGetReadyLoanByReadyLoanId();
+        thenActualReadyLoanContainsExpectedComponents();
+        thenCustomReadyLoanValidation();
+    }
+
+    @Test
+    public final void ehubException() {
+        givenPendingLoan();
+        givenPalmaLoanWsdl();
+        givenCheckoutTestErrorResponse();
+        try {
+            whenCreateLoan();
+        } catch (EhubException e) {
+            Assert.assertNotNull(e);
+            thenCustomEhubExceptionValidation(e);
+        }
     }
 
     protected abstract void givenPendingLoan();
@@ -45,15 +79,23 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     }
 
     private void givenCheckoutTestOkResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(
+                "CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
-    private void givenGetLibraryUserOrderList() {
-        stubFor(post(urlEqualTo("/webservices/getlibraryuserorderlist.asmx/GetLibraryUserOrderList")).willReturn(aResponse().withBodyFile("GetLibraryUserOrderListResponse.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
+    private void givenContentProviderGetCheckoutResponse() {
+        stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(201)));
+    }
+
+    private void givenContentProviderCheckoutResponse() {
+        stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     private void givenCheckoutResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(
+                aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
     protected abstract void whenCreateLoan() throws EhubException;
@@ -85,29 +127,12 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     protected void thenCustomReadyLoanValidation() {
     }
 
-    @Test
-    public final void getReadyLoanByLmsLoanId() throws EhubException {
-        givenLmsLoanId();
-        givenGetLibraryUserOrderList();
-        whenGetReadyLoanByLmsLoandId();
-        thenActualReadyLoanContainsExpectedComponents();
-        thenCustomReadyLoanValidation();
-    }
 
     private void givenLmsLoanId() {
-        lmsLoanId =  TestDataConstants.LMS_LOAN_ID_1;
+        lmsLoanId = TestDataConstants.LMS_LOAN_ID;
     }
 
     protected abstract void whenGetReadyLoanByLmsLoandId() throws EhubException;
-
-    @Test
-    public final void getReadyLoanByReadyLoanId() throws EhubException {
-        givenReadyLoanId();
-        givenGetLibraryUserOrderList();
-        whenGetReadyLoanByReadyLoanId();
-        thenActualReadyLoanContainsExpectedComponents();
-        thenCustomReadyLoanValidation();
-    }
 
     private void givenReadyLoanId() {
         readyLoanId = testData.getEhubLoanId();
@@ -115,18 +140,6 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     protected abstract void whenGetReadyLoanByReadyLoanId() throws EhubException;
 
-    @Test
-    public final void ehubException() {
-        givenPendingLoan();
-        givenPalmaLoanWsdl();
-        givenCheckoutTestErrorResponse();
-        try {
-            whenCreateLoan();
-        } catch (EhubException e) {
-            Assert.assertNotNull(e);
-            thenCustomEhubExceptionValidation(e);
-        }
-    }
 
     private void givenCheckoutTestErrorResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(

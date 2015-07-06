@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 class Elib3CommandChainFactory implements IElib3CommandChainFactory {
 
-    @Autowired(required = true)
+    @Autowired
     private IElibFacade elibFacade;
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
 
-    @Autowired(required = true)
+    @Autowired
     private IContentFactory contentFactory;
 
     @Autowired

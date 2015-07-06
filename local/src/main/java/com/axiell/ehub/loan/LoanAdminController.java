@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LoanAdminController implements ILoanAdminController {
 
-    @Autowired(required = true)
+    @Autowired
     private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
 
     @Override

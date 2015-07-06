@@ -16,7 +16,7 @@ import com.axiell.ehub.security.UnauthorizedException;
  * Default implementation of the {@link IConsumerBusinessController}.
  */
 public class ConsumerBusinessController implements IConsumerBusinessController {    
-    @Autowired(required = true)
+    @Autowired
     private IEhubConsumerRepository ehubConsumerRepository;
     
     @Override

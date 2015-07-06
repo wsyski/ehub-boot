@@ -45,7 +45,7 @@ import static com.axiell.ehub.provider.elib.library.ElibUtils.*;
 public class ElibDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElibDataAccessor.class);
 
-    @Autowired(required = true)
+    @Autowired
     private IElibFacade elibFacade;
 
     @Autowired

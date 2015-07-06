@@ -17,10 +17,10 @@ import com.axiell.ehub.security.AuthInfo;
  */
 public class FormatBusinessController implements IFormatBusinessController {
 
-    @Autowired(required = true)
+    @Autowired
     private IConsumerBusinessController consumerBusinessController;
 
-    @Autowired(required = true)
+    @Autowired
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
 
     @Override
