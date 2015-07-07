@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../css/ehub.css"/>
+    <title>eHUB Provider API</title>
+</head>
+<body>
+<h1>Ehub Provider API</h1>
+
+<p>
+    <a title="eHUB Developers page" href="../">Home</a>
+</p>
+
+<h3>Background</h3>
+
+<p>Axiell eHUB is a media proxy between media vendors and end users. It needs to call the connected media providers through their API.
+    connecting eHub to their providers. The current scenario is that the media provider has already its API (which fulfills the eHub requirements) and the
+    adapter code is written by Axiell Developers and added to eHub. This is usually time consuming both in terms of writing a new code and communicating with
+    the Provider Developers. Also a new version of eHub needs to be deployed each time a new provider is implemented.
+</p>
+
+<p>Therefore a new approach is suggested and a new Ehub Provider API (EP API) interface is designed. The main idea is that if the media provider delivers a
+    server code implementing EP API then no coding is required at the eHub site and the new media provider could be added just by submitting the EP parameters
+    from eHub Administration Pages. No new version of eHub needs to be deployed, and the media provider data is saved in the eHub database.</p>
+
+</body>
+</html>
