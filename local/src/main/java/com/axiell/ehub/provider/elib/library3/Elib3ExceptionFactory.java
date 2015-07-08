@@ -17,7 +17,7 @@ public class Elib3ExceptionFactory extends AbstractContentProviderExceptionFacto
     }
 
     @Override
-    protected String getStatus(final ErrorDTO error) {
+    protected String getCode(final ErrorDTO error) {
         return null;
     }
 
@@ -27,7 +27,7 @@ public class Elib3ExceptionFactory extends AbstractContentProviderExceptionFacto
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
         return null;
     }
 }

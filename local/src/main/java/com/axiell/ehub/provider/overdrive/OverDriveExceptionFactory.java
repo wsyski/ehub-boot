@@ -22,7 +22,7 @@ public class OverDriveExceptionFactory extends AbstractContentProviderExceptionF
     }
 
     @Override
-    protected String getStatus(final ErrorDTO error) {
+    protected String getCode(final ErrorDTO error) {
         return error == null ? null : error.getErrorCode();
     }
 
@@ -32,20 +32,20 @@ public class OverDriveExceptionFactory extends AbstractContentProviderExceptionF
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status, final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
         ErrorCauseArgumentValue.Type type = null;
-        if (status != null) {
-            if (STATUS_NOT_FOUND.equals(status)) {
+        if (code != null) {
+            if (STATUS_NOT_FOUND.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
-            } else if (STATUS_NO_COPIES_AVAILABLE.equals(status)) {
+            } else if (STATUS_NO_COPIES_AVAILABLE.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
-            } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(status)) {
+            } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
-            } else if (STATUS_TITLE_ALREADY_CHECKED_OUT.equals(status)) {
+            } else if (STATUS_TITLE_ALREADY_CHECKED_OUT.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
-            } else if (STATUS_PATRON_EXCEEDED_CHURNING_LIMIT.equals(status)) {
+            } else if (STATUS_PATRON_EXCEEDED_CHURNING_LIMIT.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
-            } else if (STATUS_ANOTHER_FORMAT_LOCKED_IN.equals(status)) {
+            } else if (STATUS_ANOTHER_FORMAT_LOCKED_IN.equals(code)) {
                 type = ErrorCauseArgumentValue.Type.ANOTHER_FORMAT_LOCKED_IN;
             }
         }

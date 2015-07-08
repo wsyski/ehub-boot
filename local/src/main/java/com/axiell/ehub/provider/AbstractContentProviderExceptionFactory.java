@@ -7,7 +7,6 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.jboss.resteasy.client.ClientResponse;
 
 import javax.ws.rs.ProcessingException;
@@ -33,11 +32,11 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
 
     @Override
     public InternalServerErrorException create(final Response response) {
-        String status = null;
+        String code = null;
         String message;
         try {
             E entity = readEntity(response, clazz);
-            status = getStatus(entity);
+            code = getCode(entity);
             message = getMessage(entity);
         } catch (ProcessingException ex) {
             message = readEntity(response, String.class);
@@ -45,15 +44,15 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         if (StringUtils.isBlank(message)) {
             message = DEFAULT_MESSAGE;
         }
-        ErrorCauseArgumentValue.Type type = getErrorCauseArgumentValueType(status, message);
+        ErrorCauseArgumentValue.Type type = getErrorCauseArgumentValueType(code, message);
         if (type != null) {
             return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
         }
-        if (StringUtils.isBlank(status)) {
-            status = String.valueOf(getStatusCode(response));
+        if (StringUtils.isBlank(code)) {
+            code = String.valueOf(getStatusCode(response));
         }
         final ErrorCauseArgument nameArg = makeContentProviderNameErrorCauseArgument(contentProviderConsumer.getContentProvider());
-        final ErrorCauseArgument statusArg = makeStatusCodeErrorCauseArgument(status);
+        final ErrorCauseArgument statusArg = makeStatusCodeErrorCauseArgument(code);
         return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, nameArg, statusArg);
     }
 
@@ -62,8 +61,8 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         return status == null ? UNKNOWN_STATUS_CODE : status.getStatusCode();
     }
 
-    protected ErrorCauseArgument makeStatusCodeErrorCauseArgument(final String status) {
-        return new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS, status);
+    protected ErrorCauseArgument makeStatusCodeErrorCauseArgument(final String code) {
+        return new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS, code);
     }
 
     protected ErrorCauseArgument makeContentProviderNameErrorCauseArgument(final ContentProvider contentProvider) {
@@ -80,9 +79,9 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         }
     }
 
-    protected abstract String getStatus(final E entity);
+    protected abstract String getCode(final E entity);
 
     protected abstract String getMessage(final E entity);
 
-    protected abstract ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status, final String message);
+    protected abstract ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message);
 }

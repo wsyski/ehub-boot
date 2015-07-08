@@ -18,8 +18,8 @@ public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<
     }
 
     @Override
-    protected String getStatus(final ErrorDTO error) {
-        return error == null ? null : error.getStatus();
+    protected String getCode(final ErrorDTO error) {
+        return error == null ? null : error.getCode();
     }
 
     @Override
@@ -28,13 +28,13 @@ public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
         ErrorCauseArgumentValue.Type type = null;
-        if (status != null) {
+        if (code != null) {
             try {
-                type = ErrorCauseArgumentValue.Type.valueOf(status);
+                type = ErrorCauseArgumentValue.Type.valueOf(code);
             } catch (IllegalArgumentException ex) {
-                LOGGER.info("Unknown content provider status: " + status);
+                LOGGER.info("Unknown content provider code: " + code);
             }
         }
         return type;

@@ -40,8 +40,4 @@ public class AuthInfo {
                                             final long timestamp) {
         return Lists.newArrayList(contentProviderName, siteId, ehubConsumerId, patronId, timestamp);
     }
-
-    void setTimestamp(final long timestamp) {
-        this.timestamp=timestamp;
-    }
 }

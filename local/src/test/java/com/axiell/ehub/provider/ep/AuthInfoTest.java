@@ -10,6 +10,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -20,15 +21,24 @@ public class AuthInfoTest extends ContentProviderDataAccessorTestFixture {
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     private static final String SITE_ID = "siteId";
     private static final String SECRET_KEY = "secretKey";
+    private AuthInfo underTest;
 
     @Test
     public void testToString() throws EhubException {
         givenContentProviderConsumerProperties();
         givenPatronIdInPatron();
-        AuthInfo authInfo = new AuthInfo(contentProviderConsumer, patron);
-        authInfo.setTimestamp(TIMESTAMP);
-        assertThat(authInfo.toString(), Matchers.is(
+        whenAuthInfoCreated();
+        thenExpectedToString();
+    }
+
+    private void thenExpectedToString() {
+        assertThat(underTest.toString(), Matchers.is(
                 "realm=\"provider TEST_EP\" site_id=\"siteId\" ehub_consumer_id=\"1\", ehub_patron_id=\"patronId\" timestamp=\"1436350109\", signature=\"Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D\""));
+    }
+
+    private void whenAuthInfoCreated() {
+        underTest = new AuthInfo(contentProviderConsumer, patron);
+        ReflectionTestUtils.setField(underTest, "timestamp", TIMESTAMP);
     }
 
     private void givenContentProviderConsumerProperties() {

@@ -17,7 +17,7 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
     }
 
     @Override
-    protected String getStatus(final ErrorDTO error) {
+    protected String getCode(final ErrorDTO error) {
         return null;
     }
 
@@ -27,7 +27,7 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
         ErrorCauseArgumentValue.Type type = null;
         if (message != null) {
             if (message.contains(MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE)) {

@@ -26,8 +26,4 @@ public class AuthInfo {
         Signature signature = new Signature(siteId, libraryCard, secretKey, timestamp);
         return String.format(AUTHORIZATION_HEADER_FORMAT, libraryId, timestamp, signature.toString());
     }
-
-    void setTimestamp(final long timestamp) {
-        this.timestamp=timestamp;
-    }
 }

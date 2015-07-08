@@ -7,13 +7,13 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorDTO {
     private String message;
-    private String status;
+    private String code;
 
     public String getMessage() {
         return message;
     }
 
-    public String getStatus() {
-        return status;
+    public String getCode() {
+        return code;
     }
 }

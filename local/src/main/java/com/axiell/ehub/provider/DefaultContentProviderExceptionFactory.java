@@ -15,7 +15,7 @@ public class DefaultContentProviderExceptionFactory extends AbstractContentProvi
     }
 
     @Override
-    protected String getStatus(final String error) {
+    protected String getCode(final String error) {
         return null;
     }
 
@@ -25,7 +25,7 @@ public class DefaultContentProviderExceptionFactory extends AbstractContentProvi
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String status,final String message) {
+    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
         return null;
     }
 }
