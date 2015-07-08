@@ -1,0 +1,37 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../css/ehub.css"/>
+    <title>eHub Provider API</title>
+</head>
+<body>
+<h1>eHub Provider API</h1>
+
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../">Home</a></li>
+    <li class="active">eHub Provider API</li>
+</ol>
+
+<h3>Background</h3>
+
+<p>Axiell eHub is a media proxy between media vendors and end users. It needs to call the connected media providers through their API thus
+    connecting eHub to their providers. The current scenario is that the media provider has already its API (which fulfills the eHub requirements) and the
+    adapter code is written by Axiell Developers and added to eHub. This is usually time consuming both in terms of writing a new code and communicating with
+    the Provider Developers. Also a new version of eHub needs to be deployed each time a new provider is implemented.
+</p>
+
+<p>The above scenario disadvantages forced a new approach, where a new eHub Provider API (EP API) interface is designed. The main idea is that if the media provider delivers a
+    server code implementing EP API then no coding is required at the eHub site and the new media provider could be added just by submitting the EP parameters
+    from eHub Administration Pages. No new version of eHub needs to be deployed, and the media provider data is saved in the eHub database.</p>
+
+<h3>eHub Provider API Fundamentals</h3>
+<ul>
+    <li><a title="eHub Provider API Design" href="docs/design.html">Design</a></li>
+    <li><a title="eHub Provider API User handling" href="docs/users.html">User Handling</a></li>
+    <li><a title="eHub Provider API Security" href="docs/security.html">Security</a></li>
+    <li><a title="eHub Provider API error handling" href="docs/errors.html">Error Handling</a></li>
+    <li><a title="eHub Provider API parameters" href="docs/parameters.html">Parameters</a></li>
+    <li><a title="eHub Provider API individual calls" href="api">Individual calls</a></li>
+</ul>
+
+</body>
+</html>

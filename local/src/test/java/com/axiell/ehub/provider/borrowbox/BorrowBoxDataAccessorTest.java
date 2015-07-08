@@ -4,7 +4,8 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,7 +17,7 @@ import java.util.Date;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     private BorrowBoxDataAccessor underTest;
     @Mock
@@ -48,7 +49,6 @@ public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccess
         givenPatronInCommandData();
         givenBorrowBoxFacadeReturnsFormats();
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
         whenGetFormats();
@@ -58,7 +58,6 @@ public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void createLoan() {
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProviderRecordIdInCommandData();
@@ -110,5 +109,10 @@ public class BorrowBoxDataAccessorTest extends AbstractContentProviderDataAccess
 
     public void whenGetContent() {
         actualContentLink = underTest.getContent(commandData);
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_BORROWBOX;
     }
 }

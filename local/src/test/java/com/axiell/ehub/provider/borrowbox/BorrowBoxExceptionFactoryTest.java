@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
+import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
+public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
     private static final String STATUS_NOT_AVAILABLE = "notAvailable";
 

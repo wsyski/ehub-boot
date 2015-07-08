@@ -1,0 +1,126 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHub Provider API Error Handling</title>
+</head>
+<body>
+<h1>eHub Provider API Error Handling</h1>
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
+    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
+    <li class="active">eHub Provider API Error Handling</li>
+</ol>
+
+<p>
+    eHub Provider API errors are communicated through HTTP status codes and a JSON message that contains a more detailed explanation of the error. HTTP
+    responses with a status code >399 should contain a message that explains the error. Aside
+    from these the API might reply with a HTTP status code >= 500 for internal errors.
+</p>
+
+<p>JSON messages have the following format:</p>
+<pre>
+    {
+    "message": &lt;error status&gt;,
+    "status": &lt;error status&gt;
+    }
+</pre>
+
+<p>In the above:</p>
+<table class="table">
+    <tr class="tab-row">
+        <td>&lt;message&gt;</td>
+        <td>A detailed error message explaining the problem. This message is not shown to the eHub users but logged in the application log.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;status&gt;</td>
+        <td>Error status code. There are 2 types of error status codes:
+            <ol>
+                <li>Standard error statuses. Those error statuses are translated into localized messages in eHub and shown to the eHub user, if the error
+                    occurs.
+                </li>
+                <li>Non-standard error statuses. Those error statuses are specific to the provider and can not be translated into a localized message and a
+                    general error message is shown to the eHub user, if the error occurs.
+                </li>
+            </ol>
+            It is recommended to use standard error statuses whenever possible.
+        </td>
+    </tr>
+</table>
+ex.:
+<pre>
+    {
+    "message": "Not enough credit for this transaction",
+    "status": "BORROWER_LIMIT_REACHED"
+    }
+</pre>
+
+<p>The following standard error statuses are defined in eHub Provider API</p>
+<table class="table">
+    <tr class="tab-row">
+        <td>BORROWER_LIMIT_REACHED</td>
+        <td>You have reached your limit when it comes to the number of e-media loans</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INACTIVE_LOAN</td>
+        <td>The loan is no longer active</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LIBRARY_LIMIT_REACHED</td>
+        <td>The library has reached its limit when it comes to the number of e-media loans</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED</td>
+        <td>The maximum number of downloads has been reached for this book</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_CONTENT_IN_LOAN</td>
+        <td>The loan does not contain any content</td>
+    </tr>
+    <tr class="tab-row">
+        <td>PRODUCT_INACTIVE</td>
+        <td>The book is inactive and is therefore unavailable to loan</td>
+    </tr>
+    <tr class="tab-row">
+        <td>PRODUCT_UNAVAILABLE</td>
+        <td>The book is unavailable to loan when it lacks a valid business model</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_CONTENT_PROVIDER_RECORD_ID</td>
+        <td>The provided Content Provider Record ID is invalid</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_REGION_ID</td>
+        <td>The configured Region ID is invalid</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_FORMAT_ID</td>
+        <td>The ID of the requested format is invalid</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CREATE_LOAN_FAILED</td>
+        <td>Could not create loan</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_LOAN_ID</td>
+        <td>The format of the provided loan ID is invalid</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CHECKOUT_NOT_FOUND</td>
+        <td>Your checkout for this title could not be found</td>
+    </tr>
+    <tr class="tab-row">
+        <td>ALREADY_ON_LOAN</td>
+        <td>The record is already loaned to this patron</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_PATRON</td>
+        <td>Invalid patron</td>
+    </tr>
+    <tr class="tab-row">
+        <td>ANOTHER_FORMAT_LOCKED_IN</td>
+        <td>Another format has already been locked in</td>
+    </tr>
+</table>
+
+</body>
+</html>

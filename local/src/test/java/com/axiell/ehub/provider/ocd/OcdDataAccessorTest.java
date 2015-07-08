@@ -4,8 +4,9 @@ import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.CommandData;
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,7 +18,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
-public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+
     private OcdDataAccessor underTest;
     @Mock
     private IOcdAuthenticator ocdAuthenticator;
@@ -52,7 +54,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
         givenContentProviderRecordIdInCommandData();
         givenContentProviderAliasInCommandData();
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
         whenGetFormats();
@@ -61,7 +62,7 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     }
 
     private void givenFormatHandlerReturnsContentProviderFormat() {
-        given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, CONTENT_PROVIDER_ALIAS, RECORD_ID)).willReturn(FORMAT_ID);
+        given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, getContentProviderName(), RECORD_ID)).willReturn(FORMAT_ID);
     }
 
     private void whenGetFormats() {
@@ -72,7 +73,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     public void getFormats_MediaNotFound() {
         givenContentProviderRecordIdInCommandData();
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
         whenGetFormats();
@@ -82,7 +82,6 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
     @Test
     public void createLoan_success() {
         givenBearerToken();
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProviderRecordIdInCommandData();
@@ -141,5 +140,10 @@ public class OcdDataAccessorTest extends AbstractContentProviderDataAccessorTest
 
     public void whenGetContent() {
         actualContentLink = underTest.getContent(commandData);
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_OCD;
     }
 }

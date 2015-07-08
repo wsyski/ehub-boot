@@ -1,0 +1,131 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHub Provider API Security</title>
+</head>
+<body>
+<h1>eHub Provider API Security</h1>
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
+    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
+    <li class="active">eHub Provider API Security</li>
+</ol>
+
+<p>The eHub Provider REST API uses the standard HTTP Authorization header to pass authentication information. Under the eHub Provider authentication scheme, the
+    Authorization header has the following form.</p>
+
+<p>
+    <code>Authorization: realm="provider &lt;content provider name&gt;" site_id="&lt;site id&gt;" ehub_consumer_id="&lt;ehub consumer id&gt;", ehub_patron_id="&lt;patron
+        id&gt;" timestamp="&lt;timestamp&gt;", signature="&lt;signature&gt;"</code></p>
+In the above:
+<table class="table">
+    <tr class="tab-row">
+        <td>&lt;content provider name&gt;</td>
+        <td>Content Provider name instance ex. "TEST_EP" as assigned by eHub.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;site id&gt;</td>
+        <td>Site id as assigned by provider, or any string if not relevant ex. "siteId"</td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;ehub consumer id&gt;</td>
+        <td>Ehub consumer id as assigned by eHub. It is always a positive long value ex. "1"</td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;patron id&gt;</td>
+        <td>Patron id as assigned by the local management system (LMS). See the discussion about <a title="eHub Provider API User handling" href="users.html">user
+            handling</a>. It could be any string ex. "patronId"
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;timestamp&gt;</td>
+        <td>Timestamp expressed in seconds since <a title="Unix time" href="https://en.wikipedia.org/wiki/Unix_time">Unix Epoch</a>.
+        <td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;signature&gt;</td>
+        <td>Request signature calculated as HMAC-SHA1 digest of the data included in the Authorization Header with the secret key taken as the value of
+            parameter "EP_SECRET_KEY" (see <a title="eHub Provider API parameters" href="parameters.html">parameters</a> section.
+        <td>
+    </tr>
+</table>
+
+<p>In the above example if the secret key is "secretKey"</p>
+
+<p>
+    <code>Authorization: realm="provider TEST_EP" site_id="siteId" ehub_consumer_id="1", ehub_patron_id="patronId" timestamp="1436350109",
+        signature="Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D"</code></p>
+
+<h4>Request Signature</h4>
+
+<p>A request signature is calculated according to the following algorithm:</p>
+<ol>
+    <li>
+        First a Signature base string is created by concatenating the following values:
+        <ul>
+            <li>&lt;content provider name&gt;</li>
+            <li>&lt;site id&gt;</li>
+            <li>&lt;ehub consumer id&gt;</li>
+            <li>&lt;patron id&gt;</li>
+            <li>&lt;timestamp&gt;</li>
+        </ul>
+
+        <p>In the above example the base string would be calculated as follows:</p>
+
+        <p><code>TEST_EPsiteId1patronId1436350109</code></p>
+    </li>
+    <p>
+
+    <p>The HMAC-SHA1 function is used in the following way:</p>
+
+    <p><code>digest = HMAC-SHA1 (key, text)</code></p>
+
+    <p>where</p>
+    <ul>
+        <li>text: is set to the value of the signature base string</li>
+        <li>key: is set to the secret key of the parameter "EP_SECRET_KEY" (see <a title="eHub Provider API parameters"
+                                                                                   href="parameters.html">parameters</a> section.
+        </li>
+        <li>digest: is used to set the value of the "signature" parameter, after the result bytes are base64-encoded</li>
+    </ul>
+    <p>For example if the Signature base string is "TEST_EPsiteId1patronId1436350109" the base64 encoded digest would be</p>
+
+    <p><code>Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D</code></p>
+
+    <p>if the secret key is "secretKey".</p>
+    </li>
+</ol>
+
+<h5>Percent Encoding</h5>
+
+<p>The existing percent-encoding methods do not guarantee a consistent construction of the signature base string. Therefore the eHub defines the following
+    method for percent-encoding/URL-encoding strings:</p>
+<ol>
+    <li>Text values are first encoded as UTF-8 octets per [RFC3629] if they are not already. This does not include binary values that are not intended for human
+        consumption.
+    </li>
+    <li>
+        <p>The values are then escaped using the [RFC3986] percent-encoding (%XX) mechanism as follows</p>
+        <ol>
+            <li>
+                <p>Characters in the unreserved character set as defined by</p>
+
+                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html">RFC3986</a>, Section 2.3 (ALPHA, DIGIT, "-", ".", "_",
+                    "~") MUST NOT be encoded.</p>
+            </li>
+            <li>
+                <p>All other characters MUST be encoded.</p>
+            </li>
+            <li>
+                <p>The two hexadecimal characters used to represent encoded characters MUST be uppercase.</p>
+            </li>
+        </ol>
+    </li>
+</ol>
+<p>This method is used only in the construction of the signature base string. </p>
+
+<p>This method is different from the encoding scheme used by the "application/x-www-form-urlencoded" content-type (for example, it encodes space characters as
+    "%20" and not using the "+" character). It MAY be different from the percent-encoding functions provided by web-development frameworks (e.g., encode
+    different characters, use lowercase hexadecimal characters).</p>
+</body>
+</html>

@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
+import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class Elib3ExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
+public class Elib3ExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
 
     @Mock

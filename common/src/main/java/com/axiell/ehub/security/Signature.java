@@ -59,6 +59,9 @@ public final class Signature {
      */
     @Override
     public String toString() {
+        if (digest==null) {
+            return null;
+        }
         final String base64Signature = encodeBase64String(digest);
         return encode(base64Signature);
     }

@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ContentProviderExceptionFactoryFixture;
+import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OverDriveExceptionFactoryTest extends ContentProviderExceptionFactoryFixture<ErrorDTO> {
+public class OverDriveExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<ErrorDTO> {
     protected static final String MESSAGE = "message";
 
     @Mock

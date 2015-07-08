@@ -1,0 +1,41 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHUB Developers</title>
+</head>
+<body>
+    <h1>eHUB Developers</h1>
+    <p>
+        <a title="The main eHUB Developers page" href="../../">Home</a> > <a title="The main eHUB Developers APIs page" href="index.html">APIs</a>
+    </p>
+    <h3>eHUB Formats API</h3>
+    <p>The Formats API delivers a list of the formats for a specific record.</p>
+    <p>Use the query parameters detailed below to decide in which language the names and the descriptions should be translated in. If no language is provided the formats will be delivered in a default language.</p>
+
+    <h3>Accessing the Formats API</h3>
+    <p>All you need to start is the name of the Content Provider as defined by the eHUB and the ID of the record at the Content Provider that you want to get the available formats for.</p>
+    <h4>Resource URL</h4>
+    <code>https://ehub.axiell.com/v1/content-providers/{Content Provider Name}/records/{Content Provider Record ID}/formats?parameters</code>
+
+    <h4>Query Parameters</h4>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>language</td>
+            <td>The ISO 639 alpha-2 or alpha-3 language code used when getting the translated names and descriptions of the formats</td>
+        </tr>
+    </table>
+
+    <h3>How to return a list of available formats</h3>
+    <p>The Formats API can be utilized to return a list of formats for a record by accessing the formats endpoint.</p>
+    <pre>GET https://ehub.axiell.com/v1/content-providers/atingo/records/123456/formats?language=en
+Authorization: eHUB ehub_consumer_id="1", ehub_library_card="909265910", ehub_pin="4447", ehub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"</pre>
+
+    <p>A call to the formats endpoint returns a list of formats as shown in the example below.</p>
+    <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
+&lt;ehub:contentProviderFormats xmlns:ehub=&quot;http://ehub.axiell.com&quot;&gt;
+    &lt;contentProviderFormat description=&quot;description1&quot; iconUrl=&quot;iconUrl1&quot; id=&quot;id1&quot; name=&quot;name1&quot;/&gt;
+    &lt;contentProviderFormat description=&quot;description2&quot; id=&quot;id2&quot; name=&quot;name2&quot;/&gt;
+&lt;/ehub:contentProviderFormats&gt;
+    </pre>
+</body>
+</html>

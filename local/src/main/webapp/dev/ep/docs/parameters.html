@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHub Developers</title>
+</head>
+<body>
+<h1>eHub Provider API Parameters</h1>
+
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
+    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
+    <li class="active">eHub Provider API Parameters</li>
+</ol>
+
+<ul>
+    <li>The following parameters are used for each eHub Provider API instance:
+        <table class="table">
+            <tr class="tab-row">
+                <td>API_BASE_URL</td>
+                <td>eHub Provider API base url ex. if API_BASE_URL="https://provider.com/ehub-api", then the checkout url is:
+                    "https://provider.com/ehub-api/v1/checkouts".
+                </td>
+            </tr>
+        </table>
+    </li>
+    <li>The following parameters are used for each eHub Provider API instance and eHub Consumer combination:
+        <table class="table">
+            <tr class="tab-row">
+                <td>EP_SITE_ID</td>
+                <td>Unique site identifier at the eHub Provider. If the provider does not use this parameter then it can be set to any value. This value is
+                    always sent
+                    in the Authorization Http header in every request originating at eHub. See the <a title="eHub Provider API Security" href="security.html">security</a>
+                    page for more information.
+                </td>
+            </tr>
+            <tr class="tab-row">
+                <td>EP_SECRET_KEY</td>
+                <td>A UTF-8 encoded secret key used to produce the signature in the Authorization Http header in every request originating at eHub.
+                    The string is converted into bytes and then used to produce HMAC-SHA1 digest of the Authorization http header. See the <a
+                        title="eHub Provider API Security" href="security.html">security</a> page for more information.
+                </td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</body>
+</html>

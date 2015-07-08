@@ -3,8 +3,9 @@ package com.axiell.ehub.provider.f1;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.CommandData;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
-public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final String LOAN_ID = "loanId";
     private F1DataAccessor underTest;
     @Mock
@@ -55,7 +56,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenFormatIdFromF1Facade();
         givenFormatFromFormatFactory();
         whenGetFormats();
@@ -70,7 +70,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
         givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenNoSuchFormatFromF1Facade();
         whenGetFormats();
         thenFormatSetIsEmpty();
@@ -84,7 +83,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
     @Test
     public void createLoan_success() {
         givenFormatDecorationFromContentProvider();
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -113,7 +111,6 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     @Test(expected = InternalServerErrorException.class)
     public void createLoan_missingContent() {
-        givenContentProvider();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -144,7 +141,8 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
     }
 
     private void givenInternalServerErrorException() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class), anyString())).willReturn(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class), anyString())).willReturn(
+                internalServerErrorException);
     }
 
     private void givenCreateLoanFailedFromF1Facade() {
@@ -196,5 +194,10 @@ public class F1DataAccessorTest extends AbstractContentProviderDataAccessorTest 
 
     private void whenGetFormats() {
         actualFormats = underTest.getFormats(commandData);
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_F1;
     }
 }

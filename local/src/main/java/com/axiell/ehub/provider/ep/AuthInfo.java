@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AuthInfo {
     private static final String AUTHORIZATION_HEADER_FORMAT =
-            "provider realm=\"%s\" site_id=\"%s\" ehub_consumer_id=\"%s\", ehub_patron_id=\"%s\" timestamp=\"%d\", signature=\"%s\"";
+            "realm=\"provider %s\" site_id=\"%s\" ehub_consumer_id=\"%s\", ehub_patron_id=\"%s\" timestamp=\"%d\", signature=\"%s\"";
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;
@@ -39,5 +39,9 @@ public class AuthInfo {
     public static List<?> getSignatureItems(final String contentProviderName, final String siteId, final long ehubConsumerId, final String patronId,
                                             final long timestamp) {
         return Lists.newArrayList(contentProviderName, siteId, ehubConsumerId, patronId, timestamp);
+    }
+
+    void setTimestamp(final long timestamp) {
+        this.timestamp=timestamp;
     }
 }

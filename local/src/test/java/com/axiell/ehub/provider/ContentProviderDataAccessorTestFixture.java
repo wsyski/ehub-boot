@@ -9,6 +9,7 @@ import com.axiell.ehub.provider.record.format.*;
 import junit.framework.Assert;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -26,11 +27,12 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class AbstractContentProviderDataAccessorTest {
-    protected static final String CONTENT_PROVIDER_ALIAS = "ocd";
+public abstract class ContentProviderDataAccessorTestFixture {
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String CONTENT_PROVIDER_LOAN_ID ="contentProviderLoanId";
+    protected static final long CONTENT_PROVIDER_CONSUMER_ID =1L;
+    protected static final long EHUB_CONSUMER_ID =1L;
     protected static final String CONTENT_HREF = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
@@ -74,9 +76,17 @@ public abstract class AbstractContentProviderDataAccessorTest {
     protected ContentProviderLoan actualLoan;
     protected ContentLink actualContentLink;
 
+    @Before
+    public void fixtureSetUp() {
+        given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
+        given(contentProviderConsumer.getId()).willReturn(CONTENT_PROVIDER_CONSUMER_ID);
+        given(contentProviderConsumer.getEhubConsumer()).willReturn(ehubConsumer);
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+        given(contentProvider.getName()).willReturn(getContentProviderName());
+    }
+
     protected void givenContentProviderConsumerInCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
-        given(contentProviderConsumer.getEhubConsumer()).willReturn(ehubConsumer);
 
     }
 
@@ -89,7 +99,11 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void givenLibraryCardInPatron() {
-        given(patron.getLibraryCard()).willReturn(CARD);
+        givenLibraryCardInPatron(CARD);
+    }
+
+    protected void givenLibraryCardInPatron(final String libraryCard) {
+        given(patron.getLibraryCard()).willReturn(libraryCard);
     }
 
     protected void givenPinInPatron() {
@@ -101,7 +115,7 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void givenContentProviderAliasInCommandData() {
-        given(commandData.getContentProviderAlias()).willReturn(CONTENT_PROVIDER_ALIAS);
+        given(commandData.getContentProviderAlias()).willReturn(getContentProviderName());
     }
 
     protected void givenContentProviderFormatIdInCommandData() {
@@ -117,14 +131,10 @@ public abstract class AbstractContentProviderDataAccessorTest {
     }
 
     protected void givenTextBundle() {
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
     }
 
-    protected void givenContentProvider() {
-        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
-    }
 
     protected void givenFormatDecorationFromContentProvider() {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
@@ -200,4 +210,5 @@ public abstract class AbstractContentProviderDataAccessorTest {
         verify(commandData).setContentProviderLoanMetadata(any(ContentProviderLoanMetadata.class));
     }
 
+    protected abstract String getContentProviderName();
 }

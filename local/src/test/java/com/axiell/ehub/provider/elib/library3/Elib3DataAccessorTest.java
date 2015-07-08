@@ -2,7 +2,8 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final String RECORD_ID = "recordId";
 
     private Elib3DataAccessor underTest;
@@ -109,5 +110,10 @@ public class Elib3DataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     private void thenActualFormatsEqualsExpectedFormats() {
         assertThat(actualFormats, is(expectedFormats));
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_ELIB3;
     }
 }

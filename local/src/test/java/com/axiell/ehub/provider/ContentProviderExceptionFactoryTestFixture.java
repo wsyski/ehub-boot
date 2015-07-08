@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class ContentProviderExceptionFactoryFixture<E> {
+public abstract class ContentProviderExceptionFactoryTestFixture<E> {
     protected static final String LANGUAGE = "en";
     protected static final String STATUS_UNKNOWN = "unknown";
 

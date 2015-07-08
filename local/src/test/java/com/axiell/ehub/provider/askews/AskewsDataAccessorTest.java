@@ -6,7 +6,8 @@ import com.askews.api.LoanRequestResult;
 import com.askews.api.UserLookupResult;
 import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 
-public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final String RECORD_ID = "1";
     private static final Integer LOAN_ID = 1;
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
@@ -63,7 +64,6 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenLoanDetails();
         givenLoanHasNotFailed();
         givenDownloadUrlInLoanDetail();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenDownloadableContentDisposition();
         givenContentLink();
@@ -177,7 +177,6 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
     public void getContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanId();
-        givenContentProvider();
         givenContentProviderLoanMetadataInCommandData();
         givenFormatDecorationFromContentProviderLoanMetadata();
         givenDownloadableContentDisposition();
@@ -211,10 +210,14 @@ public class AskewsDataAccessorTest extends AbstractContentProviderDataAccessorT
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenTextBundle();
         whenGetFormats();
         thenActualFormatEqualsExpected();
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_ASKEWS;
     }
 }

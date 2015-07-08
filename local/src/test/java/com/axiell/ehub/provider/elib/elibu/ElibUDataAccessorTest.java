@@ -21,7 +21,7 @@ import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
@@ -30,7 +30,7 @@ import com.axiell.ehub.provider.record.format.FormatTextBundle;
 /**
  *
  */
-public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final Integer LICENSE_ID = 1;
     private static final String CONTENT_URL = "url";
 
@@ -164,7 +164,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
         givenResult();
@@ -283,7 +282,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
         givenResult();
@@ -312,7 +310,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
         givenResult();
@@ -339,7 +336,6 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenConsumeProductResponse();
         givenResult();
@@ -394,5 +390,10 @@ public class ElibUDataAccessorTest extends AbstractContentProviderDataAccessorTe
 
     private void whenGetContent() {
         actualContentLink = underTest.getContent(commandData);
+    }
+
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_ELIBU;
     }
 }

@@ -6,7 +6,7 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessorTest;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccessorTest {
+public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final String RECORD_ID = "1";
     private static final String FORMAT_ID = "1";
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
@@ -91,7 +91,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenProduct();
         givenProductAvailable(true);
         givenDiscoveryFormat();
-        givenContentProvider();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
         whenGetFormats();
@@ -113,7 +112,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenGetCirculationFormats();
         givenCirculationFormats();
         givenCirculationFormatType();
-        givenContentProvider();
         givenTextBundle();
         whenGetFormats();
         thenActualFormatEqualsExpected();
@@ -121,7 +119,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
 
     @Test
     public void getFormatsForUnavailableProduct() {
-        givenContentProviderName();
         givenFormatFromFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
@@ -133,7 +130,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenProduct();
         givenProductAvailable(false);
         givenDiscoveryFormat();
-        givenContentProvider();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
         givenExpectedInternalServerException();
@@ -160,7 +156,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenLinks();
         givenOverDriveContentLink();
         givenDownloadUrl();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
@@ -195,7 +190,6 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         givenContentLink();
         givenLinks();
         givenOverDriveContentLink();
-        givenContentProvider();
         givenFormatDecorationFromContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
@@ -377,8 +371,9 @@ public class OverDriveDataAccessorTest extends AbstractContentProviderDataAccess
         actualContentLink = underTest.getContent(commandData);
     }
 
-    private void givenContentProviderName() {
-        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_OVERDRIVE);
+    @Override
+    protected String getContentProviderName() {
+        return ContentProvider.CONTENT_PROVIDER_OVERDRIVE;
     }
 }
 
