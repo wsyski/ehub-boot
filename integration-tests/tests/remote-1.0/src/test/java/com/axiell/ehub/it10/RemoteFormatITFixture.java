@@ -31,8 +31,8 @@ public abstract class RemoteFormatITFixture extends RemoteITFixture {
     }
 
     private void givenContentProviderGetFormatsResponse() {
-        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.TEST_EP_RECORD_0_ID + "/formats"))
-                .willReturn(aResponse().withBodyFile("getFormatsResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.TEST_EP_RECORD_0_ID))
+                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     protected abstract void whenGetFormats() throws EhubException;

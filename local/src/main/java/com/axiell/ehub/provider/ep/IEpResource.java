@@ -17,6 +17,6 @@ public interface IEpResource {
     CheckoutDTO getCheckout(@PathParam("id") String checkoutId);
 
     @GET
-    @Path("records/{recordId}/formats")
-    FormatsDTO getFormats(@PathParam("recordId") String recordId);
+    @Path("records/{recordId}")
+    RecordDTO getRecord(@PathParam("recordId") String recordId);
 }

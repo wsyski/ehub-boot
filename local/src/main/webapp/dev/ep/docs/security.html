@@ -20,30 +20,30 @@
 In the above:
 <table class="table">
     <tr class="tab-row">
-        <td>&lt;content provider name&gt;</td>
+        <td>content provider name</td>
         <td>Content Provider name instance ex. "TEST_EP" as assigned by eHub.</td>
     </tr>
     <tr class="tab-row">
-        <td>&lt;site id&gt;</td>
+        <td>site id</td>
         <td>Site id as assigned by provider, or any string if not relevant ex. "siteId"</td>
     </tr>
     <tr class="tab-row">
-        <td>&lt;ehub consumer id&gt;</td>
+        <td>ehub consumer id</td>
         <td>Ehub consumer id as assigned by eHub. It is always a positive long value ex. "1"</td>
     </tr>
     <tr class="tab-row">
-        <td>&lt;patron id&gt;</td>
+        <td>patron id</td>
         <td>Patron id as assigned by the local management system (LMS). See the discussion about <a title="eHub Provider API User handling" href="users.html">user
             handling</a>. It could be any string ex. "patronId"
         </td>
     </tr>
     <tr class="tab-row">
-        <td>&lt;timestamp&gt;</td>
-        <td>Timestamp expressed in seconds since <a title="Unix time" href="https://en.wikipedia.org/wiki/Unix_time">Unix Epoch</a>.
+        <td>timestamp</td>
+        <td>Timestamp expressed in seconds since <a title="Unix time" href="https://en.wikipedia.org/wiki/Unix_time" target="_blank">Unix Epoch</a>.
         <td>
     </tr>
     <tr class="tab-row">
-        <td>&lt;signature&gt;</td>
+        <td>signature</td>
         <td>Request signature calculated as HMAC-SHA1 digest of the data included in the Authorization Header with the secret key taken as the value of
             parameter "EP_SECRET_KEY" (see <a title="eHub Provider API parameters" href="parameters.html">parameters</a> section.
         <td>
@@ -63,11 +63,11 @@ In the above:
     <li>
         First a Signature base string is created by concatenating the following values:
         <ul>
-            <li>&lt;content provider name&gt;</li>
-            <li>&lt;site id&gt;</li>
-            <li>&lt;ehub consumer id&gt;</li>
-            <li>&lt;patron id&gt;</li>
-            <li>&lt;timestamp&gt;</li>
+            <li>content provider name</li>
+            <li>site id</li>
+            <li>ehub consumer id</li>
+            <li>patron id</li>
+            <li>timestamp</li>
         </ul>
 
         <p>In the above example the base string would be calculated as follows:</p>
@@ -110,7 +110,7 @@ In the above:
             <li>
                 <p>Characters in the unreserved character set as defined by</p>
 
-                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html">RFC3986</a>, Section 2.3 (ALPHA, DIGIT, "-", ".", "_",
+                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html" target="_blank">RFC3986</a>, Section 2.3 (ALPHA, DIGIT, "-", ".", "_",
                     "~") MUST NOT be encoded.</p>
             </li>
             <li>

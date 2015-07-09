@@ -1,0 +1,59 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>getRecord</title>
+</head>
+
+<h1>getRecord</h1>
+
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
+    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
+    <li><a title="eHub Provider API individual calls" href="./">eHub Provider API individual calls</a></li>
+    <li class="active">getRecord</li>
+</ol>
+
+<h3>Request</h3>
+
+<p><code>GET /v1/records/&lt;record id&gt;</code></p>
+<table class="table">
+    <tr class="tab-row">
+        <td>record id</td>
+        <td>The content provider record id.</td>
+    </tr>
+</table>
+<h3>Response</h3>
+
+<pre>
+    {
+    "recordId": "&lt;record id&gt;",
+    "formats": ["&lt;format id&gt;", "&lt;format id&gt;", ...]
+    }
+</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>record id</td>
+        <td>The content provider record id.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>format id</td>
+        <td>The content provider record format id.</td>
+    </tr>
+</table>
+
+<p>The response lists the available format ids for a single record. The format ids are provider dependent and defined during the media provider configuration
+    ex. eAudio. The returned list of formats could depend on the ehub_patron_id parameter send in the Authorization header (see
+    <a title="eHub Provider API Security" href="../docs/security.html">eHub Provider API Security</a>),
+    so the user is presented with not all the formats ids, but only those he can actually borrow at the time of request. If the user already holds a loan on a
+    media in a specific format it is preferred that this format id appears in the response. The details of the availability algorithm are media provider
+    specific.</p>
+
+<p>Example response:</p>
+<pre>
+    {
+    "recordId": "123456789",
+    "formats": ["eAudio","eBook"]
+    }
+</pre>
+</body>
+</html>

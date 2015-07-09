@@ -35,7 +35,7 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final FormatsDTO formatsDTO = epiFacade.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
+        final RecordDTO formatsDTO = epiFacade.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
         final Formats formats = new Formats();
         for (String formatId : formatsDTO.getFormats()) {
             final Format format = formatFactory.create(contentProvider, formatId, language);
@@ -68,7 +68,7 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final CheckoutDTO checkoutDTO) {
         final Date expirationDate = checkoutDTO.getExpirationDate();
-        final String loanId = checkoutDTO.getLoanId();
+        final String loanId = checkoutDTO.getCheckoutId();
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 

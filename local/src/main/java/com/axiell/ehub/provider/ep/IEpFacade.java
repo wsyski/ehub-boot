@@ -5,7 +5,7 @@ import com.axiell.ehub.patron.Patron;
 
 interface IEpFacade {
 
-    FormatsDTO getFormats(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
+    RecordDTO getFormats(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
 
     CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId, String formatId);
 

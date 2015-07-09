@@ -7,7 +7,13 @@ import java.util.List;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FormatsDTO {
+public class RecordDTO {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
     private List<String> formats;
 
     public List<String> getFormats() {

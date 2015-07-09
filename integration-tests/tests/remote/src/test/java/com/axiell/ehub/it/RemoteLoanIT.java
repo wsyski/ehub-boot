@@ -127,7 +127,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     private void givenCheckoutTestErrorResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(
-                "CheckOutTestResponse_error.xml").withHeader("Content-Type", "application/xml").withStatus(200)));
+                "CheckOutTestResponse_error.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
     private Checkout whenCheckout() throws EhubException {

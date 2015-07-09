@@ -1,91 +1,61 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
-    <title>eHub Developers</title>
+    <title>getCheckout</title>
 </head>
-<body>
-    <h1>eHub Developers</h1>
-    <p>
-        <a title="The main eHub Developers page" href="../../">Home</a> > <a title="The main eHub Developers APIs page" href="index.html">APIs</a>
-    </p>
-    <h3>eHub Loans API</h3>
-    <p>The Loans API is </p>
 
-    <h3>Using the Loans API</h3>
-    <p>Using POST and GET HTTP requests, you can use the Loans API to do the following:</p>
-    <ul>
-        <li>
-            <a href="#create">Create a loan</a>
-        </li>
-        <li>
-            <a href="#byId">Retrieve an ongoing loan by the eHub loan ID</a>
-        </li>
-        <li>
-            <a href="#byLmsLoanId">Retrieve an ongoing loan by the LMS loan ID</a>
-        </li>
-    </ul>
+<h1>getCheckout</h1>
 
-    <h4 id="create">Create a loan</h4>
-    <p>Below is the example POST request sent to the <b>v1/loans</b> endpoint.</p>
-    <pre>POST https://eHub.axiell.com/v1/loans
-Authorization: eHub eHub_consumer_id="1", eHub_library_card="909265910", eHub_pin="4447", eHub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"
+<ol class="breadcrumb">
+    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
+    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
+    <li><a title="eHub Provider API individual calls" href="./">eHub Provider API individual calls</a></li>
+    <li class="active">getCheckout</li>
+</ol>
 
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
-&lt;eHub:pendingLoan contentProviderFormatId=&quot;58&quot; contentProviderName=&quot;atingo&quot; contentProviderRecordId=&quot;9100128260&quot; lmsRecordId=&quot;lmsRecordId1&quot; xmlns:eHub=&quot;http://eHub.axiell.com&quot;/&gt;</pre>
+<h3>Request</h3>
 
-    <p>The response includes the URL to the content of the loan plus metadata about the loan.</p>
-    <pre>[Some HTTP Headers]
-Content-Type: application/xml; charset=utf-8
+<p><code>GET /v1/checkouts/&lt;checkout id&gt;</code></p>
 
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
-&lt;eHub:readyLoan id=&quot;1&quot; xmlns:eHub=&quot;http://eHub.axiell.com&quot;&gt;
-    &lt;contentProviderLoan expirationDate=&quot;2014-09-04T09:29:16.622+02:00&quot; id=&quot;123456789&quot;&gt;
-        &lt;streamingContent height=&quot;100&quot; url=&quot;https://example.com/content&quot; width=&quot;100&quot;/&gt;
-    &lt;/contentProviderLoan&gt;
-    &lt;lmsLoan id=&quot;lmsLoanId1&quot;/&gt;
-&lt;/eHub:readyLoan&gt;</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+</table>
 
-    <h4 id="byId">Retrieve an ongoing loan by the eHub loan ID</h4>
-    <p>Below is the example GET request sent to to the <b>v1/loans/{ID}</b> endpoint.</p>
-    <pre>GET https://eHub.axiell.com/v1/loans/123456789
-Authorization: eHub eHub_consumer_id="1", eHub_library_card="909265910", eHub_pin="4447", eHub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"</pre>
+<h3>Response</h3>
 
-    <p>The response includes the URL to the content of the loan plus metadata about the loan.</p>
-    <pre>[Some HTTP Headers]
-Content-Type: application/xml; charset=utf-8
+<pre>
+    {
+    "checkoutId": "&lt;checkout id&gt;",
+    "contentUrl": "&lt;content url&gt;",
+    "expirationDate": "&lt;expiration date&gt;"
+    }
+</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>content url</td>
+        <td>The media content url.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>expiration date</td>
+        <td>The checkout expiration date in <a title="ISO 8601 Date format" href="https://sv.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601 format</a>.
+        </td>
+    </tr>
+</table>
 
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
-&lt;eHub:readyLoan id=&quot;1&quot; xmlns:eHub=&quot;http://eHub.axiell.com&quot;&gt;
-    &lt;contentProviderLoan expirationDate=&quot;2014-09-04T09:29:16.622+02:00&quot; id=&quot;123456789&quot;&gt;
-        &lt;streamingContent height=&quot;100&quot; url=&quot;https://example.com/content&quot; width=&quot;100&quot;/&gt;
-    &lt;/contentProviderLoan&gt;
-    &lt;lmsLoan id=&quot;lmsLoanId1&quot;/&gt;
-&lt;/eHub:readyLoan&gt;</pre>
-
-    <h4 id="byLmsLoanId">Retrieve an ongoing loan by the LMS loan ID</h4>
-    <p>Below is the example GET request sent to to the <b>v1/loans?parameters</b> endpoint.</p>
-
-    <h5>Query Parameters</h5>
-    <table class="table table-striped table-bordered">
-        <tr>
-            <td>lmsLoanId</td>
-            <td>The ID of the loan in the Library Management System (LMS).</td>
-        </tr>
-    </table>
-
-    <pre>GET https://eHub.axiell.com/v1/loans/?lmsLoanId=lmsLoanId1
-Authorization: eHub eHub_consumer_id="1", eHub_library_card="909265910", eHub_pin="4447", eHub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"</pre>
-
-    <p>The response includes the URL to the content of the loan plus metadata about the loan.</p>
-    <pre>[Some HTTP Headers]
-Content-Type: application/xml; charset=utf-8
-
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;
-&lt;eHub:readyLoan id=&quot;1&quot; xmlns:eHub=&quot;http://eHub.axiell.com&quot;&gt;
-    &lt;contentProviderLoan expirationDate=&quot;2014-09-04T09:29:16.622+02:00&quot; id=&quot;123456789&quot;&gt;
-        &lt;streamingContent height=&quot;100&quot; url=&quot;https://example.com/content&quot; width=&quot;100&quot;/&gt;
-    &lt;/contentProviderLoan&gt;
-    &lt;lmsLoan id=&quot;lmsLoanId1&quot;/&gt;
-&lt;/eHub:readyLoan&gt;</pre>
+<p>Example response:</p>
+<pre>
+    {
+    "checkoutId": "123456",
+    "contentUrl": "https://provider.com/ehub-api/v1/records/123456789/content",
+    "expirationDate": "2016-01-01T00:00:00Z"
+    }
+</pre>
 </body>
 </html>
