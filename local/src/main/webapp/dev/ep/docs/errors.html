@@ -1,20 +1,20 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
-    <title>eHub Provider API Error Handling</title>
+    <title>eHUB Provider API Error Handling</title>
 </head>
 <body>
-<h1>eHub Provider API Error Handling</h1>
+<h1>eHUB Provider API Error Handling</h1>
 <ol class="breadcrumb">
-    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
-    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
-    <li class="active">eHub Provider API Error Handling</li>
+    <li><a title="The main eHUB Development page" href="../../">Home</a></li>
+    <li><a title="eHUB Provider API" href="../">eHUB Provider API</a></li>
+    <li class="active">eHUB Provider API Error Handling</li>
 </ol>
 
 <p>
-    eHub Provider API errors are communicated through HTTP status codes and a JSON message that contains a more detailed explanation of the error. HTTP
-    responses with a status code >399 should contain a message that explains the error. Aside
-    from these the API might reply with a HTTP status code >= 500 for internal errors.
+    eHUB Provider API errors are communicated through HTTP status codes and a JSON messages that contain a more detailed explanation of the error. HTTP
+    responses with a status code >399 should contain a message that explains the error. Aside from these the API might reply with a HTTP status code >= 500
+    for internal errors.
 </p>
 
 <p>JSON messages have the following format:</p>
@@ -29,17 +29,17 @@
 <table class="table">
     <tr class="tab-row">
         <td>&lt;message&gt;</td>
-        <td>A detailed error message explaining the problem. This message is not shown to the eHub users but logged in the application log.</td>
+        <td>A detailed error message explaining the problem. This message is not shown to the eHUB users, but logged in the application log.</td>
     </tr>
     <tr class="tab-row">
         <td>&lt;code&gt;</td>
         <td>Error code. There are 2 types of error codes:
             <ol>
-                <li>Standard error codes. Those error codes are translated into localized messages in eHub and shown to the eHub user, if the error
+                <li>Standard error codes. Those error codes are translated into localized messages in eHUB and shown to the eHUB user, if the error
                     occurs.
                 </li>
                 <li>Non-standard error codes. Those error codes are specific to the provider and can not be translated into a localized message and a
-                    general error message is shown to the eHub user, if the error occurs.
+                    general error message is shown to the eHUB user, if the error occurs.
                 </li>
             </ol>
             It is recommended to use standard error codes whenever possible.
@@ -54,7 +54,7 @@ ex.:
     }
 </pre>
 
-<p>The following standard error codes are defined in eHub Provider API</p>
+<p>The following standard error codes are defined in eHUB Provider API</p>
 <table class="table">
     <tr class="tab-row">
         <td>BORROWER_LIMIT_REACHED</td>

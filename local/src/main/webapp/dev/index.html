@@ -13,26 +13,30 @@
                                                               
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<html>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" type="text/css" href="../css/ehub.css"/>
-    <title>eHUB Developers</title>
+    <title>eHUB Development</title>
 </head>
 <body>
-    <h1>eHUB Developers</h1>
-    <p>Axiell eHUB is a media proxy between media vendors and end users. Axiell eHUB APIs provide a common interface to several media vendors' digital collections. They allow third party applications to integrate these collections to discover and circulate digital media.</p>
-    
-	<hr>
-	
+    <h1>eHUB Development</h1>
+    <p>Axiell eHUB is a media proxy between e-media content providers and end users. Axiell eHUB APIs provide a common interface to several e-media content providers' collections. They allow third party applications to integrate these collections to discover and circulate digital media.</p>
+
 	<h3>Getting started with eHUB APIs</h3>
+    <p>eHUB could serve both as a content provider to any Library System (currently Axiell Arena) and as a content consumer interfacing any other content providers (ex. Overdrive, Ocd, Elib). For this purpose exposes the following interfaces:</p>
     <ul>
-        <li>Read through the <a title="See the API documentation" href="ehub/docs">eHUB API documentation</a>.</li>
-        <li>Explore the <a title="eHUB APIs" href="ehub/api">eHUB APIs</a>.</li>
-        <li>Explore the <a title="eHUB Provider API" href="ep">eHUB Provider API</a>.</li>
-        <li>Apply for a developer account by contacting your sales representative, see <a title="Axiell" href="http://www.axiell.com">Axiell</a> home page for more information.</li>
-        <li>Sign a contract with one or several Content Providers that are integrated with the eHUB.</li>
+        <li>The <a title="eHUB API" href="ehub">eHUB API</a>, when it acts as a content provider to the Library Systems.</li>
+        <li>The <a title="eHUB Provider API" href="ep">eHUB Provider API</a>, when it interfaces other media providers.</li>
+    </ul>
+    <h3>Development processes and input requirements</h3>
+    <ul>
+        <li>The <a title="eHUB Loan Process" href="eHUBLoanProcess.pdf">e-media loan process</a> when using eHUB</li>
+        <li>The <a title="API Integration Process" href="eHUBAPIIntegrationProcess.pdf">process of integrating a new e-media content provider</a></li>
+        <li>A list of <a title="Integration Requirements" href="eMediaContentProviderIntegrationEHUBRequirements.pdf">input requirements</a> for Axiell to be able to integrate a new e-media content provider, and test the integration</li>
+        <li><a title="test cases" href="eMediaContentProviderIntegrationEHUBTestCases.pdf">Test cases</a> for testing of eHUB functionality</li>
+
     </ul>
 </body>
 </html>

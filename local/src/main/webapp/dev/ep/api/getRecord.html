@@ -7,9 +7,9 @@
 <h1>getRecord</h1>
 
 <ol class="breadcrumb">
-    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
-    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
-    <li><a title="eHub Provider API individual calls" href="./">eHub Provider API individual calls</a></li>
+    <li><a title="The main eHUB Development page" href="../../">Home</a></li>
+    <li><a title="eHUB Provider API" href="../">eHUB Provider API</a></li>
+    <li><a title="eHUB Provider API individual calls" href="./">eHUB Provider API individual calls</a></li>
     <li class="active">getRecord</li>
 </ol>
 
@@ -43,7 +43,7 @@
 
 <p>The response lists the available format ids for a single record. The format ids are provider dependent and defined during the media provider configuration
     ex. eAudio. The returned list of formats could depend on the ehub_patron_id parameter send in the Authorization header (see
-    <a title="eHub Provider API Security" href="../docs/security.html">eHub Provider API Security</a>),
+    <a title="eHUB Provider API Security" href="../docs/security.html">eHUB Provider API Security</a>),
     so the user is presented with not all the formats ids, but only those he can actually borrow at the time of request. If the user already holds a loan on a
     media in a specific format it is preferred that this format id appears in the response. The details of the availability algorithm are media provider
     specific.</p>

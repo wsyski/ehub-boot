@@ -1,33 +1,35 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
-    <title>eHub Provider API Users</title>
+    <title>eHUB Provider API Users</title>
 </head>
 <body>
-<h1>eHub Provider API Users</h1>
+<h1>eHUB Provider API Users</h1>
 
 <ol class="breadcrumb">
-    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
-    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
-    <li class="active">eHub Provider API Users</li>
+    <li><a title="The main eHUB Development page" href="../../">Home</a></li>
+    <li><a title="eHUB Provider API" href="../">eHUB Provider API</a></li>
+    <li class="active">eHUB Provider API Users</li>
 </ol>
 <p>
-    Media providers should assume that Axiell eHub is a trusted party and all its users (library patrons) already validated by the Local Management System (LMS)
-    before taking any action in eHub is taken. eHub users are uniquely identified by the combination of the eHub consumer (LMS instance) id and patron id.
-    The patron id a string identifier assigned by LMS and it is not the same as the borrower bar code (library card), although LMS can at any time retrive
-    the patron information (including the borrower bar code) for given patron id.</p>
+    Media providers should assume that Axiell eHUB is a trusted party and all its users (library patrons) are already validated by the Local Management System
+    (LMS) before taking any action in eHUB is taken. eHUB users are uniquely identified by the combination of an eHUB consumer (LMS instance) id and a patron
+    id. The patron id is a string identifier assigned by LMS and it is not the same as the borrower bar code (library card), although LMS can at any time
+    retrive the patron information (including the borrower bar code) for a given patron id.</p>
 
 The use of patron ids instead of the library cards has the following advantages:
 <ul>
-    <li>A patron at the library could have several cards which may cause problems when enforcing the borrowing limits</li>
-    <li>The cards could be replaced, and therefore do not uniquely identify the user</li>
+    <li>A patron at the library could have several cards which may cause problems when enforcing the borrowing limits.</li>
+    <li>The cards could be replaced, and therefore do not uniquely identify the user. The patron id remains the same as long as the patron is registered in
+        LMS.
+    </li>
     <li>Some libraries use social security numbers as library cards and dealing with them is restricted by the law regulations</li>
 </ul>
 <p>
-    It is assumed that if the media provider supports the concept of users, creates the users at the provider site automatically when needed. If it is required
-    that the users need to accept providers agreements before using their services it is suggested that the first time when the eHub user downloads a digital media
-    from the provider the user is redirected to the media provider agreement page where he has to accept the agreement text before proceeding with downloading
-    the media content.
+    It is assumed that if the media provider supports the concept of users, then it creates the users at the provider site automatically when needed. If it is
+    required that the users need to accept provider agreements before using their services it is suggested that the first time when the eHUB user downloads
+    a digital media from the provider site the user is redirected to the media provider agreement page where he has to accept the agreement text before
+    proceeding with the downloading of the media content.
 </p>
 </body>
 </html>

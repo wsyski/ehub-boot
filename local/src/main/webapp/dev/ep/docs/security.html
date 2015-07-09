@@ -1,17 +1,17 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
-    <title>eHub Provider API Security</title>
+    <title>eHUB Provider API Security</title>
 </head>
 <body>
-<h1>eHub Provider API Security</h1>
+<h1>eHUB Provider API Security</h1>
 <ol class="breadcrumb">
-    <li><a title="The main eHub Developers page" href="../../">Home</a></li>
-    <li><a title="eHub Provider API" href="../">eHub Provider API</a></li>
-    <li class="active">eHub Provider API Security</li>
+    <li><a title="The main eHUB Development page" href="../../">Home</a></li>
+    <li><a title="eHUB Provider API" href="../">eHUB Provider API</a></li>
+    <li class="active">eHUB Provider API Security</li>
 </ol>
 
-<p>The eHub Provider REST API uses the standard HTTP Authorization header to pass authentication information. Under the eHub Provider authentication scheme, the
+<p>The eHUB Provider REST API uses the standard HTTP Authorization header to pass authentication information. Under the eHUB Provider authentication scheme, the
     Authorization header has the following form.</p>
 
 <p>
@@ -21,7 +21,7 @@ In the above:
 <table class="table">
     <tr class="tab-row">
         <td>content provider name</td>
-        <td>Content Provider name instance ex. "TEST_EP" as assigned by eHub.</td>
+        <td>Content Provider name instance ex. "TEST_EP" as assigned by eHUB.</td>
     </tr>
     <tr class="tab-row">
         <td>site id</td>
@@ -29,11 +29,11 @@ In the above:
     </tr>
     <tr class="tab-row">
         <td>ehub consumer id</td>
-        <td>Ehub consumer id as assigned by eHub. It is always a positive long value ex. "1"</td>
+        <td>Ehub consumer id as assigned by eHUB. It is always a positive long value ex. "1"</td>
     </tr>
     <tr class="tab-row">
         <td>patron id</td>
-        <td>Patron id as assigned by the local management system (LMS). See the discussion about <a title="eHub Provider API User handling" href="users.html">user
+        <td>Patron id as assigned by the local management system (LMS). See the discussion about <a title="eHUB Provider API User handling" href="users.html">user
             handling</a>. It could be any string ex. "patronId"
         </td>
     </tr>
@@ -45,7 +45,7 @@ In the above:
     <tr class="tab-row">
         <td>signature</td>
         <td>Request signature calculated as HMAC-SHA1 digest of the data included in the Authorization Header with the secret key taken as the value of
-            parameter "EP_SECRET_KEY" (see <a title="eHub Provider API parameters" href="parameters.html">parameters</a> section.
+            parameter "EP_SECRET_KEY" (see <a title="eHUB Provider API parameters" href="parameters.html">parameters</a> section.
         <td>
     </tr>
 </table>
@@ -83,8 +83,8 @@ In the above:
     <p>where</p>
     <ul>
         <li>text: is set to the value of the signature base string</li>
-        <li>key: is set to the secret key of the parameter "EP_SECRET_KEY" (see <a title="eHub Provider API parameters"
-                                                                                   href="parameters.html">parameters</a> section.
+        <li>key: is set to the secret key of the parameter "EP_SECRET_KEY" (see
+            <a title="eHUB Provider API parameters" href="parameters.html">parameters</a> section.
         </li>
         <li>digest: is used to set the value of the "signature" parameter, after the result bytes are base64-encoded</li>
     </ul>
@@ -98,7 +98,7 @@ In the above:
 
 <h5>Percent Encoding</h5>
 
-<p>The existing percent-encoding methods do not guarantee a consistent construction of the signature base string. Therefore the eHub defines the following
+<p>The existing percent-encoding methods do not guarantee a consistent construction of the signature base string. Therefore the eHUB defines the following
     method for percent-encoding/URL-encoding strings:</p>
 <ol>
     <li>Text values are first encoded as UTF-8 octets per [RFC3629] if they are not already. This does not include binary values that are not intended for human
@@ -110,7 +110,8 @@ In the above:
             <li>
                 <p>Characters in the unreserved character set as defined by</p>
 
-                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html" target="_blank">RFC3986</a>, Section 2.3 (ALPHA, DIGIT, "-", ".", "_",
+                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html" target="_blank">RFC3986</a>, Section 2.3 (ALPHA,
+                    DIGIT, "-", ".", "_",
                     "~") MUST NOT be encoded.</p>
             </li>
             <li>
