@@ -1,8 +1,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
     <body>
         <wicket:panel>
+            <div wicket:id="feedback"/>
+            <h4>
+                <a wicket:id="newContentProviderLink" wicket:message="title:lnkNewContentProvider.title">
+                    <wicket:message key="lnkNewContentProvider.label"/>
+                </a>
+            </h4>
+
+            <div wicket:id="contentProviderFormContainer">
+                <div>
+                    <h4><wicket:message key="txtContentProviderFormHeader"/></h4>
+                </div>
+                <form wicket:id="contentProviderForm">
+                    <div>
+                        <label wicket:for="name">
+                            <wicket:message key="fldName.label"/>
+                        </label>
+                        <input wicket:id="name" type="text" wicket:message="title:fldName.title"></input>
+                    </div>
+                    <div wicket:id="properties">
+                        <label wicket:for="property">
+                            <span wicket:id="propertyLabel"></span>
+                        </label>
+                        <input wicket:id="property" type="text"></input>
+                    </div>
+                    <div>
+                        <input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnCreate.label,title:btnCreate.title"></input>
+                    </div>
+                </form>
+                <a wicket:id="cancelNewContentProviderLink" wicket:message="title:lnkCancelNewContentProvider.title">
+                    <wicket:message key="lnkCancelNewContentProvider.label"/>
+                </a>
+            </div>
+
             <h4><wicket:message key="txtContentProvidersHeader"/></h4>
-			
+
 			<table class="table table-bordered table-striped">
 			
 			<tr wicket:id="contentProviders">
@@ -11,6 +44,12 @@
                         <span wicket:id="contentProviderLinkLabel"></span>
                     </a>
 				</td>
+                <td class="text-center">
+                    <i class="icon-remove"></i>
+                    <a wicket:id="deleteLink" wicket:message="title:lnkDelete.title" onclick="">
+                        <wicket:message key="lnkDelete.label"/>
+                    </a>
+                </td>
         	</tr>
 			</table>
 			

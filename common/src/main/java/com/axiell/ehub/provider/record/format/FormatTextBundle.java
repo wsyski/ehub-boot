@@ -26,7 +26,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
     /**
      * Empty constructor required by JPA.
      */
-    protected FormatTextBundle() {
+    public FormatTextBundle() {
     }
 
     /**
@@ -62,7 +62,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param formatDecoration the {@link FormatDecoration} to set
      */
-    protected void setFormatDecoration(FormatDecoration formatDecoration) {
+    public void setFormatDecoration(FormatDecoration formatDecoration) {
         this.formatDecoration = formatDecoration;
     }
 
@@ -85,7 +85,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @param language the language of this {@link FormatTextBundle} as an ISO 639 alpha-2 or alpha-3
      *                 language code to set
      */
-    protected void setLanguage(final Language language) {
+    public void setLanguage(final Language language) {
         this.language = language;
     }
 
@@ -104,7 +104,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param name the name of the format in the specified language to set
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -123,7 +123,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param description the description of the format in the specified language to set
      */
-    protected void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 }

@@ -32,7 +32,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     /**
      * Empty constructor required by JPA.
      */
-    protected FormatDecoration() {
+    public FormatDecoration() {
     }
 
     /**
@@ -84,7 +84,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @param contentProvider the {@link ContentProvider} this {@link FormatDecoration}
      *                        belongs to
      */
-    protected void setContentProvider(ContentProvider contentProvider) {
+    public void setContentProvider(ContentProvider contentProvider) {
         this.contentProvider = contentProvider;
     }
 
@@ -103,7 +103,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param contentProviderFormatId the ID of the format at the {@link ContentProvider} to set
      */
-    protected void setContentProviderFormatId(String contentProviderFormatId) {
+    public void setContentProviderFormatId(String contentProviderFormatId) {
         this.contentProviderFormatId = contentProviderFormatId;
     }
 
@@ -123,7 +123,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param contentDisposition the {@link ContentDisposition} for the specified format to set
      */
-    protected void setContentDisposition(ContentDisposition contentDisposition) {
+    public void setContentDisposition(ContentDisposition contentDisposition) {
         this.contentDisposition = contentDisposition;
     }
 

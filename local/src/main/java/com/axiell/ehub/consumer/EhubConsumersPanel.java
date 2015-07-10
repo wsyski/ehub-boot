@@ -3,8 +3,6 @@
  */
 package com.axiell.ehub.consumer;
 
-import java.util.List;
-
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
@@ -14,6 +12,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 /**
  * A {@link Panel} that displays all available {@link EhubConsumer}s in the eHUB. It also provides the possibility
@@ -25,20 +25,20 @@ final class EhubConsumersPanel extends BreadCrumbPanel {
     private final EhubConsumerCreateForm ehubConsumerForm;
     private final EhubConsumerCreateLink newEhubConsumerLink;
 
-    @SpringBean(name = "consumerAdminController") 
+    @SpringBean(name = "consumerAdminController")
     private IConsumerAdminController consumerAdminController;
 
     /**
      * Constructs a new {@link EhubConsumersPanel}.
-     * 
-     * @param panelId the ID of this {@link Panel}
+     *
+     * @param panelId         the ID of this {@link Panel}
      * @param breadCrumbModel the {@link IBreadCrumbModel} to be used
      */
     EhubConsumersPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
         super(panelId, breadCrumbModel);
         ConsumersMediator consumersMediator = new ConsumersMediator();
         consumersMediator.registerEhubConsumersPanel(this);
-        
+
         ehubConsumersView = new EhubConsumerListView("ehubConsumers", breadCrumbModel, consumersMediator);
         add(ehubConsumersView);
 
@@ -53,18 +53,18 @@ final class EhubConsumersPanel extends BreadCrumbPanel {
     }
 
     private EhubConsumerCreateLink makeNewEhubConsumerLink(ConsumersMediator consumersMediator) {
-	EhubConsumerCreateLink link = new EhubConsumerCreateLink("newEhubConsumerLink", consumersMediator);
+        EhubConsumerCreateLink link = new EhubConsumerCreateLink("newEhubConsumerLink", consumersMediator);
         consumersMediator.registerEhubConsumerCreateLink(link);
         return link;
     }
 
     private WebMarkupContainer makeEhubConsumerFormContainer(ConsumersMediator consumersMediator) {
-	final EhubConsumerCancelLink link = new EhubConsumerCancelLink("cancelNewEhubConsumerLink", consumersMediator);        	
-	final WebMarkupContainer container = new WebMarkupContainer("ehubConsumerFormContainer");
-	container.add(link);
-	container.setOutputMarkupPlaceholderTag(true);
-	consumersMediator.registerEhubConsumerFormContainer(container);
-	return container;
+        final EhubConsumerCancelLink link = new EhubConsumerCancelLink("cancelNewEhubConsumerLink", consumersMediator);
+        final WebMarkupContainer container = new WebMarkupContainer("ehubConsumerFormContainer");
+        container.add(link);
+        container.setOutputMarkupPlaceholderTag(true);
+        consumersMediator.registerEhubConsumerFormContainer(container);
+        return container;
     }
 
     @Override
@@ -76,14 +76,14 @@ final class EhubConsumersPanel extends BreadCrumbPanel {
     @Override
     public void onActivate(IBreadCrumbParticipant previous) {
         final EhubConsumer ehubConsumer = new EhubConsumer();
-	ehubConsumerForm.setEhubConsumer(ehubConsumer);
+        ehubConsumerForm.setEhubConsumer(ehubConsumer);
         ehubConsumerFormContainer.setVisible(false);
 
         final List<EhubConsumer> ehubConsumers = consumerAdminController.getEhubConsumers();
         ehubConsumersView.setList(ehubConsumers);
-        
+
         newEhubConsumerLink.setVisible(true);
-        
+
         super.onActivate(previous);
     }
 }

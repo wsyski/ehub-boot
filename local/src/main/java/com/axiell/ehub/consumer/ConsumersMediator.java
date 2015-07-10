@@ -1,13 +1,12 @@
 package com.axiell.ehub.consumer;
 
-import java.io.Serializable;
-
+import com.axiell.ehub.TranslatedKeys;
+import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
-import com.axiell.ehub.TranslatedKeys;
-import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
+import java.io.Serializable;
 
 final class ConsumersMediator implements Serializable {
     private EhubConsumerPanel ehubConsumerPanel;
@@ -19,110 +18,110 @@ final class ConsumersMediator implements Serializable {
     private EhubConsumersPanel ehubConsumersPanel;
     private EhubConsumerCreateLink ehubConsumerCreateLink;
     private WebMarkupContainer ehubConsumerFormContainer;
-    
+
     void registerEhubConsumerPanel(final EhubConsumerPanel ehubConsumerPanel) {
-	this.ehubConsumerPanel = ehubConsumerPanel;
+        this.ehubConsumerPanel = ehubConsumerPanel;
     }
-    
+
     void registerContentProviderConsumerCreateLink(final ContentProviderConsumerCreateLink contentProviderConsumerCreateLink) {
-	this.contentProviderConsumerCreateLink = contentProviderConsumerCreateLink;
+        this.contentProviderConsumerCreateLink = contentProviderConsumerCreateLink;
     }
-    
+
     void registerContentProviderConsumerCreateFormContainer(final WebMarkupContainer contentProviderConsumerCreateFormContainer) {
-	this.contentProviderConsumerCreateFormContainer = contentProviderConsumerCreateFormContainer;
+        this.contentProviderConsumerCreateFormContainer = contentProviderConsumerCreateFormContainer;
     }
-    
+
     void registerContentProviderConsumerPropertiesListView(final ContentProviderConsumerPropertiesListView contentProviderConsumerPropertiesListView) {
-	this.contentProviderConsumerPropertiesListView = contentProviderConsumerPropertiesListView;
+        this.contentProviderConsumerPropertiesListView = contentProviderConsumerPropertiesListView;
     }
-    
+
     void registerContentProviderConsumerPropertiesContainer(final WebMarkupContainer contentProviderConsumerPropertiesContainer) {
-	this.contentProviderConsumerPropertiesContainer = contentProviderConsumerPropertiesContainer;
+        this.contentProviderConsumerPropertiesContainer = contentProviderConsumerPropertiesContainer;
     }
-    
+
     void registerContentProviderConsumerPanel(final ContentProviderConsumerPanel contentProviderConsumerPanel) {
-	this.contentProviderConsumerPanel = contentProviderConsumerPanel;
+        this.contentProviderConsumerPanel = contentProviderConsumerPanel;
     }
-    
+
     void registerEhubConsumersPanel(final EhubConsumersPanel ehubConsumersPanel) {
-	this.ehubConsumersPanel = ehubConsumersPanel;
+        this.ehubConsumersPanel = ehubConsumersPanel;
     }
-    
+
     void registerEhubConsumerCreateLink(final EhubConsumerCreateLink ehubConsumerCreateLink) {
-	this.ehubConsumerCreateLink = ehubConsumerCreateLink;
+        this.ehubConsumerCreateLink = ehubConsumerCreateLink;
     }
-    
+
     void registerEhubConsumerFormContainer(final WebMarkupContainer ehubConsumerFormContainer) {
-	this.ehubConsumerFormContainer = ehubConsumerFormContainer;
+        this.ehubConsumerFormContainer = ehubConsumerFormContainer;
     }
-    
+
     void afterDeleteContentProviderConsumer() {
-	ehubConsumerPanel.activate(ehubConsumerPanel);
+        ehubConsumerPanel.activate(ehubConsumerPanel);
     }
-    
+
     void afterNewContentProviderConsumerLinkClick(final AjaxRequestTarget target) {
-	contentProviderConsumerCreateFormContainer.setVisible(true);
-	
-	if (target != null) {
-	    target.addComponent(contentProviderConsumerCreateFormContainer);
-	}
+        contentProviderConsumerCreateFormContainer.setVisible(true);
+
+        if (target != null) {
+            target.addComponent(contentProviderConsumerCreateFormContainer);
+        }
     }
-    
+
     void afterCancelNewContentProviderConsumer(final AjaxRequestTarget target) {
-	contentProviderConsumerCreateFormContainer.setVisible(false);
-	contentProviderConsumerCreateLink.setVisible(true);
+        contentProviderConsumerCreateFormContainer.setVisible(false);
+        contentProviderConsumerCreateLink.setVisible(true);
 
         if (target != null) {
             target.addComponent(contentProviderConsumerCreateFormContainer);
             target.addComponent(contentProviderConsumerCreateLink);
         }
     }
-    
+
     void afterEditEhubConsumer() {
-	ehubConsumerPanel.activate(ehubConsumerPanel);
+        ehubConsumerPanel.activate(ehubConsumerPanel);
     }
-    
+
     void afterNewContentProviderConsumer(final ContentProviderConsumer contentProviderConsumer) {
-	final IBreadCrumbPanelFactory factory = new ContentProviderConsumerPanelFactory(contentProviderConsumer);
-	ehubConsumerPanel.activate(factory);
+        final IBreadCrumbPanelFactory factory = new ContentProviderConsumerPanelFactory(contentProviderConsumer);
+        ehubConsumerPanel.activate(factory);
     }
-    
+
     void onSelectedContentProviderConsumerChanged(final TranslatedKeys<ContentProviderConsumerPropertyKey> translatedKeys, final AjaxRequestTarget target) {
         contentProviderConsumerPropertiesListView.setList(translatedKeys);
-        
+
         if (target != null) {
             target.addComponent(contentProviderConsumerPropertiesContainer);
         }
     }
 
     void afterEditContentProviderConsumer() {
-	contentProviderConsumerPanel.activate(contentProviderConsumerPanel);	
+        contentProviderConsumerPanel.activate(contentProviderConsumerPanel);
     }
-    
+
     void afterDeleteEhubConsumer() {
-	ehubConsumersPanel.activate(ehubConsumersPanel);
+        ehubConsumersPanel.activate(ehubConsumersPanel);
     }
-    
+
     void afterCancelNewEhubConsumerConsumer(final AjaxRequestTarget target) {
-	ehubConsumerFormContainer.setVisible(false);
-	ehubConsumerCreateLink.setVisible(true);
+        ehubConsumerFormContainer.setVisible(false);
+        ehubConsumerCreateLink.setVisible(true);
 
         if (target != null) {
             target.addComponent(ehubConsumerFormContainer);
             target.addComponent(ehubConsumerCreateLink);
         }
     }
-    
+
     void afterClickOnEhubConsumerCreateLink(final AjaxRequestTarget target) {
-	ehubConsumerFormContainer.setVisible(true);
-	
-	if (target != null) {
-	    target.addComponent(ehubConsumerFormContainer);
-	}
+        ehubConsumerFormContainer.setVisible(true);
+
+        if (target != null) {
+            target.addComponent(ehubConsumerFormContainer);
+        }
     }
-    
+
     void afterNewEhubConsumer(final EhubConsumer ehubConsumer) {
-	final IBreadCrumbPanelFactory factory = new EhubConsumerPanelFactory(ehubConsumer);
-	ehubConsumersPanel.activate(factory);
+        final IBreadCrumbPanelFactory factory = new EhubConsumerPanelFactory(ehubConsumer);
+        ehubConsumersPanel.activate(factory);
     }
 }

@@ -3,12 +3,12 @@
  */
 package com.axiell.ehub.consumer;
 
-import java.util.List;
-import java.util.Set;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Default implementation of the {@link IConsumerAdminController}.
@@ -27,10 +27,10 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = false)
     public void delete(final EhubConsumer providedEhubConsumer) {
-	EhubConsumer retrievedEhubConsumer = getEhubConsumer(providedEhubConsumer.getId());
-	Set<ContentProviderConsumer> consumers = retrievedEhubConsumer.getContentProviderConsumers();
-	contentProviderConsumerRepository.delete(consumers);
-	ehubConsumerRepository.delete(retrievedEhubConsumer);
+        EhubConsumer retrievedEhubConsumer = getEhubConsumer(providedEhubConsumer.getId());
+        Set<ContentProviderConsumer> consumers = retrievedEhubConsumer.getContentProviderConsumers();
+        contentProviderConsumerRepository.delete(consumers);
+        ehubConsumerRepository.delete(retrievedEhubConsumer);
     }
 
     /**
@@ -39,7 +39,7 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = false)
     public void delete(ContentProviderConsumer contentProviderConsumer) {
-	contentProviderConsumerRepository.delete(contentProviderConsumer);
+        contentProviderConsumerRepository.delete(contentProviderConsumer);
     }
 
     /**
@@ -48,8 +48,8 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = true)
     public EhubConsumer getEhubConsumer(final Long ehubConsumerId) {
-	EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(ehubConsumerId);
-	return initialize(ehubConsumer);
+        EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(ehubConsumerId);
+        return initialize(ehubConsumer);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = true)
     public List<EhubConsumer> getEhubConsumers() {
-	return ehubConsumerRepository.findAllOrderedByDescription();
+        return ehubConsumerRepository.findAllOrderedByDescription();
     }
 
     /**
@@ -67,7 +67,7 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = false)
     public EhubConsumer save(EhubConsumer ehubConsumer) {
-	return ehubConsumerRepository.save(ehubConsumer);
+        return ehubConsumerRepository.save(ehubConsumer);
     }
 
     /**
@@ -76,50 +76,48 @@ public class ConsumerAdminController implements IConsumerAdminController {
     @Override
     @Transactional(readOnly = false)
     public ContentProviderConsumer save(ContentProviderConsumer contentProviderConsumer) {
-	return contentProviderConsumerRepository.save(contentProviderConsumer);
+        return contentProviderConsumerRepository.save(contentProviderConsumer);
     }
 
     @Override
     @Transactional(readOnly = false)
     public ContentProviderConsumer add(final Long ehubConsumerId, final ContentProviderConsumer providedContentProviderConsumer) {
-	final EhubConsumer ehubConsumer = getEhubConsumer(ehubConsumerId);
-	providedContentProviderConsumer.setEhubConsumer(ehubConsumer);
-	final ContentProviderConsumer savedContentProviderConsumer = save(providedContentProviderConsumer);
+        final EhubConsumer ehubConsumer = getEhubConsumer(ehubConsumerId);
+        providedContentProviderConsumer.setEhubConsumer(ehubConsumer);
+        final ContentProviderConsumer savedContentProviderConsumer = save(providedContentProviderConsumer);
 
-	final Set<ContentProviderConsumer> contentProviderConsumers = ehubConsumer.getContentProviderConsumers();
-	contentProviderConsumers.add(savedContentProviderConsumer);
-	save(ehubConsumer);
+        final Set<ContentProviderConsumer> contentProviderConsumers = ehubConsumer.getContentProviderConsumers();
+        contentProviderConsumers.add(savedContentProviderConsumer);
+        save(ehubConsumer);
 
-	return savedContentProviderConsumer;
+        return savedContentProviderConsumer;
     }
 
     /**
      * Initializes the {@link EhubConsumer}, which includes initializing all its
      * {@link ContentProviderConsumer}s and all its properties.
-     * 
-     * @param ehubConsumer
-     *            the {@link EhubConsumer} to initialize
+     *
+     * @param ehubConsumer the {@link EhubConsumer} to initialize
      * @return a completely initialized {@link EhubConsumer}
      */
     private EhubConsumer initialize(EhubConsumer ehubConsumer) {
-	for (ContentProviderConsumer contentProviderConsumer : ehubConsumer.getContentProviderConsumers()) {
-	    initialize(contentProviderConsumer);
-	}
-	Hibernate.initialize(ehubConsumer.getProperties());
-	return ehubConsumer;
+        for (ContentProviderConsumer contentProviderConsumer : ehubConsumer.getContentProviderConsumers()) {
+            initialize(contentProviderConsumer);
+        }
+        Hibernate.initialize(ehubConsumer.getProperties());
+        return ehubConsumer;
     }
 
-    /** 
+    /**
      * Initializes the {@link ContentProviderConsumer}, which includes
      * initializing all its properties.
-     * 
-     * @param contentProviderConsumer
-     *            the {@link ContentProviderConsumer} to initialize
+     *
+     * @param contentProviderConsumer the {@link ContentProviderConsumer} to initialize
      * @return a completely initialized {@link ContentProviderConsumer}
      */
     private ContentProviderConsumer initialize(ContentProviderConsumer contentProviderConsumer) {
-	Hibernate.initialize(contentProviderConsumer);
-	Hibernate.initialize(contentProviderConsumer.getProperties());
-	return contentProviderConsumer;
+        Hibernate.initialize(contentProviderConsumer);
+        Hibernate.initialize(contentProviderConsumer.getProperties());
+        return contentProviderConsumer;
     }
 }

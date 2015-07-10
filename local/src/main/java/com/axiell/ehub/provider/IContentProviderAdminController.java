@@ -38,4 +38,6 @@ public interface IContentProviderAdminController {
      * @return the saved {@link ContentProvider}
      */
     ContentProvider save(ContentProvider contentProvider);
+
+    void delete(ContentProvider contentProvider);
 }

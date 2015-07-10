@@ -58,7 +58,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     /**
      * Empty constructor required by JPA
      */
-    protected ContentProvider() {
+    public ContentProvider() {
     }
 
     /**
@@ -87,7 +87,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param name the name of the {@link ContentProvider} to set
      */
-    protected void setName(final String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -111,36 +111,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      *
      * @param properties the {@link ContentProvider} properties to set
      */
-    protected void setProperties(Map<ContentProviderPropertyKey, String> properties) {
+    public void setProperties(Map<ContentProviderPropertyKey, String> properties) {
         this.properties = properties;
-    }
-
-    /**
-     * Gets the valid properties for this {@link ContentProvider}.
-     *
-     * @return a {@link List} of {@link ContentProviderPropertyKey}s
-     */
-    @Transient
-    public List<ContentProviderPropertyKey> getValidPropertyKeys() {
-        Validate.notNull(name, "Content Provider name can not be null");
-        Set<ContentProviderPropertyKey> keys = VALID_PROPERTY_KEYS.get(name);
-        return new ArrayList<>(keys == null ? EP_VALID_PROPERTY_KEYS : keys);
-    }
-
-    /**
-     * Gets the value of a property with the given key.
-     *
-     * @param key the key of the property
-     * @return the property value
-     * @throws IllegalArgumentException if this {@link ContentProvider} has no valid property keys, or if there exists
-     *                                  no property with the given name
-     */
-    @Transient
-    public String getProperty(final ContentProviderPropertyKey key) {
-        List<ContentProviderPropertyKey> validPropertyKeys = getValidPropertyKeys();
-        Validate.notNull(validPropertyKeys, "Valid property keys can not be null");
-        Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: " + name);
-        return getProperties().get(key);
     }
 
     /**
@@ -163,6 +135,33 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      */
     public void setFormatDecorations(Map<String, FormatDecoration> formatDecorations) {
         this.formatDecorations = formatDecorations;
+    }
+
+    /**
+     * Gets the valid properties for this {@link ContentProvider}.
+     *
+     * @return a {@link List} of {@link ContentProviderPropertyKey}s
+     */
+    @Transient
+    public List<ContentProviderPropertyKey> getValidPropertyKeys() {
+        Set<ContentProviderPropertyKey> keys = name == null ? EP_VALID_PROPERTY_KEYS : VALID_PROPERTY_KEYS.get(name);
+        return new ArrayList<>(keys == null ? EP_VALID_PROPERTY_KEYS : keys);
+    }
+
+    /**
+     * Gets the value of a property with the given key.
+     *
+     * @param key the key of the property
+     * @return the property value
+     * @throws IllegalArgumentException if this {@link ContentProvider} has no valid property keys, or if there exists
+     *                                  no property with the given name
+     */
+    @Transient
+    public String getProperty(final ContentProviderPropertyKey key) {
+        List<ContentProviderPropertyKey> validPropertyKeys = getValidPropertyKeys();
+        Validate.notNull(validPropertyKeys, "Valid property keys can not be null");
+        Validate.isTrue(validPropertyKeys.contains(key), "Invalid property key: " + key + " for provider: " + name);
+        return getProperties().get(key);
     }
 
     /**
@@ -199,6 +198,17 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
         } else {
             return formatDecoration;
         }
+    }
+
+    @Transient
+    public boolean isEP() {
+        return !CONTENT_PROVIDER_ELIB3.equals(name) &&
+                !CONTENT_PROVIDER_ELIBU.equals(name) &&
+                !CONTENT_PROVIDER_ASKEWS.equals(name) &&
+                !CONTENT_PROVIDER_OVERDRIVE.equals(name) &&
+                !CONTENT_PROVIDER_F1.equals(name) &&
+                !CONTENT_PROVIDER_OCD.equals(name) &&
+                !CONTENT_PROVIDER_BORROWBOX.equals(name);
     }
 
     @Override

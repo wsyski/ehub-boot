@@ -37,8 +37,18 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
      */
     @Override
     @Transactional(readOnly = false)
-    public ContentProvider save(ContentProvider contentProvider) {
+    public ContentProvider save(final ContentProvider contentProvider) {
         return contentProviderRepository.save(contentProvider);
+    }
+
+
+    /**
+     * @see com.axiell.ehub.provider.IContentProviderAdminController#delete(com.axiell.ehub.provider.ContentProvider)
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void delete(final ContentProvider contentProvider) {
+        contentProviderRepository.delete(contentProvider);
     }
 
     /**

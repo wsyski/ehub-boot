@@ -1,5 +1,6 @@
 package com.axiell.ehub.consumer;
 
+import com.axiell.ehub.provider.ContentProvider;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanelLink;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
@@ -8,9 +9,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 
-import com.axiell.ehub.provider.ContentProvider;
-
-class ContentProviderConsumerListView extends ListView<ContentProviderConsumer> {    
+class ContentProviderConsumerListView extends ListView<ContentProviderConsumer> {
     private final IBreadCrumbModel breadCrumbModel;
     private final ConsumersMediator consumersMediator;
 
@@ -23,7 +22,7 @@ class ContentProviderConsumerListView extends ListView<ContentProviderConsumer> 
     @Override
     protected void populateItem(final ListItem<ContentProviderConsumer> item) {
         final ContentProviderConsumer contentProviderConsumer = item.getModelObject();
-        
+
         final BreadCrumbPanelLink contentProviderConsumerLink = makeContentProviderConsumerLink(contentProviderConsumer);
         item.add(contentProviderConsumerLink);
 
@@ -32,16 +31,16 @@ class ContentProviderConsumerListView extends ListView<ContentProviderConsumer> 
     }
 
     private BreadCrumbPanelLink makeContentProviderConsumerLink(final ContentProviderConsumer contentProviderConsumer) {
-	final IBreadCrumbPanelFactory factory = new ContentProviderConsumerPanelFactory(contentProviderConsumer);
+        final IBreadCrumbPanelFactory factory = new ContentProviderConsumerPanelFactory(contentProviderConsumer);
         final BreadCrumbPanelLink contentProviderConsumerLink = new BreadCrumbPanelLink("contentProviderConsumerLink", breadCrumbModel, factory);
         final Label contentProviderConsumerLinkLabel = makeContentProviderConsumerLinkLabel(contentProviderConsumer);
         contentProviderConsumerLink.add(contentProviderConsumerLinkLabel);
-	return contentProviderConsumerLink;
+        return contentProviderConsumerLink;
     }
 
     private Label makeContentProviderConsumerLinkLabel(final ContentProviderConsumer contentProviderConsumer) {
-	final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        final String contentProviderName = contentProvider.getName().toString();        
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final String contentProviderName = contentProvider.getName();
         return new Label("contentProviderConsumerLinkLabel", contentProviderName);
     }
 }

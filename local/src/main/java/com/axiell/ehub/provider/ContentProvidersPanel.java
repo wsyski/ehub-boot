@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.provider.alias.AliasesPanelFactory;
@@ -9,6 +6,8 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanelLink;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -21,14 +20,45 @@ import java.util.List;
 final class ContentProvidersPanel extends BreadCrumbPanel {
     private final ContentProvidersListView contentProvidersView;
 
+    private final WebMarkupContainer contentProviderFormContainer;
+    private final ContentProviderCreateForm contentProviderForm;
+    private final ContentProviderCreateLink newContentProviderLink;
+
     @SpringBean(name = "contentProviderAdminController")
     private IContentProviderAdminController contentProviderAdminController;
 
     ContentProvidersPanel(String panelId, final IBreadCrumbModel breadCrumbModel) {
         super(panelId, breadCrumbModel);
-        this.contentProvidersView = new ContentProvidersListView("contentProviders", breadCrumbModel);
+        ContentProvidersMediator contentProvidersMediator = new ContentProvidersMediator();
+        contentProvidersMediator.registerContentProvidersPanel(this);
+        this.contentProvidersView = new ContentProvidersListView("contentProviders", breadCrumbModel, contentProvidersMediator);
         add(contentProvidersView);
+        addFeedbackPanel();
         addAliasesLink(breadCrumbModel);
+
+        contentProviderFormContainer = makeContentProviderFormContainer(contentProvidersMediator);
+        add(contentProviderFormContainer);
+
+        contentProviderForm = new ContentProviderCreateForm("contentProviderForm", contentProvidersMediator);
+        contentProviderFormContainer.add(contentProviderForm);
+
+        newContentProviderLink = makeNewContentProviderLink(contentProvidersMediator);
+        add(newContentProviderLink);
+    }
+
+    private ContentProviderCreateLink makeNewContentProviderLink(final ContentProvidersMediator contentProvidersMediator) {
+        ContentProviderCreateLink link = new ContentProviderCreateLink("newContentProviderLink", contentProvidersMediator);
+        contentProvidersMediator.registerContentProviderCreateLink(link);
+        return link;
+    }
+
+    private WebMarkupContainer makeContentProviderFormContainer(final ContentProvidersMediator consumersMediator) {
+        final ContentProviderCancelLink link = new ContentProviderCancelLink("cancelNewContentProviderLink", consumersMediator);
+        final WebMarkupContainer container = new WebMarkupContainer("contentProviderFormContainer");
+        container.add(link);
+        container.setOutputMarkupPlaceholderTag(true);
+        consumersMediator.registerContentProviderFormContainer(container);
+        return container;
     }
 
     private void addAliasesLink(final IBreadCrumbModel breadCrumbModel) {
@@ -43,8 +73,17 @@ final class ContentProvidersPanel extends BreadCrumbPanel {
         return model.getString();
     }
 
+    private void addFeedbackPanel() {
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        add(feedbackPanel);
+    }
+
     @Override
     public void onActivate(IBreadCrumbParticipant previous) {
+        final ContentProvider contentProvider = new ContentProvider();
+        contentProviderForm.setContentProvider(contentProvider);
+        contentProviderFormContainer.setVisible(false);
+        newContentProviderLink.setVisible(true);
         final List<ContentProvider> contentProviders = contentProviderAdminController.getContentProviders();
         contentProvidersView.setList(contentProviders);
         super.onActivate(previous);
