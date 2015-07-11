@@ -68,4 +68,7 @@ public interface IConsumerAdminController {
      * @return
      */
     ContentProviderConsumer add(Long ehubConsumerId, ContentProviderConsumer contentProviderConsumer);
+
+
+    void deleteByContentProviderId(long contentProviderId);
 }

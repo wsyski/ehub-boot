@@ -31,12 +31,13 @@ public interface IContentProviderAdminController {
      */
     ContentProvider getContentProvider(String contentProviderName);
 
-    /**
-     * Saves the provided {@link ContentProvider}.
-     *
-     * @param contentProvider the {@link ContentProvider} to be saved
-     * @return the saved {@link ContentProvider}
-     */
+    boolean existsContentProviderName(final String contentProviderName);
+        /**
+         * Saves the provided {@link ContentProvider}.
+         *
+         * @param contentProvider the {@link ContentProvider} to be saved
+         * @return the saved {@link ContentProvider}
+         */
     ContentProvider save(ContentProvider contentProvider);
 
     void delete(ContentProvider contentProvider);

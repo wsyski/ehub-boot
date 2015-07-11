@@ -14,4 +14,10 @@ public class LoanAdminController implements ILoanAdminController {
     public long countLoansByFormatDecoration(final FormatDecoration formatDecoration) {
         return ehubLoanRepositoryFacade.countLoansByFormatDecoration(formatDecoration);
     }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteByContentProviderId(final long contentProviderId) {
+        ehubLoanRepositoryFacade.deleteByContentProviderId(contentProviderId);
+    }
 }

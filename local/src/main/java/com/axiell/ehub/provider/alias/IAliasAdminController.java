@@ -11,4 +11,6 @@ public interface IAliasAdminController {
     boolean existsAlias(String alias);
 
     void delete(AliasMapping aliasMapping);
+
+    void deleteByContentProviderName(String contentProviderName);
 }

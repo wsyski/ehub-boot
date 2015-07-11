@@ -1,10 +1,14 @@
 package com.axiell.ehub.loan;
 
+import com.axiell.ehub.consumer.ContentProviderConsumer;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.axiell.ehub.consumer.EhubConsumer;
+
+import java.util.List;
 
 /**
  * Simple CRUD Repository interface for {@link EhubLoan} instances. The interface is used to declare so called query
@@ -32,4 +36,8 @@ public interface IEhubLoanRepository extends CrudRepository<EhubLoan, Long> {
      */
     @Query("select count(*) from EhubLoan l where l.contentProviderLoanMetadata.formatDecoration.id = :formatDecorationId")
     long countLoansByFormatDecorationId(@Param("formatDecorationId") Long formatDecorationId);
+
+    @Modifying
+    @Query("DELETE FROM EhubLoan l WHERE l.contentProviderLoanMetadata.contentProvider.id = :contentProviderId")
+    void deleteByContentProviderId(@Param("contentProviderId") long contentProviderId);
 }

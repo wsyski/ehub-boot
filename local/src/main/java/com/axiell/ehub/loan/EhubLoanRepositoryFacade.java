@@ -46,4 +46,10 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
         final Long formatDecorationId = formatDecoration.getId();
         return ehubLoanRepository.countLoansByFormatDecorationId(formatDecorationId);
     }
+
+    @Override
+    public void deleteByContentProviderId(final long contentProviderId) {
+        ehubLoanRepository.deleteByContentProviderId(contentProviderId);
+    }
+
 }

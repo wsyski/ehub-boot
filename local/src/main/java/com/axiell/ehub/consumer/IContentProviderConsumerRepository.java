@@ -1,6 +1,9 @@
 package com.axiell.ehub.consumer;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Simple CRUD Repository interface for {@link ContentProviderConsumer} instances. The interface is used to declare so called query methods,
@@ -16,4 +19,7 @@ import org.springframework.data.repository.CrudRepository;
  * </p>
  */
 public interface IContentProviderConsumerRepository extends CrudRepository<ContentProviderConsumer, Long> {
+    @Modifying
+    @Query("DELETE FROM ContentProviderConsumer c WHERE c.contentProvider.id = :contentProviderId")
+    void deleteByContentProviderId(@Param("contentProviderId") long contentProviderId);
 }

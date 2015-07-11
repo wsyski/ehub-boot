@@ -92,6 +92,11 @@ public class ConsumerAdminController implements IConsumerAdminController {
 
         return savedContentProviderConsumer;
     }
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteByContentProviderId(final long contentProviderId) {
+        contentProviderConsumerRepository.deleteByContentProviderId(contentProviderId);
+    }
 
     /**
      * Initializes the {@link EhubConsumer}, which includes initializing all its

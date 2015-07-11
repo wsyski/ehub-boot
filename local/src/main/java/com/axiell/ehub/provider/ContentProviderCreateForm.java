@@ -15,6 +15,7 @@ class ContentProviderCreateForm extends AbstractContentProviderForm {
         final ContentProviderNameModel nameModel = new ContentProviderNameModel(formModel);
         final RequiredTextField<String> nameField = new RequiredTextField<>("name", nameModel);
         nameField.setOutputMarkupPlaceholderTag(true);
+        nameField.add(new ContentProviderNameExistsValidator());
         add(nameField);
     }
 

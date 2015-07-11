@@ -265,4 +265,16 @@
         </insert>
         <comment>Added Ehub Provider Content Provider Consumer property keys</comment>
     </changeSet>
+
+    <changeSet id="17" author="ehub" dbms="oracle">
+        <delete tableName="CONTENT_PROVIDER_ALIAS">
+            <where>NAME NOT IN (SELECT name FROM content_provider)</where>
+        </delete>
+        <addForeignKeyConstraint baseColumnNames="name"
+                                     baseTableName="CONTENT_PROVIDER_ALIAS"
+                                     constraintName="FK_CONTENT_P_C_PROVIDER_A"
+                                     referencedColumnNames="name"
+                                     referencedTableName="CONTENT_PROVIDER"/>
+        <comment>Added FK_CONTENT_P_C_PROVIDER_A foreign key</comment>
+    </changeSet>
 </databaseChangeLog>

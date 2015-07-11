@@ -11,4 +11,6 @@ public interface ILoanAdminController {
      * @return the number of loans that have been created in the specific format
      */
     long countLoansByFormatDecoration(FormatDecoration formatDecoration);
+
+    void deleteByContentProviderId(long contentProviderId);
 }

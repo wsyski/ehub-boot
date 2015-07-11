@@ -12,4 +12,6 @@ public interface IEhubLoanRepositoryFacade {
     EhubLoan findEhubLoan(EhubConsumer ehubConsumer, Long readyLoanId);
     
     long countLoansByFormatDecoration(FormatDecoration formatDecoration);
+
+    void deleteByContentProviderId(long contentProviderId);
 }

@@ -36,4 +36,10 @@ class AliasAdminController implements IAliasAdminController {
     public void delete(AliasMapping aliasMapping) {
         aliasMappingRepository.delete(aliasMapping);
     }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteByContentProviderName(final String contentProviderName) {
+        aliasMappingRepository.deleteByContentProviderName(contentProviderName);
+    };
 }
