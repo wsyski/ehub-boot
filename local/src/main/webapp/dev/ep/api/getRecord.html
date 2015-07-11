@@ -26,9 +26,15 @@
 
 <pre>
     {
-    "recordId": "&lt;record id&gt;",
-    "formats": ["&lt;format id&gt;", "&lt;format id&gt;", ...]
-    }
+    "id": "&lt;record id&gt;",
+    "formats": [
+        {
+        "id": "&lt;format id&gt;"
+        },
+        {
+        "id": "&lt;format id&gt;"
+        }
+    ]
 </pre>
 <table class="table">
     <tr class="tab-row">
@@ -51,9 +57,15 @@
 <p>Example response:</p>
 <pre>
     {
-    "recordId": "123456789",
-    "formats": ["eAudio","eBook"]
-    }
+    "id": "123456789",
+    "formats": [
+        {
+        "id": "eBook"
+        },
+        {
+        "id": "eAudio"
+        }
+    ]
 </pre>
 </body>
 </html>

@@ -24,7 +24,7 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(EpDataAccessor.class);
 
     @Autowired
-    private IEpFacade epiFacade;
+    private IEpFacade epFacade;
     @Autowired
     private IFormatFactory formatFactory;
 
@@ -35,10 +35,10 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final RecordDTO formatsDTO = epiFacade.getFormats(contentProviderConsumer, patron, contentProviderRecordId);
+        final RecordDTO formatsDTO = epFacade.getRecord(contentProviderConsumer, patron, contentProviderRecordId);
         final Formats formats = new Formats();
-        for (String formatId : formatsDTO.getFormats()) {
-            final Format format = formatFactory.create(contentProvider, formatId, language);
+        for (FormatDTO formatDTO : formatsDTO.getFormats()) {
+            final Format format = formatFactory.create(contentProvider, formatDTO.getId(), language);
             formats.addFormat(format);
         }
         return formats;
@@ -50,7 +50,7 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final CheckoutDTO checkoutDTO = epiFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
+        final CheckoutDTO checkoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
         final ContentLink contentLink = makeContent(loanMetadata, checkoutDTO);
         return new ContentProviderLoan(loanMetadata, contentLink);
@@ -62,13 +62,13 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final CheckoutDTO checkoutDTO = epiFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
+        final CheckoutDTO checkoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
         return makeContent(loanMetadata, checkoutDTO);
     }
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final CheckoutDTO checkoutDTO) {
         final Date expirationDate = checkoutDTO.getExpirationDate();
-        final String loanId = checkoutDTO.getCheckoutId();
+        final String loanId = checkoutDTO.getId();
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 class EpFacade implements IEpFacade {
 
     @Override
-    public RecordDTO getFormats(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
+    public RecordDTO getRecord(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
         final IEpResource epResource = EpResourceFactory.create(contentProviderConsumer, patron);
         return epResource.getRecord(contentProviderRecordId);
     }

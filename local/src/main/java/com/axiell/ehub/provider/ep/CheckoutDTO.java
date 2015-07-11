@@ -8,14 +8,12 @@ import java.util.Date;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
-    private String checkoutId;
-
+    private String id;
     private String contentUrl;
-
     private Date expirationDate;
 
-    public String getCheckoutId() {
-        return checkoutId;
+    public String getId() {
+        return id;
     }
 
     public String getContentUrl() {
