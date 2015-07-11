@@ -31,10 +31,6 @@ public class AbstractBorrowBoxIT extends AbstractContentProviderIT {
     @Before
     public void setUpUnderTest() {
         underTest = new BorrowBoxFacade();
-        customSetUp();
-    }
-
-    protected void customSetUp() {
     }
 
     protected void givenConfigurationProperties() {
