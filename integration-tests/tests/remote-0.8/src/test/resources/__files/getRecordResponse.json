@@ -1,4 +1,14 @@
 {
-  "recordId": "recordId_0",
-  "formats":["ebook","audio-stream","audio-downloadable"]
+  "id": "recordId_0",
+  "formats": [
+    {
+      "id": "ebook"
+    },
+    {
+      "id": "audio-stream"
+    },
+    {
+      "id": "audio-downloadable"
+    }
+  ]
 }
