@@ -12,7 +12,7 @@ import java.util.List;
  * Represents an ElibU product.
  */
 @JsonIgnoreProperties(value = {"BookType", "Categories", "PublishedDate",  "Contributors", "CoverImage", "CreatedDate", "Description", "DistributionRegions", "Language",
-    "OrderableFormatGroups", "ProductID", "PublicIdentifiers", "Publisher", "Relations", "Statuses", "Teaser", "Title", "UpdatedDate"})
+    "OrderableFormatGroups", "ProductID", "PublicIdentifiers", "Publisher", "Relations", "Statuses", "Teaser", "Title", "Toc", "UpdatedDate"})
 public class Product {
     @JsonProperty("AvailableFormats")
     private List<AvailableFormat> formats;
