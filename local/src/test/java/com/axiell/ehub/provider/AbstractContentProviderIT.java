@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.consumer.EhubConsumer;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -16,6 +17,8 @@ public abstract class AbstractContentProviderIT {
     protected ContentProviderConsumer contentProviderConsumer;
     @Mock
     protected ContentProvider contentProvider;
+    @Mock
+    protected EhubConsumer ehubConsumer;
 
     @BeforeClass
     public static void setUpWheteherIntegrationTestShouldBeRun() {
@@ -30,5 +33,9 @@ public abstract class AbstractContentProviderIT {
 
     protected void givenContentProvider() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+    }
+
+    protected void givenEhubConsumer() {
+        given(contentProviderConsumer.getEhubConsumer()).willReturn(ehubConsumer);
     }
 }
