@@ -1,37 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config format="alma-export">
-	<index>
+    <index>
         <field name="contentProviderName">
-            <query type="xquery"><![CDATA[
-xquery version "1.0";
-let $contentProviderName:=//exportCatalogueRecord/@contentProviderName
-let $patterns:=(
-'^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
-'^https?://.+(publit)\.se/api/products/()([^\.]+)$')
-return
-if (not(empty($contentProviderName))) then string($contentProviderName)
-else
-  (for $link in //view/externalUrls/externalUrl/@value
-    for $pattern in $patterns
-      return if (matches($link, $pattern, 'i')) then replace($link,$pattern, '$1', 'i') else ())[position() eq 1]
-              ]]>
-            </query>
+            <query type="xpath">//exportCatalogueRecord/@contentProviderName</query>
         </field>
         <field name="contentProviderRecordId">
-            <query type="xquery"><![CDATA[
-xquery version "1.0";
-let $contentProviderRecordId:=//exportCatalogueRecord/@contentProviderRecordId
-let $patterns:=(
-'^https?://.+(elib)\.se/library/ebook_detail\.asp\?(.*&amp;)?id=([^&amp;]+)(&amp;.*)?$',
-'^https?://.+(publit)\.se/api/products/()([^\.]+)$')
-return
-if (not(empty($contentProviderRecordId))) then string($contentProviderRecordId)
-else
-  (for $link in //view/externalUrls/externalUrl/@value
-    for $pattern in $patterns
-      return if (matches($link ,$pattern, 'i')) then replace($link, $pattern, '$3', 'i') else ())[position() eq 1]
-              ]]>
-            </query>
+            <query type="xpath">//exportCatalogueRecord/@contentProviderRecordId</query>
         </field>
-	</index>
+    </index>
 </config>

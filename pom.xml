@@ -519,34 +519,6 @@
 
             <!-- Test dependencies -->
             <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon</artifactId>
-                <version>${saxon.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-dom</artifactId>
-                <version>${saxon.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-xpath</artifactId>
-                <version>${saxon.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-xqj</artifactId>
-                <version>${saxon.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-plus</artifactId>
                 <version>${jetty.version}</version>
@@ -798,7 +770,6 @@
         <aspectj.version>1.6.12</aspectj.version>
         <joda-time.version>2.1</joda-time.version>
         <xmlunit.version>1.5</xmlunit.version>
-        <saxon.version>9.1.0.8</saxon.version>
         <jcabi-manifests.version>0.8</jcabi-manifests.version>
         <hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
         <liquibase.core.version>3.2.0</liquibase.core.version>

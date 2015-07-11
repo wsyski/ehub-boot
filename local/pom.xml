@@ -187,30 +187,6 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>saxon</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>saxon-dom</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>saxon-xpath</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.saxon</groupId>
-            <artifactId>saxon-xqj</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-common</artifactId>
             <version>${project.version}</version>
