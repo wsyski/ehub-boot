@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * Represents a consumed product.
  */
-@JsonIgnoreProperties(value = {"ProductID", "Bookmarks", "RemovedByLicense"})
+@JsonIgnoreProperties(value = {"ProductID", "Bookmarks", "RemovedByLicense", "Supplements"})
 public class ConsumedProduct {
     @JsonProperty("LicenseProductFormats")
     private List<Format> formats; 
