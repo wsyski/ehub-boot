@@ -28,6 +28,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class ContentProviderDataAccessorTestFixture {
+    protected static final String CONTENT_PROVIDER_TEST_EP="TEST_EP";
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String CONTENT_PROVIDER_LOAN_ID ="contentProviderLoanId";
