@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.consumer;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
@@ -10,10 +7,12 @@ import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
+import com.google.common.collect.ImmutableMap;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Represents a consumer of the eHUB. An {@link EhubConsumer} can have many {@link ContentProviderConsumer}s, i.e.
@@ -23,7 +22,8 @@ import java.util.*;
 @Table(name = "EHUB_CONSUMER")
 @Access(AccessType.PROPERTY)
 public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
-    private static final long serialVersionUID = 1365720155205061749L;
+    private static final Map<EhubConsumerPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<EhubConsumerPropertyKey, Pattern>builder().build();
+
     private String description;
     private String secretKey;
     private Map<EhubConsumerPropertyKey, String> properties;
@@ -214,6 +214,11 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     @Transient
     final String getProperty(final EhubConsumerPropertyKey key) {
         return getProperties().get(key);
+    }
+
+    @Transient
+    public Pattern getPropertyValidatorPattern(final EhubConsumerPropertyKey ehubConsumerPropertyKey) {
+        return PROPERTY_PATTERNS.get(ehubConsumerPropertyKey);
     }
 
     /**

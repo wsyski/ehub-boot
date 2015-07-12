@@ -14,7 +14,7 @@ final class ContentProviderDeleteLink extends ConfirmationLink<ContentProvider> 
         super(id);
         this.contentProvider = contentProvider;
         this.contentProvidersMediator = contentProvidersMediator;
-        setVisible(contentProvider.isEP());
+        setVisible(contentProvider.isEhubProvider());
     }
 
     @Override

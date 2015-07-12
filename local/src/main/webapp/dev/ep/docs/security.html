@@ -15,7 +15,7 @@
     Authorization header has the following form.</p>
 
 <p>
-    <code>Authorization: realm="provider &lt;content provider name&gt;" site_id="&lt;site id&gt;" ehub_consumer_id="&lt;ehub consumer id&gt;", ehub_patron_id="&lt;patron
+    <code>Authorization: realm="provider &lt;content provider name&gt;" site_id="&lt;site id&gt;" ehub_consumer_id="&lt;ehub consumer id&gt;", user_id="&lt;user
         id&gt;" timestamp="&lt;timestamp&gt;", signature="&lt;signature&gt;"</code></p>
 In the above:
 <table class="table">
@@ -32,8 +32,8 @@ In the above:
         <td>Ehub consumer id as assigned by eHUB. It is always a positive long value ex. "1"</td>
     </tr>
     <tr class="tab-row">
-        <td>patron id</td>
-        <td>Patron id as assigned by the local management system (LMS). See the discussion about <a title="eHUB Provider API User handling" href="users.html">user
+        <td>user id</td>
+        <td>User id set to patron id as assigned by the local management system (LMS), or patron bar code (library card). See the discussion about <a title="eHUB Provider API User handling" href="users.html">user
             handling</a>. It could be any string ex. "patronId"
         </td>
     </tr>
@@ -53,7 +53,7 @@ In the above:
 <p>In the above example if the secret key is "secretKey"</p>
 
 <p>
-    <code>Authorization: realm="provider TEST_EP" site_id="siteId" ehub_consumer_id="1", ehub_patron_id="patronId" timestamp="1436350109",
+    <code>Authorization: realm="provider TEST_EP" site_id="siteId" ehub_consumer_id="1", user_id="patronId" timestamp="1436350109",
         signature="Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D"</code></p>
 
 <h4>Request Signature</h4>

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.EhubException;
@@ -24,16 +21,29 @@ public class AuthInfoTest extends ContentProviderDataAccessorTestFixture {
     private AuthInfo underTest;
 
     @Test
-    public void testToString() throws EhubException {
-        givenContentProviderConsumerProperties();
+    public void toStringWithPatronId() throws EhubException {
+        givenContentProviderConsumerProperties(EpUserIdValue.PATRON_ID);
         givenPatronIdInPatron();
         whenAuthInfoCreated();
-        thenExpectedToString();
+        thenExpectedToStringWithPatronId();
     }
 
-    private void thenExpectedToString() {
+    @Test
+    public void toStringWithLibraryCard() throws EhubException {
+        givenContentProviderConsumerProperties(EpUserIdValue.LIBRARY_CARD);
+        givenLibraryCardInPatron();
+        whenAuthInfoCreated();
+        thenExpectedToStringWithLibraryCard();
+    }
+
+    private void thenExpectedToStringWithPatronId() {
         assertThat(underTest.toString(), Matchers.is(
-                "realm=\"provider TEST_EP\" site_id=\"siteId\" ehub_consumer_id=\"1\", ehub_patron_id=\"patronId\" timestamp=\"1436350109\", signature=\"Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D\""));
+                "realm=\"provider TEST_EP\" site_id=\"siteId\" ehub_consumer_id=\"1\", user_id=\"patronId\" timestamp=\"1436350109\", signature=\"Oa6LMvQbdsFJ8BxB%2BY02g1tXcKY%3D\""));
+    }
+
+    private void thenExpectedToStringWithLibraryCard() {
+        assertThat(underTest.toString(), Matchers.is(
+                "realm=\"provider TEST_EP\" site_id=\"siteId\" ehub_consumer_id=\"1\", user_id=\"card\" timestamp=\"1436350109\", signature=\"GhP%2BCqzIkS4b2TF7ak6Gb5qZGeo%3D\""));
     }
 
     private void whenAuthInfoCreated() {
@@ -41,9 +51,10 @@ public class AuthInfoTest extends ContentProviderDataAccessorTestFixture {
         ReflectionTestUtils.setField(underTest, "timestamp", TIMESTAMP);
     }
 
-    private void givenContentProviderConsumerProperties() {
+    private void givenContentProviderConsumerProperties(final EpUserIdValue epUserIdValue) {
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID)).willReturn(SITE_ID);
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(SECRET_KEY);
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE)).willReturn(epUserIdValue.name());
 
     }
 

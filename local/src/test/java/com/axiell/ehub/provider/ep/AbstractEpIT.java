@@ -21,6 +21,10 @@ public class AbstractEpIT extends AbstractContentProviderIT {
 
     protected static final String FORMAT_ID = "formatId";
 
+    private static final String PATRON_ID = "patronId";
+    private static final String LIBRARY_CARD = "libraryCard";
+
+
     protected EpFacade underTest;
     @Mock
     protected Patron patron;
@@ -30,14 +34,22 @@ public class AbstractEpIT extends AbstractContentProviderIT {
         underTest = new EpFacade();
     }
 
-    protected void givenConfigurationProperties() {
+    protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
         given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
         given(contentProvider.getProperty(API_BASE_URL)).willReturn(API_BASE_URL_VALUE);
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID)).willReturn(EP_SITE_ID);
-        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(
-                EP_SECRET_KEY);
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(EP_SECRET_KEY);
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE)).willReturn(epUserIdValue.name());
     }
 
+    protected void givenPatronIdInPatron() {
+        given(patron.hasId()).willReturn(true);
+        given(patron.getId()).willReturn(PATRON_ID);
+    }
 
+    protected void givenLibraryCardInPatron() {
+        given(patron.hasLibraryCard()).willReturn(true);
+        given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
+    }
 }

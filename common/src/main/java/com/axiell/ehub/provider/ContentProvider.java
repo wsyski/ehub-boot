@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
@@ -11,6 +8,7 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.util.HashCodeBuilderFactory;
 import com.eekboom.utils.Strings;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.hibernate.annotations.ForeignKey;
@@ -18,6 +16,7 @@ import org.hibernate.annotations.ForeignKey;
 import javax.persistence.*;
 import java.text.Collator;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
 import static com.google.common.collect.Sets.newHashSet;
@@ -38,18 +37,17 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     public static final String CONTENT_PROVIDER_OCD = "OCD";
     public static final String CONTENT_PROVIDER_BORROWBOX = "BORROWBOX";
 
-    private static final Map<String, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = new HashMap<>();
+    private static final Map<String, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = ImmutableMap.<String, Set<ContentProviderPropertyKey>>builder()
+            .put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL))
+            .put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL))
+            .put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS))
+            .put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL))
+            .put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
+            .put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL))
+            .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL)).build();
     private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
-
-    static {
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL));
-        VALID_PROPERTY_KEYS.put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL));
-    }
+    private static final Map<ContentProviderPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<ContentProviderPropertyKey, Pattern>builder()
+            .put(LOAN_EXPIRATION_DAYS, Pattern.compile("[0-9]+")).build();
 
     private String name;
     private Map<ContentProviderPropertyKey, String> properties;
@@ -201,7 +199,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     }
 
     @Transient
-    public boolean isEP() {
+    public boolean isEhubProvider() {
         return !CONTENT_PROVIDER_ELIB3.equals(name) &&
                 !CONTENT_PROVIDER_ELIBU.equals(name) &&
                 !CONTENT_PROVIDER_ASKEWS.equals(name) &&
@@ -209,6 +207,11 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
                 !CONTENT_PROVIDER_F1.equals(name) &&
                 !CONTENT_PROVIDER_OCD.equals(name) &&
                 !CONTENT_PROVIDER_BORROWBOX.equals(name);
+    }
+
+    @Transient
+    public Pattern getPropertyValidatorPattern(final ContentProviderPropertyKey contentProviderPropertyKey) {
+        return PROPERTY_PATTERNS.get(contentProviderPropertyKey);
     }
 
     @Override

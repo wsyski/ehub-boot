@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -36,6 +37,7 @@ final class EhubConsumersPanel extends BreadCrumbPanel {
      */
     EhubConsumersPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
         super(panelId, breadCrumbModel);
+        addFeedbackPanel();
         ConsumersMediator consumersMediator = new ConsumersMediator();
         consumersMediator.registerEhubConsumersPanel(this);
 
@@ -85,5 +87,10 @@ final class EhubConsumersPanel extends BreadCrumbPanel {
         newEhubConsumerLink.setVisible(true);
 
         super.onActivate(previous);
+    }
+
+    private void addFeedbackPanel() {
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        add(feedbackPanel);
     }
 }

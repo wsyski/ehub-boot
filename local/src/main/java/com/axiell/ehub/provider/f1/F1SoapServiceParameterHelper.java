@@ -20,7 +20,7 @@ class F1SoapServiceParameterHelper implements IF1SoapServiceParameterHelper {
     @Override
     public int getMediaId(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final String language) {
         if (isNumeric(contentProviderRecordId))
-            return Integer.valueOf(contentProviderRecordId);
+            return Integer.parseInt(contentProviderRecordId);
         throw ehubExceptionFactory.createBadRequestExceptionWithContentProviderNameAndStatus(contentProviderConsumer, INVALID_CONTENT_PROVIDER_RECORD_ID, language);
     }
 
@@ -28,21 +28,21 @@ class F1SoapServiceParameterHelper implements IF1SoapServiceParameterHelper {
     public int getRegionId(final ContentProviderConsumer contentProviderConsumer, final String language) {
         final String regionId = contentProviderConsumer.getProperty(F1_REGION_ID);
         if (isNumeric(regionId))
-            return Integer.valueOf(regionId);
+            return Integer.parseInt(regionId);
         throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, INVALID_CONTENT_PROVIDER_RECORD_ID, language);
     }
 
     @Override
     public int getTypeId(final ContentProviderConsumer contentProviderConsumer, final String formatId, final String language) {
         if (isNumeric(formatId))
-            return Integer.valueOf(formatId);
+            return Integer.parseInt(formatId);
         throw ehubExceptionFactory.createBadRequestExceptionWithContentProviderNameAndStatus(contentProviderConsumer, INVALID_FORMAT_ID, language);
     }
 
     @Override
     public int getLoanId(ContentProviderConsumer contentProviderConsumer, String loanId, String language) {
         if (isNumeric(loanId))
-            return Integer.valueOf(loanId);
+            return Integer.parseInt(loanId);
         throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, INVALID_LOAN_ID, language);
     }
 }

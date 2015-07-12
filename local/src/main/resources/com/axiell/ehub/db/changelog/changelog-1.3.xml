@@ -277,4 +277,11 @@
                                      referencedTableName="CONTENT_PROVIDER"/>
         <comment>Added FK_CONTENT_P_C_PROVIDER_A foreign key</comment>
     </changeSet>
+
+    <changeSet id="18" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="EP_USER_ID_VALUE"/>
+        </insert>
+        <comment>Added Ehub Provider Content Provider Consumer property key: EP_USER_ID_VALUE</comment>
+    </changeSet>
 </databaseChangeLog>

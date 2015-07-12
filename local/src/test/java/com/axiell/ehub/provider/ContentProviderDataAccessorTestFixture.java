@@ -96,6 +96,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     }
 
     protected void givenPatronIdInPatron() {
+        given(patron.hasId()).willReturn(true);
         given(patron.getId()).willReturn(PATRON_ID);
     }
 
@@ -104,6 +105,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     }
 
     protected void givenLibraryCardInPatron(final String libraryCard) {
+        given(patron.hasLibraryCard()).willReturn(true);
         given(patron.getLibraryCard()).willReturn(libraryCard);
     }
 

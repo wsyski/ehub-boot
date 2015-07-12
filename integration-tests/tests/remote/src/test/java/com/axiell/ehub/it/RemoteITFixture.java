@@ -80,7 +80,7 @@ public abstract class RemoteITFixture {
 
     private void initAuthInfo() throws EhubException {
         authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).build();
+                .pin(testData.getPin()).patronId(testData.getPatronId()).build();
     }
 
     private ITestDataResource getTestDataResource() {

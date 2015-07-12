@@ -14,6 +14,7 @@ import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.alias.Alias;
 import com.axiell.ehub.provider.alias.AliasMapping;
 import com.axiell.ehub.provider.alias.IAliasAdminController;
+import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,7 @@ public class TestDataResource implements ITestDataResource {
         Map<ContentProviderConsumerPropertyKey, String> properties = new HashMap<>();
         properties.put(ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY);
         properties.put(ContentProviderConsumerPropertyKey.EP_SITE_ID, TestDataConstants.TEST_EP_SITE_ID);
+        properties.put(ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE, EpUserIdValue.PATRON_ID.name());
         ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer(ehubConsumer, contentProvider, properties);
         contentProviderConsumer = consumerAdminController.save(contentProviderConsumer);
         ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);

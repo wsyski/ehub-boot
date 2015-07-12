@@ -8,6 +8,7 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 
 import com.axiell.ehub.provider.ContentProvider;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 /**
  * A Panel that displays a ContentProviderConsumer. It also provides the possibility to modify the

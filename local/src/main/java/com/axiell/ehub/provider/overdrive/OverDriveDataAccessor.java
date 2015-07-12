@@ -157,7 +157,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         String getFormatId(T object);
     }
 
-    private class DiscoveryFormatExtractor implements IFormatExtractor<DiscoveryFormatDTO> {
+    private static class DiscoveryFormatExtractor implements IFormatExtractor<DiscoveryFormatDTO> {
 
         @Override
         public String getFormatId(final DiscoveryFormatDTO object) {
@@ -165,7 +165,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         }
     }
 
-    private class CirculationFormatExtractor implements IFormatExtractor<CirculationFormatDTO> {
+    private static class CirculationFormatExtractor implements IFormatExtractor<CirculationFormatDTO> {
 
         @Override
         public String getFormatId(final CirculationFormatDTO object) {

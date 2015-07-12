@@ -8,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class PatronDTO {
     private static final String NA = "N/A";
     private static final String EMAIL_DOMAIN = "@axiell.com";
-    private String patronId = null;
+    private String patronId;
     private String libraryCardNumber;
     private String userName;
     private String password;

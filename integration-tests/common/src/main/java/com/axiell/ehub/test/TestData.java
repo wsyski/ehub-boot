@@ -87,6 +87,7 @@ public class TestData {
                 "ehubConsumerId=" + ehubConsumerId +
                 ", ehubConsumerSecretKey=" + ehubConsumerSecretKey +
                 ", ehubLoanId=" + ehubLoanId +
+                ", patronId=" + patronId +
                 ", libraryCard=" + libraryCard +
                 ", pin=" + pin +
                 '}';
