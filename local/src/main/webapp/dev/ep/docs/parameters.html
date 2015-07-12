@@ -36,7 +36,14 @@
                 <td>EP_SECRET_KEY</td>
                 <td>A UTF-8 encoded secret key used to produce the signature in the Authorization Http header in every request originating at eHUB.
                     The string is converted into bytes and then used to produce HMAC-SHA1 digest of the Authorization http header. See the <a
-                        title="eHUB Provider API Security" href="security.html">security</a> page for more information.
+                            title="eHUB Provider API Security" href="security.html">security</a> page for more information.
+                </td>
+            </tr>
+            <tr class="tab-row">
+                <td>EP_USER_ID_VALUE</td>
+                <td>The valid values of this parameter are: LIBRARY_CARD and PATRON_ID. In the first case the patron library card (bar code) is used as the user
+                    id. In the second case the Local Management System (LMS) generated id is used as user id. See the discusion in <a
+                            title="eHUB Provider API Users" href="users.html">eHUB Provider API Users</a> page for more information.
                 </td>
             </tr>
         </table>

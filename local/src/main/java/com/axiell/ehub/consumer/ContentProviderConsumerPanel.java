@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.consumer;
 
+import com.axiell.ehub.feedback.EhubFeedbackPanel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
@@ -20,6 +21,7 @@ final class ContentProviderConsumerPanel extends BreadCrumbPanel {
 
     ContentProviderConsumerPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final ContentProviderConsumer contentProviderConsumer) {
         super(panelId, breadCrumbModel);
+        addFeedbackPanel();
         this.contentProviderConsumer = contentProviderConsumer;
         
         final ConsumersMediator consumersMediator = new ConsumersMediator();
@@ -39,5 +41,10 @@ final class ContentProviderConsumerPanel extends BreadCrumbPanel {
     public void onActivate(IBreadCrumbParticipant previous) {
         contentProviderConsumerForm.setModelObject(contentProviderConsumer);
         super.onActivate(previous);
+    }
+
+    private void addFeedbackPanel() {
+        EhubFeedbackPanel feedback = new EhubFeedbackPanel("feedback");
+        add(feedback);
     }
 }

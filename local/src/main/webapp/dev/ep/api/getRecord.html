@@ -35,6 +35,7 @@
         "id": "&lt;format id&gt;"
         }
     ]
+    }
 </pre>
 <table class="table">
     <tr class="tab-row">
@@ -50,7 +51,7 @@
 <p>The response lists the available format ids for a single record. The format ids are provider dependent and defined during the media provider configuration
     ex. eAudio. The returned list of formats could depend on the user_id parameter send in the Authorization header (see
     <a title="eHUB Provider API Security" href="../docs/security.html">eHUB Provider API Security</a>),
-    so the user is presented with not all the formats ids, but only those he can actually borrow at the time of request. If the user already holds a loan on a
+    so the user is presented with not all the formats ids, but only those he can actually borrow at the time of request (this feature is not mandatory). If the user already holds a loan on a
     media in a specific format it is preferred that this format id appears in the response. The details of the availability algorithm are media provider
     specific.</p>
 
@@ -66,6 +67,7 @@
         "id": "eAudio"
         }
     ]
+    }
 </pre>
 </body>
 </html>
