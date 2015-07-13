@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.util.IFinder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -12,6 +13,7 @@ public class EpCheckoutIT extends AbstractEpIT {
 
     private CheckoutDTO checkout;
 
+    @Ignore
     @Test
     public void checkout() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();

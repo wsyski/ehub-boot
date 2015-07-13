@@ -1,5 +1,9 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
+
 import java.util.Date;
 import java.util.List;
 
@@ -33,8 +37,9 @@ class Checkout {
 
     private String getDownloadUrlFromFirstFile() {
         List<FileDTO> files = checkoutDTO.getFiles();
-        if (noFiles(files))
-            return null;
+        if (noFiles(files)) {
+            throw new InternalServerErrorException("No files found for record isbn: '" + checkoutDTO.getIsbn() + "' and content provider name: 'OCD'", ErrorCause.INTERNAL_SERVER_ERROR);
+        }
         FileDTO file = files.iterator().next();
         return OcdDownloadUrlHandler.resolve(file.getDownloadUrl());
     }

@@ -5,12 +5,14 @@ import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EpGetFormatsIT extends AbstractEpIT {
 
     private RecordDTO record;
 
+    @Ignore
     @Test
     public void getFormats() throws IFinder.NotFoundException {
         givenPatronIdInPatron();
