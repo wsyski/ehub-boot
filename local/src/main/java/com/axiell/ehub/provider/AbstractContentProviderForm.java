@@ -38,5 +38,14 @@ abstract class AbstractContentProviderForm extends StatelessForm<ContentProvider
     private void setPropertyKeys(TranslatedKeys<ContentProvider.ContentProviderPropertyKey> propertyKeys) {
         contentProviderPropertiesListView.setList(propertyKeys);
     }
+
+    @Override
+    protected void onError() {
+        // before updating, call the interception method for clients
+        beforeUpdateFormComponentModels();
+        // Update model using form data
+        updateFormComponentModels();
+        super.onError();
+    }
 }
 

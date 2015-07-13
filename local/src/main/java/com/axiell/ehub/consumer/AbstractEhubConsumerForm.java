@@ -53,5 +53,14 @@ abstract class AbstractEhubConsumerForm extends StatelessForm<EhubConsumer> {
     private void setPropertyKeys(TranslatedKeys<EhubConsumerPropertyKey> propertyKeys) {
         ehubConsumerPropertiesListView.setList(propertyKeys);
     }
+
+    @Override
+    protected void onError() {
+        // before updating, call the interception method for clients
+        beforeUpdateFormComponentModels();
+        // Update model using form data
+        updateFormComponentModels();
+        super.onError();
+    }
 }
 

@@ -8,7 +8,7 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 
-public class EpClientRequestFilter implements ClientRequestFilter {
+class EpClientRequestFilter implements ClientRequestFilter {
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;

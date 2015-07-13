@@ -9,10 +9,20 @@ abstract class AbstractContentProviderConsumerForm extends StatelessForm<Content
     protected final ContentProviderConsumerPropertiesListView contentProviderConsumerPropertiesListView;
 
     AbstractContentProviderConsumerForm(String id) {
-	super(id);
-	formModel = new Model<>();
-	setModel(formModel);
-	
-	contentProviderConsumerPropertiesListView = new ContentProviderConsumerPropertiesListView("cpcProperties", formModel);
+        super(id);
+        formModel = new Model<>();
+        setModel(formModel);
+
+        contentProviderConsumerPropertiesListView = new ContentProviderConsumerPropertiesListView("cpcProperties", formModel);
+    }
+
+
+    @Override
+    protected void onError() {
+        // before updating, call the interception method for clients
+        beforeUpdateFormComponentModels();
+        // Update model using form data
+        updateFormComponentModels();
+        super.onError();
     }
 }
