@@ -28,7 +28,5 @@ public class CheckoutDTO {
     public Date getExpirationDate() {
         return expirationDate;
     }
-
-
 }
 
