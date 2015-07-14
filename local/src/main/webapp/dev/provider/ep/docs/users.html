@@ -1,37 +1,41 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../../css/ehub.css"/>
     <title>eHUB Provider API Users</title>
 </head>
 <body>
 <h1>eHUB Provider API Users</h1>
 
 <ol class="breadcrumb">
-    <li><a title="The main eHUB Development page" href="../../">Home</a></li>
-    <li><a title="eHUB Provider API" href="../">eHUB Provider API</a></li>
+    <li><a title="eHUB Development" href="../../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Guide" href="./">eHUB Provider API Guide</a></li>
     <li class="active">eHUB Provider API Users</li>
 </ol>
+
 <p>
     Media providers should assume that Axiell eHUB is a trusted party and all its users (library patrons) are already validated by the Local Management System
-    (LMS) before taking any action in eHUB is taken. eHUB users are uniquely identified by the combination of an eHUB consumer (LMS instance) id and a patron
+    (LMS) before any action in eHUB is taken. eHUB users are uniquely identified by the combination of an eHUB consumer (LMS instance) id and a library card or
+    patron
     id. The patron id is a string identifier assigned by LMS and it is not the same as the patron library card (borrower bar code), although one can at any time
     retrive the patron information (including the patron library cards) for a given patron id using LMS.</p>
 
-The use of patron ids instead of the library cards has the following advantages:
+<p>The use of patron ids instead of the library cards has the following advantages:</p>
 <ul>
     <li>A patron at the library could have several cards which may cause problems when enforcing the borrowing limits.</li>
-    <li>The cards could be replaced, and therefore do not uniquely identify the user. The patron id remains the same as long as the patron is registered in
-        LMS.
+    <li>The cards could be replaced, and therefore do not always uniquely identify the user. The patron id remains the same as long as the patron is registered
+        in LMS.
     </li>
     <li>Some libraries use social security numbers as library cards and dealing with them is restricted by the law regulations</li>
 </ul>
 <p>If eHUB Provider supports the concept of users, then it is up to the provider server implementation to use the library card or patron id as the user id. At
     the client side implemented by eHUB it is determined by the value of EP_USER_ID_VALUE parameter (see
     <a title="eHUB Provider API parameters" href="parameters.html">eHUB Provider API parameters</a>) for more information.</p>
+
 <p>
     It is assumed that if eHUB Provider supports the concept of users, then it creates the users at the provider site automatically when needed. If it is
-    required that a user needs to accept provider agreements before using their services it is suggested that the first time when the eHUB user downloads
-    a digital media from the provider site the user is redirected to the media provider agreement page where he has to accept the agreement text before
+    required that every user needs to accept provider agreements before using their services it is suggested that the first time when the eHUB user downloads
+    a digital media from the provider site the user is redirected to the media provider agreement page, where he has to accept the agreement text before
     proceeding with the downloading of the media content.
 </p>
 </body>
