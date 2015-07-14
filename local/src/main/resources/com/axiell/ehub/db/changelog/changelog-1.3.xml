@@ -284,4 +284,18 @@
         </insert>
         <comment>Added Ehub Provider Content Provider Consumer property key: EP_USER_ID_VALUE</comment>
     </changeSet>
+
+    <changeSet id="19" author="ehub" dbms="oracle">
+        <update tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="CONTENT_DISPOSITION" value="STREAMING"/>
+            <column name="FORMAT_ID" value="audiobook-overdrive"/>
+            <column name="CONTENT_PROVIDER_ID" value="5"/>
+            <column name="PLAYER_WIDTH" value="0"/>
+            <column name="PLAYER_HEIGHT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <where>ID=1503</where>
+        </update>
+        <comment>Updated Overdrive audiobook-overdrive format decorations</comment>
+    </changeSet>
 </databaseChangeLog>
