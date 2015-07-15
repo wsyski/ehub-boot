@@ -298,4 +298,9 @@
         </update>
         <comment>Updated Overdrive audiobook-overdrive format decorations</comment>
     </changeSet>
+
+    <changeSet id="20" author="ehub" dbms="oracle">
+        <dropTable cascadeConstraints="true" tableName="RELEASE"/>
+        <comment>Dropped table RELEASE</comment>
+    </changeSet>
 </databaseChangeLog>
