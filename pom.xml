@@ -776,8 +776,8 @@
         <liquibase.slf4j.version>1.2.1</liquibase.slf4j.version>
         <jackson.version>2.1.2</jackson.version>
 
-        <ehub.release.version>2.1_4</ehub.release.version>
-        <ehub.snapshot.version>3.0-SNAPSHOT</ehub.snapshot.version>
+        <ehub.release.version>2.2.0.59</ehub.release.version>
+        <ehub.snapshot.version>2.2-SNAPSHOT</ehub.snapshot.version>
     </properties>
 
     <profiles>
