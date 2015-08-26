@@ -47,8 +47,7 @@ public final class EhubClient implements IEhubService {
     @Override
     public Record getRecord(AuthInfo authInfo, String contentProviderAlias, String contentProviderRecordId, String language) throws EhubException {
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
-        final String encodedContentProviderAlias = EhubUrlCodec.encode(contentProviderAlias);
-        IRecordsResource recordsResource = contentProvidersResource.records(encodedContentProviderAlias);
+        IRecordsResource recordsResource = contentProvidersResource.records(contentProviderAlias);
         RecordDTO recordDTO = recordsResource.getRecord(authInfo, contentProviderRecordId, language);
         return new Record(recordDTO);
     }

@@ -2,7 +2,6 @@ package com.axiell.ehub.support.request;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
-import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.RecordDTO;
@@ -14,9 +13,7 @@ import com.axiell.ehub.v1.loan.PendingLoan_v1;
 import com.axiell.ehub.v1.provider.IContentProvidersResource_v1;
 import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.codehaus.jackson.JsonGenerationException;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
@@ -28,9 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class SupportRequestAdminController implements ISupportRequestAdminController {
     private static final String STATUS_OK = "200";

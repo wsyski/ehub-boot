@@ -38,6 +38,9 @@
             <id>integration-test</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
+                <file>
+                    <exists>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</exists>
+                </file>
             </activation>
             <dependencies>
                 <dependency>
@@ -62,6 +65,9 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <!--
+                            <test>com.axiell.ehub.it.RemoteRecordIT#getRecord</test>
+                            -->
                             <includes>
                                 <include>**/*IT.java</include>
                                 <include>**/*IT_*.java</include>
@@ -119,7 +125,6 @@
                     </plugin>
                 </plugins>
             </build>
-
         </profile>
     </profiles>
 

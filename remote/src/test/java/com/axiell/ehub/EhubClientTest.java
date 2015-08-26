@@ -57,7 +57,7 @@ public class EhubClientTest {
 
     private void thenContentProvidersResourceIsCalledWithEncodedAlias(Record record) {
         assertSame(recordDTO, record.toDTO());
-        verify(contentProvidersResource, times(1)).records(getEncodedContentProviderAlias());
+        verify(contentProvidersResource, times(1)).records(CONTENT_PROVIDER_ALIAS);
     }
 
     private Record whenGetRecordExecuted() throws EhubException {
@@ -69,15 +69,10 @@ public class EhubClientTest {
     }
 
     private void givenContentProviderResourceReturnsRecordsResource() {
-        given(contentProvidersResource.records(getEncodedContentProviderAlias())).willReturn(recordsResource);
+        given(contentProvidersResource.records(CONTENT_PROVIDER_ALIAS)).willReturn(recordsResource);
     }
 
     private void givenRootResourceReturnsContentProviderResource() {
         given(rootResource.contentProviders()).willReturn(contentProvidersResource);
     }
-
-    private String getEncodedContentProviderAlias() {
-        return EhubUrlCodec.encode(CONTENT_PROVIDER_ALIAS);
-    }
-
 }

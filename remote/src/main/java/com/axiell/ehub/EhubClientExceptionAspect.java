@@ -10,6 +10,9 @@ import org.jboss.resteasy.client.exception.ResteasyClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 /**
  * This Aspect converts exceptions thrown by the {@link EhubClient} to {@link EhubException}s.
  */
@@ -17,27 +20,20 @@ import org.slf4j.LoggerFactory;
 public class EhubClientExceptionAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(EhubClientExceptionAspect.class);
 
-    /**
-     * Converts the {@link Throwable} to an {@link EhubException}.
-     *
-     * @param rce the {@link ResteasyClientException} to convert
-     * @throws EhubException when this method is invoked
-     */
-    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.EhubClient.*(..))", throwing = "rce")
+    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "rce")
     public void toEhubException(final JoinPoint joinPoint, final ResteasyClientException rce) throws EhubException {
         LOGGER.error(rce.getMessage(), rce);
         throw new EhubException(ErrorCause.INTERNAL_SERVER_ERROR.toEhubError());
     }
 
-    /**
-     * Converts the {@link EhubRuntimeException} to an {@link EhubException}.
-     *
-     * @param ere the {@link EhubRuntimeException} to convert
-     * @throws EhubException when this method is invoked
-     */
-    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.EhubClient.*(..))", throwing = "ere")
-    public void toEhubException(final JoinPoint joinPoint, final EhubRuntimeException ere) throws EhubException {
-        final EhubError ehubError = ere.getEhubError();
-        throw new EhubException(ehubError);
+    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "cee")
+    public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException cee) throws EhubException {
+        final Response response = cee.getResponse();
+        throw getEhubException(response);
+    }
+
+    private EhubException getEhubException(final Response response) {
+        EhubError ehubError=response.readEntity(EhubError.class);
+        return new EhubException(ehubError);
     }
 }

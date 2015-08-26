@@ -10,11 +10,10 @@
 
     <util:properties id="remoteProperties" location="classpath:remote-client.properties"/>
 
-    <bean id="rootResourceProxy" class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
+    <bean id="rootResourceProxy" class="com.axiell.ehub.util.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="com.axiell.ehub.IRootResource"/>
         <property name="baseUri" ref="ehubUri"/>
-        <property name="clientExecutor" ref="ehubClientExecutor"/>
-        <property name="resteasyProviderFactory" ref="ehubRestEasyProviderFactory"/>
+        <property name="httpEngine" ref="ehubHttpEngine"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
@@ -22,14 +21,10 @@
     </bean>
 
     <bean id="ehubUri" class="java.net.URI">
-        <constructor-arg value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}/v2"/>
-    </bean>
-    <bean id="ehubRestEasyProviderFactory" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="targetClass" value="com.axiell.ehub.util.EhubClientResteasyProviderFactory"/>
-        <property name="targetMethod" value="getInstance"/>
+        <constructor-arg value="#{systemProperties['ehub-server-uri']?: remoteProperties['remote.ehubBaseUri']}"/>
     </bean>
 
-    <bean id="ehubClientExecutor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor">
+    <bean id="ehubHttpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine">
         <constructor-arg ref="ehubSslHttpClient"/>
     </bean>
 
