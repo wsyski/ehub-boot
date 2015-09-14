@@ -31,7 +31,7 @@
         <repository>
             <id>Axiell maven repository</id>
             <name>Arena Project-releases</name>
-            <url>http://buildserver/artifactory/libs-release-local</url>
+            <url>http://jenkins.axiell.local:8081/artifactory/libs-release-local</url>
         </repository>
     </distributionManagement>
 
