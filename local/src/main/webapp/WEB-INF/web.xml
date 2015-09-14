@@ -36,7 +36,7 @@
         <listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
     </listener>
 
-	<context-param>
+    <context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:/com/axiell/ehub/application-context.xml</param-value>
 	</context-param>

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -146,11 +147,11 @@
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-spring</artifactId>
         </dependency>
-        
+
         <dependency>
-  			<groupId>com.jcabi</groupId>
-  			<artifactId>jcabi-manifests</artifactId>
-		</dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-manifests</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -351,6 +352,9 @@
                         <contextPath>/</contextPath>
                     </webApp>
                     <jettyConfig>config/jetty-env.xml</jettyConfig>
+                    <stopKey>STOP</stopKey>
+                    <stopPort>9999</stopPort>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
                     <systemProperties>
                         <systemProperty>
                             <name>hibernate.connection.username</name>
@@ -366,23 +370,28 @@
                         </systemProperty>
                         <systemProperty>
                             <name>catalina.base</name>
-                            <value>target</value>
+                            <value>${project.build.directory}</value>
                         </systemProperty>
                     </systemProperties>
                     <scanTargetPatterns>
-                              <scanTargetPattern>
-                                <directory>src/main/resources</directory>
-                                <includes>
-                                  <include>**/*.xml</include>
-                                  <include>**/*.properties</include>
-                                </includes>
-                              </scanTargetPattern>
-                            </scanTargetPatterns>
+                        <scanTargetPattern>
+                            <directory>src/main/resources</directory>
+                            <includes>
+                                <include>**/*.xml</include>
+                                <include>**/*.properties</include>
+                            </includes>
+                        </scanTargetPattern>
+                    </scanTargetPatterns>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>oracle</groupId>
                         <artifactId>ojdbc6</artifactId>
+                        <version>${oracle.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>oracle</groupId>
+                        <artifactId>ucp</artifactId>
                         <version>${oracle.version}</version>
                     </dependency>
                 </dependencies>
@@ -518,11 +527,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals><goal>add-source</goal></goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/askews</source>
+                                <source>${project.build.directory}/generated-sources/f1</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <verbose>false</verbose>
                 </configuration>
             </plugin>
 
@@ -534,22 +560,22 @@
                         <phase>process-classes</phase>
                         <configuration>
                             <target>
-                                <property name="maven_compile_classpath" refid="maven.compile.classpath" />
-                                <property name="maven_test_classpath" refid="maven.test.classpath" />
+                                <property name="maven_compile_classpath" refid="maven.compile.classpath"/>
+                                <property name="maven_test_classpath" refid="maven.test.classpath"/>
                                 <path id="hibernatetool.path">
-                                    <pathelement path="${maven_compile_classpath}" />
-                                    <pathelement path="${maven_test_classpath}" />
-                                    <pathelement location="${project.build.directory}/classes" />
+                                    <pathelement path="${maven_compile_classpath}"/>
+                                    <pathelement path="${maven_test_classpath}"/>
+                                    <pathelement location="${project.build.directory}/classes"/>
                                 </path>
-                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.path" />
+                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.path"/>
 
-                                <property name="hibernatetool.dir" value="${project.basedir}/src/sql/basic" />
-                                <mkdir dir="${hibernatetool.dir}" />
+                                <property name="hibernatetool.dir" value="${project.basedir}/src/sql/basic"/>
+                                <mkdir dir="${hibernatetool.dir}"/>
 
                                 <hibernatetool destdir="${hibernatetool.dir}">
-                                    <classpath refid="hibernatetool.path" />
-                                    <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties" />
-                                    <hbm2ddl export="false" format="true" outputfilename="schema.sql" />
+                                    <classpath refid="hibernatetool.path"/>
+                                    <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"/>
+                                    <hbm2ddl export="false" format="true" outputfilename="schema.sql"/>
                                 </hibernatetool>
                             </target>
                         </configuration>
@@ -644,5 +670,7 @@
     </build>
     <properties>
         <database>oracle</database>
+        <ehubUser>ehub1</ehubUser>
+        <ehubPassword>eehub1</ehubPassword>
     </properties>
 </project>
