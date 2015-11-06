@@ -11,18 +11,18 @@ import static org.mockito.BDDMockito.given;
 
 public class AbstractEpIT extends AbstractContentProviderIT {
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    protected static final String API_BASE_URL_VALUE = "http://provider.com/ehub-api";
+    protected static final String API_BASE_URL_VALUE = "https://xyzaeh.ulverscroftdigital.com";
 
     protected static final long EHUB_CONSUMER_ID = 1L;
-    protected static final String EP_SITE_ID = "siteId";
-    protected static final String EP_SECRET_KEY = "secretKey";
+    protected static final String EP_SITE_ID = "1111";
+    protected static final String EP_SECRET_KEY = "1111";
 
-    protected static final String RECORD_ID = "recordId";
+    protected static final String RECORD_ID = "9781407941011";
 
-    protected static final String FORMAT_ID = "formatId";
+    protected static final String FORMAT_ID = "eAudio";
 
     private static final String PATRON_ID = "patronId";
-    private static final String LIBRARY_CARD = "libraryCard";
+    private static final String LIBRARY_CARD = "D0200000000000";
 
 
     protected EpFacade underTest;

@@ -15,8 +15,9 @@ public class EpGetFormatsIT extends AbstractEpIT {
     @Ignore
     @Test
     public void getFormats() throws IFinder.NotFoundException {
-        givenPatronIdInPatron();
-        givenConfigurationProperties(EpUserIdValue.PATRON_ID);
+        givenLibraryCardInPatron();
+        //givenPatronIdInPatron();
+        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
         whenGetFormats();

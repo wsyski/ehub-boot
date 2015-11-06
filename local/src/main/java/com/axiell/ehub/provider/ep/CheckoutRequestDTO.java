@@ -2,11 +2,13 @@ package com.axiell.ehub.provider.ep;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutRequestDTO {
+    @JsonProperty(value = "recordId")
     private String recordId;
+    @JsonProperty(value = "formatId")
     private String formatId;
 
     public CheckoutRequestDTO(final String recordId, final String formatId) {
