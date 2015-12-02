@@ -11,8 +11,15 @@ import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.provider.*;
-import com.axiell.ehub.provider.record.format.*;
+import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
+import com.axiell.ehub.provider.CommandData;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.IExpirationDateFactory;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.axiell.ehub.util.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +64,10 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderRecordId = data.getContentProviderRecordId();
+        final Patron patron = data.getPatron();
 
-        final String contentProviderLoanId = processLoan(contentProviderConsumer, contentProviderRecordId);
-        final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId);
+        final String contentProviderLoanId = processLoan(contentProviderConsumer, contentProviderRecordId, patron);
+        final String contentUrl = getContentUrl(contentProviderConsumer, contentProviderLoanId, patron);
 
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String formatId = data.getContentProviderFormatId();
@@ -73,8 +81,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         return new ContentProviderLoan(metadata, contentLink);
     }
 
-    private String processLoan(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId) {
-        final LoanRequestResult loanRequestResult = askewsFacade.processLoan(contentProviderConsumer, contentProviderRecordId);
+    private String processLoan(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final Patron patron) {
+        final LoanRequestResult loanRequestResult = askewsFacade.processLoan(contentProviderConsumer, contentProviderRecordId, patron);
 
         if (loanRequestWasNotSuccessful(loanRequestResult)) {
             throwInternalServerErrorException(loanRequestResult.getErrorDesc().getValue(), loanRequestResult.getErrorCode());
@@ -83,13 +91,13 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         return loanRequestResult.getLoanid().toString();
     }
 
-    private boolean loanRequestWasNotSuccessful(LoanRequestResult loanRequestResult) {
+    private boolean loanRequestWasNotSuccessful(final LoanRequestResult loanRequestResult) {
         Integer requestStatus = loanRequestResult.getLoanRequestSuccess();
         return !LOAN_SUCCESS.equals(requestStatus);
     }
 
-    private String getContentUrl(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
-        final LoanDetails loanDetails = tryToGetLoanLoanDetails(contentProviderConsumer, contentProviderLoanId);
+    private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
+        final LoanDetails loanDetails = tryToGetLoanLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
         return getContentUrl(loanDetails);
     }
 
@@ -98,14 +106,14 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         return downloadUrl.getValue();
     }
 
-    private LoanDetails tryToGetLoanLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
+    private LoanDetails tryToGetLoanLoanDetails(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
         LoanDetails loanDetails;
         int retryCount = 0;
 
         do {
             retryCount++;
             sleep(retryCount);
-            loanDetails = getLoanDetails(contentProviderConsumer, contentProviderLoanId);
+            loanDetails = getLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
         } while (waitingToBeProcessed(loanDetails) && retryCount <= MAX_RETRIES);
 
         if (waitingToBeProcessed(loanDetails)) {
@@ -125,8 +133,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         }
     }
 
-    private LoanDetails getLoanDetails(ContentProviderConsumer contentProviderConsumer, String contentProviderLoanId) {
-        final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId);
+    private LoanDetails getLoanDetails(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
+        final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
         final List<LoanDetails> loanDetailsList = loanDetailsArray.getLoanDetails();
         Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId
                 + "'");
@@ -151,7 +159,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();
-        final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, contentProviderLoanId);
+        final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, contentProviderLoanId, data.getPatron());
 
         if (titleHasNotBeenProcessed(loanDetail)) {
             throwInternalServerErrorException("Title has not yet been processed", loanDetail.getLoanStatus());

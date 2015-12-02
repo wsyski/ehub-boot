@@ -303,4 +303,14 @@
         <dropTable cascadeConstraints="true" tableName="RELEASE"/>
         <comment>Dropped table RELEASE</comment>
     </changeSet>
+
+    <changeSet id="21" author="ehub" dbms="oracle">
+        <delete tableName="CONTENT_P_CONSUMER_PROPERTY">
+            <where>PROPERTY_KEY='ASKEWS_BARCODE'</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER_PROPERTY_KEY">
+            <where>PROPERTY_KEY IN ('ASKEWS_BARCODE')</where>
+        </delete>
+        <comment>Deleted ASKEWS_BARCODE property</comment>
+    </changeSet>
 </databaseChangeLog>

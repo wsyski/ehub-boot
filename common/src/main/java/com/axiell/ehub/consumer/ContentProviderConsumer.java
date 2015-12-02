@@ -28,7 +28,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     private static final Map<String, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = ImmutableMap.<String, Set<ContentProviderConsumerPropertyKey>>builder()
             .put(ContentProvider.CONTENT_PROVIDER_ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY))
             .put(ContentProvider.CONTENT_PROVIDER_ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID))
-            .put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY, ASKEWS_BARCODE))
+            .put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY))
             .put(ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
                     newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
                             OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
@@ -168,7 +168,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
 
     public enum ContentProviderConsumerPropertyKey {
         ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID,
-        ASKEWS_TOKEN_KEY, ASKEWS_BARCODE,
+        ASKEWS_TOKEN_KEY,
         OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID,
         OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
         F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY,
