@@ -34,11 +34,8 @@ import java.util.List;
 public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(AskewsDataAccessor.class);
     private static final String ASKEWS_FORMAT_ID = "Askews1";
-    private static final Integer WAITING_TO_PROCESS = 1;
     private static final Integer TITLE_HAS_BEEN_PROCESSED = 4;
     private static final Integer LOAN_SUCCESS = 1;
-    private static final int MAX_RETRIES = 60;
-    private static final Integer RETRY_WAIT_MILLIS = 1000;
 
     @Autowired
     private IAskewsFacade askewsFacade;
@@ -97,40 +94,13 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
-        final LoanDetails loanDetails = tryToGetLoanLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
+        final LoanDetails loanDetails = getLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
         return getContentUrl(loanDetails);
     }
 
     private String getContentUrl(LoanDetails loanDetails) {
         final JAXBElement<String> downloadUrl = loanDetails.getDownloadURL();
         return downloadUrl.getValue();
-    }
-
-    private LoanDetails tryToGetLoanLoanDetails(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
-        LoanDetails loanDetails;
-        int retryCount = 0;
-
-        do {
-            retryCount++;
-            sleep(retryCount);
-            loanDetails = getLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
-        } while (waitingToBeProcessed(loanDetails) && retryCount <= MAX_RETRIES);
-
-        if (waitingToBeProcessed(loanDetails)) {
-            throwInternalServerErrorException("Title has not yet been processed", loanDetails.getLoanStatus());
-        }
-
-        return loanDetails;
-    }
-
-    private void sleep(int retryCount) {
-        if (retryCount > 1) {
-            try {
-                Thread.sleep(RETRY_WAIT_MILLIS);
-            } catch (InterruptedException e) {
-            }
-            LOGGER.debug("Retrying getLoanDetails retryCount=" + retryCount);
-        }
     }
 
     private LoanDetails getLoanDetails(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
@@ -147,11 +117,6 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         if (loanDetails.isHasFailed()) {
             throwInternalServerErrorException(loanDetails.getErrorDesc().getValue(), loanDetails.getErrorCode());
         }
-    }
-
-    private boolean waitingToBeProcessed(LoanDetails loanDetail) {
-        Integer loanStatus = loanDetail.getLoanStatus();
-        return WAITING_TO_PROCESS.equals(loanStatus);
     }
 
     @Override

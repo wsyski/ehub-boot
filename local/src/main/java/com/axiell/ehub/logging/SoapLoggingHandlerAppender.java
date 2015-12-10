@@ -12,7 +12,7 @@ import java.util.List;
 public class SoapLoggingHandlerAppender implements ISoapLoggingHandlerAppender {
 
     @Override
-    public void addLoggingHandler(Object soapService) {
+    public void addLoggingHandler(final Object soapService) {
         BindingProvider bp = (BindingProvider) soapService;
         Binding binding = bp.getBinding();
         @SuppressWarnings("rawtypes")

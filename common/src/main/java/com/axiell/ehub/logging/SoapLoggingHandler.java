@@ -1,6 +1,7 @@
 package com.axiell.ehub.logging;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,27 +21,50 @@ import static com.axiell.ehub.logging.ToStringConverter.soapMessageToString;
  */
 public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SoapLoggingHandler.class);
+    private static final String KEY_STOP_WATCH = SoapLoggingHandler.class.getName() + ".stopWatch";
 
+    @Override
     public boolean handleMessage(final SOAPMessageContext soapMessageContext) {
-        if (LOGGER.isDebugEnabled()) {
-            final String logMessage = makeLogMessage(soapMessageContext);
-            LOGGER.debug(logMessage);
+        if (Boolean.TRUE.equals(soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY))) {
+            handleRequest(soapMessageContext);
+        } else {
+            handleResponse(soapMessageContext);
         }
         return true;
     }
 
-    private String makeLogMessage(final SOAPMessageContext soapMessageContext) {
-        return prefix(soapMessageContext) + url(soapMessageContext) + body(soapMessageContext) + suffix();
+    public void handleRequest(final SOAPMessageContext soapMessageContext) {
+        if (LOGGER.isDebugEnabled()) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            soapMessageContext.put(KEY_STOP_WATCH, stopWatch);
+            final String logMessage = makeRequestLogMessage(soapMessageContext);
+            LOGGER.debug(logMessage);
+        }
     }
 
-    private String prefix(final SOAPMessageContext soapMessageContext) {
-        boolean request = isMessageContextARequest(soapMessageContext);
-        String prefix = request ? "SOAP request" : "SOAP response";
-        return prefix + "{" + lineFeed();
+    public void handleResponse(final SOAPMessageContext soapMessageContext) {
+        if (LOGGER.isDebugEnabled()) {
+            StopWatch stopWatch = StopWatch.class.cast(soapMessageContext.get(KEY_STOP_WATCH));
+            final String logMessage = makeResponseLogMessage(soapMessageContext, stopWatch);
+            LOGGER.debug(logMessage);
+        }
     }
 
-    private Boolean isMessageContextARequest(final SOAPMessageContext soapMessageContext) {
-        return (Boolean) soapMessageContext.get(SOAPMessageContext.MESSAGE_OUTBOUND_PROPERTY);
+    private String makeRequestLogMessage(final SOAPMessageContext soapMessageContext) {
+        String prefix = "SOAP request {" + lineFeed();
+        return prefix + url(soapMessageContext) + body(soapMessageContext) + suffix();
+    }
+
+    private String makeResponseLogMessage(final SOAPMessageContext soapMessageContext, final StopWatch stopWatch) {
+        StringBuilder prefix = new StringBuilder("SOAP response");
+        if (stopWatch != null) {
+            prefix.append(" time: ");
+            prefix.append(stopWatch.getTime());
+        }
+        prefix.append(" {");
+        prefix.append(lineFeed());
+        return prefix.toString() + url(soapMessageContext) + body(soapMessageContext) + suffix();
     }
 
     private String url(SOAPMessageContext soapMessageContext) {
@@ -58,8 +82,10 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
         return "}";
     }
 
+    @Override
     public boolean handleFault(final SOAPMessageContext soapMessageContext) {
-        final String logMessage = makeLogMessage(soapMessageContext);
+        StopWatch stopWatch = StopWatch.class.cast(soapMessageContext.get(KEY_STOP_WATCH));
+        final String logMessage = makeResponseLogMessage(soapMessageContext, stopWatch);
         LOGGER.error(logMessage);
         return true;
     }
