@@ -1,7 +1,7 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.CheckOutResponse;
-import com.axiell.arena.services.palma.loans.CheckOutTestResponse;
+import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
+import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutErrorStatusType;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
 import com.axiell.arena.services.palma.search.v267.searchresponse.CatalogueRecords;
@@ -53,7 +53,8 @@ public class PalmaDataAccessorTest {
             new com.axiell.arena.services.palma.util.v267.cr.ObjectFactory();
     private static final com.axiell.arena.services.palma.util.v267.status.ObjectFactory V267_STATUS_OBJECT_FACTORY =
             new com.axiell.arena.services.palma.util.v267.status.ObjectFactory();
-    private static final com.axiell.arena.services.palma.loans.ObjectFactory LOANS_OBJECT_FACTORY = new com.axiell.arena.services.palma.loans.ObjectFactory();
+    private static final com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory CHECKOUT_RESPONSE_OBJECT_FACTORY = new com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory();
+    private static final com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory CHECKOUT_TEST_RESPONSE_OBJECT_FACTORY = new com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory();
     private static final com.axiell.arena.services.palma.util.status.ObjectFactory STATUS_OBJECT_FACTORY =
             new com.axiell.arena.services.palma.util.status.ObjectFactory();
 
@@ -200,35 +201,27 @@ public class PalmaDataAccessorTest {
     }
 
     private static CheckOutTestResponse getCheckOutTestResponse(final CheckOutTestErrorStatusType checkOutStatus) {
-        CheckOutTestResponse checkOutTest = LOANS_OBJECT_FACTORY.createCheckOutTestResponse();
+        CheckOutTestResponse checkOutTestResponse = CHECKOUT_TEST_RESPONSE_OBJECT_FACTORY.createCheckOutTestResponse();
         Status status = getStatusOk();
-        com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory checkouttestresponseObjectFactory =
-                new com.axiell.arena.services.palma.patron.checkouttestresponse.ObjectFactory();
-        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
-                checkouttestresponseObjectFactory.createCheckOutTestResponse();
-        checkOutTest.setCheckOutTestResponse(checkOutTestResponse);
         checkOutTestResponse.setStatus(status);
         switch (checkOutStatus) {
             case ACTIVE_LOAN:
                 checkOutTestResponse.setLoanId(LOAN_ID);
+                //checkOutTestResponse.setLoanId(CHECKOUT_TEST_RESPONSE_OBJECT_FACTORY.createCheckOutTestResponseLoanId(LOAN_ID));
                 break;
             default:
         }
         checkOutTestResponse.setTestStatus(checkOutStatus);
-        return checkOutTest;
+        return checkOutTestResponse;
     }
 
     private static CheckOutResponse getCheckOutResponse(final CheckOutErrorStatusType errorStatus) {
-        CheckOutResponse checkOut = LOANS_OBJECT_FACTORY.createCheckOutResponse();
+        CheckOutResponse checkOutResponse = CHECKOUT_RESPONSE_OBJECT_FACTORY.createCheckOutResponse();
         com.axiell.arena.services.palma.util.status.Status status = getStatusOk();
-        com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory checkoutresponseObjectFactory =
-                new com.axiell.arena.services.palma.patron.checkoutresponse.ObjectFactory();
-        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = checkoutresponseObjectFactory.createCheckOutResponse();
-        checkOut.setCheckOutResponse(checkOutResponse);
         checkOutResponse.setStatus(status);
         if (errorStatus == null) {
             com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutSuccess checkOutSuccess =
-                    checkoutresponseObjectFactory.createCheckOutResponseCheckOutSuccess();
+                    CHECKOUT_RESPONSE_OBJECT_FACTORY.createCheckOutResponseCheckOutSuccess();
             checkOutSuccess.setLoanId(LOAN_ID);
             checkOutSuccess.setRecordId(LMS_RECORD_ID);
             com.axiell.arena.services.palma.util.ObjectFactory utilObjectFactory = new com.axiell.arena.services.palma.util.ObjectFactory();
@@ -239,12 +232,12 @@ public class PalmaDataAccessorTest {
             checkOutResponse.setCheckOutSuccess(checkOutSuccess);
         } else {
             com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse.CheckOutError checkOutError =
-                    checkoutresponseObjectFactory.createCheckOutResponseCheckOutError();
+                    CHECKOUT_RESPONSE_OBJECT_FACTORY.createCheckOutResponseCheckOutError();
             checkOutError.setStatus(errorStatus);
             checkOutResponse.setCheckOutError(checkOutError);
         }
 
-        return checkOut;
+        return checkOutResponse;
     }
 
     private static Status getStatusOk() {

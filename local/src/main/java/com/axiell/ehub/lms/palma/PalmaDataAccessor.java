@@ -38,16 +38,14 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
 
     @Override
     public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron) {
-        com.axiell.arena.services.palma.loans.CheckOutTestResponse loansCheckOutTestResponse = loansFacade.checkOutTest(ehubConsumer, pendingLoan, patron);
-        CheckOutTestResponse checkOutTestResponse = loansCheckOutTestResponse.getCheckOutTestResponse();
+        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse = loansFacade.checkOutTest(ehubConsumer, pendingLoan, patron);
         responseStatusChecker.checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, patron);
         return getCheckoutTestAnalysis(ehubConsumer, pendingLoan, patron, checkOutTestResponse);
     }
 
     @Override
     public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron) {
-        com.axiell.arena.services.palma.loans.CheckOutResponse loansCheckOutResponse = loansFacade.checkOut(ehubConsumer, pendingLoan, expirationDate, patron);
-        CheckOutResponse checkOutResponse = loansCheckOutResponse.getCheckOutResponse();
+        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = loansFacade.checkOut(ehubConsumer, pendingLoan, expirationDate, patron);
         responseStatusChecker.checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, patron);
         return getLmsLoan(ehubConsumer, pendingLoan, patron, checkOutResponse);
     }

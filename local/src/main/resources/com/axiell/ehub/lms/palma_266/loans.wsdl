@@ -1449,7 +1449,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
+        <xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
                    xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status"
                    xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
@@ -1971,7 +1971,7 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:schema>
-        <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://loans.palma.services.arena.axiell.com/"
+        <xsd:schema targetNamespace="http://loans.palma.services.arena.axiell.com/"
                     xmlns:ns0="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
                     xmlns:ns1="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
                     xmlns:ns2="http://axiell.com/arena/services/palma/patron/renewLoansRequest"

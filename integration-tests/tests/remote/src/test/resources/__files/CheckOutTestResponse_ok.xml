@@ -1,9 +1,8 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-	<soap:Header/>
 	<soap:Body>
 		<ns1:CheckOutTestResponse xmlns:ns1="http://loans.palma.services.arena.axiell.com/">
 			<checkOutTestResponse xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">
-				<status xmlns="http://axiell.com/arena/services/palma/util/status" type="ok"/>
+				<status type="ok" xmlns="http://axiell.com/arena/services/palma/util/status"/>
 				<loanId xmlns="">lmsLoanId</loanId>
 				<testStatus xmlns="">activeLoan</testStatus>
 			</checkOutTestResponse>

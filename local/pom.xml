@@ -397,143 +397,6 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>3.1.5</version>
-                <executions>
-                    <execution>
-                        <id>generate-sources-palma-catalogue</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <fork>always</fork>
-                            <additionalJvmArgs>-Djavax.xml.accessExternalSchema=all</additionalJvmArgs>
-                            <sourceRoot>${project.build.directory}/generated-sources/palma-catalogue</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_267/catalogue.wsdl</wsdl>
-                                    <extraargs>
-                                        <extraarg>-client</extraarg>
-                                        <extraarg>-verbose</extraarg>
-                                        <extraarg>-validate</extraarg>
-                                    </extraargs>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-sources-palma-loans</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <fork>always</fork>
-                            <additionalJvmArgs>-Djavax.xml.accessExternalSchema=all</additionalJvmArgs>
-                            <sourceRoot>${project.build.directory}/generated-sources/palma-loans</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_266/loans.wsdl</wsdl>
-                                    <extraargs>
-                                        <extraarg>-client</extraarg>
-                                        <extraarg>-verbose</extraarg>
-                                        <extraarg>-validate</extraarg>
-                                    </extraargs>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-test-sources-palma-265</id>
-                        <phase>generate-test-sources</phase>
-                        <configuration>
-                            <sourceRoot>${project.build.directory}/generated-test-sources/palma_265</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${project.basedir}/src/test/resources/com/axiell/ehub/lms/palma_265/loans.wsdl</wsdl>
-                                    <extraargs>
-                                        <extraarg>-client</extraarg>
-                                        <extraarg>-verbose</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util=com.axiell.arena.services.palma_265.util</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/status=com.axiell.arena.services.palma_265.util.status
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/cr=com.axiell.arena.services.palma_265.util.cr
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://axiell.com/arena/services/palma/util/loan=com.axiell.arena.services.palma_265.util.loan
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://loans.palma.services.arena.axiell.com/=com.axiell.arena.services.palma_265.loans</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/util/borrowerCard=com.axiell.arena.services.palma_265.util.borrowercard
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/loansRequest=com.axiell.arena.services.palma_265.patron.loansrequest
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/loansResponse=com.axiell.arena.services.palma_265.patron.loansresponse
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/renewLoansRequest=com.axiell.arena.services.palma_265.patron.renewloansrequest
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/renewLoansResponse=com.axiell.arena.services.palma_265.patron.renewloansresponse
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutRequest=com.axiell.arena.services.palma_265.patron.checkoutrequest
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutResponse=com.axiell.arena.services.palma_265.patron.checkoutresponse
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutTestRequest=com.axiell.arena.services.palma_265.patron.checkouttestrequest
-                                        </extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>
-                                            http://axiell.com/arena/services/palma/patron/checkOutTestResponse=com.axiell.arena.services.palma_265.patron.checkouttestresponse
-                                        </extraarg>
-                                    </extraargs>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>add-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-test-sources/palma_265</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
@@ -641,11 +504,50 @@
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>generate-sources-palma-loans</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <extension>true</extension>
+                            <verbose>true</verbose>
+                            <sourceDestDir>${project.build.directory}/generated-sources/palma-loans</sourceDestDir>
+                            <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_266/loans.wsdl</wsdlFile>
+                            </wsdlFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-sources-palma-catalogue</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <extension>true</extension>
+                            <verbose>true</verbose>
+                            <sourceDestDir>${project.build.directory}/generated-sources/palma-catalogue</sourceDestDir>
+                            <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_267/catalogue.wsdl</wsdlFile>
+                            </wsdlFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>generate-sources-askews</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
                             <extension>true</extension>
                             <verbose>true</verbose>
                             <packageName>com.askews.api</packageName>
@@ -662,6 +564,9 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
                             <extension>true</extension>
                             <verbose>true</verbose>
                             <packageName>se.forlagett.api</packageName>
@@ -672,6 +577,18 @@
                         </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-basics-annotate</artifactId>
+                        <version>0.6.4</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.persistence</groupId>
+                        <artifactId>org.eclipse.persistence.moxy</artifactId>
+                        <version>2.4.0</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

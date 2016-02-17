@@ -31,7 +31,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void checkout() throws EhubException {
-        givenPalmaLoanWsdl();
+        givenPalmaLoansWsdl();
         givenPalmaCheckoutTestOkResponse();
         givenContentProviderCheckoutResponse();
         givenContentProviderGetCheckoutResponse();
@@ -58,28 +58,13 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void ehubException() {
-        givenPalmaLoanWsdl();
+        givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();
         try {
             whenCheckout();
         } catch (EhubException ex) {
             Assert.assertNotNull(ex);
         }
-    }
-
-
-    private void givenPalmaLoanWsdl() {
-        stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "text/xml").withBodyFile("loans.wsdl")));
-    }
-
-    private void givenPalmaCheckoutTestOkResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns"))
-                .willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
-    }
-
-    private void givenPalmaCheckoutResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns"))
-                .willReturn(aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
     private void givenContentProviderGetCheckoutResponse() {
@@ -122,12 +107,6 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     private void givenReadyLoanId() {
         readyLoanId = testData.getEhubLoanId();
-    }
-
-
-    private void givenCheckoutTestErrorResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(
-                "CheckOutTestResponse_error.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
     private Checkout whenCheckout() throws EhubException {
