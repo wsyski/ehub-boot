@@ -24,7 +24,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Locale;
 
-public abstract class RemoteITFixture extends PalmaITFixture {
+public abstract class RemoteITFixture extends PalmaWiremockITFixture {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";

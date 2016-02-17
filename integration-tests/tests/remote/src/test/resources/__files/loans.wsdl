@@ -1383,8 +1383,7 @@
         </xs:schema>
         <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
                    xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
-                   xmlns:util="http://axiell.com/arena/services/palma/util"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/borrowerCard"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="PalmaMessage">
@@ -1402,6 +1401,8 @@
                         <xs:element minOccurs="0" ref="util:password"/>
                         <xs:element minOccurs="0" ref="util:patronId"/>
                         <xs:element name="recordId" type="xs:string"/>
+                        <xs:element minOccurs="1" name="contentProviderName" type="xs:string"/>
+                        <xs:element minOccurs="1" name="contentProviderFormatId" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1448,7 +1449,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
+        <xs:schema elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
                    xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status"
                    xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
@@ -1520,6 +1521,7 @@
                         <xs:element minOccurs="0" ref="targetAudience"/>
                         <xs:element minOccurs="0" ref="title"/>
                         <xs:element minOccurs="0" ref="titleSeries"/>
+                        <xs:element minOccurs="0" ref="partOf"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1729,6 +1731,7 @@
                 </xs:complexType>
             </xs:element>
             <xs:element name="titleSeries" type="xs:string"/>
+            <xs:element name="partOf" type="xs:string"/>
         </xs:schema>
         <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util/loan" xmlns="http://axiell.com/arena/services/palma/util/loan"
                    xmlns:cr="http://axiell.com/arena/services/palma/util/cr" xmlns:util="http://axiell.com/arena/services/palma/util"
@@ -1746,6 +1749,7 @@
                         <xs:element ref="loanStatus"/>
                         <xs:element ref="organisation"/>
                         <xs:element ref="remainingRenewals"/>
+                        <xs:element ref="note"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1778,6 +1782,7 @@
             </xs:element>
             <xs:element name="organisation" type="xs:string"/>
             <xs:element name="remainingRenewals" type="xs:unsignedInt"/>
+            <xs:element name="note" type="xs:string"/>
         </xs:schema>
         <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/renewLoansRequest"
                    xmlns="http://axiell.com/arena/services/palma/patron/renewLoansRequest" xmlns:loan="http://axiell.com/arena/services/palma/util/loan"
@@ -1892,8 +1897,7 @@
         </xs:schema>
         <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutRequest"
                    xmlns="http://axiell.com/arena/services/palma/patron/checkOutRequest"
-                   xmlns:util="http://axiell.com/arena/services/palma/util"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/borrowerCard"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="PalmaMessage">
@@ -1915,6 +1919,8 @@
                             <xs:sequence>
                                 <xs:element name="expirationDate" type="xs:date"/>
                                 <xs:element name="recordId" type="xs:string"/>
+                                <xs:element minOccurs="1" name="contentProviderName" type="xs:string"/>
+                                <xs:element minOccurs="1" name="contentProviderFormatId" type="xs:string"/>
                             </xs:sequence>
                         </xs:choice>
                     </xs:sequence>
@@ -1965,7 +1971,7 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:schema>
-        <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://loans.palma.services.arena.axiell.com/"
+        <xsd:schema targetNamespace="http://loans.palma.services.arena.axiell.com/"
                     xmlns:ns0="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
                     xmlns:ns1="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
                     xmlns:ns2="http://axiell.com/arena/services/palma/patron/renewLoansRequest"
