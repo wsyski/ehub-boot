@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/com/axiell/ehub/invocation-context.xml")
-public abstract class AbstractPalmaIT<T> {
+public abstract class AbstractPalma<T> {
     private Endpoint endpoint;
 
     @Autowired

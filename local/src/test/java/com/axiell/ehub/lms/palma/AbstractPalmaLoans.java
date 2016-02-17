@@ -6,7 +6,6 @@ import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 
-import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Test;
 
 import javax.xml.ws.Endpoint;
@@ -15,7 +14,7 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public abstract class AbstractPalmaLoansIT<T> extends AbstractPalmaIT {
+public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
     private PendingLoan pendingLoan;

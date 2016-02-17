@@ -2,7 +2,7 @@ package com.axiell.ehub.it;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public abstract class PalmaWiremockITFixture {
+public abstract class PalmaITFixture {
 
     protected void givenPalmaLoansWsdl() {
         stubFor(get(urlEqualTo("/arena.pa.palma/loans?wsdl")).willReturn(aResponse().withHeader("Content-Type", "text/xml").withBodyFile("loans.wsdl")));

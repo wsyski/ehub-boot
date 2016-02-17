@@ -33,7 +33,7 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
         return true;
     }
 
-    public void handleRequest(final SOAPMessageContext soapMessageContext) {
+    private void handleRequest(final SOAPMessageContext soapMessageContext) {
         if (LOGGER.isDebugEnabled()) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
@@ -43,7 +43,7 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
         }
     }
 
-    public void handleResponse(final SOAPMessageContext soapMessageContext) {
+    private void handleResponse(final SOAPMessageContext soapMessageContext) {
         if (LOGGER.isDebugEnabled()) {
             StopWatch stopWatch = StopWatch.class.cast(soapMessageContext.get(KEY_STOP_WATCH));
             final String logMessage = makeResponseLogMessage(soapMessageContext, stopWatch);

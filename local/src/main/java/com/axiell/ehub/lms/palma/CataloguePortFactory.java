@@ -1,7 +1,5 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.Loans;
-import com.axiell.arena.services.palma.loans.LoansPalmaService;
 import com.axiell.arena.services.palma.search.v267.service.Catalogue;
 import com.axiell.arena.services.palma.search.v267.service.PalmaSearchService;
 import com.axiell.ehub.consumer.EhubConsumer;

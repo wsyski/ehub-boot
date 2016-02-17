@@ -3,7 +3,6 @@ package com.axiell.ehub.lms.palma;
 
 import com.axiell.ehub.DevelopmentData;
 
-import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Test;
 
 import javax.xml.ws.Endpoint;
@@ -11,7 +10,7 @@ import javax.xml.ws.Endpoint;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class PalmaSearch267IT extends AbstractPalmaIT {
+public class PalmaSearch267Test extends AbstractPalma {
 
     @Override
     Endpoint makeEndpoint(String palmaUrl) {

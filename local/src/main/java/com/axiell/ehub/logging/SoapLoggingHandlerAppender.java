@@ -20,8 +20,8 @@ public class SoapLoggingHandlerAppender implements ISoapLoggingHandlerAppender {
         if (handlerList == null) {
             handlerList = new ArrayList<>();
         }
-        SoapLoggingHandler loggingHandler = new SoapLoggingHandler();
-        handlerList.add(loggingHandler);
+        SoapLoggingHandler soapLoggingHandler = new SoapLoggingHandler();
+        handlerList.add(soapLoggingHandler);
         binding.setHandlerChain(handlerList);
     }
 }

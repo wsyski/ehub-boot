@@ -4,7 +4,6 @@ import com.axiell.arena.services.palma.search.v267.service.Catalogue;
 import com.axiell.arena.services.palma.search.v267.service.Search.SearchRequest;
 import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 
 import javax.jws.WebService;
@@ -29,7 +28,7 @@ public class PalmaSearchService_267 extends AbstractPalmaService implements Cata
     @Override
     public com.axiell.arena.services.palma.search.v267.service.SearchResponse.SearchResult search(final SearchRequest searchRequest) {
         verifySearchRequest(searchRequest);
-        return ((SearchResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_SEARCH_RESPONSE_XML)).getSearchResult();
+        return ((SearchResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_SEARCH_RESULT_RESPONSE_XML)).getSearchResult();
 
     }
 
