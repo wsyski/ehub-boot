@@ -99,7 +99,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
+        given(checkout.getContentUrls()).willReturn(Collections.singletonList(CONTENT_HREF));
     }
 
     private void whenCreateLoan() {
@@ -107,7 +107,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     @Override

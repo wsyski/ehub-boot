@@ -35,6 +35,7 @@
 		<filter-name>RestEasy</filter-name>
 		<url-pattern>/v1/*</url-pattern>
 		<url-pattern>/v2/*</url-pattern>
+		<url-pattern>/v3/*</url-pattern>
 	</filter-mapping>
 
 	<filter-mapping>

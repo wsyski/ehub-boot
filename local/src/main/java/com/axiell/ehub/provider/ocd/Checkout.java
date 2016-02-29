@@ -2,10 +2,11 @@ package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.axiell.ehub.provider.ocd.CheckoutDTO.FileDTO;
 
@@ -30,18 +31,18 @@ class Checkout {
         return checkoutDTO.getExpirationDate();
     }
 
-    String getDownloadUrl() {
+    List<String> getDownloadUrls() {
         String downloadUrl = checkoutDTO.getDownloadUrl();
-        return downloadUrl == null ? getDownloadUrlFromFirstFile() : downloadUrl;
+        return downloadUrl == null ? getFileDownloadUrls() : Collections.singletonList(downloadUrl);
     }
 
-    private String getDownloadUrlFromFirstFile() {
+    private List<String> getFileDownloadUrls() {
         List<FileDTO> files = checkoutDTO.getFiles();
         if (noFiles(files)) {
-            throw new InternalServerErrorException("No files found for record isbn: '" + checkoutDTO.getIsbn() + "' and content provider name: 'OCD'", ErrorCause.INTERNAL_SERVER_ERROR);
+            throw new InternalServerErrorException("No files found for record isbn: '" + checkoutDTO.getIsbn() + "' and content provider name: 'OCD'",
+                    ErrorCause.INTERNAL_SERVER_ERROR);
         }
-        FileDTO file = files.iterator().next();
-        return OcdDownloadUrlHandler.resolve(file.getDownloadUrl());
+        return files.parallelStream().map(fileDTO -> OcdDownloadUrlHandler.resolve(fileDTO.getDownloadUrl())).collect(Collectors.toList());
     }
 
     private boolean noFiles(List<FileDTO> files) {

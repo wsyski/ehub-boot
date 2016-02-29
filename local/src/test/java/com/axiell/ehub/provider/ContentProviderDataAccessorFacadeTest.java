@@ -1,9 +1,13 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.loan.*;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.loan.EhubLoan;
+import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import org.junit.Before;
@@ -23,12 +27,12 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    private static final String CONTENT_PROVIDER_ALIAS = CONTENT_PROVIDER_TEST_EP;
     //    public static final String LIBRARY_CARD = "libraryCard";
 //    public static final String PIN = "pin";
     public static final String LANGUAGE = "language";
     public static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
     public static final String CONTENT_PROVIDER_FORMAT_ID = "contentProviderFormatdId";
+    private static final String CONTENT_PROVIDER_ALIAS = CONTENT_PROVIDER_TEST_EP;
     private IContentProviderDataAccessorFacade underTest;
     @Mock
     private IAliasBusinessController aliasBusinessController;
@@ -98,7 +102,8 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContent() {
-        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(contentLink);
+        ContentLinks contentLinks=new ContentLinks(contentLink);
+        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(contentLinks);
     }
 
     @Test
@@ -176,7 +181,8 @@ public class ContentProviderDataAccessorFacadeTest {
             if (argument instanceof CommandData) {
                 final CommandData data = (CommandData) argument;
                 final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron) && helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
+                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron) &&
+                        helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
             }
             return false;
         }

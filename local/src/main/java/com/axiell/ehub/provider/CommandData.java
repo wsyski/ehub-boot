@@ -1,10 +1,12 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
+
+import java.util.List;
 
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
@@ -14,8 +16,8 @@ public class CommandData implements ICommandData {
     private String contentProviderAlias;
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
-    private String contentUrl;
-    private ContentLink contentLink;
+    private List<String> contentUrls;
+    private ContentLinks contentLinks;
 
     protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         this.contentProviderConsumer = contentProviderConsumer;
@@ -48,17 +50,17 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public CommandData setContentProviderAlias(final String contentProviderAlias) {
-        this.contentProviderAlias = contentProviderAlias;
-        return this;
-    }
-
     public String getContentProviderFormatId() {
         return contentProviderFormatId;
     }
 
     public String getContentProviderAlias() {
         return contentProviderAlias;
+    }
+
+    public CommandData setContentProviderAlias(final String contentProviderAlias) {
+        this.contentProviderAlias = contentProviderAlias;
+        return this;
     }
 
     public CommandData setPendingLoan(final PendingLoan pendingLoan) {
@@ -77,21 +79,21 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public String getContentUrl() {
-        return contentUrl;
+    public List<String> getContentUrls() {
+        return contentUrls;
     }
 
-    public CommandData setContentUrl(String contentUrl) {
-        this.contentUrl = contentUrl;
+    public CommandData setContentUrls(List<String> contentUrl) {
+        this.contentUrls = contentUrl;
         return this;
     }
 
-    public ContentLink getContent() {
-        return contentLink;
+    public ContentLinks getContent() {
+        return contentLinks;
     }
 
-    public CommandData setContent(ContentLink contentLink) {
-        this.contentLink = contentLink;
+    public CommandData setContent(ContentLinks contentLinks) {
+        this.contentLinks = contentLinks;
         return this;
     }
 
@@ -104,8 +106,8 @@ public class CommandData implements ICommandData {
                 ", contentProviderRecordId=" + contentProviderRecordId +
                 ", contentProviderFormatId=" + contentProviderFormatId +
                 ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
-                ", contentUrl=" + contentUrl +
-                ", contentLink=" + contentLink +
+                ", contentUrl=" + contentUrls +
+                ", contentLinks=" + contentLinks +
                 "}";
     }
 }

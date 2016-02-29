@@ -1,9 +1,11 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+
+import java.util.List;
 
 public interface IContentFactory {
 
-    ContentLink create(String contentUrl, FormatDecoration formatDecoration);
+    ContentLinks create(List<String> contentUrls, FormatDecoration formatDecoration);
 }

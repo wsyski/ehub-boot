@@ -1,12 +1,9 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.record.format.Formats;
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -31,7 +28,7 @@ class ExceptionContentProviderDataAccessorStub implements IContentProviderDataAc
     }
 
     @Override
-    public ContentLink getContent(final CommandData commandData) {
+    public ContentLinks getContent(final CommandData commandData) {
         throw new NotImplementedException("getLoan has not been implemented");
     }
 }

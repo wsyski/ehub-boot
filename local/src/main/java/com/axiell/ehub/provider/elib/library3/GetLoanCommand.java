@@ -1,11 +1,13 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+
+import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INACTIVE_LOAN;
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
@@ -28,11 +30,12 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
         final Loan loan = elibFacade.getLoan(contentProviderConsumer, elibLoanId);
 
         if (loan.isActive()) {
-            final String contentUrl = loan.getContentUrlFor(formatId);
-            if (contentUrl == null)
-                throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
+            final List<String> contentUrls = loan.getContentUrlsFor(formatId);
+            if (contentUrls == null)
+                throw exceptionFactory
+                        .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
             else {
-                data.setContentUrl(contentUrl);
+                data.setContentUrls(contentUrls);
                 forward(ACTIVE_LOAN_RETRIEVED, data);
             }
         } else

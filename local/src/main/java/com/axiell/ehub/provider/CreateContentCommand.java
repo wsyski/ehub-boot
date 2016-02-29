@@ -1,8 +1,10 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+
+import java.util.List;
 
 import static com.axiell.ehub.provider.CreateContentCommand.Result.CONTENT_CREATED;
 
@@ -15,11 +17,11 @@ public class CreateContentCommand extends AbstractCommand<CommandData> {
 
     @Override
     public void run(final CommandData data) {
-        final String contentUrl = data.getContentUrl();
+        final List<String> contentUrls = data.getContentUrls();
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        final ContentLink content = contentFactory.create(contentUrl, formatDecoration);
-        data.setContent(content);
+        final ContentLinks contentLinks = contentFactory.create(contentUrls, formatDecoration);
+        data.setContent(contentLinks);
         forward(CONTENT_CREATED, data);
     }
 

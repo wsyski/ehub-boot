@@ -1,8 +1,10 @@
 package com.axiell.ehub.checkout;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ContentLinkDTO {
     private String href;
 

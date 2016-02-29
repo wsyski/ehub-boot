@@ -4,20 +4,21 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.Date;
+import java.util.List;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
     private String id;
-    private String contentUrl;
+    private List<String> contentUrls;
     private Date expirationDate;
 
     public String getId() {
         return id;
     }
 
-    public String getContentUrl() {
-        return contentUrl;
+    public List<String> getContentUrls() {
+        return contentUrls;
     }
 
     public Date getExpirationDate() {

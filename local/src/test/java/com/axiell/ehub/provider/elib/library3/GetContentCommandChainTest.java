@@ -1,8 +1,9 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
@@ -15,6 +16,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -61,17 +65,18 @@ public class GetContentCommandChainTest {
 
     private void givenActiveLoanWithContentUrl() {
         given(loan.isActive()).willReturn(true);
-        given(loan.getContentUrlFor(any(String.class))).willReturn(CONTENT_URL);
+        given(loan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(CONTENT_URL));
         given(elibFacade.getLoan(any(ContentProviderConsumer.class), any(String.class))).willReturn(loan);
     }
 
     private void givenExpectedContent() {
         given(contentLink.href()).willReturn(CONTENT_URL);
-        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(contentLink);
+        ContentLinks contentLinks=new ContentLinks(contentLink);
+        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(contentLinks);
     }
 
     private void whenExecute() {
-        actualContentLink = underTest.execute(data);
+        actualContentLink = underTest.execute(data).getContentLinks().get(0);
     }
 
     private void thenActualContentEqualsExpectedContent() {

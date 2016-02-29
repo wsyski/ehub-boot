@@ -3,8 +3,8 @@ package com.axiell.ehub.provider.elib.library3;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Link {
     @JsonProperty(value = "FormatID")
@@ -16,12 +16,10 @@ public class Link {
         return formatId.equals(formatIdInRequest);
     }
 
-    String getFirstContentUrl() {
+    List<String> getContentUrls() {
         if (contents == null)
             return null;
-        final Iterator<Content> itr = contents.iterator();
-        final Content firstContent = itr.hasNext() ? itr.next() : null;
-        return firstContent == null ? null : firstContent.getUrl();
+        return contents.stream().map(Content::getUrl).collect(Collectors.toList());
     }
 
     @JsonIgnoreProperties(value = {"Part"})

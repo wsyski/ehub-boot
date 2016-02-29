@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
+import java.util.List;
 
 @JsonIgnoreProperties(value = {"CreatedDate", "Supplements", "CoverImage", "Title"})
 public class Loan {
@@ -38,7 +39,7 @@ public class Loan {
         return active;
     }
 
-    String getContentUrlFor(final String formatId) {
-        return links.getContentUrlFor(formatId);
+    List<String> getContentUrlsFor(final String formatId) {
+        return links.getContentUrlsFor(formatId);
     }
 }

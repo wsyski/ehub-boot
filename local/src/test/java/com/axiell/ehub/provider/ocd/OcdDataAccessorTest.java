@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static org.mockito.BDDMockito.given;
@@ -107,7 +108,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
 
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
-        given(checkout.getDownloadUrl()).willReturn(CONTENT_HREF);
+        given(checkout.getDownloadUrls()).willReturn(Collections.singletonList(CONTENT_HREF));
         given(ocdCheckoutHandler.getCompleteCheckout(any(BearerToken.class), any(CommandData.class), anyString())).willReturn(checkout);
     }
 
@@ -139,7 +140,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
     }
 
     public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     @Override

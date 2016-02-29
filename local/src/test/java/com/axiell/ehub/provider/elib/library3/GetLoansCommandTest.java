@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
@@ -23,7 +25,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     @Mock
     private Loan loan;
     private ContentProviderLoanMetadata loanMetadata;
-    private String contentUrl;
+    private List<String> contentUrls;
 
     @Before
     public void setUp() {
@@ -69,7 +71,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenActualContentUrlEqualsExpectedUrl() {
-        assertEquals(CONTENT_URL, contentUrl);
+        assertEquals(CONTENT_URL, contentUrls.get(0));
     }
 
     private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
@@ -80,7 +82,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         given(loan.getLoanId()).willReturn(LOAN_ID);
         given(loan.getProductId()).willReturn(PRODUCT_ID);
         given(loan.getExpirationDate()).willReturn(new Date());
-        given(loan.getContentUrlFor(anyString())).willReturn(CONTENT_URL);
+        given(loan.getContentUrlsFor(anyString())).willReturn(Collections.singletonList(CONTENT_URL));
         given(getLoansResponse.getLoanWithProductId(anyString())).willReturn(loan);
     }
 
@@ -91,7 +93,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private void whenRun() {
         underTest.run(data);
         loanMetadata = data.getContentProviderLoanMetadata();
-        contentUrl = data.getContentUrl();
+        contentUrls = data.getContentUrls();
     }
 
     @Test
@@ -106,7 +108,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenContentUrlIsNull() {
-        assertNull(contentUrl);
+        assertNull(contentUrls);
     }
 
     private void givenCommandOnPatronHasNoLoanWithProductId() {

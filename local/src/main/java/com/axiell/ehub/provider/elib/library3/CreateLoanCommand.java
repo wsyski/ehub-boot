@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
@@ -10,6 +10,7 @@ import com.axiell.ehub.provider.ICommandResult;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
@@ -28,23 +29,27 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         final String language = data.getLanguage();
         final String formatId = data.getContentProviderFormatId();
         final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, patron);
-        final String contentUrl = createdLoan.getContentUrlFor(formatId);
+        final List<String> contentUrls = createdLoan.getContentUrlsFor(formatId);
 
-        if (contentUrl == null)
-            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
+        if (contentUrls == null || contentUrls.isEmpty())
+            throw exceptionFactory
+                    .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
         else {
-            data.setContentUrl(contentUrl);
+            data.setContentUrls(contentUrls);
             populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, contentProviderRecordId, formatId, createdLoan);
             forward(LOAN_CREATED, data);
         }
     }
 
-    private void populateContentProviderLoanMetadataInCommandData(CommandData data, ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String formatId, CreatedLoan createdLoan) {
+    private void populateContentProviderLoanMetadataInCommandData(CommandData data, ContentProviderConsumer contentProviderConsumer,
+                                                                  String contentProviderRecordId, String formatId, CreatedLoan createdLoan) {
         final Date expirationDate = createdLoan.getExpirationDate();
         final String contentProviderLoanId = createdLoan.getLoanId();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+        final ContentProviderLoanMetadata metadata =
+                new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration)
+                        .contentProviderLoanId(contentProviderLoanId).build();
         data.setContentProviderLoanMetadata(metadata);
     }
 

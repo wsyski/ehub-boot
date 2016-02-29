@@ -1,12 +1,13 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class Links extends ArrayList<Link> {
 
-    String getContentUrlFor(final String formatId) {
+    List<String> getContentUrlsFor(final String formatId) {
         final Link link = getLinkFor(formatId);
-        return link == null ? null : link.getFirstContentUrl();
+        return link == null ? null : link.getContentUrls();
     }
 
     private Link getLinkFor(final String formatId) {

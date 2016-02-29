@@ -5,7 +5,7 @@ package com.axiell.ehub.provider.elib.elibu;
 
 import com.axiell.ehub.*;
 import com.axiell.ehub.ErrorCauseArgument.Type;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -13,15 +13,18 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-
 import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
-import com.axiell.ehub.provider.record.format.*;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -94,15 +97,16 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final ContentLink contentLink = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
+        final ContentLinks contentLinks = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
         // TODO:
         final Date expirationDate = new Date();
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration).build();
-        return new ContentProviderLoan(metadata, contentLink);
+        final ContentProviderLoanMetadata metadata =
+                new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration).build();
+        return new ContentProviderLoan(metadata, contentLinks);
     }
 
     @Override
-    public ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String libraryCard = patron.getLibraryCard();
@@ -130,8 +134,8 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         return license.getLicenseId();
     }
 
-    private ContentLink consumeProduct(final ContentProviderConsumer contentProviderConsumer, final Integer licenseId, final String recordId,
-                                    final FormatDecoration formatDecoration) {
+    private ContentLinks consumeProduct(final ContentProviderConsumer contentProviderConsumer, final Integer licenseId, final String recordId,
+                                        final FormatDecoration formatDecoration) {
         final Response response = elibUFacade.consumeProduct(contentProviderConsumer, licenseId, recordId);
         final Result result = response.getResult();
         final Status status = result.getStatus();
@@ -143,19 +147,21 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         throw makeInternalServerErrorException("Could not consume product", status);
     }
 
-    private ContentLink makeContent(final String recordId, final FormatDecoration formatDecoration, final Result result) {
+    private ContentLinks makeContent(final String recordId, final FormatDecoration formatDecoration, final Result result) {
         final ConsumedProduct consumedProduct = result.getConsumedProduct();
         final List<ConsumedProduct.Format> formats = consumedProduct.getFormats();
         final String formatId = formatDecoration.getContentProviderFormatId();
 
+        List<String> contentUrls = new ArrayList<>();
         for (ConsumedProduct.Format format : formats) {
             if (format.isSameFormat(formatId)) {
                 final Content content = format.getContent();
-                final String contentUrl = content.getUrl();
-                return createContent(contentUrl, formatDecoration);
+                contentUrls.add(content.getUrl());
             }
         }
-
-        throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
+        if (contentUrls.isEmpty()) {
+            throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
+        }
+        return createContent(contentUrls, formatDecoration);
     }
 }

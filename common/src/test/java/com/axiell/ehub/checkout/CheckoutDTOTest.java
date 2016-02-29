@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Collections;
 import java.util.Date;
 
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
@@ -61,7 +62,8 @@ public class CheckoutDTOTest {
     private void thenActualCheckoutDTOEqualsExpectedCheckoutDTO() {
         CheckoutMetadataDTO actCheckoutMetadataDTO = actCheckoutDTO.getMetadata();
         assertThat(actCheckoutMetadataDTO, matchesExpectedCheckoutMetadataDTO(expCheckoutMetadataDTO));
-        ContentLinkDTO actContentLinkDTO = actCheckoutDTO.getContentLink();
-        assertEquals(expContentLinkDTO.getHref(), actContentLinkDTO.getHref());
+        ContentLinksDTO actContentLinksDTO = actCheckoutDTO.getContentLinks();
+        assertEquals(1, actContentLinksDTO.size());
+        assertEquals(expContentLinkDTO.getHref(), actContentLinksDTO.getContentLinks().get(0).getHref());
     }
 }

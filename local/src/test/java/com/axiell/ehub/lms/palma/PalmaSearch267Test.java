@@ -2,7 +2,6 @@ package com.axiell.ehub.lms.palma;
 
 
 import com.axiell.ehub.DevelopmentData;
-
 import org.junit.Test;
 
 import javax.xml.ws.Endpoint;

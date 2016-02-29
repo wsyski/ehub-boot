@@ -389,7 +389,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     @Override

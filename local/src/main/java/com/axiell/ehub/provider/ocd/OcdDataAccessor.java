@@ -1,9 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -14,11 +13,11 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
 
@@ -45,7 +44,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final Formats formats = new Formats();
-        if (contentProviderFormat!=null) {
+        if (contentProviderFormat != null) {
             final Format format = formatFactory.create(contentProvider, contentProviderFormat, language);
             formats.addFormat(format);
         }
@@ -60,8 +59,8 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
             final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final ContentLink contentLink = makeContent(loanMetadata, completeCheckout);
-            return new ContentProviderLoan(loanMetadata, contentLink);
+            final ContentLinks contentLinks = makeContent(loanMetadata, completeCheckout);
+            return new ContentProviderLoan(loanMetadata, contentLinks);
         }
         throw makeCreateLoanFailedException(data);
     }
@@ -72,10 +71,10 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private ContentLink makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
-        final String contentUrl = checkout.getDownloadUrl();
+    private ContentLinks makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
+        final List<String> contentUrls = checkout.getDownloadUrls();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        return createContent(contentUrl, formatDecoration);
+        return createContent(contentUrls, formatDecoration);
     }
 
     private InternalServerErrorException makeCreateLoanFailedException(final CommandData data) {
@@ -85,7 +84,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();

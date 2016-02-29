@@ -1,9 +1,12 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.loan.*;
+import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.loan.ContentProviderLoanMetadata;
+import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import junit.framework.Assert;
@@ -14,13 +17,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -28,12 +30,12 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class ContentProviderDataAccessorTestFixture {
-    protected static final String CONTENT_PROVIDER_TEST_EP="TEST_EP";
+    protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
-    protected static final String CONTENT_PROVIDER_LOAN_ID ="contentProviderLoanId";
-    protected static final long CONTENT_PROVIDER_CONSUMER_ID =1L;
-    protected static final long EHUB_CONSUMER_ID =1L;
+    protected static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
+    protected static final long CONTENT_PROVIDER_CONSUMER_ID = 1L;
+    protected static final long EHUB_CONSUMER_ID = 1L;
     protected static final String CONTENT_HREF = "url";
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
@@ -65,8 +67,6 @@ public abstract class ContentProviderDataAccessorTestFixture {
     @Mock
     protected IExpirationDateFactory expirationDateFactory;
     @Mock
-    private PendingLoan pendingLoan;
-    @Mock
     protected CommandData commandData;
     @Mock
     protected Patron patron;
@@ -76,6 +76,8 @@ public abstract class ContentProviderDataAccessorTestFixture {
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected ContentLink actualContentLink;
+    @Mock
+    private PendingLoan pendingLoan;
 
     @Before
     public void fixtureSetUp() {
@@ -165,7 +167,8 @@ public abstract class ContentProviderDataAccessorTestFixture {
 
     protected void givenContentLink() {
         given(contentLink.href()).willReturn(CONTENT_HREF);
-        given(contentFactory.create(CONTENT_HREF, formatDecoration)).willReturn(contentLink);
+        ContentLinks contentLinks=new ContentLinks(contentLink);
+        given(contentFactory.create(Collections.singletonList(CONTENT_HREF), formatDecoration)).willReturn(contentLinks);
     }
 
     protected void givenFormatFromFormatFactory() {
@@ -174,7 +177,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
 
     protected void thenActualLoanContainsContentLinkHref() {
         Assert.assertNotNull(actualLoan);
-        actualContentLink = actualLoan.contentLink();
+        actualContentLink = actualLoan.contentLinks().getContentLinks().get(0);
         thenActualContentLinkContainsHref();
     }
 

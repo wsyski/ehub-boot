@@ -1,22 +1,20 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
+import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.ep.EpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
+import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
 import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import com.axiell.ehub.provider.askews.AskewsDataAccessor;
-import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
-import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFactoryTest {

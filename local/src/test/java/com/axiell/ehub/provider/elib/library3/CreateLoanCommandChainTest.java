@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -17,7 +18,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -77,7 +80,8 @@ public class CreateLoanCommandChainTest {
     public void setUpContentProviderLoanWithDefaultData() {
         given(contentProviderLoan.expirationDate()).willReturn(EXPIRATION_DATE);
         given(contentLink.href()).willReturn(CONTENT_URL);
-        given(contentProviderLoan.contentLink()).willReturn(contentLink);
+        ContentLinks contentLinks = new ContentLinks(contentLink);
+        given(contentProviderLoan.contentLinks()).willReturn(contentLinks);
         given(loanMetadata.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
@@ -116,14 +120,15 @@ public class CreateLoanCommandChainTest {
     }
 
     private void givenCreatedLoan() {
-        given(createdLoan.getContentUrlFor(any(String.class))).willReturn(CONTENT_URL);
+        given(createdLoan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(CONTENT_URL));
         given(createdLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(createdLoan.getLoanId()).willReturn(CP_LOAN_ID);
         given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(createdLoan);
     }
 
     private void givenCreatedDownloadableContent() {
-        given(contentFactory.create(any(String.class), any(FormatDecoration.class))).willReturn(contentLink);
+        ContentLinks contentLinks = new ContentLinks(Collections.singletonList(contentLink));
+        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(contentLinks);
     }
 
     private void whenExecute() {
@@ -131,7 +136,7 @@ public class CreateLoanCommandChainTest {
     }
 
     private void thenActualLoanEqualsToExpectedLoan() {
-        assertThat(actualLoan.contentLink(), is(contentProviderLoan.contentLink()));
+        assertThat(actualLoan.contentLinks().getContentLinks().get(0).href(), is(contentProviderLoan.contentLinks().getContentLinks().get(0).href()));
         assertThat(actualLoan.expirationDate(), is(contentProviderLoan.expirationDate()));
         assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));
         assertThat(actualLoan.getMetadata().getExpirationDate(), is(contentProviderLoan.getMetadata().getExpirationDate()));

@@ -3,8 +3,8 @@ package com.axiell.ehub.checkout;
 public class Checkout {
     private final CheckoutDTO checkoutDTO;
 
-    public Checkout(CheckoutMetadata checkoutMetadata, ContentLink contentLink) {
-        this.checkoutDTO = new CheckoutDTO().metadata(checkoutMetadata.toDTO()).contentLink(contentLink.toDTO());
+    public Checkout(CheckoutMetadata checkoutMetadata, ContentLinks contentLinks) {
+        this.checkoutDTO = new CheckoutDTO().metadata(checkoutMetadata.toDTO()).contentLinks(contentLinks.toDTO());
     }
 
     public Checkout(final CheckoutDTO checkoutDTO) {
@@ -15,8 +15,8 @@ public class Checkout {
         return new CheckoutMetadata(checkoutDTO.getMetadata());
     }
 
-    public ContentLink contentLink() {
-        return new ContentLink(checkoutDTO.getContentLink());
+    public ContentLinks contentLinks() {
+        return new ContentLinks(checkoutDTO.getContentLinks());
     }
 
     public CheckoutDTO toDTO() {

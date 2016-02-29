@@ -4,8 +4,7 @@ import com.axiell.ehub.EhubException;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.checkout.ContentLink;
-
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -80,7 +79,7 @@ public class RemoteLoanIT extends RemoteITFixture {
     private void thenValidCheckout(final Checkout checkout) {
         Assert.assertNotNull(checkout);
         thenValidCheckoutMetadata(checkout.metadata());
-        thenValidContentLink(checkout.contentLink());
+        thenValidContentLinks(checkout.contentLinks());
     }
 
     private void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata) {
@@ -94,11 +93,12 @@ public class RemoteLoanIT extends RemoteITFixture {
         Assert.assertNotNull(id);
     }
 
-    private void thenValidContentLink(final ContentLink contentLink) {
-        Assert.assertNotNull(contentLink);
-        Assert.assertNotNull(contentLink.href());
+    private void thenValidContentLinks(final ContentLinks contentLinks) {
+        Assert.assertNotNull(contentLinks);
+        Assert.assertEquals(2, contentLinks.getContentLinks().size());
+        Assert.assertNotNull(contentLinks.getContentLinks().get(0).href());
+        Assert.assertNotNull(contentLinks.getContentLinks().get(1).href());
     }
-
 
     private void givenLmsLoanId() {
         lmsLoanId = TestDataConstants.LMS_LOAN_ID;

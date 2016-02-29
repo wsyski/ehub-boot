@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.jboss.resteasy.client.ClientRequest;
@@ -29,7 +29,7 @@ class LegacyExceptionContentProviderDataAccessorStub implements IContentProvider
     }
 
     @Override
-    public ContentLink getContent(final CommandData commandData) {
+    public ContentLinks getContent(final CommandData commandData) {
         throw new NotImplementedException("getLoan has not been implemented");
     }
 }

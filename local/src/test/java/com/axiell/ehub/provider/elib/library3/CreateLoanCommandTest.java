@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
@@ -59,7 +60,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenCommandDataContainsContentUrl() {
-        assertEquals(URL, data.getContentUrl());
+        assertEquals(URL, data.getContentUrls().get(0));
     }
 
     private void thenCommandDataContainsContentProviderLoanMetadata() {
@@ -72,7 +73,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenContentUrlInCreatedLoan() {
-        given(createdLoan.getContentUrlFor(any(String.class))).willReturn(URL);
+        given(createdLoan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(URL));
     }
 
     private void givenExpirationDateInCreatedLoan() {
@@ -92,7 +93,8 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void givenInternalErrorServerExceptionWithMissingContentInLoan() {
-        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, argValueType, language)).willReturn(internalServerErrorException);
+        given(exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, argValueType, language))
+                .willReturn(internalServerErrorException);
     }
 
     private void thenInternalErrorExceptionIsCreatedWithMissingContentInLoan() {

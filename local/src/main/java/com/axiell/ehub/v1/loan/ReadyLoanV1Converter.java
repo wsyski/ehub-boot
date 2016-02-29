@@ -3,7 +3,10 @@ package com.axiell.ehub.v1.loan;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.provider.record.format.Format;
+
+import java.util.List;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
@@ -32,8 +35,8 @@ class ReadyLoanV1Converter {
     private static IContent_v1 convertToContent(Checkout checkout) {
         CheckoutMetadata checkoutMetadata = checkout.metadata();
         Format format = checkoutMetadata.format();
-        ContentLink content = checkout.contentLink();
-        String href = content.href();
+        List<ContentLink> contentLinks = checkout.contentLinks().getContentLinks();
+        String href = contentLinks.get(0).href();
         IContent_v1 content_v1 = null;
 
         if (DOWNLOADABLE.equals(format.contentDisposition())) {

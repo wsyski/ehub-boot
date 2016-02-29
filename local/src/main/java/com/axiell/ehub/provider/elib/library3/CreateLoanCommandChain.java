@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -47,7 +48,7 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     public ContentProviderLoan execute(final CommandData data) {
         firstCommand.run(data);
         final ContentProviderLoanMetadata metadata = data.getContentProviderLoanMetadata();
-        final ContentLink contentLink = data.getContent();
-        return new ContentProviderLoan(metadata, contentLink);
+        final ContentLinks contentLinks = data.getContent();
+        return new ContentProviderLoan(metadata, contentLinks);
     }
 }

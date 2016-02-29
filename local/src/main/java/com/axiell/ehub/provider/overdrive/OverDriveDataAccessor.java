@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.NotFoundExceptionFactory;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
@@ -97,14 +99,14 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
-        final com.axiell.ehub.checkout.ContentLink contentLink = createContent(contentUrl, formatDecoration);
+        final ContentLinks contentLinks = createContent(Collections.singletonList(contentUrl), formatDecoration);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
                 formatDecoration).build();
-        return new ContentProviderLoan(metadata, contentLink);
+        return new ContentProviderLoan(metadata, contentLinks);
     }
 
     @Override
-    public com.axiell.ehub.checkout.ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
@@ -115,7 +117,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         final DownloadLinkTemplateDTO downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
-        return createContent(contentUrl, formatDecoration);
+        return createContent(Collections.singletonList(contentUrl), formatDecoration);
     }
 
     private CheckoutDTO getCheckout(final CommandData data, final OAuthAccessToken oAuthAccessToken) {

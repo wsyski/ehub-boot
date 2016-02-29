@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class EpDataAccessor extends AbstractContentProviderDataAccessor {
@@ -52,12 +53,12 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderFormatId = data.getContentProviderFormatId();
         final CheckoutDTO checkoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final ContentLink contentLink = makeContent(loanMetadata, checkoutDTO);
-        return new ContentProviderLoan(loanMetadata, contentLink);
+        final ContentLinks contentLinks = makeContent(loanMetadata, checkoutDTO);
+        return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
     @Override
-    public ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
@@ -72,8 +73,8 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private ContentLink makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
-        final String contentUrl = checkoutDTO.getContentUrl();
+    private ContentLinks makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
+        final List<String> contentUrl = checkoutDTO.getContentUrls();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         return createContent(contentUrl, formatDecoration);
     }

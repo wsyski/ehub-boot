@@ -2,12 +2,14 @@ package com.axiell.ehub.checkout;
 
 import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutMetadataDTO {
     private Long id;
     private String lmsLoanId;

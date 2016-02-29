@@ -100,7 +100,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     }
 
     private void thenCheckoutHasDownloadUrl() {
-        assertNotNull(checkout.getDownloadUrl());
+        assertNotNull(checkout.getDownloadUrls());
     }
 
     private void givenContentProviderRecordId(final String contentProviderFormatId) {

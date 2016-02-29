@@ -15,13 +15,13 @@ public abstract class AbstractEhubRepositoryTest<D extends DevelopmentData> exte
     protected abstract D initDevelopmentData();
 
     @BeforeTransaction
-    public final void beforeTransaction() throws Exception {        
+    public void beforeTransaction() throws Exception {
         developmentData = initDevelopmentData();
         developmentData.init();
     }
 
     @AfterTransaction
-    public final void afterTransaction() throws Exception {
+    public void afterTransaction() throws Exception {
         developmentData.destroy();
     }
 

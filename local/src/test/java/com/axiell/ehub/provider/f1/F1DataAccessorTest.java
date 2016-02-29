@@ -3,9 +3,9 @@ package com.axiell.ehub.provider.f1;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Format;
 import org.junit.Before;
 import org.junit.Test;
@@ -141,7 +141,9 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     private void givenInternalServerErrorException() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class), anyString())).willReturn(
+        given(ehubExceptionFactory
+                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class),
+                        anyString())).willReturn(
                 internalServerErrorException);
     }
 
@@ -151,7 +153,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     private void givenLoanIdFromF1Facade() {

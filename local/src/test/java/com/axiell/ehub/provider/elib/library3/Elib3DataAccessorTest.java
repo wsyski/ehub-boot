@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
@@ -65,7 +66,8 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedContent() {
-        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(expectedContent);
+        ContentLinks contentLinks = new ContentLinks(expectedContent);
+        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(contentLinks);
     }
 
     private void givenGetContentCommandChain() {
@@ -73,11 +75,11 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        assertThat(actualContentLink, is(expectedContent));
+        assertThat(actualContentLink.href(), is(expectedContent.href()));
     }
 
     private void givenExpectedLoan() {

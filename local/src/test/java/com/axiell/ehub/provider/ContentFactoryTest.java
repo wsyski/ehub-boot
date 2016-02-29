@@ -8,9 +8,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
+
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
@@ -51,6 +52,6 @@ public class ContentFactoryTest {
     }
 
     private void whenCreate() {
-        actualContentLink = underTest.create(URL, formatDecoration);
+        actualContentLink = underTest.create(Collections.singletonList(URL), formatDecoration).getContentLinks().get(0);
     }
 }

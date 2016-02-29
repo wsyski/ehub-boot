@@ -1,15 +1,14 @@
 package com.axiell.ehub.v1.loan;
 
-import com.axiell.ehub.checkout.Checkout;
-import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.loan.*;
 import com.axiell.ehub.provider.record.format.FormatBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Collections;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -42,7 +41,8 @@ public class ReadyLoanV1ConverterTest {
 
     private void givenContentLink() {
         given(contentLink.href()).willReturn(URL);
-        given(checkout.contentLink()).willReturn(contentLink);
+        ContentLinks contentLinks = new ContentLinks(Collections.singletonList(contentLink));
+        given(checkout.contentLinks()).willReturn(contentLinks);
     }
 
     private void whenConvert() {

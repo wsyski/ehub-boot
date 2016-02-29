@@ -177,8 +177,10 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenRetrievedLoanHasContentIfLoanIsActive() {
-        if (loan.isActive())
-            assertNotNull(loan.getContentUrlFor(HTML5_FORMAT_ID));
+        if (loan.isActive()) {
+            assertEquals(1, loan.getContentUrlsFor(HTML5_FORMAT_ID).size());
+            assertNotNull(loan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
+        }
     }
 
     private void whenGetLibraryProduct() {
@@ -194,7 +196,8 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenCreatedLoanHasContent() {
-        assertNotNull(createdLoan.getContentUrlFor(HTML5_FORMAT_ID));
+        assertEquals(1, createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).size());
+        assertNotNull(createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
     }
 
     private void thenLibraryProductHasAvailableModel() {

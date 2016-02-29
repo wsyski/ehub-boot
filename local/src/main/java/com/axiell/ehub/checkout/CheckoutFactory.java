@@ -11,8 +11,8 @@ public class CheckoutFactory implements ICheckoutFactory {
     private ICheckoutMetadataFactory checkoutMetadataFactory;
 
     @Override
-    public Checkout create(EhubLoan ehubLoan, ContentLink contentLink, String language) {
+    public Checkout create(EhubLoan ehubLoan, ContentLinks contentLinks, String language) {
         CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, language);
-        return new Checkout(checkoutMetadata, contentLink);
+        return new Checkout(checkoutMetadata, contentLinks);
     }
 }

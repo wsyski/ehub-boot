@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -17,6 +17,7 @@ import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
@@ -59,7 +60,7 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final GetLoanContentResponse getLoanContentResponse = f1Facade.getLoanContent(data);
 
         if (getLoanContentResponse.isValidContent())
@@ -95,31 +96,33 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
         return metadata;
     }
 
-    private ContentLink makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
+    private ContentLinks makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
         final String contentUrl = getLoanContentResponse.getValue();
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        return createContent(contentUrl, formatDecoration);
+        return createContent(Collections.singletonList(contentUrl), formatDecoration);
     }
 
     private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, GetLoanContentResponse getLoanContentResponse) {
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final String contentUrl = getLoanContentResponse.getValue();
-        final ContentLink contentLink = createContent(contentUrl, formatDecoration);
-        return new ContentProviderLoan(loanMetadata, contentLink);
+        final ContentLinks contentLinks = createContent(Collections.singletonList(contentUrl), formatDecoration);
+        return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
     private InternalServerErrorException makeCreateLoanFailedException(final CommandData data, final CreateLoanResponse createLoanResponse) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String language = data.getLanguage();
         final String responseValue = createLoanResponse.getValue();
-        return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(responseValue, contentProviderConsumer, CREATE_LOAN_FAILED, language);
+        return ehubExceptionFactory
+                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(responseValue, contentProviderConsumer, CREATE_LOAN_FAILED, language);
     }
 
     private InternalServerErrorException makeMissingContentException(final CommandData data, final GetLoanContentResponse getLoanContentResponse) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String language = data.getLanguage();
         final String responseValue = getLoanContentResponse.getValue();
-        return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(responseValue, contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
+        return ehubExceptionFactory
+                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(responseValue, contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
     }
 }

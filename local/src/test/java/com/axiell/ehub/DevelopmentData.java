@@ -70,6 +70,14 @@ public class DevelopmentData {
         this.languageAdminController = languageAdminController;
     }
 
+    public static EhubConsumer createEhubConsumer() {
+        Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
+        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
+        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
+        EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DEFAULT_LANGUAGE);
+        return ehubConsumer;
+    }
+
     public void init() throws Exception {
         initLanguage();
         contentProvider = initContentProvider();
@@ -189,13 +197,5 @@ public class DevelopmentData {
         ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);
         consumerAdminController.save(ehubConsumer);
         return contentProviderConsumer;
-    }
-
-    public static EhubConsumer createEhubConsumer() {
-        Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
-        EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DEFAULT_LANGUAGE);
-        return ehubConsumer;
     }
 }

@@ -4,6 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
+import java.util.List;
 
 @JsonIgnoreProperties(value = {"CreatedDate", "Supplements", "CoverImage", "Active", "Title"})
 public class CreatedLoan {
@@ -11,16 +12,14 @@ public class CreatedLoan {
     private String productId;
     @JsonProperty("LoanID")
     private String loanId;
+    @JsonProperty(value = "ExpiryDate")
+    private Date expirationDate;
+    @JsonProperty(value = "Links")
+    private Links links;
 
     public String getProductId() {
         return productId;
     }
-
-    @JsonProperty(value = "ExpiryDate")
-    private Date expirationDate;
-
-    @JsonProperty(value = "Links")
-    private Links links;
 
     public String getLoanId() {
         return loanId;
@@ -30,7 +29,7 @@ public class CreatedLoan {
         return new Date(expirationDate.getTime());
     }
 
-    String getContentUrlFor(String formatId) {
-        return links.getContentUrlFor(formatId);
+    List<String> getContentUrlsFor(String formatId) {
+        return links.getContentUrlsFor(formatId);
     }
 }

@@ -10,6 +10,7 @@ import com.axiell.ehub.provider.ICommandResult;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
@@ -42,8 +43,8 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
 
     private void populateContentUrlInCommandData(final CommandData data, final Loan loan) {
         final String formatId = data.getContentProviderFormatId();
-        final String contentUrl = loan.getContentUrlFor(formatId);
-        data.setContentUrl(contentUrl);
+        final List<String> contentUrls = loan.getContentUrlsFor(formatId);
+        data.setContentUrls(contentUrls);
     }
 
     private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final Loan loan) {

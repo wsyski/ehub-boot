@@ -69,8 +69,8 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, patron, pendingLoan, language);
                 final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
-                final ContentLink contentLink = contentProviderLoan.contentLink();
-                return checkoutFactory.create(ehubLoan, contentLink, language);
+                final ContentLinks contentLinks = contentProviderLoan.contentLinks();
+                return checkoutFactory.create(ehubLoan, contentLinks, language);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
                 return getCheckout(ehubConsumer, patron, lmsLoanId, language);
@@ -88,8 +88,8 @@ public class LoanBusinessController implements ILoanBusinessController {
     }
 
     private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final String language) {
-        final ContentLink contentLink = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
-        return checkoutFactory.create(ehubLoan, contentLink, language);
+        final ContentLinks contentLinks = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
+        return checkoutFactory.create(ehubLoan, contentLinks, language);
     }
 
     @Override

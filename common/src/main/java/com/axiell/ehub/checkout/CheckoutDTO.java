@@ -1,12 +1,13 @@
 package com.axiell.ehub.checkout;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonAutoDetect
-public class CheckoutDTO  {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CheckoutDTO {
     private CheckoutMetadataDTO metadata;
-    private ContentLinkDTO contentLink;
+    private ContentLinksDTO contentLinks;
 
     public CheckoutMetadataDTO getMetadata() {
         return metadata;
@@ -17,12 +18,17 @@ public class CheckoutDTO  {
         return this;
     }
 
-    public ContentLinkDTO getContentLink() {
-        return contentLink;
+    public ContentLinksDTO getContentLinks() {
+        return contentLinks;
     }
 
-    public CheckoutDTO contentLink(ContentLinkDTO contentLinkDTO) {
-        this.contentLink = contentLinkDTO;
+    public CheckoutDTO contentLinks(final ContentLinksDTO contentLinksDTO) {
+        this.contentLinks = contentLinksDTO;
+        return this;
+    }
+
+    public CheckoutDTO contentLink(final ContentLinkDTO contentLinkDTO) {
+        this.contentLinks = new ContentLinksDTO().contentLink(contentLinkDTO);
         return this;
     }
 }

@@ -45,11 +45,11 @@ public class CheckoutFactoryTest {
     }
 
     private void whenCreate() {
-        actualCheckout = underTest.create(ehubLoan, contentLink, LANGUAGE);
+        actualCheckout = underTest.create(ehubLoan, new ContentLinks(contentLink), LANGUAGE);
     }
 
     private void thenActualContentLinkEqualsExpected() {
-        assertThat(actualCheckout.contentLink(), matchesExpectedContentLink(contentLink));
+        assertThat(actualCheckout.contentLinks().getContentLinks().get(0), matchesExpectedContentLink(contentLink));
     }
 
     private void thenActualCheckoutMetadataEqualsExpected() {

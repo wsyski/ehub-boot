@@ -7,7 +7,7 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBElement;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -70,12 +71,12 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
         final String formatId = data.getContentProviderFormatId();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
 
-        final ContentLink contentLink = createContent(contentUrl, formatDecoration);
+        final ContentLinks contentLinks = createContent(Collections.singletonList(contentUrl), formatDecoration);
 
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProvider);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
                 formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
-        return new ContentProviderLoan(metadata, contentLink);
+        return new ContentProviderLoan(metadata, contentLinks);
     }
 
     private String processLoan(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final Patron patron) {
@@ -120,7 +121,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentLink getContent(final CommandData data) {
+    public ContentLinks getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();
@@ -132,7 +133,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
         final String contentUrl = getContentUrl(loanDetail);
         final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
-        return createContent(contentUrl, formatDecoration);
+        return createContent(Collections.singletonList(contentUrl), formatDecoration);
     }
 
     private boolean titleHasNotBeenProcessed(LoanDetails loanDetail) {

@@ -108,7 +108,7 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
     }
 
     @Override
