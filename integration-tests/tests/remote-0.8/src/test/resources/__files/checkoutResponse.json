@@ -1,5 +1,0 @@
-{
-  "id": "contentProviderLoanId",
-  "contentUrls": ["http:/localhost:16521/ep/api/v1/records/recordId_0/content_0","http:/localhost:16521/ep/api/v1/records/recordId_0/content_1"],
-  "expirationDate": "2016-01-01T00:00:00Z"
-}

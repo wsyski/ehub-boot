@@ -12,9 +12,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>remote-0.7</module>
-        <module>remote-0.8</module>
-        <module>remote-1.0</module>
         <module>remote-1.2</module>
         <module>remote-2.4</module>
         <module>remote</module>
