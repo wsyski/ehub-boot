@@ -1,10 +1,12 @@
 package com.axiell.ehub.search;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
 @JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchResultDTO<O> {
     private List<O> items;
     private int offset;
