@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
@@ -102,7 +107,7 @@
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
         </dependency>
 
         <dependency>
@@ -162,11 +167,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-tools</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
         <dependency>
@@ -322,28 +322,6 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>src/sql/basic</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/sql/templates</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
@@ -414,38 +392,29 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <verbose>false</verbose>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>process-classes</phase>
                         <configuration>
                             <target>
-                                <property name="maven_compile_classpath" refid="maven.compile.classpath"/>
-                                <property name="maven_test_classpath" refid="maven.test.classpath"/>
-                                <path id="hibernatetool.path">
-                                    <pathelement path="${maven_compile_classpath}"/>
-                                    <pathelement path="${maven_test_classpath}"/>
+                                <property name="mavenCompileClasspath" refid="maven.compile.classpath"/>
+                                <property name="mavenTestClasspath" refid="maven.test.classpath"/>
+                                <property name="hibernateToolDir" value="${project.basedir}/src/sql/basic"/>
+                                <path id="hibernateToolPath">
+                                    <pathelement path="${mavenCompileClasspath}"/>
+                                    <pathelement path="${mavenTestClasspath}"/>
                                     <pathelement location="${project.build.directory}/classes"/>
                                 </path>
-                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernatetool.path"/>
-
-                                <property name="hibernatetool.dir" value="${project.basedir}/src/sql/basic"/>
-                                <mkdir dir="${hibernatetool.dir}"/>
-
-                                <hibernatetool destdir="${hibernatetool.dir}">
-                                    <classpath refid="hibernatetool.path"/>
+                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernateToolPath"/>
+                                <mkdir dir="${hibernateToolDir}"/>
+                                <hibernatetool destdir="${hibernateToolDir}">
+                                    <classpath refid="hibernateToolPath"/>
+                                    <!--
+                                    <configuration configurationfile="${project.basedir}/src/main/resources/hibernate.cfg.xml"/>
+                                    -->
                                     <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"/>
-                                    <hbm2ddl export="false" format="true" outputfilename="schema.sql"/>
+                                    <hbm2ddl export="false" create="true" format="true" outputfilename="schema.sql" haltonerror="true"/>
                                 </hibernatetool>
                             </target>
                         </configuration>
@@ -454,6 +423,28 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-entitymanager</artifactId>
+                        <version>${hibernate-tools.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>oracle</groupId>
+                        <artifactId>ojdbc6</artifactId>
+                        <version>${oracle.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>oracle</groupId>
+                        <artifactId>ucp</artifactId>
+                        <version>${oracle.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                        <version>${hibernate-tools.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
