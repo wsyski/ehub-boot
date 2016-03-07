@@ -414,7 +414,7 @@
                                     <configuration configurationfile="${project.basedir}/src/main/resources/hibernate.cfg.xml"/>
                                     -->
                                     <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"/>
-                                    <hbm2ddl export="false" create="true" format="true" outputfilename="schema.sql" haltonerror="true"/>
+                                    <hbm2ddl export="false" create="true" format="true" outputfilename="schema.sql" haltonerror="false"/>
                                 </hibernatetool>
                             </target>
                         </configuration>
@@ -427,7 +427,7 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-entitymanager</artifactId>
-                        <version>${hibernate-tools.version}</version>
+                        <version>4.3.11.Final</version>
                     </dependency>
                     <dependency>
                         <groupId>oracle</groupId>
