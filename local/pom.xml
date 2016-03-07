@@ -390,62 +390,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <target>
-                                <property name="mavenCompileClasspath" refid="maven.compile.classpath"/>
-                                <property name="mavenTestClasspath" refid="maven.test.classpath"/>
-                                <property name="hibernateToolDir" value="${project.basedir}/src/sql/basic"/>
-                                <path id="hibernateToolPath">
-                                    <pathelement path="${mavenCompileClasspath}"/>
-                                    <pathelement path="${mavenTestClasspath}"/>
-                                    <pathelement location="${project.build.directory}/classes"/>
-                                </path>
-                                <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernateToolPath"/>
-                                <mkdir dir="${hibernateToolDir}"/>
-                                <hibernatetool destdir="${hibernateToolDir}">
-                                    <classpath refid="hibernateToolPath"/>
-                                    <!--
-                                    <configuration configurationfile="${project.basedir}/src/main/resources/hibernate.cfg.xml"/>
-                                    -->
-                                    <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"/>
-                                    <hbm2ddl export="false" create="true" format="true" outputfilename="schema.sql" haltonerror="false"/>
-                                </hibernatetool>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-entitymanager</artifactId>
-                        <version>4.3.11.Final</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>oracle</groupId>
-                        <artifactId>ojdbc6</artifactId>
-                        <version>${oracle.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>oracle</groupId>
-                        <artifactId>ucp</artifactId>
-                        <version>${oracle.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-validator</artifactId>
-                        <version>${hibernate-tools.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
@@ -583,6 +528,74 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>hibernateTool</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <configuration>
+                                    <target>
+                                        <property name="mavenCompileClasspath" refid="maven.compile.classpath"/>
+                                        <property name="mavenTestClasspath" refid="maven.test.classpath"/>
+                                        <property name="hibernateToolDir" value="${project.basedir}/src/sql/basic"/>
+                                        <path id="hibernateToolPath">
+                                            <pathelement path="${mavenCompileClasspath}"/>
+                                            <pathelement path="${mavenTestClasspath}"/>
+                                            <pathelement location="${project.build.directory}/classes"/>
+                                        </path>
+                                        <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="hibernateToolPath"/>
+                                        <mkdir dir="${hibernateToolDir}"/>
+                                        <hibernatetool destdir="${hibernateToolDir}">
+                                            <classpath refid="hibernateToolPath"/>
+                                            <!--
+                                            <configuration configurationfile="${project.basedir}/src/main/resources/hibernate.cfg.xml"/>
+                                            -->
+                                            <jpaconfiguration persistenceunit="ehub-db" propertyfile="${project.basedir}/src/main/resources/hibernate.properties"/>
+                                            <hbm2ddl drop="false" export="false" create="true" format="true" outputfilename="schema.sql" haltonerror="false"/>
+                                        </hibernatetool>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-entitymanager</artifactId>
+                                <version>4.3.11.Final</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>oracle</groupId>
+                                <artifactId>ojdbc6</artifactId>
+                                <version>${oracle.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>oracle</groupId>
+                                <artifactId>ucp</artifactId>
+                                <version>${oracle.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-validator</artifactId>
+                                <version>${hibernate-tools.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <properties>
         <database>oracle</database>
         <ehubUser>ehub1</ehubUser>
