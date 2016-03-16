@@ -46,7 +46,7 @@ public class LinksTest {
     private void whenGetContentFromLoan() throws IOException {
         StringReader reader = new StringReader(LOAN_JSON);
         GetLoanResponse getLoanResponse = mapper.readValue(reader, GetLoanResponse.class);
-        Loan loan = getLoanResponse.getLoan();
+        LoanDTO loan = getLoanResponse.getLoan();
         contentUrls = loan.getContentUrlsFor(FORMAT_ID);
     }
 

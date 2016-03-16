@@ -1,24 +1,19 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.loan;
 
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.checkout.*;
-import com.axiell.ehub.patron.Patron;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.security.AuthInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default implementation of the {@link ILoanBusinessController}.
@@ -69,8 +64,8 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, patron, pendingLoan, language);
                 final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
-                final ContentLinks contentLinks = contentProviderLoan.contentLinks();
-                return checkoutFactory.create(ehubLoan, contentLinks, language);
+                final Content content = contentProviderLoan.content();
+                return checkoutFactory.create(ehubLoan, content, language);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
                 return getCheckout(ehubConsumer, patron, lmsLoanId, language);
@@ -88,8 +83,8 @@ public class LoanBusinessController implements ILoanBusinessController {
     }
 
     private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final String language) {
-        final ContentLinks contentLinks = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
-        return checkoutFactory.create(ehubLoan, contentLinks, language);
+        final Content content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
+        return checkoutFactory.create(ehubLoan, content, language);
     }
 
     @Override

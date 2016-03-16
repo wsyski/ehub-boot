@@ -6,11 +6,11 @@ import java.util.List;
 
 public class GetLoansResponse {
     @JsonProperty("Loans")
-    private List<Loan> loans;
+    private List<LoanDTO> loans;
 
-    Loan getLoanWithProductId(String productId) {
-        Loan loanWithRequestedProductId = null;
-        for (Loan loan : loans) {
+    LoanDTO getLoanWithProductId(String productId) {
+        LoanDTO loanWithRequestedProductId = null;
+        for (LoanDTO loan : loans) {
             if (productId.equals(loan.getProductId()))
                 loanWithRequestedProductId = loan;
         }

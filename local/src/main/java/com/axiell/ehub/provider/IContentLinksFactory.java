@@ -5,7 +5,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 import java.util.List;
 
-public interface IContentFactory {
+public interface IContentLinksFactory {
 
     ContentLinks create(List<String> contentUrls, FormatDecoration formatDecoration);
 }

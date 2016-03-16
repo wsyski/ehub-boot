@@ -5,8 +5,6 @@ import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,16 +12,15 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CheckoutDTOTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutDTOTest.class);
     private ObjectMapper mapper;
     private CheckoutMetadataDTO expCheckoutMetadataDTO;
-    private ContentLinkDTO expContentLinkDTO;
     private CheckoutDTO expCheckoutDTO;
     private String expJson;
     private CheckoutDTO actCheckoutDTO;
@@ -36,9 +33,10 @@ public class CheckoutDTOTest {
     @Before
     public void setUpExpectedDTO() {
         FormatDTO formatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
-        expCheckoutMetadataDTO = new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2").format(formatDTO);
-        expContentLinkDTO = new ContentLinkDTO().href("href1");
-        expCheckoutDTO = new CheckoutDTO().metadata(expCheckoutMetadataDTO).contentLink(expContentLinkDTO);
+        expCheckoutMetadataDTO =
+                new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2")
+                        .format(formatDTO);
+        expCheckoutDTO = new CheckoutDTO().metadata(expCheckoutMetadataDTO).contentLinks(ContentLinkBuilder.defaultContentLinks().toDTO()).supplementLinks(SupplementLinkBuilder.defaultSupplementLinks().toDTO());
     }
 
     @Test
@@ -52,7 +50,7 @@ public class CheckoutDTOTest {
         StringWriter writer = new StringWriter();
         mapper.writeValue(writer, expCheckoutDTO);
         expJson = writer.toString();
-        LOGGER.debug(expJson);
+        System.out.println(expJson);
     }
 
     private void whenUnmarshalCheckoutDTOJson() throws IOException {
@@ -62,8 +60,12 @@ public class CheckoutDTOTest {
     private void thenActualCheckoutDTOEqualsExpectedCheckoutDTO() {
         CheckoutMetadataDTO actCheckoutMetadataDTO = actCheckoutDTO.getMetadata();
         assertThat(actCheckoutMetadataDTO, matchesExpectedCheckoutMetadataDTO(expCheckoutMetadataDTO));
-        ContentLinksDTO actContentLinksDTO = actCheckoutDTO.getContentLinks();
+        List<ContentLinkDTO> actContentLinksDTO = actCheckoutDTO.getContentLinks();
         assertEquals(1, actContentLinksDTO.size());
-        assertEquals(expContentLinkDTO.getHref(), actContentLinksDTO.getContentLinks().get(0).getHref());
+        assertEquals(ContentLinkBuilder.defaultContentLinks().getContentLinks().get(0).href(), actContentLinksDTO.get(0).getHref());
+        List<SupplementLinkDTO> actSupplementLinksDTO = actCheckoutDTO.getSupplementLinks();
+        assertEquals(1, actSupplementLinksDTO.size());
+        assertEquals(SupplementLinkBuilder.defaultSupplementLinks().getSupplementLinks().get(0).href(), actSupplementLinksDTO.get(0).getHref());
+        assertEquals(SupplementLinkBuilder.defaultSupplementLinks().getSupplementLinks().get(0).name(), actSupplementLinksDTO.get(0).getName());
     }
 }

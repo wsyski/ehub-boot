@@ -1,9 +1,6 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.record.format.Formats;
 
@@ -16,5 +13,5 @@ public interface IContentProviderDataAccessor {
 
     ContentProviderLoan createLoan(CommandData data);
 
-    ContentLinks getContent(CommandData data);
+    Content getContent(CommandData data);
 }

@@ -97,16 +97,16 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
 
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-        final ContentLinks contentLinks = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
+        final com.axiell.ehub.checkout.Content content = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
         // TODO:
         final Date expirationDate = new Date();
-        final ContentProviderLoanMetadata metadata =
-                new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration).build();
-        return new ContentProviderLoan(metadata, contentLinks);
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration)
+                .build();
+        return new ContentProviderLoan(metadata, content);
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public com.axiell.ehub.checkout.Content getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String libraryCard = patron.getLibraryCard();
@@ -134,8 +134,9 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         return license.getLicenseId();
     }
 
-    private ContentLinks consumeProduct(final ContentProviderConsumer contentProviderConsumer, final Integer licenseId, final String recordId,
-                                        final FormatDecoration formatDecoration) {
+    private com.axiell.ehub.checkout.Content consumeProduct(final ContentProviderConsumer contentProviderConsumer, final Integer licenseId,
+                                                            final String recordId,
+                                                            final FormatDecoration formatDecoration) {
         final Response response = elibUFacade.consumeProduct(contentProviderConsumer, licenseId, recordId);
         final Result result = response.getResult();
         final Status status = result.getStatus();
@@ -147,7 +148,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         throw makeInternalServerErrorException("Could not consume product", status);
     }
 
-    private ContentLinks makeContent(final String recordId, final FormatDecoration formatDecoration, final Result result) {
+    private com.axiell.ehub.checkout.Content makeContent(final String recordId, final FormatDecoration formatDecoration, final Result result) {
         final ConsumedProduct consumedProduct = result.getConsumedProduct();
         final List<ConsumedProduct.Format> formats = consumedProduct.getFormats();
         final String formatId = formatDecoration.getContentProviderFormatId();
@@ -162,6 +163,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         if (contentUrls.isEmpty()) {
             throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
         }
-        return createContent(contentUrls, formatDecoration);
+        ContentLinks contentLinks = createContentLinks(contentUrls, formatDecoration);
+        return new com.axiell.ehub.checkout.Content(contentLinks);
     }
 }

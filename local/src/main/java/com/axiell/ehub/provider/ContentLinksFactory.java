@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ContentFactory implements IContentFactory {
+public class ContentLinksFactory implements IContentLinksFactory {
 
     @Override
     public ContentLinks create(final List<String> contentUrls, final FormatDecoration formatDecoration) {

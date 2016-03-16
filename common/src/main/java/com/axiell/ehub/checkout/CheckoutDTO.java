@@ -3,11 +3,16 @@ package com.axiell.ehub.checkout;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
     private CheckoutMetadataDTO metadata;
-    private ContentLinksDTO contentLinks;
+    private List<ContentLinkDTO> contentLinks;
+    private List<SupplementLinkDTO> supplementLinks;
 
     public CheckoutMetadataDTO getMetadata() {
         return metadata;
@@ -18,17 +23,26 @@ public class CheckoutDTO {
         return this;
     }
 
-    public ContentLinksDTO getContentLinks() {
-        return contentLinks;
+    public List<ContentLinkDTO> getContentLinks() {
+        return contentLinks == null ? new ArrayList<>() : contentLinks;
     }
 
-    public CheckoutDTO contentLinks(final ContentLinksDTO contentLinksDTO) {
-        this.contentLinks = contentLinksDTO;
+    public List<SupplementLinkDTO> getSupplementLinks() {
+        return supplementLinks == null ? new ArrayList<>() : supplementLinks;
+    }
+
+    public CheckoutDTO contentLinks(final List<ContentLinkDTO> contentLinks) {
+        this.contentLinks = contentLinks;
+        return this;
+    }
+
+    public CheckoutDTO supplementLinks(final List<SupplementLinkDTO> supplementLinks) {
+        this.supplementLinks = supplementLinks;
         return this;
     }
 
     public CheckoutDTO contentLink(final ContentLinkDTO contentLinkDTO) {
-        this.contentLinks = new ContentLinksDTO().contentLink(contentLinkDTO);
+        this.contentLinks = Collections.singletonList(contentLinkDTO);
         return this;
     }
 }

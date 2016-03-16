@@ -1,10 +1,10 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.ContentBuilder;
+import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.loan.ContentProviderLoan;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixture {
-    private static final String RECORD_ID = "recordId";
 
     private Elib3DataAccessor underTest;
     @Mock
@@ -32,8 +31,6 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     private ContentProviderLoan expectedLoan;
     @Mock
     private GetContentCommandChain getContentCommandChain;
-    @Mock
-    private ContentLink expectedContent;
 
     @Before
     public void setUpUnderTest() {
@@ -66,8 +63,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedContent() {
-        ContentLinks contentLinks = new ContentLinks(expectedContent);
-        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(contentLinks);
+        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.defaultContent());
     }
 
     private void givenGetContentCommandChain() {
@@ -75,11 +71,11 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        assertThat(actualContentLink.href(), is(expectedContent.href()));
+        assertThat(actualContentLink.href(), is(ContentLinkBuilder.HREF));
     }
 
     private void givenExpectedLoan() {

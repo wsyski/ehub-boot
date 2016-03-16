@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.borrowbox;
 
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -54,12 +55,12 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final String language = data.getLanguage();
         final CheckoutDTO checkoutDTO = borrowBoxFacade.checkout(contentProviderConsumer, patron, language, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final ContentLinks contentLinks = makeContent(loanMetadata, checkoutDTO);
-        return new ContentProviderLoan(loanMetadata, contentLinks);
+        final Content content = makeContent(loanMetadata, checkoutDTO);
+        return new ContentProviderLoan(loanMetadata, content);
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public Content getContent(final CommandData data) {
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
@@ -75,9 +76,10 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private ContentLinks makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
+    private Content makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
         final String contentUrl = checkoutDTO.getContentUrl();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        return createContent(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        return new Content(contentLinks);
     }
 }

@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -36,7 +37,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     protected static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
     protected static final long CONTENT_PROVIDER_CONSUMER_ID = 1L;
     protected static final long EHUB_CONSUMER_ID = 1L;
-    protected static final String CONTENT_HREF = "url";
+    protected static final String CONTENT_HREF = ContentLinkBuilder.HREF;
     protected static final String LANGUAGE = "sv";
     protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
@@ -45,7 +46,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     private static final int ERROR_STATUS = 500;
 
     @Mock
-    protected IContentFactory contentFactory;
+    protected IContentLinksFactory contentFactory;
     @Mock
     protected EhubConsumer ehubConsumer;
     @Mock
@@ -70,8 +71,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     protected CommandData commandData;
     @Mock
     protected Patron patron;
-    @Mock
-    protected ContentLink contentLink;
+
     protected Format format = FormatBuilder.downloadableFormat();
     protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
@@ -166,9 +166,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
     }
 
     protected void givenContentLink() {
-        given(contentLink.href()).willReturn(CONTENT_HREF);
-        ContentLinks contentLinks=new ContentLinks(contentLink);
-        given(contentFactory.create(Collections.singletonList(CONTENT_HREF), formatDecoration)).willReturn(contentLinks);
+        given(contentFactory.create(Collections.singletonList(ContentLinkBuilder.HREF), formatDecoration)).willReturn(ContentLinkBuilder.defaultContentLinks());
     }
 
     protected void givenFormatFromFormatFactory() {
@@ -177,7 +175,7 @@ public abstract class ContentProviderDataAccessorTestFixture {
 
     protected void thenActualLoanContainsContentLinkHref() {
         Assert.assertNotNull(actualLoan);
-        actualContentLink = actualLoan.contentLinks().getContentLinks().get(0);
+        actualContentLink = actualLoan.content().getContentLinks().getContentLinks().get(0);
         thenActualContentLinkContainsHref();
     }
 

@@ -1,8 +1,12 @@
 {
   "id": "contentProviderLoanId",
-  "contentUrls": [
-    "http:/localhost:16521/ep/api/v1/records/recordId_0/content_0",
-    "http:/localhost:16521/ep/api/v1/records/recordId_0/content_1"
+  "contentLinks": [
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/content_0"},
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/content_1"}
+  ],
+  "supplementLinks": [
+    {"name": "supplent_0", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_0"},
+    {"name": "supplent_1", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_1"}
   ],
   "expirationDate": "2016-01-01T00:00:00Z"
 }

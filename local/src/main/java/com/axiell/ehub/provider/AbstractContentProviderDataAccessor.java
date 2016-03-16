@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -18,9 +19,9 @@ import java.util.List;
  */
 public abstract class AbstractContentProviderDataAccessor implements IContentProviderDataAccessor {
     @Autowired
-    private IContentFactory contentFactory;
+    private IContentLinksFactory contentFactory;
 
-    protected ContentLinks createContent(final List<String> contentUrls, final FormatDecoration formatDecoration) {
+    protected ContentLinks createContentLinks(final List<String> contentUrls, final FormatDecoration formatDecoration) {
         return contentFactory.create(contentUrls, formatDecoration);
     }
 

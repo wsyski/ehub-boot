@@ -1,14 +1,14 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.IContentFactory;
+import com.axiell.ehub.provider.IContentLinksFactory;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -26,14 +26,13 @@ import static org.mockito.Matchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public class GetContentCommandChainTest {
     private static final String LOAN_ID = "loanId";
-    private static final String CONTENT_URL = "contentUrl";
     private GetContentCommandChain underTest;
     @Mock
     private IElibFacade elibFacade;
     @Mock
     private IEhubExceptionFactory exceptionFactory;
     @Mock
-    private IContentFactory contentFactory;
+    private IContentLinksFactory contentFactory;
     @Mock
     private ContentProviderConsumer contentProviderConsumer;
     @Mock
@@ -43,9 +42,7 @@ public class GetContentCommandChainTest {
     @Mock
     private FormatDecoration formatDecoration;
     @Mock
-    private Loan loan;
-    @Mock
-    private ContentLink contentLink;
+    private LoanDTO loan;
     private CommandData data;
     private ContentLink actualContentLink;
 
@@ -65,22 +62,20 @@ public class GetContentCommandChainTest {
 
     private void givenActiveLoanWithContentUrl() {
         given(loan.isActive()).willReturn(true);
-        given(loan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(CONTENT_URL));
+        given(loan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(ContentLinkBuilder.HREF));
         given(elibFacade.getLoan(any(ContentProviderConsumer.class), any(String.class))).willReturn(loan);
     }
 
     private void givenExpectedContent() {
-        given(contentLink.href()).willReturn(CONTENT_URL);
-        ContentLinks contentLinks=new ContentLinks(contentLink);
-        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(contentLinks);
+        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(ContentLinkBuilder.defaultContentLinks());
     }
 
     private void whenExecute() {
-        actualContentLink = underTest.execute(data).getContentLinks().get(0);
+        actualContentLink = underTest.execute(data).getContentLinks().getContentLinks().get(0);
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        Assert.assertEquals(CONTENT_URL, actualContentLink.href());
+        Assert.assertEquals(ContentLinkBuilder.HREF, actualContentLink.href());
     }
 
     private void givenCommandData() {

@@ -24,7 +24,7 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
     @Override
     public void run(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final Loan loan = getLoanWithProductId(data, contentProviderConsumer);
+        final LoanDTO loan = getLoanWithProductId(data, contentProviderConsumer);
         if (loan == null)
             forward(PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, data);
         else {
@@ -34,20 +34,24 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
         }
     }
 
-    private Loan getLoanWithProductId(final CommandData data, final ContentProviderConsumer contentProviderConsumer) {
+    private LoanDTO getLoanWithProductId(final CommandData data, final ContentProviderConsumer contentProviderConsumer) {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final Patron patron = data.getPatron();
         final GetLoansResponse getLoansResponse = elibFacade.getLoans(contentProviderConsumer, patron);
         return getLoansResponse.getLoanWithProductId(contentProviderRecordId);
     }
 
-    private void populateContentUrlInCommandData(final CommandData data, final Loan loan) {
+    private void populateContentUrlInCommandData(final CommandData data, final LoanDTO loan) {
         final String formatId = data.getContentProviderFormatId();
         final List<String> contentUrls = loan.getContentUrlsFor(formatId);
         data.setContentUrls(contentUrls);
+        final Supplements supplements = loan.getSupplements();
+        if (supplements!=null) {
+            data.setSupplementLinks(supplements.getSupplementLinks());
+        }
     }
 
-    private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final Loan loan) {
+    private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final LoanDTO loan) {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final Date expirationDate = loan.getExpirationDate();
         final String contentProviderLoanId = loan.getLoanId();

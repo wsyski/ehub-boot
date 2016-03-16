@@ -23,7 +23,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     @Mock
     private GetLoansResponse getLoansResponse;
     @Mock
-    private Loan loan;
+    private LoanDTO loan;
     private ContentProviderLoanMetadata loanMetadata;
     private List<String> contentUrls;
 

@@ -20,14 +20,14 @@ public class ContentFactoryTest {
     private static final String URL = "url";
     private static final int WIDTH = 100;
     private static final int HEIGHT = 200;
-    private ContentFactory underTest;
+    private ContentLinksFactory underTest;
     @Mock
     private FormatDecoration formatDecoration;
     private ContentLink actualContentLink;
 
     @Before
     public void setUp() {
-        underTest = new ContentFactory();
+        underTest = new ContentLinksFactory();
     }
 
     @Test

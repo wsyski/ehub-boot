@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.Content;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Date;
@@ -13,12 +13,12 @@ import java.util.Date;
  */
 public class ContentProviderLoan {
     private final ContentProviderLoanMetadata metadata;
-    private ContentLinks contentLinks;
+    private Content content;
 
-    public ContentProviderLoan(ContentProviderLoanMetadata metadata, ContentLinks contentLinks) {
+    public ContentProviderLoan(final ContentProviderLoanMetadata metadata, final Content content) {
         Validate.notNull(metadata, "The ContentProviderLoanMetadata can't be null");
         this.metadata = metadata;
-        this.contentLinks = contentLinks;
+        this.content = content;
     }
 
     public String id() {
@@ -29,8 +29,8 @@ public class ContentProviderLoan {
         return metadata.getExpirationDate();
     }
 
-    public ContentLinks contentLinks() {
-        return contentLinks;
+    public Content content() {
+        return content;
     }
 
     public ContentProviderLoanMetadata getMetadata() {

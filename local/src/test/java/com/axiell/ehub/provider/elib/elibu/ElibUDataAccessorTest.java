@@ -9,8 +9,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import com.axiell.ehub.checkout.ContentLinkBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,6 @@ import com.axiell.ehub.provider.record.format.FormatTextBundle;
  */
 public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final Integer LICENSE_ID = 1;
-    private static final String CONTENT_URL = "url";
 
     private AbstractContentProviderDataAccessor underTest;
     @Mock
@@ -107,7 +108,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenAvailableFormats() {
-        List<AvailableFormat> availableFormats = Arrays.asList(availableFormat);
+        List<AvailableFormat> availableFormats = Collections.singletonList(availableFormat);
         given(product.getFormats()).willReturn(availableFormats);
     }
 
@@ -206,7 +207,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenConsumedProductFormats() {
-        List<ConsumedProduct.Format> formats = Arrays.asList(consumedProductFormat);
+        List<ConsumedProduct.Format> formats = Collections.singletonList(consumedProductFormat);
         given(consumedProduct.getFormats()).willReturn(formats);
     }
 
@@ -220,7 +221,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     private void givenContentUrl() {
         given(consumedProductFormat.getContent()).willReturn(content);
-        given(content.getUrl()).willReturn(CONTENT_URL);
+        given(content.getUrl()).willReturn(ContentLinkBuilder.HREF);
     }
 
     private void whenCreateLoan() {
@@ -389,7 +390,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

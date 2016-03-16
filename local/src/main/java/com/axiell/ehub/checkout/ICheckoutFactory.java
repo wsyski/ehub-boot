@@ -4,5 +4,5 @@ import com.axiell.ehub.loan.EhubLoan;
 
 public interface ICheckoutFactory {
 
-    Checkout create(EhubLoan ehubLoan, ContentLinks contentLinks, String language);
+    Checkout create(EhubLoan ehubLoan, Content content, String language);
 }

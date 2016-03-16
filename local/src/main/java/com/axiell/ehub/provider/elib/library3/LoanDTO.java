@@ -6,8 +6,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.Date;
 import java.util.List;
 
-@JsonIgnoreProperties(value = {"CreatedDate", "Supplements", "CoverImage", "Title"})
-public class Loan {
+@JsonIgnoreProperties(value = {"CreatedDate", "CoverImage", "Title"})
+public class LoanDTO {
     @JsonProperty("LoanID")
     private String loanId;
 
@@ -23,6 +23,9 @@ public class Loan {
     @JsonProperty("Active")
     private Boolean active;
 
+    @JsonProperty("Supplements")
+    private Supplements supplements;
+
     public String getLoanId() {
         return loanId;
     }
@@ -33,6 +36,10 @@ public class Loan {
 
     public Date getExpirationDate() {
         return new Date(expirationDate.getTime());
+    }
+
+    public Supplements getSupplements() {
+        return supplements;
     }
 
     public Boolean isActive() {

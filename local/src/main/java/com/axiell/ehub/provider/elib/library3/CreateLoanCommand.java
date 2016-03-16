@@ -32,10 +32,14 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         final List<String> contentUrls = createdLoan.getContentUrlsFor(formatId);
 
         if (contentUrls == null || contentUrls.isEmpty())
-            throw exceptionFactory
-                    .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
+            throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN,
+                    language);
         else {
             data.setContentUrls(contentUrls);
+            final Supplements supplements = createdLoan.getSupplements();
+            if (supplements!=null) {
+                data.setSupplementLinks(supplements.getSupplementLinks());
+            }
             populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, contentProviderRecordId, formatId, createdLoan);
             forward(LOAN_CREATED, data);
         }

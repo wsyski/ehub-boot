@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.IContentFactory;
+import com.axiell.ehub.provider.IContentLinksFactory;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ class Elib3CommandChainFactory implements IElib3CommandChainFactory {
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Autowired
-    private IContentFactory contentFactory;
+    private IContentLinksFactory contentFactory;
 
     @Autowired
     private IFormatFactory formatFactory;

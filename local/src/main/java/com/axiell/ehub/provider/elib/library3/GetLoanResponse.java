@@ -4,9 +4,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class GetLoanResponse {
     @JsonProperty("Loan")
-    private Loan loan;
+    private LoanDTO loan;
 
-    public Loan getLoan() {
+    public LoanDTO getLoan() {
         return loan;
     }
 }

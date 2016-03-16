@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.NotFoundExceptionFactory;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -99,14 +100,15 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
-        final ContentLinks contentLinks = createContent(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final Content content = new Content(contentLinks);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
                 formatDecoration).build();
-        return new ContentProviderLoan(metadata, contentLinks);
+        return new ContentProviderLoan(metadata, content);
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public Content getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
@@ -117,7 +119,8 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         final DownloadLinkTemplateDTO downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
-        return createContent(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        return new Content(contentLinks);
     }
 
     private CheckoutDTO getCheckout(final CommandData data, final OAuthAccessToken oAuthAccessToken) {

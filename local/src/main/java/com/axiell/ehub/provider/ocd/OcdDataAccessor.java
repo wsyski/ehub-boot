@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -59,7 +60,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
             final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final ContentLinks contentLinks = makeContent(loanMetadata, completeCheckout);
+            final Content contentLinks = makeContent(loanMetadata, completeCheckout);
             return new ContentProviderLoan(loanMetadata, contentLinks);
         }
         throw makeCreateLoanFailedException(data);
@@ -71,10 +72,11 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private ContentLinks makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
+    private Content makeContent(final ContentProviderLoanMetadata loanMetadata, final Checkout checkout) {
         final List<String> contentUrls = checkout.getDownloadUrls();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        return createContent(contentUrls, formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrls, formatDecoration);
+        return new Content(contentLinks);
     }
 
     private InternalServerErrorException makeCreateLoanFailedException(final CommandData data) {
@@ -84,7 +86,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public Content getContent(final CommandData data) {
         final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();

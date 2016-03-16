@@ -153,7 +153,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     private void givenLoanIdFromF1Facade() {

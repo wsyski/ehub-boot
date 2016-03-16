@@ -1,10 +1,13 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.Content;
+import com.axiell.ehub.checkout.SupplementLink;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -17,7 +20,8 @@ public class CommandData implements ICommandData {
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private List<String> contentUrls;
-    private ContentLinks contentLinks;
+    private List<SupplementLink> supplementLinks;
+    private Content content;
 
     protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         this.contentProviderConsumer = contentProviderConsumer;
@@ -79,6 +83,15 @@ public class CommandData implements ICommandData {
         return this;
     }
 
+    public List<SupplementLink> getSupplementLinks() {
+        return supplementLinks;
+    }
+
+    public CommandData setSupplementLinks(List<SupplementLink> supplementLinks) {
+        this.supplementLinks = supplementLinks;
+        return this;
+    }
+
     public List<String> getContentUrls() {
         return contentUrls;
     }
@@ -88,26 +101,17 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public ContentLinks getContent() {
-        return contentLinks;
+    public Content getContent() {
+        return content;
     }
 
-    public CommandData setContent(ContentLinks contentLinks) {
-        this.contentLinks = contentLinks;
+    public CommandData setContent(Content content) {
+        this.content = content;
         return this;
     }
 
     @Override
     public String toString() {
-        return "CommandData{" +
-                "contentProviderConsumer=" + contentProviderConsumer +
-                ", patron=" + patron +
-                ", language=" + language +
-                ", contentProviderRecordId=" + contentProviderRecordId +
-                ", contentProviderFormatId=" + contentProviderFormatId +
-                ", contentProviderLoanMetadata=" + contentProviderLoanMetadata +
-                ", contentUrl=" + contentUrls +
-                ", contentLinks=" + contentLinks +
-                "}";
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

@@ -1,13 +1,13 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.CreateContentCommand;
-import com.axiell.ehub.provider.IContentFactory;
+import com.axiell.ehub.provider.IContentLinksFactory;
 
 class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLoan, CommandData> {
     private final GetLoansCommand firstCommand;
@@ -15,7 +15,7 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     private final CreateLoanCommand createLoanCommand;
     private final CreateContentCommand createContentCommand;
 
-    CreateLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentFactory contentFactory) {
+    CreateLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentLinksFactory contentFactory) {
         super(elibFacade, exceptionFactory);
         firstCommand = new GetLoansCommand(elibFacade, exceptionFactory);
         bookAvailabilityCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
@@ -48,7 +48,7 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     public ContentProviderLoan execute(final CommandData data) {
         firstCommand.run(data);
         final ContentProviderLoanMetadata metadata = data.getContentProviderLoanMetadata();
-        final ContentLinks contentLinks = data.getContent();
-        return new ContentProviderLoan(metadata, contentLinks);
+        final Content content = data.getContent();
+        return new ContentProviderLoan(metadata, content);
     }
 }

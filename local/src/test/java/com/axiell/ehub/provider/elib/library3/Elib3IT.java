@@ -40,7 +40,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     private BookAvailability bookAvailability;
     private Product product;
     private CreatedLoan createdLoan;
-    private Loan loan;
+    private LoanDTO loan;
     private LibraryProduct libraryProduct;
     private GetLoansResponse getLoansResponse;
 

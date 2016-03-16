@@ -12,7 +12,7 @@ public class CheckoutsSearchResult {
     private final SearchResultDTO<CheckoutMetadataDTO> searchResultDTO;
 
     public CheckoutsSearchResult() {
-        this(new SearchResultDTO<CheckoutMetadataDTO>().items(new ArrayList<CheckoutMetadataDTO>()));
+        this(new SearchResultDTO<CheckoutMetadataDTO>().items(new ArrayList<>()));
     }
 
     public CheckoutsSearchResult(SearchResultDTO<CheckoutMetadataDTO> searchResultDTO) {

@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
@@ -28,7 +28,7 @@ public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public Content getContent(final CommandData data) {
         final GetContentCommandChain commandChain = commandChainFactory.createGetContentCommandChain();
         return commandChain.execute(data);
     }

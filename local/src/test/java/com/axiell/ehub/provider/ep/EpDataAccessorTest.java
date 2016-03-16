@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.ContentLinkBuilder;
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
@@ -99,7 +101,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getContentUrls()).willReturn(Collections.singletonList(CONTENT_HREF));
+        given(checkout.getContentLinks()).willReturn(ContentLinkBuilder.defaultContentLinks().toDTO());
     }
 
     private void whenCreateLoan() {
@@ -107,7 +109,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

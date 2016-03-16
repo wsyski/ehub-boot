@@ -64,7 +64,7 @@ public class GetFormatsCommandChainTest {
     @Mock
     private GetLoansResponse getLoansResponse;
     @Mock
-    private Loan loan;
+    private LoanDTO loan;
     private Format actualFormat;
 
     @Before

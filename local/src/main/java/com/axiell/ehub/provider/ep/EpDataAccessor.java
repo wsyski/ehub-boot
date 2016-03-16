@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider.ep;
 
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -53,12 +55,12 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderFormatId = data.getContentProviderFormatId();
         final CheckoutDTO checkoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final ContentLinks contentLinks = makeContent(loanMetadata, checkoutDTO);
+        final Content contentLinks = makeContent(loanMetadata, checkoutDTO);
         return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
     @Override
-    public ContentLinks getContent(final CommandData data) {
+    public Content getContent(final CommandData data) {
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
@@ -73,9 +75,10 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private ContentLinks makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
-        final List<String> contentUrl = checkoutDTO.getContentUrls();
+    private Content makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
+        final List<String> hrefs = ContentLinks.fromDTO(checkoutDTO.getContentLinks()).hrefs();
         final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
-        return createContent(contentUrl, formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(hrefs, formatDecoration);
+        return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(checkoutDTO.getSupplementLinks()));
     }
 }

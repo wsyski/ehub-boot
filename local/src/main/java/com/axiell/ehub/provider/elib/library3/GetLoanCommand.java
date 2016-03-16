@@ -27,7 +27,7 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
         final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         final String formatId = formatDecoration.getContentProviderFormatId();
         final String language = data.getLanguage();
-        final Loan loan = elibFacade.getLoan(contentProviderConsumer, elibLoanId);
+        final LoanDTO loan = elibFacade.getLoan(contentProviderConsumer, elibLoanId);
 
         if (loan.isActive()) {
             final List<String> contentUrls = loan.getContentUrlsFor(formatId);
@@ -36,6 +36,10 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
                         .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
             else {
                 data.setContentUrls(contentUrls);
+                final Supplements supplements = loan.getSupplements();
+                if (supplements!=null) {
+                    data.setSupplementLinks(supplements.getSupplementLinks());
+                }
                 forward(ACTIVE_LOAN_RETRIEVED, data);
             }
         } else

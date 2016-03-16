@@ -140,7 +140,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
     }
 
     public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().get(0);
+        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

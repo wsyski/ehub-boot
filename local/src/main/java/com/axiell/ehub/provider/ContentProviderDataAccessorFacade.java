@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -41,7 +41,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     }
 
     @Override
-    public ContentLinks getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
+    public Content getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
         final String name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
