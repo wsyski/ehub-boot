@@ -2,15 +2,16 @@ package com.axiell.ehub.it;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.Fields;
-import com.axiell.ehub.checkout.Checkout;
-import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.Date;
+import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
+import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
+import static org.junit.Assert.assertThat;
+
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
@@ -79,12 +80,12 @@ public class RemoteLoanIT extends RemoteITFixture {
     private void thenValidCheckout(final Checkout checkout) {
         Assert.assertNotNull(checkout);
         thenValidCheckoutMetadata(checkout.metadata());
+        thenValidSupplementLinks(checkout.supplementLinks());
         thenValidContentLinks(checkout.contentLinks());
     }
 
     private void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata) {
         Assert.assertNotNull(checkoutMetadata);
-
         Date expirationDate = checkoutMetadata.expirationDate();
         Assert.assertNotNull(expirationDate);
         String lmsLoanId = checkoutMetadata.lmsLoanId();
@@ -96,8 +97,15 @@ public class RemoteLoanIT extends RemoteITFixture {
     private void thenValidContentLinks(final ContentLinks contentLinks) {
         Assert.assertNotNull(contentLinks);
         Assert.assertEquals(2, contentLinks.getContentLinks().size());
-        Assert.assertNotNull(contentLinks.getContentLinks().get(0).href());
-        Assert.assertNotNull(contentLinks.getContentLinks().get(1).href());
+        assertThat(contentLinks.getContentLinks().get(0), matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_0")));
+        assertThat(contentLinks.getContentLinks().get(1), matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_1")));
+    }
+
+    private void thenValidSupplementLinks(final SupplementLinks supplementLinks) {
+        Assert.assertNotNull(supplementLinks);
+        Assert.assertEquals(2, supplementLinks.getSupplementLinks().size());
+        assertThat(supplementLinks.getSupplementLinks().get(0), matchesExpectedSupplementLink(new SupplementLink("supplent_0", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_0")));
+        assertThat(supplementLinks.getSupplementLinks().get(1), matchesExpectedSupplementLink(new SupplementLink("supplent_1", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_1")));
     }
 
     private void givenLmsLoanId() {
