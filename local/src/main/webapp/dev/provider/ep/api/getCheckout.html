@@ -29,7 +29,8 @@
 <pre>
     {
     "id": "&lt;checkout id&gt;",
-    "contentUrls": "&lt;content urls&gt;",
+    "contentLinks": "&lt;content links&gt;",
+    "supplementLinks": "&lt;supplement links&gt;",
     "expirationDate": "&lt;expiration date&gt;"
     }
 </pre>
@@ -39,8 +40,12 @@
         <td>The checkout id.</td>
     </tr>
     <tr class="tab-row">
-        <td>content urls</td>
-        <td>The media content urls array.</td>
+        <td>content links</td>
+        <td>The media content links array. Every element in the array is an object with singleton property &lt;href&gt;. The property specifies the media url.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>supplement links</td>
+        <td>The media supplement links array. Every element in the array is an object with properties &lt;name&gt; and &lt;href&gt;. The &lt;name&gt; property specifies the supplement link name and &lt;href&gt; specifies the supplement material url.</td>
     </tr>
     <tr class="tab-row">
         <td>expiration date</td>
@@ -53,7 +58,8 @@
 <pre>
     {
     "id": "123456",
-    "contentUrls": ["https://provider.com/ehub-api/v1/records/123456789/content_0", "https://provider.com/ehub-api/v1/records/123456789/content_1"],
+    "contentLinks": [{"href": "https://provider.com/ehub-api/v1/records/123456789/content_0"}, {"href": "https://provider.com/ehub-api/v1/records/123456789/content_1"}],
+    "supplementLinks": [{"name": "Supplement 0", "href": "https://provider.com/ehub-api/v1/records/123456789/supplement_0"}, {"name": "Supplement 1", "href": "https://provider.com/ehub-api/v1/records/123456789/supplement_1"}],
     "expirationDate": "2016-01-01T00:00:00Z"
     }
 </pre>
