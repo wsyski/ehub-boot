@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="systimestamp" dbms="oracle"/>
+
+    <changeSet id="1" author="ehub">
+        <createTable tableName="PLATFORM">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_PLATFORM"/>
+            </column>
+            <column name="name" type="varchar2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_datetime" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_datetime" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <comment>Created table PLATFORM</comment>
+    </changeSet>
+    <changeSet id="2" author="ehub">
+        <createTable tableName="FORMAT_DECORATION_PLATFORM">
+            <column name="platform_id" type="int">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_FORMAT_DECORATION_PLATFORM"/>
+            </column>
+            <column name="content_p_format_decoration_id" type="int">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_FORMAT_DECORATION_PLATFORM"/>
+            </column>
+        </createTable>
+        <comment>Created table FORMAT_DECORATION_PLATFORM</comment>
+    </changeSet>
+    <changeSet id="3" author="ehub">
+        <addForeignKeyConstraint baseColumnNames="platform_id"
+                                 baseTableName="FORMAT_DECORATION_PLATFORM"
+                                 constraintName="FK_F_D_P_PLATFORM"
+                                 deferrable="true"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="PLATFORM"/>
+        <addForeignKeyConstraint baseColumnNames="content_p_format_decoration_id"
+                                 baseTableName="FORMAT_DECORATION_PLATFORM"
+                                 constraintName="FK_F_D_P_CONTENT_P_F_D"
+                                 deferrable="true"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="CONTENT_P_FORMAT_DECORATION"/>
+        <comment>Foreign constraints for table FORMAT_DECORATION_PLATFORM</comment>
+    </changeSet>
+    <changeSet id="4" author="ehub" dbms="oracle">
+        <insert tableName="PLATFORM">
+            <column name="ID" value="1"/>
+            <column name="NAME" value="ANDROID"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="PLATFORM">
+            <column name="ID" value="2"/>
+            <column name="NAME" value="IOS"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="PLATFORM">
+            <column name="ID" value="3"/>
+            <column name="NAME" value="PCMAC"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Base data for table PLATFORM</comment>
+    </changeSet>
+</databaseChangeLog>

@@ -4,7 +4,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.util.HashCodeBuilderFactory;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
