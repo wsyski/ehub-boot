@@ -11,7 +11,6 @@ import com.eekboom.utils.Strings;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.text.Collator;
@@ -95,12 +94,11 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      * @return the {@link ContentProvider} properties
      */
     @ElementCollection
-    @CollectionTable(name = "CONTENT_PROVIDER_PROPERTY", joinColumns = @JoinColumn(name = "CONTENT_PROVIDER_ID"))
+    @CollectionTable(name = "CONTENT_PROVIDER_PROPERTY", joinColumns = @JoinColumn(name = "CONTENT_PROVIDER_ID"), foreignKey = @ForeignKey(name = "FK_CONTENT_P_P_CONTENT_P"))
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "FK_CONTENT_P_P_CONTENT_P")
-    public Map<ContentProviderPropertyKey, String> getProperties() {
+     public Map<ContentProviderPropertyKey, String> getProperties() {
         return properties;
     }
 

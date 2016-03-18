@@ -7,7 +7,6 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.util.DateFactory;
 import com.axiell.ehub.util.Validate;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -65,8 +64,7 @@ public class ContentProviderLoanMetadata implements Serializable {
      * @return the {@link com.axiell.ehub.provider.ContentProvider} where the loan is created
      */
     @ManyToOne
-    @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
-    @ForeignKey(name = "FK_EHUB_LOAN_CONTENT_PROVIDER")
+    @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_EHUB_LOAN_CONTENT_PROVIDER"))
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
@@ -109,8 +107,7 @@ public class ContentProviderLoanMetadata implements Serializable {
      *
      * @return a {@link com.axiell.ehub.provider.record.format.FormatDecoration}
      */
-    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D")
+    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D"))
     @ManyToOne
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;

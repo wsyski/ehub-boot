@@ -6,7 +6,6 @@ package com.axiell.ehub.provider.record.format;
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 
@@ -51,8 +50,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @return the {@link FormatDecoration}
      */
     @ManyToOne
-    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false)
-    @ForeignKey(name = "FK_C_P_F_T_B_CONTENT_P_F_D")
+    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_C_P_F_T_B_CONTENT_P_F_D"))
     public FormatDecoration getFormatDecoration() {
         return formatDecoration;
     }
@@ -73,8 +71,7 @@ public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
      * @return a language code
      */
     @ManyToOne
-    @JoinColumn(name = "LANGUAGE_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_F_T_B_LANGUAGE")
+    @JoinColumn(name = "LANGUAGE_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_F_T_B_LANGUAGE"))
     public Language getLanguage() {
         return language;
     }

@@ -5,20 +5,22 @@ package com.axiell.ehub.provider.record.format;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.platform.Platform;
 import com.axiell.ehub.provider.ContentProvider;
 import org.apache.commons.lang3.Validate;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents decorations of a specific format at a specific
  * {@link ContentProvider}. These decorations are kept in the eHUB.
  */
 @Entity
-@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_PROVIDER_ID", "FORMAT_ID"}, name = "UK_CONTENT_P_FORMAT_DECORATION"))
+@Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_PROVIDER_ID", "FORMAT_ID"},
+        name = "UK_CONTENT_P_FORMAT_DECORATION"))
 @Access(AccessType.PROPERTY)
 public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1562910983744673362L;
@@ -28,6 +30,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private int playerWidth;
     private int playerHeight;
     private Map<Language, FormatTextBundle> textBundles;
+    private Set<Platform> platforms;
 
     /**
      * Empty constructor required by JPA.
@@ -71,8 +74,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @return a {@link ContentProvider}
      */
     @ManyToOne
-    @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_F_D_CONTENT_P")
+    @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_F_D_CONTENT_P"))
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
@@ -171,8 +173,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      * @return the {@link FormatTextBundle}s
      */
     @OneToMany(mappedBy = "formatDecoration", cascade = CascadeType.REMOVE)
-    @MapKeyJoinColumn(name = "LANGUAGE_ID")
-    @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_T")
+    @MapKeyJoinColumn(name = "LANGUAGE_ID", foreignKey = @ForeignKey(name = "FK_CONTENT_P_F_T_B_CONTENT_P_F_T"))
     public Map<Language, FormatTextBundle> getTextBundles() {
         return textBundles;
     }
@@ -184,6 +185,16 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      */
     public void setTextBundles(Map<Language, FormatTextBundle> textBundles) {
         this.textBundles = textBundles;
+    }
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "FORMAT_DECORATION_PLATFORM", joinColumns = @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID"), inverseJoinColumns = @JoinColumn(name = "PLATFORM_ID"), foreignKey = @ForeignKey(name = "FK_F_D_P_CONTENT_P_F_D"), inverseForeignKey = @ForeignKey(name = "FK_F_D_P_PLATFORM"))
+    public Set<Platform> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(final Set<Platform> platforms) {
+        this.platforms = platforms;
     }
 
     /**

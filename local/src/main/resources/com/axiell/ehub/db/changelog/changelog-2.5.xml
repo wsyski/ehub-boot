@@ -23,7 +23,15 @@
         </createTable>
         <comment>Created table PLATFORM</comment>
     </changeSet>
-    <changeSet id="2" author="ehub">
+    <changeSet  id="2" author="ehub">
+        <addUniqueConstraint columnNames="name"
+                             constraintName="UK_PLATFORM"
+                             deferrable="true"
+                             initiallyDeferred="false"
+                             tableName="PLATFORM"/>
+        <comment>Constraints for table PLATFORM</comment>
+    </changeSet>
+    <changeSet id="3" author="ehub">
         <createTable tableName="FORMAT_DECORATION_PLATFORM">
             <column name="platform_id" type="int">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_FORMAT_DECORATION_PLATFORM"/>
@@ -34,7 +42,7 @@
         </createTable>
         <comment>Created table FORMAT_DECORATION_PLATFORM</comment>
     </changeSet>
-    <changeSet id="3" author="ehub">
+    <changeSet id="4" author="ehub">
         <addForeignKeyConstraint baseColumnNames="platform_id"
                                  baseTableName="FORMAT_DECORATION_PLATFORM"
                                  constraintName="FK_F_D_P_PLATFORM"
@@ -53,9 +61,9 @@
                                  onUpdate="RESTRICT"
                                  referencedColumnNames="id"
                                  referencedTableName="CONTENT_P_FORMAT_DECORATION"/>
-        <comment>Foreign constraints for table FORMAT_DECORATION_PLATFORM</comment>
+        <comment>Constraints for table FORMAT_DECORATION_PLATFORM</comment>
     </changeSet>
-    <changeSet id="4" author="ehub" dbms="oracle">
+    <changeSet id="5" author="ehub">
         <insert tableName="PLATFORM">
             <column name="ID" value="1"/>
             <column name="NAME" value="ANDROID"/>

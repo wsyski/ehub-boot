@@ -8,7 +8,6 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 import com.google.common.collect.ImmutableMap;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.util.*;
@@ -108,8 +107,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "DEFAULT_LANGUAGE_ID", nullable = false)
-    @ForeignKey(name = "FK_EHUB_CONSUMER_LANGUAGE")
+    @JoinColumn(name = "DEFAULT_LANGUAGE_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_EHUB_CONSUMER_LANGUAGE"))
     public Language getDefaultLanguage() {
         return defaultLanguage;
     }
@@ -186,12 +184,11 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      * @return the {@link EhubConsumer} properties
      */
     @ElementCollection
-    @CollectionTable(name = "EHUB_CONSUMER_PROPERTY", joinColumns = @JoinColumn(name = "EHUB_CONSUMER_ID"))
+    @CollectionTable(name = "EHUB_CONSUMER_PROPERTY", joinColumns = @JoinColumn(name = "EHUB_CONSUMER_ID"), foreignKey = @ForeignKey(name = "FK_EHUB_CONSUMER_P_EHUB_C"))
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "FK_EHUB_CONSUMER_P_EHUB_C")
-    public Map<EhubConsumerPropertyKey, String> getProperties() {
+     public Map<EhubConsumerPropertyKey, String> getProperties() {
         return properties;
     }
 

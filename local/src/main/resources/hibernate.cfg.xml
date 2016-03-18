@@ -9,12 +9,13 @@
         <mapping class="com.axiell.ehub.consumer.EhubConsumer"/>
         <mapping class="com.axiell.ehub.consumer.ContentProviderConsumer"/>
         <mapping class="com.axiell.ehub.language.Language"/>
+        <mapping class="com.axiell.ehub.loan.ContentProviderLoanMetadata"/>
+        <mapping class="com.axiell.ehub.loan.EhubLoan"/>
         <mapping class="com.axiell.ehub.provider.ContentProvider"/>
         <mapping class="com.axiell.ehub.provider.record.format.FormatDecoration"/>
         <mapping class="com.axiell.ehub.provider.record.format.FormatTextBundle"/>
         <mapping class="com.axiell.ehub.provider.alias.AliasMapping"/>
-        <mapping class="com.axiell.ehub.loan.EhubLoan"/>
-        <mapping class="com.axiell.ehub.loan.ContentProviderLoanMetadata"/>
+        <mapping class="com.axiell.ehub.platform.Platform"/>
         <mapping class="com.axiell.ehub.support.about.DatabaseChangeLog"/>
         <mapping class="com.axiell.ehub.user.AdminUser"/>
     </session-factory>

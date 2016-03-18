@@ -2,7 +2,6 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.language.Language;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -29,8 +28,7 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID")
-    @MapKeyJoinColumn(name = "LANGUAGE_ID", nullable = false)
-    @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
+    @MapKeyJoinColumn(name = "LANGUAGE_ID", nullable = false, foreignKey= @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V"))
     public Map<Language, ErrorCauseArgumentValueTextBundle> getTextBundles() {
         return textBundles;
     }
