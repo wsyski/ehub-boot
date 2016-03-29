@@ -15,7 +15,7 @@
         <mapping class="com.axiell.ehub.provider.record.format.FormatDecoration"/>
         <mapping class="com.axiell.ehub.provider.record.format.FormatTextBundle"/>
         <mapping class="com.axiell.ehub.provider.alias.AliasMapping"/>
-        <mapping class="com.axiell.ehub.platform.Platform"/>
+        <mapping class="com.axiell.ehub.provider.platform.Platform"/>
         <mapping class="com.axiell.ehub.support.about.DatabaseChangeLog"/>
         <mapping class="com.axiell.ehub.user.AdminUser"/>
     </session-factory>

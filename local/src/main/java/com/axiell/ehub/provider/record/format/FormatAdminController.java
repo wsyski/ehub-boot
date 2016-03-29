@@ -87,6 +87,7 @@ public class FormatAdminController implements IFormatAdminController {
      */
     private FormatDecoration initialize(FormatDecoration formatDecoration) {
         Hibernate.initialize(formatDecoration.getTextBundles());
+        Hibernate.initialize(formatDecoration.getPlatforms());
         return formatDecoration;
     }
 }

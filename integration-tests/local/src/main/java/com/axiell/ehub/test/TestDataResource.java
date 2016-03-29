@@ -15,8 +15,11 @@ import com.axiell.ehub.provider.alias.Alias;
 import com.axiell.ehub.provider.alias.AliasMapping;
 import com.axiell.ehub.provider.alias.IAliasAdminController;
 import com.axiell.ehub.provider.ep.EpUserIdValue;
+import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -27,10 +30,7 @@ import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
 import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
@@ -45,6 +45,8 @@ public class TestDataResource implements ITestDataResource {
     @Autowired
     private IFormatAdminController formatAdminController;
     @Autowired
+    private IPlatformAdminController platformAdminController;
+    @Autowired
     private IConsumerAdminController consumerAdminController;
     @Autowired
     private IEhubLoanRepository ehubLoanRepository;
@@ -53,12 +55,16 @@ public class TestDataResource implements ITestDataResource {
     @Autowired
     private IAliasAdminController aliasAdminController;
 
+    private Platform platformPcMac;
+    private Platform platformAndroid;
+    private Platform platformIos;
 
     @Override
     public TestData init() {
         saveAlias(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
-        saveAlias("Distribut\u00f6r: "+TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
+        saveAlias("Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
         initLanguage();
+        initPlatforms();
         final ContentProvider contentProvider = initContentProvider();
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initContentProviderConsumer(ehubConsumer, contentProvider);
@@ -105,6 +111,12 @@ public class TestDataResource implements ITestDataResource {
         languageAdminController.save(new Language(TestDataConstants.DEFAULT_LANGUAGE));
     }
 
+    private void initPlatforms() {
+        platformPcMac = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_PCMAC));
+        platformIos = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_IOS));
+        platformAndroid = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_ANDROID));
+    }
+
     private ContentProvider initContentProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL);
@@ -115,12 +127,15 @@ public class TestDataResource implements ITestDataResource {
         FormatDecoration formatDecoration0 =
                 new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.TEST_EP_PLAYER_WIDTH,
                         TestDataConstants.TEST_EP_PLAYER_HEIGHT);
+        formatDecoration0.setPlatforms(Collections.singleton(platformAndroid));
         FormatDecoration formatDecoration1 =
                 new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, STREAMING, TestDataConstants.TEST_EP_PLAYER_WIDTH,
                         TestDataConstants.TEST_EP_PLAYER_HEIGHT);
+        formatDecoration1.setPlatforms(Collections.singleton(platformIos));
         FormatDecoration formatDecoration2 =
                 new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, DOWNLOADABLE, TestDataConstants.TEST_EP_PLAYER_WIDTH,
                         TestDataConstants.TEST_EP_PLAYER_HEIGHT);
+        formatDecoration2.setPlatforms(Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
 
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_1_ID, formatDecoration1);

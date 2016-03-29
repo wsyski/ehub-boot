@@ -1,4 +1,4 @@
-package com.axiell.ehub.platform;
+package com.axiell.ehub.provider.platform;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import org.apache.commons.lang3.builder.EqualsBuilder;

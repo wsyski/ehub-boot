@@ -5,7 +5,7 @@ package com.axiell.ehub.provider.record.format;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
-import com.axiell.ehub.platform.Platform;
+import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.ContentProvider;
 import org.apache.commons.lang3.Validate;
 

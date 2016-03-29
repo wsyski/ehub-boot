@@ -18,7 +18,7 @@ public class Formats {
     }
 
     public void addFormat(Format format) {
-        Validate.notNull(format, "Can't add a ContentProviderFormat that is null");
+        Validate.notNull(format, "Can't add a Format that is null");
         formats.add(format);
     }
 

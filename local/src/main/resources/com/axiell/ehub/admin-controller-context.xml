@@ -11,6 +11,7 @@
 	<bean id="languageAdminController" class="com.axiell.ehub.language.LanguageAdminController"/>
 	<bean id="contentProviderAdminController" class="com.axiell.ehub.provider.ContentProviderAdminController"/>
 	<bean id="formatAdminController" class="com.axiell.ehub.provider.record.format.FormatAdminController"/>
+	<bean id="platformAdminController" class="com.axiell.ehub.provider.record.platform.PlatformAdminController"/>
 	<bean id="userAdminController" class="com.axiell.ehub.user.UserAdminController"/>
     <bean id="databaseChangeLogAdminController" class="com.axiell.ehub.support.about.DatabaseChangeLogAdminController"/>
 	<bean id="loanAdminController" class="com.axiell.ehub.loan.LoanAdminController"/>
