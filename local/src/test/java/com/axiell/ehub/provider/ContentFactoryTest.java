@@ -18,8 +18,6 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentFactoryTest {
     private static final String URL = "url";
-    private static final int WIDTH = 100;
-    private static final int HEIGHT = 200;
     private ContentLinksFactory underTest;
     @Mock
     private FormatDecoration formatDecoration;
@@ -47,8 +45,6 @@ public class ContentFactoryTest {
 
     private void givenStreamingFormatDecoration() {
         given(formatDecoration.getContentDisposition()).willReturn(STREAMING);
-        given(formatDecoration.getPlayerWidth()).willReturn(WIDTH);
-        given(formatDecoration.getPlayerHeight()).willReturn(HEIGHT);
     }
 
     private void whenCreate() {

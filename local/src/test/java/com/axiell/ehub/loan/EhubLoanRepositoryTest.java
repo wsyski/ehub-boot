@@ -11,6 +11,7 @@ import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,8 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     @Autowired
     private ILanguageAdminController languageAdminController;
 
+    @Autowired
+    private IPlatformAdminController platformAdminController;
 
     private EhubLoan expectedEhubLoan;
     private FormatDecoration formatDecoration;
@@ -53,7 +56,8 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
      */
     @Override
     protected LoanDevelopmentData initDevelopmentData() {
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest, languageAdminController);
+        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest, languageAdminController,
+                platformAdminController);
     }
 
     /**

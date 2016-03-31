@@ -5,14 +5,15 @@ package com.axiell.ehub.provider.record.format;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
-import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.platform.Platform;
 import org.apache.commons.lang3.Validate;
 
 import javax.persistence.*;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents decorations of a specific format at a specific
@@ -27,8 +28,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private ContentProvider contentProvider;
     private String contentProviderFormatId;
     private ContentDisposition contentDisposition;
-    private int playerWidth;
-    private int playerHeight;
     private Map<Language, FormatTextBundle> textBundles;
     private Set<Platform> platforms;
 
@@ -55,16 +54,13 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
      *                                belongs to
      * @param contentProviderFormatId the ID of the format at the {@link ContentProvider}
      * @param contentDisposition      the {@link ContentDisposition} for the specified format
-     * @param playerWidth             the width of the streaming player
-     * @param playerHeight            the height of the streaming player
+     * @param platforms               the supported player platforms
      */
-    public FormatDecoration(ContentProvider contentProvider, String contentProviderFormatId, ContentDisposition contentDisposition, int playerWidth,
-                            int playerHeight) {
+    public FormatDecoration(ContentProvider contentProvider, String contentProviderFormatId, ContentDisposition contentDisposition, Set<Platform> platforms) {
         this.contentProvider = contentProvider;
         this.contentProviderFormatId = contentProviderFormatId;
         this.contentDisposition = contentDisposition;
-        this.playerWidth = playerWidth;
-        this.playerHeight = playerHeight;
+        this.platforms = platforms;
     }
 
     /**
@@ -130,44 +126,6 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     }
 
     /**
-     * Returns the width of the player in pixels.
-     *
-     * @return the number of pixels
-     */
-    @Column(name = "PLAYER_WIDTH", nullable = false)
-    public int getPlayerWidth() {
-        return playerWidth;
-    }
-
-    /**
-     * Sets the width of the player in pixels.
-     *
-     * @param playerWidth the width of the player in pixels to set
-     */
-    public void setPlayerWidth(int playerWidth) {
-        this.playerWidth = playerWidth;
-    }
-
-    /**
-     * Returns the height of the player in pixels.
-     *
-     * @return the number of pixels
-     */
-    @Column(name = "PLAYER_HEIGHT", nullable = false)
-    public int getPlayerHeight() {
-        return playerHeight;
-    }
-
-    /**
-     * Sets the height of the player in pixels
-     *
-     * @param playerHeight the height of the player in pixels to set
-     */
-    public void setPlayerHeight(int playerHeight) {
-        this.playerHeight = playerHeight;
-    }
-
-    /**
      * Returns the {@link FormatTextBundle}s.
      *
      * @return the {@link FormatTextBundle}s
@@ -228,6 +186,11 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
         } else {
             return textBundle;
         }
+    }
+
+    @Transient
+    Set<String> getPlatformNames() {
+        return getPlatforms().stream().map(Platform::getName).collect(Collectors.toSet());
     }
 
 }

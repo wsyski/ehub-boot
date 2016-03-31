@@ -13,6 +13,7 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 
 /**
  *
@@ -27,8 +28,9 @@ public class LoanDevelopmentData extends DevelopmentData {
      * @param consumerAdminController
      */
     public LoanDevelopmentData(IContentProviderAdminController contentProviderAdminController, IFormatAdminController formatAdminController,
-                               IConsumerAdminController consumerAdminController, IEhubLoanRepository ehubLoanRepository, ILanguageAdminController languageAdminController) {
-        super(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController);
+                               IConsumerAdminController consumerAdminController, IEhubLoanRepository ehubLoanRepository,
+                               ILanguageAdminController languageAdminController, IPlatformAdminController platformAdminController) {
+        super(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController, platformAdminController);
         this.ehubLoanRepository = ehubLoanRepository;
     }
 

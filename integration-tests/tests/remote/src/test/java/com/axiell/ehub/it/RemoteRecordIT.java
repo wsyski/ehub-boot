@@ -11,14 +11,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class RemoteRecordIT extends RemoteITFixture {
-    private Record record;
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+    private Record record;
 
     @Test
     public final void getRecord() throws EhubException {
@@ -48,7 +48,6 @@ public class RemoteRecordIT extends RemoteITFixture {
         List<Format> formats = record.formats();
         Assert.assertNotNull(formats);
         Assert.assertFalse(formats.isEmpty());
-
         for (Format format : formats) {
             thenFormatContainsExpectedComponents(format);
         }
@@ -59,6 +58,8 @@ public class RemoteRecordIT extends RemoteITFixture {
         Assert.assertNotNull(id);
         String name = format.name();
         Assert.assertNotNull(name);
+        Set<String> platforms = format.platforms();
+        Assert.assertTrue(platforms.size() > 0);
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {

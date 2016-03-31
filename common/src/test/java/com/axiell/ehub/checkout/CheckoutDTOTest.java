@@ -3,6 +3,7 @@ package com.axiell.ehub.checkout;
 import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -32,7 +33,8 @@ public class CheckoutDTOTest {
 
     @Before
     public void setUpExpectedDTO() {
-        FormatDTO formatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
+        FormatDTO formatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE).platforms(
+                Sets.newHashSet("platform0", "platform1"));
         expCheckoutMetadataDTO =
                 new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2")
                         .format(formatDTO);

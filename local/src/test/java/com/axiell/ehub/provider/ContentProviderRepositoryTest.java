@@ -5,6 +5,7 @@ import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.consumer.IConsumerAdminController;
 import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +31,16 @@ public class ContentProviderRepositoryTest extends AbstractEhubRepositoryTest<De
     @Autowired
     private ILanguageAdminController languageAdminController;
 
+    @Autowired
+    private IPlatformAdminController platformAdminController;
+
     /**
      * @see com.axiell.ehub.AbstractEhubRepositoryTest#initDevelopmentData()
      */
     @Override
     protected DevelopmentData initDevelopmentData() {
-        return new DevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController);
+        return new DevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController,
+                platformAdminController);
     }
 
     @Test

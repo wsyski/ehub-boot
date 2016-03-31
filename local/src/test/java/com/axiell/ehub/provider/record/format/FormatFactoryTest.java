@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Collections;
+import java.util.HashSet;
+
 import static com.axiell.ehub.provider.record.format.FormatBuilder.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -18,6 +21,7 @@ import static org.mockito.Matchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public class FormatFactoryTest {
     private static final String LANGUAGE = "en";
+    private static final String PLATFORM = "platform";
     private static final ContentDisposition CONTENT_DISPOSITION = ContentDisposition.STREAMING;
     private FormatFactory underTest;
     @Mock
@@ -38,8 +42,7 @@ public class FormatFactoryTest {
     @Before
     public void setUpFormatDecoration() {
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
-        given(formatDecoration.getPlayerWidth()).willReturn(PLAYER_WIDTH);
-        given(formatDecoration.getPlayerHeight()).willReturn(PLAYER_HEIGHT);
+        given(formatDecoration.getPlatformNames()).willReturn(Collections.singleton(PLATFORM));
     }
 
     @Test
@@ -49,8 +52,7 @@ public class FormatFactoryTest {
         thenDescriptionEqualsFormatId();
         thenNameEqualsFormatId();
         thenContentDispositionIsNull();
-        thenPlayerWidthIsZero();
-        thenPlayerHeightIsZero();
+        thenEmptyPlatforms();
     }
 
     private void whenCreateFromContentProviderAndFormatId() {
@@ -92,7 +94,7 @@ public class FormatFactoryTest {
     }
 
     private void thenActualFormatIdEqualsExpectedFormatId() {
-        assertThat(actualFormat.id(),is(FORMAT_ID));
+        assertThat(actualFormat.id(), is(FORMAT_ID));
     }
 
     private void thenDescriptionEqualsFormatId() {
@@ -111,12 +113,12 @@ public class FormatFactoryTest {
         assertThat(actualFormat.contentDisposition(), is(nullValue()));
     }
 
-    private void thenPlayerWidthIsZero() {
-        assertThat(actualFormat.playerWidth(), is(0));
+    private void thenExpectedPlatforms() {
+        assertThat(actualFormat.platforms(), is(Collections.singleton(PLATFORM)));
     }
 
-    private void thenPlayerHeightIsZero() {
-        assertThat(actualFormat.playerHeight(), is(0));
+    private void thenEmptyPlatforms() {
+        assertThat(actualFormat.platforms(), is(new HashSet<>()));
     }
 
     @Test
@@ -128,21 +130,13 @@ public class FormatFactoryTest {
         thenDescriptionEqualsExpectedDescription();
         thenNameEqualsExpectedName();
         thenContentDispositionEqualsExpectedContentDisposition();
-        thenPlayerWidthEqualsExpected();
-        thenPlayerHeightEqualsExpected();
+        thenExpectedPlatforms();
     }
 
     private void whenCreateFromFormatDecoration() {
         actualFormat = underTest.create(formatDecoration, LANGUAGE);
     }
 
-    private void thenPlayerWidthEqualsExpected() {
-        assertThat(actualFormat.playerWidth(), is(FormatBuilder.PLAYER_WIDTH));
-    }
-
-    private void thenPlayerHeightEqualsExpected() {
-        assertThat(actualFormat.playerHeight(), is(FormatBuilder.PLAYER_HEIGHT));
-    }
 
     @Test
     public void create_fromFormatDecoration_noAvailableTexts_noContentDisposition() {

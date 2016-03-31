@@ -124,18 +124,12 @@ public class TestDataResource implements ITestDataResource {
         contentProvider = contentProviderAdminController.save(contentProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 =
-                new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_0_ID, DOWNLOADABLE, TestDataConstants.TEST_EP_PLAYER_WIDTH,
-                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
-        formatDecoration0.setPlatforms(Collections.singleton(platformAndroid));
-        FormatDecoration formatDecoration1 =
-                new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, STREAMING, TestDataConstants.TEST_EP_PLAYER_WIDTH,
-                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
-        formatDecoration1.setPlatforms(Collections.singleton(platformIos));
-        FormatDecoration formatDecoration2 =
-                new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, DOWNLOADABLE, TestDataConstants.TEST_EP_PLAYER_WIDTH,
-                        TestDataConstants.TEST_EP_PLAYER_HEIGHT);
-        formatDecoration2.setPlatforms(Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
+        FormatDecoration formatDecoration0 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_0_ID, DOWNLOADABLE,
+                Collections.singleton(platformAndroid));
+        FormatDecoration formatDecoration1 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, STREAMING,
+                Collections.singleton(platformIos));
+        FormatDecoration formatDecoration2 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, DOWNLOADABLE,
+                Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
 
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_1_ID, formatDecoration1);
@@ -152,7 +146,7 @@ public class TestDataResource implements ITestDataResource {
     private EhubConsumer initEhubConsumer() {
         EhubConsumer ehubConsumer = createEhubConsumer();
         ehubConsumer = consumerAdminController.save(ehubConsumer);
-        ehubConsumer.setContentProviderConsumers(new HashSet<ContentProviderConsumer>());
+        ehubConsumer.setContentProviderConsumers(new HashSet<>());
         return ehubConsumer;
     }
 

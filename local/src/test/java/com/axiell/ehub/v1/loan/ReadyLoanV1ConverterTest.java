@@ -65,8 +65,8 @@ public class ReadyLoanV1ConverterTest {
     private void thenActualStreamingContentEqualsExpected() {
         StreamingContent_v1 actualContent = (StreamingContent_v1) actualContentProviderLoan_v1.getContent();
         assertEquals(URL, actualContent.getUrl());
-        assertEquals(FormatBuilder.PLAYER_HEIGHT, actualContent.getHeight());
-        assertEquals(FormatBuilder.PLAYER_WIDTH, actualContent.getWidth());
+        assertEquals(0, actualContent.getHeight());
+        assertEquals(0, actualContent.getWidth());
     }
 
     private void thenActualLmsLoanEqualsExpected() {

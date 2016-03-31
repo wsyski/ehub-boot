@@ -42,7 +42,7 @@ class ReadyLoanV1Converter {
         if (DOWNLOADABLE.equals(format.contentDisposition())) {
             content_v1 = new DownloadableContent_v1(href);
         } else if (STREAMING.equals(format.contentDisposition())) {
-            content_v1 = new StreamingContent_v1(href, format.playerWidth(), format.playerHeight());
+            content_v1 = new StreamingContent_v1(href, 0, 0);
         }
         return content_v1;
     }

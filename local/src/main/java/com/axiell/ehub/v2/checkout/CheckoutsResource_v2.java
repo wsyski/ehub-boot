@@ -2,10 +2,15 @@ package com.axiell.ehub.v2.checkout;
 
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.FieldsDTO;
-import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.checkout.Checkout;
+import com.axiell.ehub.checkout.CheckoutMetadataDTO;
+import com.axiell.ehub.checkout.CheckoutsSearchResult;
 import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CheckoutsResource_v2 implements ICheckoutsResource_v2 {
     private final ILoanBusinessController loanBusinessController;
@@ -15,9 +20,12 @@ public class CheckoutsResource_v2 implements ICheckoutsResource_v2 {
     }
 
     @Override
-    public SearchResultDTO<CheckoutMetadataDTO> search(AuthInfo authInfo, String lmsLoanId, String language) {
+    public SearchResultDTO<CheckoutMetadataDTO_v2> search(AuthInfo authInfo, String lmsLoanId, String language) {
         final CheckoutsSearchResult searchResult = loanBusinessController.search(authInfo, lmsLoanId, language);
-        return searchResult.toDTO();
+        final SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = searchResult.toDTO();
+        List<CheckoutMetadataDTO_v2> items = searchResultDTO.getItems().stream().map(CheckoutMetadataDTO_v2::fromDTO).collect(Collectors.toList());
+        return new SearchResultDTO<CheckoutMetadataDTO_v2>().items(items).limit(searchResultDTO.getLimit()).offset(searchResultDTO.getOffset())
+                .totalItems(searchResultDTO.getTotalItems());
     }
 
     @Override
@@ -32,6 +40,4 @@ public class CheckoutsResource_v2 implements ICheckoutsResource_v2 {
         Checkout checkout = loanBusinessController.getCheckout(authInfo, ehubCheckoutId, language);
         return CheckoutDTO_v2.fromDTO(checkout.toDTO());
     }
-
-
 }

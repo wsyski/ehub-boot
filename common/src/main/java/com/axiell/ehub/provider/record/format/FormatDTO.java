@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -12,8 +14,7 @@ public class FormatDTO implements Serializable {
     private String name;
     private String description;
     private ContentDisposition contentDisposition;
-    private int playerWidth;
-    private int playerHeight;
+    private Set<String> platforms=new HashSet<>();
 
     public FormatDTO() {
     }
@@ -54,21 +55,12 @@ public class FormatDTO implements Serializable {
         return this;
     }
 
-    public int getPlayerWidth() {
-        return playerWidth;
+    public Set<String> getPlatforms() {
+        return platforms;
     }
 
-    public FormatDTO playerWidth(int playerWidth) {
-        this.playerWidth = playerWidth;
-        return this;
-    }
-
-    public int getPlayerHeight() {
-        return playerHeight;
-    }
-
-    public FormatDTO playerHeight(int playerHeight) {
-        this.playerHeight = playerHeight;
+    public FormatDTO platforms(final Set<String> platforms) {
+        this.platforms = platforms;
         return this;
     }
 }

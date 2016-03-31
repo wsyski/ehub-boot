@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 public interface ICheckoutsResource_v2 {
 
     @GET
-    SearchResultDTO<CheckoutMetadataDTO> search(@HeaderParam("Authorization") AuthInfo authInfo, @QueryParam("lmsLoanId") final String lmsLoanId,
+    SearchResultDTO<CheckoutMetadataDTO_v2> search(@HeaderParam("Authorization") AuthInfo authInfo, @QueryParam("lmsLoanId") final String lmsLoanId,
                                                 @DefaultValue("en") @QueryParam("language") String language);
 
     @POST

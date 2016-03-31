@@ -7,8 +7,12 @@ import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderAdminController;
+import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
+import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
+import com.google.common.collect.Sets;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,10 +20,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
@@ -49,25 +50,32 @@ public class DevelopmentData {
     public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "testEpSecretKey";
-    public static final int TEST_EP_PLAYER_WIDTH = 600;
-    public static final int TEST_EP_PLAYER_HEIGHT = 215;
+    public static final String PLATFORM_PCMAC = "PCMAC";
+    public static final String PLATFORM_ANDROID = "ANDROID";
+    public static final String PLATFORM_IOS = "IOS";
 
     protected IContentProviderAdminController contentProviderAdminController;
     protected IFormatAdminController formatAdminController;
     protected IConsumerAdminController consumerAdminController;
     protected ILanguageAdminController languageAdminController;
+    protected IPlatformAdminController platformAdminController;
 
     // Global data
     private Long ehubConsumerId;
     private EhubConsumer ehubConsumer;
     private ContentProvider contentProvider;
+    private Platform platformPcMac;
+    private Platform platformAndroid;
+    private Platform platformIos;
 
     public DevelopmentData(final IContentProviderAdminController contentProviderAdminController, final IFormatAdminController formatAdminController,
-                           final IConsumerAdminController consumerAdminController, final ILanguageAdminController languageAdminController) {
+                           final IConsumerAdminController consumerAdminController, final ILanguageAdminController languageAdminController,
+                           final IPlatformAdminController platformAdminController) {
         this.contentProviderAdminController = contentProviderAdminController;
         this.formatAdminController = formatAdminController;
         this.consumerAdminController = consumerAdminController;
         this.languageAdminController = languageAdminController;
+        this.platformAdminController = platformAdminController;
     }
 
     public static EhubConsumer createEhubConsumer() {
@@ -79,6 +87,7 @@ public class DevelopmentData {
     }
 
     public void init() throws Exception {
+        initPlatforms();
         initLanguage();
         contentProvider = initContentProvider();
         ehubConsumer = initEhubConsumer();
@@ -153,6 +162,12 @@ public class DevelopmentData {
         languageAdminController.save(new Language(DEFAULT_LANGUAGE));
     }
 
+    private void initPlatforms() {
+        platformPcMac = platformAdminController.save(new Platform(PLATFORM_PCMAC));
+        platformIos = platformAdminController.save(new Platform(PLATFORM_IOS));
+        platformAndroid = platformAdminController.save(new Platform(PLATFORM_ANDROID));
+    }
+
     private ContentProvider initContentProvider() {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TEST_EP_API_BASE_URL);
@@ -160,12 +175,11 @@ public class DevelopmentData {
         contentProvider = contentProviderAdminController.save(contentProvider);
 
         Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 =
-                new FormatDecoration(contentProvider, TEST_EP_FORMAT_0_ID, DOWNLOADABLE, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration1 =
-                new FormatDecoration(contentProvider, TEST_EP_FORMAT_1_ID, STREAMING, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
-        FormatDecoration formatDecoration2 =
-                new FormatDecoration(contentProvider, TEST_EP_FORMAT_2_ID, DOWNLOADABLE, TEST_EP_PLAYER_WIDTH, TEST_EP_PLAYER_HEIGHT);
+        FormatDecoration formatDecoration0 = new FormatDecoration(contentProvider, TEST_EP_FORMAT_0_ID, DOWNLOADABLE,
+                Collections.singleton(platformAndroid));
+        FormatDecoration formatDecoration1 = new FormatDecoration(contentProvider, TEST_EP_FORMAT_1_ID, STREAMING, Collections.singleton(platformIos));
+        FormatDecoration formatDecoration2 = new FormatDecoration(contentProvider, TEST_EP_FORMAT_2_ID, DOWNLOADABLE,
+                Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
 
         formatDecorations.put(TEST_EP_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TEST_EP_FORMAT_1_ID, formatDecoration1);

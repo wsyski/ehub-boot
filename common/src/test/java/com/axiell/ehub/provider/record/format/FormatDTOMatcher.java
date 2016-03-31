@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.record.format;
 
+import com.google.common.collect.Sets;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -11,6 +12,11 @@ public class FormatDTOMatcher extends BaseMatcher<FormatDTO> {
         this.expFormatDTO = expFormatDTO;
     }
 
+    @Factory
+    public static FormatDTOMatcher matchesExpectedFormatDTO(FormatDTO expFormatDTO) {
+        return new FormatDTOMatcher(expFormatDTO);
+    }
+
     @Override
     public boolean matches(Object item) {
         if (item instanceof FormatDTO) {
@@ -19,8 +25,7 @@ public class FormatDTOMatcher extends BaseMatcher<FormatDTO> {
                     expFormatDTO.getDescription().equals(actFormatDTO.getDescription()) &&
                     expFormatDTO.getName().equals(actFormatDTO.getName()) &&
                     expFormatDTO.getContentDisposition().equals(actFormatDTO.getContentDisposition()) &&
-                    expFormatDTO.getPlayerWidth() == actFormatDTO.getPlayerWidth() &&
-                    expFormatDTO.getPlayerHeight() == actFormatDTO.getPlayerHeight();
+                    Sets.symmetricDifference(expFormatDTO.getPlatforms(), actFormatDTO.getPlatforms()).isEmpty();
         } else
             return false;
     }
@@ -28,10 +33,5 @@ public class FormatDTOMatcher extends BaseMatcher<FormatDTO> {
     @Override
     public void describeTo(Description description) {
         description.appendText("matching a FormatDTO");
-    }
-
-    @Factory
-    public static FormatDTOMatcher matchesExpectedFormatDTO(FormatDTO expFormatDTO) {
-        return new FormatDTOMatcher(expFormatDTO);
     }
 }

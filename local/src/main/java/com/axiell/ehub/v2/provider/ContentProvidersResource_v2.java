@@ -11,6 +11,8 @@ import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.format.IFormatBusinessController;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
+import com.axiell.ehub.v2.provider.record.RecordsResource_v2;
 
 public class ContentProvidersResource_v2 implements IContentProvidersResource_v2 {
     private final IFormatBusinessController formatBusinessController;
@@ -30,7 +32,7 @@ public class ContentProvidersResource_v2 implements IContentProvidersResource_v2
     }
 
     @Override
-    public IRecordsResource records(String contentProviderAlias) {
-        return new RecordsResource(formatBusinessController, contentProviderAlias);
+    public IRecordsResource_v2 records(String contentProviderAlias) {
+        return new RecordsResource_v2(formatBusinessController, contentProviderAlias);
     }
 }

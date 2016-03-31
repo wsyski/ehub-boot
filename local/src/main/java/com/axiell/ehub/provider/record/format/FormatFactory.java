@@ -3,6 +3,9 @@ package com.axiell.ehub.provider.record.format;
 import com.axiell.ehub.provider.ContentProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 class FormatFactory implements IFormatFactory {
 
@@ -24,8 +27,7 @@ class FormatFactory implements IFormatFactory {
         final String name = textBundle == null ? formatId : textBundle.getName();
         final String description = textBundle == null ? formatId : textBundle.getDescription();
         final ContentDisposition contentDisposition = formatDecoration == null ? null : formatDecoration.getContentDisposition();
-        final int playerWidth = formatDecoration == null ? 0 : formatDecoration.getPlayerWidth();
-        final int playerHeight = formatDecoration == null ? 0 : formatDecoration.getPlayerHeight();
-        return new Format(formatId, name, description, contentDisposition, playerWidth, playerHeight);
+        final Set<String> platforms = formatDecoration == null ? new HashSet<>() : formatDecoration.getPlatformNames();
+        return new Format(formatId, name, description, contentDisposition, platforms);
     }
 }

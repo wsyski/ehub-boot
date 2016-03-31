@@ -3,6 +3,7 @@ package com.axiell.ehub.v1.loan;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 
+import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.v1.XjcSupport;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class ReadyLoanV1Test {
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+    private static final Platform PLATFORM = new Platform("platform");
     private static final Logger LOGGER = LoggerFactory.getLogger(ReadyLoanV1Test.class);
     private String expXml;
     private ReadyLoan_v1 expReadyLoan;
@@ -39,7 +41,7 @@ public class ReadyLoanV1Test {
 
     private ContentProviderLoanMetadata_v1 initContentProviderLoanMetadata() {
         ContentProvider contentProvider = initContentProvider();
-        FormatDecoration formatDecoration = new FormatDecoration(contentProvider, "58", ContentDisposition.DOWNLOADABLE, 10, 10);
+        FormatDecoration formatDecoration = new FormatDecoration(contentProvider, "58", ContentDisposition.DOWNLOADABLE, Collections.singleton(PLATFORM));
         return new ContentProviderLoanMetadata_v1.Builder(contentProvider, new Date(), "contentProviderRecordId", formatDecoration).contentProviderLoanId(
                 "contentProviderLoanId").build();
     }

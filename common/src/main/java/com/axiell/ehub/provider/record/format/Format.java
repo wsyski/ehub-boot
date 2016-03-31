@@ -3,7 +3,10 @@
  */
 package com.axiell.ehub.provider.record.format;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.Serializable;
+import java.util.Set;
 
 public class Format implements Serializable {
     private final FormatDTO dto;
@@ -12,8 +15,9 @@ public class Format implements Serializable {
         dto = formatDTO;
     }
 
-    public Format(String formatId, String name, String description, ContentDisposition contentDisposition, int playerWidth, int playerHeight) {
-        dto = new FormatDTO().id(formatId).name(name).description(description).contentDisposition(contentDisposition).playerWidth(playerWidth).playerHeight(playerHeight);
+    public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms) {
+        Validate.notNull(platforms);
+        dto = new FormatDTO().id(formatId).name(name).description(description).contentDisposition(contentDisposition).platforms(platforms);
     }
 
     public String id() {
@@ -32,12 +36,8 @@ public class Format implements Serializable {
         return dto.getContentDisposition();
     }
 
-    public int playerWidth() {
-        return dto.getPlayerWidth();
-    }
-
-    public int playerHeight() {
-        return dto.getPlayerHeight();
+    public Set<String> platforms() {
+        return dto.getPlatforms();
     }
 
     public FormatDTO toDTO() {
