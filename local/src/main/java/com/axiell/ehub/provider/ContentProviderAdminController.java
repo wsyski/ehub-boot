@@ -89,6 +89,7 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
         Hibernate.initialize(contentProvider);
         Hibernate.initialize(contentProvider.getProperties());
         Hibernate.initialize(contentProvider.getFormatDecorations());
+        contentProvider.getFormatDecorations().values().forEach(formatDecoration-> Hibernate.initialize(formatDecoration.getPlatforms()));
         return contentProvider;
     }
 }

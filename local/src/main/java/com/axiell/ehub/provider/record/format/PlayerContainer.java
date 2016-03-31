@@ -17,7 +17,7 @@ public class PlayerContainer extends WebMarkupContainer {
     }
 
     private void addPlatformsField() {
-        final PlatformsChoice platformsChoice = new PlatformsChoice("playerWidth", new PlatformsModel(formModel));
+        final PlatformsChoice platformsChoice = new PlatformsChoice("platformsChoice", new PlatformsModel(formModel));
         add(platformsChoice);
     }
 

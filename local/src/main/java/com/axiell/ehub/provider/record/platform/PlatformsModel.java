@@ -10,7 +10,6 @@ import java.util.HashSet;
 public class PlatformsModel implements IModel<Collection<Platform>> {
     private final IModel<FormatDecoration> formModel;
 
-
     public PlatformsModel(final IModel<FormatDecoration> formModel) {
         this.formModel = formModel;
     }

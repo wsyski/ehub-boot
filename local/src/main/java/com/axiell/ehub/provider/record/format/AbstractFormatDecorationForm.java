@@ -10,40 +10,40 @@ abstract class AbstractFormatDecorationForm<M extends IContentDispositionChanged
     protected final IModel<FormatDecoration> formModel;
 
     AbstractFormatDecorationForm(final String id, final M mediator) {
-	super(id);
-	this.mediator = mediator;
-	formModel = new Model<>();
-	setModel(formModel);
+        super(id);
+        this.mediator = mediator;
+        formModel = new Model<>();
+        setModel(formModel);
 
-	addFormatIdField();
-	addPlayerContainer();
-	addDispositionChoice();
-	addFormatDecorationSaveButton();
+        addFormatIdField();
+        addPlayerContainer();
+        addDispositionChoice();
+        addFormatDecorationSaveButton();
     }
 
     private void addFormatIdField() {
-	final TextField<String> formatIdField = new TextField<>("contentProviderFormatId", new FormatIdModel(formModel));
-	formatIdField.setVisible(isNewFormatDecoration());
-	formatIdField.setRequired(isNewFormatDecoration());
-	add(formatIdField);
+        final TextField<String> formatIdField = new TextField<>("contentProviderFormatId", new FormatIdModel(formModel));
+        formatIdField.setVisible(isNewFormatDecoration());
+        formatIdField.setRequired(isNewFormatDecoration());
+        add(formatIdField);
     }
 
     protected abstract boolean isNewFormatDecoration();
 
     private void addPlayerContainer() {
-	final PlayerContainer playerContainer = new PlayerContainer("playerContainer", formModel);
-	mediator.registerPlayerContainer(playerContainer);
-	add(playerContainer);
+        final PlayerContainer playerContainer = new PlayerContainer("playerContainer", formModel);
+        mediator.registerPlayerContainer(playerContainer);
+        add(playerContainer);
     }
 
     private void addDispositionChoice() {
-	final ContentDispositionDropDownChoice dispositionChoice = new ContentDispositionDropDownChoice("contentDisposition", formModel, mediator);
-	add(dispositionChoice);
+        final ContentDispositionDropDownChoice dispositionChoice = new ContentDispositionDropDownChoice("contentDisposition", formModel, mediator);
+        add(dispositionChoice);
     }
 
     private void addFormatDecorationSaveButton() {
-	final AbstractFormatDecorationSaveButton<M> saveButton = makeSaveButton("submit");
-	add(saveButton);
+        final AbstractFormatDecorationSaveButton<M> saveButton = makeSaveButton("submit");
+        add(saveButton);
     }
 
     protected abstract AbstractFormatDecorationSaveButton<M> makeSaveButton(final String id);

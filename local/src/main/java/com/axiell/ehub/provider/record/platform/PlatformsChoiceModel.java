@@ -9,7 +9,7 @@ import java.util.List;
 
 class PlatformsChoiceModel extends LoadableDetachableModel<List<Platform>> {
 
-    @SpringBean(name = "remoteSelfPubClient")
+    @SpringBean(name = "platformAdminController")
     private IPlatformAdminController platformAdminController;
 
     PlatformsChoiceModel() {
