@@ -8,25 +8,25 @@ abstract class AbstractFormatDecorationFormPanel<M extends IContentDispositionCh
     protected final AbstractFormatDecorationForm<M> decorationForm;
 
     protected AbstractFormatDecorationFormPanel(final String panelId, final M mediator) {
-	super(panelId);
-	this.mediator = mediator;
-	setOutputMarkupPlaceholderTag(true);
-	addCancelLink();
+        super(panelId);
+        this.mediator = mediator;
+        setOutputMarkupPlaceholderTag(true);
+        addCancelLink();
 
-	decorationForm = makeFormatDecorationForm("decorationForm");
-	add(decorationForm);
+        decorationForm = makeFormatDecorationForm("decorationForm");
+        add(decorationForm);
     }
 
     protected abstract AbstractFormatDecorationForm<M> makeFormatDecorationForm(final String id);
 
     private void addCancelLink() {
-	final Link<?> cancelLink = makeFormatDecorationCancelLink("cancelLink");
-	add(cancelLink);
+        final Link<?> cancelLink = makeFormatDecorationCancelLink("cancelLink");
+        add(cancelLink);
     }
 
     protected abstract Link<?> makeFormatDecorationCancelLink(final String id);
 
     public void setFormModelObject(FormatDecoration formatDecoration) {
-	decorationForm.setModelObject(formatDecoration);
+        decorationForm.setModelObject(formatDecoration);
     }
 }
