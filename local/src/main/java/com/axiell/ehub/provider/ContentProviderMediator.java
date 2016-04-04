@@ -26,7 +26,7 @@ public class ContentProviderMediator implements Serializable, IContentDispositio
 	this.formatDecorationCreateFormPanel = formatDecorationCreateFormPanel;
     }
 
-    public void registerFormatDecorationCreateLink(final FormatDecorationCreateLink formatDecorationCreateLink) {
+    void registerFormatDecorationCreateLink(final FormatDecorationCreateLink formatDecorationCreateLink) {
 	this.formatDecorationCreateLink = formatDecorationCreateLink;
     }
     
