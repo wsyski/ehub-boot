@@ -16,6 +16,7 @@ class AbstractPlatformForm extends StatelessForm<Platform> {
 
     private void addPlatformNameField() {
         final RequiredTextField<String> platformNameField = new RequiredTextField<>("fldName", new PropertyModel<>(getDefaultModel(), "name"));
+        platformNameField.setOutputMarkupId(true);
         add(platformNameField);
     }
 

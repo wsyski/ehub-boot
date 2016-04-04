@@ -12,6 +12,7 @@ public class PlatformsChoice extends ListMultipleChoice<Platform> {
         super(id);
         setChoices();
         setChoiceRenderer();
+        setOutputMarkupId(true);
         setModel(platformsModel);
     }
 
