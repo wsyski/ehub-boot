@@ -8,11 +8,11 @@ import com.axiell.ehub.error.ErrorCausesBreadCrumbBarPanel;
 import com.axiell.ehub.home.HomePanel;
 import com.axiell.ehub.language.LanguagesBreadCrumbBarPanel;
 import com.axiell.ehub.provider.ContentProvidersBreadCrumbBarPanel;
+import com.axiell.ehub.provider.record.platform.PlatformsBreadCrumbBarPanel;
 import com.axiell.ehub.support.SupportBreadCrumbBarPanel;
 import com.axiell.ehub.user.AdminUser;
 import com.axiell.ehub.user.LogoutPanel;
 import org.apache.commons.lang3.Validate;
-import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -48,6 +48,13 @@ public class EhubAdminPage extends AbstractBasePage {
         add(tabbedPanel);
     }
 
+    /**
+     * Represents a tab in the tabbed panel.
+     */
+    private static enum Tab {
+        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, PLATFORMS, SUPPORT;
+    }
+
     private static class EhubAdminTabbedPanelBuilder extends AbstractTabbedPanelBuilder<Tab> {
         private final EhubAdminPage ehubAdminPage;
 
@@ -69,6 +76,8 @@ public class EhubAdminPage extends AbstractBasePage {
                     return new ErrorCausesBreadCrumbBarPanel(panelId);
                 case LANGUAGES:
                     return new LanguagesBreadCrumbBarPanel(panelId);
+                case PLATFORMS:
+                    return new PlatformsBreadCrumbBarPanel(panelId);
                 case SUPPORT:
                     return new SupportBreadCrumbBarPanel(panelId);
                 default:
@@ -87,12 +96,5 @@ public class EhubAdminPage extends AbstractBasePage {
             final StringResourceModel titleModel = new StringResourceModel(titleKey, ehubAdminPage, new Model<>());
             return titleModel.getString();
         }
-    }
-
-    /**
-     * Represents a tab in the tabbed panel.
-     */
-    private static enum Tab {
-        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, SUPPORT;
     }
 }

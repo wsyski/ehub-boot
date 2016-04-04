@@ -17,10 +17,10 @@ public interface IPlatformAdminController {
     /**
      * Gets a fully initialized {@link Platform}.
      *
-     * @param PlatformId the ID of the {@link Platform}
+     * @param id the ID of the {@link Platform}
      * @return a {@link Platform}
      */
-    Platform getPlatform(Long PlatformId);
+    Platform getPlatform(Long id);
 
     /**
      * Saves the provided {@link Platform}

@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:panel>
+    <div wicket:id="platforms">
+        <table>
+            <tr>
+                <td>
+                    <wicket:container wicket:id="platformUpdateFormPanel"></wicket:container>
+                </td>
+                <td>
+                    <a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+                        <i class="icon-remove"></i>
+                        <wicket:message key="lnkDelete.label"/>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <div>
+            <wicket:message key="txtNewPlatformHeader"/>
+        </div>
+        <wicket:container wicket:id="platformAddFormPanel"></wicket:container>
+    </div>
+</wicket:panel>
+</body>
+</html>

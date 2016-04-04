@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.record.platform;
 import com.axiell.ehub.provider.platform.Platform;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
-public class PlatformsChoiceRenderer extends ChoiceRenderer<Platform> {
+class PlatformsChoiceRenderer extends ChoiceRenderer<Platform> {
 
 
     @Override
