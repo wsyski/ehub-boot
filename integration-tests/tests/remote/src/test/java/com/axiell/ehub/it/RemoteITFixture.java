@@ -25,22 +25,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.Locale;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
+    protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
+    private static final String LF = System.getProperty("line.separator");
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
-    protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
 
-    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
+    @Rule
+    public WireMockRule wireMockRule = new WireMockRule(16521);
+
     protected TestData testData;
     protected AuthInfo authInfo;
     protected IEhubService underTest;
 
-    @Rule
-    public WireMockRule httpMockRule = new WireMockRule(16521);
-
     @Before
     public void setUp() throws EhubException {
-        setEhubServerUri();
+        setEhubServer();
         setUpEhubClient();
         initTestData();
         initAuthInfo();
@@ -68,8 +69,13 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         return System.getProperty(EHUB_SERVER_URI);
     }
 
-    private void setEhubServerUri() {
+    private void setEhubServer() {
         System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
+        System.setProperty("catalina.base", "target");
+        wireMockRule.addMockServiceRequestListener((request, response) -> {
+            LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + LF + request.getBodyAsString() + LF + response.getBodyAsString() + LF +
+                    response.getStatus());
+        });
     }
 
     private void setUpEhubClient() {

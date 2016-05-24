@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonAutoDetect

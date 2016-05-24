@@ -12,9 +12,14 @@ public abstract class PalmaITFixture {
         stubFor(get(urlEqualTo("/arena.pa.palma/v267/catalogue?wsdl")).willReturn(aResponse().withHeader("Content-Type", "text/xml").withBodyFile("catalogue.wsdl")));
     }
 
-    protected void givenPalmaCheckoutTestOkResponse() {
+    protected void givenPalmaCheckoutTestActiveLoanResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns"))
-                .willReturn(aResponse().withBodyFile("CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("CheckOutTestResponse_activeLoan.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+    }
+
+    protected void givenPalmaCheckoutTestNewLoanResponse() {
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns"))
+                .willReturn(aResponse().withBodyFile("CheckOutTestResponse_newLoan.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
     }
 
     protected void givenCheckoutTestErrorResponse() {

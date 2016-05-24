@@ -30,12 +30,21 @@ public class RemoteLoanIT extends RemoteITFixture {
     }
 
     @Test
-    public final void checkout() throws EhubException {
+    public final void checkoutWithExistingContentProviderLoan() throws EhubException {
         givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestOkResponse();
-        givenContentProviderCheckoutResponse();
-        givenContentProviderGetCheckoutResponse();
+        givenPalmaCheckoutTestActiveLoanResponse();
         givenPalmaCheckoutResponse();
+        givenContentProviderGetCheckoutResponse();
+        Checkout checkout = whenCheckout();
+        thenValidCheckout(checkout);
+    }
+
+    @Test
+    public final void checkoutWithNewContentProviderLoan() throws EhubException {
+        givenPalmaLoansWsdl();
+        givenPalmaCheckoutTestNewLoanResponse();
+        givenPalmaCheckoutResponse();
+        givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout);
     }
@@ -69,12 +78,12 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     private void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(201)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse_activeLoan.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     private void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse_newLoan.json").withHeader("Content-Type", "application/json").withStatus(201)));
     }
 
     private void thenValidCheckout(final Checkout checkout) {
