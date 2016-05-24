@@ -5,11 +5,14 @@ package com.axiell.ehub.it12;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.security.AuthInfo;
-import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.http.Request;
+import com.github.tomakehurst.wiremock.http.RequestMethod;
+import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.After;
@@ -20,10 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.HttpHeaders;
 
 public abstract class RemoteITFixture {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
+    private static final String LF = System.getProperty("line.separator");
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
     protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
@@ -31,11 +35,11 @@ public abstract class RemoteITFixture {
     protected AuthInfo authInfo;
 
     @Rule
-    public WireMockRule httpMockRule = new WireMockRule(16521);
+    public WireMockRule wireMockRule = new WireMockRule(16521);
 
     @Before
     public void setUp() throws Exception {
-        setEhubServerUri();
+        setEhubServer();
         setUpEhubClient();
         initTestData();
         initAuthInfo();
@@ -52,8 +56,20 @@ public abstract class RemoteITFixture {
         return System.getProperty(EHUB_SERVER_URI) + "/v3/test-data";
     }
 
-    private void setEhubServerUri() {
+    private void setEhubServer() {
         System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
+        System.setProperty("catalina.base", "target");
+        wireMockRule.addMockServiceRequestListener(this::logRequests);
+    }
+
+    private void logRequests(final Request request, final Response response) {
+        RequestMethod requestMethod = request.getMethod();
+        String requestBodyAsString =
+                requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF + request.getBodyAsString() : StringUtils.EMPTY;
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authorizationHeaderAsString = authorizationHeader == null ? StringUtils.EMPTY : LF + HttpHeaders.AUTHORIZATION + ": " + authorizationHeader;
+        LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
+                LF + response.getStatus());
     }
 
     private void setUpEhubClient() {
@@ -76,7 +92,7 @@ public abstract class RemoteITFixture {
     private void deleteTestData() throws Exception {
         final ClientRequest request = new ClientRequest(getTestDataServiceBaseUri());
         final ClientResponse<?> response = request.delete();
-        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+        if (response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
             LOGGER.info("Test data deleted");
         } else {
             final String reason = response.getEntity(String.class);
