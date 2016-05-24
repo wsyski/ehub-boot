@@ -10,7 +10,9 @@ import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestMethod;
+import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -25,14 +27,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Request;
 import java.util.Locale;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
+    private static final String LF = System.getProperty("line.separator");
     protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    private static final String LF = System.getProperty("line.separator");
-    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
 
@@ -65,7 +66,12 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void deleteTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        testDataResource.delete();
+        javax.ws.rs.core.Response response=testDataResource.delete();
+        if (response.getStatus() == javax.ws.rs.core.Response.Status.OK.getStatusCode()) {
+            LOGGER.info("Test data deleted");
+        } else {
+            throw new IllegalStateException("Could not delete test data: " + response.getStatusInfo().getReasonPhrase());
+        }
         LOGGER.info("Test data deleted");
     }
 
@@ -76,14 +82,17 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     private void setEhubServer() {
         System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
         System.setProperty("catalina.base", "target");
-        wireMockRule.addMockServiceRequestListener((request, response) -> {
-            RequestMethod requestMethod = request.getMethod();
-            String requestBodyAsString= requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF+request.getBodyAsString() : StringUtils.EMPTY;
-            String authorizationHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
-            String authorizationHeaderAsString=authorizationHeader==null ? StringUtils.EMPTY : LF+HttpHeaders.AUTHORIZATION+": "+authorizationHeader;
-            LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString+requestBodyAsString + LF + response.getBodyAsString() + LF +
-                    response.getStatus());
-        });
+        wireMockRule.addMockServiceRequestListener(this::logRequests);
+    }
+
+    private void logRequests(final Request request, final Response response) {
+        RequestMethod requestMethod = request.getMethod();
+        String requestBodyAsString =
+                requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF + request.getBodyAsString() : StringUtils.EMPTY;
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authorizationHeaderAsString = authorizationHeader == null ? StringUtils.EMPTY : LF + HttpHeaders.AUTHORIZATION + ": " + authorizationHeader;
+        LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
+                        LF + response.getStatus());
     }
 
     private void setUpEhubClient() {
