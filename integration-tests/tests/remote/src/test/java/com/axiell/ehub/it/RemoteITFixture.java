@@ -10,7 +10,9 @@ import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -22,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Request;
 import java.util.Locale;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
@@ -73,7 +77,11 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
         System.setProperty("catalina.base", "target");
         wireMockRule.addMockServiceRequestListener((request, response) -> {
-            LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + LF + request.getBodyAsString() + LF + response.getBodyAsString() + LF +
+            RequestMethod requestMethod = request.getMethod();
+            String requestBodyAsString= requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF+request.getBodyAsString() : StringUtils.EMPTY;
+            String authorizationHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
+            String authorizationHeaderAsString=authorizationHeader==null ? StringUtils.EMPTY : LF+HttpHeaders.AUTHORIZATION+": "+authorizationHeader;
+            LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString+requestBodyAsString + LF + response.getBodyAsString() + LF +
                     response.getStatus());
         });
     }
