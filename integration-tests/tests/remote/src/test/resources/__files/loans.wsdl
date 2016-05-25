@@ -1,14 +1,258 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions name="LoansPalmaService" targetNamespace="http://loans.palma.services.arena.axiell.com/" xmlns:ns1="http://cxf.apache.org/bindings/xformat"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://loans.palma.services.arena.axiell.com/"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions xmlns:ns1="http://cxf.apache.org/bindings/xformat" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://loans.palma.services.arena.axiell.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoansPalmaService" targetNamespace="http://loans.palma.services.arena.axiell.com/">
     <wsdl:types>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util" xmlns="http://axiell.com/arena/services/palma/util"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/util/cr" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/util/cr">
+            <xs:element name="catalogueRecord">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="arenaKey"/>
+                        <xs:element ref="id"/>
+                        <xs:element minOccurs="0" ref="author"/>
+                        <xs:element minOccurs="0" ref="availability"/>
+                        <xs:element minOccurs="0" ref="category"/>
+                        <xs:element minOccurs="0" ref="classificationCodes"/>
+                        <xs:element minOccurs="0" ref="contentTypes"/>
+                        <xs:element minOccurs="0" ref="cover"/>
+                        <xs:element minOccurs="0" ref="descriptions"/>
+                        <xs:element minOccurs="0" ref="edition"/>
+                        <xs:element minOccurs="0" ref="externalUrls"/>
+                        <xs:element minOccurs="0" ref="isbns"/>
+                        <xs:element minOccurs="0" ref="issns"/>
+                        <xs:element minOccurs="0" ref="languages"/>
+                        <xs:element minOccurs="0" ref="languageOriginal"/>
+                        <xs:element minOccurs="0" ref="mediaClass"/>
+                        <xs:element minOccurs="0" ref="mediaClassIcon"/>
+                        <xs:element minOccurs="0" ref="numbers"/>
+                        <xs:element minOccurs="0" ref="publicationYear"/>
+                        <xs:element minOccurs="0" ref="publisher"/>
+                        <xs:element minOccurs="0" ref="ratings"/>
+                        <xs:element minOccurs="0" ref="ratingAverage"/>
+                        <xs:element minOccurs="0" ref="recordSorting"/>
+                        <xs:element minOccurs="0" ref="resourceType"/>
+                        <xs:element minOccurs="0" ref="reviews"/>
+                        <xs:element minOccurs="0" ref="shelfMark"/>
+                        <xs:element minOccurs="0" ref="subjects"/>
+                        <xs:element minOccurs="0" ref="targetAudience"/>
+                        <xs:element minOccurs="0" ref="title"/>
+                        <xs:element minOccurs="0" ref="titleSeries"/>
+                        <xs:element minOccurs="0" ref="partOf"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="arenaKey" type="xs:string"/>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="author" type="xs:string"/>
+            <xs:element name="availability" type="xs:boolean"/>
+            <xs:element name="category" type="xs:string"/>
+            <xs:element name="classificationCode" type="xs:string"/>
+            <xs:element name="classificationCodes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="classificationCode"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="contentType" type="xs:string"/>
+            <xs:element name="contentTypes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="contentType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cover" type="xs:base64Binary"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="descriptions">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="description"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="edition" type="xs:string"/>
+            <xs:element name="externalUrl" type="xs:string"/>
+            <xs:element name="externalUrls">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="externalUrl"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="isbn" type="xs:string"/>
+            <xs:element name="isbns">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="isbn"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="issn" type="xs:string"/>
+            <xs:element name="issns">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="issn"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="language">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="code" type="xs:string"/>
+                        <xs:element name="name" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="languages">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="language"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="languageOriginal" type="xs:string"/>
+            <xs:element name="mediaClass" type="xs:string"/>
+            <xs:element name="mediaClassIcon">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="article"/>
+                        <xs:enumeration value="book"/>
+                        <xs:enumeration value="cassette"/>
+                        <xs:enumeration value="cd"/>
+                        <xs:enumeration value="cdBook"/>
+                        <xs:enumeration value="cdAndBook"/>
+                        <xs:enumeration value="daisy"/>
+                        <xs:enumeration value="data"/>
+                        <xs:enumeration value="document"/>
+                        <xs:enumeration value="dvd"/>
+                        <xs:enumeration value="eBook"/>
+                        <xs:enumeration value="eMusic"/>
+                        <xs:enumeration value="ePeriodical"/>
+                        <xs:enumeration value="internet"/>
+                        <xs:enumeration value="map"/>
+                        <xs:enumeration value="microFilm"/>
+                        <xs:enumeration value="music"/>
+                        <xs:enumeration value="newspaper"/>
+                        <xs:enumeration value="otherMaterial"/>
+                        <xs:enumeration value="periodical"/>
+                        <xs:enumeration value="picture"/>
+                        <xs:enumeration value="sheetMusic"/>
+                        <xs:enumeration value="talkingBook"/>
+                        <xs:enumeration value="video"/>
+                        <xs:enumeration value="videoGame"/>
+                        <xs:enumeration value="vinyl"/>
+                        <xs:enumeration value="artefact"/>
+                        <xs:enumeration value="audioBook"/>
+                        <xs:enumeration value="bibliography"/>
+                        <xs:enumeration value="blueray"/>
+                        <xs:enumeration value="braille"/>
+                        <xs:enumeration value="brailleAndText"/>
+                        <xs:enumeration value="cdRom"/>
+                        <xs:enumeration value="digitalAudioFile"/>
+                        <xs:enumeration value="dissertation"/>
+                        <xs:enumeration value="dvdRom"/>
+                        <xs:enumeration value="dvdVideo"/>
+                        <xs:enumeration value="eAudio"/>
+                        <xs:enumeration value="eBraille"/>
+                        <xs:enumeration value="electronicMaterial"/>
+                        <xs:enumeration value="game"/>
+                        <xs:enumeration value="giantPrint"/>
+                        <xs:enumeration value="hardback"/>
+                        <xs:enumeration value="largePrint"/>
+                        <xs:enumeration value="microform"/>
+                        <xs:enumeration value="mixedMedia"/>
+                        <xs:enumeration value="moonAlphabet"/>
+                        <xs:enumeration value="paperback"/>
+                        <xs:enumeration value="photograph"/>
+                        <xs:enumeration value="printedMusic"/>
+                        <xs:enumeration value="score"/>
+                        <xs:enumeration value="serial"/>
+                        <xs:enumeration value="soundRecording"/>
+                        <xs:enumeration value="talkingBookMp3"/>
+                        <xs:enumeration value="text"/>
+                        <xs:enumeration value="topicBox"/>
+                        <xs:enumeration value="toy"/>
+                        <xs:enumeration value="gameboyGame"/>
+                        <xs:enumeration value="psGame"/>
+                        <xs:enumeration value="ps2Game"/>
+                        <xs:enumeration value="wiiGame"/>
+                        <xs:enumeration value="xboxGame"/>
+                        <xs:enumeration value="videoTape"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="number" type="xs:string"/>
+            <xs:element name="numbers">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="number"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="publicationYear" type="xs:string"/>
+            <xs:element name="publisher" type="xs:string"/>
+            <xs:element name="rating">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="user" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ratings">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rating"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ratingAverage" type="xs:float"/>
+            <xs:element name="recordSorting" type="xs:string"/>
+            <xs:element name="resourceType" type="xs:string"/>
+            <xs:element name="review">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="user" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="reviews">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="review"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="shelfMark" type="xs:string"/>
+            <xs:element name="subject" type="xs:string"/>
+            <xs:element name="subjects">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="subject"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="targetAudience" type="xs:string"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="titles">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" ref="title"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="titleSeries" type="xs:string"/>
+            <xs:element name="partOf" type="xs:string"/>
+        </xs:schema>
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/util">
             <xs:element name="language">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <!-- ISO ISO  639-1 language codes, parsed from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt  -->
+                        <!--
+                         ISO ISO  639-1 language codes, parsed from http://www.loc.gov/standards/iso639-2/ISO-639-2_utf-8.txt
+                        -->
                         <xs:enumeration value="aa"/>
                         <xs:enumeration value="ab"/>
                         <xs:enumeration value="af"/>
@@ -199,7 +443,9 @@
             <xs:element name="country">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <!-- ISO ISO 3166-1-alpha-2 country codes, parsed from http://www.iso.org/iso/list-en1-semic-3.txt  -->
+                        <!--
+                         ISO ISO 3166-1-alpha-2 country codes, parsed from http://www.iso.org/iso/list-en1-semic-3.txt
+                        -->
                         <xs:enumeration value="AF"/>
                         <xs:enumeration value="AX"/>
                         <xs:enumeration value="AL"/>
@@ -1366,376 +1612,7 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util/borrowerCard" xmlns="http://axiell.com/arena/services/palma/util/borrowerCard"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
-            <xs:element name="borrowerCard">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="cardNumber"/>
-                        <xs:element ref="util:isDeletable"/>
-                        <xs:element ref="util:isEditable"/>
-                        <xs:element ref="util:isValid"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="cardNumber" type="xs:string"/>
-        </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
-                   xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:import namespace="http://axiell.com/arena/services/palma/util/borrowerCard"/>
-            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
-            <xs:element name="PalmaMessage">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="checkOutTestRequest"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="checkOutTestRequest">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="util:arenaMember"/>
-                        <xs:element minOccurs="0" ref="util:user"/>
-                        <xs:element minOccurs="0" ref="util:password"/>
-                        <xs:element minOccurs="0" ref="util:patronId"/>
-                        <xs:element name="recordId" type="xs:string"/>
-                        <xs:element minOccurs="1" name="contentProviderName" type="xs:string"/>
-                        <xs:element minOccurs="1" name="contentProviderFormatId" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util/status" xmlns="http://axiell.com/arena/services/palma/util/status"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:element name="status">
-                <xs:complexType>
-                    <xs:attribute name="type" use="required">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:enumeration value="error"/>
-                                <xs:enumeration value="ok"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attribute name="message" use="optional">
-                        <xs:simpleType>
-                            <xs:restriction base="xs:string">
-                                <xs:enumeration value="CentralServiceFeaturesNotEnabled"/>
-                                <xs:enumeration value="BackendError"/>
-                                <xs:enumeration value="AgencyCredentialsNotFound"/>
-                                <xs:enumeration value="AgencyNotFound"/>
-                                <xs:enumeration value="ArenaMemberNotFound"/>
-                                <xs:enumeration value="ReservationDenied"/>
-                                <xs:enumeration value="InstallationNotFound"/>
-                                <xs:enumeration value="DecoratorError"/>
-                                <xs:enumeration value="InvalidSearchQuery"/>
-                                <xs:enumeration value="CatalogueRecordNotFound"/>
-                                <xs:enumeration value="RatingNotFound"/>
-                                <xs:enumeration value="InvalidDateFormat"/>
-                                <xs:enumeration value="ReservationsNotFound"/>
-                                <xs:enumeration value="LoanNotFound"/>
-                                <xs:enumeration value="InvalidLogin"/>
-                                <xs:enumeration value="UserNotFound"/>
-                                <xs:enumeration value="Error"/>
-                                <xs:enumeration value="PortalSiteNotFound"/>
-                                <xs:enumeration value="RecordNotFound"/>
-                                <xs:enumeration value="ItemNotFound"/>
-                                <xs:enumeration value="CheckoutDenied"/>
-                            </xs:restriction>
-                        </xs:simpleType>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
-        </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
-                   xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
-            <xs:import namespace="http://axiell.com/arena/services/palma/util/status"/>
-            <xs:element name="PalmaMessage">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="checkOutTestResponse"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="checkOutTestResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="status:status"/>
-                        <xs:element minOccurs="0" ref="util:fee"/>
-                        <xs:element name="loanId" type="xs:string"/>
-                        <xs:element name="testStatus" type="checkOutTestErrorStatusType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:simpleType name="checkOutTestErrorStatusType">
-                <xs:restriction base="xs:Name">
-                    <xs:enumeration value="activeLoan"/>
-                    <xs:enumeration value="blockedBorrCard"/>
-                    <xs:enumeration value="borrCardNotFound"/>
-                    <xs:enumeration value="catalogueRecordNotFound"/>
-                    <xs:enumeration value="checkOutDenied"/>
-                    <xs:enumeration value="invalidBorrCard"/>
-                    <xs:enumeration value="invalidItemId"/>
-                    <xs:enumeration value="invalidPinCode"/>
-                    <xs:enumeration value="invalidRecordId"/>
-                    <xs:enumeration value="newLoan"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util/cr" xmlns="http://axiell.com/arena/services/palma/util/cr"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:element name="catalogueRecord">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element ref="arenaKey"/>
-                        <xs:element ref="id"/>
-                        <xs:element minOccurs="0" ref="author"/>
-                        <xs:element minOccurs="0" ref="availability"/>
-                        <xs:element minOccurs="0" ref="category"/>
-                        <xs:element minOccurs="0" ref="classificationCodes"/>
-                        <xs:element minOccurs="0" ref="contentTypes"/>
-                        <xs:element minOccurs="0" ref="cover"/>
-                        <xs:element minOccurs="0" ref="descriptions"/>
-                        <xs:element minOccurs="0" ref="edition"/>
-                        <xs:element minOccurs="0" ref="externalUrls"/>
-                        <xs:element minOccurs="0" ref="isbns"/>
-                        <xs:element minOccurs="0" ref="issns"/>
-                        <xs:element minOccurs="0" ref="languages"/>
-                        <xs:element minOccurs="0" ref="languageOriginal"/>
-                        <xs:element minOccurs="0" ref="mediaClass"/>
-                        <xs:element minOccurs="0" ref="mediaClassIcon"/>
-                        <xs:element minOccurs="0" ref="numbers"/>
-                        <xs:element minOccurs="0" ref="publicationYear"/>
-                        <xs:element minOccurs="0" ref="publisher"/>
-                        <xs:element minOccurs="0" ref="ratings"/>
-                        <xs:element minOccurs="0" ref="ratingAverage"/>
-                        <xs:element minOccurs="0" ref="recordSorting"/>
-                        <xs:element minOccurs="0" ref="resourceType"/>
-                        <xs:element minOccurs="0" ref="reviews"/>
-                        <xs:element minOccurs="0" ref="shelfMark"/>
-                        <xs:element minOccurs="0" ref="subjects"/>
-                        <xs:element minOccurs="0" ref="targetAudience"/>
-                        <xs:element minOccurs="0" ref="title"/>
-                        <xs:element minOccurs="0" ref="titleSeries"/>
-                        <xs:element minOccurs="0" ref="partOf"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="arenaKey" type="xs:string"/>
-            <xs:element name="id" type="xs:string"/>
-            <xs:element name="author" type="xs:string"/>
-            <xs:element name="availability" type="xs:boolean"/>
-            <xs:element name="category" type="xs:string"/>
-            <xs:element name="classificationCode" type="xs:string"/>
-            <xs:element name="classificationCodes">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="classificationCode"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="contentType" type="xs:string"/>
-            <xs:element name="contentTypes">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="contentType"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="cover" type="xs:base64Binary"/>
-            <xs:element name="description" type="xs:string"/>
-            <xs:element name="descriptions">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="description"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="edition" type="xs:string"/>
-            <xs:element name="externalUrl" type="xs:string"/>
-            <xs:element name="externalUrls">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="externalUrl"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="isbn" type="xs:string"/>
-            <xs:element name="isbns">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="isbn"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="issn" type="xs:string"/>
-            <xs:element name="issns">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="issn"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="language">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="code" type="xs:string"/>
-                        <xs:element name="name" type="xs:string"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="languages">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="language"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="languageOriginal" type="xs:string"/>
-            <xs:element name="mediaClass" type="xs:string"/>
-            <xs:element name="mediaClassIcon">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="article"/>
-                        <xs:enumeration value="book"/>
-                        <xs:enumeration value="cassette"/>
-                        <xs:enumeration value="cd"/>
-                        <xs:enumeration value="cdBook"/>
-                        <xs:enumeration value="cdAndBook"/>
-                        <xs:enumeration value="daisy"/>
-                        <xs:enumeration value="data"/>
-                        <xs:enumeration value="document"/>
-                        <xs:enumeration value="dvd"/>
-                        <xs:enumeration value="eBook"/>
-                        <xs:enumeration value="eMusic"/>
-                        <xs:enumeration value="ePeriodical"/>
-                        <xs:enumeration value="internet"/>
-                        <xs:enumeration value="map"/>
-                        <xs:enumeration value="microFilm"/>
-                        <xs:enumeration value="music"/>
-                        <xs:enumeration value="newspaper"/>
-                        <xs:enumeration value="otherMaterial"/>
-                        <xs:enumeration value="periodical"/>
-                        <xs:enumeration value="picture"/>
-                        <xs:enumeration value="sheetMusic"/>
-                        <xs:enumeration value="talkingBook"/>
-                        <xs:enumeration value="video"/>
-                        <xs:enumeration value="videoGame"/>
-                        <xs:enumeration value="vinyl"/>
-
-                        <xs:enumeration value="artefact"/>
-                        <xs:enumeration value="audioBook"/>
-                        <xs:enumeration value="bibliography"/>
-                        <xs:enumeration value="blueray"/>
-                        <xs:enumeration value="braille"/>
-                        <xs:enumeration value="brailleAndText"/>
-                        <xs:enumeration value="cdRom"/>
-                        <xs:enumeration value="digitalAudioFile"/>
-                        <xs:enumeration value="dissertation"/>
-                        <xs:enumeration value="dvdRom"/>
-                        <xs:enumeration value="dvdVideo"/>
-                        <xs:enumeration value="eAudio"/>
-                        <xs:enumeration value="eBraille"/>
-                        <xs:enumeration value="electronicMaterial"/>
-                        <xs:enumeration value="game"/>
-                        <xs:enumeration value="giantPrint"/>
-                        <xs:enumeration value="hardback"/>
-                        <xs:enumeration value="largePrint"/>
-                        <xs:enumeration value="microform"/>
-                        <xs:enumeration value="mixedMedia"/>
-                        <xs:enumeration value="moonAlphabet"/>
-                        <xs:enumeration value="paperback"/>
-                        <xs:enumeration value="photograph"/>
-                        <xs:enumeration value="printedMusic"/>
-                        <xs:enumeration value="score"/>
-                        <xs:enumeration value="serial"/>
-                        <xs:enumeration value="soundRecording"/>
-                        <xs:enumeration value="talkingBookMp3"/>
-                        <xs:enumeration value="text"/>
-                        <xs:enumeration value="topicBox"/>
-                        <xs:enumeration value="toy"/>
-                        <xs:enumeration value="gameboyGame"/>
-                        <xs:enumeration value="psGame"/>
-                        <xs:enumeration value="ps2Game"/>
-                        <xs:enumeration value="wiiGame"/>
-                        <xs:enumeration value="xboxGame"/>
-                        <xs:enumeration value="videoTape"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="number" type="xs:string"/>
-            <xs:element name="numbers">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="number"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="publicationYear" type="xs:string"/>
-            <xs:element name="publisher" type="xs:string"/>
-            <xs:element name="rating">
-                <xs:complexType>
-                    <xs:simpleContent>
-                        <xs:extension base="xs:string">
-                            <xs:attribute name="user" type="xs:string" use="required"/>
-                        </xs:extension>
-                    </xs:simpleContent>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="ratings">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="rating"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="ratingAverage" type="xs:float"/>
-            <xs:element name="recordSorting" type="xs:string"/>
-            <xs:element name="resourceType" type="xs:string"/>
-            <xs:element name="review">
-                <xs:complexType>
-                    <xs:simpleContent>
-                        <xs:extension base="xs:string">
-                            <xs:attribute name="user" type="xs:string" use="required"/>
-                        </xs:extension>
-                    </xs:simpleContent>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="reviews">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="review"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="shelfMark" type="xs:string"/>
-            <xs:element name="subject" type="xs:string"/>
-            <xs:element name="subjects">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" ref="subject"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="targetAudience" type="xs:string"/>
-            <xs:element name="title" type="xs:string"/>
-            <xs:element name="titles">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" ref="title"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="titleSeries" type="xs:string"/>
-            <xs:element name="partOf" type="xs:string"/>
-        </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/util/loan" xmlns="http://axiell.com/arena/services/palma/util/loan"
-                   xmlns:cr="http://axiell.com/arena/services/palma/util/cr" xmlns:util="http://axiell.com/arena/services/palma/util"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/util/loan" xmlns:cr="http://axiell.com/arena/services/palma/util/cr" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/util/loan">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/cr"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="loan">
@@ -1784,9 +1661,7 @@
             <xs:element name="remainingRenewals" type="xs:unsignedInt"/>
             <xs:element name="note" type="xs:string"/>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/renewLoansRequest"
-                   xmlns="http://axiell.com/arena/services/palma/patron/renewLoansRequest" xmlns:loan="http://axiell.com/arena/services/palma/util/loan"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/renewLoansRequest" xmlns:loan="http://axiell.com/arena/services/palma/util/loan" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/renewLoansRequest">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/loan"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="PalmaMessage">
@@ -1816,9 +1691,48 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/renewLoansResponse"
-                   xmlns="http://axiell.com/arena/services/palma/patron/renewLoansResponse" xmlns:loan="http://axiell.com/arena/services/palma/util/loan"
-                   xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/util/status" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/util/status">
+            <xs:element name="status">
+                <xs:complexType>
+                    <xs:attribute name="type" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="error"/>
+                                <xs:enumeration value="ok"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="message" use="optional">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:enumeration value="CentralServiceFeaturesNotEnabled"/>
+                                <xs:enumeration value="BackendError"/>
+                                <xs:enumeration value="AgencyCredentialsNotFound"/>
+                                <xs:enumeration value="AgencyNotFound"/>
+                                <xs:enumeration value="ArenaMemberNotFound"/>
+                                <xs:enumeration value="ReservationDenied"/>
+                                <xs:enumeration value="InstallationNotFound"/>
+                                <xs:enumeration value="DecoratorError"/>
+                                <xs:enumeration value="InvalidSearchQuery"/>
+                                <xs:enumeration value="CatalogueRecordNotFound"/>
+                                <xs:enumeration value="RatingNotFound"/>
+                                <xs:enumeration value="InvalidDateFormat"/>
+                                <xs:enumeration value="ReservationsNotFound"/>
+                                <xs:enumeration value="LoanNotFound"/>
+                                <xs:enumeration value="InvalidLogin"/>
+                                <xs:enumeration value="UserNotFound"/>
+                                <xs:enumeration value="Error"/>
+                                <xs:enumeration value="PortalSiteNotFound"/>
+                                <xs:enumeration value="RecordNotFound"/>
+                                <xs:enumeration value="ItemNotFound"/>
+                                <xs:enumeration value="CheckoutDenied"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/renewLoansResponse" xmlns:loan="http://axiell.com/arena/services/palma/util/loan" xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/renewLoansResponse">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/loan"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util/status"/>
             <xs:element name="PalmaMessage">
@@ -1844,9 +1758,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/loansRequest"
-                   xmlns="http://axiell.com/arena/services/palma/patron/loansRequest" xmlns:util="http://axiell.com/arena/services/palma/util"
-                   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/loansRequest" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/loansRequest">
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="PalmaMessage">
                 <xs:complexType>
@@ -1867,9 +1779,7 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/loansResponse"
-                   xmlns="http://axiell.com/arena/services/palma/patron/loansResponse" xmlns:loan="http://axiell.com/arena/services/palma/util/loan"
-                   xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/loansResponse" xmlns:loan="http://axiell.com/arena/services/palma/util/loan" xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/loansResponse">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/loan"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util/status"/>
             <xs:element name="PalmaMessage">
@@ -1895,9 +1805,82 @@
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutRequest"
-                   xmlns="http://axiell.com/arena/services/palma/patron/checkOutRequest"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/util/borrowerCard" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/util/borrowerCard">
+            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
+            <xs:element name="borrowerCard">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="cardNumber"/>
+                        <xs:element ref="util:isDeletable"/>
+                        <xs:element ref="util:isEditable"/>
+                        <xs:element ref="util:isValid"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cardNumber" type="xs:string"/>
+        </xs:schema>
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestRequest" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestRequest">
+            <xs:import namespace="http://axiell.com/arena/services/palma/util/borrowerCard"/>
+            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
+            <xs:element name="PalmaMessage">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="checkOutTestRequest"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="checkOutTestRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="util:arenaMember"/>
+                        <xs:element minOccurs="0" ref="util:user"/>
+                        <xs:element minOccurs="0" ref="util:password"/>
+                        <xs:element minOccurs="0" ref="util:patronId"/>
+                        <xs:element name="recordId" type="xs:string"/>
+                        <xs:element name="contentProviderName" type="xs:string"/>
+                        <xs:element name="contentProviderFormatId" type="xs:string"/>
+                        <xs:element default="false" minOccurs="0" name="loanPerProduct" type="xs:boolean"/>
+                        <xs:element minOccurs="0" name="issue" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema elementFormDefault="qualified" xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">
+            <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
+            <xs:import namespace="http://axiell.com/arena/services/palma/util/status"/>
+            <xs:element name="PalmaMessage">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="checkOutTestResponse"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="checkOutTestResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="status:status"/>
+                        <xs:element minOccurs="0" ref="util:fee"/>
+                        <xs:element minOccurs="0" name="loanId" type="xs:string"/>
+                        <xs:element name="testStatus" type="checkOutTestErrorStatusType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:simpleType name="checkOutTestErrorStatusType">
+                <xs:restriction base="xs:Name">
+                    <xs:enumeration value="activeLoan"/>
+                    <xs:enumeration value="blockedBorrCard"/>
+                    <xs:enumeration value="borrCardNotFound"/>
+                    <xs:enumeration value="catalogueRecordNotFound"/>
+                    <xs:enumeration value="checkOutDenied"/>
+                    <xs:enumeration value="invalidBorrCard"/>
+                    <xs:enumeration value="invalidItemId"/>
+                    <xs:enumeration value="invalidPinCode"/>
+                    <xs:enumeration value="invalidRecordId"/>
+                    <xs:enumeration value="newLoan"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+        <xs:schema xmlns="http://axiell.com/arena/services/palma/patron/checkOutRequest" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutRequest">
             <xs:import namespace="http://axiell.com/arena/services/palma/util/borrowerCard"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:element name="PalmaMessage">
@@ -1919,17 +1902,17 @@
                             <xs:sequence>
                                 <xs:element name="expirationDate" type="xs:date"/>
                                 <xs:element name="recordId" type="xs:string"/>
-                                <xs:element minOccurs="1" name="contentProviderName" type="xs:string"/>
-                                <xs:element minOccurs="1" name="contentProviderFormatId" type="xs:string"/>
+                                <xs:element name="contentProviderName" type="xs:string"/>
+                                <xs:element name="contentProviderFormatId" type="xs:string"/>
+                                <xs:element default="false" minOccurs="0" name="loanPerProduct" type="xs:boolean"/>
+                                <xs:element minOccurs="0" name="issue" type="xs:string"/>
                             </xs:sequence>
                         </xs:choice>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-        <xs:schema targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutResponse"
-                   xmlns="http://axiell.com/arena/services/palma/patron/checkOutResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status"
-                   xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <xs:schema elementFormDefault="qualified" xmlns="http://axiell.com/arena/services/palma/patron/checkOutResponse" xmlns:status="http://axiell.com/arena/services/palma/util/status" xmlns:util="http://axiell.com/arena/services/palma/util" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://axiell.com/arena/services/palma/patron/checkOutResponse">
             <xs:import namespace="http://axiell.com/arena/services/palma/util"/>
             <xs:import namespace="http://axiell.com/arena/services/palma/util/status"/>
             <xs:element name="PalmaMessage">
@@ -1971,58 +1954,49 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:schema>
-        <xsd:schema targetNamespace="http://loans.palma.services.arena.axiell.com/"
-                    xmlns:ns0="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"
-                    xmlns:ns1="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"
-                    xmlns:ns2="http://axiell.com/arena/services/palma/patron/renewLoansRequest"
-                    xmlns:ns3="http://axiell.com/arena/services/palma/patron/renewLoansResponse"
-                    xmlns:ns4="http://axiell.com/arena/services/palma/patron/loansRequest"
-                    xmlns:ns5="http://axiell.com/arena/services/palma/patron/loansResponse"
-                    xmlns:ns6="http://axiell.com/arena/services/palma/patron/checkOutRequest"
-                    xmlns:ns7="http://axiell.com/arena/services/palma/patron/checkOutResponse" xmlns:tns="http://loans.palma.services.arena.axiell.com/"
-                    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-            <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"/>
-            <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"/>
+        <xsd:schema xmlns:ns0="http://axiell.com/arena/services/palma/patron/renewLoansRequest" xmlns:ns1="http://axiell.com/arena/services/palma/patron/renewLoansResponse" xmlns:ns2="http://axiell.com/arena/services/palma/patron/loansRequest" xmlns:ns3="http://axiell.com/arena/services/palma/patron/loansResponse" xmlns:ns4="http://axiell.com/arena/services/palma/patron/checkOutTestRequest" xmlns:ns5="http://axiell.com/arena/services/palma/patron/checkOutTestResponse" xmlns:ns6="http://axiell.com/arena/services/palma/patron/checkOutRequest" xmlns:ns7="http://axiell.com/arena/services/palma/patron/checkOutResponse" xmlns:tns="http://loans.palma.services.arena.axiell.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://loans.palma.services.arena.axiell.com/">
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/renewLoansRequest"/>
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/renewLoansResponse"/>
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/loansRequest"/>
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/loansResponse"/>
+            <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutTestRequest"/>
+            <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutTestResponse"/>
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutRequest"/>
             <xsd:import namespace="http://axiell.com/arena/services/palma/patron/checkOutResponse"/>
-            <xsd:element name="CheckOutTest" type="tns:CheckOutTest"/>
-            <xsd:complexType name="CheckOutTest">
-                <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns0:checkOutTestRequest"/>
-                </xsd:sequence>
-            </xsd:complexType>
-            <xsd:element name="CheckOutTestResponse" type="tns:CheckOutTestResponse"/>
-            <xsd:complexType name="CheckOutTestResponse">
-                <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns1:checkOutTestResponse"/>
-                </xsd:sequence>
-            </xsd:complexType>
             <xsd:element name="RenewLoans" type="tns:RenewLoans"/>
             <xsd:complexType name="RenewLoans">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns2:renewLoansRequest"/>
+                    <xsd:element minOccurs="0" ref="ns0:renewLoansRequest"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="RenewLoansResponse" type="tns:RenewLoansResponse"/>
             <xsd:complexType name="RenewLoansResponse">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns3:renewLoansResponse"/>
+                    <xsd:element minOccurs="0" ref="ns1:renewLoansResponse"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="GetLoans" type="tns:GetLoans"/>
             <xsd:complexType name="GetLoans">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns4:loansRequest"/>
+                    <xsd:element minOccurs="0" ref="ns2:loansRequest"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="GetLoansResponse" type="tns:GetLoansResponse"/>
             <xsd:complexType name="GetLoansResponse">
                 <xsd:sequence>
-                    <xsd:element minOccurs="0" ref="ns5:loansResponse"/>
+                    <xsd:element minOccurs="0" ref="ns3:loansResponse"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="CheckOutTest" type="tns:CheckOutTest"/>
+            <xsd:complexType name="CheckOutTest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" ref="ns4:checkOutTestRequest"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="CheckOutTestResponse" type="tns:CheckOutTestResponse"/>
+            <xsd:complexType name="CheckOutTestResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" ref="ns5:checkOutTestResponse"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="CheckOut" type="tns:CheckOut"/>
@@ -2039,75 +2013,50 @@
             </xsd:complexType>
         </xsd:schema>
     </wsdl:types>
-    <wsdl:message name="CheckOutResponse">
-        <wsdl:part element="tns:CheckOutResponse" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="CheckOutTest">
-        <wsdl:part element="tns:CheckOutTest" name="parameters">
-        </wsdl:part>
+    <wsdl:message name="RenewLoans">
+        <wsdl:part element="tns:RenewLoans" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="GetLoans">
-        <wsdl:part element="tns:GetLoans" name="parameters">
-        </wsdl:part>
+        <wsdl:part element="tns:GetLoans" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="CheckOut">
-        <wsdl:part element="tns:CheckOut" name="parameters">
-        </wsdl:part>
+        <wsdl:part element="tns:CheckOut" name="parameters"></wsdl:part>
     </wsdl:message>
-    <wsdl:message name="CheckOutTestResponse">
-        <wsdl:part element="tns:CheckOutTestResponse" name="parameters">
-        </wsdl:part>
-    </wsdl:message>
-    <wsdl:message name="RenewLoans">
-        <wsdl:part element="tns:RenewLoans" name="parameters">
-        </wsdl:part>
+    <wsdl:message name="CheckOutResponse">
+        <wsdl:part element="tns:CheckOutResponse" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="RenewLoansResponse">
-        <wsdl:part element="tns:RenewLoansResponse" name="parameters">
-        </wsdl:part>
+        <wsdl:part element="tns:RenewLoansResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="CheckOutTestResponse">
+        <wsdl:part element="tns:CheckOutTestResponse" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:message name="GetLoansResponse">
-        <wsdl:part element="tns:GetLoansResponse" name="parameters">
-        </wsdl:part>
+        <wsdl:part element="tns:GetLoansResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="CheckOutTest">
+        <wsdl:part element="tns:CheckOutTest" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:portType name="loans">
-        <wsdl:operation name="CheckOutTest">
-            <wsdl:input message="tns:CheckOutTest" name="CheckOutTest">
-            </wsdl:input>
-            <wsdl:output message="tns:CheckOutTestResponse" name="CheckOutTestResponse">
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="RenewLoans">
-            <wsdl:input message="tns:RenewLoans" name="RenewLoans">
-            </wsdl:input>
-            <wsdl:output message="tns:RenewLoansResponse" name="RenewLoansResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:RenewLoans" name="RenewLoans"></wsdl:input>
+            <wsdl:output message="tns:RenewLoansResponse" name="RenewLoansResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="GetLoans">
-            <wsdl:input message="tns:GetLoans" name="GetLoans">
-            </wsdl:input>
-            <wsdl:output message="tns:GetLoansResponse" name="GetLoansResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:GetLoans" name="GetLoans"></wsdl:input>
+            <wsdl:output message="tns:GetLoansResponse" name="GetLoansResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckOutTest">
+            <wsdl:input message="tns:CheckOutTest" name="CheckOutTest"></wsdl:input>
+            <wsdl:output message="tns:CheckOutTestResponse" name="CheckOutTestResponse"></wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="CheckOut">
-            <wsdl:input message="tns:CheckOut" name="CheckOut">
-            </wsdl:input>
-            <wsdl:output message="tns:CheckOutResponse" name="CheckOutResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:CheckOut" name="CheckOut"></wsdl:input>
+            <wsdl:output message="tns:CheckOutResponse" name="CheckOutResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="LoansPalmaServiceSoapBinding" type="tns:loans">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="CheckOutTest">
-            <soap:operation soapAction="" style="document"/>
-            <wsdl:input name="CheckOutTest">
-                <soap:body use="literal"/>
-            </wsdl:input>
-            <wsdl:output name="CheckOutTestResponse">
-                <soap:body use="literal"/>
-            </wsdl:output>
-        </wsdl:operation>
         <wsdl:operation name="RenewLoans">
             <soap:operation soapAction="" style="document"/>
             <wsdl:input name="RenewLoans">
@@ -2123,6 +2072,15 @@
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="GetLoansResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckOutTest">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="CheckOutTest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="CheckOutTestResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>
