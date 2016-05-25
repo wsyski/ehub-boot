@@ -42,6 +42,8 @@ class LoansFacade implements ILoansFacade {
         checkOutTestRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutTestRequest.setUser(patron.getLibraryCard());
         checkOutTestRequest.setPassword(patron.getPin());
+        checkOutTestRequest.setIssue(null);
+        checkOutTestRequest.setLoanPerProduct(false);
         return checkOutTestRequest;
     }
 
@@ -62,6 +64,8 @@ class LoansFacade implements ILoansFacade {
         checkOutRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutRequest.setUser(patron.getLibraryCard());
         checkOutRequest.setPassword(patron.getPin());
+        checkOutRequest.setIssue(null);
+        checkOutRequest.setLoanPerProduct(false);
         return checkOutRequest;
     }
 }
