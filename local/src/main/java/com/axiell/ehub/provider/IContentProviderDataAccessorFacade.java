@@ -1,13 +1,11 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.Content;
-import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 
 public interface IContentProviderDataAccessorFacade {
