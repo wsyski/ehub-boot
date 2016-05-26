@@ -49,6 +49,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
             .put(LOAN_EXPIRATION_DAYS, Pattern.compile("[0-9]+")).build();
 
     private String name;
+    private boolean isLoanPerProduct;
     private Map<ContentProviderPropertyKey, String> properties;
     private Map<String, FormatDecoration> formatDecorations;
 
@@ -86,6 +87,16 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
      */
     public void setName(final String name) {
         this.name = name;
+    }
+
+
+    @Column(name = "LOAN_PER_PRODUCT", nullable = false, unique = true)
+    public boolean isLoanPerProduct() {
+        return isLoanPerProduct;
+    }
+
+    public void setLoanPerProduct(final boolean isLoanPerProduct) {
+        this.isLoanPerProduct = isLoanPerProduct;
     }
 
     /**

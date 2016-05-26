@@ -3,7 +3,13 @@
         <wicket:panel>
         	<div wicket:id="feedback"></div>
         	<div>
-        		<form wicket:id="contentProviderForm">        			
+        		<form wicket:id="contentProviderForm">
+                    <div>
+                        <label wicket:for="isLoanPerProduct">
+                            <wicket:message key="fldIsLoanPerProduct.label"/>
+                        </label>
+                        <input wicket:id="isLoanPerProduct" type="checkbox" wicket:message="title:fldIsLoanPerProduct.title"></input>
+                    </div>
 		        	<div wicket:id="properties">
 		        		<label wicket:for="property">
        						<span wicket:id="propertyLabel"></span>

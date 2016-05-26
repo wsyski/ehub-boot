@@ -93,4 +93,13 @@
         <sql>INSERT INTO FORMAT_DECORATION_PLATFORM(PLATFORM_ID,CONTENT_P_FORMAT_DECORATION_ID) SELECT platform.id,  content_p_format_decoration.id FROM PLATFORM, CONTENT_P_FORMAT_DECORATION</sql>
         <comment>Initialize format platforms</comment>
     </changeSet>
+    <changeSet id="8" author="ehub" >
+        <addColumn tableName="CONTENT_PROVIDER">
+            <column name="LOAN_PER_PRODUCT" type="number(1)"/>
+        </addColumn>
+        <update tableName="CONTENT_PROVIDER">
+            <column name="LOAN_PER_PRODUCT" value="0"/>
+        </update>
+        <addNotNullConstraint columnName="LOAN_PER_PRODUCT" tableName="CONTENT_PROVIDER"/>
+    </changeSet>
 </databaseChangeLog>
