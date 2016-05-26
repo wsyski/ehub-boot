@@ -2,9 +2,10 @@ package com.axiell.ehub.checkout;
 
 import com.axiell.ehub.provider.record.format.Format;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CheckoutMetadata {
+public class CheckoutMetadata implements Serializable {
     private final CheckoutMetadataDTO checkoutDTO;
 
     public CheckoutMetadata() {
