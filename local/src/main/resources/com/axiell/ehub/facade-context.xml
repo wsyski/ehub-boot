@@ -4,5 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<bean id="ehubLoanRepositoryFacade" class="com.axiell.ehub.loan.EhubLoanRepositoryFacade"/>
+	<bean id="formatDecorationRepositoryFacade" class="com.axiell.ehub.provider.record.format.FormatDecorationRepositoryFacade"/>
 
 </beans>
