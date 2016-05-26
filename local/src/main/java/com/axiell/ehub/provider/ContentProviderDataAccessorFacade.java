@@ -9,6 +9,7 @@ import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
 
     @Override
-    public Formats getFormats(EhubConsumer ehubConsumer, String contentProviderAlias, Patron patron, String contentProviderRecordId, String language) {
+    public Formats getFormats(final EhubConsumer ehubConsumer, final String contentProviderAlias, final Patron patron, final String contentProviderRecordId, final String language) {
         final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
@@ -31,7 +32,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     }
 
     @Override
-    public ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language) {
+    public ContentProviderLoan createLoan(final EhubConsumer ehubConsumer, final Patron patron, final PendingLoan pendingLoan, final String language) {
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
         final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
@@ -41,7 +42,7 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     }
 
     @Override
-    public Content getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language) {
+    public Content getContent(final EhubConsumer ehubConsumer, final EhubLoan ehubLoan, final Patron patron, final String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
         final String name = getContentProviderName(metadata);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);

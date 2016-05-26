@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @JsonAutoDetect
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutMetadataDTO {
+public class CheckoutMetadataDTO implements Serializable {
     private Long id;
     private String lmsLoanId;
     private String contentProviderLoanId;

@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.record.format;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * Simple CRUD Repository interface for {@link ContentProviderFormatDecoration} instances. The interface is used to declare so called query
+ * Simple CRUD Repository interface for {@link FormatDecoration} instances. The interface is used to declare so called query
  * methods, methods to retrieve single entities or collections of them.
  * 
  * <p>
