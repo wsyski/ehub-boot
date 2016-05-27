@@ -100,6 +100,7 @@ public class F1IT extends AbstractContentProviderIT {
         givenContentProviderConsumerInCommandData();
         givenLanguageInCommandData();
         givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenLibraryCardInCommandData();
         givenValidContentProviderRecordIdInCommandData();
         whenGetLoanContent();
@@ -107,11 +108,14 @@ public class F1IT extends AbstractContentProviderIT {
     }
 
     private void givenContentProviderLoanMetadataInCommandData() {
-        given(formatDecoration.getContentProviderFormatId()).willReturn(EXPECTED_VALID_TYPE_ID);
-        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
         given(loanMetadata.getRecordId()).willReturn(CP_RECORD_ID);
         given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(data.getContentProviderLoanMetadata()).willReturn(loanMetadata);
+    }
+
+    private void givenFormatDecorationInCommandData() {
+        given(data.getFormatDecoration()).willReturn(formatDecoration);
+        given(formatDecoration.getContentProviderFormatId()).willReturn(EXPECTED_VALID_TYPE_ID);
     }
 
     private void thenActualLoanContentIsValid() {

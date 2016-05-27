@@ -84,15 +84,17 @@ public class F1FacadeTest {
 
     @Test
     public void getLoanContent() {
-        givenFormatDecorationInLoanMetadata();
-        givenContentProviderLoanMetadata();
+        givenFirstFormatDecorationInLoanMetadata();
+        givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenF1ContentProviderConsumerProperties();
         givenLoanContentFromSoapService();
         whenGetLoanContent();
         thenActualContentEqualsExpectedContent();
         thenGetContentProviderConsumerFromCommandDataIsInvoked();
         thenGetRecordIdFromContentProviderLoanMetadataIsInvoked();
-        thenGetFormatDecorationFromContentProviderLoanMetadataIsInvoked();
+        thenGetFormatDecorationFromCommandDataIsInvoked();
+        thenGetFormatDecorationFromContentProviderLoanMetadataIsNeverInvoked();
         thenGetContentProviderFormatIdFromFormatDecorationIsInvoked();
         thenGetLanguageFromCommandDataIsInvoked();
         thenGetPatronInCommandDataIsInvoked();
@@ -103,20 +105,28 @@ public class F1FacadeTest {
         verify(formatDecoration, times(1)).getContentProviderFormatId();
     }
 
-    private void givenFormatDecorationInLoanMetadata() {
-        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+    private void givenFirstFormatDecorationInLoanMetadata() {
+        given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
     }
 
-    private void thenGetFormatDecorationFromContentProviderLoanMetadataIsInvoked() {
-        verify(loanMetadata, times(1)).getFormatDecoration();
+    private void thenGetFormatDecorationFromContentProviderLoanMetadataIsNeverInvoked() {
+        verify(loanMetadata, never()).getFirstFormatDecoration();
+    }
+
+    private void thenGetFormatDecorationFromCommandDataIsInvoked() {
+        verify(commandData, times(1)).getFormatDecoration();
     }
 
     private void thenGetRecordIdFromContentProviderLoanMetadataIsInvoked() {
         verify(loanMetadata, times(1)).getRecordId();
     }
 
-    private void givenContentProviderLoanMetadata() {
+    private void givenContentProviderLoanMetadataInCommandData() {
         given(commandData.getContentProviderLoanMetadata()).willReturn(loanMetadata);
+    }
+
+    private void givenFormatDecorationInCommandData() {
+        given(commandData.getFormatDecoration()).willReturn(formatDecoration);
     }
 
     private void thenGetContentProviderConsumerFromCommandDataIsInvoked() {

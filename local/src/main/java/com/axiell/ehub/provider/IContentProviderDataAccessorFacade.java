@@ -6,6 +6,7 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 
 public interface IContentProviderDataAccessorFacade {
@@ -14,5 +15,5 @@ public interface IContentProviderDataAccessorFacade {
 
     ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language);
 
-    Content getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, Patron patron, String language);
+    Content getContent(EhubConsumer ehubConsumer, EhubLoan ehubLoan, FormatDecoration formatDecoration, Patron patron, String language);
 }

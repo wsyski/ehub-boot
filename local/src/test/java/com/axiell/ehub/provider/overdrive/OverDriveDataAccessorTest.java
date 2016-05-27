@@ -202,6 +202,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     public void getContent() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
         givenPinInPatron();
@@ -230,6 +231,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     public void getContentWhenNoDownloadLinkTemplate() {
         givenContentProviderConsumerInCommandData();
         givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
         givenPinInPatron();

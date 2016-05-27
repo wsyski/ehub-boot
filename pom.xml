@@ -181,13 +181,10 @@
             </plugins>
         </pluginManagement>
         <plugins>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -706,7 +703,7 @@
         <maven-jaxb2-plugin.version>0.8.2</maven-jaxb2-plugin.version>
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
-        <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
+        <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
         <resteasy.version>3.0.16.Final</resteasy.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>

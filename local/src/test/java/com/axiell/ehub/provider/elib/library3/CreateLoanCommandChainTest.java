@@ -83,7 +83,7 @@ public class CreateLoanCommandChainTest {
         given(contentProviderLoan.content()).willReturn(ContentBuilder.defaultContent());
         given(loanMetadata.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
-        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+        given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
         given(loanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(loanMetadata.getRecordId()).willReturn(CP_RECORD_ID);
         given(contentProviderLoan.getMetadata()).willReturn(loanMetadata);
@@ -150,7 +150,7 @@ public class CreateLoanCommandChainTest {
         assertThat(actualLoan.expirationDate(), is(contentProviderLoan.expirationDate()));
         assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));
         assertThat(actualLoan.getMetadata().getExpirationDate(), is(contentProviderLoan.getMetadata().getExpirationDate()));
-        assertThat(actualLoan.getMetadata().getFormatDecoration(), is(contentProviderLoan.getMetadata().getFormatDecoration()));
+        assertThat(actualLoan.getMetadata().getFirstFormatDecoration(), is(contentProviderLoan.getMetadata().getFirstFormatDecoration()));
         assertThat(actualLoan.getMetadata().getId(), is(contentProviderLoan.getMetadata().getId()));
         assertThat(actualLoan.getMetadata().getRecordId(), is(contentProviderLoan.getMetadata().getRecordId()));
     }

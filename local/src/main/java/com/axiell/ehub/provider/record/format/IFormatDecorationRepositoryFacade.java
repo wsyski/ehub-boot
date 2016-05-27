@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.provider.ContentProvider;
+
 public interface IFormatDecorationRepositoryFacade {
 
-    FormatDecoration find(long contentProviderId, String contentProviderFormatId);
-
-    FormatDecoration find(long id);
+    FormatDecoration find(ContentProvider contentProvider, String contentProviderFormatId);
 }

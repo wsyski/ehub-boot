@@ -27,14 +27,7 @@ public interface IEhubLoanRepository extends CrudRepository<EhubLoan, Long> {
     @Query("select l from EhubLoan l where l.ehubConsumer.id = :ehubConsumerId and l.lmsLoan.id = :lmsLoanId")
     EhubLoan findLoan(@Param("ehubConsumerId") Long ehubConsumerId, @Param("lmsLoanId") String lmsLoanId);
     
-
-    @Query("select l from EhubLoan l where l.ehubConsumer.id = :ehubConsumerId and l.id = :readyLoanId")
-    EhubLoan findLoan(@Param("ehubConsumerId") Long ehubConsumerId, @Param("readyLoanId") Long readyLoanId);
-    
-    /**
-     * Counts the number of loans that have been created in a specific format.
-     */
-    @Query("select count(*) from EhubLoan l where l.contentProviderLoanMetadata.formatDecoration.id = :formatDecorationId")
+    @Query("select count(*) from EhubLoan l where l.contentProviderLoanMetadata.firstFormatDecoration.id = :formatDecorationId")
     long countLoansByFormatDecorationId(@Param("formatDecorationId") Long formatDecorationId);
 
     @Modifying

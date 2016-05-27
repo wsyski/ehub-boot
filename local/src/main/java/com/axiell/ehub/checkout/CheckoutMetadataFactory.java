@@ -15,13 +15,12 @@ public class CheckoutMetadataFactory implements ICheckoutMetadataFactory {
     @Autowired
     private IFormatFactory formatFactory;
 
-    public CheckoutMetadata create(EhubLoan ehubLoan, String language) {
+    public CheckoutMetadata create(final EhubLoan ehubLoan, final FormatDecoration formatDecoration, final String language) {
         Long id = ehubLoan.getId();
         ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
         String contentProviderLoanId = contentProviderLoanMetadata.getId();
         Date expirationDate = contentProviderLoanMetadata.getExpirationDate();
         String lmsLoanId = ehubLoan.getLmsLoan().getId();
-        FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         Format format = formatFactory.create(formatDecoration, language);
         return new CheckoutMetadata().id(id).contentProviderLoanId(contentProviderLoanId).expirationDate(expirationDate).format(format).lmsLoanId(lmsLoanId);
     }

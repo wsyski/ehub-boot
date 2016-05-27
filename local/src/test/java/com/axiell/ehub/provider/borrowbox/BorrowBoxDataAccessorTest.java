@@ -72,8 +72,8 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
     public void getContent() {
         givenGetCheckout();
         givenCompleteCheckout();
-        givenFormatDecorationFromContentProviderLoanMetadata();
         givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();

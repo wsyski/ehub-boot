@@ -344,7 +344,7 @@
                         </systemProperty>
                         <systemProperty>
                             <name>hibernate.connection.url</name>
-                            <value>jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehubtest.ccxrprzmpauo.eu-west-1.rds.amazonaws.com)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))</value>
+                            <value>jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))</value>
                         </systemProperty>
                         <systemProperty>
                             <name>catalina.base</name>
@@ -379,10 +379,15 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>add-source</id>
                         <phase>generate-sources</phase>
-                        <goals><goal>add-source</goal></goals>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
                         <configuration>
                             <sources>
+                                <source>${project.build.directory}/generated-sources/palma-loans</source>
+                                <source>${project.build.directory}/generated-sources/palma-catalogue</source>
                                 <source>${project.build.directory}/generated-sources/askews</source>
                                 <source>${project.build.directory}/generated-sources/f1</source>
                             </sources>
