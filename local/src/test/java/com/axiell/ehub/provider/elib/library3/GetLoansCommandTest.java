@@ -44,7 +44,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         whenRun();
         thenContentProviderLoanMetadataHasExpectedLoanId();
         thenContentProviderLoanMetadataHasExpectedRecordId();
-        thenContentProviderLoanMetadataHasExpectedFormatDecoration();
+        thenContentProviderLoanMetadataHasExpectedFirstFormatDecoration();
         thenActualContentUrlEqualsExpectedUrl();
         thenActualFormatDecorationEqualsExpectedFormatDecoration();
         thenCommandIsInvoked();
@@ -66,8 +66,8 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
         assertEquals(LOAN_ID, loanMetadata.getId());
     }
 
-    private void thenContentProviderLoanMetadataHasExpectedFormatDecoration() {
-        assertEquals(formatDecoration, loanMetadata.getFormatDecoration());
+    private void thenContentProviderLoanMetadataHasExpectedFirstFormatDecoration() {
+        assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
     }
 
     private void thenActualContentUrlEqualsExpectedUrl() {
@@ -75,7 +75,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
-        assertEquals(formatDecoration, loanMetadata.getFormatDecoration());
+        assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
     }
 
     private void givenLoanWithProductId() {

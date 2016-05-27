@@ -9,6 +9,7 @@ import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +56,8 @@ public class ContentProviderDataAccessorFacadeTest {
     private ContentProviderLoan contentProviderLoan;
     @Mock
     private Patron patron;
+    @Mock
+    private FormatDecoration formatDecoration;
 
     @Before
     public void setUpEhubConsumer() {
@@ -137,7 +140,7 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenGetContent() {
-        underTest.getContent(ehubConsumer, ehubLoan, patron, LANGUAGE);
+        underTest.getContent(ehubConsumer, ehubLoan, formatDecoration, patron, LANGUAGE);
     }
 
     private void thenContentIsRetrievedFromContentProvider() {

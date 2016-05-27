@@ -99,14 +99,13 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
 
     private Content makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
         final String contentUrl = getLoanContentResponse.getValue();
-        final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
-        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
         return new Content(contentLinks);
     }
 
-    private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, GetLoanContentResponse getLoanContentResponse) {
-        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
+    private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, final GetLoanContentResponse getLoanContentResponse) {
+        final FormatDecoration formatDecoration = loanMetadata.getFirstFormatDecoration();
         final String contentUrl = getLoanContentResponse.getValue();
         final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
         final Content content = new Content(contentLinks);

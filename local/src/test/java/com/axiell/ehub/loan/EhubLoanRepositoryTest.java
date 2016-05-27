@@ -26,7 +26,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/com/axiell/ehub/admin-controller-context.xml")
 public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevelopmentData> {
-    private static final Long INVALID_EHUB_CONSUMER_ID = -1L;
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
@@ -97,20 +96,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     }
 
     private void whenFindLoanByReadyLoanId() {
-        EhubConsumer ehubConsumer = expectedEhubLoan.getEhubConsumer();
-        actualEhubLoan = underTest.findLoan(ehubConsumer.getId(), expectedEhubLoan.getId());
-    }
-
-    @Test
-    @Rollback(true)
-    public void invalidEhubConsumerId() {
-        givenExpectedEhubLoan();
-        actualEhubLoan = underTest.findLoan(INVALID_EHUB_CONSUMER_ID, expectedEhubLoan.getId());
-        thenActualEhubLoanIsNull();
-    }
-
-    private void thenActualEhubLoanIsNull() {
-        Assert.assertNull(actualEhubLoan);
+        actualEhubLoan = underTest.findOne(expectedEhubLoan.getId());
     }
 
     @Test
@@ -124,7 +110,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
 
     private void givenFormatDecoration() {
         ContentProviderLoanMetadata contentProviderLoanMetadata = expectedEhubLoan.getContentProviderLoanMetadata();
-        formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
+        formatDecoration = contentProviderLoanMetadata.getFirstFormatDecoration();
     }
 
     private void whenCountByFormatDecorationId() {

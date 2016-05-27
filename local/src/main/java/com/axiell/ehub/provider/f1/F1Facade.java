@@ -52,8 +52,8 @@ class F1Facade implements IF1Facade {
     public GetLoanContentResponse getLoanContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String contentProviderRecordId = loanMetadata.getRecordId();
-        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final String formatId = formatDecoration.getContentProviderFormatId();
         final String language = data.getLanguage();
         final Patron patron = data.getPatron();

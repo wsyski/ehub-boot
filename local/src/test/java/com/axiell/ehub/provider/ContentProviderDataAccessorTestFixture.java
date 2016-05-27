@@ -150,7 +150,11 @@ public abstract class ContentProviderDataAccessorTestFixture {
     }
 
     protected void givenFormatDecorationFromContentProviderLoanMetadata() {
-        given(loanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+        given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
+    }
+
+    protected void givenFormatDecorationInCommandData() {
+        given(commandData.getFormatDecoration()).willReturn(formatDecoration);
     }
 
     protected void givenExpirationDate() {

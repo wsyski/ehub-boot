@@ -132,8 +132,8 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
     public void getContent() {
         givenBearerToken();
         givenCompleteCheckout();
-        givenFormatDecorationFromContentProviderLoanMetadata();
         givenContentProviderLoanMetadataInCommandData();
+        givenFormatDecorationInCommandData();
         givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();

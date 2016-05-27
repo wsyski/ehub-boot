@@ -1,8 +1,6 @@
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.Fields;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
@@ -10,7 +8,10 @@ import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.IFormatDecorationRepositoryFacade;
 import com.axiell.ehub.security.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class LoanBusinessController implements ILoanBusinessController {
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
 
     @Autowired
+    private IFormatDecorationRepositoryFacade formatDecorationRepositoryFacade;
+
+    @Autowired
     private ICheckoutMetadataFactory checkoutMetadataFactory;
 
     @Autowired
@@ -44,7 +48,8 @@ public class LoanBusinessController implements ILoanBusinessController {
         final CheckoutsSearchResult checkoutsSearchResult = new CheckoutsSearchResult();
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
         if (ehubLoan != null) {
-            final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, language);
+            final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan,
+                    ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), language);
             checkoutsSearchResult.addItem(checkoutMetadata);
         }
         return checkoutsSearchResult;
@@ -65,10 +70,10 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 final Content content = contentProviderLoan.content();
-                return checkoutFactory.create(ehubLoan, content, language);
+                return checkoutFactory.create(ehubLoan, ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), content, language);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
-                return getCheckout(ehubConsumer, patron, lmsLoanId, language);
+                return getCheckout(ehubConsumer, patron, lmsLoanId, pendingLoan.contentProviderFormatId(), language);
             default:
                 throw new NotImplementedException("Create loan where the result of the pre-checkout analysis is '" + result + "' has not been implemented");
         }
@@ -76,23 +81,45 @@ public class LoanBusinessController implements ILoanBusinessController {
 
     @Override
     @Transactional(readOnly = true)
-    public Checkout getCheckout(final AuthInfo authInfo, final Long readyLoanId, final String language) {
+    public Checkout getCheckout(final AuthInfo authInfo, final long readyLoanId, final String language) {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
+        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(readyLoanId);
         final Patron patron = authInfo.getPatron();
-        return makeCheckout(ehubConsumer, patron, ehubLoan, language);
+        final ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
+        final FormatDecoration firstFormatDecoration = contentProviderLoanMetadata.getFirstFormatDecoration();
+        return makeCheckout(ehubConsumer, patron, ehubLoan, firstFormatDecoration, language);
     }
 
-    private Checkout getCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String language) {
+    private Checkout getCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String contentProviderFormatId,
+                                 final String language) {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
-        if (ehubLoan == null) {
-            throw new InternalServerErrorException("Missing ehub loan lmsLoanId: '" + lmsLoanId + "'");
-        }
-        return makeCheckout(ehubConsumer, patron, ehubLoan, language);
+        FormatDecoration formatDecoration = getFormatDecoration(contentProviderFormatId, ehubLoan);
+        return makeCheckout(ehubConsumer, patron, ehubLoan, formatDecoration, language);
     }
 
-    private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final String language) {
-        final Content content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
-        return checkoutFactory.create(ehubLoan, content, language);
+    private FormatDecoration getFormatDecoration(final String contentProviderFormatId, final EhubLoan ehubLoan) {
+        final ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
+        final FormatDecoration firstFormatDecoration = contentProviderLoanMetadata.getFirstFormatDecoration();
+        final FormatDecoration formatDecoration;
+        if (!firstFormatDecoration.getContentProviderFormatId().equals(contentProviderFormatId)) {
+            ContentProvider contentProvider = contentProviderLoanMetadata.getContentProvider();
+            if (contentProvider.isLoanPerProduct()) {
+                formatDecoration = formatDecorationRepositoryFacade.find(contentProvider, contentProviderFormatId);
+            }
+            else {
+                final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
+                throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument);
+            }
+        }
+        else {
+            formatDecoration = firstFormatDecoration;
+        }
+        return formatDecoration;
+    }
+
+    private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final FormatDecoration formatDecoration,
+                                  final String language) {
+        final Content content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, formatDecoration, patron, language);
+        return checkoutFactory.create(ehubLoan, formatDecoration, content, language);
     }
 }

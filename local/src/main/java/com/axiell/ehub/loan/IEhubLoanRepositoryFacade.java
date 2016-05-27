@@ -9,7 +9,7 @@ public interface IEhubLoanRepositoryFacade {
 
     EhubLoan findEhubLoan(EhubConsumer ehubConsumer, String lmsLoanId);
 
-    EhubLoan findEhubLoan(EhubConsumer ehubConsumer, Long readyLoanId);
+    EhubLoan findEhubLoan(long readyLoanId);
     
     long countLoansByFormatDecoration(FormatDecoration formatDecoration);
 

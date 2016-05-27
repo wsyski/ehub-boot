@@ -6,6 +6,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,6 +20,7 @@ public class CommandData implements ICommandData {
     private String contentProviderAlias;
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
+    private FormatDecoration formatDecoration;
     private List<String> contentUrls;
     private List<SupplementLink> supplementLinks;
     private Content content;
@@ -80,6 +82,15 @@ public class CommandData implements ICommandData {
 
     public CommandData setContentProviderLoanMetadata(ContentProviderLoanMetadata contentProviderLoanMetadata) {
         this.contentProviderLoanMetadata = contentProviderLoanMetadata;
+        return this;
+    }
+
+    public FormatDecoration getFormatDecoration() {
+        return formatDecoration;
+    }
+
+    public CommandData setFormatDecoration(final FormatDecoration formatDecoration) {
+        this.formatDecoration = formatDecoration;
         return this;
     }
 

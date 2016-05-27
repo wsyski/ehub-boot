@@ -112,9 +112,9 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final CheckoutsDTO checkouts = overDriveFacade.getCheckouts(contentProviderConsumer, oAuthAccessToken);
         final String productId = contentProviderLoanMetadata.getRecordId();
-        final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         final String formatType = formatDecoration.getContentProviderFormatId();
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         final DownloadLinkTemplateDTO downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);

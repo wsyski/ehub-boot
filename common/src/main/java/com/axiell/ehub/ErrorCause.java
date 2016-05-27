@@ -34,6 +34,7 @@ public enum ErrorCause {
     CONTENT_PROVIDER_CONSUMER_NOT_FOUND("A Consumer for Content Provider with name {0} could not be found for EhubConsumer with ID {1}"), 
     INTERNAL_SERVER_ERROR("The eHUB server encountered an unexpected condition which prevented it from fulfilling the request. Please contact the Axiell Support."), 
     CONTENT_PROVIDER_ERROR("The Content Provider {0} returned the following error status code: {1}"),
+    CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT("The Content Provider {0} does not support loan per product"),
     LMS_CHECKOUT_DENIED("Checkout of record with ID {0} to the holder of library card {1} is denied for the eHUB Consumer with ID {2}"),
     LMS_BLOCKED_LIBRARY_CARD("Blocked library card {0} for the eHUB Consumer with ID {1}"),
     LMS_LIBRARY_CARD_NOT_FOUND("The library card {0} not found for the eHUB Consumer with ID {1}"),

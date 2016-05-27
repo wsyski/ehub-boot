@@ -73,7 +73,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     public void getContent() {
         givenGetCheckout();
         givenCompleteCheckout();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInCommandData();
         givenContentProviderLoanMetadataInCommandData();
         givenContentLink();
         whenGetContent();

@@ -55,19 +55,20 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final String language = data.getLanguage();
         final CheckoutDTO checkoutDTO = borrowBoxFacade.checkout(contentProviderConsumer, patron, language, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final Content content = makeContent(loanMetadata, checkoutDTO);
+        final Content content = makeContent(loanMetadata.getFirstFormatDecoration(), checkoutDTO);
         return new ContentProviderLoan(loanMetadata, content);
     }
 
     @Override
     public Content getContent(final CommandData data) {
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String language = data.getLanguage();
         final CheckoutDTO checkoutDTO = borrowBoxFacade.getCheckout(contentProviderConsumer, patron, language, contentProviderLoanId);
-        return makeContent(loanMetadata, checkoutDTO);
+        return makeContent(formatDecoration, checkoutDTO);
     }
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final CheckoutDTO checkoutDTO) {
@@ -76,9 +77,8 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private Content makeContent(final ContentProviderLoanMetadata loanMetadata, final CheckoutDTO checkoutDTO) {
+    private Content makeContent(final FormatDecoration formatDecoration, final CheckoutDTO checkoutDTO) {
         final String contentUrl = checkoutDTO.getContentUrl();
-        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
         final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
         return new Content(contentLinks);
     }

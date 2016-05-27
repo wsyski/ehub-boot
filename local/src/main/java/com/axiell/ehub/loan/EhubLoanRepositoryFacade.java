@@ -9,6 +9,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
+
     @Autowired
     private IEhubLoanRepository ehubLoanRepository;
 
@@ -22,19 +23,21 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
     @Override
     public EhubLoan findEhubLoan(final EhubConsumer ehubConsumer, final String lmsLoanId) {
         final Long ehubConsumerId = ehubConsumer.getId();
-        return ehubLoanRepository.findLoan(ehubConsumerId, lmsLoanId);
+        final EhubLoan ehubLoan = ehubLoanRepository.findLoan(ehubConsumerId, lmsLoanId);
+        if (ehubLoan == null) {
+            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.LMS_LOAN_ID, lmsLoanId);
+            throw new NotFoundException(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, argument);
+        }
+        return ehubLoan;
     }
 
     @Override
-    public EhubLoan findEhubLoan(final EhubConsumer ehubConsumer, final Long readyLoanId) {
-        final Long ehubConsumerId = ehubConsumer.getId();
-        final EhubLoan ehubLoan = ehubLoanRepository.findLoan(ehubConsumerId, readyLoanId);
-
+    public EhubLoan findEhubLoan(final long readyLoanId) {
+        final EhubLoan ehubLoan = ehubLoanRepository.findOne(readyLoanId);
         if (ehubLoan == null) {
             final ErrorCauseArgument argument = new ErrorCauseArgument(Type.READY_LOAN_ID, readyLoanId);
             throw new NotFoundException(ErrorCause.LOAN_BY_ID_NOT_FOUND, argument);
         }
-
         return ehubLoan;
     }
 

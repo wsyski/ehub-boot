@@ -2,6 +2,7 @@ package com.axiell.ehub.checkout;
 
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.EhubLoan;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,9 @@ public class CheckoutFactoryTest {
     private SupplementLink supplementLink = defaultSupplementLink();
     @Mock
     private ICheckoutMetadataFactory checkoutMetadataFactory;
+    @Mock
+    private FormatDecoration formatDecoration;
+
     private CheckoutMetadata checkoutMetadata = checkoutMetadataWithDownloadableFormat();
     private CheckoutFactory underTest;
     private Checkout actualCheckout;
@@ -43,14 +47,14 @@ public class CheckoutFactoryTest {
 
     @Test
     public void createFromEhubLoan() throws Exception {
-        given(checkoutMetadataFactory.create(any(EhubLoan.class), anyString())).willReturn(checkoutMetadata);
+        given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString())).willReturn(checkoutMetadata);
         whenCreate();
         thenActualContentLinkEqualsExpected();
         thenActualCheckoutMetadataEqualsExpected();
     }
 
     private void whenCreate() {
-        actualCheckout = underTest.create(ehubLoan, defaultContent(), LANGUAGE);
+        actualCheckout = underTest.create(ehubLoan, formatDecoration, defaultContent(), LANGUAGE);
     }
 
     private void thenActualContentLinkEqualsExpected() {

@@ -126,15 +126,13 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     public Content getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String contentProviderLoanId = contentProviderLoanMetadata.getId();
         final LoanDetails loanDetail = getLoanDetails(contentProviderConsumer, contentProviderLoanId, data.getPatron());
-
         if (titleHasNotBeenProcessed(loanDetail)) {
             throwInternalServerErrorException("Title has not yet been processed", loanDetail.getLoanStatus());
         }
-
         final String contentUrl = getContentUrl(loanDetail);
-        final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
         return new Content(contentLinks);
     }

@@ -29,9 +29,6 @@ import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
 import com.axiell.ehub.provider.record.format.FormatTextBundle;
 
-/**
- *
- */
 public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private static final Integer LICENSE_ID = 1;
 
@@ -360,6 +357,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     @Test
     public void getContent() {
         givenContentProviderConsumerInCommandData();
+        givenFormatDecorationInCommandData();
         givenContentProviderLoanMetadataInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
@@ -375,7 +373,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatusIsConsumedProduct();
         givenConsumedProduct();
         givenConsumedProductFormats();
-        givenFormatDecorationFromContentProviderLoanMetadata();
         givenFormatIdFromFormatDecoration();
         givenIsSameFormat();
         givenContentUrl();

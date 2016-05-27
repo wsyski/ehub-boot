@@ -128,7 +128,7 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenContentProviderLoanId();
         givenLibraryCardInPatron();
         givenContentProviderLoanMetadataInCommandData();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInCommandData();
         givenDownloadableContentDisposition();
         givenLoanDetails();
         givenLoanStatusIsTitleHasBeenProcessed();

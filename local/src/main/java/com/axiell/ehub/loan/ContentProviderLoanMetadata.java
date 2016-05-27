@@ -21,7 +21,7 @@ public class ContentProviderLoanMetadata implements Serializable {
     private String id;
     private ContentProvider contentProvider;
     private Date expirationDate;
-    private FormatDecoration formatDecoration;
+    private FormatDecoration firstFormatDecoration;
     private String recordId;
 
     /**
@@ -30,12 +30,12 @@ public class ContentProviderLoanMetadata implements Serializable {
     protected ContentProviderLoanMetadata() {
     }
 
-    private ContentProviderLoanMetadata(String id, ContentProvider contentProvider, Date expirationDate, String recordId, FormatDecoration formatDecoration) {
+    private ContentProviderLoanMetadata(String id, ContentProvider contentProvider, Date expirationDate, String recordId, FormatDecoration firstFormatDecoration) {
         this.id = id;
         this.contentProvider = contentProvider;
         this.expirationDate = DateFactory.create(expirationDate);
         this.recordId = recordId;
-        this.formatDecoration = formatDecoration;
+        this.firstFormatDecoration = firstFormatDecoration;
     }
 
     /**
@@ -103,25 +103,25 @@ public class ContentProviderLoanMetadata implements Serializable {
 
     /**
      * Returns the decoration of the format of the loan at the
-     * {@link com.axiell.ehub.provider.ContentProvider}.
+     * {@link ContentProvider}.
      *
-     * @return a {@link com.axiell.ehub.provider.record.format.FormatDecoration}
+     * @return a {@link FormatDecoration}
      */
-    @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D"))
+    @JoinColumn(name = "CONTENT_P_F_FORMAT_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D"))
     @ManyToOne
-    public FormatDecoration getFormatDecoration() {
-        return formatDecoration;
+    public FormatDecoration getFirstFormatDecoration() {
+        return firstFormatDecoration;
     }
 
     /**
      * Sets the decoration of the format of the loan at the
      * {@link com.axiell.ehub.provider.ContentProvider}. Only used by JPA.
      *
-     * @param formatDecoration the decoration of the format of the loan at the
+     * @param firstFormatDecoration the decoration of the format of the loan at the
      *                         {@link com.axiell.ehub.provider.ContentProvider} to set
      */
-    protected void setFormatDecoration(FormatDecoration formatDecoration) {
-        this.formatDecoration = formatDecoration;
+    protected void setFirstFormatDecoration(final FormatDecoration firstFormatDecoration) {
+        this.firstFormatDecoration = firstFormatDecoration;
     }
 
     /**
@@ -140,20 +140,20 @@ public class ContentProviderLoanMetadata implements Serializable {
     public static class Builder {
         private final ContentProvider contentProvider;
         private final Date expirationDate;
-        private final FormatDecoration formatDecoration;
+        private final FormatDecoration firstFormatDecoration;
         private final String recordId;
 
         private String id;
 
-        public Builder(final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration formatDecoration) {
+        public Builder(final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration firstFormatDecoration) {
             Validate.isNotNull(contentProvider, "ContentProvider can't be null");
             Validate.isNotNull(expirationDate, "Expiration date can't be null");
             Validate.isNotNull(recordId, "The record ID can't be null");
-            Validate.isNotNull(formatDecoration, "Format decoration can't be null");
+            Validate.isNotNull(firstFormatDecoration, "First format decoration can't be null");
             this.contentProvider = contentProvider;
             this.expirationDate = DateFactory.create(expirationDate);
             this.recordId = recordId;
-            this.formatDecoration = formatDecoration;
+            this.firstFormatDecoration = firstFormatDecoration;
         }
 
         public Builder contentProviderLoanId(final String value) {
@@ -162,7 +162,7 @@ public class ContentProviderLoanMetadata implements Serializable {
         }
 
         public ContentProviderLoanMetadata build() {
-            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, formatDecoration);
+            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, firstFormatDecoration);
         }
     }
 }

@@ -23,8 +23,8 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
     public void run(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String elibLoanId = contentProviderLoanMetadata.getId();
-        final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         final String formatId = formatDecoration.getContentProviderFormatId();
         final String language = data.getLanguage();
         final LoanDTO loan = elibFacade.getLoan(contentProviderConsumer, elibLoanId);

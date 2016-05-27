@@ -17,5 +17,5 @@ public interface ILoanBusinessController {
 
     Checkout checkout(AuthInfo authInfo, Fields fields, String language);
 
-    Checkout getCheckout(AuthInfo authInfo, Long readyLoanId, String language);
+    Checkout getCheckout(AuthInfo authInfo, long readyLoanId, String language);
 }

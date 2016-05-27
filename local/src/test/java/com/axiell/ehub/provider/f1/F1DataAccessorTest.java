@@ -123,7 +123,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     @Test
     public void getContent_success() {
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInCommandData();
         givenContentProviderLoanMetadataInCommandData();
         givenValidLoanContentFromGetLoanContentResponse();
         givenContentLink();
@@ -143,8 +143,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     private void givenInternalServerErrorException() {
         given(ehubExceptionFactory
                 .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class),
-                        anyString())).willReturn(
-                internalServerErrorException);
+                        anyString())).willReturn(internalServerErrorException);
     }
 
     private void givenCreateLoanFailedFromF1Facade() {

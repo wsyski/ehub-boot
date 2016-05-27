@@ -52,7 +52,7 @@ public class CheckoutMetadataFactoryTest {
 
     @Test
     public void createFromEhubLoan() throws Exception {
-        given(contentProviderLoanMetadata.getFormatDecoration()).willReturn(formatDecoration);
+        given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
         given(contentProviderLoanMetadata.getExpirationDate()).willReturn(EXP_DATE);
         given(contentProviderLoanMetadata.getId()).willReturn(CP_LOAN_ID);
         given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
@@ -68,7 +68,7 @@ public class CheckoutMetadataFactoryTest {
     }
 
     private void whenCreate() {
-        actualCheckoutMetadata = underTest.create(ehubLoan, LANGUAGE);
+        actualCheckoutMetadata = underTest.create(ehubLoan, formatDecoration, LANGUAGE);
     }
 
     private void thenActualEhubLoanIdEqualsExpected() {

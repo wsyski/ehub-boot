@@ -111,9 +111,9 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String libraryCard = patron.getLibraryCard();
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
         final String recordId = contentProviderLoanMetadata.getRecordId();
-        final FormatDecoration formatDecoration = contentProviderLoanMetadata.getFormatDecoration();
         return consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
     }
 

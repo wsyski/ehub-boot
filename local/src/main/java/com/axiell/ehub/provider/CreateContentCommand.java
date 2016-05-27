@@ -20,8 +20,7 @@ public class CreateContentCommand extends AbstractCommand<CommandData> {
     @Override
     public void run(final CommandData data) {
         final List<String> contentUrls = data.getContentUrls();
-        final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
-        final FormatDecoration formatDecoration = loanMetadata.getFormatDecoration();
+        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final ContentLinks contentLinks = contentFactory.create(contentUrls, formatDecoration);
         data.setContent(new Content(contentLinks).supplementLinks(new SupplementLinks(data.getSupplementLinks())));
         forward(CONTENT_CREATED, data);
