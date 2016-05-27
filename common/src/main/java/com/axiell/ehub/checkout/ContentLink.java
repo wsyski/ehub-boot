@@ -3,7 +3,9 @@ package com.axiell.ehub.checkout;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ContentLink {
+import java.io.Serializable;
+
+public class ContentLink implements Serializable {
     private final ContentLinkDTO contentLinkDTO;
 
     public ContentLink(String href) {

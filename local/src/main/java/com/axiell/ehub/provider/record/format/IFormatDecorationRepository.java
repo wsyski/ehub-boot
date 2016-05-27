@@ -1,19 +1,11 @@
 package com.axiell.ehub.provider.record.format;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-/**
- * Simple CRUD Repository interface for {@link ContentProviderFormatDecoration} instances. The interface is used to declare so called query
- * methods, methods to retrieve single entities or collections of them.
- * 
- * <p>
- * <b>NOTE:</b> Even though this interface is public it should only be used within the package
- * <code>com.axiell.axiell.provider.record.format</code>. Access to this repository outside this package should be done through the
- * {@link IFormatBusinessController}.
- * </p>
- * <p>
- * The reason why it is public when it should have been package private is due to that the proxy functionality of the Spring JPA framework requires public repository interfaces.
- * </p>
- */
 public interface IFormatDecorationRepository extends CrudRepository<FormatDecoration, Long> {
+
+    @Query("select fd from FormatDecoration fd where fd.contentProvider.id = :contentProviderId and fd.contentProviderFormatId = :contentProviderFormatId")
+    FormatDecoration findByContentProviderIdAndContentProviderFormatId(@Param("contentProviderId") Long ehubConsumerId, @Param("contentProviderFormatId") String contentProviderFormatId);
 }

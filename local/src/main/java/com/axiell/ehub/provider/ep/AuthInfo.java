@@ -17,7 +17,7 @@ import static com.axiell.ehub.util.EhubUrlCodec.encode;
 
 class AuthInfo {
     private static final String AUTHORIZATION_HEADER_FORMAT =
-            "realm=\"provider %s\" site_id=\"%s\" ehub_consumer_id=\"%s\", user_id=\"%s\" timestamp=\"%d\", signature=\"%s\"";
+            "realm=\"provider %s\", site_id=\"%s\", ehub_consumer_id=\"%s\", user_id=\"%s\", timestamp=\"%d\", signature=\"%s\"";
 
     private ContentProviderConsumer contentProviderConsumer;
     private Patron patron;

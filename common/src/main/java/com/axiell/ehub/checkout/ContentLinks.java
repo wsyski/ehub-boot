@@ -3,12 +3,13 @@ package com.axiell.ehub.checkout;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ContentLinks {
+public class ContentLinks implements Serializable {
     private List<ContentLinkDTO> contentLinksDTO = new ArrayList<>();
 
     public ContentLinks(final List<ContentLink> contentLinks) {

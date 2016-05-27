@@ -74,6 +74,15 @@ public class LoanBusinessController implements ILoanBusinessController {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Checkout getCheckout(final AuthInfo authInfo, final Long readyLoanId, final String language) {
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
+        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
+        final Patron patron = authInfo.getPatron();
+        return makeCheckout(ehubConsumer, patron, ehubLoan, language);
+    }
+
     private Checkout getCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String language) {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
         if (ehubLoan == null) {
@@ -85,14 +94,5 @@ public class LoanBusinessController implements ILoanBusinessController {
     private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final String language) {
         final Content content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, patron, language);
         return checkoutFactory.create(ehubLoan, content, language);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Checkout getCheckout(final AuthInfo authInfo, final Long readyLoanId, final String language) {
-        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
-        final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, readyLoanId);
-        final Patron patron = authInfo.getPatron();
-        return makeCheckout(ehubConsumer, patron, ehubLoan, language);
     }
 }

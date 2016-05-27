@@ -21,10 +21,12 @@ public class PlayerContainer extends WebMarkupContainer {
         add(platformsChoice);
     }
 
+    /*
     @Override
     public boolean isVisible() {
         final FormatDecoration formatDecoration = formModel.getObject();
         final ContentDisposition contentDisposition = formatDecoration.getContentDisposition();
         return ContentDisposition.STREAMING.equals(contentDisposition);
     }
+    */
 }
