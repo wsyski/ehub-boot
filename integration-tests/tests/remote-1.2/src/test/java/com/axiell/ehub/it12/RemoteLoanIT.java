@@ -16,7 +16,7 @@ public class RemoteLoanIT extends RemoteLoanITFixture {
 
     @Override
     protected void givenPendingLoan() {
-        pendingLoan = new PendingLoan( TestDataConstants.LMS_RECORD_ID, CONTENT_PROVIDER_ALIAS,  TestDataConstants.TEST_EP_RECORD_0_ID,  TestDataConstants.TEST_EP_FORMAT_0_ID);
+        pendingLoan = new PendingLoan( TestDataConstants.LMS_RECORD_ID, CONTENT_PROVIDER_ALIAS,  TestDataConstants.TEST_EP_RECORD_0_ID,  TestDataConstants.TEST_EP_FORMAT_1_ID);
     }
 
     @Override
