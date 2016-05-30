@@ -25,11 +25,11 @@ public class RemoteLoanIT extends RemoteITFixture {
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
         fields.addValue("contentProviderAlias", CONTENT_PROVIDER_ALIAS);
         fields.addValue("contentProviderRecordId", TestDataConstants.TEST_EP_RECORD_0_ID);
-        fields.addValue("contentProviderFormatId", TestDataConstants.TEST_EP_FORMAT_0_ID);
     }
 
     @Test
     public final void checkout() throws EhubException {
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestOkResponse();
         givenContentProviderCheckoutResponse();
@@ -57,6 +57,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void ehubException() {
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();
         try {
@@ -106,7 +107,12 @@ public class RemoteLoanIT extends RemoteITFixture {
         readyLoanId = testData.getEhubLoanId();
     }
 
+    private void givenContentProviderFormatId(final String contentProviderFormatId) {
+        fields.addValue("contentProviderFormatId", contentProviderFormatId);
+    }
+
     private Checkout whenCheckout() throws EhubException {
+        Assert.assertNotNull(fields.getRequiredValue("contentProviderFormatId"));
         return underTest.checkout(authInfo, fields, LANGUAGE);
     }
 
