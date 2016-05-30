@@ -60,12 +60,12 @@ public class TestDataResource implements ITestDataResource {
     private Platform platformIos;
 
     @Override
-    public TestData init() {
+    public TestData init(final boolean isLoanPerProduct) {
         saveAlias(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
         saveAlias("Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
         initLanguage();
         initPlatforms();
-        final ContentProvider contentProvider = initContentProvider();
+        final ContentProvider contentProvider = initContentProvider(isLoanPerProduct);
         final EhubConsumer ehubConsumer = initEhubConsumer();
         initContentProviderConsumer(ehubConsumer, contentProvider);
         final Long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
@@ -117,7 +117,7 @@ public class TestDataResource implements ITestDataResource {
         platformAndroid = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_ANDROID));
     }
 
-    private ContentProvider initContentProvider() {
+    private ContentProvider initContentProvider(final boolean isLoanPerProduct) {
         Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
         contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL);
         ContentProvider contentProvider = new ContentProvider(TestDataConstants.CONTENT_PROVIDER_TEST_EP, contentProviderProperties);
@@ -139,6 +139,7 @@ public class TestDataResource implements ITestDataResource {
             formatDecorations.put(entry.getKey(), value);
         }
         contentProvider.setFormatDecorations(formatDecorations);
+        contentProvider.setLoanPerProduct(isLoanPerProduct);
         contentProvider = contentProviderAdminController.save(contentProvider);
         return contentProvider;
     }

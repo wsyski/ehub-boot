@@ -143,4 +143,8 @@ public class RemoteLoanPerFormatIT extends RemoteITFixture {
     private Checkout whenGetCheckoutByLoanId() throws EhubException {
         return underTest.getCheckout(authInfo, readyLoanId, LANGUAGE);
     }
+
+    protected  boolean isLoanPerProduct() {
+        return false;
+    }
 }
