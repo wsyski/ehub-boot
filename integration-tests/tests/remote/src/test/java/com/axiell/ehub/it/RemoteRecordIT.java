@@ -70,4 +70,8 @@ public class RemoteRecordIT extends RemoteITFixture {
         expectedException.expect(EhubException.class);
         return new AuthInfo.Builder(0L, "invalidSecret").build();
     }
+
+    protected  boolean isLoanPerProduct() {
+       return false;
+    }
 }

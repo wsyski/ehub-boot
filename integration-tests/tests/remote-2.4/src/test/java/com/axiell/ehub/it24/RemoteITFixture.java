@@ -60,7 +60,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void initTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        testData = testDataResource.init();
+        testData = testDataResource.init(false);
         LOGGER.info("Test data initialized: " + testData.toString());
     }
 

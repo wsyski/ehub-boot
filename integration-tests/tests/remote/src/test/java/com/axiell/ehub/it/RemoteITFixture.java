@@ -60,7 +60,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void initTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        testData = testDataResource.init();
+        testData = testDataResource.init(isLoanPerProduct());
         LOGGER.info("Test data initialized: " + testData.toString());
     }
 
@@ -111,4 +111,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         ResteasyWebTarget target = client.target(getTestDataServiceBaseUri());
         return target.proxy(ITestDataResource.class);
     }
+
+
+    protected abstract boolean isLoanPerProduct();
 }
