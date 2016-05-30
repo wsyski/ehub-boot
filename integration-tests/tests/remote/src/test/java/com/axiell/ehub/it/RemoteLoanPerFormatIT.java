@@ -1,19 +1,21 @@
 package com.axiell.ehub.it;
 
 import com.axiell.ehub.EhubException;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.Date;
+
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
-import static org.junit.Assert.assertThat;
-
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.junit.Assert.assertThat;
 
 public class RemoteLoanPerFormatIT extends RemoteITFixture {
     private Fields fields;
@@ -37,6 +39,18 @@ public class RemoteLoanPerFormatIT extends RemoteITFixture {
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout);
+    }
+
+    @Test
+    public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
+        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT
+                .toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP)));
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+        givenPalmaLoansWsdl();
+        givenPalmaCheckoutTestActiveLoanResponse();
+        givenPalmaCheckoutResponse();
+        givenContentProviderGetCheckoutResponse();
+        Checkout checkout = whenCheckout();
     }
 
     @Test
@@ -67,15 +81,13 @@ public class RemoteLoanPerFormatIT extends RemoteITFixture {
     }
 
     @Test
-    public final void ehubException() {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+    public final void checkoutWithCheckoutTestErrorResponse() throws EhubException {
+        givenExpectedEhubException(ErrorCause.LMS_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, "blockedBorrCard"),
+                new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(testData.getEhubConsumerId()))));
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();
-        try {
-            whenCheckout();
-        } catch (EhubException ex) {
-            Assert.assertNotNull(ex);
-        }
+        Checkout checkout = whenCheckout();
     }
 
     private void givenContentProviderGetCheckoutResponse() {
@@ -108,15 +120,19 @@ public class RemoteLoanPerFormatIT extends RemoteITFixture {
     private void thenValidContentLinks(final ContentLinks contentLinks) {
         Assert.assertNotNull(contentLinks);
         Assert.assertEquals(2, contentLinks.getContentLinks().size());
-        assertThat(contentLinks.getContentLinks().get(0), matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_0")));
-        assertThat(contentLinks.getContentLinks().get(1), matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_1")));
+        assertThat(contentLinks.getContentLinks().get(0),
+                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_0")));
+        assertThat(contentLinks.getContentLinks().get(1),
+                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_1")));
     }
 
     private void thenValidSupplementLinks(final SupplementLinks supplementLinks) {
         Assert.assertNotNull(supplementLinks);
         Assert.assertEquals(2, supplementLinks.getSupplementLinks().size());
-        assertThat(supplementLinks.getSupplementLinks().get(0), matchesExpectedSupplementLink(new SupplementLink("supplent_0", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_0")));
-        assertThat(supplementLinks.getSupplementLinks().get(1), matchesExpectedSupplementLink(new SupplementLink("supplent_1", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_1")));
+        assertThat(supplementLinks.getSupplementLinks().get(0),
+                matchesExpectedSupplementLink(new SupplementLink("supplent_0", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_0")));
+        assertThat(supplementLinks.getSupplementLinks().get(1),
+                matchesExpectedSupplementLink(new SupplementLink("supplent_1", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_1")));
     }
 
     private void givenLmsLoanId() {
@@ -144,7 +160,7 @@ public class RemoteLoanPerFormatIT extends RemoteITFixture {
         return underTest.getCheckout(authInfo, readyLoanId, LANGUAGE);
     }
 
-    protected  boolean isLoanPerProduct() {
+    protected boolean isLoanPerProduct() {
         return false;
     }
 }

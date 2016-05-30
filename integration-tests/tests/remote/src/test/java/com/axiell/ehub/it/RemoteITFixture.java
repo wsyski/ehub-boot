@@ -3,8 +3,7 @@
  */
 package com.axiell.ehub.it;
 
-import com.axiell.ehub.EhubException;
-import com.axiell.ehub.IEhubService;
+import com.axiell.ehub.*;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
@@ -15,12 +14,15 @@ import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +32,9 @@ import javax.ws.rs.core.HttpHeaders;
 import java.util.Locale;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final String LF = System.getProperty("line.separator");
     protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
@@ -112,6 +117,10 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         return target.proxy(ITestDataResource.class);
     }
 
+    protected void givenExpectedEhubException(final EhubError ehubError) {
+        exception.expect(EhubException.class);
+        exception.expectMessage(ehubError.getMessage());
+    }
 
     protected abstract boolean isLoanPerProduct();
 }
