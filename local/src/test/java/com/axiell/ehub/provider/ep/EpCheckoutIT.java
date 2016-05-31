@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
+import com.axiell.ehub.provider.ep.lpf.CheckoutDTO;
 import com.axiell.ehub.util.IFinder;
 import org.junit.Ignore;
 import org.junit.Test;

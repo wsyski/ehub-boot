@@ -10,6 +10,8 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ep.lpf.CheckoutDTO;
+import com.axiell.ehub.provider.ep.lpf.IEpFacade;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
