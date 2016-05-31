@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpp;
 
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -7,19 +7,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class CheckoutRequestDTO {
     @JsonProperty(value = "recordId")
     private String recordId;
-    @JsonProperty(value = "formatId")
-    private String formatId;
 
-    public CheckoutRequestDTO(final String recordId, final String formatId) {
+    public CheckoutRequestDTO(final String recordId) {
         this.recordId = recordId;
-        this.formatId = formatId;
     }
 
     public String getRecordId() {
         return recordId;
-    }
 
-    public String getFormatId() {
-        return formatId;
     }
 }
+

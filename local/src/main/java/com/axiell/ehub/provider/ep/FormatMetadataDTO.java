@@ -5,20 +5,13 @@ import com.axiell.ehub.checkout.SupplementLinkDTO;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import java.util.Date;
 import java.util.List;
 
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutDTO {
-    private String id;
+public class FormatMetadataDTO {
     private List<ContentLinkDTO> contentLinks;
     private List<SupplementLinkDTO> supplementLinks;
-    private Date expirationDate;
-
-    public String getId() {
-        return id;
-    }
 
     public List<ContentLinkDTO> getContentLinks() {
         return contentLinks;
@@ -28,7 +21,13 @@ public class CheckoutDTO {
         return supplementLinks;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
+    public FormatMetadataDTO contentLinks(final List<ContentLinkDTO> contentLinks) {
+        this.contentLinks = contentLinks;
+        return this;
+    }
+
+    public FormatMetadataDTO supplementLinks(final List<SupplementLinkDTO> supplementLinks) {
+        this.supplementLinks = supplementLinks;
+        return this;
     }
 }

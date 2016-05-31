@@ -1,4 +1,6 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpp;
+
+import com.axiell.ehub.provider.ep.RecordDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

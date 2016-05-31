@@ -704,7 +704,7 @@
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
-        <resteasy.version>3.0.16.Final</resteasy.version>
+        <resteasy.version>3.0.17.Final</resteasy.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>
         <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
@@ -739,7 +739,7 @@
         <xmlunit.version>1.5</xmlunit.version>
         <liquibase.core.version>3.4.2</liquibase.core.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
-        <jackson.version>2.1.2</jackson.version>
+        <jackson.version>2.7.4</jackson.version>
         <ehub.release.version>2.4.0.78</ehub.release.version>
         <ehub.snapshot.version>2.5-SNAPSHOT</ehub.snapshot.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>

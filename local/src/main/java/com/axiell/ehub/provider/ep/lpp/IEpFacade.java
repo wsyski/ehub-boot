@@ -1,13 +1,14 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.provider.ep.RecordDTO;
 
-interface IEpFacade {
+public interface IEpFacade {
 
     RecordDTO getRecord(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
 
-    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId, String formatId);
+    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderRecordId);
 
     CheckoutDTO getCheckout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderLoanId);
 }
