@@ -12,11 +12,10 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.security.AuthInfo;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -34,8 +33,7 @@ import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanBusinessControllerTest {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
+    private EhubRuntimeException exception = null;
 
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
@@ -92,7 +90,9 @@ public class LoanBusinessControllerTest {
     @Before
     public void setUpLoanBusinessController() {
         checkoutMetadata = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
+        given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
         given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString())).willReturn(checkoutMetadata);
+        setUpEhubLoan();
         underTest = new LoanBusinessController();
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
         ReflectionTestUtils.setField(underTest, "palmaDataAccessor", palmaDataAccessor);
@@ -103,13 +103,18 @@ public class LoanBusinessControllerTest {
     }
 
     @Before
+    public void setUpEhubLoan() {
+        given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
+        given(ehubLoan.getLmsLoan()).willReturn(lmsLoan);
+    }
+
+    @Before
     public void setUpEhubConsumer() {
         given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
     }
 
     @Before
     public void setUpContentProviderNameFromExistingLoan() {
-        given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
@@ -143,26 +148,27 @@ public class LoanBusinessControllerTest {
     }
 
     @Test
-    public void createActiveLoan_firstFormat() {
+    public void activeLoan_firstFormat() {
         givenActiveLoanAsPreCheckoutAnalysisResult();
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-        given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
-        given(formatDecoration.getContentProviderFormatId()).willReturn(FieldsBuilder.CONTENT_PROVIDER_FORMAT_ID);
+        givenContentProviderFormatId(FieldsBuilder.CONTENT_PROVIDER_FORMAT_ID);
         whenCreateLoan();
         InOrder inOrder = thenEhubLoanIsFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
         thenContentIsRetrievedFromContentProvider(inOrder);
     }
 
+
     @Test
-    public void createActiveLoan_unsupportedLoanPerProduct() {
-        givenExpectedNotFoundException();
+    public void activeLoan_unsupportedLoanPerProduct() {
         givenActiveLoanAsPreCheckoutAnalysisResult();
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
-        given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
-        given(formatDecoration.getContentProviderFormatId()).willReturn(NEW_CONTENT_PROVIDER_FORMAT_ID);
-        given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
-        given(ehubLoan.getLmsLoan()).willReturn(lmsLoan);
-        whenCreateLoan();
+        givenContentProviderFormatId(NEW_CONTENT_PROVIDER_FORMAT_ID);
+        try {
+            whenCreateLoan();
+        } catch (EhubRuntimeException ex) {
+            exception = ex;
+        }
+        thenNotFoundException();
         thenErrorCauseIsUnsupportedLoanPerProduct();
     }
 
@@ -183,8 +189,12 @@ public class LoanBusinessControllerTest {
         thenSearchResultDoesNotContainLoanWithExpectedLmsLoanId();
     }
 
-    private void givenExpectedNotFoundException() {
-        exception.expect(NotFoundException.class);
+    private void givenContentProviderFormatId(final String contentProviderFormatId) {
+        given(formatDecoration.getContentProviderFormatId()).willReturn(contentProviderFormatId);
+    }
+
+    private void thenNotFoundException() {
+        Assert.assertThat(exception, Matchers.is(NotFoundException.class));
     }
 
     private void thenErrorCauseIsUnsupportedLoanPerProduct() {
@@ -209,7 +219,8 @@ public class LoanBusinessControllerTest {
     }
 
     private void thenNewEhubLoanIsSavedInTheEhubDatabase() {
-        InOrder inOrder = inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
+        InOrder inOrder =
+                inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
         inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
         inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class));
         inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class));
