@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ocd;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = {"result"})
 public class BearerToken {

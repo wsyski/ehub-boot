@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 class SupplementDTO {
     @JsonProperty("Name")

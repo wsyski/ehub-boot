@@ -2,9 +2,9 @@ package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.provider.ep.FormatDTO;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.util.Date;
 import java.util.Map;

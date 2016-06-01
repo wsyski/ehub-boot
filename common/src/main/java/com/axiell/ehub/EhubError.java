@@ -17,7 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -118,6 +120,7 @@ public class EhubError implements Serializable {
      */
     @XmlElementWrapper(name = "arguments")
     @XmlElement(name = "argument", required = true)
+    @JsonGetter("arguments")
     public List<ErrorCauseArgument> getArguments() {
         return arguments;
     }
