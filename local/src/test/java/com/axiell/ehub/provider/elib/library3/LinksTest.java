@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import junit.framework.Assert;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

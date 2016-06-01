@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.checkout.ContentLinkDTO;
 import com.axiell.ehub.checkout.SupplementLinkDTO;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 

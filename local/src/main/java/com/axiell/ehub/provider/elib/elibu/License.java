@@ -3,8 +3,8 @@
  */
 package com.axiell.ehub.provider.elib.elibu;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a license, i.e. uniquely one client for at least one term.

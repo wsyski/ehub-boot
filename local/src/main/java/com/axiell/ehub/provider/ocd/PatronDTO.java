@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.Md5Function;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = {"libraryPin", "libraryId", "preferences"})
 public class PatronDTO {

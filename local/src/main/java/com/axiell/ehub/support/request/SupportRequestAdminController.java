@@ -19,7 +19,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.spring.RestClientProxyFactoryBean;
-import org.jboss.resteasy.plugins.providers.jackson.ResteasyJacksonProvider;
+import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.ws.rs.core.MediaType;
@@ -140,7 +140,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
 
     private String toJson(Object dto, Class<?> dtoClass) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ResteasyJacksonProvider provider = new ResteasyJacksonProvider();
+        ResteasyJackson2Provider provider = new ResteasyJackson2Provider();
         try {
             provider.writeTo(dto, dtoClass, null, null, MediaType.APPLICATION_JSON_TYPE, null, baos);
             return new String(baos.toByteArray(), "UTF-8");
