@@ -2,12 +2,10 @@ package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.checkout.ContentLinkDTO;
 import com.axiell.ehub.checkout.SupplementLinkDTO;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.List;
 
-@JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FormatMetadataDTO {
     private List<ContentLinkDTO> contentLinks;

@@ -45,7 +45,7 @@ public class EpCheckoutIT extends AbstractEpIT {
     }
 
     private void thenCheckoutHasDownloadUrl() {
-        assertNotNull(checkout.getContentLinks());
+        assertNotNull(checkout.getFormatMetadata().getContentLinks());
     }
 
 

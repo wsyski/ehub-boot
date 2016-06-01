@@ -1,35 +1,29 @@
 package com.axiell.ehub.provider.ep.lpf;
 
-import com.axiell.ehub.checkout.ContentLinkDTO;
-import com.axiell.ehub.checkout.SupplementLinkDTO;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.util.Date;
-import java.util.List;
 
-@JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
+    @JsonProperty("id")
     private String id;
 
     @JsonUnwrapped
     private FormatMetadataDTO formatMetadata = new FormatMetadataDTO();
 
+    @JsonProperty("expirationDate")
     private Date expirationDate;
 
     public String getId() {
         return id;
     }
 
-    public List<ContentLinkDTO> getContentLinks() {
-        return formatMetadata.getContentLinks();
-    }
-
-    public List<SupplementLinkDTO> getSupplementLinks() {
-        return formatMetadata.getSupplementLinks();
+    public FormatMetadataDTO getFormatMetadata() {
+        return formatMetadata;
     }
 
     public Date getExpirationDate() {

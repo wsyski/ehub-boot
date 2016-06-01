@@ -102,7 +102,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getContentLinks()).willReturn(ContentLinkBuilder.defaultContentLinks().toDTO());
+        given(checkout.getFormatMetadata()).willReturn(FormatMetadataDTOBuilder.defaultFormatMetadataDTO());
     }
 
     private void whenCreateLoan() {

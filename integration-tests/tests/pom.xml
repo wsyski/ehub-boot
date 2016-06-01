@@ -97,7 +97,7 @@
                                     <!--
                                     <daemon>false</daemon>
                                     -->
-                                    <daemon>true</daemon>
+                                    <daemon>false</daemon>
                                     <scanIntervalSeconds>0</scanIntervalSeconds>
                                     <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
                                     <webApp>
