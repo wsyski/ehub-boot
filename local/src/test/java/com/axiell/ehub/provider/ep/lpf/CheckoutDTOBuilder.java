@@ -9,6 +9,6 @@ public class CheckoutDTOBuilder {
     public static final String FORMAT_ID = "formatId";
 
     public static CheckoutDTO defaultCheckoutDTO() {
-        return new CheckoutDTO().id(ID).formatMetadata(FormatMetadataDTOBuilder.defaultFormatMetadataDTO(FORMAT_ID)).expirationDate(new Date());
+        return new CheckoutDTO().id(ID).expirationDate(new Date()).formatMetadata(FormatMetadataDTOBuilder.defaultFormatMetadataDTO());
     }
 }

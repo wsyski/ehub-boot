@@ -6,12 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +35,8 @@ public class CheckoutDTOTest {
         expCheckoutMetadataDTO =
                 new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2")
                         .format(formatDTO);
-        expCheckoutDTO = new CheckoutDTO().metadata(expCheckoutMetadataDTO).contentLinks(ContentLinkBuilder.defaultContentLinks().toDTO()).supplementLinks(SupplementLinkBuilder.defaultSupplementLinks().toDTO());
+        expCheckoutDTO = new CheckoutDTO().metadata(expCheckoutMetadataDTO).contentLinks(ContentLinkBuilder.defaultContentLinks().toDTO())
+                .supplementLinks(SupplementLinkBuilder.defaultSupplementLinks().toDTO());
     }
 
     @Test

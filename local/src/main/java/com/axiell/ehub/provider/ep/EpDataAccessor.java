@@ -79,8 +79,9 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
     }
 
     private Content makeContent(final FormatDecoration formatDecoration, final CheckoutDTO checkoutDTO) {
-        final List<String> hrefs = ContentLinks.fromDTO(checkoutDTO.getContentLinks()).hrefs();
+        final FormatMetadataDTO formatMetadataDTO=checkoutDTO.getFormatMetadata();
+        final List<String> hrefs = ContentLinks.fromDTO(formatMetadataDTO.getContentLinks()).hrefs();
         final ContentLinks contentLinks = createContentLinks(hrefs, formatDecoration);
-        return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(checkoutDTO.getSupplementLinks()));
+        return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(formatMetadataDTO.getSupplementLinks()));
     }
 }
