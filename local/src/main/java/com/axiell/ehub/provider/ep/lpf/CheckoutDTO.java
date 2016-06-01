@@ -1,21 +1,21 @@
 package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.Date;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
-    @JsonProperty("id")
     private String id;
-
     @JsonUnwrapped
     private FormatMetadataDTO formatMetadata = new FormatMetadataDTO();
-
-    @JsonProperty("expirationDate")
     private Date expirationDate;
 
     public String getId() {
@@ -30,18 +30,34 @@ public class CheckoutDTO {
         return expirationDate;
     }
 
-    public CheckoutDTO id(final String id) {
+    public CheckoutDTO(final String id, final FormatMetadataDTO formatMetadata, final Date expirationDate) {
         this.id = id;
-        return this;
-    }
-
-    public CheckoutDTO formatMetadata(final FormatMetadataDTO formatMetadata) {
         this.formatMetadata = formatMetadata;
-        return this;
+        this.expirationDate = expirationDate;
     }
 
-    public CheckoutDTO expirationDate(final Date expirationDate) {
-        this.expirationDate = expirationDate;
-        return this;
+    private CheckoutDTO() {
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof CheckoutDTO)) {
+            return false;
+        }
+        final CheckoutDTO rhs = (CheckoutDTO) obj;
+        return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(17, 31).append(getId()).toHashCode();
+    }
+
+    @Override
+    public final String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

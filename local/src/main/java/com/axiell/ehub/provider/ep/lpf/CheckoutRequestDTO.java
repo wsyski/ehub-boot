@@ -1,18 +1,20 @@
 package com.axiell.ehub.provider.ep.lpf;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutRequestDTO {
-    @JsonProperty(value = "recordId")
     private String recordId;
-    @JsonProperty(value = "formatId")
     private String formatId;
 
     public CheckoutRequestDTO(final String recordId, final String formatId) {
         this.recordId = recordId;
         this.formatId = formatId;
+    }
+
+    private CheckoutRequestDTO() {
     }
 
     public String getRecordId() {
