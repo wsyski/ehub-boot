@@ -1,21 +1,16 @@
 package com.axiell.ehub.provider.ep.lpf;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import com.axiell.ehub.DTOTestFixture;
 
-import java.io.IOException;
+public class CheckoutDTOTest extends DTOTestFixture<CheckoutDTO> {
 
-public class CheckoutDTOTest {
-    private CheckoutDTO underTest = CheckoutDTOBuilder.defaultCheckoutDTO();
+    @Override
+    protected CheckoutDTO getTestInstance() {
+        return CheckoutDTOBuilder.defaultCheckoutDTO();
+    }
 
-    @Test
-    public void serialize() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(underTest);
-        System.out.println(json);
-        CheckoutDTO checkoutDTO = objectMapper.readValue(json, CheckoutDTO.class);
-        Assert.assertThat(checkoutDTO.getId(), Matchers.is(underTest.getId()));
+    @Override
+    protected Class<CheckoutDTO> getTestClass() {
+        return CheckoutDTO.class;
     }
 }
