@@ -14,6 +14,15 @@ public class RecordDTO {
     private String id;
     private List<FormatDTO> formats;
 
+
+    public RecordDTO(final String id, final List<FormatDTO> formats) {
+        this.id = id;
+        this.formats = formats;
+    }
+
+    private RecordDTO() {
+    }
+
     public String getId() {
         return id;
     }
