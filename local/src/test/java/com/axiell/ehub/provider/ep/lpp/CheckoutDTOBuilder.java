@@ -9,7 +9,7 @@ import java.util.Date;
 public class CheckoutDTOBuilder {
     public static final String ID = "id";
 
-    public static CheckoutDTO defaultCheckoutDTO() {
-        return new CheckoutDTO(ID, Collections.singletonMap(FormatBuilder.downloadableFormat().id(), FormatMetadataDTOBuilder.defaultFormatMetadataDTO()),new Date());
+    public static LppCheckoutDTO defaultCheckoutDTO() {
+        return new LppCheckoutDTO(ID, Collections.singletonMap(FormatBuilder.downloadableFormat().id(), FormatMetadataDTOBuilder.defaultFormatMetadataDTO()),new Date());
     }
 }

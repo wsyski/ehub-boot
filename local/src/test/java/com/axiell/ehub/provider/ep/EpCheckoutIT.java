@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.provider.ep.lpf.CheckoutDTO;
+import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
 import com.axiell.ehub.util.IFinder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertNotNull;
 @RunWith(MockitoJUnitRunner.class)
 public class EpCheckoutIT extends AbstractEpIT {
 
-    private CheckoutDTO checkout;
+    private LpfCheckoutDTO checkout;
 
     @Ignore
     @Test

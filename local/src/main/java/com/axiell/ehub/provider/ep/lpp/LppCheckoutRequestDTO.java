@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.ep.lpf;
+package com.axiell.ehub.provider.ep.lpp;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,24 +8,18 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutRequestDTO {
+public class LppCheckoutRequestDTO {
     private String recordId;
-    private String formatId;
 
-    public CheckoutRequestDTO(final String recordId, final String formatId) {
+    public LppCheckoutRequestDTO(final String recordId) {
         this.recordId = recordId;
-        this.formatId = formatId;
     }
 
-    private CheckoutRequestDTO() {
+    private LppCheckoutRequestDTO() {
     }
 
     public String getRecordId() {
         return recordId;
-    }
-
-    public String getFormatId() {
-        return formatId;
     }
 
     @Override
@@ -33,16 +27,16 @@ public class CheckoutRequestDTO {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof CheckoutRequestDTO)) {
+        if (!(obj instanceof LppCheckoutRequestDTO)) {
             return false;
         }
-        final CheckoutRequestDTO rhs = (CheckoutRequestDTO) obj;
-        return new EqualsBuilder().append(getRecordId(), rhs.getRecordId()).append(getFormatId(), rhs.getFormatId()).isEquals();
+        final LppCheckoutRequestDTO rhs = (LppCheckoutRequestDTO) obj;
+        return new EqualsBuilder().append(getRecordId(), rhs.getRecordId()).isEquals();
     }
 
     @Override
     public final int hashCode() {
-        return new HashCodeBuilder(17, 31).append(getRecordId()).append(getFormatId()).toHashCode();
+        return new HashCodeBuilder(17, 31).append(getRecordId()).toHashCode();
     }
 
     @Override
@@ -50,3 +44,4 @@ public class CheckoutRequestDTO {
         return ReflectionToStringBuilder.toString(this);
     }
 }
+

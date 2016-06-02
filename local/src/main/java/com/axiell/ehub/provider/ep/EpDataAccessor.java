@@ -10,8 +10,8 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ep.lpf.CheckoutDTO;
-import com.axiell.ehub.provider.ep.lpf.IEpFacade;
+import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
+import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -29,7 +29,7 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(EpDataAccessor.class);
 
     @Autowired
-    private IEpFacade epFacade;
+    private ILpfEpFacade epFacade;
     @Autowired
     private IFormatFactory formatFactory;
 
@@ -55,9 +55,9 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final CheckoutDTO checkoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
-        final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), checkoutDTO);
+        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
+        final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lpfCheckoutDTO);
+        final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), lpfCheckoutDTO);
         return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
@@ -68,18 +68,18 @@ public class EpDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final CheckoutDTO checkoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
-        return makeContent(formatDecoration, checkoutDTO);
+        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
+        return makeContent(formatDecoration, lpfCheckoutDTO);
     }
 
-    private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final CheckoutDTO checkoutDTO) {
-        final Date expirationDate = checkoutDTO.getExpirationDate();
-        final String loanId = checkoutDTO.getId();
+    private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final LpfCheckoutDTO lpfCheckoutDTO) {
+        final Date expirationDate = lpfCheckoutDTO.getExpirationDate();
+        final String loanId = lpfCheckoutDTO.getId();
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private Content makeContent(final FormatDecoration formatDecoration, final CheckoutDTO checkoutDTO) {
-        final FormatMetadataDTO formatMetadataDTO=checkoutDTO.getFormatMetadata();
+    private Content makeContent(final FormatDecoration formatDecoration, final LpfCheckoutDTO lpfCheckoutDTO) {
+        final FormatMetadataDTO formatMetadataDTO= lpfCheckoutDTO.getFormatMetadata();
         final List<String> hrefs = ContentLinks.fromDTO(formatMetadataDTO.getContentLinks()).hrefs();
         final ContentLinks contentLinks = createContentLinks(hrefs, formatDecoration);
         return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(formatMetadataDTO.getSupplementLinks()));

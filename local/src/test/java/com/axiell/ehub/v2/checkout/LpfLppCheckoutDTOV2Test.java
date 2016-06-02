@@ -17,8 +17,8 @@ import static com.axiell.ehub.v2.checkout.CheckoutMetadataDTOMatcher_v2.matchesE
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class CheckoutDTOV2Test {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutDTOV2Test.class);
+public class LpfLppCheckoutDTOV2Test {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LpfLppCheckoutDTOV2Test.class);
     private ObjectMapper mapper;
     private CheckoutMetadataDTO_v2 expCheckoutMetadataDTO;
     private ContentLinkDTO expContentLinkDTO;

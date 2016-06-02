@@ -3,8 +3,8 @@ package com.axiell.ehub.provider.ep;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
-import com.axiell.ehub.provider.ep.lpf.EpFacade;
-import com.axiell.ehub.provider.ep.lpf.IEpFacade;
+import com.axiell.ehub.provider.ep.lpf.LpfEpFacade;
+import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
 import org.junit.Before;
 import org.mockito.Mock;
 
@@ -23,13 +23,13 @@ public class AbstractEpIT extends AbstractContentProviderIT {
     private static final String LIBRARY_CARD = "D0200000000000";
 
 
-    protected IEpFacade underTest;
+    protected ILpfEpFacade underTest;
     @Mock
     protected Patron patron;
 
     @Before
     public void setUpUnderTest() {
-        underTest = new EpFacade();
+        underTest = new LpfEpFacade();
     }
 
     protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {

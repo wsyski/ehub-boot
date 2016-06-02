@@ -8,15 +8,15 @@ import javax.ws.rs.core.MediaType;
 @Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface IEpResource {
+public interface ILpfEpResource {
 
     @POST
     @Path("checkouts")
-    CheckoutDTO checkout(CheckoutRequestDTO checkoutRequest);
+    LpfCheckoutDTO checkout(LpfCheckoutRequestDTO checkoutRequest);
 
     @GET
     @Path("checkouts/{id}")
-    CheckoutDTO getCheckout(@PathParam("id") String checkoutId);
+    LpfCheckoutDTO getCheckout(@PathParam("id") String checkoutId);
 
     @GET
     @Path("records/{id}")
