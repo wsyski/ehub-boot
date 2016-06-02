@@ -12,7 +12,7 @@ import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutDTO {
+public class LppCheckoutDTO {
     private String id;
 
     private Map<String, FormatMetadataDTO> formatsMetadata;
@@ -31,13 +31,13 @@ public class CheckoutDTO {
         return expirationDate;
     }
 
-    public CheckoutDTO(final String id, final Map<String, FormatMetadataDTO> formatsMetadata, final Date expirationDate) {
+    public LppCheckoutDTO(final String id, final Map<String, FormatMetadataDTO> formatsMetadata, final Date expirationDate) {
         this.id = id;
         this.formatsMetadata = formatsMetadata;
         this.expirationDate = expirationDate;
     }
 
-    private CheckoutDTO() {
+    private LppCheckoutDTO() {
     }
 
     @Override
@@ -45,10 +45,10 @@ public class CheckoutDTO {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof CheckoutDTO)) {
+        if (!(obj instanceof LppCheckoutDTO)) {
             return false;
         }
-        final CheckoutDTO rhs = (CheckoutDTO) obj;
+        final LppCheckoutDTO rhs = (LppCheckoutDTO) obj;
         return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
     }
 

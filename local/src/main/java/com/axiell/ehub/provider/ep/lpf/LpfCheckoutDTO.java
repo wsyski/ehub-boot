@@ -12,7 +12,7 @@ import java.util.Date;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutDTO {
+public class LpfCheckoutDTO {
     private String id;
     @JsonUnwrapped
     private FormatMetadataDTO formatMetadata = new FormatMetadataDTO();
@@ -30,13 +30,13 @@ public class CheckoutDTO {
         return expirationDate;
     }
 
-    public CheckoutDTO(final String id, final FormatMetadataDTO formatMetadata, final Date expirationDate) {
+    public LpfCheckoutDTO(final String id, final FormatMetadataDTO formatMetadata, final Date expirationDate) {
         this.id = id;
         this.formatMetadata = formatMetadata;
         this.expirationDate = expirationDate;
     }
 
-    private CheckoutDTO() {
+    private LpfCheckoutDTO() {
     }
 
     @Override
@@ -44,10 +44,10 @@ public class CheckoutDTO {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof CheckoutDTO)) {
+        if (!(obj instanceof LpfCheckoutDTO)) {
             return false;
         }
-        final CheckoutDTO rhs = (CheckoutDTO) obj;
+        final LpfCheckoutDTO rhs = (LpfCheckoutDTO) obj;
         return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
     }
 

@@ -1,13 +1,12 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import com.axiell.ehub.provider.ep.lpf.CheckoutDTO;
-import com.axiell.ehub.provider.ep.lpf.IEpFacade;
+import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
+import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -23,7 +22,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     private EpDataAccessor underTest;
     @Mock
-    private IEpFacade epFacade;
+    private ILpfEpFacade epFacade;
     @Mock
     private InternalServerErrorException internalServerErrorException;
     @Mock
@@ -33,7 +32,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
     @Mock
     private FormatDTO format;
     @Mock
-    private CheckoutDTO checkout;
+    private LpfCheckoutDTO checkout;
 
     @Before
     public void setUp() {

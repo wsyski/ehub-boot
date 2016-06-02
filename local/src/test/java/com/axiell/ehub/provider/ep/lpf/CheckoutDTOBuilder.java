@@ -7,7 +7,7 @@ import java.util.Date;
 public class CheckoutDTOBuilder {
     public static final String ID = "id";
 
-    public static CheckoutDTO defaultCheckoutDTO() {
-        return new CheckoutDTO(ID, FormatMetadataDTOBuilder.defaultFormatMetadataDTO(), new Date());
+    public static LpfCheckoutDTO defaultCheckoutDTO() {
+        return new LpfCheckoutDTO(ID, FormatMetadataDTOBuilder.defaultFormatMetadataDTO(), new Date());
     }
 }
