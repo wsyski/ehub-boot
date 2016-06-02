@@ -4,7 +4,7 @@ import com.axiell.ehub.provider.ep.FormatMetadataDTOBuilder;
 
 import java.util.Date;
 
-public class CheckoutDTOBuilder {
+public class LppCheckoutDTOBuilder {
     public static final String ID = "id";
 
     public static LpfCheckoutDTO defaultCheckoutDTO() {
