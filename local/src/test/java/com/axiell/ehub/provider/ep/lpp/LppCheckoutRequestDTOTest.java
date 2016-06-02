@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.DTOTestFixture;
 
-public class LpfLppCheckoutRequestDTOTest extends DTOTestFixture<LppCheckoutRequestDTO> {
+public class LppCheckoutRequestDTOTest extends DTOTestFixture<LppCheckoutRequestDTO> {
 
     @Override
     protected LppCheckoutRequestDTO getTestInstance() {
