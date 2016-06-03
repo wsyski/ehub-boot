@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
+import com.axiell.ehub.provider.ep.ICheckoutDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LppCheckoutDTO {
+public class LppCheckoutDTO implements ICheckoutDTO {
     private String id;
 
     private Map<String, FormatMetadataDTO> formatsMetadata;
