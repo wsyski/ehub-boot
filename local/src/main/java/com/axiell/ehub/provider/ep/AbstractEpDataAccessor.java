@@ -14,8 +14,6 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -37,7 +35,7 @@ public abstract class AbstractEpDataAccessor<F extends IEpFacade> extends Abstra
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final RecordDTO formatsDTO = getFacade().getRecord(contentProviderConsumer, patron, contentProviderRecordId);
+        final RecordDTO formatsDTO = getEpFacade().getRecord(contentProviderConsumer, patron, contentProviderRecordId);
         final Formats formats = new Formats();
         for (FormatDTO formatDTO : formatsDTO.getFormats()) {
             final Format format = formatFactory.create(contentProvider, formatDTO.getId(), language);
@@ -46,7 +44,7 @@ public abstract class AbstractEpDataAccessor<F extends IEpFacade> extends Abstra
         return formats;
     }
 
-    protected abstract F getFacade();
+    protected abstract F getEpFacade();
 
     protected IEhubExceptionFactory getEhubExceptionFactory() {
         return ehubExceptionFactory;

@@ -90,8 +90,8 @@ public abstract class ContentProviderDataAccessorTestFixture {
 
     protected void givenContentProviderConsumerInCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
-
     }
+
 
     protected void givenPatronInCommandData() {
         given(commandData.getPatron()).willReturn(patron);
@@ -135,11 +135,18 @@ public abstract class ContentProviderDataAccessorTestFixture {
         given(commandData.getContentProviderLoanMetadata()).willReturn(loanMetadata);
     }
 
+    protected void givenContentProviderLoanIdFromLoanMetadata() {
+        given(loanMetadata.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
+    }
+
     protected void givenTextBundle() {
         givenFormatDecorationFromContentProvider();
         given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
     }
 
+    protected void givenContentProviderFormatIdFromFormatDecoration() {
+        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
+    }
 
     protected void givenFormatDecorationFromContentProvider() {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);

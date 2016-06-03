@@ -1,13 +1,8 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
-import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
-import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +11,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
-import java.util.Date;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
-public abstract class EpDataAccessorTestFixture<F extends IEpFacade, C extends ICheckoutDTO, A extends AbstractEpDataAccessor> extends ContentProviderDataAccessorTestFixture {
+public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extends AbstractEpDataAccessor> extends ContentProviderDataAccessorTestFixture {
 
-    private A underTest;
-    @Mock
-    private F epFacade;
+    protected A underTest;
+
     @Mock
     private InternalServerErrorException internalServerErrorException;
     @Mock
@@ -44,8 +36,6 @@ public abstract class EpDataAccessorTestFixture<F extends IEpFacade, C extends I
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
     }
 
-    protected abstract A createEpDataAccessor();
-
     @Test
     public void getFormats() {
         givenLanguageInCommandData();
@@ -61,8 +51,12 @@ public abstract class EpDataAccessorTestFixture<F extends IEpFacade, C extends I
         thenActualFormatEqualsExpected();
     }
 
+    protected abstract A createEpDataAccessor();
+
+    protected abstract IEpFacade getEpFacade();
+
     private void givenEpFacadeReturnsFormats() {
-        given(epFacade.getRecord(contentProviderConsumer, patron, RECORD_ID)).willReturn(record);
+        given(getEpFacade().getRecord(contentProviderConsumer, patron, RECORD_ID)).willReturn(record);
         given(record.getFormats()).willReturn(Collections.singletonList(format));
         given(format.getId()).willReturn(FORMAT_ID);
     }
@@ -71,7 +65,7 @@ public abstract class EpDataAccessorTestFixture<F extends IEpFacade, C extends I
         actualFormats = underTest.getFormats(commandData);
     }
 
-    private void whenCreateLoan() {
+    protected void whenCreateLoan() {
         actualLoan = underTest.createLoan(commandData);
     }
 
