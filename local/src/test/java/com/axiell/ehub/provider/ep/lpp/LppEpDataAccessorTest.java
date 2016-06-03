@@ -1,9 +1,10 @@
-package com.axiell.ehub.provider.ep.lpf;
+package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ep.EpDataAccessorTestFixture;
 import com.axiell.ehub.provider.ep.FormatMetadataDTOBuilder;
+import com.axiell.ehub.provider.record.format.FormatBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,19 +12,20 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckoutDTO, LpfEpDataAccessor> {
+public class LppEpDataAccessorTest extends EpDataAccessorTestFixture<LppCheckoutDTO, LppEpDataAccessor> {
 
     @Mock
-    protected LpfEpFacade epFacade;
+    protected LppEpFacade epFacade;
 
     @Mock
-    private LpfCheckoutDTO checkout;
+    private LppCheckoutDTO checkout;
 
     @Before
     public void setEpFacade() {
@@ -32,6 +34,7 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
 
     @Test
     public void createLoan() {
+        givenLanguageInCommandData();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -52,6 +55,7 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
         givenContentProviderLoanMetadataInCommandData();
         givenContentProviderLoanIdFromLoanMetadata();
         givenContentProviderConsumerInCommandData();
+        givenContentProviderFormatIdFromFormatDecoration();
         givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
@@ -59,7 +63,7 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
 
 
     public void givenCheckout() {
-        given(epFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
+        given(epFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenGetCheckout() {
@@ -69,16 +73,16 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getFormatMetadata()).willReturn(FormatMetadataDTOBuilder.defaultFormatMetadataDTO());
+        given(checkout.getFormatsMetadata()).willReturn(Collections.singletonMap(FormatBuilder.downloadableFormat().id(),FormatMetadataDTOBuilder.defaultFormatMetadataDTO()));
     }
 
     @Override
-    protected LpfEpDataAccessor createEpDataAccessor() {
-        return new LpfEpDataAccessor();
+    protected LppEpDataAccessor createEpDataAccessor() {
+        return new LppEpDataAccessor();
     }
 
     @Override
-    protected LpfEpFacade getEpFacade() {
+    protected LppEpFacade getEpFacade() {
         return epFacade;
     }
 

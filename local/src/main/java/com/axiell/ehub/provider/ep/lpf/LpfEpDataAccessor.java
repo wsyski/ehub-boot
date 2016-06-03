@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
 
     @Autowired
-    private ILpfEpFacade lpfEpFacade;
+    private ILpfEpFacade epFacade;
 
     @Override
-    protected ILpfEpFacade getFacade() {
-        return lpfEpFacade;
+    protected ILpfEpFacade getEpFacade() {
+        return epFacade;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
-        final LpfCheckoutDTO lpfCheckoutDTO = lpfEpFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
+        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lpfCheckoutDTO);
         final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), lpfCheckoutDTO.getFormatMetadata());
         return new ContentProviderLoan(loanMetadata, contentLinks);
@@ -41,7 +41,7 @@ public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final LpfCheckoutDTO lpfCheckoutDTO = lpfEpFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
+        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
         return makeContent(formatDecoration, lpfCheckoutDTO.getFormatMetadata());
     }
 }
