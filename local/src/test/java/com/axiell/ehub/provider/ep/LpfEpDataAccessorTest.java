@@ -7,6 +7,7 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
 import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
+import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -18,9 +19,9 @@ import java.util.Date;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class LpfEpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
-    private EpDataAccessor underTest;
+    private LpfEpDataAccessor underTest;
     @Mock
     private ILpfEpFacade epFacade;
     @Mock
@@ -36,7 +37,7 @@ public class EpDataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     @Before
     public void setUp() {
-        underTest = new EpDataAccessor();
+        underTest = new LpfEpDataAccessor();
         ReflectionTestUtils.setField(underTest, "epFacade", epFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);

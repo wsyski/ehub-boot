@@ -78,7 +78,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContentProviderDataAccessor() {
-        given(contentProviderDataAccessorFactory.getInstance(any(String.class))).willReturn(contentProviderDataAccessor);
+        given(contentProviderDataAccessorFactory.getInstance(any(ContentProvider.class))).willReturn(contentProviderDataAccessor);
     }
 
     @Before
@@ -135,7 +135,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenLoanIsCreatedByContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
         inOrder.verify(contentProviderDataAccessor).createLoan(argThat(new CreateLoanCommandData()));
     }
 
@@ -145,7 +145,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenContentIsRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
         inOrder.verify(contentProviderDataAccessor).getContent(argThat(new GetContentCommandData()));
     }
 
@@ -155,7 +155,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
-        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(String.class));
+        inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
         inOrder.verify(contentProviderDataAccessor).getFormats(argThat(new GetFormatsCommandData()));
     }
 

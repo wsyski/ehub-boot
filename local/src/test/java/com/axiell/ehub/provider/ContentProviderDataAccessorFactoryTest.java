@@ -4,17 +4,22 @@ import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
-import com.axiell.ehub.provider.ep.EpDataAccessor;
+import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
+import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.hamcrest.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static com.axiell.ehub.provider.ContentProvider.*;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFactoryTest {
@@ -22,7 +27,9 @@ public class ContentProviderDataAccessorFactoryTest {
 
     private IContentProviderDataAccessorFactory underTest;
     @Mock
-    private EpDataAccessor epDataAccessor;
+    private LpfEpDataAccessor lpfEpDataAccessor;
+    @Mock
+    private LppEpDataAccessor lppEpDataAccessor;
     @Mock
     private ElibUDataAccessor elibUDataAccessor;
     @Mock
@@ -37,14 +44,16 @@ public class ContentProviderDataAccessorFactoryTest {
     private F1DataAccessor f1DataAccessor;
     @Mock
     private OcdDataAccessor ocdDataAccessor;
+    @Mock
+    private ContentProvider contentProvider;
 
-    private String contentProviderName;
     private IContentProviderDataAccessor actualContentProviderDataAccessor;
 
     @Before
     public void setUp() {
         underTest = new ContentProviderDataAccessorFactory();
-        ReflectionTestUtils.setField(underTest, "epDataAccessor", epDataAccessor);
+        ReflectionTestUtils.setField(underTest, "lpfEpDataAccessor", lpfEpDataAccessor);
+        ReflectionTestUtils.setField(underTest, "lppEpDataAccessor", lppEpDataAccessor);
         ReflectionTestUtils.setField(underTest, "elibUDataAccessor", elibUDataAccessor);
         ReflectionTestUtils.setField(underTest, "borrowBoxDataAccessor", borrowBoxDataAccessor);
         ReflectionTestUtils.setField(underTest, "askewsDataAccessor", askewsDataAccessor);
@@ -55,126 +64,80 @@ public class ContentProviderDataAccessorFactoryTest {
     }
 
     @Test
-    public void getEpDataAccessor() {
-        givenEpAsContentProviderName();
+    public void lpfEpDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_TEST_EP, false);
         whenGetContentProviderDataAccessor();
-        thenEpDataAccessorIsReturned();
+        thenExpectedDataAccessorIsReturned(LpfEpDataAccessor.class);
     }
 
-    private void givenEpAsContentProviderName() {
-        contentProviderName = CONTENT_PROVIDER_TEST_EP;
+    @Test
+    public void lppEpDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_TEST_EP, true);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(LppEpDataAccessor.class);
+    }
+
+    @Test
+    public void elibUDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_ELIBU, true);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(ElibUDataAccessor.class);
+
+    }
+
+    @Test
+    public void elib3DataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_ELIB3, true);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(Elib3DataAccessor.class);
+
+    }
+
+    @Test
+    public void borrowboxDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_BORROWBOX, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(BorrowBoxDataAccessor.class);
+    }
+
+    @Test
+    public void askewsDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_ASKEWS, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(AskewsDataAccessor.class);
+    }
+
+    @Test
+    public void overdriveDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_OVERDRIVE, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(OverDriveDataAccessor.class);
+    }
+
+    @Test
+    public void f1DataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_F1, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(F1DataAccessor.class);
+    }
+
+    @Test
+    public void ocdDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_OCD, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(OcdDataAccessor.class);
     }
 
     private void whenGetContentProviderDataAccessor() {
-        actualContentProviderDataAccessor = underTest.getInstance(contentProviderName);
+        actualContentProviderDataAccessor = underTest.getInstance(contentProvider);
     }
 
-    private void thenEpDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof EpDataAccessor);
+    private void thenExpectedDataAccessorIsReturned(final Class clazz) {
+        Assert.assertThat(actualContentProviderDataAccessor, Matchers.instanceOf(clazz));
     }
 
-    @Test
-    public void getElibUDataAccessor() {
-        givenElibUAsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenElibUDataAccessorIsReturned();
-    }
-
-    private void givenElibUAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIBU;
-    }
-
-    private void thenElibUDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof ElibUDataAccessor);
-    }
-
-    @Test
-    public void getPublitDataAccessor() {
-        givenPublitAsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenPublitDataAccessorIsReturned();
-    }
-
-    private void givenPublitAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_BORROWBOX;
-    }
-
-    private void thenPublitDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof BorrowBoxDataAccessor);
-    }
-
-    @Test
-    public void getAskewsDataAccessor() {
-        givenAskewsAsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenAskewsDataAccessorIsReturned();
-    }
-
-    private void givenAskewsAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_ASKEWS;
-    }
-
-    private void thenAskewsDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof AskewsDataAccessor);
-    }
-
-    @Test
-    public void getOverDriveDataAccessor() {
-        givenOverDriveAsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenOverDriveDataAccessorIsReturned();
-    }
-
-    private void givenOverDriveAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_OVERDRIVE;
-    }
-
-    private void thenOverDriveDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof OverDriveDataAccessor);
-    }
-
-    @Test
-    public void getElib3DataAccessor() {
-        givenElib3AsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenElib3DataAccessorIsReturned();
-    }
-
-    private void givenElib3AsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_ELIB3;
-    }
-
-    private void thenElib3DataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof Elib3DataAccessor);
-    }
-
-    @Test
-    public void getF1DataAccessor() {
-        givenF1AsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenF1DataAccessorIsReturned();
-    }
-
-    private void givenF1AsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_F1;
-    }
-
-    private void thenF1DataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof F1DataAccessor);
-    }
-
-    @Test
-    public void getOcdDataAccessor() {
-        givenOcdAsContentProviderName();
-        whenGetContentProviderDataAccessor();
-        thenOcdDataAccessorIsReturned();
-    }
-
-    private void givenOcdAsContentProviderName() {
-        contentProviderName = ContentProvider.CONTENT_PROVIDER_OCD;
-    }
-
-    private void thenOcdDataAccessorIsReturned() {
-        Assert.assertTrue(actualContentProviderDataAccessor instanceof OcdDataAccessor);
+    private void givenContentProvider(final String name, final boolean isLoanPerProduct) {
+        given(contentProvider.getName()).willReturn(name);
+        given(contentProvider.isLoanPerProduct()).willReturn(isLoanPerProduct);
     }
 }
