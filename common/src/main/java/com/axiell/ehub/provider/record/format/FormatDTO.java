@@ -2,12 +2,15 @@ package com.axiell.ehub.provider.record.format;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FormatDTO implements Serializable {
     private String id;
@@ -62,5 +65,27 @@ public class FormatDTO implements Serializable {
     public FormatDTO platforms(final Set<String> platforms) {
         this.platforms = platforms;
         return this;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof FormatDTO)) {
+            return false;
+        }
+        final FormatDTO rhs = (FormatDTO) obj;
+        return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(17, 31).append(getId()).toHashCode();
+    }
+
+    @Override
+    public final String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }
