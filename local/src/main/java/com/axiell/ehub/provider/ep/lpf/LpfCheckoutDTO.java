@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
+import com.axiell.ehub.provider.ep.ICheckoutDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LpfCheckoutDTO {
+public class LpfCheckoutDTO implements ICheckoutDTO {
     private String id;
     @JsonUnwrapped
     private FormatMetadataDTO formatMetadata = new FormatMetadataDTO();

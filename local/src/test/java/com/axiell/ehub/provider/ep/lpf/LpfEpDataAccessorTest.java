@@ -1,13 +1,13 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
-import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
-import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
+import com.axiell.ehub.provider.ep.FormatDTO;
+import com.axiell.ehub.provider.ep.FormatMetadataDTOBuilder;
+import com.axiell.ehub.provider.ep.RecordDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -23,7 +23,7 @@ public class LpfEpDataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     private LpfEpDataAccessor underTest;
     @Mock
-    private ILpfEpFacade epFacade;
+    private ILpfEpFacade lpfEpFacade;
     @Mock
     private InternalServerErrorException internalServerErrorException;
     @Mock
@@ -38,9 +38,10 @@ public class LpfEpDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     @Before
     public void setUp() {
         underTest = new LpfEpDataAccessor();
-        ReflectionTestUtils.setField(underTest, "epFacade", epFacade);
+        ReflectionTestUtils.setField(underTest, "lpfEpFacade", lpfEpFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
+        ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class LpfEpDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenEpFacadeReturnsFormats() {
-        given(epFacade.getRecord(contentProviderConsumer, patron, RECORD_ID)).willReturn(record);
+        given(lpfEpFacade.getRecord(contentProviderConsumer, patron, RECORD_ID)).willReturn(record);
         given(record.getFormats()).willReturn(Collections.singletonList(format));
         given(format.getId()).willReturn(FORMAT_ID);
     }
@@ -92,11 +93,11 @@ public class LpfEpDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     public void givenCheckout() {
-        given(epFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
+        given(lpfEpFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenGetCheckout() {
-        given(epFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class))).willReturn(checkout);
+        given(lpfEpFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenCompleteCheckout() {

@@ -1,55 +1,28 @@
 package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.checkout.Content;
-import com.axiell.ehub.checkout.ContentLinks;
-import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ep.FormatDTO;
+import com.axiell.ehub.provider.ep.AbstractEpDataAccessor;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import com.axiell.ehub.provider.ep.RecordDTO;
-import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
-import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
-import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
-import com.axiell.ehub.provider.record.format.IFormatFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
+import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
 
 @Component
-public class LppEpDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LppEpDataAccessor.class);
+public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
 
     @Autowired
-    private ILpfEpFacade epFacade;
-    @Autowired
-    private IFormatFactory formatFactory;
+    private ILppEpFacade lppEpFacade;
 
     @Override
-    public Formats getFormats(final CommandData data) {
-        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final Patron patron = data.getPatron();
-        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        final String language = data.getLanguage();
-        final String contentProviderRecordId = data.getContentProviderRecordId();
-        final RecordDTO formatsDTO = epFacade.getRecord(contentProviderConsumer, patron, contentProviderRecordId);
-        final Formats formats = new Formats();
-        for (FormatDTO formatDTO : formatsDTO.getFormats()) {
-            final Format format = formatFactory.create(contentProvider, formatDTO.getId(), language);
-            formats.addFormat(format);
-        }
-        return formats;
+    protected ILppEpFacade getFacade() {
+        return lppEpFacade;
     }
 
     @Override
@@ -57,10 +30,13 @@ public class LppEpDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final String contentProviderFormatId = data.getContentProviderFormatId();
-        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
-        final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lpfCheckoutDTO);
-        final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), lpfCheckoutDTO);
+        final LppCheckoutDTO lppCheckoutDTO = lppEpFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId);
+        final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lppCheckoutDTO);
+        final FormatDecoration formatDecoration = loanMetadata.getFirstFormatDecoration();
+        final String language = data.getLanguage();
+        final FormatMetadataDTO formatMetadataDTO =
+                getFormatMetadataDTO(formatDecoration.getContentProviderFormatId(), lppCheckoutDTO, contentProviderConsumer, language);
+        final Content contentLinks = makeContent(formatDecoration, formatMetadataDTO);
         return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
@@ -71,20 +47,20 @@ public class LppEpDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final LpfCheckoutDTO lpfCheckoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
-        return makeContent(formatDecoration, lpfCheckoutDTO);
+        final LppCheckoutDTO lppCheckoutDTO = lppEpFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
+        final String language = data.getLanguage();
+        final FormatMetadataDTO formatMetadataDTO =
+                getFormatMetadataDTO(formatDecoration.getContentProviderFormatId(), lppCheckoutDTO, contentProviderConsumer, language);
+        return makeContent(formatDecoration, formatMetadataDTO);
     }
 
-    private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final LpfCheckoutDTO lpfCheckoutDTO) {
-        final Date expirationDate = lpfCheckoutDTO.getExpirationDate();
-        final String loanId = lpfCheckoutDTO.getId();
-        return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
-    }
-
-    private Content makeContent(final FormatDecoration formatDecoration, final LpfCheckoutDTO lpfCheckoutDTO) {
-        final FormatMetadataDTO formatMetadataDTO= lpfCheckoutDTO.getFormatMetadata();
-        final List<String> hrefs = ContentLinks.fromDTO(formatMetadataDTO.getContentLinks()).hrefs();
-        final ContentLinks contentLinks = createContentLinks(hrefs, formatDecoration);
-        return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(formatMetadataDTO.getSupplementLinks()));
+    private FormatMetadataDTO getFormatMetadataDTO(final String contentProviderFormatId, final LppCheckoutDTO lppCheckoutDTO,
+                                                  final ContentProviderConsumer contentProviderConsumer, final String language) {
+        FormatMetadataDTO formatMetadataDTO = lppCheckoutDTO.getFormatsMetadata().get(contentProviderFormatId);
+        if (formatMetadataDTO == null) {
+            throw getEhubExceptionFactory()
+                    .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CREATE_LOAN_FAILED, language);
+        }
+        return formatMetadataDTO;
     }
 }
