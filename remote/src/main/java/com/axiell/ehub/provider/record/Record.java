@@ -4,17 +4,19 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Record implements Serializable {
     private final RecordDTO recordDTO;
-    private final List<Format> formats;
 
     public Record(RecordDTO recordDTO) {
         this.recordDTO = recordDTO;
-        formats = Lists.transform(recordDTO.getFormats(), new FormatDTOToFormatFunction());
     }
 
     public String id() {
@@ -22,7 +24,7 @@ public class Record implements Serializable {
     }
 
     public List<Format> formats() {
-        return formats;
+        return recordDTO.getFormats().stream().map(Format::new).collect(Collectors.toList());
     }
 
     public RecordDTO toDTO() {
@@ -30,10 +32,25 @@ public class Record implements Serializable {
     }
 
 
-    private static class FormatDTOToFormatFunction implements Function<FormatDTO, Format>, Serializable {
-        @Override
-        public Format apply(FormatDTO formatDTO) {
-            return new Format(formatDTO);
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
         }
+        if (!(obj instanceof Record)) {
+            return false;
+        }
+        final Record rhs = (Record) obj;
+        return new EqualsBuilder().append(toDTO(), rhs.toDTO()).isEquals();
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(17, 31).append(toDTO()).toHashCode();
+    }
+
+    @Override
+    public final String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

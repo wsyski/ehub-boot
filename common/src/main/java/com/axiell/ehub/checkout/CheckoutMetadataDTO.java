@@ -4,11 +4,14 @@ import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutMetadataDTO implements Serializable {
@@ -61,5 +64,27 @@ public class CheckoutMetadataDTO implements Serializable {
     public CheckoutMetadataDTO format(FormatDTO formatDTO) {
         this.format = formatDTO;
         return this;
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof CheckoutMetadataDTO)) {
+            return false;
+        }
+        final CheckoutMetadataDTO rhs = (CheckoutMetadataDTO) obj;
+        return new EqualsBuilder().append(getId(), rhs.getId()).isEquals();
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(17, 31).append(getId()).toHashCode();
+    }
+
+    @Override
+    public final String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }
