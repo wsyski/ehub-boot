@@ -4,7 +4,8 @@ import com.axiell.ehub.provider.askews.AskewsDataAccessor;
 import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
 import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
-import com.axiell.ehub.provider.ep.EpDataAccessor;
+import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
+import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
@@ -36,26 +37,31 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
     private BorrowBoxDataAccessor borrowBoxDataAccessor;
 
     @Autowired
-    private EpDataAccessor epDataAccessor;
+    private LpfEpDataAccessor lpfEpDataAccessor;
+
+    @Autowired
+    private LppEpDataAccessor lppEpDataAccessor;
 
     @Override
-    public IContentProviderDataAccessor getInstance(final String contentProviderName) {
-        if (ContentProvider.CONTENT_PROVIDER_ELIB3.equals(contentProviderName)) {
+    public IContentProviderDataAccessor getInstance(final ContentProvider contentProvider) {
+        final String name = contentProvider.getName();
+        if (ContentProvider.CONTENT_PROVIDER_ELIB3.equals(name)) {
             return elib3DataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(name)) {
             return elibUDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ASKEWS.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_ASKEWS.equals(name)) {
             return askewsDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_OVERDRIVE.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_OVERDRIVE.equals(name)) {
             return overDriveDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_F1.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_F1.equals(name)) {
             return f1DataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_BORROWBOX.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_BORROWBOX.equals(name)) {
             return borrowBoxDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_OCD.equals(contentProviderName)) {
+        } else if (ContentProvider.CONTENT_PROVIDER_OCD.equals(name)) {
             return ocdDataAccessor;
         } else {
-            return epDataAccessor;
+            boolean isLoanPerProduct = contentProvider.isLoanPerProduct();
+            return isLoanPerProduct ? lppEpDataAccessor : lpfEpDataAccessor;
         }
     }
 }

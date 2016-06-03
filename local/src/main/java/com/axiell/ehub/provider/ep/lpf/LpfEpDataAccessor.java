@@ -1,4 +1,4 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
@@ -10,8 +10,9 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
-import com.axiell.ehub.provider.ep.lpf.ILpfEpFacade;
+import com.axiell.ehub.provider.ep.FormatDTO;
+import com.axiell.ehub.provider.ep.FormatMetadataDTO;
+import com.axiell.ehub.provider.ep.RecordDTO;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
@@ -25,8 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class EpDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EpDataAccessor.class);
+public class LpfEpDataAccessor extends AbstractContentProviderDataAccessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LpfEpDataAccessor.class);
 
     @Autowired
     private ILpfEpFacade epFacade;

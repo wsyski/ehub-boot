@@ -26,7 +26,8 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
                               final String language) {
         final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+        final ContentProvider contentProvider = consumer.getContentProvider();
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
                 .setContentProviderAlias(contentProviderAlias);
         return dataAccessor.getFormats(commandData);
@@ -37,7 +38,8 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
         final String name = aliasBusinessController.getName(contentProviderAlias);
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
+        final ContentProvider contentProvider = consumer.getContentProvider();
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
         final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);
         return dataAccessor.createLoan(commandData);
     }
@@ -46,16 +48,10 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     public Content getContent(final EhubConsumer ehubConsumer, final EhubLoan ehubLoan, final FormatDecoration formatDecoration, final Patron patron,
                               final String language) {
         final ContentProviderLoanMetadata metadata = ehubLoan.getContentProviderLoanMetadata();
-        final String name = getContentProviderName(metadata);
-        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(name);
-        final CommandData commandData =
-                CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata).setFormatDecoration(formatDecoration);
-        return dataAccessor.getContent(commandData);
-    }
-
-    private String getContentProviderName(final ContentProviderLoanMetadata metadata) {
         final ContentProvider contentProvider = metadata.getContentProvider();
-        return contentProvider.getName();
+        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(contentProvider.getName());
+        final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
+        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata).setFormatDecoration(formatDecoration);
+        return dataAccessor.getContent(commandData);
     }
 }
