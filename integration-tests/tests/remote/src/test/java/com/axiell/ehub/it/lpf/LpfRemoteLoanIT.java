@@ -1,10 +1,11 @@
-package com.axiell.ehub.it;
+package com.axiell.ehub.it.lpf;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.it.RemoteITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupp
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertThat;
 
-public class RemoteLoanPerFormatIT extends RemoteITFixture {
+public class LpfRemoteLoanIT extends RemoteITFixture {
     private Fields fields;
     private String lmsLoanId;
     private Long readyLoanId;
