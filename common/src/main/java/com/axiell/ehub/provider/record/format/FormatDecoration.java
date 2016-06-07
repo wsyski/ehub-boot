@@ -189,7 +189,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     }
 
     @Transient
-    Set<String> getPlatformNames() {
+    public Set<String> getPlatformNames() {
         return getPlatforms().stream().map(Platform::getName).collect(Collectors.toSet());
     }
 
