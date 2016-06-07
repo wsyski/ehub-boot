@@ -1,3 +1,4 @@
+com.axiell.ehub.security.AuthorizationHeaderInterceptor
 com.axiell.ehub.logging.LoggingFilter
 com.axiell.ehub.logging.TimeLoggingClientFilter
 com.axiell.ehub.util.RestEasyBadRequestExceptionMapper

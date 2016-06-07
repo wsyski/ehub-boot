@@ -1,4 +1,4 @@
 com.axiell.ehub.logging.ResourceFilterBindingFeature
-com.axiell.ehub.logging.LegacyTimeLoggingClientFilter
-com.axiell.ehub.logging.LegacyLoggingClientFilter
+com.axiell.ehub.logging.TimeLoggingClientFilter
+com.axiell.ehub.logging.LoggingFilter
 
