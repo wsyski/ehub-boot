@@ -93,12 +93,12 @@ public class LpfRemoteLoanIT extends RemoteITFixture {
 
     private void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
-                .willReturn(aResponse().withBodyFile("checkoutResponse_activeLoan.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("lpfCheckoutResponse_activeLoan.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
     private void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile("checkoutResponse_newLoan.json").withHeader("Content-Type", "application/json").withStatus(201)));
+                .willReturn(aResponse().withBodyFile("lpfCheckoutResponse_newLoan.json").withHeader("Content-Type", "application/json").withStatus(201)));
     }
 
     private void thenValidCheckout(final Checkout checkout) {
@@ -122,18 +122,18 @@ public class LpfRemoteLoanIT extends RemoteITFixture {
         Assert.assertNotNull(contentLinks);
         Assert.assertEquals(2, contentLinks.getContentLinks().size());
         assertThat(contentLinks.getContentLinks().get(0),
-                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_0")));
+                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_0")));
         assertThat(contentLinks.getContentLinks().get(1),
-                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/content_1")));
+                matchesExpectedContentLink(new ContentLink("http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_1")));
     }
 
     private void thenValidSupplementLinks(final SupplementLinks supplementLinks) {
         Assert.assertNotNull(supplementLinks);
         Assert.assertEquals(2, supplementLinks.getSupplementLinks().size());
         assertThat(supplementLinks.getSupplementLinks().get(0),
-                matchesExpectedSupplementLink(new SupplementLink("supplent_0", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_0")));
+                matchesExpectedSupplementLink(new SupplementLink("supplement_0", "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_0")));
         assertThat(supplementLinks.getSupplementLinks().get(1),
-                matchesExpectedSupplementLink(new SupplementLink("supplent_1", "http:/localhost:16521/ep/api/v1/records/recordId_0/supplement_1")));
+                matchesExpectedSupplementLink(new SupplementLink("supplement_1", "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_1")));
     }
 
     private void givenLmsLoanId() {

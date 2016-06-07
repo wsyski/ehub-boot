@@ -381,28 +381,6 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/palma-loans</source>
-                                <source>${project.build.directory}/generated-sources/palma-catalogue</source>
-                                <source>${project.build.directory}/generated-sources/askews</source>
-                                <source>${project.build.directory}/generated-sources/f1</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <archiveClasses>false</archiveClasses>
@@ -452,6 +430,7 @@
                 <executions>
                     <execution>
                         <id>generate-sources-palma-loans</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -462,14 +441,15 @@
                             <extension>true</extension>
                             <verbose>true</verbose>
                             <sourceDestDir>${project.build.directory}/generated-sources/palma-loans</sourceDestDir>
-                            <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
+                            <wsdlDirectory>src/main/resources/com/axiell/ehub/lms/palma_266</wsdlDirectory>
                             <wsdlFiles>
-                                <wsdlFile>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_266/loans.wsdl</wsdlFile>
+                                <wsdlFile>loans.wsdl</wsdlFile>
                             </wsdlFiles>
                         </configuration>
                     </execution>
                     <execution>
                         <id>generate-sources-palma-catalogue</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -480,14 +460,15 @@
                             <extension>true</extension>
                             <verbose>true</verbose>
                             <sourceDestDir>${project.build.directory}/generated-sources/palma-catalogue</sourceDestDir>
-                            <wsdlDirectory>src/main/resources/com/askews/api</wsdlDirectory>
+                            <wsdlDirectory>src/main/resources/com/axiell/ehub/lms/palma_267</wsdlDirectory>
                             <wsdlFiles>
-                                <wsdlFile>${basedir}/src/main/resources/com/axiell/ehub/lms/palma_267/catalogue.wsdl</wsdlFile>
+                                <wsdlFile>catalogue.wsdl</wsdlFile>
                             </wsdlFiles>
                         </configuration>
                     </execution>
                     <execution>
                         <id>generate-sources-askews</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -507,6 +488,7 @@
                     </execution>
                     <execution>
                         <id>generate-sources-f1</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -524,18 +506,27 @@
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb2_commons</groupId>
-                        <artifactId>jaxb2-basics-annotate</artifactId>
-                        <version>0.6.4</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.eclipse.persistence</groupId>
-                        <artifactId>org.eclipse.persistence.moxy</artifactId>
-                        <version>2.4.0</version>
-                    </dependency>
-                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/palma-loans</source>
+                                <source>${project.build.directory}/generated-sources/palma-catalogue</source>
+                                <source>${project.build.directory}/generated-sources/askews</source>
+                                <source>${project.build.directory}/generated-sources/f1</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
