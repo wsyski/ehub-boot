@@ -103,6 +103,6 @@
         <addNotNullConstraint columnName="LOAN_PER_PRODUCT" tableName="CONTENT_PROVIDER"/>
     </changeSet>
     <changeSet id="9" author="ehub">
-        <renameColumn tableName="EHUB_LOAN" newColumnName="CONTENT_P_F_FORMAT_DECORATION_ID" oldColumnName="CONTENT_P_FORMAT_DECORATION_ID"/>
+        <renameColumn tableName="EHUB_LOAN" newColumnName="CONTENT_P_F_F_DECORATION_ID" oldColumnName="CONTENT_P_FORMAT_DECORATION_ID"/>
     </changeSet>
 </databaseChangeLog>

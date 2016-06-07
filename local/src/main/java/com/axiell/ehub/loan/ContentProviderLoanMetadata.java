@@ -107,7 +107,7 @@ public class ContentProviderLoanMetadata implements Serializable {
      *
      * @return a {@link FormatDecoration}
      */
-    @JoinColumn(name = "CONTENT_P_F_FORMAT_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D"))
+    @JoinColumn(name = "CONTENT_P_F_F_DECORATION_ID", nullable = false, foreignKey = @ForeignKey(name = "FK_CONTENT_P_L_M_CONTENT_P_F_D"))
     @ManyToOne
     public FormatDecoration getFirstFormatDecoration() {
         return firstFormatDecoration;
