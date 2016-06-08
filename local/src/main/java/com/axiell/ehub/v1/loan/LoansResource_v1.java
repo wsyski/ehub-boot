@@ -15,7 +15,7 @@ public final class LoansResource_v1 implements ILoansResource_v1 {
 
     @Override
     public ReadyLoan_v1 createLoan(AuthInfo authInfo, String language, PendingLoan_v1 pendingLoan_v1) {
-        Fields fields = PendingLoanV1Converter.convert(pendingLoan_v1);
+        Fields fields = PendingLoanConverter_v1.convert(pendingLoan_v1);
         Checkout checkout = loanBusinessController.checkout(authInfo, fields, language);
         return ReadyLoanV1Converter.convert(checkout);
     }
