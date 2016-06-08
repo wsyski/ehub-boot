@@ -19,7 +19,7 @@ class ElibUFacade implements IElibUFacade {
         final String md5ServiceKey = makeMd5ServiceKey(contentProviderConsumer);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String productUrl = contentProvider.getProperty(PRODUCT_URL);
-        final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, productUrl);
+        final IElibUResource elibUResource = ElibUResourceFactory.create(productUrl);
         return elibUResource.getProduct(serviceId, md5ServiceKey, elibuRecordId);
     }
 
@@ -35,7 +35,7 @@ class ElibUFacade implements IElibUFacade {
         final String subscriptionId = contentProviderConsumer.getProperty(SUBSCRIPTION_ID);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeLicenseUrl = contentProvider.getProperty(CONSUME_LICENSE_URL);
-        final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, consumeLicenseUrl);
+        final IElibUResource elibUResource = ElibUResourceFactory.create(consumeLicenseUrl);
         return elibUResource.consumeLicense(serviceId, md5ServiceKey, subscriptionId, libraryCard);
     }
 
@@ -48,7 +48,7 @@ class ElibUFacade implements IElibUFacade {
         final String md5Checksum = md5Hex(checksum);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String consumeProductUrl = contentProvider.getProperty(PRODUCT_URL);
-        final IElibUResource elibUResource = ProxyFactory.create(IElibUResource.class, consumeProductUrl);
+        final IElibUResource elibUResource = ElibUResourceFactory.create(consumeProductUrl);
         return elibUResource.consumeProduct(serviceId, md5ServiceKey, elibuRecordId, licenseId, md5Checksum);
     }
 }
