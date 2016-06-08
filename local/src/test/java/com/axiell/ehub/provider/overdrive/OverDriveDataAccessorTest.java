@@ -289,7 +289,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenErrorDetails() {
-        given(response.getEntity(ErrorDTO.class)).willReturn(errorDetails);
+        given(response.readEntity(ErrorDTO.class)).willReturn(errorDetails);
     }
 
     private void givenCirculationFormats() {

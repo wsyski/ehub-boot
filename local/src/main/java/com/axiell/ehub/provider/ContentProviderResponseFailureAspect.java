@@ -26,7 +26,7 @@ public class ContentProviderResponseFailureAspect extends AbstractContentProvide
     }
 
     private InternalServerErrorException getContentProviderException(final Response response, final JoinPoint joinPoint) {
-        IContentProviderExceptionFactory contentProviderExceptionFactory = getContentProviderErrorExceptionFactory(joinPoint);
+        final IContentProviderExceptionFactory contentProviderExceptionFactory = getContentProviderErrorExceptionFactory(joinPoint);
         return contentProviderExceptionFactory.create(response);
     }
 }

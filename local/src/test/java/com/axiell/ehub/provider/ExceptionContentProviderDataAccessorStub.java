@@ -2,7 +2,6 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.checkout.Content;
-import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.record.format.Formats;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;

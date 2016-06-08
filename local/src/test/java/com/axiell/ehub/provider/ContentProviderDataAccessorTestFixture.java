@@ -2,7 +2,6 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
-import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
@@ -10,14 +9,14 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
-import junit.framework.Assert;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
@@ -60,9 +59,9 @@ public abstract class ContentProviderDataAccessorTestFixture {
     @Mock
     protected ContentProviderLoanMetadata loanMetadata;
     @Mock
-    protected ClientResponseFailure failure;
+    protected WebApplicationException failure;
     @Mock
-    protected ClientResponse<?> response;
+    protected Response response;
     @Mock
     protected IFormatFactory formatFactory;
     @Mock
