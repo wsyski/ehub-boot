@@ -11,9 +11,9 @@ import java.util.List;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
 
-class ReadyLoanV1Converter {
+class ReadyLoanConverter_v1 {
 
-    private ReadyLoanV1Converter() {
+    private ReadyLoanConverter_v1() {
     }
 
     static ReadyLoan_v1 convert(Checkout checkout) {

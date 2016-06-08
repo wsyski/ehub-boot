@@ -17,13 +17,13 @@ public final class LoansResource_v1 implements ILoansResource_v1 {
     public ReadyLoan_v1 createLoan(AuthInfo authInfo, String language, PendingLoan_v1 pendingLoan_v1) {
         Fields fields = PendingLoanConverter_v1.convert(pendingLoan_v1);
         Checkout checkout = loanBusinessController.checkout(authInfo, fields, language);
-        return ReadyLoanV1Converter.convert(checkout);
+        return ReadyLoanConverter_v1.convert(checkout);
     }
 
     @Override
     public ReadyLoan_v1 getLoan(AuthInfo authInfo, Long readyLoanId, String language) {
         Checkout checkout = loanBusinessController.getCheckout(authInfo, readyLoanId, language);
-        return ReadyLoanV1Converter.convert(checkout);
+        return ReadyLoanConverter_v1.convert(checkout);
     }
 
     @Override
@@ -31,7 +31,7 @@ public final class LoansResource_v1 implements ILoansResource_v1 {
         CheckoutsSearchResult checkoutsSearchResult = loanBusinessController.search(authInfo, lmsLoanId, language);
         CheckoutMetadata checkoutMetadata = checkoutsSearchResult.findCheckoutByLmsLoanId(lmsLoanId);
         Checkout checkout = loanBusinessController.getCheckout(authInfo, checkoutMetadata.id(), language);
-        return ReadyLoanV1Converter.convert(checkout);
+        return ReadyLoanConverter_v1.convert(checkout);
     }
 
     public void setLoanBusinessController(ILoanBusinessController loanBusinessController) {
