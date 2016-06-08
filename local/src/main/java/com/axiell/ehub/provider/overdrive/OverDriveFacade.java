@@ -3,14 +3,12 @@ package com.axiell.ehub.provider.overdrive;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
-import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {
@@ -68,7 +66,7 @@ class OverDriveFacade implements IOverDriveFacade {
     }
 
     public CirculationFormatsDTO getCirculationFormats(ContentProviderConsumer contentProviderConsumer, OAuthAccessToken patronAccessToken,
-                                                            String productId) {
+                                                       String productId) {
         final ICirculationResource circulationResource = CirculationResourceFactory.create(contentProviderConsumer);
         return circulationResource.getCirculationFormats(patronAccessToken, productId);
     }

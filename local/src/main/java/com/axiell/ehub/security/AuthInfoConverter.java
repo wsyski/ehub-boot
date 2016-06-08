@@ -3,20 +3,15 @@
  */
 package com.axiell.ehub.security;
 
-import org.jboss.resteasy.spi.StringConverter;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.ext.ParamConverter;
 
-import javax.ws.rs.ext.Provider;
+public class AuthInfoConverter implements ParamConverter<AuthInfo> {
 
-/**
- * Provides the possibility to convert a string to an {@link AuthInfo} and an
- * {@link AuthInfo} to a string.
- */
-@Provider
-public class AuthInfoConverter implements StringConverter<AuthInfo> {
-
-    @Autowired
     private IAuthInfoResolver authInfoResolver;
+
+    public AuthInfoConverter(final IAuthInfoResolver authInfoResolver) {
+        this.authInfoResolver = authInfoResolver;
+    }
 
     @Override
     public AuthInfo fromString(final String authorizationHeader) {
