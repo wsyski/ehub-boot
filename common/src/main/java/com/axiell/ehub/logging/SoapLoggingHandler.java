@@ -1,24 +1,22 @@
 package com.axiell.ehub.logging;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
+import java.io.IOException;
 import java.util.Set;
 
-import static com.axiell.ehub.logging.ToStringConverter.lineFeed;
-import static com.axiell.ehub.logging.ToStringConverter.soapMessageToString;
 
-/**
- * SOAP Logging Handler
- */
 public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SoapLoggingHandler.class);
     private static final String KEY_STOP_WATCH = SoapLoggingHandler.class.getName() + ".stopWatch";
@@ -52,7 +50,7 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
     }
 
     private String makeRequestLogMessage(final SOAPMessageContext soapMessageContext) {
-        String prefix = "SOAP request {" + lineFeed();
+        String prefix = "SOAP request {" + SystemUtils.LINE_SEPARATOR;
         return prefix + url(soapMessageContext) + body(soapMessageContext) + suffix();
     }
 
@@ -63,19 +61,19 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
             prefix.append(stopWatch.getTime());
         }
         prefix.append(" {");
-        prefix.append(lineFeed());
+        prefix.append(SystemUtils.LINE_SEPARATOR);
         return prefix.toString() + url(soapMessageContext) + body(soapMessageContext) + suffix();
     }
 
     private String url(SOAPMessageContext soapMessageContext) {
         Object url = soapMessageContext.get(BindingProvider.ENDPOINT_ADDRESS_PROPERTY);
-        return "URL: " + lineFeed() + url + lineFeed();
+        return "URL: " + SystemUtils.LINE_SEPARATOR + url + SystemUtils.LINE_SEPARATOR;
     }
 
     private String body(SOAPMessageContext soapMessageContext) {
         final SOAPMessage soapMessage = soapMessageContext.getMessage();
         String body = soapMessageToString(soapMessage);
-        return "Body: " + lineFeed() + body + lineFeed();
+        return "Body: " + SystemUtils.LINE_SEPARATOR + body + SystemUtils.LINE_SEPARATOR;
     }
 
     private String suffix() {
@@ -88,6 +86,26 @@ public class SoapLoggingHandler implements SOAPHandler<SOAPMessageContext> {
         final String logMessage = makeResponseLogMessage(soapMessageContext, stopWatch);
         LOGGER.error(logMessage);
         return true;
+    }
+
+    public static String soapMessageToString(final SOAPMessage soapMessageToProcess) {
+        StringBuilder soapMessageStringBuilder = new StringBuilder();
+        StringBuilderOutputStream soapMessageStream = new StringBuilderOutputStream();
+        appendSoapMessage(soapMessageToProcess, soapMessageStringBuilder, soapMessageStream);
+        return soapMessageStringBuilder.toString();
+    }
+
+    private static void appendSoapMessage(final SOAPMessage soapMessageToProcess, final StringBuilder soapMessageStringBuilder, final StringBuilderOutputStream soapMessageStream) {
+        readSoapMessage(soapMessageToProcess, soapMessageStream);
+        soapMessageStringBuilder.append(soapMessageStream.toString());
+    }
+
+    private static void readSoapMessage(final SOAPMessage soapMessageToProcess, final StringBuilderOutputStream soapMessageStream) {
+        try {
+            soapMessageToProcess.writeTo(soapMessageStream);
+        } catch (SOAPException | IOException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
     }
 
     @Override

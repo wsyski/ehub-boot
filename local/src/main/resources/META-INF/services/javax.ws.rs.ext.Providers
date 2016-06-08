@@ -4,5 +4,3 @@ com.axiell.ehub.logging.TimeLoggingClientFilter
 com.axiell.ehub.util.RestEasyBadRequestExceptionMapper
 com.axiell.ehub.util.EhubRuntimeExceptionMapper
 com.axiell.ehub.util.RuntimeExceptionMapper
-com.axiell.ehub.logging.LegacyTimeLoggingClientFilter
-com.axiell.ehub.logging.LegacyLoggingClientFilter

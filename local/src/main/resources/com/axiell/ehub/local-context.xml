@@ -9,5 +9,4 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
     <bean id="contentProviderResponseFailureAspect" class="com.axiell.ehub.provider.ContentProviderResponseFailureAspect"/>
-    <bean id="legacyContentProviderResponseFailureAspect" class="com.axiell.ehub.provider.LegacyContentProviderResponseFailureAspect"/>
 </beans>
