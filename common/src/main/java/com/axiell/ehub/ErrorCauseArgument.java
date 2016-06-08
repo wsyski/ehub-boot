@@ -10,12 +10,16 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.axiell.ehub.provider.ContentProvider;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Represents an argument to an {@link ErrorCause}. It can for example be the name of a {@link ContentProvider} or the
  * ID of a loan in the LMS.
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorCauseArgument {
     private Type type;
     private String value;

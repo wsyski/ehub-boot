@@ -2,9 +2,9 @@ package com.axiell.ehub.support.request.loan;
 
 import com.axiell.ehub.support.request.*;
 
-class CrateLoanButton extends AbstractRequestGeneratorButton<DefaultSupportResponse> {
+class CreateLoanButton extends AbstractRequestGeneratorButton<DefaultSupportResponse> {
 
-    CrateLoanButton(final String id, final IRequestsGeneratorMediator mediator) {
+    CreateLoanButton(final String id, final IRequestsGeneratorMediator mediator) {
         super(id, mediator);
     }
 
