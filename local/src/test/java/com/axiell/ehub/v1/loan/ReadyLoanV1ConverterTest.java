@@ -2,7 +2,6 @@ package com.axiell.ehub.v1.loan;
 
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.loan.*;
-import com.axiell.ehub.provider.record.format.FormatBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -46,7 +45,7 @@ public class ReadyLoanV1ConverterTest {
     }
 
     private void whenConvert() {
-        actualReadyLoan_v1 = ReadyLoanV1Converter.convert(checkout);
+        actualReadyLoan_v1 = ReadyLoanConverter_v1.convert(checkout);
         actualContentProviderLoan_v1 = actualReadyLoan_v1.getContentProviderLoan();
     }
 
