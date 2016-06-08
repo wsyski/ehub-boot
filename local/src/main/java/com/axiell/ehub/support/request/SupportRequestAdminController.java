@@ -90,8 +90,8 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             final ILoansResource_v1 loansResource = createResource(ILoansResource_v1.class, baseUri);
             loansResource.createLoan(authInfo, language, pendingLoan);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
-        } catch (EhubException e) {
-            final EhubError ehubError = e.getEhubError();
+        } catch (EhubException ex) {
+            final EhubError ehubError = ex.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
         } catch (WebApplicationException ex) {
             return makeSupportResponse(supportRequest, ex);
@@ -110,8 +110,8 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             final ILoansResource_v1 loansResource = createResource(ILoansResource_v1.class, baseUri);
             loansResource.getLoan(authInfo, lmsLoanId, language);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
-        } catch (EhubException e) {
-            final EhubError ehubError = e.getEhubError();
+        } catch (EhubException ex) {
+            final EhubError ehubError = ex.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
         } catch (WebApplicationException ex) {
             return makeSupportResponse(supportRequest, ex);
@@ -165,8 +165,8 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             proxyFactoryBean.setBaseUri(new URI(baseUri));
             proxyFactoryBean.afterPropertiesSet();
             return clazz.cast(proxyFactoryBean.getObject());
-        } catch (Exception e) {
-            throw new RuntimeException("Could not initialize the root resource");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage(),ex);
         }
     }
 
