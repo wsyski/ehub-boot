@@ -5,12 +5,10 @@
 
 	<import resource="business-controller-context.xml" />
 
-    <!-- List the resolver beans used by the JAX-RS resources -->
     <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver"/>
-
-	<bean class="com.axiell.ehub.security.AuthInfoConverter"/>
-
-	<!-- List only the JAX-RS root resources here -->
+	<bean class="com.axiell.ehub.security.EhubParamConverterProvider">
+			<property name="authInfoResolver" ref="authInfoResolver"/>
+	</bean>
 
     <bean id="rootResource" class="com.axiell.ehub.RootResource">
         <property name="formatBusinessController" ref="formatBusinessController" />
