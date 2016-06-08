@@ -35,8 +35,6 @@ public abstract class AbstractEhubExceptionMapper<E extends Throwable> implement
             if (requestUri != null) {
                 if (requestUri.startsWith("/v1")) {
                     return MediaType.APPLICATION_XML_TYPE;
-                } else if (requestUri.startsWith("/v2")) {
-                    return MediaType.APPLICATION_JSON_TYPE;
                 } else {
                     return MediaType.APPLICATION_JSON_TYPE;
                 }

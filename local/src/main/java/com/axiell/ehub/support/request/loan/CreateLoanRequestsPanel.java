@@ -20,7 +20,7 @@ class CreateLoanRequestsPanel extends AbstractRequestsGeneratorPanel {
     }
 
     private void addGeneratorButton() {
-        final CrateLoanButton generatorButton = new CrateLoanButton("generatorButton", mediator);
+        final CreateLoanButton generatorButton = new CreateLoanButton("generatorButton", mediator);
         form.add(generatorButton);
     }
 

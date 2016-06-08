@@ -7,22 +7,20 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubUrlCodec;
-import com.axiell.ehub.util.XjcSupport;
+import com.axiell.ehub.util.RestClientProxyFactoryBean;
+import com.axiell.ehub.v1.XjcSupport;
 import com.axiell.ehub.v1.loan.ILoansResource_v1;
 import com.axiell.ehub.v1.loan.PendingLoan_v1;
 import com.axiell.ehub.v1.provider.IContentProvidersResource_v1;
 import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.jboss.resteasy.client.ClientExecutor;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ClientResponseFailure;
-import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.client.spring.RestClientProxyFactoryBean;
+import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -30,10 +28,11 @@ import java.net.URI;
 public class SupportRequestAdminController implements ISupportRequestAdminController {
     private static final String STATUS_OK = "200";
     private static final String STATUS_NOT_AVAILABLE = "N/A";
-    private DefaultHttpClient sslHttpClient;
+
+    private ClientHttpEngine httpEngine;
 
     @Override
-    public DefaultSupportResponse getRecord(RequestArguments arguments) {
+    public DefaultSupportResponse getRecord(final RequestArguments arguments) {
         final String baseUri = arguments.getBaseUri();
         final String contentProviderName = arguments.getContentProviderName();
         final String contentProviderRecordId = arguments.getContentProviderRecordId();
@@ -42,14 +41,14 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            IRootResource rootResource = initRootResource(baseUri, supportRequest);
+            IRootResource rootResource = createResource(IRootResource.class, baseUri);
             RecordDTO recordDTO = rootResource.contentProviders().records(contentProviderName).getRecord(authInfo, contentProviderRecordId, language);
             String body = toJson(recordDTO, RecordDTO.class);
             return new DefaultSupportResponse(supportRequest, STATUS_OK, body);
-        } catch (ClientResponseFailure crf) {
-            return makeSupportResponse(supportRequest, crf);
-        } catch (EhubException e) {
-            final EhubError ehubError = e.getEhubError();
+        } catch (WebApplicationException ex) {
+            return makeSupportResponse(supportRequest, ex);
+        } catch (EhubException ex) {
+            final EhubError ehubError = ex.getEhubError();
             String body = toJson(ehubError, EhubError.class);
             return new DefaultSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, body);
         }
@@ -65,15 +64,15 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final IContentProvidersResource_v1 contentProvidersResource = makeContentProvidersResource(baseUri, supportRequest);
+            final IContentProvidersResource_v1 contentProvidersResource = createResource(IContentProvidersResource_v1.class, baseUri);
             final IRecordsResource_v1 recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
             final Formats_v1 formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
             return makeSupportResponse(supportRequest, STATUS_OK, formats);
-        } catch (ClientResponseFailure crf) {
-            return makeSupportResponse(supportRequest, crf);
-        } catch (EhubException e) {
-            final EhubError ehubError = e.getEhubError();
+        } catch (EhubException ex) {
+            final EhubError ehubError = ex.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
+        } catch (WebApplicationException ex) {
+            return makeSupportResponse(supportRequest, ex);
         }
     }
 
@@ -88,14 +87,14 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final ILoansResource_v1 loansResource = makeLoansResource(baseUri, supportRequest);
+            final ILoansResource_v1 loansResource = createResource(ILoansResource_v1.class, baseUri);
             loansResource.createLoan(authInfo, language, pendingLoan);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
         } catch (EhubException e) {
             final EhubError ehubError = e.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
-        } catch (RuntimeException e) {
-            return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
+        } catch (WebApplicationException ex) {
+            return makeSupportResponse(supportRequest, ex);
         }
     }
 
@@ -108,33 +107,14 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         try {
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
-            final ILoansResource_v1 loansResource = makeLoansResource(baseUri, supportRequest);
+            final ILoansResource_v1 loansResource = createResource(ILoansResource_v1.class, baseUri);
             loansResource.getLoan(authInfo, lmsLoanId, language);
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
         } catch (EhubException e) {
             final EhubError ehubError = e.getEhubError();
             return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, ehubError);
-        } catch (RuntimeException e) {
-            return makeSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, null);
-        }
-    }
-
-    @Required
-    public void setSslHttpClient(DefaultHttpClient sslHttpClient) {
-        this.sslHttpClient = sslHttpClient;
-    }
-
-    private IRootResource initRootResource(String baseUri, SupportRequest supportRequest) {
-        final SupportClientExecutor clientExecutor = new SupportClientExecutor(sslHttpClient, supportRequest);
-        RestClientProxyFactoryBean<IRootResource> proxyFactoryBean = new RestClientProxyFactoryBean();
-        proxyFactoryBean.setServiceInterface(IRootResource.class);
-        proxyFactoryBean.setClientExecutor(clientExecutor);
-        try {
-            proxyFactoryBean.setBaseUri(new URI(baseUri + "/v2"));
-            proxyFactoryBean.afterPropertiesSet();
-            return proxyFactoryBean.getObject();
-        } catch (Exception e) {
-            throw new RuntimeException("Could not initialize the root resource");
+        } catch (WebApplicationException ex) {
+            return makeSupportResponse(supportRequest, ex);
         }
     }
 
@@ -147,16 +127,6 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         } catch (IOException e) {
             return e.getMessage();
         }
-    }
-
-    private IContentProvidersResource_v1 makeContentProvidersResource(final String baseUri, final SupportRequest supportRequest) {
-        final ClientExecutor clientExecutor = new SupportClientExecutor(sslHttpClient, supportRequest);
-        return ProxyFactory.create(IContentProvidersResource_v1.class, baseUri, clientExecutor);
-    }
-
-    private ILoansResource_v1 makeLoansResource(final String baseUri, final SupportRequest supportRequest) {
-        final NonExecutableClientExecutor clientExecutor = new NonExecutableClientExecutor(supportRequest);
-        return ProxyFactory.create(ILoansResource_v1.class, baseUri, clientExecutor);
     }
 
     private PendingLoan_v1 makePendingLoan(final RequestArguments arguments) {
@@ -180,11 +150,28 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         return new DefaultSupportResponse(supportRequest, status, body);
     }
 
-    private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final ClientResponseFailure crf) {
-        final ClientResponse<?> response = crf.getResponse();
-        final String body = response == null ? null : response.getEntity(String.class);
+    private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final WebApplicationException ex) {
+        final Response response = ex.getResponse();
+        final String body = response == null ? null : response.readEntity(String.class);
         final String status = response == null ? null : String.valueOf(response.getStatus());
         return new DefaultSupportResponse(supportRequest, status, body);
     }
 
+    private <T> T createResource(final Class<T> clazz, String baseUri) {
+        RestClientProxyFactoryBean<T> proxyFactoryBean = new RestClientProxyFactoryBean<>();
+        proxyFactoryBean.setServiceInterface(clazz);
+        proxyFactoryBean.setHttpEngine(httpEngine);
+        try {
+            proxyFactoryBean.setBaseUri(new URI(baseUri));
+            proxyFactoryBean.afterPropertiesSet();
+            return clazz.cast(proxyFactoryBean.getObject());
+        } catch (Exception e) {
+            throw new RuntimeException("Could not initialize the root resource");
+        }
+    }
+
+    @Required
+    public void setHttpEngine(final ClientHttpEngine httpEngine) {
+        this.httpEngine = httpEngine;
+    }
 }
