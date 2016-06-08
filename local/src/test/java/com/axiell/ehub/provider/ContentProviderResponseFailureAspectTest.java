@@ -19,6 +19,7 @@ public class ContentProviderResponseFailureAspectTest {
 
     @Autowired
     private ExceptionContentProviderDataAccessorStub underTest;
+
     private CommandData commandData;
 
     @Before

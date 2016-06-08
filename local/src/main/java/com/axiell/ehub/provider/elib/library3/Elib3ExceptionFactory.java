@@ -6,8 +6,8 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
-public class Elib3ExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
-        implements IContentProviderExceptionFactory<ErrorDTO> {
+public class Elib3ExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO> implements IContentProviderExceptionFactory<ErrorDTO> {
+    static final String MESSAGE_PRODUCT_UNAVAILABLE = "Product not found";
 
 
     public Elib3ExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
@@ -28,6 +28,12 @@ public class Elib3ExceptionFactory extends AbstractContentProviderExceptionFacto
 
     @Override
     protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
-        return null;
+        ErrorCauseArgumentValue.Type type = null;
+        if (message != null) {
+            if (message.contains(MESSAGE_PRODUCT_UNAVAILABLE)) {
+                type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+            }
+        }
+        return type;
     }
 }
