@@ -30,7 +30,7 @@ public class PendingLoanV1ConverterTest {
     }
 
     private void whenConvert() {
-        actualFields = PendingLoanV1Converter.convert(pendingLoan_v1);
+        actualFields = PendingLoanConverter_v1.convert(pendingLoan_v1);
     }
 
     private void thenContentProviderFormatIdEqualsExpected() {

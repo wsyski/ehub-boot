@@ -14,6 +14,8 @@ import com.axiell.ehub.v1.loan.PendingLoan_v1;
 import com.axiell.ehub.v1.provider.IContentProvidersResource_v1;
 import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
+import com.axiell.ehub.v2.IRootResource_v2;
+import com.axiell.ehub.v2.provider.record.RecordDTO_v2;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
 import org.springframework.beans.factory.annotation.Required;
@@ -43,6 +45,29 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             supportRequest.setAuthInfo(authInfo);
             IRootResource rootResource = createResource(IRootResource.class, baseUri);
             RecordDTO recordDTO = rootResource.contentProviders().records(contentProviderName).getRecord(authInfo, contentProviderRecordId, language);
+            String body = toJson(recordDTO, RecordDTO.class);
+            return new DefaultSupportResponse(supportRequest, STATUS_OK, body);
+        } catch (WebApplicationException ex) {
+            return makeSupportResponse(supportRequest, ex);
+        } catch (EhubException ex) {
+            final EhubError ehubError = ex.getEhubError();
+            String body = toJson(ehubError, EhubError.class);
+            return new DefaultSupportResponse(supportRequest, STATUS_NOT_AVAILABLE, body);
+        }
+    }
+
+    @Override
+    public DefaultSupportResponse getRecord_v2(final RequestArguments arguments) {
+        final String baseUri = arguments.getBaseUri();
+        final String contentProviderName = arguments.getContentProviderName();
+        final String contentProviderRecordId = arguments.getContentProviderRecordId();
+        final String language = arguments.getLanguage();
+        final SupportRequest supportRequest = new SupportRequest();
+        try {
+            final AuthInfo authInfo = makeAuthInfo(arguments);
+            supportRequest.setAuthInfo(authInfo);
+            IRootResource_v2 rootResource = createResource(IRootResource_v2.class, baseUri);
+            RecordDTO_v2 recordDTO = rootResource.contentProviders().records(contentProviderName).getRecord(authInfo, contentProviderRecordId, language);
             String body = toJson(recordDTO, RecordDTO.class);
             return new DefaultSupportResponse(supportRequest, STATUS_OK, body);
         } catch (WebApplicationException ex) {

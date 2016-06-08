@@ -3,9 +3,9 @@ package com.axiell.ehub.v1.loan;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.loan.PendingLoan;
 
-class PendingLoanV1Converter {
+class PendingLoanConverter_v1 {
 
-    private PendingLoanV1Converter() {
+    private PendingLoanConverter_v1() {
     }
 
     public static Fields convert(PendingLoan_v1 pendingLoan_v1) {
