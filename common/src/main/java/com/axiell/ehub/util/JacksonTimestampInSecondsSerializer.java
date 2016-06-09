@@ -15,7 +15,6 @@ import java.util.Date;
 
 
 public class JacksonTimestampInSecondsSerializer extends JsonSerializer<Date> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JacksonTimestampInSecondsSerializer.class);
 
     @Override
     public void serialize (final Date value, final JsonGenerator jsonGenerator, final SerializerProvider serializerProvider) throws IOException {

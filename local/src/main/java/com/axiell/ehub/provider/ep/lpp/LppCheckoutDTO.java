@@ -2,9 +2,11 @@ package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import com.axiell.ehub.provider.ep.ICheckoutDTO;
+import com.axiell.ehub.util.JacksonTimestampInIso8601FormatSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -19,7 +21,7 @@ public class LppCheckoutDTO implements ICheckoutDTO {
 
     @JsonProperty("formatMetadata")
     private Map<String, FormatMetadataDTO> formatMetadatas;
-
+    @JsonSerialize(using = JacksonTimestampInIso8601FormatSerializer.class)
     private Date expirationDate;
 
     public String getId() {

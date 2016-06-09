@@ -31,6 +31,10 @@ public abstract class DTOTestFixture<T> {
 
     private void thenExpectedActualObject(T actualObject) {
         Assert.assertThat(actualObject, Matchers.is(underTest));
+        customAssertion(underTest, actualObject);
+    }
+
+    protected void customAssertion(final T underTest, final T actualObject) {
     }
 
     protected abstract T getTestInstance();
