@@ -10,17 +10,17 @@ import java.io.IOException;
 import java.util.Date;
 
 
-public class JacksonTimestampDeserializer extends JsonDeserializer<Date> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JacksonTimestampDeserializer.class);
+public class JacksonTimestampInSecondsDeserializer extends JsonDeserializer<Date> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JacksonTimestampInSecondsDeserializer.class);
 
     @Override
     public Date deserialize(final JsonParser jp, final DeserializationContext deserializationContext) throws IOException {
-        String timestamp = jp.getText().trim();
+        String value = jp.getText().trim();
 
         try {
-            return new Date(Long.valueOf(timestamp + "000"));
+            return new Date(Long.valueOf(value) * 1000);
         } catch (NumberFormatException ex) {
-            LOGGER.error("Unable to deserialize timestamp: " + timestamp, ex);
+            LOGGER.error("Unable to deserialize timestamp: " + value, ex);
             return null;
         }
     }
