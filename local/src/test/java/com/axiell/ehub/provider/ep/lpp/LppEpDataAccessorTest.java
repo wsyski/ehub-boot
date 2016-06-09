@@ -73,7 +73,7 @@ public class LppEpDataAccessorTest extends EpDataAccessorTestFixture<LppCheckout
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getFormatsMetadata()).willReturn(Collections.singletonMap(FormatBuilder.downloadableFormat().id(),FormatMetadataDTOBuilder.defaultFormatMetadataDTO()));
+        given(checkout.getFormatMetadatas()).willReturn(Collections.singletonMap(FormatBuilder.downloadableFormat().id(),FormatMetadataDTOBuilder.defaultFormatMetadataDTO()));
     }
 
     @Override

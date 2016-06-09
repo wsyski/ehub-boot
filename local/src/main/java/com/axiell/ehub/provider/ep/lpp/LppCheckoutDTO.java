@@ -4,6 +4,7 @@ import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import com.axiell.ehub.provider.ep.ICheckoutDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -16,7 +17,8 @@ import java.util.Map;
 public class LppCheckoutDTO implements ICheckoutDTO {
     private String id;
 
-    private Map<String, FormatMetadataDTO> formatsMetadata;
+    @JsonProperty("formatMetadata")
+    private Map<String, FormatMetadataDTO> formatMetadatas;
 
     private Date expirationDate;
 
@@ -24,17 +26,17 @@ public class LppCheckoutDTO implements ICheckoutDTO {
         return id;
     }
 
-    public Map<String, FormatMetadataDTO> getFormatsMetadata() {
-        return formatsMetadata;
+    public Map<String, FormatMetadataDTO> getFormatMetadatas() {
+        return formatMetadatas;
     }
 
     public Date getExpirationDate() {
         return expirationDate;
     }
 
-    public LppCheckoutDTO(final String id, final Map<String, FormatMetadataDTO> formatsMetadata, final Date expirationDate) {
+    public LppCheckoutDTO(final String id, final Map<String, FormatMetadataDTO> formatMetadatas, final Date expirationDate) {
         this.id = id;
-        this.formatsMetadata = formatsMetadata;
+        this.formatMetadatas = formatMetadatas;
         this.expirationDate = expirationDate;
     }
 
