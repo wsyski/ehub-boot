@@ -27,27 +27,29 @@ public final class LoginPanel extends Panel {
     }
 
     private void addFeedbackPanel() {
-	final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
     }
-    
+
     private StatelessForm<AdminUser> makeLoginForm(final AdminUser user) {
-	final CompoundPropertyModel<AdminUser> formModel = new CompoundPropertyModel<>(user);
+        final CompoundPropertyModel<AdminUser> formModel = new CompoundPropertyModel<>(user);
         return new StatelessForm<>("loginForm", formModel);
     }
 
     private void addNameField(StatelessForm<AdminUser> loginForm) {
-	final RequiredTextField<String> nameField = new RequiredTextField<>("name");
+        final RequiredTextField<String> nameField = new RequiredTextField<>("name");
+        nameField.setOutputMarkupId(true);
         loginForm.add(nameField);
     }
 
     private void addPasswordField(StatelessForm<AdminUser> loginForm) {
-	final PasswordTextField passwordField = new PasswordTextField("clearPassword");
+        final PasswordTextField passwordField = new PasswordTextField("clearPassword");
+        passwordField.setOutputMarkupId(true);
         loginForm.add(passwordField);
     }
 
     private void addLoginButton(final AdminUser user, StatelessForm<AdminUser> loginForm) {
-	final LoginButton loginButton = new LoginButton("submit", user);
+        final LoginButton loginButton = new LoginButton("submit", user);
         loginForm.add(loginButton);
     }
 }

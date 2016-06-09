@@ -105,4 +105,13 @@
     <changeSet id="9" author="ehub">
         <renameColumn tableName="EHUB_LOAN" newColumnName="CONTENT_P_F_F_DECORATION_ID" oldColumnName="CONTENT_P_FORMAT_DECORATION_ID"/>
     </changeSet>
+    <changeSet id="10" author="ehub" >
+        <addColumn tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="LOCKED" type="number(1)"/>
+        </addColumn>
+        <update tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="LOCKED" value="0"/>
+        </update>
+        <addNotNullConstraint columnName="LOCKED" tableName="CONTENT_P_FORMAT_DECORATION"/>
+    </changeSet>
 </databaseChangeLog>

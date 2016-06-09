@@ -27,6 +27,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
     private static final long serialVersionUID = 1562910983744673362L;
     private ContentProvider contentProvider;
     private String contentProviderFormatId;
+    private boolean isLocked;
     private ContentDisposition contentDisposition;
     private Map<Language, FormatTextBundle> textBundles;
     private Set<Platform> platforms;
@@ -61,6 +62,15 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
         this.contentProviderFormatId = contentProviderFormatId;
         this.contentDisposition = contentDisposition;
         this.platforms = platforms;
+    }
+
+    @Column(name = "LOCKED", nullable = false)
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(final boolean isLocked) {
+        this.isLocked = isLocked;
     }
 
     /**

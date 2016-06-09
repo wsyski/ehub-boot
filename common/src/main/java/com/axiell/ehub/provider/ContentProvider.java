@@ -90,7 +90,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     }
 
 
-    @Column(name = "LOAN_PER_PRODUCT", nullable = false, unique = true)
+    @Column(name = "LOAN_PER_PRODUCT", nullable = false)
     public boolean isLoanPerProduct() {
         return isLoanPerProduct;
     }
