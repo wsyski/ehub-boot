@@ -58,7 +58,7 @@ public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
 
     private FormatMetadataDTO getFormatMetadataDTO(final String contentProviderFormatId, final LppCheckoutDTO lppCheckoutDTO,
                                                   final ContentProviderConsumer contentProviderConsumer, final String language) {
-        FormatMetadataDTO formatMetadataDTO = lppCheckoutDTO.getFormatsMetadata().get(contentProviderFormatId);
+        FormatMetadataDTO formatMetadataDTO = lppCheckoutDTO.getFormatMetadatas().get(contentProviderFormatId);
         if (formatMetadataDTO == null) {
             throw getEhubExceptionFactory()
                     .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CREATE_LOAN_FAILED, language);
