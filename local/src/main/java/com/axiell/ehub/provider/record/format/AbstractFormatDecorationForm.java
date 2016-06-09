@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.record.format;
 
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -17,7 +18,8 @@ abstract class AbstractFormatDecorationForm<M extends IContentDispositionChanged
 
         addFormatIdField();
         addPlayerContainer();
-        addDispositionChoice();
+        addDispositionField();
+        addLockedField();
         addFormatDecorationSaveButton();
     }
 
@@ -36,7 +38,14 @@ abstract class AbstractFormatDecorationForm<M extends IContentDispositionChanged
         add(playerContainer);
     }
 
-    private void addDispositionChoice() {
+    private void addLockedField() {
+        final FormatDecorationIsLockedModel formatDecorationIsLockedModel = new FormatDecorationIsLockedModel(formModel);
+        final CheckBox checkBox = new CheckBox("locked", formatDecorationIsLockedModel);
+        checkBox.setOutputMarkupId(true);
+        add(checkBox);
+    }
+
+    private void addDispositionField() {
         final ContentDispositionDropDownChoice dispositionChoice = new ContentDispositionDropDownChoice("contentDisposition", formModel, mediator);
         add(dispositionChoice);
     }

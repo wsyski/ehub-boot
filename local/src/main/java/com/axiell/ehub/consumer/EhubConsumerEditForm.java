@@ -16,11 +16,13 @@ class EhubConsumerEditForm extends AbstractEhubConsumerForm {
 
     private void addIdField(final EhubConsumer ehubConsumer) {
         final DisabledTextField idField = new DisabledTextField("id", ehubConsumer, "id");
+        idField.setOutputMarkupId(true);
         add(idField);
     }
 
     private void addSecretKeyField(final EhubConsumer ehubConsumer) {
         final DisabledTextField secretKeyField = new DisabledTextField("secretKey", ehubConsumer, "secretKey");
+        secretKeyField.setOutputMarkupId(true);
         add(secretKeyField);
     }
 

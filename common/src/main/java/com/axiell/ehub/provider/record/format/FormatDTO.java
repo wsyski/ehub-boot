@@ -15,6 +15,7 @@ import java.util.Set;
 public class FormatDTO implements Serializable {
     private String id;
     private String name;
+    private boolean locked;
     private String description;
     private ContentDisposition contentDisposition;
     private Set<String> platforms=new HashSet<>();
@@ -37,6 +38,15 @@ public class FormatDTO implements Serializable {
 
     public FormatDTO name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public FormatDTO locked(final boolean locked) {
+        this.locked = locked;
         return this;
     }
 

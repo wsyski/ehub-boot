@@ -32,11 +32,10 @@ class ErrorCauseArgumentValueTextsListView extends ListView<Language> {
     @Override
     protected void populateItem(final ListItem<Language> item) {
         final Language language = item.getModelObject();
-
         final LanguageLabel languageLabel = new LanguageLabel("language", language, getLocale());
         item.add(languageLabel);
-
         final ErrorCauseArgumentValueTextField valueTextField = makeErrorCauseArgumentValueTextField(language);
+        valueTextField.setOutputMarkupId(true);
         item.add(valueTextField);
     }
 

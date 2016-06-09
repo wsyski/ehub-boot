@@ -31,6 +31,10 @@ public class Format implements Serializable {
         return dto.getName();
     }
 
+    public boolean locked() {
+        return dto.isLocked();
+    }
+
     public String description() {
         return dto.getDescription();
     }
