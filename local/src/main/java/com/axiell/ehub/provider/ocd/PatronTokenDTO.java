@@ -15,7 +15,7 @@ public class PatronTokenDTO {
     private String password;
 
     PatronTokenDTO(ContentProviderConsumer contentProviderConsumer, Patron patron) {
-        this.libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);;
+        this.libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
         PatronDTO patronDTO = new PatronDTO(patron);
         this.userName = patronDTO.getUserName();
         this.password = patronDTO.getPassword();

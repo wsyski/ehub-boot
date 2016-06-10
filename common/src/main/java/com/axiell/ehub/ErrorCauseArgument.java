@@ -13,6 +13,8 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Represents an argument to an {@link ErrorCause}. It can for example be the name of a {@link ContentProvider} or the
  * ID of a loan in the LMS.
@@ -20,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @XmlAccessorType(XmlAccessType.NONE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ErrorCauseArgument {
+public class ErrorCauseArgument implements Serializable {
     private Type type;
     private String value;
 
