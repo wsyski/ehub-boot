@@ -13,6 +13,6 @@ public class JacksonTimestampInSecondsDeserializer extends JsonDeserializer<Date
     @Override
     public Date deserialize(final JsonParser jp, final DeserializationContext deserializationContext) throws IOException {
         String value = jp.getText().trim();
-        return new Date(Long.valueOf(value) * 1000);
+        return new Date(Long.parseLong(value) * 1000);
     }
 }
