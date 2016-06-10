@@ -1,6 +1,10 @@
-package com.axiell.ehub.provider.ep;
+package com.axiell.ehub.provider.ep.lpp;
 
+import com.axiell.ehub.provider.ep.AbstractEpIT;
+import com.axiell.ehub.provider.ep.EpUserIdValue;
+import com.axiell.ehub.provider.ep.IEpFacade;
 import com.axiell.ehub.provider.ep.lpf.LpfCheckoutDTO;
+import com.axiell.ehub.provider.ep.lpf.LpfEpFacade;
 import com.axiell.ehub.util.IFinder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,9 +14,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EpCheckoutIT extends AbstractEpIT {
+public class LppEpCheckoutIT extends AbstractEpIT<LppEpFacade> {
 
-    private LpfCheckoutDTO checkout;
+    private LppCheckoutDTO checkout;
 
     @Ignore
     @Test
@@ -21,15 +25,15 @@ public class EpCheckoutIT extends AbstractEpIT {
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
-        whenCheckout(FORMAT_ID);
-        thenPatronHasCheckout();
+        whenCheckout();
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
         thenCheckoutHasDownloadUrl();
+        thenPatronHasCheckout();
     }
 
-    private void whenCheckout(final String contentProviderFormatId) {
-        checkout = underTest.checkout(contentProviderConsumer, patron, RECORD_ID, contentProviderFormatId);
+    private void whenCheckout() {
+        checkout = underTest.checkout(contentProviderConsumer, patron, RECORD_ID);
     }
 
     private void thenPatronHasCheckout() throws IFinder.NotFoundException {
@@ -45,8 +49,12 @@ public class EpCheckoutIT extends AbstractEpIT {
     }
 
     private void thenCheckoutHasDownloadUrl() {
-        assertNotNull(checkout.getFormatMetadata().getContentLinks());
+        assertNotNull(checkout.getFormatMetadatas().get(FORMAT_ID_0));
+        assertNotNull(checkout.getFormatMetadatas().get(FORMAT_ID_1));
     }
 
-
+    @Override
+    protected LppEpFacade createEpFacade() {
+        return new LppEpFacade();
+    }
 }
