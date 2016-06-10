@@ -11,10 +11,16 @@
     <li><a title="Adding a new media provider" href="../../">Adding a new media provider</a></li>
     <li class="active">eHUB Provider API Reference</li>
 </ol>
+<p>There are 2 API interfaces available:</p>
+<ul>
+    <li>Loan per format. In this case downloading each format of the product results in a new checkout at the content provider. For example downloading a book in epub and pdf formats results in 2 different checkouts at the content provider.</li>
+    <li>Loan per product. In this case downloading each format of the product results in a single checkout at the content provider. For example downloading a book in epub and pdf formats results in a single checkout at the content provider.</li>
+</ul>
+<p>Both API share the same getRecord calls and separate checkout and getCheckout call implementations</p>
 <ul>
     <li><a title="getRecord" href="getRecord.html">getRecord</a></li>
-    <li><a title="checkout" href="checkout.html">checkout</a></li>
-    <li><a title="getCheckout" href="getCheckout.html">getCheckout</a></li>
+    <li><a title="checkout" href="lpf/index.html">Loan per format checkout and getCheckout call implementations</a></li>
+    <li><a title="checkout" href="lpp/index.html">Loan per product checkout and getCheckout call implementations</a></li>
 </ul>
 </body>
 </html>
