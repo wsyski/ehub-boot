@@ -14,11 +14,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static junit.framework.Assert.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LppEpCheckoutIT extends AbstractEpIT<LppEpFacade> {
+public class LppEpIT extends AbstractEpIT<LppEpFacade> {
 
     private LppCheckoutDTO checkout;
 
-    @Ignore
     @Test
     public void checkout() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();

@@ -1,14 +1,18 @@
 package com.axiell.ehub.provider.ep;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
-@Path("v1")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public interface IEpResource {
+public interface IEpResource<C extends ICheckoutDTO, R extends ICheckoutRequestDTO> {
 
     @GET
     @Path("records/{id}")
     RecordDTO getRecord(@PathParam("id") String recordId);
+
+    C checkout(R checkoutRequest);
+
+    C getCheckout(String checkoutId);
+
+    @DELETE
+    @Path("checkouts/{id}")
+    void deleteCheckout(@PathParam("id") String checkoutId);
 }

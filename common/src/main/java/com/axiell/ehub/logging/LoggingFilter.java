@@ -24,13 +24,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-
-/**
- * Universal logging filter.
- * <p/>
- * Can be used on client or server side. Has the highest priority.
- */
-@Priority(Integer.MIN_VALUE)
+@Priority(Integer.MAX_VALUE)
 @Provider
 @SuppressWarnings("ClassWithMultipleLoggers")
 public class LoggingFilter implements ContainerRequestFilter, ClientRequestFilter, ContainerResponseFilter,

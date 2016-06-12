@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 @Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ILpfEpResource extends IEpResource {
+public interface ILpfEpResource extends IEpResource<LpfCheckoutDTO,LpfCheckoutRequestDTO> {
 
     @POST
     @Path("checkouts")

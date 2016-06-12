@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.ep.lpp;
 
+import com.axiell.ehub.provider.ep.ICheckoutRequestDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -8,7 +9,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LppCheckoutRequestDTO {
+public class LppCheckoutRequestDTO implements ICheckoutRequestDTO {
     private String recordId;
 
     public LppCheckoutRequestDTO(final String recordId) {
