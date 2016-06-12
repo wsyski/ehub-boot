@@ -36,9 +36,10 @@ class AuthInfo {
         String encodedContentProviderName = encode(contentProvider.getName());
         String encodedSiteId =  encode(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID));
         String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY);
-        String encodedUserId =  encode(getUserId());
+        String encodedUserId =  getUserId()==null ? null : encode(getUserId());
         Signature signature = new Signature(getSignatureItems(encodedContentProviderName, encodedSiteId, ehubConsumerId, encodedUserId, timestamp), secretKey);
-        return String.format(AUTHORIZATION_HEADER_FORMAT, encodedContentProviderName, encodedSiteId, ehubConsumerId, encodedUserId, timestamp, signature.toString());
+        String encodedSignature = encode(signature.toString());
+        return String.format(AUTHORIZATION_HEADER_FORMAT, encodedContentProviderName, encodedSiteId, ehubConsumerId, encodedUserId, timestamp, encodedSignature);
     }
 
     private String getUserId() {
@@ -71,8 +72,8 @@ class AuthInfo {
         return userId;
     }
 
-    private static List<?> getSignatureItems(final String contentProviderName, final String siteId, final long ehubConsumerId, final String userId,
+    private static List<String> getSignatureItems(final String contentProviderName, final String siteId, final long ehubConsumerId, final String userId,
                                              final long timestamp) {
-        return Lists.newArrayList(contentProviderName, siteId, ehubConsumerId, userId, timestamp);
+        return Lists.newArrayList(contentProviderName, siteId, String.valueOf(ehubConsumerId), userId, String.valueOf(timestamp));
     }
 }

@@ -14,7 +14,7 @@ public class AuthHeaderParserTest {
     private static final String EXP_PATRON_ID = "patronId";
     private static final String EXP_CARD = "card";
     private static final String EXP_PIN = "pin";
-    private static final Signature EXP_SIGNATURE = new Signature("c2lnbmF0dXJl");
+    private static final String EXP_SIGNATURE = "c2lnbmF0dXJl";
     private AuthHeaderParser underTest;
     private String authorizationHeader;
     private Object actualReturnValue;

@@ -6,7 +6,7 @@ package com.axiell.ehub.security;
 import static org.junit.Assert.*;
 
 import com.axiell.ehub.patron.Patron;
-import com.google.common.collect.Lists;
+import static com.axiell.ehub.util.EhubUrlCodec.encode;
 import org.junit.Test;
 
 public class SignatureTest {
@@ -31,7 +31,7 @@ public class SignatureTest {
     }
 
     private void thenActualSigntaureEqualsExpectedSignature() {
-        assertEquals(EXP_VALUE, actValue);
+        assertEquals(EXP_VALUE, encode(actValue));
     }
 
     private void whenToString() {
