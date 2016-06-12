@@ -40,7 +40,6 @@ public abstract class AbstractEpIT<F extends IEpFacade> extends AbstractContentP
         underTest = createEpFacade();
     }
 
-    @Ignore
     @Test
     public void getFormats() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();

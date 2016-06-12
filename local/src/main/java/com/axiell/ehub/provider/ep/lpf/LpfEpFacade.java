@@ -2,31 +2,27 @@ package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ep.EpResourceFactory;
-import com.axiell.ehub.provider.ep.RecordDTO;
+import com.axiell.ehub.provider.ep.AbstractEpFacade;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LpfEpFacade implements ILpfEpFacade {
-    private EpResourceFactory<ILpfEpResource> epResourceFactory=new EpResourceFactory<>();
-    @Override
-    public RecordDTO getRecord(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
-        final ILpfEpResource epResource = epResourceFactory.create(ILpfEpResource.class, contentProviderConsumer, patron);
-        return epResource.getRecord(contentProviderRecordId);
-    }
+public class LpfEpFacade extends AbstractEpFacade<LpfCheckoutDTO, LpfCheckoutRequestDTO, ILpfEpResource> implements ILpfEpFacade {
 
     @Override
     public LpfCheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId,
                                    final String formatId) {
-        final ILpfEpResource epResource = epResourceFactory.create(ILpfEpResource.class, contentProviderConsumer, patron);
+        final ILpfEpResource epResource = getEpResource(contentProviderConsumer, patron);
         final LpfCheckoutRequestDTO checkoutRequest = new LpfCheckoutRequestDTO(contentProviderRecordId, formatId);
         return epResource.checkout(checkoutRequest);
     }
 
     @Override
-    public LpfCheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final Patron patron,
-                                      final String contentProviderLoanId) {
-        final ILpfEpResource epResource = epResourceFactory.create(ILpfEpResource.class, contentProviderConsumer, patron);
-        return epResource.getCheckout(contentProviderLoanId);
+    protected Class<ILpfEpResource> getIEpResourceClass() {
+        return ILpfEpResource.class;
     }
 }
+
+
+
+
+

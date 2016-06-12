@@ -11,7 +11,7 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 
 public class EpResourceFactory<E> {
 
-    public E create(final Class<E> clazz, final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public static <E> E create(final Class<E> clazz, final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
