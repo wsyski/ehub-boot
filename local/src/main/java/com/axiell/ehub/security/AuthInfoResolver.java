@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 class AuthInfoResolver implements IAuthInfoResolver {
-    private static Logger LOGGER = LoggerFactory.getLogger(AuthInfoResolver.class);
 
     @Autowired
     private IConsumerBusinessController consumerBusinessController;
@@ -24,11 +23,11 @@ class AuthInfoResolver implements IAuthInfoResolver {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(ehubConsumerId);
 
         final Patron patron = makePatron(parser);
-        final Signature actualSignature = parser.getActualSignature();
+        final String actualSignature = parser.getActualSignature();
         final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), ehubConsumer.getSecretKey());
 
-        if (actualSignature.isValid(expectedSignature))
-            return new AuthInfo(ehubConsumerId, patron, actualSignature);
+        if (expectedSignature.isValid(actualSignature))
+            return new AuthInfo(ehubConsumerId, patron, expectedSignature);
         else
             throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
     }

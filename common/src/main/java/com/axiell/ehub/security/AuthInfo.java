@@ -71,13 +71,14 @@ public class AuthInfo {
         final String encodedLibraryCard = patron.hasLibraryCard() ? encode(patron.getLibraryCard()) : null;
         final String pin = patron.getPin();
         final String encodedPin = pin == null ? null : encode(pin);
+        final String encodedSignature = signature == null ? null : encode(signature);
 
         if (patron.hasId())
-            return MessageFormat.format(CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedPatronId, encodedLibraryCard, encodedPin, signature);
+            return MessageFormat.format(CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedPatronId, encodedLibraryCard, encodedPin, encodedSignature);
         else if (patron.hasLibraryCard())
-            return MessageFormat.format(CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedLibraryCard, encodedPin, signature);
+            return MessageFormat.format(CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedLibraryCard, encodedPin, encodedSignature);
         else
-            return MessageFormat.format(CONSUMER_ID_PATTERN, ehubConsumerId.toString(), signature);
+            return MessageFormat.format(CONSUMER_ID_PATTERN, ehubConsumerId.toString(), encodedSignature);
     }
 
     /**
@@ -169,9 +170,9 @@ public class AuthInfo {
         }
     }
 
-    public static List<?> getSignatureItems(final long ehubConsumerId, final Patron patron) {
-        List<Object> signatureItems=new ArrayList<>();
-        signatureItems.add(ehubConsumerId);
+    public static List<String> getSignatureItems(final long ehubConsumerId, final Patron patron) {
+        List<String> signatureItems=new ArrayList<>();
+        signatureItems.add(String.valueOf(ehubConsumerId));
         if (patron.hasLibraryCard()) {
             signatureItems.add(patron.getLibraryCard());
             signatureItems.add(patron.getPin());

@@ -82,9 +82,9 @@ class AuthHeaderParser {
         return authHeaderParams.get(EHUB_PIN);
     }
 
-    Signature getActualSignature() {
+    String getActualSignature() {
         final String base64EncodedSignature = authHeaderParams.get(EHUB_SIGNATURE);
         validateInputIsNotNull(base64EncodedSignature, ErrorCause.MISSING_SIGNATURE);
-        return new Signature(base64EncodedSignature);
+        return base64EncodedSignature;
     }
 }
