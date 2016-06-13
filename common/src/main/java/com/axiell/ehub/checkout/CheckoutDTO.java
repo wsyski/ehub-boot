@@ -3,13 +3,14 @@ package com.axiell.ehub.checkout;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CheckoutDTO {
+public class CheckoutDTO implements Serializable {
     private CheckoutMetadataDTO metadata;
     private List<ContentLinkDTO> contentLinks;
     private List<SupplementLinkDTO> supplementLinks;

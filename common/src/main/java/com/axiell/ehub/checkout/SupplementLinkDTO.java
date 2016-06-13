@@ -6,9 +6,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-@JsonAutoDetect
+import java.io.Serializable;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SupplementLinkDTO {
+public class SupplementLinkDTO implements Serializable {
     private String name;
     private String href;
 
