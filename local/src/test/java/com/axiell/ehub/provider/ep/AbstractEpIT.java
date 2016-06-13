@@ -7,37 +7,44 @@ import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.hamcrest.Matchers;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.List;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
+import static junit.framework.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
-public abstract class AbstractEpIT<F extends IEpFacade> extends AbstractContentProviderIT {
-    protected static final String API_BASE_URL_VALUE = "https://xyzaeh.ulverscroftdigital.com";
-    protected static final long EHUB_CONSUMER_ID = 1L;
-    protected static final String EP_SITE_ID = "1111";
-    protected static final String EP_SECRET_KEY = "1111";
-    protected static final String RECORD_ID = "9781407941011";
-    protected static final String FORMAT_ID_0 = "mp3";
-    protected static final String FORMAT_ID_1 = "m4b";
-    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+@RunWith(MockitoJUnitRunner.class)
+public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> extends AbstractContentProviderIT {
+    private static final long EHUB_CONSUMER_ID = 1L;
     private static final String PATRON_ID = "patronId";
     private static final String LIBRARY_CARD = "D0200000000000";
-    private static final boolean IS_LOAN_PER_PRODUCT = true;
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
     protected RecordDTO record;
 
+    protected C checkout;
+
     protected F underTest;
+
     @Mock
     protected Patron patron;
 
     @Before
-    public void setUpUnderTest() {
+    public void setUp() {
         underTest = createEpFacade();
+    }
+
+    @After
+    public void tearDown() {
+        deleteCheckout();
     }
 
     @Test
@@ -48,18 +55,26 @@ public abstract class AbstractEpIT<F extends IEpFacade> extends AbstractContentP
         givenContentProvider();
         givenEhubConsumer();
         whenGetFormats();
-        thenExpectedMediaType(FORMAT_ID_0);
+        thenExpectedGetFormatsResponse();
     }
 
     protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
         given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
-        given(contentProvider.isLoanPerProduct()).willReturn(IS_LOAN_PER_PRODUCT);
-        given(contentProvider.getProperty(API_BASE_URL)).willReturn(API_BASE_URL_VALUE);
-        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID)).willReturn(EP_SITE_ID);
-        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(EP_SECRET_KEY);
+        given(contentProvider.isLoanPerProduct()).willReturn(isLoanPerProduct());
+        given(contentProvider.getProperty(API_BASE_URL)).willReturn(getApiBaseUri());
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID)).willReturn(getSiteId());
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(getSecretKey());
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE))
                 .willReturn(epUserIdValue.name());
+    }
+
+    protected void thenCheckoutHasTransactionId() {
+        assertNotNull(checkout.getId());
+    }
+
+    protected void thenCheckoutHasExpirationDate() {
+        assertNotNull(checkout.getExpirationDate());
     }
 
     protected void givenPatronIdInPatron() {
@@ -73,14 +88,36 @@ public abstract class AbstractEpIT<F extends IEpFacade> extends AbstractContentP
     }
 
     private void whenGetFormats() {
-        record = underTest.getRecord(contentProviderConsumer, patron, RECORD_ID);
+        record = underTest.getRecord(contentProviderConsumer, patron, getRecordId());
     }
 
-    private void thenExpectedMediaType(final String contentProviderFormatId) throws IFinder.NotFoundException {
-        IMatcher<FormatDTO> matcher = new FormatIdFormatMatcher(contentProviderFormatId);
-        FormatDTO format = new CollectionFinder<FormatDTO>().find(matcher, record.getFormats());
-        Assert.assertThat(contentProviderFormatId, Matchers.is(format.getId()));
+    private void thenExpectedGetFormatsResponse() throws IFinder.NotFoundException {
+        getFormatIds().forEach(contentProviderFormatId -> {
+            IMatcher<FormatDTO> matcher = new FormatIdFormatMatcher(contentProviderFormatId);
+            FormatDTO format = new CollectionFinder<FormatDTO>().find(matcher, record.getFormats());
+            Assert.assertThat(contentProviderFormatId, Matchers.is(format.getId()));
+        });
+
     }
+
+    private void deleteCheckout() {
+        if (checkout != null) {
+            underTest.deleteCheckout(contentProviderConsumer, patron, checkout.getId());
+            checkout = null;
+        }
+    }
+
+    protected abstract boolean isLoanPerProduct();
 
     protected abstract F createEpFacade();
+
+    protected abstract List<String> getFormatIds();
+
+    protected abstract String getApiBaseUri();
+
+    protected abstract String getSiteId();
+
+    protected abstract String getSecretKey();
+
+    protected abstract String getRecordId();
 }
