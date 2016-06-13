@@ -23,8 +23,7 @@
 
 <pre>
     {
-    "recordId": "&lt;record id&gt;",
-    "formatId": &lt;format id&gt;"
+    "recordId": "&lt;record id&gt;"
     }
 </pre>
 <table class="table">
@@ -80,10 +79,17 @@
     </tr>
 </table>
 
+<p>Example request:</p>
+<p><code>POST /v1/checkouts</code></p>
+<pre>
+{
+    "recordId": "recordId_0"
+}
+</pre>
 <p>Example response:</p>
 <pre>
-   {
-  "id": "contentProviderLoanId",
+{
+  "id": "checkoutId",
   "formatMetadata": {
     "ebook": {
       "contentLinks": [

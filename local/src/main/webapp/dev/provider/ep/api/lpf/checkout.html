@@ -67,14 +67,28 @@
     </tr>
 </table>
 
+<p>Example request:</p>
+<p><code>POST /v1/checkouts</code></p>
+<pre>
+{
+    "recordId": "recordId_0",
+    "formatId": "ebook"
+}
+</pre>
 <p>Example response:</p>
 <pre>
-    {
-    "id": "123456",
-    "contentLinks": [{"href": "https://provider.com/ehub-api/v1/records/123456789/content_0"}, {"href": "https://provider.com/ehub-api/v1/records/123456789/content_1"}],
-    "supplementLinks": [{"name": "Supplement 0", "href": "https://provider.com/ehub-api/v1/records/123456789/supplement_0"}, {"name": "Supplement 1", "href": "https://provider.com/ehub-api/v1/records/123456789/supplement_1"}],
-    "expirationDate": "2016-01-01T00:00:00Z"
-    }
+{
+  "id": "checkoutId",
+  "contentLinks": [
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_0"},
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_1"}
+  ],
+  "supplementLinks": [
+    {"name": "supplement_0", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_0"},
+    {"name": "supplement_1", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_1"}
+  ],
+  "expirationDate": "2016-01-01T00:00:00Z"
+}
 </pre>
 </body>
 </html>

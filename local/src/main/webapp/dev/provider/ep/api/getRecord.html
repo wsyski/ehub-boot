@@ -58,19 +58,24 @@
     media in a specific format it is preferred that this format id appears in the response. The details of the availability algorithm are media provider
     specific.</p>
 
+<p>Example request:</p>
+<p><code>GET /v1/records/recordId_0</code></p>
 <p>Example response:</p>
 <pre>
+{
+  "id": "recordId_0",
+  "formats": [
     {
-    "id": "123456789",
-    "formats": [
-        {
-        "id": "eBook"
-        },
-        {
-        "id": "eAudio"
-        }
-    ]
+      "id": "ebook"
+    },
+    {
+      "id": "audio-stream"
+    },
+    {
+      "id": "audio-downloadable"
     }
+  ]
+}
 </pre>
 </body>
 </html>
