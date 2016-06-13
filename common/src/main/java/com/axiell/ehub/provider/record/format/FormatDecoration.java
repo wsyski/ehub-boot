@@ -155,7 +155,7 @@ public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
         this.textBundles = textBundles;
     }
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JoinTable(name = "FORMAT_DECORATION_PLATFORM", joinColumns = @JoinColumn(name = "CONTENT_P_FORMAT_DECORATION_ID"), inverseJoinColumns = @JoinColumn(name = "PLATFORM_ID"), foreignKey = @ForeignKey(name = "FK_F_D_P_CONTENT_P_F_D"), inverseForeignKey = @ForeignKey(name = "FK_F_D_P_PLATFORM"))
     public Set<Platform> getPlatforms() {
         return platforms;
