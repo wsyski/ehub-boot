@@ -39,10 +39,6 @@ public class Format implements Serializable {
         return dto.getDescription();
     }
 
-    public boolean locked() {
-        return false;
-    }
-
     public ContentDisposition contentDisposition() {
         return dto.getContentDisposition();
     }
