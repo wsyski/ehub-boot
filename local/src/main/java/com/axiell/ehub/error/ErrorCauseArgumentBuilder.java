@@ -2,8 +2,11 @@ package com.axiell.ehub.error;
 
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgumentValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ErrorCauseArgumentBuilder {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorCauseArgumentBuilder.class);
     private final IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository;
     private final ErrorCauseArgument.Type argumentType;
     private final ErrorCauseArgumentValue.Type valueType;
@@ -34,6 +37,11 @@ public class ErrorCauseArgumentBuilder {
 
     private String getValue() {
         final ErrorCauseArgumentValue errorCauseArgumentValue = errorCauseArgumentValueRepository.findByType(valueType);
-        return errorCauseArgumentValue.getText(language, defaultLanguage);
+        if (errorCauseArgumentValue == null) {
+            LOGGER.warn("Missing error cause argument value for type: " + valueType.name());
+            return valueType.name();
+        } else {
+            return errorCauseArgumentValue.getText(language, defaultLanguage);
+        }
     }
 }
