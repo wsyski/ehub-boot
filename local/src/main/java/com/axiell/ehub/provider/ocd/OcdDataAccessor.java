@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
+import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
 
 @Component
 public class OcdDataAccessor extends AbstractContentProviderDataAccessor {

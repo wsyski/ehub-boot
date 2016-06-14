@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 
@@ -25,7 +25,7 @@ public class DefaultContentProviderExceptionFactory extends AbstractContentProvi
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
+    protected ErrorCauseArgumentType getErrorCauseArgumentValueType(final String code, final String message) {
         return null;
     }
 }

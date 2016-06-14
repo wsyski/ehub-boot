@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
+import static com.axiell.ehub.ErrorCauseArgumentType.*;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
 import static org.mockito.BDDMockito.given;

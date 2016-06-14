@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 
 @Component
 class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValueAdminController {
@@ -24,12 +24,12 @@ class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValue
     private IErrorCauseArgumentValueRepository argumentValueRepository;
 
     @Override
-    public List<Type> getTypes() {
-        final Type[] types = Type.values();
-        final List<Type> typeList = Lists.newArrayList(types);
-        Collections.sort(typeList, new Comparator<Type>() {
+    public List<ErrorCauseArgumentType> getTypes() {
+        final ErrorCauseArgumentType[] types = ErrorCauseArgumentType.values();
+        final List<ErrorCauseArgumentType> typeList = Lists.newArrayList(types);
+        Collections.sort(typeList, new Comparator<ErrorCauseArgumentType>() {
             @Override
-            public int compare(final Type o1, final Type o2) {
+            public int compare(final ErrorCauseArgumentType o1, final ErrorCauseArgumentType o2) {
                 return o1.name().compareTo(o2.name());
             }
         });
@@ -38,7 +38,7 @@ class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValue
 
     @Override
     @Transactional(readOnly = true)
-    public ErrorCauseArgumentValue findBy(final Type type) {
+    public ErrorCauseArgumentValue findBy(final ErrorCauseArgumentType type) {
         ErrorCauseArgumentValue argumentValue = argumentValueRepository.findByType(type);
         return initialize(argumentValue);
     }

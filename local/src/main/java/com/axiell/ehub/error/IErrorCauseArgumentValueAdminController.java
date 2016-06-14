@@ -6,13 +6,13 @@ import com.axiell.ehub.language.Language;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 
 public interface IErrorCauseArgumentValueAdminController {
 
-    List<Type> getTypes();
+    List<ErrorCauseArgumentType> getTypes();
 
-    ErrorCauseArgumentValue findBy(Type type);
+    ErrorCauseArgumentValue findBy(ErrorCauseArgumentType type);
 
     ErrorCauseArgumentValueTextBundle save(ErrorCauseArgumentValueTextBundle textBundle);
 

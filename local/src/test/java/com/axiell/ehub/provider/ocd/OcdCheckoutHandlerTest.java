@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -102,6 +102,6 @@ public class OcdCheckoutHandlerTest {
     }
 
     public void givenInternalServerErrorExceptionFromEhubExceptionFactory() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentValue.Type.class), anyString())).willThrow(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), anyString())).willThrow(internalServerErrorException);
     }
 }

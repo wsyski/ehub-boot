@@ -9,8 +9,8 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INACTIVE_LOAN;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.INACTIVE_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.provider.elib.library3.GetLoanCommand.Result.ACTIVE_LOAN_RETRIEVED;
 
 class GetLoanCommand extends AbstractElib3Command<CommandData> {

@@ -1,6 +1,7 @@
 package com.axiell.ehub.error;
 
 import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +10,12 @@ public class ErrorCauseArgumentBuilder {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorCauseArgumentBuilder.class);
     private final IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository;
     private final ErrorCauseArgument.Type argumentType;
-    private final ErrorCauseArgumentValue.Type valueType;
+    private final ErrorCauseArgumentType valueType;
     private String language;
     private String defaultLanguage;
 
     public ErrorCauseArgumentBuilder(final IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository, final ErrorCauseArgument.Type type,
-                                     final ErrorCauseArgumentValue.Type valueType) {
+                                     final ErrorCauseArgumentType valueType) {
         this.errorCauseArgumentValueRepository = errorCauseArgumentValueRepository;
         this.argumentType = type;
         this.valueType = valueType;

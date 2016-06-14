@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
+import static com.axiell.ehub.ErrorCauseArgumentType.MISSING_CONTENT_IN_LOAN;
 
 @Component
 public class F1DataAccessor extends AbstractContentProviderDataAccessor {

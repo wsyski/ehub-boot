@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.MISSING_CONTENT_IN_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.Map;
 
 import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.ALREADY_ON_LOAN;
 import static junit.framework.Assert.assertNotNull;
 
 public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheckoutDTO> {
