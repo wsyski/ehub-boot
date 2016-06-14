@@ -14,12 +14,10 @@ import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -33,7 +31,7 @@ import java.util.Locale;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
     @Rule
-    public final ExpectedException exception = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final String LF = System.getProperty("line.separator");
@@ -118,8 +116,8 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     protected void givenExpectedEhubException(final EhubError ehubError) {
-        exception.expect(EhubException.class);
-        exception.expectMessage(ehubError.getMessage());
+        expectedException.expect(EhubException.class);
+        expectedException.expectMessage(ehubError.getMessage());
     }
 
     protected abstract boolean isLoanPerProduct();
