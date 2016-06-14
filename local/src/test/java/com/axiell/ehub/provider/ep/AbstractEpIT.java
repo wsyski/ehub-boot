@@ -1,5 +1,7 @@
 package com.axiell.ehub.provider.ep;
 
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
@@ -7,10 +9,8 @@ import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -26,7 +26,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     private static final long EHUB_CONSUMER_ID = 1L;
     private static final String PATRON_ID = "patronId";
     private static final String LIBRARY_CARD = "D0200000000000";
-    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+    protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
     protected RecordDTO record;
 
@@ -36,6 +36,9 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
 
     @Mock
     protected Patron patron;
+
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -47,6 +50,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         deleteCheckout();
     }
 
+    @Ignore
     @Test
     public void getFormats() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();
@@ -106,6 +110,12 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
             checkout = null;
         }
     }
+
+    protected void givenExpectedEhubException(final EhubError ehubError) {
+        expectedException.expect(EhubException.class);
+        expectedException.expectMessage(ehubError.getMessage());
+    }
+
 
     protected abstract boolean isLoanPerProduct();
 
