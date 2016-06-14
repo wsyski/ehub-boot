@@ -10,7 +10,7 @@ public class TestDataConstants {
     public static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
     public static final String LIBRARY_CARD = "libraryCard";
     public static final String PIN = "pin";
-    public static final String EHUB_CONSUMER_SECRET_KEY = "ehubConsumerSecretKey";
+    public static final String EHUB_CONSUMER_SECRET_KEY = "c2VjcmV0S2V5";
     public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";

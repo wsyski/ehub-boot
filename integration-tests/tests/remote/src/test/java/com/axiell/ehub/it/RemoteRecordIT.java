@@ -1,14 +1,14 @@
 package com.axiell.ehub.it;
 
 import com.axiell.ehub.EhubException;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.List;
 import java.util.Set;
@@ -16,8 +16,8 @@ import java.util.Set;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class RemoteRecordIT extends RemoteITFixture {
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    private static final long INVALID_EHUB_CONSUMER_ID = 0L;
+
     private Record record;
 
     @Test
@@ -30,12 +30,9 @@ public class RemoteRecordIT extends RemoteITFixture {
     @Test
     public void unauthorized() throws EhubException {
         AuthInfo invalidAuthInfo = givenInvalidAuthInfo();
+        givenExpectedEhubException(ErrorCause.EHUB_CONSUMER_NOT_FOUND
+                .toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(INVALID_EHUB_CONSUMER_ID))));
         whenGetRecord(invalidAuthInfo);
-        thenExpectedExceptionMessage();
-    }
-
-    private void thenExpectedExceptionMessage() {
-        expectedException.expectMessage("An eHUB Consumer with ID 0 could not be found");
     }
 
     private void givenContentProviderGetFormatsResponse() {
@@ -68,10 +65,10 @@ public class RemoteRecordIT extends RemoteITFixture {
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {
         expectedException.expect(EhubException.class);
-        return new AuthInfo.Builder(0L, "invalidSecret").build();
+        return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID, TestDataConstants.EHUB_CONSUMER_SECRET_KEY).build();
     }
 
-    protected  boolean isLoanPerProduct() {
-       return false;
+    protected boolean isLoanPerProduct() {
+        return false;
     }
 }

@@ -1,9 +1,6 @@
 package com.axiell.ehub.it;
 
-import com.axiell.ehub.EhubException;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.Fields;
+import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
@@ -50,6 +47,12 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     protected void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
                 .willReturn(aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
+                        .withStatus(201)));
+    }
+
+    protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentValue.Type type) {
+        stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
+                .willReturn(aResponse().withBodyFile(getResponseFilePrefix() + "errorDTO_"+type.name()+".json").withHeader("Content-Type", "application/json")
                         .withStatus(201)));
     }
 
