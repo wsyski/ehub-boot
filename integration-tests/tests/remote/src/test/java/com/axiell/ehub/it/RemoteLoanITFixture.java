@@ -49,9 +49,9 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
                         .withStatus(201)));
     }
 
-    protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentValue.Type type) {
+    protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentType errorCauseArgumentType) {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
-                aResponse().withBodyFile("errorDTO_" + type.name() + ".json").withHeader("Content-Type", "application/json").withStatus(500)));
+                aResponse().withBodyFile("errorDTO_" + errorCauseArgumentType.name() + ".json").withHeader("Content-Type", "application/json").withStatus(500)));
     }
 
     private String getResponseFilePrefix() {

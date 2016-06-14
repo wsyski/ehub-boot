@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 
 @Component
 public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {

@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -125,7 +125,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
     }
 
     private void givenInternalServerErrorException() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentValue.Type.class), anyString())).willReturn(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), anyString())).willReturn(internalServerErrorException);
     }
 
     @Test

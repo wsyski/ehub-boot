@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -142,7 +142,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     private void givenInternalServerErrorException() {
         given(ehubExceptionFactory
-                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(Type.class),
+                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class),
                         anyString())).willReturn(internalServerErrorException);
     }
 

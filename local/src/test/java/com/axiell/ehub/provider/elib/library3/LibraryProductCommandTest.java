@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;

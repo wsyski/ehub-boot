@@ -5,7 +5,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 import static com.axiell.ehub.provider.elib.library3.LibraryProductCommand.Result.MODEL_AVAILABLE;
 
 class LibraryProductCommand extends  AbstractElib3Command<CommandData> {

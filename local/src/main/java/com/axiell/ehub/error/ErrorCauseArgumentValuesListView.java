@@ -10,9 +10,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 
-class ErrorCauseArgumentValuesListView extends ListView<Type> {
+class ErrorCauseArgumentValuesListView extends ListView<ErrorCauseArgumentType> {
     private final IBreadCrumbModel breadCrumbModel;
 
     @SpringBean(name = "errorCauseArgumentValueAdminController")
@@ -25,18 +25,18 @@ class ErrorCauseArgumentValuesListView extends ListView<Type> {
     }
 
     private void setErrorCauseArgumentValueTypes() {
-        final List<Type> types = errorCauseArgumentValueAdminController.getTypes();
+        final List<ErrorCauseArgumentType> types = errorCauseArgumentValueAdminController.getTypes();
         setList(types);
     }
 
     @Override
-    protected void populateItem(final ListItem<Type> item) {
-        final Type type = item.getModelObject();
+    protected void populateItem(final ListItem<ErrorCauseArgumentType> item) {
+        final ErrorCauseArgumentType type = item.getModelObject();
         final BreadCrumbPanelLink link = makeErrorCauseArgumentValueLink(type);
         item.add(link);
     }
 
-    private BreadCrumbPanelLink makeErrorCauseArgumentValueLink(final Type type) {
+    private BreadCrumbPanelLink makeErrorCauseArgumentValueLink(final ErrorCauseArgumentType type) {
         final IBreadCrumbPanelFactory factory = new ErrorCauseArgumentValuePanelFactory(type);
         final BreadCrumbPanelLink link = new BreadCrumbPanelLink("errorCauseArgumentValueLink", breadCrumbModel, factory);
         final Label linkLabel = makeErrorCauseArgumentLinkLabel(type);
@@ -44,7 +44,7 @@ class ErrorCauseArgumentValuesListView extends ListView<Type> {
         return link;
     }
 
-    private Label makeErrorCauseArgumentLinkLabel(final Type type) {
+    private Label makeErrorCauseArgumentLinkLabel(final ErrorCauseArgumentType type) {
         final String name = type.name();
         return new Label("errorCauseArgumentValueLinkLabel", name);
     }

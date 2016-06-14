@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.borrowbox;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
@@ -32,21 +32,21 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
-        ErrorCauseArgumentValue.Type type = null;
+    protected ErrorCauseArgumentType getErrorCauseArgumentValueType(final String code, final String message) {
+        ErrorCauseArgumentType type = null;
         if (code != null) {
             if (STATUS_NOT_YET_REGISTERED.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.INVALID_PATRON;
+                type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (STATUS_UNAUTHORIZED.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.INVALID_PATRON;
+                type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (STATUS_NO_CREDITS_LEFT.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.BORROWER_LIMIT_REACHED;
+                type = ErrorCauseArgumentType.BORROWER_LIMIT_REACHED;
             } else if (STATUS_NOT_AVAILABLE.equals(code) || STATUS_PRODUCT_NOT_AVAILABLE_ON_SITE.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE;
+                type = ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
             } else if (STATUS_NO_COPY_AVAILABLE.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED;
+                type = ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_ALREADY_ON_LOAN.equals(code)) {
-                type = ErrorCauseArgumentValue.Type.ALREADY_ON_LOAN;
+                type = ErrorCauseArgumentType.ALREADY_ON_LOAN;
             }
         }
         return type;

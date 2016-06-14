@@ -1,9 +1,6 @@
 package com.axiell.ehub.error;
 
-import com.axiell.ehub.BadRequestException;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ErrorCauseArgumentValue;
-import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 
 
@@ -15,13 +12,13 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
 
     @Override
     public InternalServerErrorException createInternalServerErrorExceptionWithContentProviderNameAndStatus(
-            final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentValue.Type argValueType, final String language) {
+            final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentType argValueType, final String language) {
         return createInternalServerErrorExceptionWithContentProviderNameAndStatus(null, contentProviderConsumer, argValueType, language);
     }
 
     @Override
     public InternalServerErrorException createInternalServerErrorExceptionWithContentProviderNameAndStatus(
-            final String message, final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentValue.Type argValueType,
+            final String message, final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentType argValueType,
             final String language) {
         final ErrorCauseArgument contentProviderNameArg = makeContentProviderNameArg(contentProviderConsumer);
         final ErrorCauseArgument statusArg = makeStatusArg(contentProviderConsumer, argValueType, language);
@@ -31,7 +28,7 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
 
     @Override
     public BadRequestException createBadRequestExceptionWithContentProviderNameAndStatus(final ContentProviderConsumer contentProviderConsumer,
-                                                                                         final ErrorCauseArgumentValue.Type argValueType,
+                                                                                         final ErrorCauseArgumentType argValueType,
                                                                                          final String language) {
         final ErrorCauseArgument contentProviderNameArg = makeContentProviderNameArg(contentProviderConsumer);
         final ErrorCauseArgument statusArg = makeStatusArg(contentProviderConsumer, argValueType, language);
@@ -43,6 +40,6 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
         return new ErrorCauseArgument(CONTENT_PROVIDER_NAME, contentProviderName);
     }
 
-    protected abstract ErrorCauseArgument makeStatusArg(final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentValue.Type argValueType,
+    protected abstract ErrorCauseArgument makeStatusArg(final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentType argValueType,
                                                         final String language);
 }

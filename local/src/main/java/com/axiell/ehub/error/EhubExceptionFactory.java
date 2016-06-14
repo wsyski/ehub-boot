@@ -1,7 +1,7 @@
 package com.axiell.ehub.error;
 
 import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class EhubExceptionFactory extends AbstractEhubExceptionFactory implement
     private IErrorCauseArgumentValueRepository errorCauseArgumentValueRepository;
 
     @Override
-    protected ErrorCauseArgument makeStatusArg(final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentValue.Type argValueType,
+    protected ErrorCauseArgument makeStatusArg(final ContentProviderConsumer contentProviderConsumer, final ErrorCauseArgumentType argValueType,
                                                final String language) {
         final String defaultLanguage = contentProviderConsumer.getEhubConsumer().getDefaultLanguage().getId();
         return new ErrorCauseArgumentBuilder(errorCauseArgumentValueRepository, CONTENT_PROVIDER_STATUS, argValueType).language(language).defaultLanguage(

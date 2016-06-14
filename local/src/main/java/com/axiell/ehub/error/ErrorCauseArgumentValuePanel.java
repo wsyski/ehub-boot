@@ -7,16 +7,16 @@ import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 
 class ErrorCauseArgumentValuePanel extends BreadCrumbPanel {
     private final ErrorCauseArgumentValueMediator mediator;
-    private final Type type;
+    private final ErrorCauseArgumentType type;
 
     @SpringBean(name = "errorCauseArgumentValueAdminController")
     private IErrorCauseArgumentValueAdminController errorCauseArgumentValueAdminController;
 
-    ErrorCauseArgumentValuePanel(final String id, final IBreadCrumbModel breadCrumbModel, final Type type) {
+    ErrorCauseArgumentValuePanel(final String id, final IBreadCrumbModel breadCrumbModel, final ErrorCauseArgumentType type) {
         super(id, breadCrumbModel);
         mediator = new ErrorCauseArgumentValueMediator();
         mediator.registerErrorCauseArgumentValuePanel(this);

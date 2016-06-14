@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -48,7 +48,7 @@ public abstract class AbstractElib3CommandTest {
     @Mock
     private EhubConsumer ehubConsumer;
 
-    protected ErrorCauseArgumentValue.Type argValueType;
+    protected ErrorCauseArgumentType argValueType;
     protected String language;
     protected AssertCommand next;
     protected CommandData data;

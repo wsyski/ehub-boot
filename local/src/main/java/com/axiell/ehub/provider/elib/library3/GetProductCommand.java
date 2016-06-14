@@ -6,7 +6,7 @@ import com.axiell.ehub.provider.ICommandResult;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_INACTIVE;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_INACTIVE;
 import static com.axiell.ehub.provider.elib.library3.GetProductCommand.Result.PRODUCT_ACTIVE;
 
 class GetProductCommand extends AbstractElib3Command<Elib3CommandData> {

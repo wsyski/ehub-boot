@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
@@ -70,12 +70,12 @@ public abstract class ContentProviderExceptionFactoryTestFixture<E> {
     protected void internalServerErrorExceptionWithStatusProductUnavailable() {
         assertThat(internalServerErrorException,
                 is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                        ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name())));
+                        ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name())));
     }
 
     protected void internalServerErrorExceptionWithLibraryLimitReached() {
         assertThat(internalServerErrorException,is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                ErrorCauseArgumentValue.Type.LIBRARY_LIMIT_REACHED.name())));
+                ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED.name())));
     }
 
     private void thenValidContentProviderName(final ErrorCauseArgument errorCauseArgument) {

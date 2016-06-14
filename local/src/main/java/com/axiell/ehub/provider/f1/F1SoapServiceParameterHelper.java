@@ -5,9 +5,9 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INVALID_CONTENT_PROVIDER_RECORD_ID;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INVALID_FORMAT_ID;
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.INVALID_LOAN_ID;
+import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
+import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_FORMAT_ID;
+import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_LOAN_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.F1_REGION_ID;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 

@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.BadRequestException;
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -138,11 +138,11 @@ public class F1SoapServiceParameterHelperTest {
     }
 
     private void givenBadRequestExceptionIsCreated() {
-        given(ehubExceptionFactory.createBadRequestExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentValue.Type.class), any(String.class))).willReturn(badRequestException);
+        given(ehubExceptionFactory.createBadRequestExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), any(String.class))).willReturn(badRequestException);
     }
 
     private void givenInternalServerErrorExceptionIsCreated() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentValue.Type.class), any(String.class))).willReturn(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), any(String.class))).willReturn(internalServerErrorException);
     }
 
     private void givenValidRecordId() {
