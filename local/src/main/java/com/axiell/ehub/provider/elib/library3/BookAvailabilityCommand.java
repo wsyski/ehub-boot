@@ -6,7 +6,7 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ICommandResult;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.*;
+import static com.axiell.ehub.ErrorCauseArgumentType.*;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
 

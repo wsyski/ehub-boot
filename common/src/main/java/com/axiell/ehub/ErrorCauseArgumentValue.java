@@ -10,7 +10,7 @@ import java.util.Map;
 @Table(name = "ERROR_CAUSE_ARGUMENT_VALUE")
 @Access(AccessType.PROPERTY)
 public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<Long> {
-    private Type type;
+    private ErrorCauseArgumentType type;
     private Map<Language, ErrorCauseArgumentValueTextBundle> textBundles;
 
     protected ErrorCauseArgumentValue() {
@@ -18,11 +18,11 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE", unique = true)
-    public Type getType() {
+    public ErrorCauseArgumentType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(ErrorCauseArgumentType type) {
         this.type = type;
     }
 
@@ -58,11 +58,5 @@ public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<L
             return null;
         }
         return textBundle.getText();
-    }
-
-    public enum Type {
-        BORROWER_LIMIT_REACHED, INACTIVE_LOAN, LIBRARY_LIMIT_REACHED, MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED, MISSING_CONTENT_IN_LOAN,
-        PRODUCT_INACTIVE, PRODUCT_UNAVAILABLE, INVALID_CONTENT_PROVIDER_RECORD_ID, INVALID_REGION_ID, INVALID_FORMAT_ID, CREATE_LOAN_FAILED, INVALID_LOAN_ID,
-        CHECKOUT_NOT_FOUND, ALREADY_ON_LOAN, INVALID_PATRON, ANOTHER_FORMAT_LOCKED_IN
     }
 }

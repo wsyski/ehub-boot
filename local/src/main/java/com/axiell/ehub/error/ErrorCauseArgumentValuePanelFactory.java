@@ -4,12 +4,12 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type;
+import com.axiell.ehub.ErrorCauseArgumentType;
 
 class ErrorCauseArgumentValuePanelFactory implements IBreadCrumbPanelFactory {
-    private final Type type;
+    private final ErrorCauseArgumentType type;
 
-    ErrorCauseArgumentValuePanelFactory(Type type) {
+    ErrorCauseArgumentValuePanelFactory(ErrorCauseArgumentType type) {
         this.type = type;
     }
 

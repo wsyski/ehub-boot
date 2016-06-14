@@ -1,9 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ErrorCauseArgumentValue;
-import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +39,7 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         if (StringUtils.isBlank(message)) {
             message = DEFAULT_MESSAGE;
         }
-        ErrorCauseArgumentValue.Type type = getErrorCauseArgumentValueType(code, message);
+        ErrorCauseArgumentType type = getErrorCauseArgumentValueType(code, message);
         if (type != null) {
             return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
         }
@@ -77,5 +74,5 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
 
     protected abstract String getMessage(final E entity);
 
-    protected abstract ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message);
+    protected abstract ErrorCauseArgumentType getErrorCauseArgumentValueType(final String code, final String message);
 }

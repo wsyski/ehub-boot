@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CHECKOUT_NOT_FOUND;
+import static com.axiell.ehub.ErrorCauseArgumentType.CHECKOUT_NOT_FOUND;
 
 @Component
 class OcdCheckoutHandler implements IOcdCheckoutHandler {

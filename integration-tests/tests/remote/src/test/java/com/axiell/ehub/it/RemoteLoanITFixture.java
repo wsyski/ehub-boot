@@ -28,7 +28,19 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     }
 
     @Test
-    public final void checkoutWithCheckoutTestErrorResponse() throws EhubException {
+    public final void checkoutWithContentProviderError() throws EhubException {
+        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP),
+                new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS, ErrorCauseArgumentType.ALREADY_ON_LOAN)));
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+        givenPalmaLoansWsdl();
+        givenPalmaCheckoutTestNewLoanResponse();
+        givenPalmaCheckoutResponse();
+        givenContentProviderCheckoutErrorResponse(ErrorCauseArgumentType.ALREADY_ON_LOAN);
+        Checkout checkout = whenCheckout();
+    }
+
+    @Test
+    public final void checkoutWithLmsError() throws EhubException {
         givenExpectedEhubException(ErrorCause.LMS_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, "blockedBorrCard"),
                 new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(testData.getEhubConsumerId()))));
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
@@ -38,22 +50,20 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     }
 
     protected void givenContentProviderGetCheckoutResponse() {
-        stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
-                .willReturn(
-                        aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
-                                .withStatus(200)));
+        stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID)).willReturn(
+                aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
+                        .withStatus(200)));
     }
 
     protected void givenContentProviderCheckoutResponse() {
-        stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
+        stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
+                aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
                         .withStatus(201)));
     }
 
-    protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentValue.Type type) {
-        stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile(getResponseFilePrefix() + "errorDTO_"+type.name()+".json").withHeader("Content-Type", "application/json")
-                        .withStatus(201)));
+    protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentType errorCauseArgumentType) {
+        stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
+                aResponse().withBodyFile("errorDTO_" + errorCauseArgumentType.name() + ".json").withHeader("Content-Type", "application/json").withStatus(500)));
     }
 
     private String getResponseFilePrefix() {

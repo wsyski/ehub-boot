@@ -10,7 +10,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.PRODUCT_INACTIVE;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_INACTIVE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;

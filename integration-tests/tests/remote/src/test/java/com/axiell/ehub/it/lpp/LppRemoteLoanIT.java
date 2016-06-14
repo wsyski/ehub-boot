@@ -1,6 +1,6 @@
 package com.axiell.ehub.it.lpp;
 
-import com.axiell.ehub.EhubException;
+import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.it.RemoteLoanITFixture;

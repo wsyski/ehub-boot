@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
@@ -28,11 +28,11 @@ public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<
     }
 
     @Override
-    protected ErrorCauseArgumentValue.Type getErrorCauseArgumentValueType(final String code, final String message) {
-        ErrorCauseArgumentValue.Type type = null;
+    protected ErrorCauseArgumentType getErrorCauseArgumentValueType(final String code, final String message) {
+        ErrorCauseArgumentType type = null;
         if (code != null) {
             try {
-                type = ErrorCauseArgumentValue.Type.valueOf(code);
+                type = ErrorCauseArgumentType.valueOf(code);
             } catch (IllegalArgumentException ex) {
                 LOGGER.info("Unknown content provider code: " + code);
             }

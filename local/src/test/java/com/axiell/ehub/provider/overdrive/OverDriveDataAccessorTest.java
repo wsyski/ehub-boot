@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.ErrorCauseArgumentValue;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
@@ -263,7 +263,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private void givenExpectedInternalServerException() {
         throwable.expect(InternalServerErrorException.class);
         throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
-                ErrorCauseArgumentValue.Type.PRODUCT_UNAVAILABLE.name()));
+                ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name()));
     }
 
     private void givenProduct() {

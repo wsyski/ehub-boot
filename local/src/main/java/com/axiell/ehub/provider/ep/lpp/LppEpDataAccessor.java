@@ -12,7 +12,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.axiell.ehub.ErrorCauseArgumentValue.Type.CREATE_LOAN_FAILED;
+import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
 
 @Component
 public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
