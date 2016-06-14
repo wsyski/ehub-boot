@@ -1,6 +1,8 @@
 package com.axiell.ehub.checkout;
 
-public class Checkout {
+import java.io.Serializable;
+
+public class Checkout implements Serializable {
     private final CheckoutDTO checkoutDTO;
 
     public Checkout(CheckoutMetadata checkoutMetadata, Content content) {
