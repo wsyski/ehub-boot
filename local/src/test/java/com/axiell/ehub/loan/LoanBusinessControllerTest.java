@@ -33,7 +33,7 @@ import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanBusinessControllerTest {
-    private EhubRuntimeException exception = null;
+    private EhubRuntimeException exception;
 
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
@@ -194,7 +194,7 @@ public class LoanBusinessControllerTest {
     }
 
     private void thenNotFoundException() {
-        Assert.assertThat(exception, Matchers.is(NotFoundException.class));
+        Assert.assertThat(exception, Matchers.instanceOf(NotFoundException.class));
     }
 
     private void thenErrorCauseIsUnsupportedLoanPerProduct() {
