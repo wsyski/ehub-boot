@@ -7,7 +7,11 @@ import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
@@ -16,19 +20,21 @@ import static junit.framework.Assert.assertNotNull;
 
 public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheckoutDTO> {
 
-    @Ignore
     @Test
     public void checkout() {
         givenLibraryCardInPatron();
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
+        // checkout=underTest.getCheckout(contentProviderConsumer,patron,"21773");
+        // if (1==1) return;
+        //deleteCheckout("21802");
         whenCheckout();
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
         thenCheckoutHasExpectedDownloadUrls();
         thenPatronHasCheckout();
-        // thenRepeatedCheckoutFails();
+        thenRepeatedCheckoutFails();
     }
 
     private void whenCheckout() {

@@ -2,6 +2,8 @@ package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
@@ -17,6 +19,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
+import static com.axiell.ehub.ErrorCauseArgumentType.ALREADY_ON_LOAN;
+import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -26,6 +31,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     private static final long EHUB_CONSUMER_ID = 1L;
     private static final String PATRON_ID = "patronId";
     private static final String LIBRARY_CARD = "D0200000000000";
+    protected static final String INVALID_RECORD_ID = "invalidRecordId";
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
     protected RecordDTO record;
@@ -50,7 +56,6 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         deleteCheckout();
     }
 
-    @Ignore
     @Test
     public void getFormats() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();
@@ -58,8 +63,24 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
-        whenGetFormats();
+        whenGetFormats(getRecordId());
         thenExpectedGetFormatsResponse();
+    }
+
+    @Test
+    public void getFormatsForInvalidRecordId() throws IFinder.NotFoundException {
+        givenLibraryCardInPatron();
+        //givenPatronIdInPatron();
+        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
+        givenContentProvider();
+        givenEhubConsumer();
+        thenGetFormatWithInvalidRecordIdFails();
+    }
+
+    private void thenGetFormatWithInvalidRecordIdFails() {
+        whenGetFormats(INVALID_RECORD_ID);
+        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, CONTENT_PROVIDER_TEST_EP),
+                        new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
     }
 
     protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
@@ -91,8 +112,8 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
     }
 
-    private void whenGetFormats() {
-        record = underTest.getRecord(contentProviderConsumer, patron, getRecordId());
+    private void whenGetFormats(final String recordId) {
+        record = underTest.getRecord(contentProviderConsumer, patron, recordId);
     }
 
     private void thenExpectedGetFormatsResponse() throws IFinder.NotFoundException {
@@ -106,9 +127,13 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
 
     private void deleteCheckout() {
         if (checkout != null) {
-            underTest.deleteCheckout(contentProviderConsumer, patron, checkout.getId());
+            deleteCheckout(checkout.getId());
             checkout = null;
         }
+    }
+
+    protected void deleteCheckout(final String checkoutId) {
+        underTest.deleteCheckout(contentProviderConsumer, patron, checkoutId);
     }
 
     protected void givenExpectedEhubException(final EhubError ehubError) {
