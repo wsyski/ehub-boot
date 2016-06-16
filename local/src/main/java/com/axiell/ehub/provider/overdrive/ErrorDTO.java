@@ -7,15 +7,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorDTO {
     private String errorCode;
+    private String error;
     private String message;
+    private String error_descriptiom;
     private String token;
 
     public String getErrorCode() {
-        return errorCode;
+        return errorCode == null ? error : errorCode;
     }
 
     public String getMessage() {
-        return message;
+        return message==null ? error_descriptiom  : message;
     }
 
     public String getToken() {

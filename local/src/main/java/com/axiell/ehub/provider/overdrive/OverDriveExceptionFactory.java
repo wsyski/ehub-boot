@@ -6,8 +6,8 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
-public class OverDriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
-        implements IContentProviderExceptionFactory<ErrorDTO> {
+public class OverDriveExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO> implements IContentProviderExceptionFactory<ErrorDTO> {
+    static final String STATUS_UNAUTHORIZED_CLIENT = "unauthorized_client";
     static final String STATUS_NOT_FOUND = "NotFound";
     static final String STATUS_NO_COPIES_AVAILABLE = "NoCopiesAvailable";
     static final String STATUS_PATRON_CHECKOUT_LIMIT = "PatronHasExceededCheckoutLimit";
@@ -37,6 +37,8 @@ public class OverDriveExceptionFactory extends AbstractContentProviderExceptionF
         if (code != null) {
             if (STATUS_NOT_FOUND.equals(code)) {
                 type = ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
+            } else if (STATUS_UNAUTHORIZED_CLIENT.equals(code)) {
+                type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (STATUS_NO_COPIES_AVAILABLE.equals(code)) {
                 type = ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_PATRON_CHECKOUT_LIMIT.equals(code)) {
