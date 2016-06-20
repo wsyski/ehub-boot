@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.util.List;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class CheckoutDTO_v2 {
     private CheckoutMetadataDTO_v2 metadata;
     private ContentLinkDTO contentLink;
