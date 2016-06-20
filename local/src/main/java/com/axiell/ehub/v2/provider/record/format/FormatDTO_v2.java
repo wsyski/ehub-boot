@@ -7,15 +7,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FormatDTO_v2 implements Serializable {
     private String id;
     private String name;
     private String description;
     private ContentDisposition contentDisposition;
-    private int playerWidth=0;
-    private int playerHeight=0;
+    private int playerWidth = 0;
+    private int playerHeight = 0;
 
     public FormatDTO_v2() {
     }
@@ -75,6 +75,7 @@ public class FormatDTO_v2 implements Serializable {
     }
 
     public static FormatDTO_v2 fromDTO(FormatDTO formatDTO) {
-        return new FormatDTO_v2().id(formatDTO.getId()).name(formatDTO.getName()).description(formatDTO.getDescription()).contentDisposition(formatDTO.getContentDisposition()).playerWidth(0).playerHeight(0);
+        return new FormatDTO_v2().id(formatDTO.getId()).name(formatDTO.getName()).description(formatDTO.getDescription())
+                .contentDisposition(formatDTO.getContentDisposition()).playerWidth(0).playerHeight(0);
     }
 }
