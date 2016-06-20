@@ -13,7 +13,7 @@
     <bean id="rootResourceProxy" class="com.axiell.ehub.util.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="com.axiell.ehub.IRootResource"/>
         <property name="baseUri" ref="ehubUri"/>
-        <property name="httpEngine" ref="httpEngine"/>
+        <property name="httpEngine" ref="ehubHttpEngine"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">
