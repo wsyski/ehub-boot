@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:properties id="httpClientFactoryProperties" location="classpath:http-client-factory.properties"/>
+
     <context:component-scan base-package="com.axiell.ehub"/>
 
-    <bean id="httpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine"/>
+    <bean id="ehubHttpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine">
+       <constructor-arg name="httpClient" ref="ehubHttpClient"/>
+    </bean>
 
+    <bean id="ehubHttpClientFactory" class="com.axiell.ehub.util.HttpClientFactory">
+        <property name="maxTotal" value="#{httpClientFactoryProperties['httpClientFactory.maxTotal']}"/>
+        <property name="defaultMaxPerRoute" value="#{httpClientFactoryProperties['httpClientFactory.defaultMaxPerRoute']}"/>
+        <property name="connectTimeout" value="#{httpClientFactoryProperties['httpClientFactory.connectTimeout']}"/>
+        <property name="connectionRequestTimeout" value="#{httpClientFactoryProperties['httpClientFactory.connectionRequestTimeout']}"/>
+        <property name="socketTimeout" value="#{httpClientFactoryProperties['httpClientFactory.socketTimeout']}"/>
+        <property name="validateAfterInactivity" value="#{httpClientFactoryProperties['httpClientFactory.validateAfterInactivity']}"/>
+    </bean>
+
+    <bean id="ehubHttpClient" factory-bean="ehubHttpClientFactory" factory-method="createInstance"/>
 </beans>
