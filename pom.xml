@@ -476,6 +476,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpcomponents-httpclient.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-spring</artifactId>
                 <version>${wicket.version}</version>
@@ -704,6 +710,7 @@
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
         <resteasy.version>3.0.17.Final</resteasy.version>
+        <httpcomponents-httpclient.version>4.4.1</httpcomponents-httpclient.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>
         <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
