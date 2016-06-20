@@ -1,6 +1,5 @@
 package com.axiell.ehub.v2.provider.record;
 
-import com.axiell.ehub.provider.record.format.FormatDTO;
 import com.axiell.ehub.v2.provider.record.format.FormatDTO_v2;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
 
-@JsonAutoDetect
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordDTO_v2 implements Serializable {
     private String id;
