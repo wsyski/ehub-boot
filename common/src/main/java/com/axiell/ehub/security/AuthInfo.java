@@ -17,12 +17,6 @@ import java.util.List;
 
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
 
-/**
- * Carries eHUB authentication information.
- * <p/>
- * TODO: decide if more info should be included in the signature, e.g. timestamp
- * TODO: include realm in header
- */
 public class AuthInfo {
     public static final String EHUB_SCHEME = "eHUB";
     public static final String EHUB_REALM = "realm=\"Axiell eHUB\"";
@@ -32,8 +26,9 @@ public class AuthInfo {
     static final String EHUB_PIN = "ehub_pin";
     static final String EHUB_SIGNATURE = "ehub_signature";
 
-    private static final String CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN = EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_PATRON_ID + "=\"{1}\", " + EHUB_LIBRARY_CARD + "=\"{2}\", "
-            + EHUB_PIN + "=\"{3}\", " + EHUB_SIGNATURE + "=\"{4}\"";
+    private static final String CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN =
+            EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_PATRON_ID + "=\"{1}\", " + EHUB_LIBRARY_CARD + "=\"{2}\", "
+                    + EHUB_PIN + "=\"{3}\", " + EHUB_SIGNATURE + "=\"{4}\"";
 
     private static final String CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN = EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_LIBRARY_CARD + "=\"{1}\", "
             + EHUB_PIN + "=\"{2}\", " + EHUB_SIGNATURE + "=\"{3}\"";
@@ -74,7 +69,9 @@ public class AuthInfo {
         final String encodedSignature = signature == null ? null : encode(signature);
 
         if (patron.hasId())
-            return MessageFormat.format(CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedPatronId, encodedLibraryCard, encodedPin, encodedSignature);
+            return MessageFormat
+                    .format(CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedPatronId, encodedLibraryCard, encodedPin,
+                            encodedSignature);
         else if (patron.hasLibraryCard())
             return MessageFormat.format(CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedLibraryCard, encodedPin, encodedSignature);
         else
@@ -165,13 +162,13 @@ public class AuthInfo {
             }
 
             final Patron patron = new Patron.Builder(libraryCard, pin).id(patronId).build();
-            final Signature signature = new Signature(getSignatureItems(ehubConsumerId,patron), ehubConsumerSecretKey);
+            final Signature signature = new Signature(getSignatureItems(ehubConsumerId, patron), ehubConsumerSecretKey);
             return new AuthInfo(ehubConsumerId, patron, signature);
         }
     }
 
     public static List<String> getSignatureItems(final long ehubConsumerId, final Patron patron) {
-        List<String> signatureItems=new ArrayList<>();
+        List<String> signatureItems = new ArrayList<>();
         signatureItems.add(String.valueOf(ehubConsumerId));
         if (patron.hasLibraryCard()) {
             signatureItems.add(patron.getLibraryCard());
