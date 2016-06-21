@@ -3,7 +3,9 @@ package com.axiell.ehub.checkout;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class SupplementLink {
+import java.io.Serializable;
+
+public class SupplementLink implements Serializable {
     private final SupplementLinkDTO supplementLinkDTO;
 
     public SupplementLink(final String name, final String href) {

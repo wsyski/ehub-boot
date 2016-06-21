@@ -9,7 +9,7 @@ public class ErrorDTO {
     private String errorCode;
     private String error;
     private String message;
-    private String error_descriptiom;
+    private String error_description;
     private String token;
 
     public String getErrorCode() {
@@ -17,7 +17,7 @@ public class ErrorDTO {
     }
 
     public String getMessage() {
-        return message==null ? error_descriptiom  : message;
+        return message==null ? error_description  : message;
     }
 
     public String getToken() {
