@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.security;
 
 import com.axiell.ehub.EhubError;
@@ -11,78 +8,72 @@ import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.patron.Patron;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.axiell.ehub.util.EhubUrlCodec.encode;
 
 public class AuthInfo {
-    public static final String EHUB_SCHEME = "eHUB";
-    public static final String EHUB_REALM = "realm=\"Axiell eHUB\"";
+    static final String EHUB_SCHEME = "eHUB";
+    static final String REALM = "realm=\"Axiell eHUB\"";
     static final String EHUB_CONSUMER_ID = "ehub_consumer_id";
     static final String EHUB_PATRON_ID = "ehub_patron_id";
     static final String EHUB_LIBRARY_CARD = "ehub_library_card";
     static final String EHUB_PIN = "ehub_pin";
+    static final String EHUB_EMAIL = "ehub_email";
     static final String EHUB_SIGNATURE = "ehub_signature";
-
-    private static final String CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN =
-            EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_PATRON_ID + "=\"{1}\", " + EHUB_LIBRARY_CARD + "=\"{2}\", "
-                    + EHUB_PIN + "=\"{3}\", " + EHUB_SIGNATURE + "=\"{4}\"";
-
-    private static final String CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN = EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_LIBRARY_CARD + "=\"{1}\", "
-            + EHUB_PIN + "=\"{2}\", " + EHUB_SIGNATURE + "=\"{3}\"";
-
-    private static final String CONSUMER_ID_PATTERN = EHUB_SCHEME + " " + EHUB_CONSUMER_ID + "=\"{0}\", " + EHUB_SIGNATURE + "=\"{1}\"";
 
     private final Long ehubConsumerId;
     private final Patron patron;
-    private final String signature;
+    private final String secretKey;
 
-    public AuthInfo(final Long ehubConsumerId, final Patron patron, final Signature signature) {
+    public AuthInfo(final Long ehubConsumerId, final Patron patron, final String secretKey) {
+        this.secretKey = secretKey;
         if (ehubConsumerId == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
         }
-        if (signature == null) {
-            throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
-        }
         this.ehubConsumerId = ehubConsumerId;
         this.patron = patron;
-        this.signature = signature.toString();
     }
 
-    /**
-     * Creates the Authorization header value.
-     * <p/>
-     * <p>
-     * This method is used by the RESTEasy client proxy framework when inserting the value of the Authorization header.
-     * </p>
-     *
-     * @see java.lang.Object#toString()
-     */
+    private String getSignature() {
+        Signature signature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
+        return signature.toString();
+    }
+
     @Override
     public String toString() {
-        final String encodedPatronId = patron.hasId() ? encode(patron.getId()) : null;
-        final String encodedLibraryCard = patron.hasLibraryCard() ? encode(patron.getLibraryCard()) : null;
-        final String pin = patron.getPin();
-        final String encodedPin = pin == null ? null : encode(pin);
-        final String encodedSignature = signature == null ? null : encode(signature);
+        final StringBuilder sb = new StringBuilder();
+        appendItem(sb, EHUB_CONSUMER_ID, String.valueOf(ehubConsumerId));
+        if (patron!=null) {
+            if (patron.hasId()) {
+                appendItem(sb, EHUB_PATRON_ID, patron.getId());
+            }
+            if (patron.hasLibraryCard()) {
+                appendItem(sb, EHUB_LIBRARY_CARD, patron.getLibraryCard());
+            }
+            if (patron.hasPin()) {
+                appendItem(sb, EHUB_PIN, patron.getPin());
 
-        if (patron.hasId())
-            return MessageFormat
-                    .format(CONSUMER_ID_PATRON_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedPatronId, encodedLibraryCard, encodedPin,
-                            encodedSignature);
-        else if (patron.hasLibraryCard())
-            return MessageFormat.format(CONSUMER_ID_LIBRARY_CARD_PIN_PATTERN, ehubConsumerId.toString(), encodedLibraryCard, encodedPin, encodedSignature);
-        else
-            return MessageFormat.format(CONSUMER_ID_PATTERN, ehubConsumerId.toString(), encodedSignature);
+            }
+            if (patron.hasEmail()) {
+                appendItem(sb, EHUB_EMAIL, patron.getEmail());
+            }
+        }
+        appendItem(sb, EHUB_SIGNATURE, getSignature());
+        return EHUB_SCHEME + " " + sb.toString();
     }
 
-    /**
-     * Returns the ID of the {@link EhubConsumer}.
-     *
-     * @return the ID of the {@link EhubConsumer}
-     */
+    private void appendItem(final StringBuilder sb, final String name, final String value) {
+        if (sb.length() > 0) {
+            sb.append(", ");
+        }
+        sb.append(name);
+        sb.append("=\"");
+        sb.append(encode(value));
+        sb.append("\"");
+    }
+
     public Long getEhubConsumerId() {
         return ehubConsumerId;
     }
@@ -103,6 +94,7 @@ public class AuthInfo {
         private String patronId;
         private String libraryCard;
         private String pin;
+        private String email;
 
         /**
          * Constructs a new {@link Builder}.
@@ -117,6 +109,11 @@ public class AuthInfo {
 
         public Builder patronId(final String patronId) {
             this.patronId = patronId;
+            return this;
+        }
+
+        public Builder email(final String email) {
+            this.email = email;
             return this;
         }
 
@@ -161,18 +158,32 @@ public class AuthInfo {
                 throw new EhubException(ehubError);
             }
 
-            final Patron patron = new Patron.Builder(libraryCard, pin).id(patronId).build();
-            final Signature signature = new Signature(getSignatureItems(ehubConsumerId, patron), ehubConsumerSecretKey);
-            return new AuthInfo(ehubConsumerId, patron, signature);
+            final Patron patron = new Patron.Builder(libraryCard, pin).id(patronId).email(email).build();
+            return new AuthInfo(ehubConsumerId, patron, ehubConsumerSecretKey);
         }
     }
 
-    public static List<String> getSignatureItems(final long ehubConsumerId, final Patron patron) {
+    static List<String> getSignatureItems(final Long ehubConsumerId, final Patron patron) {
         List<String> signatureItems = new ArrayList<>();
-        signatureItems.add(String.valueOf(ehubConsumerId));
-        if (patron.hasLibraryCard()) {
-            signatureItems.add(patron.getLibraryCard());
-            signatureItems.add(patron.getPin());
+        if (ehubConsumerId != null) {
+            signatureItems.add(String.valueOf(ehubConsumerId));
+        }
+        if (patron != null) {
+            //TODO: This should be uncommented, but unfortunately would result in the backward compatibility problem.
+            /*
+            if (patron.hasId()) {
+                signatureItems.add(patron.getId());
+            }
+            **/
+            if (patron.hasLibraryCard()) {
+                signatureItems.add(patron.getLibraryCard());
+            }
+            if (patron.hasPin()) {
+                signatureItems.add(patron.getPin());
+            }
+            if (patron.hasEmail()) {
+                signatureItems.add(patron.getEmail());
+            }
         }
         return signatureItems;
     }

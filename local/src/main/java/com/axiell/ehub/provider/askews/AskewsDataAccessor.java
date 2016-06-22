@@ -144,7 +144,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
     private void throwInternalServerErrorException(String errorMessage, Integer errorCode) {
         ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ASKEWS);
-        ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, String.valueOf(errorCode));
+        ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, errorCode==null ? null : errorCode.toString());
         throw new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 }

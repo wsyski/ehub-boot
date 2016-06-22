@@ -11,13 +11,14 @@ import java.text.MessageFormat;
  */
 @XmlEnum
 public enum ErrorCause {
-    BAD_REQUEST("Some parameter(s) in your URL or XML are not correct. Please see the eHUB API documentation and review your request."), 
+    BAD_REQUEST("Some parameter(s) in your URL or XML are not correct. Please see the eHUB API documentation and review your request."),
     MISSING_CONTENT_PROVIDER_NAME("The getContent provider name is missing in your request. Please see the eHUB API documentation and review your request."),
     MISSING_AUTHORIZATION_HEADER("Authorization header is missing"),
     MISSING_EHUB_CONSUMER_ID("The eHUB Consumer ID is missing in the authentication information"), 
     MISSING_SIGNATURE("The signature is missing in the authentication information"), 
     MISSING_LIBRARY_CARD("The library card is missing in the authentication information"), 
     MISSING_PIN("The pin is missing in the authentication information"), 
+    MISSING_EMAIL("Patron has no registered email address"),
     MISSING_FORMAT("The format is missing in the request"),
     MISSING_FIELD("The field with name {0} is missing in the request. Please see the API documentation for more information."),
     INVALID_SIGNATURE("Invalid signature"), 
