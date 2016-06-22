@@ -8,7 +8,7 @@ class PlatformsChoiceRenderer extends ChoiceRenderer<Platform> {
 
     @Override
     public String getIdValue(final Platform platform, int index) {
-        return platform.getId() == null ? null : String.valueOf(platform.getId());
+        return platform.getId() == null ? null : platform.getId().toString();
     }
 
     @Override

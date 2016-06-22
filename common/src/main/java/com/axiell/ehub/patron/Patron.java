@@ -2,6 +2,7 @@ package com.axiell.ehub.patron;
 
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.security.UnauthorizedException;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import static com.axiell.ehub.util.SHA512Function.sha512Hex;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -10,10 +11,12 @@ public class Patron {
     private final String id;
     private final String libraryCard;
     private final String pin;
+    private final String email;
 
-    private Patron(String id, String libraryCard, String pin) {
+    private Patron(final String id, final String libraryCard, final String pin, final String email) {
         this.libraryCard = libraryCard;
         this.pin = pin;
+        this.email = email;
         this.id = isBlank(id) ? generateId() : id;
     }
 
@@ -33,6 +36,7 @@ public class Patron {
         return id;
     }
 
+
     public boolean hasLibraryCard() {
         return !isBlank(libraryCard);
     }
@@ -43,32 +47,52 @@ public class Patron {
         throw new UnauthorizedException(ErrorCause.MISSING_LIBRARY_CARD);
     }
 
+    public boolean hasPin() {
+        return !isBlank(pin);
+    }
     public String getPin() {
         return pin;
     }
 
+
+    public boolean hasEmail() {
+        return !isBlank(email);
+    }
+
+    public String getEmail() {
+        if (hasEmail())
+            return email;
+        throw new UnauthorizedException(ErrorCause.MISSING_EMAIL);
+    }
+
     @Override
-    public String toString() {
-        return "Patron{id=" + id + ", libraryCard=" + libraryCard + ", pin=" + pin + "}";
+    public final String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 
     public static class Builder {
         private final String libraryCard;
         private final String pin;
         private String id;
+        private String email;
 
         public Builder(String libraryCard, String pin) {
             this.libraryCard = libraryCard;
             this.pin = pin;
         }
 
-        public Builder id(String value) {
-            id = value;
+        public Builder id(final String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder email(final String email) {
+            this.email = email;
             return this;
         }
 
         public Patron build() {
-            return new Patron(id, libraryCard, pin);
+            return new Patron(id, libraryCard, pin, email);
         }
     }
 }

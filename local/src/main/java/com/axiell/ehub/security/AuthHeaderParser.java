@@ -67,7 +67,7 @@ class AuthHeaderParser {
     Long getEhubConsumerId() {
         final String ehubConsumerId = authHeaderParams.get(EHUB_CONSUMER_ID);
         validateInputIsNotNull(ehubConsumerId, ErrorCause.MISSING_EHUB_CONSUMER_ID);
-        return Long.valueOf(ehubConsumerId);
+        return Long.parseLong(ehubConsumerId);
     }
 
     String getPatronId() {
@@ -80,6 +80,10 @@ class AuthHeaderParser {
 
     String getPin() {
         return authHeaderParams.get(EHUB_PIN);
+    }
+
+    String getEmail() {
+        return authHeaderParams.get(EHUB_EMAIL);
     }
 
     String getActualSignature() {

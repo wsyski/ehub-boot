@@ -42,7 +42,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     @Test
     public final void checkoutWithLmsError() throws EhubException {
         givenExpectedEhubException(ErrorCause.LMS_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, "blockedBorrCard"),
-                new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(testData.getEhubConsumerId()))));
+                new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, testData.getEhubConsumerId().toString())));
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();

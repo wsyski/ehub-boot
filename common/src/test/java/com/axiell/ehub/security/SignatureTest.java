@@ -56,7 +56,7 @@ public class SignatureTest {
 
     private void givenNewSignature() {
         Patron patron = new Patron.Builder(card, pin).id(patronId).build();
-        underTest = new Signature(AuthInfo.getSignatureItems(ehubConsumerId,patron), secret);
+        underTest = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secret);
     }
 
     @Test

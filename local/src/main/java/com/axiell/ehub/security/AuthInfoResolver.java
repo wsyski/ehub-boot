@@ -24,10 +24,14 @@ class AuthInfoResolver implements IAuthInfoResolver {
 
         final Patron patron = makePatron(parser);
         final String actualSignature = parser.getActualSignature();
-        final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), ehubConsumer.getSecretKey());
+        final String secretKey = ehubConsumer.getSecretKey();
+        if (actualSignature==null) {
+            throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
+        }
+        final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secretKey);
 
         if (expectedSignature.isValid(actualSignature))
-            return new AuthInfo(ehubConsumerId, patron, expectedSignature);
+            return new AuthInfo(ehubConsumerId, patron, secretKey);
         else
             throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
     }
@@ -36,6 +40,7 @@ class AuthInfoResolver implements IAuthInfoResolver {
         final String patronId = parser.getPatronId();
         final String libraryCard = parser.getLibraryCard();
         final String pin = parser.getPin();
-        return new Patron.Builder(libraryCard, pin).id(patronId).build();
+        final String email = parser.getEmail();
+        return new Patron.Builder(libraryCard, pin).id(patronId).email(email).build();
     }
 }
