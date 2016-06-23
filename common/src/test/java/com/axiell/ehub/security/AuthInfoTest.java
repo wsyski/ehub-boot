@@ -21,10 +21,10 @@ public class AuthInfoTest {
     private String LIBRARY_CARD = "5007113623";
     private String PIN = "5046";
     private String EMAIL = "arena@axiell.com";
-    private String SIGNATURE_0 = "xG96OslJLhuDXYSiiEadvxL0L3Q=";
+    private String SIGNATURE_0 = "Ev11cpKaRgtyq0YYzFrcPayXMTw=";
     private String SIGNATURE_1 = "ffIEXvDRISE10TjF9pH6bYs34vU=";
-    private String SIGNATURE_2 = "xG96OslJLhuDXYSiiEadvxL0L3Q=";
-    private String SIGNATURE_3 = "We+fI315vrBrNHqz/gi6MxRkYaI=";
+    private String SIGNATURE_2 = "7WkXKogjGxgWgJ1hlkWp1w5ATIs=";
+    private String SIGNATURE_3 = "Vg3Evp1nHRPgcdHskqRnHFQEeqk=";
     private String expInfoValue1;
     private String expInfoValue2;
     private String expInfoValue3;

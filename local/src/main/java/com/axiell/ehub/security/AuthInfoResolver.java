@@ -3,10 +3,7 @@ package com.axiell.ehub.security;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
 import com.axiell.ehub.patron.Patron;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,15 +22,19 @@ class AuthInfoResolver implements IAuthInfoResolver {
         final Patron patron = makePatron(parser);
         final String actualSignature = parser.getActualSignature();
         final String secretKey = ehubConsumer.getSecretKey();
-        if (actualSignature==null) {
+        if (actualSignature == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
         }
         final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secretKey);
 
-        if (expectedSignature.isValid(actualSignature))
+        //TODO: Remove when all Arena installations are upgraded
+        final Signature expectedCompatibilitySignature = new Signature(AuthInfo.getSignatureCompatibilityItems(ehubConsumerId, patron), secretKey);
+
+        if (expectedSignature.isValid(actualSignature) || expectedCompatibilitySignature.isValid(actualSignature)) {
             return new AuthInfo(ehubConsumerId, patron, secretKey);
-        else
+        } else {
             throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
+        }
     }
 
     private Patron makePatron(AuthHeaderParser parser) {
