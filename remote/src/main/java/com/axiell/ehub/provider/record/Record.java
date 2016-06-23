@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Record implements Serializable {
     private final RecordDTO recordDTO;
 
-    public Record(RecordDTO recordDTO) {
+    public Record(final RecordDTO recordDTO) {
         this.recordDTO = recordDTO;
     }
 
