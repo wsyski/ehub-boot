@@ -18,9 +18,10 @@ public class Format implements Serializable {
         dto = formatDTO;
     }
 
-    public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms) {
+    public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms,
+                  final boolean isLocked) {
         Validate.notNull(platforms);
-        dto = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms);
+        dto = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms).locked(isLocked);
     }
 
     public String id() {
