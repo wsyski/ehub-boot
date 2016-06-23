@@ -169,12 +169,9 @@ public class AuthInfo {
             signatureItems.add(String.valueOf(ehubConsumerId));
         }
         if (patron != null) {
-            //TODO: This should be uncommented, but unfortunately would result in the backward compatibility problem.
-            /*
             if (patron.hasId()) {
                 signatureItems.add(patron.getId());
             }
-            **/
             if (patron.hasLibraryCard()) {
                 signatureItems.add(patron.getLibraryCard());
             }
@@ -187,4 +184,26 @@ public class AuthInfo {
         }
         return signatureItems;
     }
+
+    //TODO: Remove when all Arena installations are upgraded
+    @Deprecated
+    static List<String> getSignatureCompatibilityItems(final Long ehubConsumerId, final Patron patron) {
+        List<String> signatureItems = new ArrayList<>();
+        if (ehubConsumerId != null) {
+            signatureItems.add(String.valueOf(ehubConsumerId));
+        }
+        if (patron != null) {
+            if (patron.hasLibraryCard()) {
+                signatureItems.add(patron.getLibraryCard());
+            }
+            if (patron.hasPin()) {
+                signatureItems.add(patron.getPin());
+            }
+            if (patron.hasEmail()) {
+                signatureItems.add(patron.getEmail());
+            }
+        }
+        return signatureItems;
+    }
+
 }

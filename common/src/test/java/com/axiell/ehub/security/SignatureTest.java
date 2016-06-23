@@ -1,16 +1,12 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.security;
 
-import static org.junit.Assert.*;
-
 import com.axiell.ehub.patron.Patron;
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class SignatureTest {
-    private static final String EXP_VALUE = "GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D";
+    private static final String SIGNATURE = "GN+9mlD70ZER/x3ur7w7HJRgnYU=";
     private Long ehubConsumerId;
     private String secret;
     private String patronId;
@@ -31,7 +27,7 @@ public class SignatureTest {
     }
 
     private void thenActualSigntaureEqualsExpectedSignature() {
-        assertEquals(EXP_VALUE, encode(actValue));
+        assertEquals(SIGNATURE, actValue);
     }
 
     private void whenToString() {
@@ -43,7 +39,7 @@ public class SignatureTest {
     }
 
     private void givenSecret() {
-        secret ="secret1";
+        secret = "secret1";
     }
 
     private void givenCard() {
@@ -51,12 +47,12 @@ public class SignatureTest {
     }
 
     private void givenPin() {
-        pin ="4447";
+        pin = "4447";
     }
 
     private void givenNewSignature() {
         Patron patron = new Patron.Builder(card, pin).id(patronId).build();
-        underTest = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secret);
+        underTest = new Signature(AuthInfo.getSignatureCompatibilityItems(ehubConsumerId, patron), secret);
     }
 
     @Test

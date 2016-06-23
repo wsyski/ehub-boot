@@ -50,6 +50,7 @@ public class Patron {
     public boolean hasPin() {
         return !isBlank(pin);
     }
+
     public String getPin() {
         return pin;
     }
