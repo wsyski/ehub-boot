@@ -1,9 +1,6 @@
 package com.axiell.ehub.provider.record;
 
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDTO;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -30,7 +27,6 @@ public class Record implements Serializable {
     public RecordDTO toDTO() {
         return recordDTO;
     }
-
 
     @Override
     public final boolean equals(final Object obj) {

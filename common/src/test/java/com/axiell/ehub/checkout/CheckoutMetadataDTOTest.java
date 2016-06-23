@@ -38,8 +38,7 @@ public class CheckoutMetadataDTOTest {
     @Before
     public void setUpExpectedDTO() {
         expCheckoutMetadataDTO1 = new CheckoutMetadataDTO().id(1L);
-
-        expFormatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
+        expFormatDTO = new FormatDTO("id","name",ContentDisposition.DOWNLOADABLE).description("description");
         expCheckoutMetadataDTO2 = new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2").format(expFormatDTO);
         expCheckoutsDTO = new ArrayList<>();
         expCheckoutsDTO.add(expCheckoutMetadataDTO1);
