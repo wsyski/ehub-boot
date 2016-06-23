@@ -27,7 +27,8 @@ class FormatFactory implements IFormatFactory {
         final String name = textBundle == null ? formatId : textBundle.getName();
         final String description = textBundle == null ? formatId : textBundle.getDescription();
         final ContentDisposition contentDisposition = formatDecoration == null ? null : formatDecoration.getContentDisposition();
+        final boolean isLocked = formatDecoration != null && formatDecoration.isLocked();
         final Set<String> platforms = formatDecoration == null ? new HashSet<>() : formatDecoration.getPlatformNames();
-        return new Format(formatId, name, description, contentDisposition, platforms);
+        return new Format(formatId, name, description, contentDisposition, platforms, isLocked);
     }
 }
