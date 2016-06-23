@@ -37,8 +37,10 @@ public class SearchResultDTOTest {
 
     @Before
     public void setUpExpectedDTO() {
-        expFormatDTO = new FormatDTO().id("id").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
-        expCheckoutMetadataDTO = new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2").format(expFormatDTO);
+        expFormatDTO = new FormatDTO("id", "name", ContentDisposition.DOWNLOADABLE).description("description");
+        expCheckoutMetadataDTO =
+                new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2")
+                        .format(expFormatDTO);
         List<CheckoutMetadataDTO> items = Lists.newArrayList(expCheckoutMetadataDTO);
         searchResultDTO = new SearchResultDTO<>();
         searchResultDTO.items(items).offset(1).limit(2).totalItems(3);
@@ -59,7 +61,8 @@ public class SearchResultDTOTest {
     }
 
     private void whenUnmarshalSearchResultDTOJson() throws IOException {
-        actSearchResultDTO = mapper.readValue(expJson, new TypeReference<SearchResultDTO<CheckoutMetadataDTO>>() {});
+        actSearchResultDTO = mapper.readValue(expJson, new TypeReference<SearchResultDTO<CheckoutMetadataDTO>>() {
+        });
     }
 
     private void thenActualSearchResultDTOEqualsExpected() {

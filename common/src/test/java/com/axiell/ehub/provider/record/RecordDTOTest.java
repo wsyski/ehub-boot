@@ -29,7 +29,7 @@ public class RecordDTOTest {
 
     @Before
     public void setUpExpectedDTO() {
-        expFormatDTO = new FormatDTO().id("formatId").description("description").name("name").contentDisposition(ContentDisposition.DOWNLOADABLE);
+        expFormatDTO = new FormatDTO("formatId","name",ContentDisposition.DOWNLOADABLE).description("description");
         expRecordDTO = new RecordDTO().id("recordId").formats(Lists.newArrayList(expFormatDTO));
     }
 

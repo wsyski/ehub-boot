@@ -32,10 +32,8 @@ public class Patron {
     }
 
     public String getId() {
-        // TODO: throw exception if null?
         return id;
     }
-
 
     public boolean hasLibraryCard() {
         return !isBlank(libraryCard);
