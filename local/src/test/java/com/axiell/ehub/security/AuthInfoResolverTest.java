@@ -16,16 +16,18 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.text.MessageFormat;
 
+import static com.axiell.ehub.util.EhubUrlCodec.encode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthInfoResolverTest {
     private static final Long EHUB_CONSUMER_ID = 1L;
-    private static final String SECRET_KEY = "secret";
+    private static final String SECRET_KEY = "c2VjcmV0S2V5";
     private static final String PATRON_ID = "patronId";
     private static final String CARD = "libraryCard";
     private static final String PIN = "pin";
+    private static final String EMAIL = "arena@axiell.com";
 
     private AuthInfoResolver underTest;
     @Mock
@@ -36,6 +38,7 @@ public class AuthInfoResolverTest {
     private String patronId;
     private String card;
     private String pin;
+    private String email;
     private Signature expSignature;
     private String authorizationHeader;
     private AuthInfo actualAuthInfo;
@@ -60,6 +63,19 @@ public class AuthInfoResolverTest {
         thenAuthInfoIsNotNull();
     }
 
+    @Test
+    public void validSignature_withPatronIdAndEmail() {
+        givenPatronId();
+        givenCard();
+        givenPin();
+        givenEmail();
+        givenPatron();
+        givenValidSignature();
+        givenAuthorizationHeader();
+        whenResolve();
+        thenAuthInfoIsNotNull();
+    }
+
     private void givenCard() {
         card = CARD;
     }
@@ -68,8 +84,12 @@ public class AuthInfoResolverTest {
         pin = PIN;
     }
 
+    private void givenEmail() {
+        email = EMAIL;
+    }
+
     private void givenAuthorizationHeader() {
-        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron, expSignature);
+        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron, SECRET_KEY);
         authorizationHeader = authInfo.toString();
     }
 
@@ -78,7 +98,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenPatron() {
-        patron = new Patron.Builder(card, pin).id(patronId).build();
+        patron = new Patron.Builder(card, pin).id(patronId).email(email).build();
     }
 
     private void givenPatronId() {
@@ -124,7 +144,7 @@ public class AuthInfoResolverTest {
 
     private void makeAuthorizationHeaderWithoutPatronIdButWithCardPin(String signature) {
         authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
-                EHUB_CONSUMER_ID, CARD, PIN, signature);
+                EHUB_CONSUMER_ID, encode(CARD), encode(PIN), encode(signature));
     }
 
     private void thenActualErrorCauseEqualsExpectedErrorCause(EhubRuntimeException e, ErrorCause expectedErrorCause) {
