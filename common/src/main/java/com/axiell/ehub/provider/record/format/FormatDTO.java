@@ -18,27 +18,23 @@ public class FormatDTO implements Serializable {
     private boolean locked;
     private String description;
     private ContentDisposition contentDisposition;
-    private Set<String> platforms=new HashSet<>();
+    private Set<String> platforms = new HashSet<>();
 
-    public FormatDTO() {
+    private FormatDTO() {
+    }
+
+    public FormatDTO(final String id, final String name, final ContentDisposition contentDisposition) {
+        this.id = id;
+        this.name = name;
+        this.contentDisposition = contentDisposition;
     }
 
     public String getId() {
         return id;
     }
 
-    public FormatDTO id(String id) {
-        this.id = id;
-        return this;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public FormatDTO name(String name) {
-        this.name = name;
-        return this;
     }
 
     public boolean isLocked() {
@@ -63,10 +59,6 @@ public class FormatDTO implements Serializable {
         return contentDisposition;
     }
 
-    public FormatDTO contentDisposition(ContentDisposition contentDisposition) {
-        this.contentDisposition = contentDisposition;
-        return this;
-    }
 
     public Set<String> getPlatforms() {
         return platforms;

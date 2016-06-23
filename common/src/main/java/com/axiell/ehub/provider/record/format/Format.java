@@ -14,13 +14,14 @@ import java.util.Set;
 public class Format implements Serializable {
     private final FormatDTO dto;
 
-    public Format(FormatDTO formatDTO) {
+    public Format(final FormatDTO formatDTO) {
         dto = formatDTO;
     }
 
-    public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms) {
+    public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms,
+                  final boolean isLocked) {
         Validate.notNull(platforms);
-        dto = new FormatDTO().id(formatId).name(name).description(description).contentDisposition(contentDisposition).platforms(platforms);
+        dto = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms).locked(isLocked);
     }
 
     public String id() {

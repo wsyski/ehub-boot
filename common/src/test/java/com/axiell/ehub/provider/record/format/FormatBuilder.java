@@ -13,10 +13,10 @@ public class FormatBuilder {
     public static final Set<String> PLATFORMS = Collections.singleton(PLATFORM_PCMAC);
 
     public static Format downloadableFormat() {
-        return new Format(FORMAT_ID, FORMAT_NAME, FORMAT_DESCRIPTION, DOWNLOADABLE_CONTENT_DISPOSITION, PLATFORMS);
+        return new Format(FORMAT_ID, FORMAT_NAME, FORMAT_DESCRIPTION, DOWNLOADABLE_CONTENT_DISPOSITION, PLATFORMS, false);
     }
 
     public static Format streamingFormat() {
-        return new Format(FORMAT_ID, FORMAT_NAME, FORMAT_DESCRIPTION, STREAMING_CONTENT_DISPOSITION, PLATFORMS);
+        return new Format(FORMAT_ID, FORMAT_NAME, FORMAT_DESCRIPTION, STREAMING_CONTENT_DISPOSITION, PLATFORMS, false);
     }
 }
