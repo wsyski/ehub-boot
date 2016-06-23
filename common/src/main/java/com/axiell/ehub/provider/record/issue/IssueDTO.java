@@ -39,8 +39,8 @@ public class IssueDTO implements Serializable {
         return title;
     }
 
-    public IssueDTO title(final String name) {
-        this.title = name;
+    public IssueDTO title(final String title) {
+        this.title = title;
         return this;
     }
 
