@@ -55,6 +55,15 @@ public class CheckoutMetadata implements Serializable {
         return this;
     }
 
+    public boolean isNewLoan() {
+        return checkoutMetadataDTO.isNewLoan();
+    }
+
+    public CheckoutMetadata newLoan(final boolean newLoan) {
+        checkoutMetadataDTO.newLoan(newLoan);
+        return this;
+    }
+
     public Format format() {
         return new Format(checkoutMetadataDTO.getFormat());
     }

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.record.issue;
 
 import com.axiell.ehub.provider.record.format.Format;
@@ -21,10 +18,14 @@ public class Issue implements Serializable {
         dto = IssueDTO;
     }
 
-    public Issue(final List<Format> formats) {
+    public Issue(final String id, final String title, final String imageUrl, final List<Format> formats) {
         Validate.notNull(formats);
         List<FormatDTO> formatsDTO = formats.stream().map(Format::toDTO).collect(Collectors.toList());
-        dto = new IssueDTO(formatsDTO);
+        dto = new IssueDTO(formatsDTO).id(id).title(title).imageUrl(imageUrl);
+    }
+
+    public Issue(final List<Format> formats) {
+        this(null, null, null, formats);
     }
 
     public String getId() {

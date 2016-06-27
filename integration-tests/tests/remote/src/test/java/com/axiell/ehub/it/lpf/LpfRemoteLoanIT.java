@@ -29,7 +29,7 @@ public class LpfRemoteLoanIT extends RemoteLoanITFixture {
         givenPalmaCheckoutResponse();
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout,TestDataConstants.TEST_EP_FORMAT_1_ID);
+        thenValidCheckout(checkout,TestDataConstants.TEST_EP_FORMAT_1_ID, false);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class LpfRemoteLoanIT extends RemoteLoanITFixture {
         givenPalmaCheckoutResponse();
         givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID, true);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class LpfRemoteLoanIT extends RemoteLoanITFixture {
         givenReadyLoanId();
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenGetCheckoutByLoanId();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, false);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LpfRemoteLoanIT extends RemoteLoanITFixture {
         givenLmsLoanId();
         givenContentProviderGetCheckoutResponse();
         CheckoutMetadata checkoutMetadata = whenFindCheckoutMetadataByLmsLoandId();
-        thenValidCheckoutMetadata(checkoutMetadata);
+        thenValidCheckoutMetadata(checkoutMetadata, false);
     }
 
     protected boolean isLoanPerProduct() {

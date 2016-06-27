@@ -70,14 +70,14 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
         return isLoanPerProduct() ? "lpp" : "lpf";
     }
 
-    protected void thenValidCheckout(final Checkout checkout, final String contentProviderFormatId) {
+    protected void thenValidCheckout(final Checkout checkout, final String contentProviderFormatId, final boolean isNewLoan) {
         Assert.assertNotNull(checkout);
-        thenValidCheckoutMetadata(checkout.metadata());
+        thenValidCheckoutMetadata(checkout.metadata(), isNewLoan);
         thenValidSupplementLinks(checkout.supplementLinks(), contentProviderFormatId);
         thenValidContentLinks(checkout.contentLinks(), contentProviderFormatId);
     }
 
-    protected void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata) {
+    protected void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata, final boolean isNewLoan) {
         Assert.assertNotNull(checkoutMetadata);
         Date expirationDate = checkoutMetadata.expirationDate();
         Assert.assertNotNull(expirationDate);
@@ -85,6 +85,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
         Assert.assertNotNull(lmsLoanId);
         Long id = checkoutMetadata.id();
         Assert.assertNotNull(id);
+        Assert.assertEquals(isNewLoan, checkoutMetadata.isNewLoan());
     }
 
     private void thenValidContentLinks(final ContentLinks contentLinks, final String contentProviderFormatId) {

@@ -19,6 +19,7 @@ public class CheckoutMetadataDTO implements Serializable {
     private String lmsLoanId;
     private String contentProviderLoanId;
     private Date expirationDate;
+    private boolean newLoan;
     private FormatDTO format;
 
     public Long getId() {
@@ -52,8 +53,17 @@ public class CheckoutMetadataDTO implements Serializable {
         return expirationDate;
     }
 
-    public CheckoutMetadataDTO expirationDate(Date expirationDate) {
+    public CheckoutMetadataDTO expirationDate(final Date expirationDate) {
         this.expirationDate = expirationDate;
+        return this;
+    }
+
+    public boolean isNewLoan() {
+        return newLoan;
+    }
+
+    public CheckoutMetadataDTO newLoan(final boolean newLoan) {
+        this.newLoan = newLoan;
         return this;
     }
 
