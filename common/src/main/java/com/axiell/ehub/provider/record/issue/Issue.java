@@ -24,6 +24,10 @@ public class Issue implements Serializable {
         dto = new IssueDTO(formatsDTO).id(id).title(title).imageUrl(imageUrl);
     }
 
+    public Issue(final List<Format> formats) {
+        this(null, null, null, formats);
+    }
+
     public String getId() {
         return dto.getId();
     }

@@ -21,6 +21,7 @@ import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupp
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,14 +48,14 @@ public class CheckoutFactoryTest {
 
     @Test
     public void createFromEhubLoan() throws Exception {
-        given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString())).willReturn(checkoutMetadata);
+        given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString(), anyBoolean())).willReturn(checkoutMetadata);
         whenCreate();
         thenActualContentLinkEqualsExpected();
         thenActualCheckoutMetadataEqualsExpected();
     }
 
     private void whenCreate() {
-        actualCheckout = underTest.create(ehubLoan, formatDecoration, defaultContent(), LANGUAGE);
+        actualCheckout = underTest.create(ehubLoan, formatDecoration, defaultContent(), LANGUAGE, false);
     }
 
     private void thenActualContentLinkEqualsExpected() {

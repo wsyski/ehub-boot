@@ -12,6 +12,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO implements Serializable {
     private CheckoutMetadataDTO metadata;
+
     private List<ContentLinkDTO> contentLinks;
     private List<SupplementLinkDTO> supplementLinks;
 
@@ -19,7 +20,7 @@ public class CheckoutDTO implements Serializable {
         return metadata;
     }
 
-    public CheckoutDTO metadata(CheckoutMetadataDTO metadataDTO) {
+    public CheckoutDTO metadata(final CheckoutMetadataDTO metadataDTO) {
         this.metadata = metadataDTO;
         return this;
     }
