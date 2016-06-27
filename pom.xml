@@ -611,6 +611,10 @@
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>servlet-api</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-util</artifactId>
+                    </exclusion>
                 </exclusions>
                 <scope>test</scope>
             </dependency>
@@ -733,9 +737,9 @@
         <commons-codec.version>1.7</commons-codec.version>
         <commons.io.version>2.4</commons.io.version>
         <oracle.version>11.2.0.4</oracle.version>
-        <jetty.version>9.3.10.v20160621</jetty.version>
+        <jetty.version>9.3.0.M1</jetty.version>
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
-        <wiremock.version>1.57</wiremock.version>
+        <wiremock.version>1.58</wiremock.version>
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.7.2</slf4j.version>
         <wicket.core.version>1.4.21</wicket.core.version>
