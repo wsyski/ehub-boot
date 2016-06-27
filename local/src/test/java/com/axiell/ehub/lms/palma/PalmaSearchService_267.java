@@ -4,7 +4,7 @@ import com.axiell.arena.services.palma.search.v267.service.Catalogue;
 import com.axiell.arena.services.palma.search.v267.service.Search.SearchRequest;
 import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.ehub.DevelopmentData;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import javax.jws.WebService;
 

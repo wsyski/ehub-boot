@@ -6,8 +6,7 @@ import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRe
 import com.axiell.arena.services.palma.patron.loansrequest.LoansRequest;
 import com.axiell.arena.services.palma.patron.renewloansrequest.RenewLoansRequest;
 import com.axiell.ehub.DevelopmentData;
-import com.axiell.ehub.checkout.CheckoutTest;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import javax.jws.WebService;
 
@@ -19,13 +18,15 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
     @Override
     public com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTest(final CheckOutTestRequest parameters) {
         verifyCheckOutTest(parameters);
-        return ((com.axiell.arena.services.palma.loans.CheckOutTestResponse)getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_XML)).getCheckOutTestResponse();
+        return ((com.axiell.arena.services.palma.loans.CheckOutTestResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_XML))
+                .getCheckOutTestResponse();
     }
 
     @Override
     public com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOut(final CheckOutRequest parameters) {
         verifyCheckOut(parameters);
-        return ((com.axiell.arena.services.palma.loans.CheckOutResponse)getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_RESPONSE_XML)).getCheckOutResponse();
+        return ((com.axiell.arena.services.palma.loans.CheckOutResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_RESPONSE_XML))
+                .getCheckOutResponse();
     }
 
     @Override
