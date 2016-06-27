@@ -34,7 +34,7 @@ public class EhubAdminPage extends AbstractBasePage {
     }
 
     private void addPrettifyJavaScript() {
-        add(JavascriptPackageResource.getHeaderContribution("https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"));
+        add(JavascriptPackageResource.getHeaderContribution("https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"));
     }
 
     private void addLogoutPanel() {
