@@ -91,7 +91,7 @@ public class LoanBusinessControllerTest {
     public void setUpLoanBusinessController() {
         checkoutMetadata = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
         given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
-        given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString())).willReturn(checkoutMetadata);
+        given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString(), anyBoolean())).willReturn(checkoutMetadata);
         setUpEhubLoan();
         underTest = new LoanBusinessController();
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);

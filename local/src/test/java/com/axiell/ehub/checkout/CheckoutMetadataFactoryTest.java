@@ -68,7 +68,7 @@ public class CheckoutMetadataFactoryTest {
     }
 
     private void whenCreate() {
-        actualCheckoutMetadata = underTest.create(ehubLoan, formatDecoration, LANGUAGE);
+        actualCheckoutMetadata = underTest.create(ehubLoan, formatDecoration, LANGUAGE, false);
     }
 
     private void thenActualEhubLoanIdEqualsExpected() {

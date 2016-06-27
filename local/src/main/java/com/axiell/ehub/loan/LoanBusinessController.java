@@ -49,7 +49,7 @@ public class LoanBusinessController implements ILoanBusinessController {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
         if (ehubLoan != null) {
             final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan,
-                    ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), language);
+                    ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), language, false);
             checkoutsSearchResult.addItem(checkoutMetadata);
         }
         return checkoutsSearchResult;
@@ -70,10 +70,10 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 final Content content = contentProviderLoan.content();
-                return checkoutFactory.create(ehubLoan, ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), content, language);
+                return checkoutFactory.create(ehubLoan, ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), content, language, true);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
-                return getCheckout(ehubConsumer, patron, lmsLoanId, pendingLoan.contentProviderFormatId(), language);
+                return findCheckout(ehubConsumer, patron, lmsLoanId, pendingLoan.contentProviderFormatId(), language);
             default:
                 throw new NotImplementedException("Create loan where the result of the pre-checkout analysis is '" + result + "' has not been implemented");
         }
@@ -90,8 +90,8 @@ public class LoanBusinessController implements ILoanBusinessController {
         return makeCheckout(ehubConsumer, patron, ehubLoan, firstFormatDecoration, language);
     }
 
-    private Checkout getCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String contentProviderFormatId,
-                                 final String language) {
+    private Checkout findCheckout(final EhubConsumer ehubConsumer, final Patron patron, final String lmsLoanId, final String contentProviderFormatId,
+                                  final String language) {
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
         FormatDecoration formatDecoration = getFormatDecoration(contentProviderFormatId, ehubLoan);
         return makeCheckout(ehubConsumer, patron, ehubLoan, formatDecoration, language);
@@ -120,6 +120,6 @@ public class LoanBusinessController implements ILoanBusinessController {
     private Checkout makeCheckout(final EhubConsumer ehubConsumer, final Patron patron, final EhubLoan ehubLoan, final FormatDecoration formatDecoration,
                                   final String language) {
         final Content content = contentProviderDataAccessorFacade.getContent(ehubConsumer, ehubLoan, formatDecoration, patron, language);
-        return checkoutFactory.create(ehubLoan, formatDecoration, content, language);
+        return checkoutFactory.create(ehubLoan, formatDecoration, content, language, false);
     }
 }
