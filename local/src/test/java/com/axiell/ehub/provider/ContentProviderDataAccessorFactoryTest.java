@@ -9,11 +9,12 @@ import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
+import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.hamcrest.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -34,6 +35,8 @@ public class ContentProviderDataAccessorFactoryTest {
     private ElibUDataAccessor elibUDataAccessor;
     @Mock
     private BorrowBoxDataAccessor borrowBoxDataAccessor;
+    @Mock
+    private ZinioDataAccessor zinioDataAccessor;
     @Mock
     private AskewsDataAccessor askewsDataAccessor;
     @Mock
@@ -56,6 +59,7 @@ public class ContentProviderDataAccessorFactoryTest {
         ReflectionTestUtils.setField(underTest, "lppEpDataAccessor", lppEpDataAccessor);
         ReflectionTestUtils.setField(underTest, "elibUDataAccessor", elibUDataAccessor);
         ReflectionTestUtils.setField(underTest, "borrowBoxDataAccessor", borrowBoxDataAccessor);
+        ReflectionTestUtils.setField(underTest, "zinioDataAccessor", zinioDataAccessor);
         ReflectionTestUtils.setField(underTest, "askewsDataAccessor", askewsDataAccessor);
         ReflectionTestUtils.setField(underTest, "overDriveDataAccessor", overDriveDataAccessor);
         ReflectionTestUtils.setField(underTest, "elib3DataAccessor", elib3DataAccessor);
@@ -98,6 +102,13 @@ public class ContentProviderDataAccessorFactoryTest {
         givenContentProvider(CONTENT_PROVIDER_BORROWBOX, false);
         whenGetContentProviderDataAccessor();
         thenExpectedDataAccessorIsReturned(BorrowBoxDataAccessor.class);
+    }
+
+    @Test
+    public void zinioDataAccessor() {
+        givenContentProvider(CONTENT_PROVIDER_ZINIO, false);
+        whenGetContentProviderDataAccessor();
+        thenExpectedDataAccessorIsReturned(ZinioDataAccessor.class);
     }
 
     @Test
