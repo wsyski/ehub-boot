@@ -1,10 +1,10 @@
 package com.axiell.ehub.lms.palma;
 
-import com.axiell.arena.services.palma.loans.*;
+import com.axiell.arena.services.palma.loans.Loans;
 import com.axiell.arena.services.palma.patron.checkoutrequest.CheckOutRequest;
+import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
 import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRequest;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
-import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
@@ -25,13 +25,14 @@ class LoansFacade implements ILoansFacade {
             new com.axiell.arena.services.palma.patron.checkoutrequest.ObjectFactory();
 
     @Override
-    public CheckOutTestResponse checkOutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron) {
-        CheckOutTestRequest checkOutTest = createCheckOutTestRequest(ehubConsumer, pendingLoan, patron);
+    public CheckOutTestResponse checkOutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, Patron patron, final boolean isLoanPerProduct) {
+        CheckOutTestRequest checkOutTest = createCheckOutTestRequest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         Loans loans = loansPortFactory.getInstance(ehubConsumer);
         return loans.checkOutTest(checkOutTest);
     }
 
-    private CheckOutTestRequest createCheckOutTestRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron) {
+    private CheckOutTestRequest createCheckOutTestRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron,
+                                                          final boolean isLoanPerProduct) {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
         com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory checkoutTestRequestObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
@@ -42,19 +43,21 @@ class LoansFacade implements ILoansFacade {
         checkOutTestRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutTestRequest.setUser(patron.getLibraryCard());
         checkOutTestRequest.setPassword(patron.getPin());
-        checkOutTestRequest.setIssue(null);
-        checkOutTestRequest.setLoanPerProduct(false);
+        checkOutTestRequest.setIssueId(pendingLoan.contentProviderIssueId());
+        checkOutTestRequest.setLoanPerProduct(isLoanPerProduct);
         return checkOutTestRequest;
     }
 
     @Override
-    public CheckOutResponse checkOut(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron) {
-        CheckOutRequest checkOutRequest = createCheckOutRequest(ehubConsumer, pendingLoan, expirationDate, patron);
+    public CheckOutResponse checkOut(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron,
+                                     final boolean isLoanPerProduct) {
+        CheckOutRequest checkOutRequest = createCheckOutRequest(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct);
         Loans loans = loansPortFactory.getInstance(ehubConsumer);
         return loans.checkOut(checkOutRequest);
     }
 
-    private static CheckOutRequest createCheckOutRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron) {
+    private static CheckOutRequest createCheckOutRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate,
+                                                         final Patron patron, final boolean isLoanPerProduct) {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
         CheckOutRequest checkOutRequest = CHECKOUTREQUEST_OBJECT_FACTORY.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
@@ -64,8 +67,8 @@ class LoansFacade implements ILoansFacade {
         checkOutRequest.setContentProviderName(pendingLoan.contentProviderAlias());
         checkOutRequest.setUser(patron.getLibraryCard());
         checkOutRequest.setPassword(patron.getPin());
-        checkOutRequest.setIssue(null);
-        checkOutRequest.setLoanPerProduct(false);
+        checkOutRequest.setIssueId(pendingLoan.contentProviderIssueId());
+        checkOutRequest.setLoanPerProduct(isLoanPerProduct);
         return checkOutRequest;
     }
 }

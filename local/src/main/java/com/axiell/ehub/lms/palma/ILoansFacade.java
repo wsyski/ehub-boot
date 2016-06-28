@@ -10,7 +10,7 @@ import java.util.Date;
 
 interface ILoansFacade {
 
-    CheckOutTestResponse checkOutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron);
+    CheckOutTestResponse checkOutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron, boolean isLoanPerProduct);
 
-    CheckOutResponse checkOut(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron);
+    CheckOutResponse checkOut(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron, boolean isLoanPerProduct);
 }

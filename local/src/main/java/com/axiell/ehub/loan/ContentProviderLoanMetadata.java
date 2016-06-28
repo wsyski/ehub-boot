@@ -23,6 +23,7 @@ public class ContentProviderLoanMetadata implements Serializable {
     private Date expirationDate;
     private FormatDecoration firstFormatDecoration;
     private String recordId;
+    private String issueId;
 
     /**
      * Empty constructor required by JPA.
@@ -30,7 +31,7 @@ public class ContentProviderLoanMetadata implements Serializable {
     protected ContentProviderLoanMetadata() {
     }
 
-    private ContentProviderLoanMetadata(String id, ContentProvider contentProvider, Date expirationDate, String recordId, FormatDecoration firstFormatDecoration) {
+    private ContentProviderLoanMetadata(final String id, final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration firstFormatDecoration) {
         this.id = id;
         this.contentProvider = contentProvider;
         this.expirationDate = DateFactory.create(expirationDate);
@@ -124,17 +125,23 @@ public class ContentProviderLoanMetadata implements Serializable {
         this.firstFormatDecoration = firstFormatDecoration;
     }
 
-    /**
-     * NOTE: nullable = true should be changed to nullable = false when all
-     * loans in the Ehub database has a record ID.
-     */
-    @Column(name = "CONTENT_PROVIDER_RECORD_ID", nullable = true)
+
+    @Column(name = "CONTENT_PROVIDER_RECORD_ID", nullable = false)
     public String getRecordId() {
         return recordId;
     }
 
-    protected void setRecordId(String recordId) {
+    protected void setRecordId(final String recordId) {
         this.recordId = recordId;
+    }
+
+    @Column(name = "CONTENT_PROVIDER_ISSUE_ID", nullable = true)
+    public String getContentProviderIssueId() {
+        return issueId;
+    }
+
+    protected void setContentProviderIssueId(final String issueId) {
+        this.issueId = issueId;
     }
 
     public static class Builder {

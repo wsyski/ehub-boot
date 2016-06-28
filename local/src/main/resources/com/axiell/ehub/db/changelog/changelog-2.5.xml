@@ -142,4 +142,15 @@
         </insert>
         <comment>Added text bundles to MISSING_EMAIL error cause argument values</comment>
     </changeSet>
+
+    <changeSet id="13" author="ehub" dbms="oracle">
+        <delete tableName="EHUB_LOAN">
+            <where>content_provider_record_id is null</where>
+        </delete>
+        <addNotNullConstraint columnName="content_provider_record_id" tableName="EHUB_LOAN"/>
+        <addColumn tableName="EHUB_LOAN">
+            <column name="CONTENT_PROVIDER_ISSUE_ID" type="varchar2(255)"/>
+        </addColumn>
+        <comment>Modify EHUB_LOAN</comment>
+    </changeSet>
 </databaseChangeLog>
