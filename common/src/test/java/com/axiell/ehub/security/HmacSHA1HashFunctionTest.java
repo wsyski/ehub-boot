@@ -6,6 +6,7 @@ package com.axiell.ehub.security;
 import static org.junit.Assert.*;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import org.junit.Test;
@@ -21,10 +22,10 @@ public class HmacSHA1HashFunctionTest {
      */
     @Test
     public void testHmacSha1() throws UnsupportedEncodingException {
-        byte[] input = "input".getBytes("UTF8");
-        byte[] key1 = "key1".getBytes("UTF8");
-        byte[] key2 = "key1".getBytes("UTF8");
-        byte[] key3 = "key3".getBytes("UTF8");
+        byte[] input = "input".getBytes(StandardCharsets.UTF_8);
+        byte[] key1 = "key1".getBytes(StandardCharsets.UTF_8);
+        byte[] key2 = "key1".getBytes(StandardCharsets.UTF_8);
+        byte[] key3 = "key3".getBytes(StandardCharsets.UTF_8);
         
        byte[] digest1 = HmacSha1Function.hmacSha1(input, key1);
        byte[] digest2 = HmacSha1Function.hmacSha1(input, key2);

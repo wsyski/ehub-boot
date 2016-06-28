@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.security;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +59,7 @@ public final class Signature {
     @Override
     public String toString() {
         if (digest == null) {
-            return null;
+            return StringUtils.EMPTY;
         }
         return encodeBase64String(digest);
     }
