@@ -2,6 +2,7 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
@@ -58,16 +59,21 @@ public class LoanBusinessController implements ILoanBusinessController {
     @Override
     @Transactional(readOnly = false)
     public Checkout checkout(final AuthInfo authInfo, final Fields fields, final String language) {
-        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final PendingLoan pendingLoan = new PendingLoan(fields);
+        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final Patron patron = authInfo.getPatron();
-        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron);
+        final String contentProviderAlias = pendingLoan.contentProviderAlias();
+        final ContentProviderConsumer contentProviderConsumer =
+                contentProviderDataAccessorFacade.getContentProviderConsumer(ehubConsumer, contentProviderAlias);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final boolean isLoanPerProduct = contentProvider.isLoanPerProduct();
+        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         final Result result = checkoutTestAnalysis.getResult();
 
         switch (result) {
             case NEW_LOAN:
                 final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, patron, pendingLoan, language);
-                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron);
+                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron, isLoanPerProduct);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 final Content content = contentProviderLoan.content();
                 return checkoutFactory.create(ehubLoan, ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), content, language, true);
@@ -105,13 +111,11 @@ public class LoanBusinessController implements ILoanBusinessController {
             ContentProvider contentProvider = contentProviderLoanMetadata.getContentProvider();
             if (contentProvider.isLoanPerProduct()) {
                 formatDecoration = formatDecorationRepositoryFacade.find(contentProvider, contentProviderFormatId);
-            }
-            else {
+            } else {
                 final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
                 throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument);
             }
-        }
-        else {
+        } else {
             formatDecoration = firstFormatDecoration;
         }
         return formatDecoration;

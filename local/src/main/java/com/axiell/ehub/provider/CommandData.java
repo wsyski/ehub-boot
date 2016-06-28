@@ -16,8 +16,9 @@ public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
     private final Patron patron;
     private final String language;
-    private String contentProviderRecordId;
     private String contentProviderAlias;
+    private String contentProviderRecordId;
+    private String contentProviderIssueId;
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private FormatDecoration formatDecoration;
@@ -56,6 +57,10 @@ public class CommandData implements ICommandData {
         return this;
     }
 
+    public String getContentProviderIssueId() {
+        return contentProviderIssueId;
+    }
+
     public String getContentProviderFormatId() {
         return contentProviderFormatId;
     }
@@ -72,6 +77,7 @@ public class CommandData implements ICommandData {
     public CommandData setPendingLoan(final PendingLoan pendingLoan) {
         this.contentProviderAlias = pendingLoan.contentProviderAlias();
         this.contentProviderRecordId = pendingLoan.contentProviderRecordId();
+        this.contentProviderIssueId = pendingLoan.contentProviderIssueId();
         this.contentProviderFormatId = pendingLoan.contentProviderFormatId();
         return this;
     }

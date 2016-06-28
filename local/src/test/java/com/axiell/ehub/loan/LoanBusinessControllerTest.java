@@ -2,6 +2,7 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
@@ -52,12 +53,12 @@ public class LoanBusinessControllerTest {
     private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
     @Mock
     private IContentProviderDataAccessorFacade contentProviderDataAccessorFacade;
-    private AuthInfo authInfo;
-    private Fields fields = FieldsBuilder.defaultFields();
     @Mock
     private EhubConsumer ehubConsumer;
     @Mock
     private ContentProvider contentProvider;
+    @Mock
+    private ContentProviderConsumer contentProviderConsumer;
     @Mock
     private FormatDecoration formatDecoration;
     @Mock
@@ -78,6 +79,9 @@ public class LoanBusinessControllerTest {
     private ICheckoutMetadataFactory checkoutMetadataFactory;
     @Mock
     private ICheckoutFactory checkoutFactory;
+
+    private AuthInfo authInfo;
+    private Fields fields = FieldsBuilder.defaultFields();
     private CheckoutMetadata checkoutMetadata;
     private Checkout actualCheckout;
     private CheckoutsSearchResult actualSearchResult;
@@ -92,6 +96,7 @@ public class LoanBusinessControllerTest {
         checkoutMetadata = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
         given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
         given(checkoutMetadataFactory.create(any(EhubLoan.class), any(FormatDecoration.class), anyString(), anyBoolean())).willReturn(checkoutMetadata);
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         setUpEhubLoan();
         underTest = new LoanBusinessController();
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
@@ -124,11 +129,16 @@ public class LoanBusinessControllerTest {
         given(contentProviderDataAccessorFacade.createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class))).willReturn(
                 contentProviderLoan);
     }
+    @Before
+    public void setUpGetContentProviderConsumer() {
+        given(contentProviderDataAccessorFacade.getContentProviderConsumer(any(EhubConsumer.class), any(String.class))).willReturn(contentProviderConsumer);
+    }
 
     @Before
     public void setUpSavedEhubLoan() {
         given(ehubLoanRepositoryFacade.saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class))).willReturn(ehubLoan);
     }
+
 
     @Test
     public void createNewLoan() throws EhubException {
@@ -210,7 +220,7 @@ public class LoanBusinessControllerTest {
 
     private void givenNewLoanAsPreCheckoutAnalysisResult() {
         CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.NEW_LOAN, null);
-        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(
+        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class), any(boolean.class))).willReturn(
                 preCheckoutAnalysis);
     }
 
@@ -222,15 +232,15 @@ public class LoanBusinessControllerTest {
         InOrder inOrder =
                 inOrder(consumerBusinessController, palmaDataAccessor, contentProviderDataAccessorFacade, palmaDataAccessor, ehubLoanRepositoryFacade);
         inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
-        inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class));
+        inOrder.verify(palmaDataAccessor).checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class), any(boolean.class));
         inOrder.verify(contentProviderDataAccessorFacade).createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class));
-        inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class));
+        inOrder.verify(palmaDataAccessor).checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class), any(boolean.class));
         inOrder.verify(ehubLoanRepositoryFacade).saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class));
     }
 
     private void givenActiveLoanAsPreCheckoutAnalysisResult() {
         CheckoutTestAnalysis preCheckoutAnalysis = new CheckoutTestAnalysis(Result.ACTIVE_LOAN, LMS_LOAN_ID);
-        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(
+        given(palmaDataAccessor.checkoutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class), any(boolean.class))).willReturn(
                 preCheckoutAnalysis);
     }
 

@@ -1840,7 +1840,7 @@
                         <xs:element name="contentProviderName" type="xs:string"/>
                         <xs:element name="contentProviderFormatId" type="xs:string"/>
                         <xs:element default="false" minOccurs="0" name="loanPerProduct" type="xs:boolean"/>
-                        <xs:element minOccurs="0" name="issue" type="xs:string"/>
+                        <xs:element minOccurs="0" name="issueId" type="xs:string"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -1905,7 +1905,7 @@
                                 <xs:element name="contentProviderName" type="xs:string"/>
                                 <xs:element name="contentProviderFormatId" type="xs:string"/>
                                 <xs:element default="false" minOccurs="0" name="loanPerProduct" type="xs:boolean"/>
-                                <xs:element minOccurs="0" name="issue" type="xs:string"/>
+                                <xs:element minOccurs="0" name="issueId" type="xs:string"/>
                             </xs:sequence>
                         </xs:choice>
                     </xs:sequence>

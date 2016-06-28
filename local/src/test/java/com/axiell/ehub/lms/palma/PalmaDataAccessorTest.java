@@ -65,13 +65,13 @@ public class PalmaDataAccessorTest {
     private ICatalogueFacade catalogueFacade;
     @Mock
     private EhubConsumer ehubConsumer;
+    @Mock
+    private Patron patron;
+
     private PendingLoan pendingLoan;
     private CheckoutTestAnalysis preCheckoutAnalysis;
     private LmsLoan lmsLoan;
     private String mediaClass;
-
-    @Mock
-    private Patron patron;
 
     @Test
     public void checkOutTestActiveLoan() {
@@ -168,7 +168,7 @@ public class PalmaDataAccessorTest {
 
     private void givenCheckOutResponseWithStatus(final CheckOutErrorStatusType checkOutStatus) {
         CheckOutResponse checkOutResponse = getCheckOutResponse(checkOutStatus);
-        given(loansFacade.checkOut(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class))).willReturn(checkOutResponse);
+        given(loansFacade.checkOut(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class), any(boolean.class))).willReturn(checkOutResponse);
     }
 
     private void thenLmsLoanSuccess() {
@@ -271,16 +271,16 @@ public class PalmaDataAccessorTest {
 
     private void givenCheckOutTestResponseFromAlmaWithStatus(final CheckOutTestErrorStatusType testStatus) {
         CheckOutTestResponse checkOutTestResponse = getCheckOutTestResponse(testStatus);
-        given(loansFacade.checkOutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class))).willReturn(checkOutTestResponse);
+        given(loansFacade.checkOutTest(any(EhubConsumer.class), any(PendingLoan.class), any(Patron.class), any(boolean.class))).willReturn(checkOutTestResponse);
     }
 
     private void whenCheckOutTest() {
-        preCheckoutAnalysis = underTest.checkoutTest(ehubConsumer, pendingLoan, patron);
+        preCheckoutAnalysis = underTest.checkoutTest(ehubConsumer, pendingLoan, patron, false);
     }
 
     private void whenCheckOut() {
         Date expirationDate = new Date();
-        lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, patron);
+        lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, patron, false);
     }
 
     private void whenGetMediaClass() {

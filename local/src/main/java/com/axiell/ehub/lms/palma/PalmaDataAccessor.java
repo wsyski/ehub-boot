@@ -37,15 +37,19 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
     private IResponseStatusChecker responseStatusChecker;
 
     @Override
-    public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron) {
-        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse = loansFacade.checkOutTest(ehubConsumer, pendingLoan, patron);
+    public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron,
+                                             final boolean isLoanPerProduct) {
+        com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
+                loansFacade.checkOutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         responseStatusChecker.checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, patron);
         return getCheckoutTestAnalysis(ehubConsumer, pendingLoan, patron, checkOutTestResponse);
     }
 
     @Override
-    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron) {
-        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse = loansFacade.checkOut(ehubConsumer, pendingLoan, expirationDate, patron);
+    public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron,
+                            final boolean isLoanPerProduct) {
+        com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse =
+                loansFacade.checkOut(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct);
         responseStatusChecker.checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, patron);
         return getLmsLoan(ehubConsumer, pendingLoan, patron, checkOutResponse);
     }
@@ -54,14 +58,13 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
     public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderAlias, final String contentProviderRecordId) {
         SearchResponse.SearchResult searchResult = catalogueFacade.search(ehubConsumer, contentProviderAlias, contentProviderRecordId);
         responseStatusChecker.checkResponseStatus(searchResult.getStatus(), ehubConsumer);
-        String mediaClass=null;
-        if (searchResult.getNofRecordsTotal()==0) {
-           LOGGER.error("Missing record contentProviderAlias: "+ contentProviderAlias +" contentProviderRecordId: "+contentProviderRecordId);
-        }
-        else {
-            mediaClass=searchResult.getCatalogueRecords().getCatalogueRecord().get(0).getMediaClass();
-            if (searchResult.getNofRecordsTotal()>1) {
-                LOGGER.error("Duplicate records for contentProviderAlias: "+ contentProviderAlias +" contentProviderRecordId: "+contentProviderRecordId);
+        String mediaClass = null;
+        if (searchResult.getNofRecordsTotal() == 0) {
+            LOGGER.error("Missing record contentProviderAlias: " + contentProviderAlias + " contentProviderRecordId: " + contentProviderRecordId);
+        } else {
+            mediaClass = searchResult.getCatalogueRecords().getCatalogueRecord().get(0).getMediaClass();
+            if (searchResult.getNofRecordsTotal() > 1) {
+                LOGGER.error("Duplicate records for contentProviderAlias: " + contentProviderAlias + " contentProviderRecordId: " + contentProviderRecordId);
             }
         }
         return mediaClass;
