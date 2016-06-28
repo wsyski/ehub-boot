@@ -35,6 +35,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
             .put(ContentProvider.CONTENT_PROVIDER_F1, newHashSet(F1_USERNAME, F1_PASSWORD, F1_REGION_ID))
             .put(ContentProvider.CONTENT_PROVIDER_OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN))
             .put(ContentProvider.CONTENT_PROVIDER_BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY))
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, newHashSet(ZINIO_LIB_ID, ZINIO_TOKEN))
             .build();
 
     private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE);
@@ -172,6 +173,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
         OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID,
         OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
         F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY,
+        ZINIO_LIB_ID,ZINIO_TOKEN,
         EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE
     }
 }

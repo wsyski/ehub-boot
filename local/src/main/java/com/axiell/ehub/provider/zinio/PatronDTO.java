@@ -1,0 +1,69 @@
+package com.axiell.ehub.provider.zinio;
+
+import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.util.Md5Function;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = {"libraryPin", "libraryId", "preferences"})
+public class PatronDTO {
+    private static final String NA = "N/A";
+    private static final String EMAIL_DOMAIN = "@axiell.com";
+    private String patronId;
+    private String libraryCardNumber;
+    private String userName;
+    private String password;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String postalCode;
+
+    public PatronDTO() {
+    }
+
+    PatronDTO(Patron patron) {
+        libraryCardNumber = patron.getLibraryCard();
+        userName = patron.getLibraryCard();
+        //password = patron.getPin();
+        password = Md5Function.md5Hex(patron.getLibraryCard());
+        email = makeEmail();
+        firstName = NA;
+        lastName = NA;
+        postalCode = NA;
+    }
+
+    private String makeEmail() {
+        return userName + EMAIL_DOMAIN;
+    }
+
+    public String getPatronId() {
+        return patronId;
+    }
+
+    public String getLibraryCardNumber() {
+        return libraryCardNumber;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+}

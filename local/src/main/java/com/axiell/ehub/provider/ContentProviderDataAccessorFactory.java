@@ -9,6 +9,7 @@ import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
 import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
+import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,9 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
     private BorrowBoxDataAccessor borrowBoxDataAccessor;
 
     @Autowired
+    private ZinioDataAccessor zinioDataAccessor;
+
+    @Autowired
     private LpfEpDataAccessor lpfEpDataAccessor;
 
     @Autowired
@@ -57,6 +61,8 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
             return f1DataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_BORROWBOX.equals(name)) {
             return borrowBoxDataAccessor;
+        } else if (ContentProvider.CONTENT_PROVIDER_ZINIO.equals(name)) {
+            return zinioDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_OCD.equals(name)) {
             return ocdDataAccessor;
         } else {
