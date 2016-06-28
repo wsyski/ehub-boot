@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.Fields;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
@@ -33,7 +34,8 @@ public class CommandDataMatcherHelper {
     }
 
     public boolean isExpectedPendingLoan(PendingLoan expectedPendingLoan) {
-        return expectedPendingLoan.contentProviderFormatId().equals(data.getContentProviderFormatId()) &&
-                expectedPendingLoan.contentProviderRecordId().equals(data.getContentProviderRecordId());
+        PendingLoan actualPendingLoan = new PendingLoan(new Fields().addValue("contentProviderAlias", expectedPendingLoan.contentProviderAlias()).addValue("lmsRecordId", expectedPendingLoan.lmsRecordId()).addValue("contentProviderRecordId", data.getContentProviderRecordId())
+                .addValue("contentProviderIssueId", data.getContentProviderIssueId()).addValue("contentProviderFormatId", data.getContentProviderFormatId()));
+        return expectedPendingLoan.equals(actualPendingLoan);
     }
 }

@@ -26,10 +26,11 @@ public interface IPalmaDataAccessor {
      * @param ehubConsumer the {@link EhubConsumer} to be used
      * @param pendingLoan the {@link PendingLoan} containing media information
      * @param patron
+     * @param isLoanPerProduct
      * @return a {@link CheckoutTestAnalysis}
      * @throws ForbiddenException
      */
-    CheckoutTestAnalysis checkoutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron);
+    CheckoutTestAnalysis checkoutTest(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Patron patron, boolean isLoanPerProduct);
 
     /**
      * Does a checkout in the LMS of the media defined in the provided {@link PendingLoan}.
@@ -38,10 +39,11 @@ public interface IPalmaDataAccessor {
      * @param pendingLoan the {@link PendingLoan} containing media information
      * @param expirationDate the loan expiration date
      * @param patron
+     * @param isLoanPerProduct
      * @return an {@link LmsLoan}
      * @throws ForbiddenException
      */
-    LmsLoan checkout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron);
+    LmsLoan checkout(EhubConsumer ehubConsumer, PendingLoan pendingLoan, Date expirationDate, Patron patron, boolean isLoanPerProduct);
 
     String getMediaClass(EhubConsumer ehubConsumer, String contentProviderAlias, String contentProviderRecordId);
 }

@@ -21,6 +21,7 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
     private Patron patron;
     private CheckoutTestAnalysis preCheckoutAnalysis;
     private LmsLoan lmsLoan;
+    private boolean isLoanPerProduct;
 
     @Override
     void customSetUp() {
@@ -28,6 +29,7 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
                 "contentProviderRecordId", DevelopmentData.TEST_EP_RECORD_0_ID).addValue("contentProviderFormatId", DevelopmentData.TEST_EP_FORMAT_0_ID);
         pendingLoan = new PendingLoan(fields);
         patron = new Patron.Builder(DevelopmentData.LIBRARY_CARD, DevelopmentData.PIN).build();
+        isLoanPerProduct = false;
     }
 
     @Override
@@ -59,12 +61,12 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
     }
 
     private void whenCheckOutTestExecuted() {
-        preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron);
+        preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
     }
 
     private void whenCheckOutExecuted() {
         Date expirationDate = new Date();
-        lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, patron);
+        lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct);
     }
 
     protected abstract T getPalmaLoansServiceInstance();

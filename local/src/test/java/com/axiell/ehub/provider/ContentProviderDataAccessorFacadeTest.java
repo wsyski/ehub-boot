@@ -27,9 +27,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentProviderDataAccessorFacadeTest {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    //    public static final String LIBRARY_CARD = "libraryCard";
-//    public static final String PIN = "pin";
     public static final String LANGUAGE = "language";
+    public static final String LMS_RECORD_ID = "lmsRecordId";
     public static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
     public static final String CONTENT_PROVIDER_FORMAT_ID = "contentProviderFormatdId";
     private static final String CONTENT_PROVIDER_ALIAS = CONTENT_PROVIDER_TEST_EP;
@@ -86,6 +85,7 @@ public class ContentProviderDataAccessorFacadeTest {
         given(pendingLoan.contentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
         given(pendingLoan.contentProviderFormatId()).willReturn(CONTENT_PROVIDER_FORMAT_ID);
         given(pendingLoan.contentProviderAlias()).willReturn(CONTENT_PROVIDER_ALIAS);
+        given(pendingLoan.lmsRecordId()).willReturn(LMS_RECORD_ID);
     }
 
     @Before

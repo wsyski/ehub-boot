@@ -24,11 +24,10 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     @Override
     public Formats getFormats(final EhubConsumer ehubConsumer, final String contentProviderAlias, final Patron patron, final String contentProviderRecordId,
                               final String language) {
-        final String name = aliasBusinessController.getName(contentProviderAlias);
-        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-        final ContentProvider contentProvider = consumer.getContentProvider();
+        final ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(ehubConsumer, contentProviderAlias);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
-        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
+        final CommandData commandData = CommandData.newInstance(contentProviderConsumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
                 .setContentProviderAlias(contentProviderAlias);
         return dataAccessor.getFormats(commandData);
     }
@@ -36,11 +35,10 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     @Override
     public ContentProviderLoan createLoan(final EhubConsumer ehubConsumer, final Patron patron, final PendingLoan pendingLoan, final String language) {
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
-        final String name = aliasBusinessController.getName(contentProviderAlias);
-        final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(name);
-        final ContentProvider contentProvider = consumer.getContentProvider();
+        final ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(ehubConsumer, contentProviderAlias);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
-        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setPendingLoan(pendingLoan);
+        final CommandData commandData = CommandData.newInstance(contentProviderConsumer, patron, language).setPendingLoan(pendingLoan);
         return dataAccessor.createLoan(commandData);
     }
 
@@ -51,7 +49,14 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
         final ContentProvider contentProvider = metadata.getContentProvider();
         final ContentProviderConsumer consumer = ehubConsumer.getContentProviderConsumer(contentProvider.getName());
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
-        final CommandData commandData = CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata).setFormatDecoration(formatDecoration);
+        final CommandData commandData =
+                CommandData.newInstance(consumer, patron, language).setContentProviderLoanMetadata(metadata).setFormatDecoration(formatDecoration);
         return dataAccessor.getContent(commandData);
+    }
+
+    @Override
+    public ContentProviderConsumer getContentProviderConsumer(final EhubConsumer ehubConsumer, final String contentProviderAlias) {
+        final String name = aliasBusinessController.getName(contentProviderAlias);
+        return ehubConsumer.getContentProviderConsumer(name);
     }
 }
