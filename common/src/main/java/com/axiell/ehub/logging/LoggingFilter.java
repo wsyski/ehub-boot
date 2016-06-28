@@ -17,6 +17,7 @@ import javax.ws.rs.ext.WriterInterceptorContext;
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -25,7 +26,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @SuppressWarnings("ClassWithMultipleLoggers")
 public class LoggingFilter implements ContainerRequestFilter, ClientRequestFilter, ContainerResponseFilter,
         ClientResponseFilter, WriterInterceptor {
-    public static final Charset UTF8 = Charset.forName("UTF-8");
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
     private static final String NOTIFICATION_PREFIX = "* ";
     private static final String REQUEST_PREFIX = "> ";
@@ -153,7 +153,7 @@ public class LoggingFilter implements ContainerRequestFilter, ClientRequestFilte
         final byte[] entity = new byte[maxEntitySize + 1];
         final int entitySize = stream.read(entity);
         if (entitySize > 0) {
-            b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize)));
+            b.append(new String(entity, 0, Math.min(entitySize, maxEntitySize), StandardCharsets.UTF_8));
         }
         if (entitySize > maxEntitySize) {
             b.append("...more...");
@@ -252,7 +252,7 @@ public class LoggingFilter implements ContainerRequestFilter, ClientRequestFilte
             // write entity to the builder
             final byte[] entity = baos.toByteArray();
 
-            b.append(new String(entity, 0, Math.min(entity.length, maxEntitySize)));
+            b.append(new String(entity, 0, Math.min(entity.length, maxEntitySize), StandardCharsets.UTF_8));
             if (entity.length > maxEntitySize) {
                 b.append("...more...");
             }
