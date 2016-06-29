@@ -1,23 +1,21 @@
-package com.axiell.ehub.provider.borrowbox;
+package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-class BorrowBoxResourceFactory {
+public class ZinioResourceFactory {
 
-    private BorrowBoxResourceFactory() {
+    private ZinioResourceFactory() {
     }
 
-    public static IBorrowBoxResource create(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
+    public static IZinioResource create(final ContentProviderConsumer contentProviderConsumer) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.API_BASE_URL);
         ResteasyClient client = new ResteasyClientBuilder().build();
-        client.register(new BorrowBoxClientRequestFilter(contentProviderConsumer, patron, language));
         ResteasyWebTarget target = client.target(baseUrl);
-        return target.proxy(IBorrowBoxResource.class);
+        return target.proxy(IZinioResource.class);
     }
 }

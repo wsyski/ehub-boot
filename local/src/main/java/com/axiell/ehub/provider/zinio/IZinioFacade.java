@@ -7,9 +7,12 @@ import java.util.List;
 
 interface IZinioFacade {
 
-    PatronDTO getOrCreatePatron(ContentProviderConsumer contentProviderConsumer, Patron patron);
+    String login(ContentProviderConsumer contentProviderConsumer, Patron patron);
 
-    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId);
+    void checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderIssueId);
 
-    List<CheckoutDTO> getCheckouts(ContentProviderConsumer contentProviderConsumer);
+    List<IssueDTO> getIssues(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId);
+
+    String getDownloadUrl(String loginUrl, String contentProviderIssueId);
+
 }
