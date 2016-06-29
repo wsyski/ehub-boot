@@ -153,4 +153,71 @@
         </addColumn>
         <comment>Modify EHUB_LOAN</comment>
     </changeSet>
+
+    <changeSet id="14" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER">
+            <column name="ID" value="10"/>
+            <column name="LOAN_PER_PRODUCT" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="NAME" value="ZINIO"/>
+        </insert>
+        <comment>Added Zinio as Content Provider</comment>
+    </changeSet>
+
+    <changeSet id="15" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_ALIAS">
+            <column name="ID" value="12"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <column name="ALIAS" value="ZINIO"/>
+            <column name="NAME" value="ZINIO"/>
+        </insert>
+        <comment>Added Zinio as ZINIO alias</comment>
+    </changeSet>
+
+    <changeSet id="16" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_PROVIDER_PROPERTY">
+            <column name="CONTENT_PROVIDER_ID" value="10"/>
+            <column name="PROPERTY_KEY" value="API_BASE_URL"/>
+            <column name="PROPERTY_VALUE" value="http://www.rbdigitaltest.com"/>
+        </insert>
+        <comment>Added Zinio Content Provider properties</comment>
+    </changeSet>
+
+    <changeSet id="17" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="ZINIO_LIB_ID"/>
+        </insert>
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="ZINIO_TOKEN"/>
+        </insert>
+        <comment>Added Zinio Content Provider Consumer property keys</comment>
+    </changeSet>
+
+    <changeSet id="18" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_DECORATION">
+            <column name="ID" value="1801"/>
+            <column name="CONTENT_DISPOSITION" value="STREAMING"/>
+            <column name="FORMAT_ID" value="ZINIO.stream"/>
+            <column name="CONTENT_PROVIDER_ID" value="10"/>
+            <column name="LOCKED" value="0"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added Zinio format decorations</comment>
+    </changeSet>
+
+    <changeSet id="19" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <column name="ID" value="4801"/>
+            <column name="DESCRIPTION" value="Zinio streaming format"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="NAME" value="Zinio (Stream)"/>
+            <column name="CONTENT_P_FORMAT_DECORATION_ID" value="1801"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to the Zinio format decorations</comment>
+    </changeSet>
 </databaseChangeLog>

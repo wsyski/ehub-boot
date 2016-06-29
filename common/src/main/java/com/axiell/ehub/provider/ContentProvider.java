@@ -218,7 +218,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
                 !CONTENT_PROVIDER_OVERDRIVE.equals(name) &&
                 !CONTENT_PROVIDER_F1.equals(name) &&
                 !CONTENT_PROVIDER_OCD.equals(name) &&
-                !CONTENT_PROVIDER_BORROWBOX.equals(name);
+                !CONTENT_PROVIDER_BORROWBOX.equals(name) &&
+                !CONTENT_PROVIDER_ZINIO.equals(name);
     }
 
     @Transient
