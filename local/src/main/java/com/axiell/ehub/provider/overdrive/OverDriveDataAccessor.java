@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.overdrive;
 
+import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
@@ -95,7 +96,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         }
         final Date expirationDate = checkout.getExpirationDate();
         if (downloadLinkTemplate == null) {
-            throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_OVERDRIVE, productId, formatType);
+            throw NotFoundExceptionFactory.create(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, productId, formatType);
         }
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
