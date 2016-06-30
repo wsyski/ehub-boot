@@ -36,7 +36,7 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
             } else if (message.contains(MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID)) {
                 type = ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
             } else if (message.contains(MESSAGE_CHECKOUT_LIMIT_REACHED)) {
-                type = ErrorCauseArgumentType.BORROWER_LIMIT_REACHED;
+                type = ErrorCauseArgumentType.MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED;
             }
         }
         return type;
