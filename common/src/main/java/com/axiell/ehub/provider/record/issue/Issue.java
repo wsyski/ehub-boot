@@ -44,7 +44,6 @@ public class Issue implements Serializable {
         return dto.getFormats().stream().map(Format::new).collect(Collectors.toList());
     }
 
-
     public IssueDTO toDTO() {
         return dto;
     }
