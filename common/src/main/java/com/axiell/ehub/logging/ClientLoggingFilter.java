@@ -68,7 +68,7 @@ import javax.ws.rs.ext.Provider;
  * @author Ondrej Kosatka (ondrej.kosatka at oracle.com)
  */
 @ConstrainedTo(RuntimeType.CLIENT)
-@Priority(Integer.MIN_VALUE)
+@Priority(Integer.MAX_VALUE)
 @Provider
 @SuppressWarnings("ClassWithMultipleLoggers")
 public final class ClientLoggingFilter extends LoggingInterceptor implements ClientRequestFilter, ClientResponseFilter {
