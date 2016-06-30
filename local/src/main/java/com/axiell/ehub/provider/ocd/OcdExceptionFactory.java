@@ -6,8 +6,7 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
-public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
-        implements IContentProviderExceptionFactory<ErrorDTO> {
+public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO> implements IContentProviderExceptionFactory<ErrorDTO> {
     static final String MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE = "No fulfillment copy available";
     static final String MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID = "PatronId and TitleId are invalid";
     static final String MESSAGE_CHECKOUT_LIMIT_REACHED = "Checkout limit of (";
