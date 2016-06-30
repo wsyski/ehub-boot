@@ -161,7 +161,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
             }
         }
         if (contentUrls.isEmpty()) {
-            throw NotFoundExceptionFactory.create(ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
+            throw NotFoundExceptionFactory.create(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, ContentProvider.CONTENT_PROVIDER_ELIBU, recordId, formatId);
         }
         ContentLinks contentLinks = createContentLinks(contentUrls, formatDecoration);
         return new com.axiell.ehub.checkout.Content(contentLinks);
