@@ -35,6 +35,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     public static final String CONTENT_PROVIDER_F1 = "F1";
     public static final String CONTENT_PROVIDER_OCD = "OCD";
     public static final String CONTENT_PROVIDER_BORROWBOX = "BORROWBOX";
+    public static final String CONTENT_PROVIDER_ZINIO = "ZINIO";
 
     private static final Map<String, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = ImmutableMap.<String, Set<ContentProviderPropertyKey>>builder()
             .put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL))
@@ -43,7 +44,9 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
             .put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL))
             .put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
             .put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL))
-            .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL)).build();
+            .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL))
+            .put(CONTENT_PROVIDER_ZINIO, newHashSet(API_BASE_URL))
+            .build();
     private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
     private static final Map<ContentProviderPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<ContentProviderPropertyKey, Pattern>builder()
             .put(LOAN_EXPIRATION_DAYS, Pattern.compile("[0-9]+")).build();
@@ -215,7 +218,8 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
                 !CONTENT_PROVIDER_OVERDRIVE.equals(name) &&
                 !CONTENT_PROVIDER_F1.equals(name) &&
                 !CONTENT_PROVIDER_OCD.equals(name) &&
-                !CONTENT_PROVIDER_BORROWBOX.equals(name);
+                !CONTENT_PROVIDER_BORROWBOX.equals(name) &&
+                !CONTENT_PROVIDER_ZINIO.equals(name);
     }
 
     @Transient
