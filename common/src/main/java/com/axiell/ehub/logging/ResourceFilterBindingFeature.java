@@ -14,7 +14,7 @@ public class ResourceFilterBindingFeature implements DynamicFeature {
 
         if (resourcePackage.startsWith("com.axiell.ehub")) {
             featureContext.register(TimeLoggingClientFilter.class);
-            featureContext.register(LoggingFilter.class);
+            featureContext.register(ClientLoggingFilter.class);
         }
     }
 }
