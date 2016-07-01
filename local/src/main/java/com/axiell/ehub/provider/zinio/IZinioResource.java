@@ -5,7 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-@Produces(MediaType.TEXT_HTML)
+@Produces(MediaType.TEXT_PLAIN)
 public interface IZinioResource {
     static final String CMD_P_ACCOUNT_CREATE = "p_account_create";
     static final String CMD_P_EXISTS = "p_exists";

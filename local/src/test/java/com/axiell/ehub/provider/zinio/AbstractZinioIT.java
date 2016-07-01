@@ -3,6 +3,8 @@ package com.axiell.ehub.provider.zinio;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.EhubExceptionFactoryStub;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
@@ -13,6 +15,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.BDDMockito.given;
 
@@ -36,6 +39,10 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
     @Before
     public void setUp() {
         underTest = new ZinioFacade();
+        IEhubExceptionFactory ehubExceptionFactory=new EhubExceptionFactoryStub();
+        IZinioResponseFactory zinioResponseFactory=new ZinioResponseFactory();
+        ReflectionTestUtils.setField(zinioResponseFactory,"ehubExceptionFactory", ehubExceptionFactory);
+        ReflectionTestUtils.setField(underTest,"zinioResponseFactory",zinioResponseFactory);
     }
 
     protected void givenConfigurationProperties() {

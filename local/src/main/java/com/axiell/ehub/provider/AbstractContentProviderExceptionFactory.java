@@ -9,9 +9,9 @@ import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 
 public abstract class AbstractContentProviderExceptionFactory<E> implements IContentProviderExceptionFactory<E> {
-    public static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";
-    protected static final int UNKNOWN_STATUS_CODE = -1;
-    protected static final String UNKNOWN_CONTENT_PROVIDER = "unknown";
+    static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";
+    private static final int UNKNOWN_STATUS_CODE = -1;
+    private static final String UNKNOWN_CONTENT_PROVIDER = "unknown";
     private final Class<E> clazz;
     private IEhubExceptionFactory ehubExceptionFactory;
     private ContentProviderConsumer contentProviderConsumer;
@@ -46,6 +46,25 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         if (StringUtils.isBlank(code)) {
             code = String.valueOf(getStatusCode(response));
         }
+        return makeInternalServerErrorException(code, message);
+    }
+
+    @Override
+    public InternalServerErrorException create(E entity) {
+        String code = getCode(entity);
+        String message = getMessage(entity);
+
+        if (StringUtils.isBlank(message)) {
+            message = DEFAULT_MESSAGE;
+        }
+        ErrorCauseArgumentType type = getErrorCauseArgumentValueType(code, message);
+        if (type != null) {
+            return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
+        }
+        return makeInternalServerErrorException(code, message);
+    }
+
+    private InternalServerErrorException makeInternalServerErrorException(String code, String message) {
         final ErrorCauseArgument nameArg = makeContentProviderNameErrorCauseArgument(contentProviderConsumer.getContentProvider());
         final ErrorCauseArgument statusArg = makeStatusCodeErrorCauseArgument(code);
         return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, nameArg, statusArg);

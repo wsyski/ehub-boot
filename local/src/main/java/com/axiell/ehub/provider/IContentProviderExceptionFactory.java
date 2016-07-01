@@ -7,4 +7,6 @@ import javax.ws.rs.core.Response;
 public interface IContentProviderExceptionFactory<E> {
 
     InternalServerErrorException create(Response response);
+
+    InternalServerErrorException create(E entity);
 }

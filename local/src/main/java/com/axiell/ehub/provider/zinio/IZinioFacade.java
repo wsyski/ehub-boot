@@ -7,11 +7,11 @@ import java.util.List;
 
 interface IZinioFacade {
 
-    String login(ContentProviderConsumer contentProviderConsumer, Patron patron);
+    String login(ContentProviderConsumer contentProviderConsumer, Patron patron, String language);
 
-    void checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderIssueId);
+    void checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderIssueId, String language);
 
-    List<IssueDTO> getIssues(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId);
+    List<IssueDTO> getIssues(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language);
 
     String getDownloadUrl(String loginUrl, String contentProviderIssueId);
 

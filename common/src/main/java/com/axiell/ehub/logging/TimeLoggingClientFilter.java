@@ -12,8 +12,7 @@ import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 @Provider
-public class
-TimeLoggingClientFilter implements ClientRequestFilter, ClientResponseFilter {
+public class TimeLoggingClientFilter implements ClientRequestFilter, ClientResponseFilter {
     private static final Logger TIME_LOGGER = LoggerFactory.getLogger("time");
     private static final String SEPARATOR = "; ";
     private static final String STOP_WATCH_PROPERTY = "ehubStopWatch";
