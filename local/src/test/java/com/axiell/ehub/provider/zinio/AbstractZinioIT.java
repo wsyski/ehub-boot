@@ -1,18 +1,20 @@
 package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.EhubError;
-import com.axiell.ehub.EhubException;
+import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.EhubExceptionFactoryStub;
+import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.ep.EpUserIdValue;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.BDDMockito.given;
 
@@ -24,18 +26,24 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
     private static final String ZINIO_LIB_ID = "axielltest";
     private static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";
     private static final String LIBRARY_CARD = "12345";
+    protected static final String RECORD_ID = "RBZ0000111";
+    protected static final String INVALID_RECORD_ID = "invalidRecordId";
+    protected static final String ISSUE_ID = "416342560";
 
     protected ZinioFacade underTest;
 
     @Mock
     protected Patron patron;
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
+    protected EhubRuntimeException exception=null;
 
     @Before
     public void setUp() {
         underTest = new ZinioFacade();
+        IEhubExceptionFactory ehubExceptionFactory = new EhubExceptionFactoryStub();
+        IZinioResponseFactory zinioResponseFactory = new ZinioResponseFactory();
+        ReflectionTestUtils.setField(zinioResponseFactory, "ehubExceptionFactory", ehubExceptionFactory);
+        ReflectionTestUtils.setField(underTest, "zinioResponseFactory", zinioResponseFactory);
     }
 
     protected void givenConfigurationProperties() {
@@ -54,8 +62,10 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
         given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
     }
 
-    protected void givenExpectedEhubException(final EhubError ehubError) {
-        expectedException.expect(EhubException.class);
-        expectedException.expectMessage(ehubError.getMessage());
+    protected void thenExpectedEhubRuntimeException(final EhubError ehubError) {
+        Assert.assertNotNull(exception);
+        Assert.assertThat(exception, Matchers.isA(EhubRuntimeException.class));
+        Assert.assertThat(exception.getEhubError().getCause(), Matchers.is(ehubError.getCause()));
+        Assert.assertThat(exception.getEhubError().getArguments(), Matchers.containsInAnyOrder(ehubError.getArguments().toArray()));
     }
 }
