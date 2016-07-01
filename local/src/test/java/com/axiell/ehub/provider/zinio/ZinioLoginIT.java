@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Locale;
 
-public class ZinioPatronLoginIT extends AbstractZinioIT {
+public class ZinioLoginIT extends AbstractZinioIT {
     private String loginUrl;
 
     @Test

@@ -1,9 +1,11 @@
 package com.axiell.ehub.provider.zinio;
 
+import java.util.List;
+
 public interface IZinioResponse {
     ZinioStatus getStatus();
 
     String getMessage();
 
-    <T> T getObject(Class<T> clazz);
+    <T> List<T> getAsList(Class<T> clazz);
 }

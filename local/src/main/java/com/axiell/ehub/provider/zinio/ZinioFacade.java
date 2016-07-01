@@ -4,6 +4,8 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.EhubUrlCodec;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +63,7 @@ public class ZinioFacade implements IZinioFacade {
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
         String response = zinioResource.getIssues(IZinioResource.CMD_ZINIO_ISSUES_BY_MAGAZINES_AND_LIBRARY, libraryId, token, contentProviderRecordId);
         IZinioResponse zinioResponse = createZinioResponse(contentProviderConsumer, language, response);
-        return zinioResponse.getObject(List.class);
+        return zinioResponse.getAsList(IssueDTO.class);
     }
 
     @Override

@@ -22,8 +22,9 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
             final String language) {
         final ErrorCauseArgument contentProviderNameArg = makeContentProviderNameArg(contentProviderConsumer);
         final ErrorCauseArgument statusArg = makeStatusArg(contentProviderConsumer, argValueType, language);
-        return message == null ? new InternalServerErrorException(CONTENT_PROVIDER_ERROR, contentProviderNameArg, statusArg) :
+        InternalServerErrorException internalServerErrorException = message == null ? new InternalServerErrorException(CONTENT_PROVIDER_ERROR, contentProviderNameArg, statusArg) :
                 new InternalServerErrorException(message, CONTENT_PROVIDER_ERROR, contentProviderNameArg, statusArg);
+        return internalServerErrorException;
     }
 
     @Override
@@ -32,7 +33,8 @@ public abstract class AbstractEhubExceptionFactory implements IEhubExceptionFact
                                                                                          final String language) {
         final ErrorCauseArgument contentProviderNameArg = makeContentProviderNameArg(contentProviderConsumer);
         final ErrorCauseArgument statusArg = makeStatusArg(contentProviderConsumer, argValueType, language);
-        return new BadRequestException(BAD_REQUEST, contentProviderNameArg, statusArg);
+        BadRequestException badRequestException = new BadRequestException(BAD_REQUEST, contentProviderNameArg, statusArg);
+        return  badRequestException;
     }
 
     private ErrorCauseArgument makeContentProviderNameArg(final ContentProviderConsumer contentProviderConsumer) {

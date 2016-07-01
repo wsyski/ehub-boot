@@ -9,6 +9,7 @@ import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 public class ZinioExceptionFactory extends AbstractContentProviderExceptionFactory<String>
         implements IContentProviderExceptionFactory<String> {
     static final String MESSAGE_NOT_EXISTS = "not exists";
+    static final String MESSAGE_UNEXISTED_MAGAZINE_RBID = "unexisted magazine rbid";
 
     public ZinioExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                  final IEhubExceptionFactory ehubExceptionFactory) {
@@ -31,6 +32,8 @@ public class ZinioExceptionFactory extends AbstractContentProviderExceptionFacto
         if (message != null) {
             if (message.contains(MESSAGE_NOT_EXISTS)) {
                 type = ErrorCauseArgumentType.INVALID_PATRON;
+            } else if (message.contains(MESSAGE_UNEXISTED_MAGAZINE_RBID)) {
+                type = ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
             }
         }
         return type;
