@@ -25,6 +25,4 @@ public class ZinioPatronLoginIT extends AbstractZinioIT {
     private void thenExpectedLoginUrl() {
         Assert.assertThat(loginUrl, Matchers.startsWith("http://www.rbdigitaltest.com/axielltest?p_session="));
     }
-
-
 }
