@@ -125,7 +125,6 @@ public class EhubRuntimeException extends RuntimeException {
             final String value = header.value;
             builder.header(name, value);
         }
-
         return builder.build();
     }
 

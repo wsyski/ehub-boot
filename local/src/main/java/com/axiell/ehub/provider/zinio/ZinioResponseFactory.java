@@ -6,16 +6,19 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class ZinioResponseFactory implements IZinioResponseFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZinioResponseFactory.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
@@ -24,6 +27,7 @@ public class ZinioResponseFactory implements IZinioResponseFactory {
     public IZinioResponse create(final String response, final ContentProviderConsumer contentProviderConsumer, final String language) {
         return new ZinioResponse(response, contentProviderConsumer, language);
     }
+
 
     private class ZinioResponse implements IZinioResponse {
 
@@ -57,10 +61,10 @@ public class ZinioResponseFactory implements IZinioResponseFactory {
             return message;
         }
 
-        public <T> T getObject(final Class<T> clazz) {
-            ObjectMapper objectMapper = new ObjectMapper();
+        public <T> List<T> getAsList(final Class<T> clazz) {
             try {
-                return objectMapper.readValue(message, clazz);
+                CollectionType collectionType=OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz);
+                return OBJECT_MAPPER.readValue(message, collectionType);
             } catch (IOException ex) {
                 LOGGER.error(ex.getMessage(), ex);
                 throw createInternalServerErrorException("Invalid content provider 'ZINIO' json message: " + message);

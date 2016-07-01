@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +9,8 @@ import javax.xml.bind.annotation.XmlValue;
 import com.axiell.ehub.provider.ContentProvider;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
@@ -108,5 +107,22 @@ public class ErrorCauseArgument implements Serializable {
         EHUB_CONSUMER_PROPERTY_KEY,
         EHUB_CONSUMER_PROPERTY_VALUE,
         FIELD
+    }
+
+    @Override
+    public final boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof ErrorCauseArgument)) {
+            return false;
+        }
+        final ErrorCauseArgument rhs = (ErrorCauseArgument) obj;
+        return new EqualsBuilder().append(getType(), rhs.getType()).append(getValue(),rhs.getValue()).isEquals();
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(17, 31).append(getType()).append(getValue()).toHashCode();
     }
 }
