@@ -69,10 +69,9 @@ public class ZinioFacade implements IZinioFacade {
         return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.encode(contentProviderIssueId);
     }
 
-    private IZinioResponse createZinioResponse(ContentProviderConsumer contentProviderConsumer, String language, String response) {
+    private IZinioResponse createZinioResponse(final ContentProviderConsumer contentProviderConsumer, final String language, final String response) {
         LOGGER.info(response);
-        IZinioResponse zinioResponse = zinioResponseFactory.create(response, contentProviderConsumer, language);
-        return zinioResponse;
+        return zinioResponseFactory.create(response, contentProviderConsumer, language);
     }
 
     private String getPassword() {
