@@ -4,6 +4,8 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Locale;
+
 public class ZinioPatronLoginIT extends AbstractZinioIT {
     private String loginUrl;
 
@@ -17,7 +19,7 @@ public class ZinioPatronLoginIT extends AbstractZinioIT {
     }
 
     private void whenLogin() {
-        loginUrl = underTest.login(contentProviderConsumer, patron);
+        loginUrl = underTest.login(contentProviderConsumer, patron, Locale.ENGLISH.getLanguage());
     }
 
     private void thenExpectedLoginUrl() {
