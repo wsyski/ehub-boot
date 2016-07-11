@@ -4,7 +4,6 @@ import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.CreateContentCommand;
-import com.axiell.ehub.provider.IContentLinksFactory;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoanCommand.Result.ACTIVE_LOAN_RETRIEVED;
 
@@ -12,10 +11,10 @@ class GetContentCommandChain extends AbstractElib3CommandChain<Content, CommandD
     private final GetLoanCommand firstCommand;
     private final CreateContentCommand createContentCommand;
 
-    GetContentCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentLinksFactory contentFactory) {
+    GetContentCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory) {
         super(elibFacade, exceptionFactory);
         firstCommand = new GetLoanCommand(elibFacade, exceptionFactory);
-        createContentCommand = new CreateContentCommand(contentFactory);
+        createContentCommand = new CreateContentCommand();
         configureFirstCommand();
         configureCreateContentCommand();
     }

@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -43,11 +44,11 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
 
     private void populateContentUrlInCommandData(final CommandData data, final LoanDTO loan) {
         final String formatId = data.getContentProviderFormatId();
-        final List<String> contentUrls = loan.getContentUrlsFor(formatId);
-        data.setContentUrls(contentUrls);
+        final List<String> contentLinkHrefs = loan.getContentUrlsFor(formatId);
+        data.setContentLinkHrefs(contentLinkHrefs);
         final Supplements supplements = loan.getSupplements();
         if (supplements!=null) {
-            data.setSupplementLinks(supplements.getSupplementLinks());
+            data.setSupplementLinks(new SupplementLinks(supplements.getSupplementLinks()));
         }
     }
 

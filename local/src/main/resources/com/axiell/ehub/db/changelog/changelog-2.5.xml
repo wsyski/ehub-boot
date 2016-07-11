@@ -182,6 +182,11 @@
             <column name="PROPERTY_KEY" value="API_BASE_URL"/>
             <column name="PROPERTY_VALUE" value="http://www.rbdigitaltest.com"/>
         </insert>
+        <insert tableName="CONTENT_PROVIDER_PROPERTY">
+            <column name="CONTENT_PROVIDER_ID" value="10"/>
+            <column name="PROPERTY_KEY" value="LOAN_EXPIRATION_DAYS"/>
+            <column name="PROPERTY_VALUE" value="28"/>
+        </insert>
         <comment>Added Zinio Content Provider properties</comment>
     </changeSet>
 

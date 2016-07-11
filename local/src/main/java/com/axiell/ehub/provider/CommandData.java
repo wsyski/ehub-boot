@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.Content;
-import com.axiell.ehub.checkout.SupplementLink;
+import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
@@ -11,6 +10,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandData implements ICommandData {
     private final ContentProviderConsumer contentProviderConsumer;
@@ -22,8 +22,8 @@ public class CommandData implements ICommandData {
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private FormatDecoration formatDecoration;
-    private List<String> contentUrls;
-    private List<SupplementLink> supplementLinks;
+    private ContentLinks contentLinks;
+    private SupplementLinks supplementLinks;
     private Content content;
 
     protected CommandData(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
@@ -100,22 +100,26 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public List<SupplementLink> getSupplementLinks() {
+    public SupplementLinks getSupplementLinks() {
         return supplementLinks;
     }
 
-    public CommandData setSupplementLinks(List<SupplementLink> supplementLinks) {
+    public CommandData setSupplementLinks(final SupplementLinks supplementLinks) {
         this.supplementLinks = supplementLinks;
         return this;
     }
 
-    public List<String> getContentUrls() {
-        return contentUrls;
+    public ContentLinks getContentLinks() {
+        return contentLinks;
     }
 
-    public CommandData setContentUrls(List<String> contentUrl) {
-        this.contentUrls = contentUrl;
+    public CommandData setContentLinks(final ContentLinks contentLinks) {
+        this.contentLinks = contentLinks;
         return this;
+    }
+
+    public CommandData setContentLinkHrefs(final List<String> contentLinkHrefs) {
+        return setContentLinks(new ContentLinks(contentLinkHrefs.stream().map(ContentLink::new).collect(Collectors.toList())));
     }
 
     public Content getContent() {

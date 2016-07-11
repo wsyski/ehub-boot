@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.record.format;
 
 import org.apache.commons.lang3.Validate;
@@ -17,8 +14,8 @@ public class Formats {
         return formats;
     }
 
-    public void addFormat(Format format) {
-        Validate.notNull(format, "Can't add a Format that is null");
+    public void addFormat(final Format format) {
+        Validate.notNull(format, "Format can not be null");
         formats.add(format);
     }
 

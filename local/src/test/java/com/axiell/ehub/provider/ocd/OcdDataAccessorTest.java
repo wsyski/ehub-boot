@@ -42,7 +42,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
         underTest = new OcdDataAccessor();
         ReflectionTestUtils.setField(underTest, "ocdAuthenticator", ocdAuthenticator);
         ReflectionTestUtils.setField(underTest, "ocdCheckoutHandler", ocdCheckoutHandler);
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "ocdFormatHandler", ocdFormatHandler);
@@ -89,7 +88,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
         givenCheckoutIsSuccessful();
         givenCheckout();
         givenCompleteCheckout();
-        givenContentLink();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
@@ -134,7 +132,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
         givenCompleteCheckout();
         givenContentProviderLoanMetadataInCommandData();
         givenFormatDecorationInCommandData();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

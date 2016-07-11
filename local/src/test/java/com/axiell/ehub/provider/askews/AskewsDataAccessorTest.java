@@ -45,7 +45,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
     @Before
     public void setUpAskewsDataAccessor() {
         underTest = new AskewsDataAccessor();
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "askewsFacade", askewsFacade);
         ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
@@ -67,7 +66,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenDownloadUrlInLoanDetail();
         givenFormatDecorationFromContentProvider();
         givenDownloadableContentDisposition();
-        givenContentLink();
         givenExpirationDate();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
@@ -133,7 +131,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenLoanDetails();
         givenLoanStatusIsTitleHasBeenProcessed();
         givenDownloadUrlInLoanDetail();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

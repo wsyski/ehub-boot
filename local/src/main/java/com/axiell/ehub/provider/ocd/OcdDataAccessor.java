@@ -60,7 +60,7 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
             final String contentProviderLoanId = checkout.getTransactionId();
             final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
             final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), completeCheckout);
+            final Content contentLinks = makeContent(completeCheckout);
             return new ContentProviderLoan(loanMetadata, contentLinks);
         }
         throw makeCreateLoanFailedException(data);
@@ -72,9 +72,9 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private Content makeContent(final FormatDecoration formatDecoration, final Checkout checkout) {
+    private Content makeContent(final Checkout checkout) {
         final List<String> contentUrls = checkout.getDownloadUrls();
-        final ContentLinks contentLinks = createContentLinks(contentUrls, formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrls);
         return new Content(contentLinks);
     }
 
@@ -88,9 +88,8 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     public Content getContent(final CommandData data) {
         final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
-        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String contentProviderLoanId = loanMetadata.getId();
         final Checkout checkout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
-        return makeContent(formatDecoration, checkout);
+        return makeContent(checkout);
     }
 }
