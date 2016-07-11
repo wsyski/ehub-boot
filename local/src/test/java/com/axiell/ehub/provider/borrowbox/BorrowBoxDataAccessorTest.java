@@ -38,7 +38,6 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         underTest = new BorrowBoxDataAccessor();
         ReflectionTestUtils.setField(underTest, "borrowBoxFacade", borrowBoxFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
     }
 
     @Test
@@ -63,7 +62,6 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenContentProviderRecordIdInCommandData();
         givenCompleteCheckout();
         givenCheckout();
-        givenContentLink();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
@@ -74,7 +72,6 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenCompleteCheckout();
         givenContentProviderLoanMetadataInCommandData();
         givenFormatDecorationInCommandData();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

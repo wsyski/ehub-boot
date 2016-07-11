@@ -1,7 +1,5 @@
 package com.axiell.ehub.provider.zinio;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Locale;

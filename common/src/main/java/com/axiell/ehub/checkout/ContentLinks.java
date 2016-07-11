@@ -14,8 +14,7 @@ public class ContentLinks implements Serializable {
 
     public ContentLinks(final List<ContentLink> contentLinks) {
         if (contentLinks != null) {
-            this.contentLinksDTO = contentLinks.stream()
-                    .map(contentLink -> new ContentLinkDTO().href(contentLink.href())).collect(Collectors.toList());
+            this.contentLinksDTO = contentLinks.stream().map(contentLink -> new ContentLinkDTO().href(contentLink.href())).collect(Collectors.toList());
         }
     }
 

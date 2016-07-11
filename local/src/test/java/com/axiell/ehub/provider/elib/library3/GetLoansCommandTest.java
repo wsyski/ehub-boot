@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +8,6 @@ import org.mockito.Mock;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
@@ -25,7 +25,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     @Mock
     private LoanDTO loan;
     private ContentProviderLoanMetadata loanMetadata;
-    private List<String> contentUrls;
+    private ContentLinks contentLinks;
 
     @Before
     public void setUp() {
@@ -71,7 +71,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenActualContentUrlEqualsExpectedUrl() {
-        assertEquals(CONTENT_URL, contentUrls.get(0));
+        assertEquals(CONTENT_URL, contentLinks.getContentLinks().get(0).href());
     }
 
     private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
@@ -93,7 +93,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private void whenRun() {
         underTest.run(data);
         loanMetadata = data.getContentProviderLoanMetadata();
-        contentUrls = data.getContentUrls();
+        contentLinks = data.getContentLinks();
     }
 
     @Test
@@ -108,7 +108,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenContentUrlIsNull() {
-        assertNull(contentUrls);
+        assertNull(contentLinks);
     }
 
     private void givenCommandOnPatronHasNoLoanWithProductId() {

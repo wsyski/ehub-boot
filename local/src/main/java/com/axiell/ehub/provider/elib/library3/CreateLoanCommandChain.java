@@ -1,13 +1,11 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.Content;
-import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.CreateContentCommand;
-import com.axiell.ehub.provider.IContentLinksFactory;
 
 class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLoan, CommandData> {
     private final GetLoansCommand firstCommand;
@@ -15,12 +13,12 @@ class CreateLoanCommandChain extends AbstractElib3CommandChain<ContentProviderLo
     private final CreateLoanCommand createLoanCommand;
     private final CreateContentCommand createContentCommand;
 
-    CreateLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory, final IContentLinksFactory contentFactory) {
+    CreateLoanCommandChain(final IElibFacade elibFacade, final IEhubExceptionFactory exceptionFactory) {
         super(elibFacade, exceptionFactory);
         firstCommand = new GetLoansCommand(elibFacade, exceptionFactory);
         bookAvailabilityCommand = new BookAvailabilityCommand(elibFacade, exceptionFactory);
         createLoanCommand = new CreateLoanCommand(elibFacade, exceptionFactory);
-        createContentCommand = new CreateContentCommand(contentFactory);
+        createContentCommand = new CreateContentCommand();
         configureFirstCommand();
         configureBookAvailabilityCommand();
         configureCreateLoanCommand();

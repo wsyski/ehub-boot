@@ -149,8 +149,8 @@ public class ContentProviderLoanMetadata implements Serializable {
         private final Date expirationDate;
         private final FormatDecoration firstFormatDecoration;
         private final String recordId;
-
         private String id;
+        private String issueId;
 
         public Builder(final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration firstFormatDecoration) {
             Validate.isNotNull(contentProvider, "ContentProvider can't be null");
@@ -165,6 +165,11 @@ public class ContentProviderLoanMetadata implements Serializable {
 
         public Builder contentProviderLoanId(final String value) {
             this.id = value;
+            return this;
+        }
+
+        public Builder issueId(final String issueId) {
+            this.issueId=issueId;
             return this;
         }
 

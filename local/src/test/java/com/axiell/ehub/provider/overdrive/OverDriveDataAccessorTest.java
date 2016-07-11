@@ -72,7 +72,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     @Before
     public void setUpElibUDataAccessor() {
         underTest = new OverDriveDataAccessor();
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
@@ -159,7 +158,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatDecorationFromContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenContentLink();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
@@ -187,7 +185,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadLink();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenContentLink();
         givenLinks();
         givenOverDriveContentLink();
         givenFormatDecorationFromContentProvider();
@@ -222,7 +219,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadUrl();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

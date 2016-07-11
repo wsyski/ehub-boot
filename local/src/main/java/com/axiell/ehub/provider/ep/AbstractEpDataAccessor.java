@@ -56,9 +56,9 @@ public abstract class AbstractEpDataAccessor<F extends IEpFacade> extends Abstra
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    protected Content makeContent(final FormatDecoration formatDecoration, final FormatMetadataDTO formatMetadataDTO) {
+    protected Content makeContent(final FormatMetadataDTO formatMetadataDTO) {
         final List<String> hrefs = ContentLinks.fromDTO(formatMetadataDTO.getContentLinks()).hrefs();
-        final ContentLinks contentLinks = createContentLinks(hrefs, formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(hrefs);
         return new Content(contentLinks).supplementLinks(SupplementLinks.fromDTO(formatMetadataDTO.getSupplementLinks()));
     }
 }

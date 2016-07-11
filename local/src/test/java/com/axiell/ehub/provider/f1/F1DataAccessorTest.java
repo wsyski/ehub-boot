@@ -44,7 +44,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
         underTest = new F1DataAccessor();
         ReflectionTestUtils.setField(underTest, "f1Facade", f1Facade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
     }
@@ -91,7 +90,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
         givenDownloadableContentDisposition();
         givenLoanIdFromF1Facade();
         givenValidLoanContentFromGetLoanContentResponse();
-        givenContentLink();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
         thenActualLoanHasExpectedId();
@@ -126,7 +124,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
         givenFormatDecorationInCommandData();
         givenContentProviderLoanMetadataInCommandData();
         givenValidLoanContentFromGetLoanContentResponse();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

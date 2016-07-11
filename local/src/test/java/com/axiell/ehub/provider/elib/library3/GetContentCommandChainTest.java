@@ -8,7 +8,6 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.IContentLinksFactory;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -32,8 +31,6 @@ public class GetContentCommandChainTest {
     @Mock
     private IEhubExceptionFactory exceptionFactory;
     @Mock
-    private IContentLinksFactory contentFactory;
-    @Mock
     private ContentProviderConsumer contentProviderConsumer;
     @Mock
     private ContentProvider contentProvider;
@@ -48,14 +45,13 @@ public class GetContentCommandChainTest {
 
     @Before
     public void setUpUnderTest() {
-        underTest = new GetContentCommandChain(elibFacade, exceptionFactory, contentFactory);
+        underTest = new GetContentCommandChain(elibFacade, exceptionFactory);
     }
 
     @Test
     public void execute() {
         givenCommandData();
         givenActiveLoanWithContentUrl();
-        givenExpectedContent();
         whenExecute();
         thenActualContentEqualsExpectedContent();
     }
@@ -64,10 +60,6 @@ public class GetContentCommandChainTest {
         given(loan.isActive()).willReturn(true);
         given(loan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(ContentLinkBuilder.HREF));
         given(elibFacade.getLoan(any(ContentProviderConsumer.class), any(String.class))).willReturn(loan);
-    }
-
-    private void givenExpectedContent() {
-        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(ContentLinkBuilder.defaultContentLinks());
     }
 
     private void whenExecute() {

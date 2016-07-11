@@ -61,7 +61,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     @Before
     public void setUpElibUDataAccessor() {
         underTest = new ElibUDataAccessor();
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "elibUFacade", elibUFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
     }
@@ -173,7 +172,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenIsSameFormat();
         givenContentUrl();
         givenDownloadableContentDisposition();
-        givenContentLink();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
@@ -377,7 +375,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenIsSameFormat();
         givenContentUrl();
         givenDownloadableContentDisposition();
-        givenContentLink();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }

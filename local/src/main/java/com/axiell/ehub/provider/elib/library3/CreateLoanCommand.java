@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -29,16 +30,16 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         final String language = data.getLanguage();
         final String formatId = data.getContentProviderFormatId();
         final CreatedLoan createdLoan = elibFacade.createLoan(contentProviderConsumer, contentProviderRecordId, patron);
-        final List<String> contentUrls = createdLoan.getContentUrlsFor(formatId);
+        final List<String> contentLinkHrefs = createdLoan.getContentUrlsFor(formatId);
 
-        if (contentUrls == null || contentUrls.isEmpty())
+        if (contentLinkHrefs == null || contentLinkHrefs.isEmpty())
             throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN,
                     language);
         else {
-            data.setContentUrls(contentUrls);
+            data.setContentLinkHrefs(contentLinkHrefs);
             final Supplements supplements = createdLoan.getSupplements();
-            if (supplements!=null) {
-                data.setSupplementLinks(supplements.getSupplementLinks());
+            if (supplements != null) {
+                data.setSupplementLinks(new SupplementLinks(supplements.getSupplementLinks()));
             }
             populateContentProviderLoanMetadataInCommandData(data, contentProviderConsumer, contentProviderRecordId, formatId, createdLoan);
             forward(LOAN_CREATED, data);

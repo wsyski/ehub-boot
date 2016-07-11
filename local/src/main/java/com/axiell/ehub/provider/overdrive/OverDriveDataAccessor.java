@@ -101,7 +101,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
-        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrl);
         final Content content = new Content(contentLinks);
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
                 formatDecoration).build();
@@ -120,7 +120,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         final DownloadLinkTemplateDTO downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
-        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrl);
         return new Content(contentLinks);
     }
 

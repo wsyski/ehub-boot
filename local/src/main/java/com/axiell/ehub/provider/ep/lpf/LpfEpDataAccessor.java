@@ -30,7 +30,7 @@ public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
         final String contentProviderFormatId = data.getContentProviderFormatId();
         final LpfCheckoutDTO lpfCheckoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lpfCheckoutDTO);
-        final Content contentLinks = makeContent(loanMetadata.getFirstFormatDecoration(), lpfCheckoutDTO.getFormatMetadata());
+        final Content contentLinks = makeContent(lpfCheckoutDTO.getFormatMetadata());
         return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
@@ -42,6 +42,6 @@ public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final LpfCheckoutDTO lpfCheckoutDTO = epFacade.getCheckout(contentProviderConsumer, patron, contentProviderLoanId);
-        return makeContent(formatDecoration, lpfCheckoutDTO.getFormatMetadata());
+        return makeContent(lpfCheckoutDTO.getFormatMetadata());
     }
 }

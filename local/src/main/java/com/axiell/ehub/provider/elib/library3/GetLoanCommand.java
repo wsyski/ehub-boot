@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
@@ -30,15 +31,15 @@ class GetLoanCommand extends AbstractElib3Command<CommandData> {
         final LoanDTO loan = elibFacade.getLoan(contentProviderConsumer, elibLoanId);
 
         if (loan.isActive()) {
-            final List<String> contentUrls = loan.getContentUrlsFor(formatId);
-            if (contentUrls == null)
-                throw exceptionFactory
-                        .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN, language);
+            final List<String> contentLinkHrefs = loan.getContentUrlsFor(formatId);
+            if (contentLinkHrefs == null)
+                throw exceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, MISSING_CONTENT_IN_LOAN,
+                        language);
             else {
-                data.setContentUrls(contentUrls);
+                data.setContentLinkHrefs(contentLinkHrefs);
                 final Supplements supplements = loan.getSupplements();
                 if (supplements!=null) {
-                    data.setSupplementLinks(supplements.getSupplementLinks());
+                    data.setSupplementLinks(new SupplementLinks(supplements.getSupplementLinks()));
                 }
                 forward(ACTIVE_LOAN_RETRIEVED, data);
             }

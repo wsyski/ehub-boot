@@ -37,7 +37,7 @@ public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
         final String language = data.getLanguage();
         final FormatMetadataDTO formatMetadataDTO =
                 getFormatMetadataDTO(contentProviderFormatId, lppCheckoutDTO, contentProviderConsumer, language);
-        final Content contentLinks = makeContent(formatDecoration, formatMetadataDTO);
+        final Content contentLinks = makeContent(formatMetadataDTO);
         return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
@@ -53,7 +53,7 @@ public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
         final String contentProviderFormatId = formatDecoration.getContentProviderFormatId();
         final FormatMetadataDTO formatMetadataDTO =
                 getFormatMetadataDTO(contentProviderFormatId, lppCheckoutDTO, contentProviderConsumer, language);
-        return makeContent(formatDecoration, formatMetadataDTO);
+        return makeContent(formatMetadataDTO);
     }
 
     private FormatMetadataDTO getFormatMetadataDTO(final String contentProviderFormatId, final LppCheckoutDTO lppCheckoutDTO,

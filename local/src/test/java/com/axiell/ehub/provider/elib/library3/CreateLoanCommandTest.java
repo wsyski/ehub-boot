@@ -60,7 +60,7 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenCommandDataContainsContentUrl() {
-        assertEquals(URL, data.getContentUrls().get(0));
+        assertEquals(URL, data.getContentLinks().getContentLinks().get(0).href());
     }
 
     private void thenCommandDataContainsContentProviderLoanMetadata() {

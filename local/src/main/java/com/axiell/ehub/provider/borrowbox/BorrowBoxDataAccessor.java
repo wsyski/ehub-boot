@@ -55,7 +55,7 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final String language = data.getLanguage();
         final CheckoutDTO checkoutDTO = borrowBoxFacade.checkout(contentProviderConsumer, patron, language, contentProviderRecordId, contentProviderFormatId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkoutDTO);
-        final Content content = makeContent(loanMetadata.getFirstFormatDecoration(), checkoutDTO);
+        final Content content = makeContent(checkoutDTO);
         return new ContentProviderLoan(loanMetadata, content);
     }
 
@@ -68,7 +68,7 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String language = data.getLanguage();
         final CheckoutDTO checkoutDTO = borrowBoxFacade.getCheckout(contentProviderConsumer, patron, language, contentProviderLoanId);
-        return makeContent(formatDecoration, checkoutDTO);
+        return makeContent(checkoutDTO);
     }
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final CheckoutDTO checkoutDTO) {
@@ -77,9 +77,9 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
         return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderLoanId(loanId).build();
     }
 
-    private Content makeContent(final FormatDecoration formatDecoration, final CheckoutDTO checkoutDTO) {
+    private Content makeContent(final CheckoutDTO checkoutDTO) {
         final String contentUrl = checkoutDTO.getContentUrl();
-        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrl);
         return new Content(contentLinks);
     }
 }
