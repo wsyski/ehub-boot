@@ -45,7 +45,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
             .put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
             .put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL))
             .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL))
-            .put(CONTENT_PROVIDER_ZINIO, newHashSet(API_BASE_URL))
+            .put(CONTENT_PROVIDER_ZINIO, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
             .build();
     private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
     private static final Map<ContentProviderPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<ContentProviderPropertyKey, Pattern>builder()

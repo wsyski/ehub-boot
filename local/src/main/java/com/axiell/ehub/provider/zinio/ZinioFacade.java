@@ -19,7 +19,6 @@ public class ZinioFacade implements IZinioFacade {
     @Autowired
     private IZinioResponseFactory zinioResponseFactory;
 
-
     private final static int PASSWORD_LEN = 8;
     private static final String NA = "N/A";
 
@@ -65,7 +64,7 @@ public class ZinioFacade implements IZinioFacade {
     }
 
     @Override
-    public String getDownloadUrl(final String loginUrl, final String contentProviderIssueId) {
+    public String getContentUrl(final String loginUrl, final String contentProviderIssueId) {
         return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.encode(contentProviderIssueId);
     }
 

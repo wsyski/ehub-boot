@@ -12,13 +12,11 @@ import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
@@ -99,15 +97,13 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
 
     private Content makeContentForActiveLoan(CommandData data, GetLoanContentResponse getLoanContentResponse) {
         final String contentUrl = getLoanContentResponse.getValue();
-        final FormatDecoration formatDecoration = data.getFormatDecoration();
-        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrl);
         return new Content(contentLinks);
     }
 
     private ContentProviderLoan makeContentForNewLoan(final ContentProviderLoanMetadata loanMetadata, final GetLoanContentResponse getLoanContentResponse) {
-        final FormatDecoration formatDecoration = loanMetadata.getFirstFormatDecoration();
         final String contentUrl = getLoanContentResponse.getValue();
-        final ContentLinks contentLinks = createContentLinks(Collections.singletonList(contentUrl), formatDecoration);
+        final ContentLinks contentLinks = createContentLinks(contentUrl);
         final Content content = new Content(contentLinks);
         return new ContentProviderLoan(loanMetadata, content);
     }

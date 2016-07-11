@@ -11,7 +11,6 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.IContentLinksFactory;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +21,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
@@ -37,14 +35,13 @@ public class CreateLoanCommandChainTest {
     private static final Date EXPIRATION_DATE = new Date();
     private static final String CP_LOAN_ID = "CP_LOAN_ID";
     private static final String CP_RECORD_ID = "CP_RECORD_ID";
+    private static final String CP_FORMAT_ID = "contentProviderFormatId";
 
     private CreateLoanCommandChain underTest;
     @Mock
     private IElibFacade elibFacade;
     @Mock
     private IEhubExceptionFactory exceptionFactory;
-    @Mock
-    private IContentLinksFactory contentFactory;
     @Mock
     private CommandData commandData;
     @Mock
@@ -74,7 +71,7 @@ public class CreateLoanCommandChainTest {
 
     @Before
     public void setUpUnderTest() {
-        underTest = new CreateLoanCommandChain(elibFacade, exceptionFactory, contentFactory);
+        underTest = new CreateLoanCommandChain(elibFacade, exceptionFactory);
     }
 
     @Before
@@ -95,7 +92,6 @@ public class CreateLoanCommandChainTest {
         givenCommandData();
         givenProductIsAvailable();
         givenCreatedLoan();
-        givenCreatedDownloadableContent();
         whenExecute();
         thenActualLoanEqualsToExpectedLoan();
     }
@@ -105,7 +101,6 @@ public class CreateLoanCommandChainTest {
         givenLoanWithProductIdInGetLoansResponse();
         givenGetLoansResponse();
         givenCommandData();
-        givenCreatedDownloadableContent();
         whenExecute();
         thenActualLoanEqualsToExpectedLoan();
     }
@@ -119,7 +114,7 @@ public class CreateLoanCommandChainTest {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(pendingLoan.contentProviderRecordId()).willReturn(CP_RECORD_ID);
         given(patron.hasId()).willReturn(true);
-        given(pendingLoan.contentProviderFormatId()).willReturn("contentProviderFormatId");
+        given(pendingLoan.contentProviderFormatId()).willReturn(CP_FORMAT_ID);
         commandData = CommandData.newInstance(contentProviderConsumer, patron, "sv").setPendingLoan(pendingLoan);
     }
 
@@ -131,13 +126,10 @@ public class CreateLoanCommandChainTest {
     private void givenCreatedLoan() {
         given(createdLoan.getContentUrlsFor(any(String.class))).willReturn(Collections.singletonList(ContentLinkBuilder.HREF));
         given(createdLoan.getSupplements()).willReturn(getSupplements());
+        given(createdLoan.getContentUrlsFor(CP_FORMAT_ID)).willReturn(ContentLinkBuilder.defaultContentLinks().hrefs());
         given(createdLoan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(createdLoan.getLoanId()).willReturn(CP_LOAN_ID);
         given(elibFacade.createLoan(any(ContentProviderConsumer.class), any(String.class), any(Patron.class))).willReturn(createdLoan);
-    }
-
-    private void givenCreatedDownloadableContent() {
-        given(contentFactory.create(any(List.class), any(FormatDecoration.class))).willReturn(ContentLinkBuilder.defaultContentLinks());
     }
 
     private void whenExecute() {
@@ -145,8 +137,10 @@ public class CreateLoanCommandChainTest {
     }
 
     private void thenActualLoanEqualsToExpectedLoan() {
-        Assert.assertThat(actualLoan.content().getContentLinks().getContentLinks().get(0), matchesExpectedContentLink(contentProviderLoan.content().getContentLinks().getContentLinks().get(0)));
-        Assert.assertThat(actualLoan.content().getSupplementLinks().getSupplementLinks().get(0), matchesExpectedSupplementLink(contentProviderLoan.content().getSupplementLinks().getSupplementLinks().get(0)));
+        Assert.assertThat(actualLoan.content().getContentLinks().getContentLinks().get(0),
+                matchesExpectedContentLink(contentProviderLoan.content().getContentLinks().getContentLinks().get(0)));
+        Assert.assertThat(actualLoan.content().getSupplementLinks().getSupplementLinks().get(0),
+                matchesExpectedSupplementLink(contentProviderLoan.content().getSupplementLinks().getSupplementLinks().get(0)));
         assertThat(actualLoan.expirationDate(), is(contentProviderLoan.expirationDate()));
         assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));
         assertThat(actualLoan.getMetadata().getExpirationDate(), is(contentProviderLoan.getMetadata().getExpirationDate()));
@@ -160,12 +154,13 @@ public class CreateLoanCommandChainTest {
         given(loan.getProductId()).willReturn(CP_RECORD_ID);
         given(loan.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(loan.getSupplements()).willReturn(getSupplements());
+        given(loan.getContentUrlsFor(CP_FORMAT_ID)).willReturn(ContentLinkBuilder.defaultContentLinks().hrefs());
         given(getLoansResponse.getLoanWithProductId(anyString())).willReturn(loan);
     }
 
     private Supplements getSupplements() {
-        Supplements supplements=new Supplements();
-        SupplementDTO supplementDTO=new SupplementDTO().name(SupplementLinkBuilder.NAME).href(SupplementLinkBuilder.HREF);
+        Supplements supplements = new Supplements();
+        SupplementDTO supplementDTO = new SupplementDTO().name(SupplementLinkBuilder.NAME).href(SupplementLinkBuilder.HREF);
         supplements.add(supplementDTO);
         return supplements;
     }

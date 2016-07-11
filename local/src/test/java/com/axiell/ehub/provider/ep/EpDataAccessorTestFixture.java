@@ -32,7 +32,6 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
     public void setUp() {
         underTest = createEpDataAccessor();
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
-        ReflectionTestUtils.setField(underTest, "contentFactory", contentFactory);
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
     }
 

@@ -45,8 +45,6 @@ public abstract class ContentProviderDataAccessorTestFixture {
     private static final int ERROR_STATUS = 500;
 
     @Mock
-    protected IContentLinksFactory contentFactory;
-    @Mock
     protected EhubConsumer ehubConsumer;
     @Mock
     protected ContentProviderConsumer contentProviderConsumer;
@@ -173,10 +171,6 @@ public abstract class ContentProviderDataAccessorTestFixture {
 
     protected void givenClientResponseStatus() {
         given(response.getStatus()).willReturn(ERROR_STATUS);
-    }
-
-    protected void givenContentLink() {
-        given(contentFactory.create(Collections.singletonList(ContentLinkBuilder.HREF), formatDecoration)).willReturn(ContentLinkBuilder.defaultContentLinks());
     }
 
     protected void givenFormatFromFormatFactory() {
