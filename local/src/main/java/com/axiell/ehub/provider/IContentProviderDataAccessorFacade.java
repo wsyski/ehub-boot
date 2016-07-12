@@ -8,11 +8,13 @@ import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.issue.Issue;
+
+import java.util.List;
 
 public interface IContentProviderDataAccessorFacade {
 
-    Formats getFormats(EhubConsumer ehubConsumer, String contentProviderAlias, Patron patron, String contentProviderRecordId, String language);
+    List<Issue> getIssues(EhubConsumer ehubConsumer, String contentProviderAlias, Patron patron, String contentProviderRecordId, String language);
 
     ContentProviderLoan createLoan(EhubConsumer ehubConsumer, Patron patron, PendingLoan pendingLoan, String language);
 

@@ -1,14 +1,15 @@
 /*
  * Copyright (c) 2012 Axiell Group AB.
  */
-package com.axiell.ehub.provider.record.format;
+package com.axiell.ehub.provider.record.issue;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
+import com.axiell.ehub.provider.record.issue.IssueBusinessController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +25,9 @@ import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.security.AuthInfo;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FormatBusinessControllerTest {
+public class IssueBusinessControllerTest {
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    private IFormatBusinessController underTest;
+    private IIssueBusinessController underTest;
     @Mock
     private IConsumerBusinessController consumerBusinessController;
     @Mock
@@ -42,7 +43,7 @@ public class FormatBusinessControllerTest {
 
     @Before
     public void setUpFormatBusinessController() {
-        underTest = new FormatBusinessController();
+        underTest = new IssueBusinessController();
         ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
         ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFacade", contentProviderDataAccessorFacade);
     }
@@ -59,12 +60,12 @@ public class FormatBusinessControllerTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(authInfo, CONTENT_PROVIDER_TEST_EP, "contentProviderRecordId", "language");
+        underTest.getIssues(authInfo, CONTENT_PROVIDER_TEST_EP, "contentProviderRecordId", "language");
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(consumerBusinessController, contentProviderDataAccessorFacade);
         inOrder.verify(consumerBusinessController).getEhubConsumer(any(AuthInfo.class));
-        inOrder.verify(contentProviderDataAccessorFacade).getFormats(any(EhubConsumer.class), any(String.class), any(Patron.class), any(String.class), any(String.class));
+        inOrder.verify(contentProviderDataAccessorFacade).getIssues(any(EhubConsumer.class), any(String.class), any(Patron.class), any(String.class), any(String.class));
     }
 }

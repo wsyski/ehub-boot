@@ -6,6 +6,7 @@ package com.axiell.ehub.provider.record.format;
 import java.util.List;
 
 import com.axiell.ehub.language.Language;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.data.repository.CrudRepository;
  * <p>
  * <b>NOTE:</b> Even though this interface is public it should only be used within the package
  * <code>com.axiell.axiell.provider.record.format</code>. Access to this repository outside this package should be done through the
- * {@link IFormatBusinessController}.
+ * {@link IIssueBusinessController}.
  * </p>
  * <p>
  * The reason why it is public when it should have been package private is due to that the proxy functionality of the Spring JPA framework requires public repository interfaces.

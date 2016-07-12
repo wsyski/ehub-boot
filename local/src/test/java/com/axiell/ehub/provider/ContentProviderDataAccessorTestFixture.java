@@ -17,8 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
@@ -70,11 +71,12 @@ public abstract class ContentProviderDataAccessorTestFixture {
     protected Patron patron;
 
     protected Format format = FormatBuilder.downloadableFormat();
-    protected Formats actualFormats;
     protected ContentProviderLoan actualLoan;
     protected ContentLink actualContentLink;
     @Mock
     private PendingLoan pendingLoan;
+
+    protected List<Format> actualFormats;
 
     @Before
     public void fixtureSetUp() {
@@ -188,14 +190,14 @@ public abstract class ContentProviderDataAccessorTestFixture {
     }
 
     protected void thenActualFormatEqualsExpected() {
-        Assert.assertFalse(actualFormats.getFormats().isEmpty());
-        Format actualFormat = actualFormats.getFormats().iterator().next();
+        Assert.assertFalse(actualFormats.isEmpty());
+        Format actualFormat = actualFormats.iterator().next();
         assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(format.toDTO()));
     }
 
     protected Set<Format> thenFormatSetIsNotNull() {
         Assert.assertNotNull(actualFormats);
-        Set<Format> formatSet = actualFormats.getFormats();
+        Set<Format> formatSet = new HashSet<>(actualFormats);
         Assert.assertNotNull(formatSet);
         return formatSet;
     }

@@ -11,7 +11,6 @@ import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,8 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
     private IExpirationDateFactory expirationDateFactory;
 
 
-    private List<Issue> getIssues(final CommandData data) {
+    @Override
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
@@ -43,19 +43,6 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final List<IssueDTO> issuesDTO = zinioFacade.getIssues(contentProviderConsumer, contentProviderRecordId, language);
         return issuesDTO.stream().map(issueDTO -> new Issue(issueDTO.getId(), issueDTO.getTitle(), issueDTO.getImageUrl(),
                 Collections.singletonList(format))).collect(Collectors.toList());
-    }
-
-    @Override
-    public Formats getFormats(final CommandData data) {
-        final List<Issue> issues = getIssues(data);
-        final Formats formats = new Formats();
-        if (!issues.isEmpty()) {
-            List<Format> firstIssueFormats=issues.get(0).getFormats();
-            if (!firstIssueFormats.isEmpty()) {
-                formats.addFormat(firstIssueFormats.get(0));
-            }
-        }
-        return formats;
     }
 
     @Override

@@ -10,14 +10,14 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractEpDataAccessor<F extends IEpFacade> extends AbstractContentProviderDataAccessor {
 
@@ -29,19 +29,16 @@ public abstract class AbstractEpDataAccessor<F extends IEpFacade> extends Abstra
 
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final RecordDTO formatsDTO = getEpFacade().getRecord(contentProviderConsumer, patron, contentProviderRecordId);
-        final Formats formats = new Formats();
-        for (FormatDTO formatDTO : formatsDTO.getFormats()) {
-            final Format format = formatFactory.create(contentProvider, formatDTO.getId(), language);
-            formats.addFormat(format);
-        }
-        return formats;
+        return Collections.singletonList(
+                new Issue(formatsDTO.getFormats().stream().map(formatDTO -> formatFactory.create(contentProvider, formatDTO.getId(), language))
+                        .collect(Collectors.toList())));
     }
 
     protected abstract F getEpFacade();

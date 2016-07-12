@@ -19,11 +19,9 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.util.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +32,6 @@ import java.util.List;
 
 @Component
 public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AskewsDataAccessor.class);
     private static final String ASKEWS_FORMAT_ID = "Askews1";
     private static final Integer TITLE_HAS_BEEN_PROCESSED = 4;
     private static final Integer LOAN_SUCCESS = 1;
@@ -49,14 +46,12 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private IFormatFactory formatFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String language = data.getLanguage();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final Format format = formatFactory.create(contentProvider, ASKEWS_FORMAT_ID, language);
-        final Formats formats = new Formats();
-        formats.addFormat(format);
-        return formats;
+        return Collections.singletonList(new Issue(Collections.singletonList(format)));
     }
 
     @Override
@@ -109,8 +104,8 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
     private LoanDetails getLoanDetails(final ContentProviderConsumer contentProviderConsumer, final String contentProviderLoanId, final Patron patron) {
         final ArrayOfLoanDetails loanDetailsArray = askewsFacade.getLoanDetails(contentProviderConsumer, contentProviderLoanId, patron);
         final List<LoanDetails> loanDetailsList = loanDetailsArray.getLoanDetails();
-        Validate.isNotEmpty(loanDetailsList, "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId
-                + "'");
+        Validate.isNotEmpty(loanDetailsList,
+                "The list of LoanDetails returned from Askews is empty where content provider loan = ID '" + contentProviderLoanId + "'");
         final LoanDetails loanDetails = loanDetailsList.get(0);
         validateLoanHasNotFailed(loanDetails);
         return loanDetails;
@@ -143,7 +138,7 @@ public class AskewsDataAccessor extends AbstractContentProviderDataAccessor {
 
     private void throwInternalServerErrorException(String errorMessage, Integer errorCode) {
         ErrorCauseArgument argContentProviderName = new ErrorCauseArgument(Type.CONTENT_PROVIDER_NAME, ContentProvider.CONTENT_PROVIDER_ASKEWS);
-        ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, errorCode==null ? null : errorCode.toString());
+        ErrorCauseArgument argContentProviderStatus = new ErrorCauseArgument(Type.CONTENT_PROVIDER_STATUS, errorCode == null ? null : errorCode.toString());
         throw new InternalServerErrorException(errorMessage, ErrorCause.CONTENT_PROVIDER_ERROR, argContentProviderName, argContentProviderStatus);
     }
 }

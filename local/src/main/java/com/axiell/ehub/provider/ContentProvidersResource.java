@@ -5,18 +5,15 @@ package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.security.AuthInfo;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
-import com.axiell.ehub.provider.record.format.IFormatBusinessController;
-
-import javax.xml.ws.Response;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 
 public class ContentProvidersResource implements IContentProvidersResource {
-    private final IFormatBusinessController formatBusinessController;
+    private final IIssueBusinessController formatBusinessController;
 
-    public ContentProvidersResource(IFormatBusinessController formatBusinessController) {
+    public ContentProvidersResource(IIssueBusinessController formatBusinessController) {
         this.formatBusinessController = formatBusinessController;
     }
 
