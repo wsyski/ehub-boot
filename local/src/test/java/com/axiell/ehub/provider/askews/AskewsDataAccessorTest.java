@@ -8,6 +8,7 @@ import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -217,7 +218,8 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues =underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     @Override

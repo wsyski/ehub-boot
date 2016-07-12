@@ -11,12 +11,13 @@ import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,19 +38,19 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderAlias = data.getContentProviderAlias();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String contentProviderFormat = ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, contentProviderAlias, contentProviderRecordId);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
-        final Formats formats = new Formats();
+        final List<Format> formats = new ArrayList<>();
         if (contentProviderFormat != null) {
             final Format format = formatFactory.create(contentProvider, contentProviderFormat, language);
-            formats.addFormat(format);
+            formats.add(format);
         }
-        return formats;
+        return Collections.singletonList(new Issue(formats));
     }
 
     @Override

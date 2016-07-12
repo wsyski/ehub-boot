@@ -12,12 +12,15 @@ import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IExpirationDateFactory;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
 import static com.axiell.ehub.ErrorCauseArgumentType.MISSING_CONTENT_IN_LOAN;
@@ -38,15 +41,15 @@ public class F1DataAccessor extends AbstractContentProviderDataAccessor {
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final GetFormatResponse getFormatResponse = f1Facade.getFormats(data);
-        final Formats formats = new Formats();
+        final List<Format> formats = new ArrayList<>();
 
         if (getFormatResponse.isValidFormat()) {
             final Format format = makeFormat(data, getFormatResponse);
-            formats.addFormat(format);
+            formats.add(format);
         }
-        return formats;
+        return Collections.singletonList(new Issue(formats));
     }
 
     @Override

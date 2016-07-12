@@ -64,7 +64,7 @@
                         </executions>
                         <configuration>
                             <!--
-                            <test>com.axiell.ehub.it.RemoteLoanIT#checkout</test>
+                            <test>com.axiell.ehub.it.RemoteRecordIT#getRecord</test>
                             -->
                             <includes>
                                 <include>**/*IT.java</include>

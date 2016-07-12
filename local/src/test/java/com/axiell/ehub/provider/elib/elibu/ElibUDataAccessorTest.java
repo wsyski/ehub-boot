@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.axiell.ehub.checkout.ContentLinkBuilder;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +114,8 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues =underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     @Test

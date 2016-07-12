@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.record;
 
-import com.axiell.ehub.provider.record.format.FormatDTO;
+import com.axiell.ehub.provider.record.issue.IssueDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,24 +14,22 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecordDTO implements Serializable {
     private String id;
-    private List<FormatDTO> formats;
+    private List<IssueDTO> issues;
+
+    private RecordDTO() {
+    }
+
+    public RecordDTO(final String id, final List<IssueDTO> issues) {
+        this.id = id;
+        this.issues = issues;
+    }
 
     public String getId() {
         return id;
     }
 
-    public RecordDTO id(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public List<FormatDTO> getFormats() {
-        return formats;
-    }
-
-    public RecordDTO formats(List<FormatDTO> formats) {
-        this.formats = formats;
-        return this;
+    public List<IssueDTO> getIssues() {
+        return issues;
     }
 
     @Override

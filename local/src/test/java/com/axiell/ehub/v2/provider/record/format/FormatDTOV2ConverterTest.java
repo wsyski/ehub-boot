@@ -1,4 +1,4 @@
-package com.axiell.ehub.v1.provider.record.format;
+package com.axiell.ehub.v2.provider.record.format;
 
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.issue.Issue;
@@ -8,14 +8,15 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FormatsV1ConverterTest {
+public class FormatDTOV2ConverterTest {
     private Issue issue = IssueBuilder.issue();
     private Format format = issue.getFormats().get(0);
-    private Format_v1 actualFormat_v1;
+    private FormatDTO_v2 actualFormatDTO_v2;
 
     @Test
     public void convert() {
@@ -26,19 +27,19 @@ public class FormatsV1ConverterTest {
     }
 
     private void whenConvert() {
-        Formats_v1 actualFormats_v1 = FormatsV1Converter.convert(Collections.singletonList(issue));
-        actualFormat_v1 = actualFormats_v1.asList().get(0);
+        List<FormatDTO_v2> actualFormatsDTO_v2 = FormatDTOV2Converter.convert(Collections.singletonList(issue));
+        actualFormatDTO_v2 = actualFormatsDTO_v2.get(0);
     }
 
     private void thenActualDescriptionEqualsExpected() {
-        assertEquals(format.description(), actualFormat_v1.getDescription());
+        assertEquals(format.description(), actualFormatDTO_v2.getDescription());
     }
 
     private void thenActualIdEqualsExpected() {
-        assertEquals(format.id(), actualFormat_v1.getId());
+        assertEquals(format.id(), actualFormatDTO_v2.getId());
     }
 
     private void thenActualNameEqualsExpected() {
-        assertEquals(format.name(), actualFormat_v1.getName());
+        assertEquals(format.name(), actualFormatDTO_v2.getName());
     }
 }

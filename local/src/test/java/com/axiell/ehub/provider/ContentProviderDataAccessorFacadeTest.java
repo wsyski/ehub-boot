@@ -10,6 +10,7 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.*;
@@ -150,13 +153,13 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, patron, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
+        underTest.getIssues(ehubConsumer, CONTENT_PROVIDER_ALIAS, patron, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
         inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
-        inOrder.verify(contentProviderDataAccessor).getFormats(argThat(new GetFormatsCommandData()));
+        inOrder.verify(contentProviderDataAccessor).getIssues(argThat(new GetFormatsCommandData()));
     }
 
     private class GetFormatsCommandData extends ArgumentMatcher<CommandData> {

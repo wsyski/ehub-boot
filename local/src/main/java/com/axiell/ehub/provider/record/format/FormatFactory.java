@@ -17,13 +17,13 @@ class FormatFactory implements IFormatFactory {
     }
 
     @Override
-    public Format create(FormatDecoration formatDecoration, String language) {
+    public Format create(final FormatDecoration formatDecoration, final String language) {
         final FormatTextBundle textBundle = formatDecoration.getTextBundle(language);
         final String formatId = formatDecoration.getContentProviderFormatId();
         return makeFormat(formatId, formatDecoration, textBundle);
     }
 
-    private Format makeFormat(String formatId, FormatDecoration formatDecoration, FormatTextBundle textBundle) {
+    private Format makeFormat(final String formatId, final FormatDecoration formatDecoration, final FormatTextBundle textBundle) {
         final String name = textBundle == null ? formatId : textBundle.getName();
         final String description = textBundle == null ? formatId : textBundle.getDescription();
         final ContentDisposition contentDisposition = formatDecoration == null ? null : formatDecoration.getContentDisposition();

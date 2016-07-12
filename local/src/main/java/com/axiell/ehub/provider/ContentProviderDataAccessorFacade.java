@@ -10,9 +10,11 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ContentProviderDataAccessorFacade implements IContentProviderDataAccessorFacade {
@@ -22,14 +24,14 @@ public class ContentProviderDataAccessorFacade implements IContentProviderDataAc
     private IContentProviderDataAccessorFactory contentProviderDataAccessorFactory;
 
     @Override
-    public Formats getFormats(final EhubConsumer ehubConsumer, final String contentProviderAlias, final Patron patron, final String contentProviderRecordId,
-                              final String language) {
+    public List<Issue> getIssues(final EhubConsumer ehubConsumer, final String contentProviderAlias, final Patron patron, final String contentProviderRecordId,
+                                 final String language) {
         final ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(ehubConsumer, contentProviderAlias);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final IContentProviderDataAccessor dataAccessor = contentProviderDataAccessorFactory.getInstance(contentProvider);
         final CommandData commandData = CommandData.newInstance(contentProviderConsumer, patron, language).setContentProviderRecordId(contentProviderRecordId)
                 .setContentProviderAlias(contentProviderAlias);
-        return dataAccessor.getFormats(commandData);
+        return dataAccessor.getIssues(commandData);
     }
 
     @Override

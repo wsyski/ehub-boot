@@ -7,6 +7,7 @@ import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.axiell.ehub.ErrorCauseArgumentType;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -191,7 +195,8 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues =underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     @Override

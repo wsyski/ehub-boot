@@ -1,6 +1,8 @@
 package com.axiell.ehub.provider.record;
 
-import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.issue.Issue;
+import com.axiell.ehub.provider.record.issue.IssueDTO;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -12,16 +14,22 @@ import java.util.stream.Collectors;
 public class Record implements Serializable {
     private final RecordDTO recordDTO;
 
+    public Record(final String id, final List<Issue> issues) {
+        Validate.notNull(issues);
+        List<IssueDTO> issuesDTO = issues.stream().map(Issue::toDTO).collect(Collectors.toList());
+        recordDTO = new RecordDTO(id, issuesDTO);
+    }
+
     public Record(final RecordDTO recordDTO) {
         this.recordDTO = recordDTO;
     }
 
-    public String id() {
+    public String getId() {
         return recordDTO.getId();
     }
 
-    public List<Format> formats() {
-        return recordDTO.getFormats().stream().map(Format::new).collect(Collectors.toList());
+    public List<Issue> getIssues() {
+        return recordDTO.getIssues().stream().map(Issue::new).collect(Collectors.toList());
     }
 
     public RecordDTO toDTO() {

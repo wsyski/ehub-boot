@@ -5,16 +5,14 @@ import com.axiell.ehub.checkout.ICheckoutsResource;
 import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.provider.ContentProvidersResource;
 import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.format.IFormatBusinessController;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.core.Response;
 
 public class RootResource implements IRootResource {
     private ILoanBusinessController loanBusinessController;
-    private IFormatBusinessController formatBusinessController;
+    private IIssueBusinessController formatBusinessController;
 
     @Override
     public Response root() {
@@ -37,7 +35,7 @@ public class RootResource implements IRootResource {
     }
 
     @Required
-    public void setFormatBusinessController(IFormatBusinessController formatBusinessController) {
+    public void setFormatBusinessController(IIssueBusinessController formatBusinessController) {
         this.formatBusinessController = formatBusinessController;
     }
 }
