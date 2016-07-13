@@ -44,8 +44,10 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
 
     private void populateContentUrlInCommandData(final CommandData data, final LoanDTO loan) {
         final String formatId = data.getContentProviderFormatId();
-        final List<String> contentLinkHrefs = loan.getContentUrlsFor(formatId);
-        data.setContentLinkHrefs(contentLinkHrefs);
+        if (formatId != null) {
+            final List<String> contentLinkHrefs = loan.getContentUrlsFor(formatId);
+            data.setContentLinkHrefs(contentLinkHrefs);
+        }
         final Supplements supplements = loan.getSupplements();
         if (supplements != null) {
             data.setSupplementLinks(new SupplementLinks(supplements.getSupplementLinks()));
