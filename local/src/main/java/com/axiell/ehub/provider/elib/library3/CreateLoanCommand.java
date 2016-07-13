@@ -58,7 +58,7 @@ class CreateLoanCommand extends AbstractElib3Command<CommandData> {
         data.setContentProviderLoanMetadata(metadata);
     }
 
-    public static enum Result implements ICommandResult {
+    public enum Result implements ICommandResult {
         LOAN_CREATED
     }
 }

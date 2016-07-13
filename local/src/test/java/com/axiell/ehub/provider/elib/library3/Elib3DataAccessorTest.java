@@ -68,7 +68,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedContent() {
-        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.defaultContent());
+        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
 
     private void givenGetContentCommandChain() {

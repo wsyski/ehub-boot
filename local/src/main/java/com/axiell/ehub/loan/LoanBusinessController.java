@@ -17,9 +17,6 @@ import com.axiell.ehub.security.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Default implementation of the {@link ILoanBusinessController}.
- */
 public class LoanBusinessController implements ILoanBusinessController {
     @Autowired
     private IConsumerBusinessController consumerBusinessController;
@@ -49,15 +46,16 @@ public class LoanBusinessController implements ILoanBusinessController {
         final CheckoutsSearchResult checkoutsSearchResult = new CheckoutsSearchResult();
         final EhubLoan ehubLoan = ehubLoanRepositoryFacade.findEhubLoan(ehubConsumer, lmsLoanId);
         if (ehubLoan != null) {
-            final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan,
-                    ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), language, false);
+            final ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
+            final CheckoutMetadata checkoutMetadata = checkoutMetadataFactory.create(ehubLoan, contentProviderLoanMetadata.getFirstFormatDecoration(), language,
+                    false);
             checkoutsSearchResult.addItem(checkoutMetadata);
         }
         return checkoutsSearchResult;
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public Checkout checkout(final AuthInfo authInfo, final Fields fields, final String language) {
         final PendingLoan pendingLoan = new PendingLoan(fields);
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
@@ -76,7 +74,8 @@ public class LoanBusinessController implements ILoanBusinessController {
                 final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron, isLoanPerProduct);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 final Content content = contentProviderLoan.content();
-                return checkoutFactory.create(ehubLoan, ehubLoan.getContentProviderLoanMetadata().getFirstFormatDecoration(), content, language, true);
+                final ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
+                return checkoutFactory.create(ehubLoan, contentProviderLoanMetadata.getFirstFormatDecoration(), content, language, true);
             case ACTIVE_LOAN:
                 final String lmsLoanId = checkoutTestAnalysis.getLmsLoanId();
                 return findCheckout(ehubConsumer, patron, lmsLoanId, pendingLoan.contentProviderFormatId(), language);

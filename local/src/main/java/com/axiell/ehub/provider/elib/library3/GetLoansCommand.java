@@ -47,12 +47,13 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
         final List<String> contentLinkHrefs = loan.getContentUrlsFor(formatId);
         data.setContentLinkHrefs(contentLinkHrefs);
         final Supplements supplements = loan.getSupplements();
-        if (supplements!=null) {
+        if (supplements != null) {
             data.setSupplementLinks(new SupplementLinks(supplements.getSupplementLinks()));
         }
     }
 
-    private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer, final LoanDTO loan) {
+    private void populateContentProviderLoanMetadataInCommandData(final CommandData data, final ContentProviderConsumer contentProviderConsumer,
+                                                                  final LoanDTO loan) {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final Date expirationDate = loan.getExpirationDate();
         final String contentProviderLoanId = loan.getLoanId();
@@ -60,7 +61,8 @@ class GetLoansCommand extends AbstractElib3Command<CommandData> {
         if (formatId != null) {
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
             final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
-            final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
+            final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId,
+                    formatDecoration).contentProviderLoanId(contentProviderLoanId).build();
             data.setContentProviderLoanMetadata(metadata);
         }
     }

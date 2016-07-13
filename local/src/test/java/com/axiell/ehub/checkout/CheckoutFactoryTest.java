@@ -1,6 +1,5 @@
 package com.axiell.ehub.checkout;
 
-import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.hamcrest.Matchers;
@@ -14,7 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static com.axiell.ehub.checkout.CheckoutMetadataBuilder.checkoutMetadataWithDownloadableFormat;
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
 import static com.axiell.ehub.checkout.ContentLinkBuilder.defaultContentLink;
-import static com.axiell.ehub.checkout.ContentBuilder.defaultContent;
+import static com.axiell.ehub.checkout.ContentBuilder.contentWithSupplementLinks;
 import static com.axiell.ehub.checkout.SupplementLinkBuilder.defaultSupplementLink;
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
@@ -55,7 +54,7 @@ public class CheckoutFactoryTest {
     }
 
     private void whenCreate() {
-        actualCheckout = underTest.create(ehubLoan, formatDecoration, defaultContent(), LANGUAGE, false);
+        actualCheckout = underTest.create(ehubLoan, formatDecoration, contentWithSupplementLinks(), LANGUAGE, false);
     }
 
     private void thenActualContentLinkEqualsExpected() {

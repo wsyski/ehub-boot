@@ -55,7 +55,7 @@ public class CheckoutsSearchResultTest {
     }
 
     private void thenActualLmsLoanIdEqualsExpectedLmsLoanId() {
-        assertEquals(LMS_LOAN_ID, actCheckout.lmsLoanId());
+        assertEquals(LMS_LOAN_ID, actCheckout.getLmsLoanId());
     }
 
     @Test

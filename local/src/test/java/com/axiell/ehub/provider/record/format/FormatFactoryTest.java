@@ -86,39 +86,39 @@ public class FormatFactoryTest {
     }
 
     private void thenDescriptionEqualsExpectedDescription() {
-        assertThat(actualFormat.description(), is(FORMAT_DESCRIPTION));
+        assertThat(actualFormat.getDescription(), is(FORMAT_DESCRIPTION));
     }
 
     private void thenNameEqualsExpectedName() {
-        assertThat(actualFormat.name(), is(FORMAT_NAME));
+        assertThat(actualFormat.getName(), is(FORMAT_NAME));
     }
 
     private void thenActualFormatIdEqualsExpectedFormatId() {
-        assertThat(actualFormat.id(), is(FORMAT_ID));
+        assertThat(actualFormat.getId(), is(FORMAT_ID));
     }
 
     private void thenDescriptionEqualsFormatId() {
-        assertThat(actualFormat.description(), is(FORMAT_ID));
+        assertThat(actualFormat.getDescription(), is(FORMAT_ID));
     }
 
     private void thenNameEqualsFormatId() {
-        assertThat(actualFormat.name(), is(FORMAT_ID));
+        assertThat(actualFormat.getName(), is(FORMAT_ID));
     }
 
     private void thenContentDispositionEqualsExpectedContentDisposition() {
-        assertThat(actualFormat.contentDisposition(), is(CONTENT_DISPOSITION));
+        assertThat(actualFormat.getContentDisposition(), is(CONTENT_DISPOSITION));
     }
 
     private void thenContentDispositionIsNull() {
-        assertThat(actualFormat.contentDisposition(), is(nullValue()));
+        assertThat(actualFormat.getContentDisposition(), is(nullValue()));
     }
 
     private void thenExpectedPlatforms() {
-        assertThat(actualFormat.platforms(), is(Collections.singleton(PLATFORM)));
+        assertThat(actualFormat.getPlatforms(), is(Collections.singleton(PLATFORM)));
     }
 
     private void thenEmptyPlatforms() {
-        assertThat(actualFormat.platforms(), is(new HashSet<>()));
+        assertThat(actualFormat.getPlatforms(), is(new HashSet<>()));
     }
 
     @Test

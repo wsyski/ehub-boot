@@ -13,7 +13,7 @@ public class FormatsV1Converter {
         List<Format> formats = issues.isEmpty() ? new ArrayList<>() : issues.get(0).getFormats();
 
         for (Format format : formats) {
-            Format_v1 format_v1 = new Format_v1(format.id(), format.name(), format.description(), null);
+            Format_v1 format_v1 = new Format_v1(format.getId(), format.getName(), format.getDescription(), null);
             formats_v1.addFormat(format_v1);
         }
 

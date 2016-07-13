@@ -33,7 +33,7 @@ public class CheckoutMetadataTest {
     }
 
     private void whenGetLmsLoanId() {
-        actLmsLoanId = underTest.lmsLoanId();
+        actLmsLoanId = underTest.getLmsLoanId();
     }
 
     private void thenActualLmsLoanIdEqualsExpectedLmsLoanId() {

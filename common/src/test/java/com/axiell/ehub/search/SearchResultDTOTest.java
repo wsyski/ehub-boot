@@ -38,9 +38,7 @@ public class SearchResultDTOTest {
     @Before
     public void setUpExpectedDTO() {
         expFormatDTO = new FormatDTO("id", "name", ContentDisposition.DOWNLOADABLE).description("description");
-        expCheckoutMetadataDTO =
-                new CheckoutMetadataDTO().id(2L).contentProviderLoanId("contentProviderLoan2").expirationDate(new Date()).lmsLoanId("lmsLoanId2")
-                        .format(expFormatDTO);
+        expCheckoutMetadataDTO = new CheckoutMetadataDTO(2L, "lmsLoanId", new Date(), true, expFormatDTO).contentProviderLoanId("contentProviderLoan2");
         List<CheckoutMetadataDTO> items = Lists.newArrayList(expCheckoutMetadataDTO);
         searchResultDTO = new SearchResultDTO<>();
         searchResultDTO.items(items).offset(1).limit(2).totalItems(3);

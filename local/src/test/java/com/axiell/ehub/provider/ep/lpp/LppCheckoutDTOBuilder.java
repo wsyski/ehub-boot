@@ -10,6 +10,6 @@ public class LppCheckoutDTOBuilder {
     public static final String ID = "id";
 
     public static LppCheckoutDTO defaultCheckoutDTO() {
-        return new LppCheckoutDTO(ID, Collections.singletonMap(FormatBuilder.downloadableFormat().id(), FormatMetadataDTOBuilder.defaultFormatMetadataDTO()),new Date());
+        return new LppCheckoutDTO(ID, Collections.singletonMap(FormatBuilder.downloadableFormat().getId(), FormatMetadataDTOBuilder.defaultFormatMetadataDTO()),new Date());
     }
 }
