@@ -25,22 +25,24 @@ import static com.google.common.collect.Sets.newHashSet;
 @Table(name = "CONTENT_PROVIDER_CONSUMER")
 @Access(AccessType.PROPERTY)
 public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<Long> {
-    private static final Map<String, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS = ImmutableMap.<String, Set<ContentProviderConsumerPropertyKey>>builder()
-            .put(ContentProvider.CONTENT_PROVIDER_ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY))
-            .put(ContentProvider.CONTENT_PROVIDER_ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID))
-            .put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY))
-            .put(ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
-                    newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
-                            OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
-            .put(ContentProvider.CONTENT_PROVIDER_F1, newHashSet(F1_USERNAME, F1_PASSWORD, F1_REGION_ID))
-            .put(ContentProvider.CONTENT_PROVIDER_OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN))
-            .put(ContentProvider.CONTENT_PROVIDER_BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY))
-            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, newHashSet(ZINIO_LIB_ID, ZINIO_TOKEN))
-            .build();
+    private static final Map<String, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS =
+            ImmutableMap.<String, Set<ContentProviderConsumerPropertyKey>>builder()
+                    .put(ContentProvider.CONTENT_PROVIDER_ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY))
+                    .put(ContentProvider.CONTENT_PROVIDER_ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID))
+                    .put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY))
+                    .put(ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
+                            newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
+                                    OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
+                    .put(ContentProvider.CONTENT_PROVIDER_F1, newHashSet(F1_USERNAME, F1_PASSWORD, F1_REGION_ID))
+                    .put(ContentProvider.CONTENT_PROVIDER_OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN))
+                    .put(ContentProvider.CONTENT_PROVIDER_BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY))
+                    .put(ContentProvider.CONTENT_PROVIDER_ZINIO, newHashSet(ZINIO_LIB_ID, ZINIO_TOKEN))
+                    .build();
 
     private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE);
-    private static final Map<ContentProviderConsumerPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<ContentProviderConsumerPropertyKey, Pattern>builder()
-            .put(EP_USER_ID_VALUE, Pattern.compile("PATRON_ID|LIBRARY_CARD")).build();
+    private static final Map<ContentProviderConsumerPropertyKey, Pattern> PROPERTY_PATTERNS =
+            ImmutableMap.<ContentProviderConsumerPropertyKey, Pattern>builder()
+                    .put(EP_USER_ID_VALUE, Pattern.compile("PATRON_ID|LIBRARY_CARD")).build();
 
     private EhubConsumer ehubConsumer;
     private ContentProvider contentProvider;
@@ -173,7 +175,7 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
         OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID,
         OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
         F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY,
-        ZINIO_LIB_ID,ZINIO_TOKEN,
+        ZINIO_LIB_ID, ZINIO_TOKEN,
         EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE
     }
 }
