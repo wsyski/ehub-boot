@@ -31,14 +31,14 @@ public class FormatsV1ConverterTest {
     }
 
     private void thenActualDescriptionEqualsExpected() {
-        assertEquals(format.description(), actualFormat_v1.getDescription());
+        assertEquals(format.getDescription(), actualFormat_v1.getDescription());
     }
 
     private void thenActualIdEqualsExpected() {
-        assertEquals(format.id(), actualFormat_v1.getId());
+        assertEquals(format.getId(), actualFormat_v1.getId());
     }
 
     private void thenActualNameEqualsExpected() {
-        assertEquals(format.name(), actualFormat_v1.getName());
+        assertEquals(format.getName(), actualFormat_v1.getName());
     }
 }

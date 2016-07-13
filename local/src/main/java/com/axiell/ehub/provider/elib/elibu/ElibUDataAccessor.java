@@ -92,7 +92,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
         final com.axiell.ehub.checkout.Content content = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
-        // TODO:
+        // TODO: Fix this
         final Date expirationDate = new Date();
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration)
                 .build();

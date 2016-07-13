@@ -11,66 +11,50 @@ import java.util.Date;
 public class CheckoutMetadata implements Serializable {
     private final CheckoutMetadataDTO checkoutMetadataDTO;
 
-    public CheckoutMetadata() {
-        this(new CheckoutMetadataDTO());
+    public CheckoutMetadata(final long id, final String lmsLoanId, final Date expirationDate, final boolean isNewLoan, final Format format) {
+        this.checkoutMetadataDTO = new CheckoutMetadataDTO(id, lmsLoanId, expirationDate, isNewLoan, format.toDTO());
     }
 
     public CheckoutMetadata(CheckoutMetadataDTO checkoutMetadataDTO) {
         this.checkoutMetadataDTO = checkoutMetadataDTO;
     }
 
-    public Long id() {
+    public long getId() {
         return checkoutMetadataDTO.getId();
     }
 
-    public CheckoutMetadata id(Long id) {
-        checkoutMetadataDTO.id(id);
-        return this;
-    }
-
-    public String lmsLoanId() {
+    public String getLmsLoanId() {
         return checkoutMetadataDTO.getLmsLoanId();
     }
 
-    public CheckoutMetadata lmsLoanId(String lmsLoanId) {
-        checkoutMetadataDTO.lmsLoanId(lmsLoanId);
-        return this;
-    }
-
-    public String contentProviderLoanId() {
+    public String getContentProviderLoanId() {
         return checkoutMetadataDTO.getContentProviderLoanId();
     }
 
-    public CheckoutMetadata contentProviderLoanId(String contentProviderLoanId) {
+    public CheckoutMetadata contentProviderLoanId(final String contentProviderLoanId) {
         checkoutMetadataDTO.contentProviderLoanId(contentProviderLoanId);
         return this;
     }
 
-    public Date expirationDate() {
+    public Date getExpirationDate() {
         return checkoutMetadataDTO.getExpirationDate();
-    }
-
-    public CheckoutMetadata expirationDate(Date expirationDate) {
-        checkoutMetadataDTO.expirationDate(expirationDate);
-        return this;
     }
 
     public boolean isNewLoan() {
         return checkoutMetadataDTO.isNewLoan();
     }
 
-    public CheckoutMetadata newLoan(final boolean newLoan) {
-        checkoutMetadataDTO.newLoan(newLoan);
+    public String getContentProviderIssueId() {
+        return checkoutMetadataDTO.getContentProviderIssueId();
+    }
+
+    public CheckoutMetadata contentProviderIssueId(final String contentProviderIssueId) {
+        checkoutMetadataDTO.contentProviderIssueId(contentProviderIssueId);
         return this;
     }
 
-    public Format format() {
+    public Format getFormat() {
         return new Format(checkoutMetadataDTO.getFormat());
-    }
-
-    public CheckoutMetadata format(Format format) {
-        checkoutMetadataDTO.format(format.toDTO());
-        return this;
     }
 
     public CheckoutMetadataDTO toDTO() {

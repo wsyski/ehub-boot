@@ -10,7 +10,6 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +18,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.*;
@@ -105,7 +102,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContent() {
-        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(ContentBuilder.defaultContent());
+        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
 
     @Test

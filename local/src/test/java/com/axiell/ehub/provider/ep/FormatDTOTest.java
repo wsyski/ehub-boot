@@ -7,7 +7,7 @@ public class FormatDTOTest extends DTOTestFixture<FormatDTO> {
 
     @Override
     protected FormatDTO getTestInstance() {
-        return new FormatDTO(FormatBuilder.downloadableFormat().id());
+        return new FormatDTO(FormatBuilder.downloadableFormat().getId());
     }
 
     @Override

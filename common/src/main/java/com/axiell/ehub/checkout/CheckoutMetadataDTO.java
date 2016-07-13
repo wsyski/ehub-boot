@@ -15,36 +15,38 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutMetadataDTO implements Serializable {
-    private Long id;
+    private long id;
     private String lmsLoanId;
     private String contentProviderLoanId;
     private Date expirationDate;
-    private boolean newLoan;
+    private boolean isNewLoan;
+    private String contentProviderIssueId;
     private FormatDTO format;
 
-    public Long getId() {
-        return id;
+    private CheckoutMetadataDTO() {
     }
 
-    public CheckoutMetadataDTO id(Long id) {
+    public CheckoutMetadataDTO(final long id, final String lmsLoanId, final Date expirationDate, final boolean isNewLoan, final FormatDTO format) {
         this.id = id;
-        return this;
+        this.lmsLoanId = lmsLoanId;
+        this.expirationDate = expirationDate;
+        this.isNewLoan = isNewLoan;
+        this.format = format;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getLmsLoanId() {
         return lmsLoanId;
     }
 
-    public CheckoutMetadataDTO lmsLoanId(String lmsLoanId) {
-        this.lmsLoanId = lmsLoanId;
-        return this;
-    }
-
     public String getContentProviderLoanId() {
         return contentProviderLoanId;
     }
 
-    public CheckoutMetadataDTO contentProviderLoanId(String contentProviderLoanId) {
+    public CheckoutMetadataDTO contentProviderLoanId(final String contentProviderLoanId) {
         this.contentProviderLoanId = contentProviderLoanId;
         return this;
     }
@@ -53,27 +55,21 @@ public class CheckoutMetadataDTO implements Serializable {
         return expirationDate;
     }
 
-    public CheckoutMetadataDTO expirationDate(final Date expirationDate) {
-        this.expirationDate = expirationDate;
-        return this;
-    }
-
     public boolean isNewLoan() {
-        return newLoan;
+        return isNewLoan;
     }
 
-    public CheckoutMetadataDTO newLoan(final boolean newLoan) {
-        this.newLoan = newLoan;
+    public String getContentProviderIssueId() {
+        return contentProviderIssueId;
+    }
+
+    public CheckoutMetadataDTO contentProviderIssueId(final String contentProviderIssueId) {
+        this.contentProviderIssueId = contentProviderIssueId;
         return this;
     }
 
     public FormatDTO getFormat() {
         return format;
-    }
-
-    public CheckoutMetadataDTO format(FormatDTO formatDTO) {
-        this.format = formatDTO;
-        return this;
     }
 
     @Override

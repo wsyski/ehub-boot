@@ -32,7 +32,6 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
     @Autowired
     private IExpirationDateFactory expirationDateFactory;
 
-
     @Override
     public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();

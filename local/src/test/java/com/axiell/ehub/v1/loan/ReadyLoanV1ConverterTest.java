@@ -50,7 +50,7 @@ public class ReadyLoanV1ConverterTest {
     }
 
     private void thenActualReadyLoanIdEqualsExpected() {
-        assertEquals(CheckoutMetadataBuilder.ID, actualReadyLoan_v1.getId());
+        assertEquals(CheckoutMetadataBuilder.CHECKOUT_ID, actualReadyLoan_v1.getId());
     }
 
     private void thenActualContentProviderLoanEqualsExpected() {

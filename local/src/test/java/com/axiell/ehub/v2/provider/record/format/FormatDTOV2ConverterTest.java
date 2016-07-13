@@ -32,14 +32,14 @@ public class FormatDTOV2ConverterTest {
     }
 
     private void thenActualDescriptionEqualsExpected() {
-        assertEquals(format.description(), actualFormatDTO_v2.getDescription());
+        assertEquals(format.getDescription(), actualFormatDTO_v2.getDescription());
     }
 
     private void thenActualIdEqualsExpected() {
-        assertEquals(format.id(), actualFormatDTO_v2.getId());
+        assertEquals(format.getId(), actualFormatDTO_v2.getId());
     }
 
     private void thenActualNameEqualsExpected() {
-        assertEquals(format.name(), actualFormatDTO_v2.getName());
+        assertEquals(format.getName(), actualFormatDTO_v2.getName());
     }
 }

@@ -3,7 +3,6 @@ package com.axiell.ehub.v1.loan;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLink;
-import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.provider.record.format.Format;
 
 import java.util.List;
@@ -18,30 +17,30 @@ class ReadyLoanConverter_v1 {
 
     static ReadyLoan_v1 convert(Checkout checkout) {
         CheckoutMetadata checkoutMetadata = checkout.metadata();
-        LmsLoan_v1 lmsLoan_v1 = new LmsLoan_v1(checkoutMetadata.lmsLoanId());
+        LmsLoan_v1 lmsLoan_v1 = new LmsLoan_v1(checkoutMetadata.getLmsLoanId());
         IContent_v1 content_v1 = convertToContent(checkout);
         ContentProviderLoanMetadata_v1 contentToContentProviderLoanMetadata = convert(checkoutMetadata);
         ContentProviderLoan_v1 contentProviderLoan_v1 = new ContentProviderLoan_v1(contentToContentProviderLoanMetadata, content_v1);
-        return new ReadyLoan_v1(checkoutMetadata.id(), lmsLoan_v1, contentProviderLoan_v1);
+        return new ReadyLoan_v1(checkoutMetadata.getId(), lmsLoan_v1, contentProviderLoan_v1);
     }
 
     private static ContentProviderLoanMetadata_v1 convert(CheckoutMetadata checkoutMetadata) {
         ContentProviderLoanMetadata_v1 contentProviderLoanMetadata_v1 = new ContentProviderLoanMetadata_v1();
-        contentProviderLoanMetadata_v1.setId(checkoutMetadata.contentProviderLoanId());
-        contentProviderLoanMetadata_v1.setExpirationDate(checkoutMetadata.expirationDate());
+        contentProviderLoanMetadata_v1.setId(checkoutMetadata.getContentProviderLoanId());
+        contentProviderLoanMetadata_v1.setExpirationDate(checkoutMetadata.getExpirationDate());
         return contentProviderLoanMetadata_v1;
     }
 
     private static IContent_v1 convertToContent(Checkout checkout) {
         CheckoutMetadata checkoutMetadata = checkout.metadata();
-        Format format = checkoutMetadata.format();
+        Format format = checkoutMetadata.getFormat();
         List<ContentLink> contentLinks = checkout.contentLinks().getContentLinks();
         String href = contentLinks.get(0).href();
         IContent_v1 content_v1 = null;
 
-        if (DOWNLOADABLE.equals(format.contentDisposition())) {
+        if (DOWNLOADABLE.equals(format.getContentDisposition())) {
             content_v1 = new DownloadableContent_v1(href);
-        } else if (STREAMING.equals(format.contentDisposition())) {
+        } else if (STREAMING.equals(format.getContentDisposition())) {
             content_v1 = new StreamingContent_v1(href, 0, 0);
         }
         return content_v1;

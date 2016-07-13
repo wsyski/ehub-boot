@@ -12,6 +12,9 @@ import java.util.List;
 
 public class RecordDTOV2Converter {
 
+    private RecordDTOV2Converter() {
+    }
+
     public static RecordDTO_v2 convert(final Record record) {
         return new RecordDTO_v2().id(record.getId()).formats(FormatDTOV2Converter.convert(record.getIssues()));
     }

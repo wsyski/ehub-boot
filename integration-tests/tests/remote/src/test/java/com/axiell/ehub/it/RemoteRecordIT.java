@@ -56,11 +56,11 @@ public class RemoteRecordIT extends RemoteITFixture {
     }
 
     private void thenFormatContainsExpectedComponents(final Format format) {
-        String id = format.id();
+        String id = format.getId();
         Assert.assertNotNull(id);
-        String name = format.name();
+        String name = format.getName();
         Assert.assertNotNull(name);
-        Set<String> platforms = format.platforms();
+        Set<String> platforms = format.getPlatforms();
         Assert.assertTrue(platforms.size() > 0);
     }
 

@@ -12,44 +12,44 @@ import java.io.Serializable;
 import java.util.Set;
 
 public class Format implements Serializable {
-    private final FormatDTO dto;
+    private final FormatDTO formatDTO;
 
     public Format(final FormatDTO formatDTO) {
-        dto = formatDTO;
+        this.formatDTO = formatDTO;
     }
 
     public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms,
                   final boolean isLocked) {
         Validate.notNull(platforms);
-        dto = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms).locked(isLocked);
+        formatDTO = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms).locked(isLocked);
     }
 
-    public String id() {
-        return dto.getId();
+    public String getId() {
+        return formatDTO.getId();
     }
 
-    public String name() {
-        return dto.getName();
+    public String getName() {
+        return formatDTO.getName();
     }
 
-    public boolean locked() {
-        return dto.isLocked();
+    public boolean isLocked() {
+        return formatDTO.isLocked();
     }
 
-    public String description() {
-        return dto.getDescription();
+    public String getDescription() {
+        return formatDTO.getDescription();
     }
 
-    public ContentDisposition contentDisposition() {
-        return dto.getContentDisposition();
+    public ContentDisposition getContentDisposition() {
+        return formatDTO.getContentDisposition();
     }
 
-    public Set<String> platforms() {
-        return dto.getPlatforms();
+    public Set<String> getPlatforms() {
+        return formatDTO.getPlatforms();
     }
 
     public FormatDTO toDTO() {
-        return dto;
+        return formatDTO;
     }
 
     @Override
