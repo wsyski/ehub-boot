@@ -30,7 +30,7 @@ public final class LoansResource_v1 implements ILoansResource_v1 {
     public ReadyLoan_v1 getLoan(AuthInfo authInfo, String lmsLoanId, String language) {
         CheckoutsSearchResult checkoutsSearchResult = loanBusinessController.search(authInfo, lmsLoanId, language);
         CheckoutMetadata checkoutMetadata = checkoutsSearchResult.findCheckoutByLmsLoanId(lmsLoanId);
-        Checkout checkout = loanBusinessController.getCheckout(authInfo, checkoutMetadata.id(), language);
+        Checkout checkout = loanBusinessController.getCheckout(authInfo, checkoutMetadata.getId(), language);
         return ReadyLoanConverter_v1.convert(checkout);
     }
 

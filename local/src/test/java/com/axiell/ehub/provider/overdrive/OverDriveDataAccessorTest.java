@@ -13,6 +13,7 @@ import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -281,7 +282,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues =underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     private void givenErrorDetails() {

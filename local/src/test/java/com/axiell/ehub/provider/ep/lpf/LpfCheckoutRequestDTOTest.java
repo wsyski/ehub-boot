@@ -7,7 +7,7 @@ public class LpfCheckoutRequestDTOTest extends DTOTestFixture<LpfCheckoutRequest
 
     @Override
     protected LpfCheckoutRequestDTO getTestInstance() {
-        return new LpfCheckoutRequestDTO("recordId", FormatBuilder.downloadableFormat().id());
+        return new LpfCheckoutRequestDTO("recordId", FormatBuilder.downloadableFormat().getId());
     }
 
     @Override

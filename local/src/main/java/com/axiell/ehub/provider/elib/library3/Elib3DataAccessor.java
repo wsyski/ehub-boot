@@ -4,9 +4,12 @@ import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
@@ -15,10 +18,10 @@ public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
     private IElib3CommandChainFactory commandChainFactory;
 
     @Override
-    public Formats getFormats(final CommandData commandData) {
+    public List<Issue> getIssues(final CommandData commandData) {
         final Elib3CommandData data = Elib3CommandData.newInstance(commandData);
         final GetFormatsCommandChain commandChain = commandChainFactory.createGetFormatsCommandChain();
-        return commandChain.execute(data);
+        return Collections.singletonList(new Issue(commandChain.execute(data)));
     }
 
     @Override

@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Checkout implements Serializable {
     private final CheckoutDTO checkoutDTO;
 
-    public Checkout(CheckoutMetadata checkoutMetadata, Content content) {
-        this.checkoutDTO = new CheckoutDTO().metadata(checkoutMetadata.toDTO()).contentLinks(content.getContentLinks().toDTO()).supplementLinks(content.getSupplementLinks().toDTO());
+    public Checkout(final CheckoutMetadata checkoutMetadata, final Content content) {
+        this.checkoutDTO = new CheckoutDTO(checkoutMetadata.toDTO(), content.getContentLinks().toDTO()).supplementLinks(content.getSupplementLinks().toDTO());
     }
 
     public Checkout(final CheckoutDTO checkoutDTO) {

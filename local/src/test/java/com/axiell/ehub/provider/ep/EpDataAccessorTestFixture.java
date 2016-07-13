@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.ep;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 
@@ -61,7 +63,8 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues = underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     protected void whenCreateLoan() {

@@ -1,13 +1,8 @@
 package com.axiell.ehub.v2;
 
-import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.NotImplementedException;
-import com.axiell.ehub.checkout.CheckoutsResource;
-import com.axiell.ehub.checkout.ICheckoutsResource;
 import com.axiell.ehub.loan.ILoanBusinessController;
-import com.axiell.ehub.provider.ContentProvidersResource;
-import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.format.IFormatBusinessController;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.v2.checkout.CheckoutsResource_v2;
 import com.axiell.ehub.v2.checkout.ICheckoutsResource_v2;
 import com.axiell.ehub.v2.provider.ContentProvidersResource_v2;
@@ -18,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 public class RootResource_v2 implements IRootResource_v2 {
     private ILoanBusinessController loanBusinessController;
-    private IFormatBusinessController formatBusinessController;
+    private IIssueBusinessController formatBusinessController;
 
     @Override
     public Response root() {
@@ -41,7 +36,7 @@ public class RootResource_v2 implements IRootResource_v2 {
     }
 
     @Required
-    public void setFormatBusinessController(IFormatBusinessController formatBusinessController) {
+    public void setFormatBusinessController(IIssueBusinessController formatBusinessController) {
         this.formatBusinessController = formatBusinessController;
     }
 }

@@ -102,7 +102,7 @@ public class ContentProviderDataAccessorFacadeTest {
 
     @Before
     public void setUpContent() {
-        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(ContentBuilder.defaultContent());
+        given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
 
     @Test
@@ -150,13 +150,13 @@ public class ContentProviderDataAccessorFacadeTest {
     }
 
     private void whenGetFormats() {
-        underTest.getFormats(ehubConsumer, CONTENT_PROVIDER_ALIAS, patron, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
+        underTest.getIssues(ehubConsumer, CONTENT_PROVIDER_ALIAS, patron, CONTENT_PROVIDER_RECORD_ID, LANGUAGE);
     }
 
     private void thenFormatsAreRetrievedFromContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
         inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
-        inOrder.verify(contentProviderDataAccessor).getFormats(argThat(new GetFormatsCommandData()));
+        inOrder.verify(contentProviderDataAccessor).getIssues(argThat(new GetFormatsCommandData()));
     }
 
     private class GetFormatsCommandData extends ArgumentMatcher<CommandData> {

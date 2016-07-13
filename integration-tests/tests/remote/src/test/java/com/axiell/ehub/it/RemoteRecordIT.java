@@ -5,8 +5,10 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestDataConstants;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,7 +44,10 @@ public class RemoteRecordIT extends RemoteITFixture {
 
     private void thenActualFormatsContainsExpectedComponents() {
         Assert.assertNotNull(record);
-        List<Format> formats = record.formats();
+        List<Issue> issues = record.getIssues();
+        Assert.assertNotNull(issues);
+        Assert.assertThat(issues.size(), Matchers.is(1));
+        List<Format> formats = issues.get(0).getFormats();
         Assert.assertNotNull(formats);
         Assert.assertFalse(formats.isEmpty());
         for (Format format : formats) {
@@ -50,12 +55,12 @@ public class RemoteRecordIT extends RemoteITFixture {
         }
     }
 
-    private void thenFormatContainsExpectedComponents(Format format) {
-        String id = format.id();
+    private void thenFormatContainsExpectedComponents(final Format format) {
+        String id = format.getId();
         Assert.assertNotNull(id);
-        String name = format.name();
+        String name = format.getName();
         Assert.assertNotNull(name);
-        Set<String> platforms = format.platforms();
+        Set<String> platforms = format.getPlatforms();
         Assert.assertTrue(platforms.size() > 0);
     }
 

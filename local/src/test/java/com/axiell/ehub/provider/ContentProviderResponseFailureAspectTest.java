@@ -31,7 +31,7 @@ public class ContentProviderResponseFailureAspectTest {
     @Test
     public void clientResponseFailureToInternalServerErrorException() {
         try {
-            underTest.getFormats(commandData);
+            underTest.getIssues(commandData);
             Assert.fail("An InternalServerErrorException should have been thrown");
         } catch (InternalServerErrorException e) {
             thenInternalServerErrorExceptionMessageContainsExpectedContentProviderName(e);
@@ -43,7 +43,7 @@ public class ContentProviderResponseFailureAspectTest {
         EhubError ehubError = e.getEhubError();
         Assert.assertNotNull(ehubError);
         String actualMessage = ehubError.getMessage();
-        Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME.toString()));
+        Assert.assertTrue(actualMessage.contains(CONTENT_PROVIDER_NAME));
     }
 
     private ContentProviderConsumer makeContentProviderConsumer() {

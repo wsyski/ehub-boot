@@ -1,12 +1,11 @@
 package com.axiell.ehub.checkout;
 
-
 public class ContentBuilder {
-    public static Content defaultContent() {
+    public static Content contentWithSupplementLinks() {
         return new Content(ContentLinkBuilder.defaultContentLinks()).supplementLinks(SupplementLinkBuilder.defaultSupplementLinks());
     }
 
-    public static Content defaultContentWithoutSupplementLinks() {
+    public static Content content() {
         return new Content(ContentLinkBuilder.defaultContentLinks());
     }
 }

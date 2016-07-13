@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.elib.elibu;
 
 import com.axiell.ehub.*;
@@ -17,20 +14,18 @@ import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
 import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * The ElibU integration.
- */
 @Component
 public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ElibUDataAccessor.class);
@@ -42,7 +37,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     private IFormatFactory formatFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String elibuRecordId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
@@ -51,7 +46,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         final Status status = result.getStatus();
 
         if (status.hasRetrievedProduct()) {
-            final Formats formats = new Formats();
+            final List<Format> formats = new ArrayList<>();
             final List<AvailableFormat> availableFormats = getAvailableFormats(result);
             final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
 
@@ -62,14 +57,13 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
                     LOGGER.warn("ElibU returned a format without ID - ignoring this one");
                 } else {
                     final Format format = formatFactory.create(contentProvider, formatId, language);
-                    formats.addFormat(format);
+                    formats.add(format);
                 }
             }
-
-            return formats;
+            return Collections.singletonList(new Issue(formats));
         }
 
-        throw makeInternalServerErrorException("Could not get formats", status);
+        throw makeInternalServerErrorException("Could not get issues", status);
     }
 
     private List<AvailableFormat> getAvailableFormats(final Result result) {
@@ -98,7 +92,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatId);
         final com.axiell.ehub.checkout.Content content = consumeProduct(contentProviderConsumer, licenseId, recordId, formatDecoration);
-        // TODO:
+        // TODO: Fix this
         final Date expirationDate = new Date();
         final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, recordId, formatDecoration)
                 .build();

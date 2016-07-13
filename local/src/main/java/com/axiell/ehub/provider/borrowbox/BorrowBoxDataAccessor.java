@@ -9,21 +9,19 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BorrowBoxDataAccessor.class);
 
     @Autowired
     private IBorrowBoxFacade borrowBoxFacade;
@@ -31,19 +29,16 @@ public class BorrowBoxDataAccessor extends AbstractContentProviderDataAccessor {
     private IFormatFactory formatFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final FormatsDTO formatsDTO = borrowBoxFacade.getFormats(contentProviderConsumer, patron, language, contentProviderRecordId);
-        final Formats formats = new Formats();
-        for (FormatsDTO.FormatDTO formatDTO : formatsDTO.getFormats()) {
-            final Format format = formatFactory.create(contentProvider, formatDTO.getFormatId(), language);
-            formats.addFormat(format);
-        }
-        return formats;
+        return Collections.singletonList(
+                new Issue(formatsDTO.getFormats().stream().map(formatDTO -> formatFactory.create(contentProvider, formatDTO.getFormatId(), language))
+                        .collect(Collectors.toList())));
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.google.common.collect.Lists;
 import junit.framework.Assert;
@@ -16,10 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -180,8 +176,8 @@ public class GetFormatsCommandChainTest {
     }
 
     private void whenExecute() {
-        final Formats actualFormats = underTest.execute(elib3CommandData);
-        actualFormatSet = actualFormats.getFormats();
+        final List<Format> actualFormats = underTest.execute(elib3CommandData);
+        actualFormatSet = new HashSet<>(actualFormats);
         Iterator<Format> itr = actualFormatSet.iterator();
         actualFormat = itr.hasNext() ? actualFormatSet.iterator().next() : null;
     }

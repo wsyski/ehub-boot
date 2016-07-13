@@ -5,11 +5,16 @@ import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import com.axiell.ehub.provider.record.format.Formats;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatBuilder;
+import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -24,13 +29,13 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     @Mock
     private GetFormatsCommandChain getFormatsCommandChain;
     @Mock
-    private Formats expectedFormats;
-    @Mock
     private CreateLoanCommandChain createLoanCommandChain;
     @Mock
     private ContentProviderLoan expectedLoan;
     @Mock
     private GetContentCommandChain getContentCommandChain;
+
+    private List<Format> expectedFormats = Collections.singletonList(FormatBuilder.streamingFormat());
 
     @Before
     public void setUpUnderTest() {
@@ -63,7 +68,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedContent() {
-        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.defaultContent());
+        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
 
     private void givenGetContentCommandChain() {
@@ -103,7 +108,8 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void whenGetFormats() {
-        actualFormats = underTest.getFormats(commandData);
+        List<Issue> issues= underTest.getIssues(commandData);
+        actualFormats = issues.get(0).getFormats();
     }
 
     private void thenActualFormatsEqualsExpectedFormats() {

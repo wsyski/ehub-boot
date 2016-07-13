@@ -77,7 +77,7 @@ public class CreateLoanCommandChainTest {
     @Before
     public void setUpContentProviderLoanWithDefaultData() {
         given(contentProviderLoan.expirationDate()).willReturn(EXPIRATION_DATE);
-        given(contentProviderLoan.content()).willReturn(ContentBuilder.defaultContent());
+        given(contentProviderLoan.content()).willReturn(ContentBuilder.contentWithSupplementLinks());
         given(loanMetadata.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getExpirationDate()).willReturn(EXPIRATION_DATE);
         given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);

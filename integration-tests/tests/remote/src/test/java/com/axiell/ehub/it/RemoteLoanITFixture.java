@@ -79,11 +79,11 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     protected void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata, final boolean isNewLoan) {
         Assert.assertNotNull(checkoutMetadata);
-        Date expirationDate = checkoutMetadata.expirationDate();
+        Date expirationDate = checkoutMetadata.getExpirationDate();
         Assert.assertNotNull(expirationDate);
-        String lmsLoanId = checkoutMetadata.lmsLoanId();
+        String lmsLoanId = checkoutMetadata.getLmsLoanId();
         Assert.assertNotNull(lmsLoanId);
-        Long id = checkoutMetadata.id();
+        Long id = checkoutMetadata.getId();
         Assert.assertNotNull(id);
         Assert.assertEquals(isNewLoan, checkoutMetadata.isNewLoan());
     }

@@ -6,18 +6,15 @@ package com.axiell.ehub.v2.provider;
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.provider.ContentProviderDTO;
 import com.axiell.ehub.provider.ContentProvidersDTO;
-import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.IRecordsResource;
-import com.axiell.ehub.provider.record.RecordsResource;
-import com.axiell.ehub.provider.record.format.IFormatBusinessController;
+import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
 import com.axiell.ehub.v2.provider.record.RecordsResource_v2;
 
 public class ContentProvidersResource_v2 implements IContentProvidersResource_v2 {
-    private final IFormatBusinessController formatBusinessController;
+    private final IIssueBusinessController formatBusinessController;
 
-    public ContentProvidersResource_v2(IFormatBusinessController formatBusinessController) {
+    public ContentProvidersResource_v2(IIssueBusinessController formatBusinessController) {
         this.formatBusinessController = formatBusinessController;
     }
 

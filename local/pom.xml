@@ -573,24 +573,9 @@
                         </executions>
                         <dependencies>
                             <dependency>
-                                <groupId>org.hibernate</groupId>
-                                <artifactId>hibernate-entitymanager</artifactId>
-                                <version>4.3.11.Final</version>
-                            </dependency>
-                            <dependency>
                                 <groupId>oracle</groupId>
                                 <artifactId>ojdbc6</artifactId>
                                 <version>${oracle.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>oracle</groupId>
-                                <artifactId>ucp</artifactId>
-                                <version>${oracle.version}</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>org.hibernate</groupId>
-                                <artifactId>hibernate-validator</artifactId>
-                                <version>${hibernate-tools.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>

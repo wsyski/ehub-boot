@@ -3,7 +3,10 @@ package com.axiell.ehub.checkout;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.LmsLoan;
-import com.axiell.ehub.provider.record.format.*;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatDTO;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.IFormatFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CheckoutMetadataFactoryTest {
-    private static final Long EHUB_LOAN_ID = 2L;
+    private static final long EHUB_LOAN_ID = 2L;
     private static final Date EXP_DATE = new Date();
     private static final String CP_LOAN_ID = "cpLoanId";
     private static final String LMS_LOAN_ID = "lmsLoanId";
@@ -72,22 +75,22 @@ public class CheckoutMetadataFactoryTest {
     }
 
     private void thenActualEhubLoanIdEqualsExpected() {
-        assertEquals(EHUB_LOAN_ID, actualCheckoutMetadata.id());
+        assertEquals(EHUB_LOAN_ID, actualCheckoutMetadata.getId());
     }
 
     private void thenActualExpirationDateEqualsExpected() {
-        assertEquals(EXP_DATE, actualCheckoutMetadata.expirationDate());
+        assertEquals(EXP_DATE, actualCheckoutMetadata.getExpirationDate());
     }
 
     private void thenActualContentProviderLoanEqualsExpected() {
-        assertEquals(CP_LOAN_ID, actualCheckoutMetadata.contentProviderLoanId());
+        assertEquals(CP_LOAN_ID, actualCheckoutMetadata.getContentProviderLoanId());
     }
 
     private void thenLmsLoanIdEqualsExpected() {
-        assertEquals(LMS_LOAN_ID, actualCheckoutMetadata.lmsLoanId());
+        assertEquals(LMS_LOAN_ID, actualCheckoutMetadata.getLmsLoanId());
     }
 
     private void thenActualFormatEqualsExpected() {
-        assertThat(actualCheckoutMetadata.format().toDTO(), matchesExpectedFormatDTO(format.toDTO()));
+        assertThat(actualCheckoutMetadata.getFormat().toDTO(), matchesExpectedFormatDTO(format.toDTO()));
     }
 }

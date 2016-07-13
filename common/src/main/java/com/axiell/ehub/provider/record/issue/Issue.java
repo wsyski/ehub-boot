@@ -12,16 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Issue implements Serializable {
-    private final IssueDTO dto;
+    private final IssueDTO issueDTO;
 
     public Issue(final IssueDTO IssueDTO) {
-        dto = IssueDTO;
+        issueDTO = IssueDTO;
     }
 
     public Issue(final String id, final String title, final String imageUrl, final List<Format> formats) {
         Validate.notNull(formats);
         List<FormatDTO> formatsDTO = formats.stream().map(Format::toDTO).collect(Collectors.toList());
-        dto = new IssueDTO(formatsDTO).id(id).title(title).imageUrl(imageUrl);
+        issueDTO = new IssueDTO(formatsDTO).id(id).title(title).imageUrl(imageUrl);
     }
 
     public Issue(final List<Format> formats) {
@@ -29,23 +29,23 @@ public class Issue implements Serializable {
     }
 
     public String getId() {
-        return dto.getId();
+        return issueDTO.getId();
     }
 
     public String getTitle() {
-        return dto.getTitle();
+        return issueDTO.getTitle();
     }
 
     public String getImageUrl() {
-        return dto.getImageUrl();
+        return issueDTO.getImageUrl();
     }
 
     public List<Format> getFormats() {
-        return dto.getFormats().stream().map(Format::new).collect(Collectors.toList());
+        return issueDTO.getFormats().stream().map(Format::new).collect(Collectors.toList());
     }
 
     public IssueDTO toDTO() {
-        return dto;
+        return issueDTO;
     }
 
     @Override

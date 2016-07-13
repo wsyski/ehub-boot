@@ -42,7 +42,7 @@ class Checkout {
             throw new InternalServerErrorException("No files found for record isbn: '" + checkoutDTO.getIsbn() + "' and content provider name: 'OCD'",
                     ErrorCause.INTERNAL_SERVER_ERROR);
         }
-        return files.parallelStream().map(fileDTO -> OcdDownloadUrlHandler.resolve(fileDTO.getDownloadUrl())).collect(Collectors.toList());
+        return files.stream().map(fileDTO -> OcdDownloadUrlHandler.resolve(fileDTO.getDownloadUrl())).collect(Collectors.toList());
     }
 
     private boolean noFiles(List<FileDTO> files) {

@@ -17,17 +17,15 @@ import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.provider.record.format.Formats;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
+import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 
@@ -43,7 +41,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     private IFormatFactory formatFactory;
 
     @Override
-    public Formats getFormats(final CommandData data) {
+    public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
@@ -53,25 +51,15 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         if (checkout != null) {
             CirculationFormatsDTO circulationFormats = overDriveFacade.getCirculationFormats(contentProviderConsumer, oAuthAccessToken,
                     checkout.getReserveId());
-            return makeFormats(contentProvider, language, circulationFormats.getFormats(), new CirculationFormatExtractor());
+            return makeIssues(contentProvider, language, circulationFormats.getFormats(), new CirculationFormatExtractor());
         } else {
             final Product product = overDriveFacade.getProduct(contentProviderConsumer, productId);
             if (!product.isAvailable()) {
                 throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE,
                         language);
             }
-            return makeFormats(contentProvider, language, product.getFormats(), new DiscoveryFormatExtractor());
+            return makeIssues(contentProvider, language, product.getFormats(), new DiscoveryFormatExtractor());
         }
-    }
-
-    private <T> Formats makeFormats(final ContentProvider contentProvider, final String language, final Collection<T> discoveryFormats,
-                                    final IFormatExtractor<T> formatExtractor) {
-        final Formats formats = new Formats();
-        for (T discoveryFormat : discoveryFormats) {
-            final Format format = formatFactory.create(contentProvider, formatExtractor.getFormatId(discoveryFormat), language);
-            formats.addFormat(format);
-        }
-        return formats;
     }
 
     @Override
@@ -96,7 +84,8 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         }
         final Date expirationDate = checkout.getExpirationDate();
         if (downloadLinkTemplate == null) {
-            throw NotFoundExceptionFactory.create(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, productId, formatType);
+            throw NotFoundExceptionFactory.create(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, productId,
+                    formatType);
         }
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
@@ -122,6 +111,16 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
         final ContentLinks contentLinks = createContentLinks(contentUrl);
         return new Content(contentLinks);
+    }
+
+    private <T> List<Issue> makeIssues(final ContentProvider contentProvider, final String language, final Collection<T> discoveryFormats,
+                                       final IFormatExtractor<T> formatExtractor) {
+        final List<Format> formats = new ArrayList<>();
+        for (T discoveryFormat : discoveryFormats) {
+            final Format format = formatFactory.create(contentProvider, formatExtractor.getFormatId(discoveryFormat), language);
+            formats.add(format);
+        }
+        return Collections.singletonList(new Issue(formats));
     }
 
     private CheckoutDTO getCheckout(final CommandData data, final OAuthAccessToken oAuthAccessToken) {
