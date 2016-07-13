@@ -234,4 +234,9 @@
         </update>
         <comment>Set loan per product for ELIB3</comment>
     </changeSet>
+
+    <changeSet id="21" author="ehub">
+        <sql>INSERT INTO FORMAT_DECORATION_PLATFORM(PLATFORM_ID,CONTENT_P_FORMAT_DECORATION_ID) SELECT platform.id,  content_p_format_decoration.id FROM PLATFORM, CONTENT_P_FORMAT_DECORATION WHERE content_p_format_decoration.id=1801</sql>
+        <comment>Initialize ZINIO format decoration platforms</comment>
+    </changeSet>
 </databaseChangeLog>
