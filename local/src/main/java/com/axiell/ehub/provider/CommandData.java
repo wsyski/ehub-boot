@@ -1,6 +1,9 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.checkout.Content;
+import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
@@ -119,7 +122,9 @@ public class CommandData implements ICommandData {
     }
 
     public CommandData setContentLinkHrefs(final List<String> contentLinkHrefs) {
-        return setContentLinks(new ContentLinks(contentLinkHrefs.stream().map(ContentLink::new).collect(Collectors.toList())));
+        ContentLinks contentLinks =
+                contentLinkHrefs == null ? null : new ContentLinks(contentLinkHrefs.stream().map(ContentLink::new).collect(Collectors.toList()));
+        return setContentLinks(contentLinks);
     }
 
     public Content getContent() {
