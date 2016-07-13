@@ -163,7 +163,7 @@ public class AuthInfo {
         }
     }
 
-    static List<String> getSignatureItems(final Long ehubConsumerId, final Patron patron) {
+    public static List<String> getSignatureItems(final Long ehubConsumerId, final Patron patron) {
         List<String> signatureItems = new ArrayList<>();
         if (ehubConsumerId != null) {
             signatureItems.add(String.valueOf(ehubConsumerId));
@@ -187,7 +187,7 @@ public class AuthInfo {
 
     //TODO: Remove when all Arena installations are upgraded
     @Deprecated
-    static List<String> getSignatureCompatibilityItems(final Long ehubConsumerId, final Patron patron) {
+    public static List<String> getSignatureCompatibilityItems(final Long ehubConsumerId, final Patron patron) {
         List<String> signatureItems = new ArrayList<>();
         if (ehubConsumerId != null) {
             signatureItems.add(String.valueOf(ehubConsumerId));
