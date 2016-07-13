@@ -157,7 +157,7 @@
     <changeSet id="14" author="ehub" dbms="oracle">
         <insert tableName="CONTENT_PROVIDER">
             <column name="ID" value="10"/>
-            <column name="LOAN_PER_PRODUCT" value="0"/>
+            <column name="LOAN_PER_PRODUCT" value="1"/>
             <column name="CREATE_DATETIME" valueComputed="${now}"/>
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
             <column name="NAME" value="ZINIO"/>
@@ -224,5 +224,14 @@
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
         </insert>
         <comment>Added text bundles to the Zinio format decorations</comment>
+    </changeSet>
+
+    <changeSet id="20" author="ehub" dbms="oracle">
+        <update tableName="CONTENT_PROVIDER">
+            <column name="LOAN_PER_PRODUCT" value="1"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+            <where>ID=6</where>
+        </update>
+        <comment>Set loan per product for ELIB3</comment>
     </changeSet>
 </databaseChangeLog>
