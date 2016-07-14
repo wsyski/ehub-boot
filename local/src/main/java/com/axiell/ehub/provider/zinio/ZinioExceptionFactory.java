@@ -33,7 +33,7 @@ public class ZinioExceptionFactory extends AbstractContentProviderExceptionFacto
             if (message.contains(MESSAGE_NOT_EXISTS)) {
                 type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (message.contains(MESSAGE_UNEXISTED_MAGAZINE_RBID)) {
-                type = ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
+                type = ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
             }
         }
         return type;
