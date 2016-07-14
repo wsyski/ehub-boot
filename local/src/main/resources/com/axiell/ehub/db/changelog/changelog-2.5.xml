@@ -78,7 +78,7 @@
         </insert>
         <insert tableName="PLATFORM">
             <column name="ID" value="3"/>
-            <column name="NAME" value="PCMAC"/>
+            <column name="NAME" value="DESKTOP"/>
             <column name="CREATE_DATETIME" valueComputed="${now}"/>
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
         </insert>
