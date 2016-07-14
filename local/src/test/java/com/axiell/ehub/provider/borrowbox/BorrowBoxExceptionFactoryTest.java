@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.borrowbox;
 
+import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFacto
 
     @Test
     public void errorEntityWithMessageAndStatusUnknown() {
-        givenErrorEntityWithMessageAndStatus(MESSAGE, STATUS_UNKNOWN);
+        givenErrorEntityWithMessageAndStatus(MESSAGE, AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
         whenCreateExecuted();
         thenInternalServerErrorExceptionHasMessage(MESSAGE);
         thenInternalServerErrorExceptionWithStatusUnknown();
