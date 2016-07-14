@@ -4,9 +4,8 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.issue.Issue;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -14,14 +13,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFixture<BorrowBoxDataAccessor> {
 
-    private BorrowBoxDataAccessor underTest;
     @Mock
     private BorrowBoxFacade borrowBoxFacade;
     @Mock
@@ -52,7 +49,7 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatDecorationFromContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
-        whenGetFormats();
+        whenGetIssues();
         thenFormatSetContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
@@ -84,13 +81,9 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(format.getFormatId()).willReturn(FORMAT_ID);
     }
 
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
-    }
-
     public void givenCheckout() {
-        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class))).willReturn(checkout);
+        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class)))
+                .willReturn(checkout);
     }
 
     public void givenGetCheckout() {

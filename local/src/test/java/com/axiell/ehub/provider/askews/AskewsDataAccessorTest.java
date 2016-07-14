@@ -8,7 +8,6 @@ import com.axiell.ehub.EhubAssert;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,14 +21,13 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 
-public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixture<AskewsDataAccessor> {
     private static final String RECORD_ID = "1";
     private static final Integer LOAN_ID = 1;
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
     private static final Integer LOAN_REQUEST_NOT_SUCCESS = -1;
     private static final Integer TITLE_HAS_BEEN_PROCESSED = 4;
 
-    private AskewsDataAccessor underTest;
     @Mock
     private IAskewsFacade askewsFacade;
     @Mock
@@ -97,7 +95,7 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenLanguageInCommandData();
         givenFormatDecorationFromContentProvider();
         givenTextBundle();
-        whenGetFormats();
+        whenGetIssues();
         thenActualFormatEqualsExpected();
     }
 
@@ -215,11 +213,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
 
     private void whenGetContent() {
         actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
-    }
-
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
     }
 
     @Override

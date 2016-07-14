@@ -7,7 +7,6 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,15 +14,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
-public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<OcdDataAccessor> {
 
-    private OcdDataAccessor underTest;
     @Mock
     private IOcdAuthenticator ocdAuthenticator;
     @Mock
@@ -58,7 +55,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
         givenFormatDecorationFromContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
-        whenGetFormats();
+        whenGetIssues();
         thenFormatSetContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
@@ -67,19 +64,14 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture 
         given(ocdFormatHandler.getContentProviderFormat(contentProviderConsumer, getContentProviderName(), RECORD_ID)).willReturn(FORMAT_ID);
     }
 
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
-    }
-
     @Test
     public void getFormats_MediaNotFound() {
         givenContentProviderRecordIdInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
-        whenGetFormats();
-        thenFormatSetIsEmpty();
+        whenGetIssues();
+        thenFormatsEmpty();
     }
 
     @Test

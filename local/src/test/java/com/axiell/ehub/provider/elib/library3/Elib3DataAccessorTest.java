@@ -7,7 +7,6 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatBuilder;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,9 +20,8 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixture<Elib3DataAccessor> {
 
-    private Elib3DataAccessor underTest;
     @Mock
     private IElib3CommandChainFactory commandChainFactory;
     @Mock
@@ -47,7 +45,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     public void getFormats() {
         givenExpectedFormats();
         givenGetFormatsCommandChain();
-        whenGetFormats();
+        whenGetIssues();
         thenActualFormatsEqualsExpectedFormats();
     }
 
@@ -107,13 +105,8 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
         given(commandChainFactory.createGetFormatsCommandChain()).willReturn(getFormatsCommandChain);
     }
 
-    private void whenGetFormats() {
-        List<Issue> issues= underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
-    }
-
     private void thenActualFormatsEqualsExpectedFormats() {
-        assertThat(actualFormats, is(expectedFormats));
+        assertThat(getActualFormats(), is(expectedFormats));
     }
 
     @Override

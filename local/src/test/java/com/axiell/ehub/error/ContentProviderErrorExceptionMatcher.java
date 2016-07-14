@@ -46,7 +46,7 @@ public class ContentProviderErrorExceptionMatcher extends TypeSafeMatcher<Throwa
         if (!errorCauseArgument.getType().equals(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS)) {
             return false;
         }
-        if (!errorCauseArgument.getValue().equals(status)) {
+        if (!status.equals(errorCauseArgument.getValue())) {
             return false;
         }
         return true;

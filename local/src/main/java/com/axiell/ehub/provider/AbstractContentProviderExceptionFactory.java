@@ -1,6 +1,9 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.*;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +13,8 @@ import javax.ws.rs.core.Response;
 
 public abstract class AbstractContentProviderExceptionFactory<E> implements IContentProviderExceptionFactory<E> {
     static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";
-    private static final int UNKNOWN_STATUS_CODE = -1;
-    private static final String UNKNOWN_CONTENT_PROVIDER = "unknown";
+    public final String UNKNOWN_CONTENT_PROVIDER = "unknown";
+    public static final String UNKNOWN_STATUS_CODE = "unknown";
     private final Class<E> clazz;
     private IEhubExceptionFactory ehubExceptionFactory;
     private ContentProviderConsumer contentProviderConsumer;
@@ -44,7 +47,8 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
             return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
         }
         if (StringUtils.isBlank(code)) {
-            code = String.valueOf(getStatusCode(response));
+            Integer statusCode = getStatusCode(response);
+            code = statusCode == null ? UNKNOWN_STATUS_CODE : String.valueOf(statusCode);
         }
         return makeInternalServerErrorException(code, message);
     }
@@ -61,6 +65,9 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         if (type != null) {
             return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(message, contentProviderConsumer, type, language);
         }
+        if (StringUtils.isBlank(code)) {
+            code = UNKNOWN_STATUS_CODE;
+        }
         return makeInternalServerErrorException(code, message);
     }
 
@@ -70,9 +77,9 @@ public abstract class AbstractContentProviderExceptionFactory<E> implements ICon
         return new InternalServerErrorException(message, ErrorCause.CONTENT_PROVIDER_ERROR, nameArg, statusArg);
     }
 
-    protected int getStatusCode(final Response response) {
+    protected Integer getStatusCode(final Response response) {
         final Response.StatusType status = response.getStatusInfo();
-        return status == null ? UNKNOWN_STATUS_CODE : status.getStatusCode();
+        return status == null ? null : status.getStatusCode();
     }
 
     protected ErrorCauseArgument makeStatusCodeErrorCauseArgument(final String code) {

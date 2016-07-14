@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.f1;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -7,7 +8,6 @@ import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,19 +15,15 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.axiell.ehub.ErrorCauseArgumentType;
-
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
-public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F1DataAccessor> {
     private static final String LOAN_ID = "loanId";
-    private F1DataAccessor underTest;
+
     @Mock
     private IF1Facade f1Facade;
     @Mock
@@ -61,7 +57,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
         givenFormatDecorationFromContentProvider();
         givenFormatIdFromF1Facade();
         givenFormatFromFormatFactory();
-        whenGetFormats();
+        whenGetIssues();
         thenFormatSetContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
@@ -74,8 +70,8 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
         givenLanguageInCommandData();
         givenFormatDecorationFromContentProvider();
         givenNoSuchFormatFromF1Facade();
-        whenGetFormats();
-        thenFormatSetIsEmpty();
+        whenGetIssues();
+        thenFormatsEmpty();
     }
 
     private void givenNoSuchFormatFromF1Facade() {
@@ -143,7 +139,8 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     private void givenInternalServerErrorException() {
         given(ehubExceptionFactory
-                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class),
+                .createInternalServerErrorExceptionWithContentProviderNameAndStatus(anyString(), any(ContentProviderConsumer.class),
+                        any(ErrorCauseArgumentType.class),
                         anyString())).willReturn(internalServerErrorException);
     }
 
@@ -192,11 +189,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture {
 
     private void givenGetFormatResponseFromF1Facade() {
         given(f1Facade.getFormats(any(CommandData.class))).willReturn(getFormatResponse);
-    }
-
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
     }
 
     @Override

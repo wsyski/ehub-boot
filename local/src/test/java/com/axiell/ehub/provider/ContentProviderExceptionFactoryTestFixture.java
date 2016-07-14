@@ -23,7 +23,6 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public abstract class ContentProviderExceptionFactoryTestFixture<E> {
     protected static final String LANGUAGE = "en";
-    protected static final String STATUS_UNKNOWN = "unknown";
 
     @Mock
     protected Response response;
@@ -57,14 +56,13 @@ public abstract class ContentProviderExceptionFactoryTestFixture<E> {
         assertThat(errorCauseArguments.size(), is(2));
         thenValidContentProviderName(errorCauseArguments.get(0));
         assertThat(errorCauseArguments.get(1).getType(), is(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS));
-        assertThat(errorCauseArguments.get(1).getValue(), is(String.valueOf(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode())));
         thenInternalServerErrorExceptionHasMessage(message);
     }
 
 
     protected void thenInternalServerErrorExceptionWithStatusUnknown() {
         assertThat(internalServerErrorException, is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                        STATUS_UNKNOWN)));
+                AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE)));
     }
 
     protected void internalServerErrorExceptionWithStatusProductUnavailable() {
