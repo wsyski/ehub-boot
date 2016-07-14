@@ -71,7 +71,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
         givenFormatDecorationFromContentProvider();
         givenNoSuchFormatFromF1Facade();
         whenGetIssues();
-        thenFormatSetIsEmpty();
+        thenFormatsEmpty();
     }
 
     private void givenNoSuchFormatFromF1Facade() {

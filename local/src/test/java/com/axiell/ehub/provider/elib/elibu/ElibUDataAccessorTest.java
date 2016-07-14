@@ -116,7 +116,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenProduct();
         givenAvailableFormats();
         whenGetIssues();
-        thenFormatSetIsEmpty();
+        thenFormatsEmpty();
     }
 
     @Test

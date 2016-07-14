@@ -106,7 +106,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void thenActualFormatsEqualsExpectedFormats() {
-        assertThat(actualFormats, is(expectedFormats));
+        assertThat(getActualFormats(), is(expectedFormats));
     }
 
     @Override
