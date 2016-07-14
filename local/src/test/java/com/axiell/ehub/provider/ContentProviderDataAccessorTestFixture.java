@@ -10,6 +10,7 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import com.axiell.ehub.provider.record.issue.Issue;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public abstract class ContentProviderDataAccessorTestFixture<A extends IContentProviderDataAccessor> {
+    protected static final Format DOWNLOADABLE_FORMAT = FormatBuilder.downloadableFormat();
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     protected static final String RECORD_ID = "1";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
@@ -42,8 +44,6 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     protected static final String PIN = "pin";
     private static final Date EXPIRATION_DATE = new Date();
     private static final int ERROR_STATUS = 500;
-
-    protected A underTest;
 
     @Mock
     protected EhubConsumer ehubConsumer;
@@ -69,14 +69,15 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     protected CommandData commandData;
     @Mock
     protected Patron patron;
-
-    protected Format format = FormatBuilder.downloadableFormat();
-    protected ContentProviderLoan actualLoan;
-    protected ContentLink actualContentLink;
     @Mock
     private PendingLoan pendingLoan;
 
-    protected List<Format> actualFormats;
+    protected ContentProviderLoan actualLoan;
+    protected ContentLink actualContentLink;
+
+    protected List<Issue> actualIssues;
+
+    protected A underTest;
 
     @Before
     public void fixtureSetUp() {
@@ -176,7 +177,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void givenFormatFromFormatFactory() {
-        given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(format);
+        given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(DOWNLOADABLE_FORMAT);
     }
 
     protected void thenActualLoanContainsContentLinkHref() {
@@ -190,27 +191,32 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void thenActualFormatEqualsExpected() {
-        Assert.assertFalse(actualFormats.isEmpty());
-        Format actualFormat = actualFormats.iterator().next();
-        assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(format.toDTO()));
+        Assert.assertFalse(getActualFormats().isEmpty());
+        Format actualFormat = getActualFormats().iterator().next();
+        assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(DOWNLOADABLE_FORMAT.toDTO()));
     }
 
     private void thenFormatsNotNull() {
-        Assert.assertNotNull(actualFormats);
+        Assert.assertNotNull(getActualFormats());
     }
 
     protected void thenFormatSetContainsOneFormat() {
-        Assert.assertTrue(actualFormats.size() == 1);
+        Assert.assertTrue(getActualFormats().size() == 1);
     }
 
-    protected void thenFormatSetIsEmpty() {
+    protected void thenFormatsEmpty() {
         thenFormatsNotNull();
-        assertTrue(actualFormats.isEmpty());
+        assertTrue(getActualFormats().isEmpty());
     }
 
     protected void whenGetIssues() {
-        List<Issue> issues = underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
+        actualIssues = underTest.getIssues(commandData);
+    }
+
+    protected List<Format> getActualFormats() {
+        Assert.assertThat(actualIssues, Matchers.notNullValue());
+        Assert.assertThat(actualIssues.size(), Matchers.greaterThan(0));
+        return actualIssues.iterator().next().getFormats();
     }
 
     protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {

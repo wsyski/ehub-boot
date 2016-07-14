@@ -71,7 +71,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
         whenGetIssues();
-        thenFormatSetIsEmpty();
+        thenFormatsEmpty();
     }
 
     @Test
