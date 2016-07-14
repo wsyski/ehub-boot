@@ -1,39 +1,31 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider.elib.elibu;
 
-import static com.axiell.ehub.EhubAssert.thenInternalServerErrorExceptionIsThrown;
-import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import com.axiell.ehub.BadRequestException;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
-import com.axiell.ehub.provider.record.issue.Issue;
+import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
+import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
+import com.axiell.ehub.provider.record.format.FormatTextBundle;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.axiell.ehub.BadRequestException;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.elib.elibu.ConsumedProduct.Content;
-import com.axiell.ehub.provider.elib.elibu.Product.AvailableFormat;
-import com.axiell.ehub.provider.record.format.FormatTextBundle;
+import java.util.Collections;
+import java.util.List;
 
-public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+import static com.axiell.ehub.EhubAssert.thenInternalServerErrorExceptionIsThrown;
+import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+
+public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixture<ElibUDataAccessor> {
     private static final Integer LICENSE_ID = 1;
 
-    private AbstractContentProviderDataAccessor underTest;
     @Mock
     private IElibUFacade elibUFacade;
     @Mock
@@ -80,7 +72,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenAvailableFormats();
         givenFormatIdInAvailableFormat();
         givenTextBundle();
-        whenGetFormats();
+        whenGetIssues();
         thenFormatSetContainsOneFormat();
     }
 
@@ -113,11 +105,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         given(availableFormat.getId()).willReturn(FORMAT_ID);
     }
 
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
-    }
-
     @Test
     public void getFormatsWhenNoFormatId() {
         givenContentProviderConsumerInCommandData();
@@ -128,7 +115,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatusHasRetrievedProduct();
         givenProduct();
         givenAvailableFormats();
-        whenGetFormats();
+        whenGetIssues();
         thenFormatSetIsEmpty();
     }
 
@@ -141,7 +128,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatus();
         givenStatusHasNotRetrievedProduct();
         try {
-            whenGetFormats();
+            whenGetIssues();
         } catch (InternalServerErrorException e) {
             thenInternalServerErrorExceptionIsThrown(e);
         }

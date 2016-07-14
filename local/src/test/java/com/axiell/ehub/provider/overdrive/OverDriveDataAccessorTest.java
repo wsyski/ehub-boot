@@ -6,14 +6,12 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
-import com.axiell.ehub.provider.record.issue.Issue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,7 +29,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture {
+public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture<OverDriveDataAccessor> {
     private static final String RECORD_ID = "1";
     private static final String FORMAT_ID = "1";
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
@@ -68,8 +66,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private CheckoutsDTO checkouts;
     private IEhubExceptionFactory ehubExceptionFactory = new EhubExceptionFactoryStub();
 
-    private OverDriveDataAccessor underTest;
-
     @Before
     public void setUpElibUDataAccessor() {
         underTest = new OverDriveDataAccessor();
@@ -93,7 +89,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDiscoveryFormat();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
-        whenGetFormats();
+        whenGetIssues();
         thenActualFormatEqualsExpected();
     }
 
@@ -113,7 +109,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenCirculationFormats();
         givenCirculationFormatType();
         givenTextBundle();
-        whenGetFormats();
+        whenGetIssues();
         thenActualFormatEqualsExpected();
     }
 
@@ -133,7 +129,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
         givenExpectedInternalServerException();
-        whenGetFormats();
+        whenGetIssues();
     }
 
     @Test
@@ -279,11 +275,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private void givenFormatIdInDiscoveryFormat() {
         given(discoveryFormat.getId()).willReturn(FORMAT_ID);
         given(discoveryFormat.getName()).willReturn(OVERDRIVE_FORMAT_NAME);
-    }
-
-    private void whenGetFormats() {
-        List<Issue> issues =underTest.getIssues(commandData);
-        actualFormats = issues.get(0).getFormats();
     }
 
     private void givenErrorDetails() {
