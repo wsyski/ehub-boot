@@ -27,7 +27,7 @@ public class TestDataConstants {
     public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "c2VjcmV0S2V5";
-    public static final String PLATFORM_PCMAC = "PCMAC";
+    public static final String PLATFORM_DESKTOP = "DESKTOP";
     public static final String PLATFORM_ANDROID = "ANDROID";
     public static final String PLATFORM_IOS = "IOS";
 }

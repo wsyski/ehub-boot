@@ -55,7 +55,7 @@ public class TestDataResource implements ITestDataResource {
     @Autowired
     private IAliasAdminController aliasAdminController;
 
-    private Platform platformPcMac;
+    private Platform platformDesktop;
     private Platform platformAndroid;
     private Platform platformIos;
 
@@ -112,7 +112,7 @@ public class TestDataResource implements ITestDataResource {
     }
 
     private void initPlatforms() {
-        platformPcMac = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_PCMAC));
+        platformDesktop = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_DESKTOP));
         platformIos = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_IOS));
         platformAndroid = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_ANDROID));
     }
@@ -129,7 +129,7 @@ public class TestDataResource implements ITestDataResource {
         FormatDecoration formatDecoration1 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, STREAMING,
                 Collections.singleton(platformIos));
         FormatDecoration formatDecoration2 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, DOWNLOADABLE,
-                Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
+                Sets.newHashSet(platformDesktop, platformIos, platformAndroid));
 
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_1_ID, formatDecoration1);
