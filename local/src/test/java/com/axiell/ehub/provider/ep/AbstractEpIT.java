@@ -1,10 +1,9 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.EhubException;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.util.CollectionFinder;
@@ -19,8 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
-import static com.axiell.ehub.ErrorCauseArgumentType.ALREADY_ON_LOAN;
 import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 import static junit.framework.Assert.assertNotNull;
@@ -79,8 +76,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
 
     private void thenGetFormatWithInvalidRecordIdFails() {
         whenGetFormats(INVALID_RECORD_ID);
-        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, CONTENT_PROVIDER_TEST_EP),
-                        new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
+        givenExpectedContentProviderErrorException(INVALID_CONTENT_PROVIDER_RECORD_ID);
     }
 
     protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
@@ -136,11 +132,11 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         underTest.deleteCheckout(contentProviderConsumer, patron, checkoutId);
     }
 
-    protected void givenExpectedEhubException(final EhubError ehubError) {
-        expectedException.expect(EhubException.class);
-        expectedException.expectMessage(ehubError.getMessage());
+    protected void givenExpectedContentProviderErrorException(final ErrorCauseArgumentType errorCauseArgumentType) {
+        expectedException.expect(InternalServerErrorException.class);
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, CONTENT_PROVIDER_TEST_EP,
+                errorCauseArgumentType.name()));
     }
-
 
     protected abstract boolean isLoanPerProduct();
 

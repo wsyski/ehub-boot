@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.borrowbox;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
@@ -13,7 +14,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<ErrorDTO> {
-    protected static final String MESSAGE = "message";
+    private static final String MESSAGE = "message";
     private static final String STATUS_NOT_AVAILABLE = "notAvailable";
 
     @Mock
@@ -29,14 +30,14 @@ public class BorrowBoxExceptionFactoryTest extends ContentProviderExceptionFacto
         givenErrorEntityWithMessageAndStatus(MESSAGE, AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
         whenCreateExecuted();
         thenInternalServerErrorExceptionHasMessage(MESSAGE);
-        thenInternalServerErrorExceptionWithStatusUnknown();
+        thenExpectedContentProviderErrorException(AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
     }
 
     @Test
     public void errorEntityWithMessageAndStatusProductNotFound() {
         givenErrorEntityWithMessageAndStatus(MESSAGE, STATUS_NOT_AVAILABLE);
         whenCreateExecuted();
-        internalServerErrorExceptionWithStatusProductUnavailable();
+        thenExpectedContentProviderErrorException(ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name());
     }
 
     private void givenErrorEntityWithMessageAndStatus(final String message, final String status) {

@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OcdExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<ErrorDTO> {
-    protected static final String MESSAGE = "message";
+    private static final String MESSAGE = "message";
 
     @Mock
     private ErrorDTO error;
@@ -34,7 +34,7 @@ public class OcdExceptionFactoryTest extends ContentProviderExceptionFactoryTest
     public void errorEntityWithMessageAndStatusLibraryLimitReached() {
         givenErrorEntityWithMessageAndStatus(OcdExceptionFactory.MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE, null);
         whenCreateExecuted();
-        internalServerErrorExceptionWithLibraryLimitReached();
+        thenExpectedContentProviderErrorException(ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED.name());
     }
 
     private void givenErrorEntityWithMessageAndStatus(final String message, final String status) {

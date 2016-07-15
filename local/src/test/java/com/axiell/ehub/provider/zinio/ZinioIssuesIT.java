@@ -43,10 +43,9 @@ public class ZinioIssuesIT extends AbstractZinioIT {
         }
     }
 
-
     private void thenExpectedInvalidRecordIdException() {
         thenExpectedEhubRuntimeException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, CONTENT_PROVIDER_ZINIO),
-                new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name())));
+                new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
     }
 
     private void thenExpectedIssues() {
