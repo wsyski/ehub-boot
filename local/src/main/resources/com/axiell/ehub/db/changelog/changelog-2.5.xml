@@ -104,6 +104,7 @@
     </changeSet>
     <changeSet id="9" author="ehub">
         <renameColumn tableName="EHUB_LOAN" newColumnName="CONTENT_P_F_F_DECORATION_ID" oldColumnName="CONTENT_P_FORMAT_DECORATION_ID"/>
+        <comment>Renamed column CONTENT_P_FORMAT_DECORATION_ID to CONTENT_P_F_F_DECORATION_ID EHUB_LOAN</comment>
     </changeSet>
     <changeSet id="10" author="ehub" >
         <addColumn tableName="CONTENT_P_FORMAT_DECORATION">
@@ -113,6 +114,7 @@
             <column name="LOCKED" value="0"/>
         </update>
         <addNotNullConstraint columnName="LOCKED" tableName="CONTENT_P_FORMAT_DECORATION"/>
+        <comment>Added not null constraint on column locked in CONTENT_P_FORMAT_DECORATION</comment>
     </changeSet>
     <changeSet id="11" author="ehub" dbms="oracle">
         <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
