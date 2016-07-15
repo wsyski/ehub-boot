@@ -1,7 +1,10 @@
 package com.axiell.ehub.provider.zinio;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
@@ -9,7 +12,9 @@ import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -21,9 +26,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
+import static org.mockito.BDDMockito.given;
+
 @RunWith(MockitoJUnitRunner.class)
 public class ZinioResponseFactoryTest {
     private static final String LANGUAGE = Locale.ENGLISH.getLanguage();
+
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     protected EhubConsumer ehubConsumer;
@@ -42,6 +53,8 @@ public class ZinioResponseFactoryTest {
     public void setUp() {
         underTest = new ZinioResponseFactory();
         ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+        given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ZINIO);
     }
 
     @Test
@@ -58,6 +71,13 @@ public class ZinioResponseFactoryTest {
         zinioResponse = whenGetZinioResponse(response);
         thenResponseStatusOK();
         thenExpectedIssues();
+    }
+
+    @Test
+    public void createIssuesResponse_invalidRecordId() throws Exception {
+        givenExpectedInternalErrorException();
+        String response = givenExpectedZinioResponse("issuesResponse_invalidRecordId.txt");
+        zinioResponse = whenGetZinioResponse(response);
     }
 
     private void thenExpectedLoginUrl() {
@@ -79,6 +99,12 @@ public class ZinioResponseFactoryTest {
 
     private IZinioResponse whenGetZinioResponse(final String response) {
         return underTest.create(response, contentProviderConsumer, LANGUAGE);
+    }
+
+    private void givenExpectedInternalErrorException() {
+        expectedException.expect(InternalServerErrorException.class);
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO,
+                ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name()));
     }
 
     private String givenExpectedZinioResponse(final String fileName) throws IOException {
