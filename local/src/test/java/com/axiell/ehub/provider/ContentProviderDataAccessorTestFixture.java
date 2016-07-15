@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.axiell.ehub.checkout.CheckoutMetadataBuilder.ISSUE_ID;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -143,20 +142,24 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(commandData.getContentProviderLoanMetadata()).willReturn(loanMetadata);
     }
 
-    protected void givenContentProviderLoanIdFromLoanMetadata() {
+    protected void givenContentProviderLoanIdInLoanMetadata() {
         given(loanMetadata.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
     }
 
+    protected void givenContentProviderIssueIdInLoanMetadata() {
+        given(loanMetadata.getContentProviderIssueId()).willReturn(ISSUE_ID);
+    }
+
     protected void givenTextBundle() {
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
     }
 
-    protected void givenContentProviderFormatIdFromFormatDecoration() {
+    protected void givenContentProviderFormatIdInFormatDecoration() {
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
-    protected void givenFormatDecorationFromContentProvider() {
+    protected void givenFormatDecorationInContentProvider() {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
     }
 
@@ -164,7 +167,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(formatDecoration.getContentDisposition()).willReturn(ContentDisposition.DOWNLOADABLE);
     }
 
-    protected void givenFormatDecorationFromContentProviderLoanMetadata() {
+    protected void givenFormatDecorationInContentProviderLoanMetadata() {
         given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
     }
 
@@ -184,7 +187,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(response.getStatus()).willReturn(ERROR_STATUS);
     }
 
-    protected void givenFormatFromFormatFactory() {
+    protected void givenFormatInFormatFactory() {
         given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(DOWNLOADABLE_FORMAT);
     }
 

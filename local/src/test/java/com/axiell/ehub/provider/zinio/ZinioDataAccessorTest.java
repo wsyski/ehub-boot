@@ -49,9 +49,9 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
         givenZinioFacadeReturnsFormats();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
@@ -61,15 +61,31 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     public void createLoan() {
         givenLanguageInCommandData();
         givenContentProviderConsumerInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
+        givenContentProviderIssueIdInCommandData();
+        givenPatronInCommandData();
         givenLoginUrl();
         givenContentUrl();
-        givenContentProviderIssueIdInCommandData();
         givenExpirationDateFactory();
         givenCheckout();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
+    }
+
+    @Test
+    public void getContent() {
+        givenLanguageInCommandData();
+        givenContentProviderConsumerInCommandData();
+        givenContentProviderLoanMetadataInCommandData();
+        givenContentProviderIssueIdInCommandData();
+        givenFormatDecorationInCommandData();
+        givenPatronInCommandData();
+        givenContentProviderIssueIdInLoanMetadata();
+        givenLoginUrl();
+        givenContentUrl();
+        whenGetContent();
+        thenActualContentLinkContainsHref();
     }
 
     private void givenZinioFacadeReturnsFormats() {
@@ -93,22 +109,6 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     public void givenCheckout() {
         zinioFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), eq(LANGUAGE));
     }
-
-    /*
-    @Test
-    public void getContent() {
-        givenGetCheckout();
-        givenCompleteCheckout();
-        givenContentProviderLoanMetadataInCommandData();
-        givenFormatDecorationInCommandData();
-        whenGetContent();
-        thenActualContentLinkContainsHref();
-    }
-
-    public void givenGetCheckout() {
-        given(zinioFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
-    }
-    */
 
 
     @Override

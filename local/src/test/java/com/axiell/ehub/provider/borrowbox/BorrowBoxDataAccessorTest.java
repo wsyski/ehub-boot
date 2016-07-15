@@ -46,9 +46,9 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
         givenBorrowBoxFacadeReturnsFormats();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
@@ -57,7 +57,7 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
     @Test
     public void createLoan() {
         givenContentProviderConsumerInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
         givenCompleteCheckout();
         givenCheckout();
