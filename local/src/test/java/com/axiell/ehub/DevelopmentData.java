@@ -12,7 +12,6 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 import com.google.common.collect.Sets;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -50,7 +49,7 @@ public class DevelopmentData {
     public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "testEpSecretKey";
-    public static final String PLATFORM_PCMAC = "PCMAC";
+    public static final String PLATFORM_DESKTOP = "DESKTOP";
     public static final String PLATFORM_ANDROID = "ANDROID";
     public static final String PLATFORM_IOS = "IOS";
 
@@ -64,7 +63,7 @@ public class DevelopmentData {
     private Long ehubConsumerId;
     private EhubConsumer ehubConsumer;
     private ContentProvider contentProvider;
-    private Platform platformPcMac;
+    private Platform platformDesktop;
     private Platform platformAndroid;
     private Platform platformIos;
 
@@ -163,7 +162,7 @@ public class DevelopmentData {
     }
 
     private void initPlatforms() {
-        platformPcMac = platformAdminController.save(new Platform(PLATFORM_PCMAC));
+        platformDesktop = platformAdminController.save(new Platform(PLATFORM_DESKTOP));
         platformIos = platformAdminController.save(new Platform(PLATFORM_IOS));
         platformAndroid = platformAdminController.save(new Platform(PLATFORM_ANDROID));
     }
@@ -179,7 +178,7 @@ public class DevelopmentData {
                 Collections.singleton(platformAndroid));
         FormatDecoration formatDecoration1 = new FormatDecoration(contentProvider, TEST_EP_FORMAT_1_ID, STREAMING, Collections.singleton(platformIos));
         FormatDecoration formatDecoration2 = new FormatDecoration(contentProvider, TEST_EP_FORMAT_2_ID, DOWNLOADABLE,
-                Sets.newHashSet(platformPcMac, platformIos, platformAndroid));
+                Sets.newHashSet(platformDesktop, platformIos, platformAndroid));
 
         formatDecorations.put(TEST_EP_FORMAT_0_ID, formatDecoration0);
         formatDecorations.put(TEST_EP_FORMAT_1_ID, formatDecoration1);
