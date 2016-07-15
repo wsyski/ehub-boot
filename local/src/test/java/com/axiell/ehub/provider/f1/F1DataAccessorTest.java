@@ -58,7 +58,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
         givenFormatIdFromF1Facade();
         givenFormatFromFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 

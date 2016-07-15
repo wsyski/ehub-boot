@@ -30,8 +30,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture<OverDriveDataAccessor> {
-    private static final String RECORD_ID = "1";
-    private static final String FORMAT_ID = "1";
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
 
     @Rule

@@ -1,51 +1,48 @@
-package com.axiell.ehub.provider.borrowbox;
+package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
+import com.axiell.ehub.provider.IExpirationDateFactory;
+import com.axiell.ehub.provider.record.issue.IssueBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
-import java.util.Date;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFixture<BorrowBoxDataAccessor> {
+public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixture<ZinioDataAccessor> {
 
     @Mock
-    private IBorrowBoxFacade borrowBoxFacade;
+    private IZinioFacade zinioFacade;
     @Mock
     private InternalServerErrorException internalServerErrorException;
     @Mock
     private IEhubExceptionFactory ehubExceptionFactory;
     @Mock
-    private FormatsDTO formats;
-    @Mock
-    private FormatsDTO.FormatDTO format;
-    @Mock
-    private CheckoutDTO checkout;
+    private IExpirationDateFactory expirationDateFactory;
+    private List<IssueDTO> issues = Collections.singletonList(IssueDTO.toIssueDTO(IssueBuilder.periodicalIssue()));
 
     @Before
     public void setUp() {
-        underTest = new BorrowBoxDataAccessor();
-        ReflectionTestUtils.setField(underTest, "borrowBoxFacade", borrowBoxFacade);
+        underTest = new ZinioDataAccessor();
+        ReflectionTestUtils.setField(underTest, "zinioFacade", zinioFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
+        ReflectionTestUtils.setField(underTest, "expirationDateFactory", expirationDateFactory);
     }
 
     @Test
-    public void getFormats() {
+    public void getIssues() {
         givenLanguageInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
-        givenBorrowBoxFacadeReturnsFormats();
+        givenZinioFacadeReturnsFormats();
         givenFormatDecorationFromContentProvider();
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
@@ -54,6 +51,15 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         thenActualFormatEqualsExpected();
     }
 
+    private void givenZinioFacadeReturnsFormats() {
+        given(zinioFacade.getIssues(contentProviderConsumer, RECORD_ID, LANGUAGE)).willReturn(issues);
+        /*
+        given(issues.getFormats()).willReturn(Collections.singletonList(format));
+        given(format.getFormatId()).willReturn(FORMAT_ID);
+        */
+    }
+
+    /*
     @Test
     public void createLoan() {
         givenContentProviderConsumerInCommandData();
@@ -75,19 +81,15 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         thenActualContentLinkContainsHref();
     }
 
-    private void givenBorrowBoxFacadeReturnsFormats() {
-        given(borrowBoxFacade.getFormats(contentProviderConsumer, patron, LANGUAGE, RECORD_ID)).willReturn(formats);
-        given(formats.getFormats()).willReturn(Collections.singletonList(format));
-        given(format.getFormatId()).willReturn(FORMAT_ID);
-    }
+
 
     public void givenCheckout() {
-        given(borrowBoxFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class)))
+        given(zinioFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class)))
                 .willReturn(checkout);
     }
 
     public void givenGetCheckout() {
-        given(borrowBoxFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
+        given(zinioFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
     }
 
     public void givenCompleteCheckout() {
@@ -95,6 +97,8 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(checkout.getLoanId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
         given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
     }
+      */
+
 
     @Override
     protected String getContentProviderName() {

@@ -56,7 +56,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenContentProviderConsumerInCommandData();
         givenFormatFromFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 
