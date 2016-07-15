@@ -40,9 +40,9 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
         givenEpFacadeReturnsFormats();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();

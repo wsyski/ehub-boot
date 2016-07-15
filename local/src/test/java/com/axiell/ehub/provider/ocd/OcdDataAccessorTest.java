@@ -52,9 +52,9 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenFormatHandlerReturnsContentProviderFormat();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderAliasInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
@@ -67,9 +67,9 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
     @Test
     public void getFormats_MediaNotFound() {
         givenContentProviderRecordIdInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenFormatsEmpty();
     }
@@ -78,7 +78,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
     public void createLoan_success() {
         givenBearerToken();
         givenContentProviderConsumerInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
         givenCheckoutIsSuccessful();
         givenCheckout();

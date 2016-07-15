@@ -74,7 +74,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForAvailableProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -93,7 +93,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForBorrowedProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -113,7 +113,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForUnavailableProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -150,7 +150,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenLinks();
         givenOverDriveContentLink();
         givenDownloadUrl();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         whenCreateLoan();
@@ -182,7 +182,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadableContentDisposition();
         givenLinks();
         givenOverDriveContentLink();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         whenCreateLoan();
@@ -201,7 +201,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInContentProviderLoanMetadata();
         givenCheckoutList();
         givenCirculationFormats();
         givenCirculationFormatType();
@@ -230,7 +230,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInContentProviderLoanMetadata();
         givenFormatIdFromFormatDecoration();
         givenClientResponse();
         givenClientResponseStatus();

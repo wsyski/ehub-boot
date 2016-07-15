@@ -60,7 +60,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     @Test
     public void getFormats() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -150,7 +150,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenConsumeProductResponse();
         givenResult();
         givenStatus();
@@ -263,7 +263,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenConsumeProductResponse();
         givenResult();
         givenStatus();
@@ -291,7 +291,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenConsumeProductResponse();
         givenResult();
         givenStatus();
@@ -317,7 +317,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenStatus();
         givenStatusIsConsumedLicense();
         givenLicenseId();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenConsumeProductResponse();
         givenResult();
         givenStatus();

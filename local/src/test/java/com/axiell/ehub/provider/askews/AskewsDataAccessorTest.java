@@ -62,7 +62,7 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenLoanDetails();
         givenLoanHasNotFailed();
         givenDownloadUrlInLoanDetail();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenDownloadableContentDisposition();
         givenExpirationDate();
         whenCreateLoan();
@@ -88,11 +88,11 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
     @Test
     public void getFormats() {
         givenPatronInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenTextBundle();
         whenGetIssues();
         thenActualFormatEqualsExpected();

@@ -35,7 +35,7 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenCompleteCheckout();
         givenCheckout();
         whenCreateLoan();
@@ -49,7 +49,7 @@ public class LpfEpDataAccessorTest extends EpDataAccessorTestFixture<LpfCheckout
         givenCompleteCheckout();
         givenFormatDecorationInCommandData();
         givenContentProviderLoanMetadataInCommandData();
-        givenContentProviderLoanIdFromLoanMetadata();
+        givenContentProviderLoanIdInLoanMetadata();
         givenContentProviderConsumerInCommandData();
         whenGetContent();
         thenActualContentLinkContainsHref();
