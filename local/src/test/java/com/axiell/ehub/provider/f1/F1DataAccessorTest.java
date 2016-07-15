@@ -149,10 +149,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
         givenCreateLoanResponseFromF1Facade();
     }
 
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
-    }
-
     private void givenLoanIdFromF1Facade() {
         given(createLoanResponse.isValidLoan()).willReturn(true);
         given(createLoanResponse.getValue()).willReturn(LOAN_ID);
@@ -175,10 +171,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
 
     private void thenActualLoanHasExpectedId() {
         assertEquals(LOAN_ID, actualLoan.id());
-    }
-
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
     }
 
     private void givenFormatIdFromF1Facade() {

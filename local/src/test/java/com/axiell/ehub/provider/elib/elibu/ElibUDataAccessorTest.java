@@ -208,10 +208,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         given(content.getUrl()).willReturn(ContentLinkBuilder.HREF);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     @Test
     public void createLoanWhenMissingFormat() {
         givenContentProviderConsumerInCommandData();
@@ -370,10 +366,6 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     private void givenContentProviderRecordIdInLoanMetadata() {
         given(loanMetadata.getRecordId()).willReturn(RECORD_ID);
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

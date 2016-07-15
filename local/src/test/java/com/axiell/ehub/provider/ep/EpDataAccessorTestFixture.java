@@ -58,14 +58,6 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
         given(format.getId()).willReturn(FORMAT_ID);
     }
 
-    protected void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
-    protected void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
-    }
-
     @Override
     protected String getContentProviderName() {
         return CONTENT_PROVIDER_TEST_EP;
