@@ -1,5 +1,7 @@
 package com.axiell.ehub.provider.zinio;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
 import org.junit.Before;
@@ -10,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ZinioExceptionFactoryTest extends ContentProviderExceptionFactoryTestFixture<String> {
-    protected static final String MESSAGE = "message";
+    private static final String MESSAGE = "message";
 
     private String message;
 
@@ -25,7 +27,7 @@ public class ZinioExceptionFactoryTest extends ContentProviderExceptionFactoryTe
         givenMessage(MESSAGE);
         whenCreateExecuted();
         thenInternalServerErrorExceptionHasMessage(MESSAGE);
-        thenInternalServerErrorExceptionWithStatusUnknown();
+        thenExpectedContentProviderErrorException(AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
     }
 
     @Test
@@ -33,7 +35,7 @@ public class ZinioExceptionFactoryTest extends ContentProviderExceptionFactoryTe
         givenMessage(ZinioExceptionFactory.MESSAGE_UNEXISTED_MAGAZINE_RBID);
         whenCreateExecuted();
         thenInternalServerErrorExceptionHasMessage(ZinioExceptionFactory.MESSAGE_UNEXISTED_MAGAZINE_RBID);
-        internalServerErrorExceptionWithStatusProductUnavailable();
+        thenExpectedContentProviderErrorException(ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID.name());
     }
 
     private void givenMessage(final String message) {

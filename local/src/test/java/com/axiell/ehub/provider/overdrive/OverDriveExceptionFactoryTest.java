@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.overdrive;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderExceptionFactoryTestFixture;
@@ -29,14 +30,14 @@ public class OverDriveExceptionFactoryTest extends ContentProviderExceptionFacto
         givenErrorEntityWithMessageAndStatus(MESSAGE, AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
         whenCreateExecuted();
         thenInternalServerErrorExceptionHasMessage(MESSAGE);
-        thenInternalServerErrorExceptionWithStatusUnknown();
+        thenExpectedContentProviderErrorException(AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE);
     }
 
     @Test
     public void errorEntityWithMessageAndStatusLibraryLimitReached() {
         givenErrorEntityWithMessageAndStatus(MESSAGE, OverDriveExceptionFactory.STATUS_NO_COPIES_AVAILABLE);
         whenCreateExecuted();
-        internalServerErrorExceptionWithLibraryLimitReached();
+        thenExpectedContentProviderErrorException(ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED.name());
     }
 
     private void givenErrorEntityWithMessageAndStatus(final String message, final String status) {

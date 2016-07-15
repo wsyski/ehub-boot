@@ -32,7 +32,6 @@ import static org.mockito.BDDMockito.given;
 public class ZinioResponseFactoryTest {
     private static final String LANGUAGE = Locale.ENGLISH.getLanguage();
 
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -75,7 +74,7 @@ public class ZinioResponseFactoryTest {
 
     @Test
     public void createIssuesResponse_invalidRecordId() throws Exception {
-        givenExpectedInternalErrorException();
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID);
         String response = givenExpectedZinioResponse("issuesResponse_invalidRecordId.txt");
         zinioResponse = whenGetZinioResponse(response);
     }
@@ -101,10 +100,10 @@ public class ZinioResponseFactoryTest {
         return underTest.create(response, contentProviderConsumer, LANGUAGE);
     }
 
-    private void givenExpectedInternalErrorException() {
+    private void givenExpectedContentProviderErrorException(final ErrorCauseArgumentType errorCauseArgumentType) {
         expectedException.expect(InternalServerErrorException.class);
         expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO,
-                ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name()));
+                errorCauseArgumentType.name()));
     }
 
     private String givenExpectedZinioResponse(final String fileName) throws IOException {
