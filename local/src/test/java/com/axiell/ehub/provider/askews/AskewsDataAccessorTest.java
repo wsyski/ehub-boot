@@ -22,7 +22,6 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixture<AskewsDataAccessor> {
-    private static final String RECORD_ID = "1";
     private static final Integer LOAN_ID = 1;
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
     private static final Integer LOAN_REQUEST_NOT_SUCCESS = -1;

@@ -1,11 +1,15 @@
 package com.axiell.ehub.provider.zinio;
 
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.issue.Issue;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.util.Collections;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,13 +23,13 @@ public class IssueDTO {
     @JsonProperty("zinio_cover_image_url")
     private String imageUrl;
 
+    private IssueDTO() {
+    }
+
     public IssueDTO(final String id, final String title, final String imageUrl) {
         this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
-    }
-
-    private IssueDTO() {
     }
 
     public String getId() {
@@ -38,6 +42,14 @@ public class IssueDTO {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public Issue toIssue(final Format format) {
+        return new Issue(id, title, imageUrl, Collections.singletonList(format));
+    }
+
+    public static IssueDTO toIssueDTO(final Issue issue) {
+        return new IssueDTO(issue.getId(), issue.getTitle(), issue.getImageUrl());
     }
 
     @Override

@@ -40,8 +40,7 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final Format format = formatFactory.create(contentProvider, ZINIO_STREAM_FORMAT_ID, language);
         final List<IssueDTO> issuesDTO = zinioFacade.getIssues(contentProviderConsumer, contentProviderRecordId, language);
-        return issuesDTO.stream().map(issueDTO -> new Issue(issueDTO.getId(), issueDTO.getTitle(), issueDTO.getImageUrl(),
-                Collections.singletonList(format))).collect(Collectors.toList());
+        return issuesDTO.stream().map(issueDTO -> issueDTO.toIssue(format)).collect(Collectors.toList());
     }
 
     @Override

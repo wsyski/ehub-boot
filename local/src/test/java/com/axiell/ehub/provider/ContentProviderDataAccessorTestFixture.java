@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
 import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
@@ -22,6 +23,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
@@ -33,17 +35,17 @@ import static org.mockito.Mockito.verify;
 public abstract class ContentProviderDataAccessorTestFixture<A extends IContentProviderDataAccessor> {
     protected static final Format DOWNLOADABLE_FORMAT = FormatBuilder.downloadableFormat();
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    protected static final String RECORD_ID = "1";
+    protected static final String RECORD_ID = "recordId";
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
     protected static final long CONTENT_PROVIDER_CONSUMER_ID = 1L;
     protected static final long EHUB_CONSUMER_ID = 1L;
     protected static final String CONTENT_HREF = ContentLinkBuilder.HREF;
-    protected static final String LANGUAGE = "sv";
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
     protected static final String PIN = "pin";
-    private static final Date EXPIRATION_DATE = new Date();
+    private static final Date EXPIRATION_DATE = CheckoutMetadataBuilder.EXPIRATION_DATE;
     private static final int ERROR_STATUS = 500;
 
     @Mock
@@ -190,8 +192,9 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void thenActualFormatEqualsExpected() {
-        Assert.assertFalse(getActualFormats().isEmpty());
-        Format actualFormat = getActualFormats().iterator().next();
+        List<Format> formats = getActualFormats();
+        Assert.assertFalse(formats.isEmpty());
+        Format actualFormat = formats.iterator().next();
         assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(DOWNLOADABLE_FORMAT.toDTO()));
     }
 
@@ -199,7 +202,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         Assert.assertNotNull(getActualFormats());
     }
 
-    protected void thenFormatSetContainsOneFormat() {
+    protected void thenActualFormatsContainsOneFormat() {
         Assert.assertTrue(getActualFormats().size() == 1);
     }
 

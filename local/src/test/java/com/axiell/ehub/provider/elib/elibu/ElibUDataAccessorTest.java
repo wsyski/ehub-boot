@@ -73,7 +73,7 @@ public class ElibUDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         givenFormatIdInAvailableFormat();
         givenTextBundle();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
     }
 
     private void givenProductResponse() {
