@@ -1,20 +1,12 @@
 package com.axiell.ehub.provider.ep.lpp;
 
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.provider.ep.AbstractEpIT;
 import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
-import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
 import static com.axiell.ehub.ErrorCauseArgumentType.ALREADY_ON_LOAN;
 import static junit.framework.Assert.assertNotNull;
 
@@ -42,8 +34,7 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
     }
 
     private void thenRepeatedCheckoutFails() {
-        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, CONTENT_PROVIDER_TEST_EP),
-                        new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, ALREADY_ON_LOAN.name())));
+        givenExpectedContentProviderErrorException(ALREADY_ON_LOAN);
         whenCheckout();
     }
 

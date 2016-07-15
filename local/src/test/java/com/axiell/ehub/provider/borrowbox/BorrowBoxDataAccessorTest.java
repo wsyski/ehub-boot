@@ -20,7 +20,7 @@ import static org.mockito.Matchers.any;
 public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFixture<BorrowBoxDataAccessor> {
 
     @Mock
-    private BorrowBoxFacade borrowBoxFacade;
+    private IBorrowBoxFacade borrowBoxFacade;
     @Mock
     private InternalServerErrorException internalServerErrorException;
     @Mock
@@ -46,18 +46,18 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
         givenBorrowBoxFacadeReturnsFormats();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 
     @Test
     public void createLoan() {
         givenContentProviderConsumerInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
         givenCompleteCheckout();
         givenCheckout();
@@ -94,14 +94,6 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getLoanId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
         given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
-    }
-
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
-    public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

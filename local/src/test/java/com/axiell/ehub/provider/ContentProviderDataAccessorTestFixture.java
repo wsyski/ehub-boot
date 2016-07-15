@@ -1,5 +1,7 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -10,6 +12,7 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import com.axiell.ehub.provider.record.issue.Issue;
+import com.axiell.ehub.provider.record.issue.IssueBuilder;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +24,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
@@ -32,18 +36,19 @@ import static org.mockito.Mockito.verify;
 public abstract class ContentProviderDataAccessorTestFixture<A extends IContentProviderDataAccessor> {
     protected static final Format DOWNLOADABLE_FORMAT = FormatBuilder.downloadableFormat();
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    protected static final String RECORD_ID = "1";
+    protected static final String RECORD_ID = "recordId";
+    protected static final String ISSUE_ID = IssueBuilder.ISSUE_ID;
     protected static final String FORMAT_ID = FormatBuilder.FORMAT_ID;
     protected static final String CONTENT_PROVIDER_LOAN_ID = "contentProviderLoanId";
     protected static final long CONTENT_PROVIDER_CONSUMER_ID = 1L;
     protected static final long EHUB_CONSUMER_ID = 1L;
     protected static final String CONTENT_HREF = ContentLinkBuilder.HREF;
-    protected static final String LANGUAGE = "sv";
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     protected static final String PATRON_ID = "patronId";
     protected static final String CARD = "card";
     protected static final String PIN = "pin";
-    private static final Date EXPIRATION_DATE = new Date();
-    private static final int ERROR_STATUS = 500;
+    protected static final Date EXPIRATION_DATE = CheckoutMetadataBuilder.EXPIRATION_DATE;
+    protected static final int ERROR_STATUS = 500;
 
     @Mock
     protected EhubConsumer ehubConsumer;
@@ -73,10 +78,8 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     private PendingLoan pendingLoan;
 
     protected ContentProviderLoan actualLoan;
-    protected ContentLink actualContentLink;
-
+    protected Content actualContent;
     protected List<Issue> actualIssues;
-
     protected A underTest;
 
     @Before
@@ -119,6 +122,10 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(commandData.getContentProviderRecordId()).willReturn(RECORD_ID);
     }
 
+    protected void givenContentProviderIssueIdInCommandData() {
+        given(commandData.getContentProviderIssueId()).willReturn(ISSUE_ID);
+    }
+
     protected void givenContentProviderAliasInCommandData() {
         given(commandData.getContentProviderAlias()).willReturn(getContentProviderName());
     }
@@ -135,20 +142,24 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(commandData.getContentProviderLoanMetadata()).willReturn(loanMetadata);
     }
 
-    protected void givenContentProviderLoanIdFromLoanMetadata() {
+    protected void givenContentProviderLoanIdInLoanMetadata() {
         given(loanMetadata.getId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
     }
 
+    protected void givenContentProviderIssueIdInLoanMetadata() {
+        given(loanMetadata.getContentProviderIssueId()).willReturn(ISSUE_ID);
+    }
+
     protected void givenTextBundle() {
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         given(formatDecoration.getTextBundle(LANGUAGE)).willReturn(textBundle);
     }
 
-    protected void givenContentProviderFormatIdFromFormatDecoration() {
+    protected void givenContentProviderFormatIdInFormatDecoration() {
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
-    protected void givenFormatDecorationFromContentProvider() {
+    protected void givenFormatDecorationInContentProvider() {
         given(contentProvider.getFormatDecoration(any(String.class))).willReturn(formatDecoration);
     }
 
@@ -156,7 +167,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(formatDecoration.getContentDisposition()).willReturn(ContentDisposition.DOWNLOADABLE);
     }
 
-    protected void givenFormatDecorationFromContentProviderLoanMetadata() {
+    protected void givenFormatDecorationInContentProviderLoanMetadata() {
         given(loanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
     }
 
@@ -176,23 +187,24 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         given(response.getStatus()).willReturn(ERROR_STATUS);
     }
 
-    protected void givenFormatFromFormatFactory() {
+    protected void givenFormatInFormatFactory() {
         given(formatFactory.create(any(ContentProvider.class), anyString(), anyString())).willReturn(DOWNLOADABLE_FORMAT);
     }
 
     protected void thenActualLoanContainsContentLinkHref() {
         Assert.assertNotNull(actualLoan);
-        actualContentLink = actualLoan.content().getContentLinks().getContentLinks().get(0);
+        actualContent = actualLoan.content();
         thenActualContentLinkContainsHref();
     }
 
     protected void thenActualContentLinkContainsHref() {
-        Assert.assertEquals(CONTENT_HREF, actualContentLink.href());
+        Assert.assertEquals(CONTENT_HREF, getActualContentLink().href());
     }
 
     protected void thenActualFormatEqualsExpected() {
-        Assert.assertFalse(getActualFormats().isEmpty());
-        Format actualFormat = getActualFormats().iterator().next();
+        List<Format> formats = getActualFormats();
+        Assert.assertFalse(formats.isEmpty());
+        Format actualFormat = formats.iterator().next();
         assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(DOWNLOADABLE_FORMAT.toDTO()));
     }
 
@@ -200,7 +212,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         Assert.assertNotNull(getActualFormats());
     }
 
-    protected void thenFormatSetContainsOneFormat() {
+    protected void thenActualFormatsContainsOneFormat() {
         Assert.assertTrue(getActualFormats().size() == 1);
     }
 
@@ -213,18 +225,30 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         actualIssues = underTest.getIssues(commandData);
     }
 
+    protected void whenCreateLoan() {
+        actualLoan = underTest.createLoan(commandData);
+    }
+
+    public void whenGetContent() {
+        actualContent = underTest.getContent(commandData);
+    }
+
     protected List<Format> getActualFormats() {
         Assert.assertThat(actualIssues, Matchers.notNullValue());
         Assert.assertThat(actualIssues.size(), Matchers.greaterThan(0));
         return actualIssues.iterator().next().getFormats();
     }
 
-    protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
-        assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
+    protected ContentLink getActualContentLink() {
+        Assert.assertThat(actualContent, Matchers.notNullValue());
+        List<ContentLink> contentLinks = actualContent.getContentLinks().getContentLinks();
+        Assert.assertThat(contentLinks, Matchers.notNullValue());
+        Assert.assertThat(contentLinks.size(), Matchers.greaterThan(0));
+        return contentLinks.iterator().next();
     }
 
-    protected void thenSetContentProviderLoanMetadataInCommandDataHasBeenInvoked() {
-        verify(commandData).setContentProviderLoanMetadata(any(ContentProviderLoanMetadata.class));
+    protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
+        assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
     }
 
     protected abstract String getContentProviderName();

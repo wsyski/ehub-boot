@@ -52,11 +52,11 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenFormatHandlerReturnsContentProviderFormat();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderAliasInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 
@@ -67,9 +67,9 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
     @Test
     public void getFormats_MediaNotFound() {
         givenContentProviderRecordIdInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
         thenFormatsEmpty();
     }
@@ -78,7 +78,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
     public void createLoan_success() {
         givenBearerToken();
         givenContentProviderConsumerInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
         givenCheckoutIsSuccessful();
         givenCheckout();
@@ -105,10 +105,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         given(ocdCheckoutHandler.getCompleteCheckout(any(BearerToken.class), any(CommandData.class), anyString())).willReturn(checkout);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     @Test(expected = InternalServerErrorException.class)
     public void createLoan_unsuccessful() {
         givenBearerToken();
@@ -129,10 +125,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenFormatDecorationInCommandData();
         whenGetContent();
         thenActualContentLinkContainsHref();
-    }
-
-    public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.zinio;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ErrorCauseArgumentType;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS;
-import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
 import static com.axiell.ehub.provider.ContentProvider.CONTENT_PROVIDER_ZINIO;
 
 public class ZinioIssuesIT extends AbstractZinioIT {
@@ -43,10 +43,9 @@ public class ZinioIssuesIT extends AbstractZinioIT {
         }
     }
 
-
     private void thenExpectedInvalidRecordIdException() {
         thenExpectedEhubRuntimeException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, CONTENT_PROVIDER_ZINIO),
-                new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
+                new ErrorCauseArgument(CONTENT_PROVIDER_STATUS, ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
     }
 
     private void thenExpectedIssues() {

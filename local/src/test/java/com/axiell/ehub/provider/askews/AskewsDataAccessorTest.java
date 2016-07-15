@@ -22,7 +22,6 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixture<AskewsDataAccessor> {
-    private static final String RECORD_ID = "1";
     private static final Integer LOAN_ID = 1;
     private static final Integer LOAN_REQUEST_SUCCESS = 1;
     private static final Integer LOAN_REQUEST_NOT_SUCCESS = -1;
@@ -63,7 +62,7 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         givenLoanDetails();
         givenLoanHasNotFailed();
         givenDownloadUrlInLoanDetail();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenDownloadableContentDisposition();
         givenExpirationDate();
         whenCreateLoan();
@@ -89,11 +88,11 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
     @Test
     public void getFormats() {
         givenPatronInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenTextBundle();
         whenGetIssues();
         thenActualFormatEqualsExpected();
@@ -183,10 +182,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         given(loanDetail.getDownloadURL()).willReturn(new JAXBElement<String>(new QName(""), String.class, CONTENT_HREF));
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     private void givenLoanRequestIsNotSucess() {
         given(loanRequestResult.getLoanRequestSuccess()).willReturn(LOAN_REQUEST_NOT_SUCCESS);
     }
@@ -209,10 +204,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
 
     private void givenLoanStatusIsTitleHasBeenProcessed() {
         given(loanDetail.getLoanStatus()).willReturn(TITLE_HAS_BEEN_PROCESSED);
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

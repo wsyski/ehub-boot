@@ -54,11 +54,11 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenFormatIdFromF1Facade();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 
@@ -68,7 +68,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenNoSuchFormatFromF1Facade();
         whenGetIssues();
         thenFormatsEmpty();
@@ -81,7 +81,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
 
     @Test
     public void createLoan_success() {
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenContentProviderFormatIdInCommandData();
@@ -130,7 +130,7 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
 
     @Test(expected = InternalServerErrorException.class)
     public void getContent_missingContent() {
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInContentProviderLoanMetadata();
         givenContentProviderLoanMetadataInCommandData();
         givenGetLoanContentResponseFromF1Facade();
         givenInternalServerErrorException();
@@ -147,10 +147,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
     private void givenCreateLoanFailedFromF1Facade() {
         given(createLoanResponse.getValue()).willReturn("ERROR");
         givenCreateLoanResponseFromF1Facade();
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     private void givenLoanIdFromF1Facade() {
@@ -175,10 +171,6 @@ public class F1DataAccessorTest extends ContentProviderDataAccessorTestFixture<F
 
     private void thenActualLoanHasExpectedId() {
         assertEquals(LOAN_ID, actualLoan.id());
-    }
-
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
     }
 
     private void givenFormatIdFromF1Facade() {

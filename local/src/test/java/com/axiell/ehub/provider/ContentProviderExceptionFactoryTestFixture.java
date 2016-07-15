@@ -59,21 +59,9 @@ public abstract class ContentProviderExceptionFactoryTestFixture<E> {
         thenInternalServerErrorExceptionHasMessage(message);
     }
 
-
-    protected void thenInternalServerErrorExceptionWithStatusUnknown() {
-        assertThat(internalServerErrorException, is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                AbstractContentProviderExceptionFactory.UNKNOWN_STATUS_CODE)));
-    }
-
-    protected void internalServerErrorExceptionWithStatusProductUnavailable() {
-        assertThat(internalServerErrorException,
-                is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                        ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name())));
-    }
-
-    protected void internalServerErrorExceptionWithLibraryLimitReached() {
+    protected void thenExpectedContentProviderErrorException(final String code) {
         assertThat(internalServerErrorException,is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, getContentProviderName(),
-                ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED.name())));
+                code)));
     }
 
     private void thenValidContentProviderName(final ErrorCauseArgument errorCauseArgument) {

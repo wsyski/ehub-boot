@@ -40,11 +40,11 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
         givenContentProviderAliasInCommandData();
         givenPatronInCommandData();
         givenEpFacadeReturnsFormats();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenContentProviderConsumerInCommandData();
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         whenGetIssues();
-        thenFormatSetContainsOneFormat();
+        thenActualFormatsContainsOneFormat();
         thenActualFormatEqualsExpected();
     }
 
@@ -56,14 +56,6 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
         given(getEpFacade().getRecord(contentProviderConsumer, patron, RECORD_ID)).willReturn(record);
         given(record.getFormats()).willReturn(Collections.singletonList(format));
         given(format.getId()).willReturn(FORMAT_ID);
-    }
-
-    protected void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
-    protected void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

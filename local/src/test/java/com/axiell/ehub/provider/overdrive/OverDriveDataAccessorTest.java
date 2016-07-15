@@ -30,8 +30,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture<OverDriveDataAccessor> {
-    private static final String RECORD_ID = "1";
-    private static final String FORMAT_ID = "1";
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
 
     @Rule
@@ -76,7 +74,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForAvailableProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -95,7 +93,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForBorrowedProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -115,7 +113,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
 
     @Test
     public void getFormatsForUnavailableProduct() {
-        givenFormatFromFormatFactory();
+        givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
         givenLanguageInCommandData();
@@ -152,7 +150,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenLinks();
         givenOverDriveContentLink();
         givenDownloadUrl();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         whenCreateLoan();
@@ -184,7 +182,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadableContentDisposition();
         givenLinks();
         givenOverDriveContentLink();
-        givenFormatDecorationFromContentProvider();
+        givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         whenCreateLoan();
@@ -203,7 +201,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInContentProviderLoanMetadata();
         givenCheckoutList();
         givenCirculationFormats();
         givenCirculationFormatType();
@@ -232,7 +230,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenPatronAccessToken();
         givenCheckouts();
         givenRecordIdFromContentProviderLoanMetadata();
-        givenFormatDecorationFromContentProviderLoanMetadata();
+        givenFormatDecorationInContentProviderLoanMetadata();
         givenFormatIdFromFormatDecoration();
         givenClientResponse();
         givenClientResponseStatus();
@@ -341,10 +339,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     private void givenCheckouts() {
         given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
     }
@@ -356,10 +350,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private void givenCheckoutList() {
         List<CheckoutDTO> checkoutList = Collections.singletonList(checkout);
         given(checkouts.getCheckouts()).willReturn(checkoutList);
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

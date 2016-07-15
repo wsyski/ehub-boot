@@ -23,7 +23,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/com/axiell/ehub/provider/askews-context.xml"})
+@ContextConfiguration(locations = {"/com/axiell/ehub/provider/askews/askews-context.xml"})
 public class AskewsIT extends AbstractContentProviderIT {
     private static final Integer AUTH_ID = 17;
     private static final String TOKEN_KEY = "k60pb4rtmdplhtrnsdjrssw749bxmz";
