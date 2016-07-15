@@ -341,10 +341,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     private void givenCheckouts() {
         given(overDriveFacade.getCheckouts(contentProviderConsumer, accessToken)).willReturn(checkouts);
     }
@@ -356,10 +352,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private void givenCheckoutList() {
         List<CheckoutDTO> checkoutList = Collections.singletonList(checkout);
         given(checkouts.getCheckouts()).willReturn(checkoutList);
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

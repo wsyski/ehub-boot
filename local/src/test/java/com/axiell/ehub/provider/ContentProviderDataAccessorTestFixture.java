@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -73,10 +74,8 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     private PendingLoan pendingLoan;
 
     protected ContentProviderLoan actualLoan;
-    protected ContentLink actualContentLink;
-
+    protected Content actualContent;
     protected List<Issue> actualIssues;
-
     protected A underTest;
 
     @Before
@@ -182,12 +181,12 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
 
     protected void thenActualLoanContainsContentLinkHref() {
         Assert.assertNotNull(actualLoan);
-        actualContentLink = actualLoan.content().getContentLinks().getContentLinks().get(0);
+        actualContent = actualLoan.content();
         thenActualContentLinkContainsHref();
     }
 
     protected void thenActualContentLinkContainsHref() {
-        Assert.assertEquals(CONTENT_HREF, actualContentLink.href());
+        Assert.assertEquals(CONTENT_HREF, getActualContentLink().href());
     }
 
     protected void thenActualFormatEqualsExpected() {
@@ -213,10 +212,26 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         actualIssues = underTest.getIssues(commandData);
     }
 
+    protected void whenCreateLoan() {
+        actualLoan = underTest.createLoan(commandData);
+    }
+
+    public void whenGetContent() {
+        actualContent = underTest.getContent(commandData);
+    }
+
     protected List<Format> getActualFormats() {
         Assert.assertThat(actualIssues, Matchers.notNullValue());
         Assert.assertThat(actualIssues.size(), Matchers.greaterThan(0));
         return actualIssues.iterator().next().getFormats();
+    }
+
+    protected ContentLink getActualContentLink() {
+        Assert.assertThat(actualContent, Matchers.notNullValue());
+        List<ContentLink> contentLinks = actualContent.getContentLinks().getContentLinks();
+        Assert.assertThat(contentLinks, Matchers.notNullValue());
+        Assert.assertThat(contentLinks.size(), Matchers.greaterThan(0));
+        return contentLinks.iterator().next();
     }
 
     protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {

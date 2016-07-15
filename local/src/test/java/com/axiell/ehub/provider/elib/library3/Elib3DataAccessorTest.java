@@ -73,12 +73,8 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
         given(commandChainFactory.createGetContentCommandChain()).willReturn(getContentCommandChain);
     }
 
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
-    }
-
     private void thenActualContentEqualsExpectedContent() {
-        assertThat(actualContentLink.href(), is(ContentLinkBuilder.HREF));
+        assertThat(getActualContentLink().href(), is(ContentLinkBuilder.HREF));
     }
 
     private void givenExpectedLoan() {
@@ -87,10 +83,6 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     private void givenCreateLoanCommandChain() {
         given(commandChainFactory.createCreateLoanCommandChain()).willReturn(createLoanCommandChain);
-    }
-
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
     }
 
     private void thenActualLoanEqualsExpectedLoan() {

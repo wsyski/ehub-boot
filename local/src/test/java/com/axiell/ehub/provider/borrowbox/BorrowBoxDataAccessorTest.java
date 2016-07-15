@@ -96,14 +96,6 @@ public class BorrowBoxDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
-    public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
-    }
-
     @Override
     protected String getContentProviderName() {
         return ContentProvider.CONTENT_PROVIDER_BORROWBOX;

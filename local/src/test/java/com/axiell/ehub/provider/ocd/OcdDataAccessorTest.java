@@ -105,10 +105,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         given(ocdCheckoutHandler.getCompleteCheckout(any(BearerToken.class), any(CommandData.class), anyString())).willReturn(checkout);
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     @Test(expected = InternalServerErrorException.class)
     public void createLoan_unsuccessful() {
         givenBearerToken();
@@ -129,10 +125,6 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
         givenFormatDecorationInCommandData();
         whenGetContent();
         thenActualContentLinkContainsHref();
-    }
-
-    public void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override

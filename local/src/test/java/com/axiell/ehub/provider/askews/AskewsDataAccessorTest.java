@@ -183,10 +183,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
         given(loanDetail.getDownloadURL()).willReturn(new JAXBElement<String>(new QName(""), String.class, CONTENT_HREF));
     }
 
-    private void whenCreateLoan() {
-        actualLoan = underTest.createLoan(commandData);
-    }
-
     private void givenLoanRequestIsNotSucess() {
         given(loanRequestResult.getLoanRequestSuccess()).willReturn(LOAN_REQUEST_NOT_SUCCESS);
     }
@@ -209,10 +205,6 @@ public class AskewsDataAccessorTest extends ContentProviderDataAccessorTestFixtu
 
     private void givenLoanStatusIsTitleHasBeenProcessed() {
         given(loanDetail.getLoanStatus()).willReturn(TITLE_HAS_BEEN_PROCESSED);
-    }
-
-    private void whenGetContent() {
-        actualContentLink = underTest.getContent(commandData).getContentLinks().getContentLinks().get(0);
     }
 
     @Override
