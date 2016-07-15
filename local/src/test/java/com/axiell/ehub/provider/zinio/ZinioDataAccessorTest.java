@@ -1,7 +1,10 @@
 package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.checkout.ContentLinkBuilder;
+import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.IExpirationDateFactory;
@@ -15,9 +18,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
 public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixture<ZinioDataAccessor> {
-
+    private final static String LOGIN_URL = "loginUrl";
+    private final static String CONTENT_URL = ContentLinkBuilder.HREF;
     @Mock
     private IZinioFacade zinioFacade;
     @Mock
@@ -51,26 +57,44 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         thenActualFormatEqualsExpected();
     }
 
-    private void givenZinioFacadeReturnsFormats() {
-        given(zinioFacade.getIssues(contentProviderConsumer, RECORD_ID, LANGUAGE)).willReturn(issues);
-        /*
-        given(issues.getFormats()).willReturn(Collections.singletonList(format));
-        given(format.getFormatId()).willReturn(FORMAT_ID);
-        */
-    }
-
-    /*
     @Test
     public void createLoan() {
+        givenLanguageInCommandData();
         givenContentProviderConsumerInCommandData();
         givenFormatDecorationFromContentProvider();
         givenContentProviderRecordIdInCommandData();
-        givenCompleteCheckout();
+        givenLoginUrl();
+        givenContentUrl();
+        givenContentProviderIssueIdInCommandData();
+        givenExpirationDateFactory();
         givenCheckout();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
 
+    private void givenZinioFacadeReturnsFormats() {
+        given(zinioFacade.getIssues(contentProviderConsumer, RECORD_ID, LANGUAGE)).willReturn(issues);
+    }
+
+
+    private void givenLoginUrl() {
+        given(zinioFacade.login(any(ContentProviderConsumer.class), any(Patron.class), eq(LANGUAGE))).willReturn(LOGIN_URL);
+
+    }
+
+    private void givenContentUrl() {
+        given(zinioFacade.getContentUrl(LOGIN_URL, ISSUE_ID)).willReturn(CONTENT_URL);
+    }
+
+    private void givenExpirationDateFactory() {
+        given(expirationDateFactory.createExpirationDate(contentProvider)).willReturn(EXPIRATION_DATE);
+    }
+
+    public void givenCheckout() {
+        zinioFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), eq(LANGUAGE));
+    }
+
+    /*
     @Test
     public void getContent() {
         givenGetCheckout();
@@ -81,23 +105,10 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
         thenActualContentLinkContainsHref();
     }
 
-
-
-    public void givenCheckout() {
-        given(zinioFacade.checkout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class), any(String.class)))
-                .willReturn(checkout);
-    }
-
     public void givenGetCheckout() {
         given(zinioFacade.getCheckout(any(ContentProviderConsumer.class), any(Patron.class), any(String.class), any(String.class))).willReturn(checkout);
     }
-
-    public void givenCompleteCheckout() {
-        given(checkout.getExpirationDate()).willReturn(new Date());
-        given(checkout.getLoanId()).willReturn(CONTENT_PROVIDER_LOAN_ID);
-        given(checkout.getContentUrl()).willReturn(CONTENT_HREF);
-    }
-      */
+    */
 
 
     @Override
