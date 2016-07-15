@@ -251,9 +251,5 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
         assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
     }
 
-    protected void thenSetContentProviderLoanMetadataInCommandDataHasBeenInvoked() {
-        verify(commandData).setContentProviderLoanMetadata(any(ContentProviderLoanMetadata.class));
-    }
-
     protected abstract String getContentProviderName();
 }
