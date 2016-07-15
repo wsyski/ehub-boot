@@ -7,6 +7,7 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ZinioResponseFactory implements IZinioResponseFactory {
         private String message;
 
         private ZinioResponse(final String response, final ContentProviderConsumer contentProviderConsumer, final String language) {
-            if (response != null) {
+            if (StringUtils.isNotBlank(response)) {
                 String[] parts = response.split("\t");
                 if (parts.length == 2) {
                     status = ZinioStatus.valueOf(parts[0]);
@@ -49,7 +50,7 @@ public class ZinioResponseFactory implements IZinioResponseFactory {
                     throw createInternalServerErrorException("Invalid content provider 'ZINIO' response: " + response);
                 }
             } else {
-                throw createInternalServerErrorException("Null content provider 'ZINIO' response: ");
+                throw createInternalServerErrorException("Blank content provider 'ZINIO' response: ");
             }
         }
 
