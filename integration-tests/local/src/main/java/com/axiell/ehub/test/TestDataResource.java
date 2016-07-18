@@ -20,6 +20,8 @@ import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
+import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -35,6 +37,17 @@ import java.util.*;
 
 @Component
 public class TestDataResource implements ITestDataResource {
+    private static final Map<String, String> API_BASE_URL = ImmutableMap.<String, String>builder()
+            .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.TEST_EP_API_BASE_URL)
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, TestDataConstants.ZINIO_API_BASE_URL).build();
+
+    private static final Map<String, String[]> FORMAT_ID = ImmutableMap.<String, String[]>builder()
+            .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP,
+                    new String[]{TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID})
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, new String[]{ZinioDataAccessor.ZINIO_STREAM_FORMAT_ID}).build();
+
+    private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTY =
+            ImmutableMap.<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>>builder().build();
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;

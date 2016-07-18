@@ -1,9 +1,13 @@
 package com.axiell.ehub.test;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Locale;
+import java.util.Map;
 
 public class TestDataConstants {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+    public static final String CONTENT_PROVIDER_ZINIO = "ZINIO";
 
     public static final String LMS_RECORD_ID = "lmsRecordId";
     public static final String LMS_LOAN_ID = "lmsLoanId";
@@ -31,4 +35,7 @@ public class TestDataConstants {
     public static final String ZINIO_API_BASE_URL = "http://localhost:16521/zinio/api";
     public static final String ZINIO_LIB_ID = "axielltest";
     public static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";
+
+
+
 }
