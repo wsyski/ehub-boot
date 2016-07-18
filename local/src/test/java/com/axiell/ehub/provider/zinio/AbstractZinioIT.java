@@ -2,7 +2,9 @@ package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubRuntimeException;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
@@ -11,6 +13,8 @@ import com.axiell.ehub.provider.ContentProvider;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -35,7 +39,8 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
     @Mock
     protected Patron patron;
 
-    protected EhubRuntimeException exception=null;
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -62,10 +67,8 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
         given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
     }
 
-    protected void thenExpectedEhubRuntimeException(final EhubError ehubError) {
-        Assert.assertNotNull(exception);
-        Assert.assertThat(exception, Matchers.isA(EhubRuntimeException.class));
-        Assert.assertThat(exception.getEhubError().getCause(), Matchers.is(ehubError.getCause()));
-        Assert.assertThat(exception.getEhubError().getArguments(), Matchers.containsInAnyOrder(ehubError.getArguments().toArray()));
+    protected void givenExpectedInternalServerException(final String code) {
+        expectedException.expect(InternalServerErrorException.class);
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO, code));
     }
 }
