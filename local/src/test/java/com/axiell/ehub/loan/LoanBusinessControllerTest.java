@@ -5,6 +5,7 @@ import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
+import com.axiell.ehub.error.EhubExceptionMatcher;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
@@ -13,10 +14,11 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.security.AuthInfo;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
@@ -34,7 +36,8 @@ import static org.mockito.Mockito.never;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanBusinessControllerTest {
-    private EhubRuntimeException exception;
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
 
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
@@ -173,13 +176,8 @@ public class LoanBusinessControllerTest {
         givenActiveLoanAsPreCheckoutAnalysisResult();
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
         givenContentProviderFormatId(NEW_CONTENT_PROVIDER_FORMAT_ID);
-        try {
-            whenCreateLoan();
-        } catch (EhubRuntimeException ex) {
-            exception = ex;
-        }
-        thenNotFoundException();
-        thenErrorCauseIsUnsupportedLoanPerProduct();
+        givenExpectedUnsupportedLoanPerProduct();
+        whenCreateLoan();
     }
 
     @Test
@@ -203,14 +201,11 @@ public class LoanBusinessControllerTest {
         given(formatDecoration.getContentProviderFormatId()).willReturn(contentProviderFormatId);
     }
 
-    private void thenNotFoundException() {
-        Assert.assertThat(exception, Matchers.instanceOf(NotFoundException.class));
+    private void givenExpectedUnsupportedLoanPerProduct() {
+        final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
+        expectedException.expect(new EhubExceptionMatcher(InternalServerErrorException.class,ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument));
     }
 
-    private void thenErrorCauseIsUnsupportedLoanPerProduct() {
-        ErrorCause errorCause = getErrorCause(NotFoundException.class.cast(exception));
-        Assert.assertEquals(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, errorCause);
-    }
 
     private ErrorCause getErrorCause(final NotFoundException e) {
         Assert.assertNotNull(e);

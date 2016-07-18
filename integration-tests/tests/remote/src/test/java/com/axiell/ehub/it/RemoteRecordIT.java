@@ -7,6 +7,7 @@ import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.security.UnauthorizedException;
 import com.axiell.ehub.test.TestDataConstants;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -32,8 +33,8 @@ public class RemoteRecordIT extends RemoteITFixture {
     @Test
     public void unauthorized() throws EhubException {
         AuthInfo invalidAuthInfo = givenInvalidAuthInfo();
-        givenExpectedEhubException(ErrorCause.EHUB_CONSUMER_NOT_FOUND
-                .toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(INVALID_EHUB_CONSUMER_ID))));
+        givenExpectedEhubException(UnauthorizedException.class,ErrorCause.EHUB_CONSUMER_NOT_FOUND,
+                new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(INVALID_EHUB_CONSUMER_ID)));
         whenGetRecord(invalidAuthInfo);
     }
 

@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.ep.lpp;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.ep.AbstractEpIT;
 import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
@@ -7,7 +8,6 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static com.axiell.ehub.ErrorCauseArgumentType.ALREADY_ON_LOAN;
 import static junit.framework.Assert.assertNotNull;
 
 public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheckoutDTO> {
@@ -34,7 +34,7 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
     }
 
     private void thenRepeatedCheckoutFails() {
-        givenExpectedContentProviderErrorException(ALREADY_ON_LOAN);
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN);
         whenCheckout();
     }
 

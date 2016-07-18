@@ -112,7 +112,7 @@ public class LoanBusinessController implements ILoanBusinessController {
                 formatDecoration = formatDecorationRepositoryFacade.find(contentProvider, contentProviderFormatId);
             } else {
                 final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
-                throw new NotFoundException(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument);
+                throw new InternalServerErrorException(ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument);
             }
         } else {
             formatDecoration = firstFormatDecoration;

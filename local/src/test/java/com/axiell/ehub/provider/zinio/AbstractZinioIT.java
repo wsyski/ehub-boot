@@ -1,7 +1,5 @@
 package com.axiell.ehub.provider.zinio;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
@@ -10,8 +8,6 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -67,8 +63,7 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
         given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
     }
 
-    protected void givenExpectedInternalServerException(final String code) {
-        expectedException.expect(InternalServerErrorException.class);
-        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO, code));
+    protected void givenExpectedContentProviderErrorException(final String status) {
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO, status));
     }
 }

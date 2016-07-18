@@ -13,8 +13,7 @@ import javax.ws.rs.core.Response;
  * Skeletal implementation of the eHUB {@link RuntimeException}. It should be sub-classed to provide the specific
  * exceptions.
  */
-public class EhubRuntimeException extends RuntimeException {
-    private static final long serialVersionUID = -3317131212182853837L;
+public class EhubRuntimeException extends RuntimeException implements IEhubException {
     private final int status;
     private final EhubError ehubError;
     private final String message;
