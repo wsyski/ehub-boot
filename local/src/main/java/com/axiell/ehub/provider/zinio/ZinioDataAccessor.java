@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
-    static final String ZINIO_STREAM_FORMAT_ID = "ZINIO.stream";
+    public static final String ZINIO_STREAM_FORMAT_ID = "ZINIO.stream";
 
     @Autowired
     private IFormatFactory formatFactory;
