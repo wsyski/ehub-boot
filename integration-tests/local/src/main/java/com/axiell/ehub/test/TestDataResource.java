@@ -61,8 +61,8 @@ public class TestDataResource implements ITestDataResource {
         saveAlias("Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
         initLanguage();
         initPlatforms();
-        final ContentProvider contentProvider = initContentProvider(isLoanPerProduct);
         final EhubConsumer ehubConsumer = initEhubConsumer();
+        final ContentProvider contentProvider = initContentProvider(isLoanPerProduct);
         initContentProviderConsumer(ehubConsumer, contentProvider);
         final Long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
         return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
