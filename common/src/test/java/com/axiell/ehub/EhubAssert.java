@@ -1,20 +1,21 @@
 package com.axiell.ehub;
 
-import junit.framework.Assert;
+
+import org.junit.Assert;
 
 public class EhubAssert {
-    
+
     /**
      * Private constructor that prevents direct instantiation.
      */
-    private EhubAssert() {	
+    private EhubAssert() {
     }
 
     public static void thenInternalServerErrorExceptionIsThrown(InternalServerErrorException e) {
-	Assert.assertNotNull(e);
+        Assert.assertNotNull(e);
     }
-    
+
     public static void thenNotFoundExceptionIsThrown(NotFoundException e) {
-	Assert.assertNotNull(e);
+        Assert.assertNotNull(e);
     }
 }
