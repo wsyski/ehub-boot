@@ -37,7 +37,6 @@ public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
     @Override
     public Content getContent(final CommandData data) {
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
-        final FormatDecoration formatDecoration = data.getFormatDecoration();
         final String contentProviderLoanId = loanMetadata.getId();
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
