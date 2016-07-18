@@ -126,7 +126,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDiscoveryFormat();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
-        givenExpectedInternalServerException(ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name());
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name());
         whenGetIssues();
     }
 
@@ -251,9 +251,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID);
     }
 
-    private void givenExpectedInternalServerException(final String code) {
-        expectedException.expect(InternalServerErrorException.class);
-        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, code));
+    private void givenExpectedContentProviderErrorException(final String status) {
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, status));
     }
 
     private void givenProduct() {

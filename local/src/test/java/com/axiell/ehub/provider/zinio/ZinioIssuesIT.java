@@ -23,7 +23,7 @@ public class ZinioIssuesIT extends AbstractZinioIT {
     public void getIssuesWithInvalidRecordId() {
         givenConfigurationProperties();
         givenContentProvider();
-        givenExpectedInternalServerException(ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID.name());
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID.name());
         whenGetIssues(INVALID_RECORD_ID);
     }
 

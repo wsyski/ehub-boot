@@ -1,9 +1,6 @@
 package com.axiell.ehub.error;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.*;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
@@ -11,12 +8,12 @@ import java.util.List;
 
 public class ContentProviderErrorExceptionMatcher extends TypeSafeMatcher<Throwable> {
 
-    private final Class<? extends Throwable> clazz;
+    private final Class<? extends IEhubException> clazz;
     private final String status;
     private final String contentProviderName;
 
-    public ContentProviderErrorExceptionMatcher(final Class<? extends Throwable> type, final String contentProviderName, final String status) {
-        this.clazz = type;
+    public ContentProviderErrorExceptionMatcher(final Class<? extends IEhubException> clazz, final String contentProviderName, final String status) {
+        this.clazz = clazz;
         this.contentProviderName = contentProviderName;
         this.status = status;
     }
@@ -26,7 +23,7 @@ public class ContentProviderErrorExceptionMatcher extends TypeSafeMatcher<Throwa
         if (!throwable.getClass().isAssignableFrom(clazz)) {
             return false;
         }
-        EhubError ehubError = InternalServerErrorException.class.cast(throwable).getEhubError();
+        EhubError ehubError = clazz.cast(throwable).getEhubError();
         ErrorCause errorCause = ehubError.getCause();
         if (!errorCause.equals(ErrorCause.CONTENT_PROVIDER_ERROR)) {
             return false;

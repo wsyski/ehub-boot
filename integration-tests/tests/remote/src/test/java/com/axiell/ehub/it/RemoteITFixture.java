@@ -4,6 +4,9 @@
 package com.axiell.ehub.it;
 
 import com.axiell.ehub.*;
+import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
+import com.axiell.ehub.error.EhubExceptionMatcher;
+import com.axiell.ehub.error.LmsErrorExceptionMatcher;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
@@ -115,9 +118,17 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         return target.proxy(ITestDataResource.class);
     }
 
-    protected void givenExpectedEhubException(final EhubError ehubError) {
-        expectedException.expect(EhubException.class);
-        expectedException.expectMessage(ehubError.getMessage());
+    protected void givenExpectedContentProviderErrorException(final String status) {
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(EhubException.class, TestDataConstants.CONTENT_PROVIDER_TEST_EP,
+                status));
+    }
+
+    protected void givenExpectedLmsErrorException(final String status) {
+        expectedException.expect(new LmsErrorExceptionMatcher(EhubException.class, testData.getEhubConsumerId(), status));
+    }
+
+    protected void givenExpectedEhubException(final Class clazz, final ErrorCause errorCause, final ErrorCauseArgument... arguments) {
+        expectedException.expect(new EhubExceptionMatcher(EhubException.class,errorCause, arguments));
     }
 
     protected abstract boolean isLoanPerProduct();

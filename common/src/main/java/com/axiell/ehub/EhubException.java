@@ -11,8 +11,7 @@ package com.axiell.ehub;
  * all its sub-classes.
  * </p>
  */
-public final class EhubException extends Exception {
-    private static final long serialVersionUID = -1267415635521718019L;
+public final class EhubException extends Exception implements IEhubException {
     private final EhubError ehubError;
 
     /**
