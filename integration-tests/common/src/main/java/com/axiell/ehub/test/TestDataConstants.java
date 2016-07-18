@@ -15,19 +15,17 @@ public class TestDataConstants {
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";
     public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
-
-    public static final String TEST_EP_RECORD_0_ID = "recordId_0";
-    public static final String TEST_EP_RECORD_1_ID = "recordId_1";
-    public static final String TEST_EP_FORMAT_0_ID = "ebook";
-    public static final String TEST_EP_FORMAT_0_NAME = "eBook format";
-    public static final String TEST_EP_FORMAT_1_ID = "audio-stream";
-    public static final String TEST_EP_FORMAT_1_NAME = "eAudio stream format";
-    public static final String TEST_EP_FORMAT_2_ID = "audio-downloadable";
-    public static final String TEST_EP_FORMAT_2_NAME = "eAudio downloadable format";
-    public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
-    public static final String TEST_EP_SITE_ID = "siteId";
-    public static final String TEST_EP_SECRET_KEY = "c2VjcmV0S2V5";
     public static final String PLATFORM_DESKTOP = "DESKTOP";
     public static final String PLATFORM_ANDROID = "ANDROID";
     public static final String PLATFORM_IOS = "IOS";
+    public static final String RECORD_0_ID = "recordId_0";
+    public static final String RECORD_1_ID = "recordId_1";
+
+    public static final String TEST_EP_FORMAT_0_ID = "ebook";
+    public static final String TEST_EP_FORMAT_1_ID = "audio-stream";
+    public static final String TEST_EP_FORMAT_2_ID = "audio-downloadable";
+    public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
+    public static final String TEST_EP_SITE_ID = "siteId";
+    public static final String TEST_EP_SECRET_KEY = "c2VjcmV0S2V5";
+
 }
