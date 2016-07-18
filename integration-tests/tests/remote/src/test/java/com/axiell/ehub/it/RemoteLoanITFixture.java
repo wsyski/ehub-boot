@@ -29,8 +29,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     @Test
     public final void checkoutWithContentProviderError() throws EhubException {
-        givenExpectedEhubException(ErrorCause.CONTENT_PROVIDER_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP),
-                new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_STATUS, ErrorCauseArgumentType.ALREADY_ON_LOAN)));
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN.name());
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestNewLoanResponse();
@@ -41,8 +40,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     @Test
     public final void checkoutWithLmsError() throws EhubException {
-        givenExpectedEhubException(ErrorCause.LMS_ERROR.toEhubError(new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, "blockedBorrCard"),
-                new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, testData.getEhubConsumerId().toString())));
+        givenExpectedLmsErrorException("blockedBorrCard");
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();

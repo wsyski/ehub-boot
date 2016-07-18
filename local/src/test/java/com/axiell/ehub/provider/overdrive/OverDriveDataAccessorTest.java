@@ -33,7 +33,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
 
     @Rule
-    public ExpectedException throwable = ExpectedException.none();
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private IOverDriveFacade overDriveFacade;
@@ -126,7 +126,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDiscoveryFormat();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
-        givenExpectedInternalServerException();
+        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name());
         whenGetIssues();
     }
 
@@ -251,10 +251,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID);
     }
 
-    private void givenExpectedInternalServerException() {
-        throwable.expect(InternalServerErrorException.class);
-        throwable.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
-                ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name()));
+    private void givenExpectedContentProviderErrorException(final String status) {
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, status));
     }
 
     private void givenProduct() {

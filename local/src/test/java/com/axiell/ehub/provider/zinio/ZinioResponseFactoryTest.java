@@ -101,7 +101,6 @@ public class ZinioResponseFactoryTest {
     }
 
     private void givenExpectedContentProviderErrorException(final ErrorCauseArgumentType errorCauseArgumentType) {
-        expectedException.expect(InternalServerErrorException.class);
         expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_ZINIO,
                 errorCauseArgumentType.name()));
     }

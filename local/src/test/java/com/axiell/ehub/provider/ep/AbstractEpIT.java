@@ -71,12 +71,8 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
-        thenGetFormatWithInvalidRecordIdFails();
-    }
-
-    private void thenGetFormatWithInvalidRecordIdFails() {
-        whenGetFormats(INVALID_RECORD_ID);
         givenExpectedContentProviderErrorException(INVALID_CONTENT_PROVIDER_RECORD_ID);
+        whenGetFormats(INVALID_RECORD_ID);
     }
 
     protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
@@ -133,7 +129,6 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     }
 
     protected void givenExpectedContentProviderErrorException(final ErrorCauseArgumentType errorCauseArgumentType) {
-        expectedException.expect(InternalServerErrorException.class);
         expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, CONTENT_PROVIDER_TEST_EP,
                 errorCauseArgumentType.name()));
     }
