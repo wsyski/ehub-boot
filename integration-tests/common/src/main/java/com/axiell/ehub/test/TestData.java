@@ -1,5 +1,7 @@
 package com.axiell.ehub.test;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -83,13 +85,6 @@ public class TestData {
 
     @Override
     public String toString() {
-        return "TestData{" +
-                "ehubConsumerId=" + ehubConsumerId +
-                ", ehubConsumerSecretKey=" + ehubConsumerSecretKey +
-                ", ehubLoanId=" + ehubLoanId +
-                ", patronId=" + patronId +
-                ", libraryCard=" + libraryCard +
-                ", pin=" + pin +
-                '}';
+        return ReflectionToStringBuilder.toString(this);
     }
 }
