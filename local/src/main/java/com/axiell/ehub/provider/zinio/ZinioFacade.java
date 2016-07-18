@@ -74,6 +74,6 @@ public class ZinioFacade implements IZinioFacade {
     }
 
     private String getPassword() {
-        return RandomStringUtils.random(PASSWORD_LEN, true, true);
+        return RandomStringUtils.random(PASSWORD_LEN, true, true) + "1";
     }
 }
