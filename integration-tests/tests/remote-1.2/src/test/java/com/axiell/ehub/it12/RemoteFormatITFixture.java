@@ -31,7 +31,7 @@ public abstract class RemoteFormatITFixture extends RemoteITFixture {
     }
 
     private void givenContentProviderGetFormatsResponse() {
-        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.TEST_EP_RECORD_0_ID))
+        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_0_ID))
                 .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 

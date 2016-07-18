@@ -18,7 +18,7 @@ public class RemoteFormatIT extends RemoteFormatITFixture {
 
     @Override
     protected void whenGetFormats() throws EhubException {
-        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_ALIAS,  TestDataConstants.TEST_EP_RECORD_0_ID, LANGUAGE);
+        actualFormats = ehubService.getFormats(authInfo, CONTENT_PROVIDER_ALIAS,  TestDataConstants.RECORD_0_ID, LANGUAGE);
     }
 
     @Test(expected = EhubException.class)
@@ -36,6 +36,6 @@ public class RemoteFormatIT extends RemoteFormatITFixture {
     }
 
     private void whenGetFormatsWithInvalidAuthInfo() throws EhubException {
-        ehubService.getFormats(invalidAuthInfo, CONTENT_PROVIDER_ALIAS,  TestDataConstants.TEST_EP_RECORD_0_ID, LANGUAGE);
+        ehubService.getFormats(invalidAuthInfo, CONTENT_PROVIDER_ALIAS,  TestDataConstants.RECORD_0_ID, LANGUAGE);
     }
 }
