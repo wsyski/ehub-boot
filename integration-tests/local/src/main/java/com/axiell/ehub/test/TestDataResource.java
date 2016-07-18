@@ -37,17 +37,29 @@ import java.util.*;
 
 @Component
 public class TestDataResource implements ITestDataResource {
-    private static final Map<String, String> API_BASE_URL = ImmutableMap.<String, String>builder()
-            .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.TEST_EP_API_BASE_URL)
-            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, TestDataConstants.ZINIO_API_BASE_URL).build();
-
     private static final Map<String, String[]> FORMAT_ID = ImmutableMap.<String, String[]>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP,
                     new String[]{TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID})
             .put(ContentProvider.CONTENT_PROVIDER_ZINIO, new String[]{ZinioDataAccessor.ZINIO_STREAM_FORMAT_ID}).build();
 
     private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTY =
-            ImmutableMap.<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>>builder().build();
+            ImmutableMap.<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>>builder()
+                    .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY)
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID, TestDataConstants.TEST_EP_SITE_ID)
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE, EpUserIdValue.PATRON_ID.name()).build())
+                    .put(ContentProvider.CONTENT_PROVIDER_ZINIO, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID, TestDataConstants.ZINIO_LIB_ID)
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN, TestDataConstants.ZINIO_TOKEN).build())
+                    .build();
+    private static final Map<String, Map<ContentProvider.ContentProviderPropertyKey, String>> CONTENT_PROVIDER_PROPERTY =
+            ImmutableMap.<String, Map<ContentProvider.ContentProviderPropertyKey, String>>builder()
+                    .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, ImmutableMap.<ContentProvider.ContentProviderPropertyKey, String>builder()
+                            .put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL).build())
+                    .put(ContentProvider.CONTENT_PROVIDER_ZINIO, ImmutableMap.<ContentProvider.ContentProviderPropertyKey, String>builder()
+                            .put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.ZINIO_API_BASE_URL)
+                            .put(ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS, String.valueOf(TestDataConstants.ZINIO_LOAN_EXPIRATION_DAYS)).build())
+                    .build();
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
