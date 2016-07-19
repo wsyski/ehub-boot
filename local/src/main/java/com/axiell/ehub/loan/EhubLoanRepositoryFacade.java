@@ -3,6 +3,7 @@ package com.axiell.ehub.loan;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
@@ -16,7 +17,14 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
     @Override
     public EhubLoan saveEhubLoan(final EhubConsumer ehubConsumer, final LmsLoan lmsLoan, final ContentProviderLoan contentProviderLoan) {
         final ContentProviderLoanMetadata contentProviderLoanMetadata = contentProviderLoan.getMetadata();
-        final EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
+        final Long ehubConsumerId = ehubConsumer.getId();
+        final String lmsLoanId = lmsLoan.getId();
+        EhubLoan ehubLoan = ehubLoanRepository.findLoan(ehubConsumerId, lmsLoanId);
+        if (ehubLoan != null) {
+            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.LMS_LOAN_ID, lmsLoanId);
+            throw new InternalServerErrorException(ErrorCause.LOAN_ALREADY_EXISTS, argument);
+        }
+        ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         return ehubLoanRepository.save(ehubLoan);
     }
 
