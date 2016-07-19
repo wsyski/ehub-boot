@@ -1,10 +1,12 @@
 package com.axiell.ehub.provider.zinio;
 
+import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.EhubUrlCodec;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,9 @@ public class ZinioFacade implements IZinioFacade {
 
     @Override
     public String getContentUrl(final String loginUrl, final String contentProviderIssueId) {
+        if (StringUtils.isBlank(contentProviderIssueId)) {
+           throw createInternalServerErrorException("Blank contentProviderIssueId");
+        }
         return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.encode(contentProviderIssueId);
     }
 
@@ -75,5 +80,9 @@ public class ZinioFacade implements IZinioFacade {
 
     private String getPassword() {
         return "a" + RandomStringUtils.randomAlphanumeric(PASSWORD_LEN) + "0";
+    }
+
+    private InternalServerErrorException createInternalServerErrorException(String message) {
+        return new InternalServerErrorException(message, ErrorCause.INTERNAL_SERVER_ERROR);
     }
 }
