@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
-    static final String ZINIO_STREAM_FORMAT_ID = "ZINIO.stream";
+    public static final String ZINIO_STREAM_FORMAT_ID = "ZINIO.stream";
 
     @Autowired
     private IFormatFactory formatFactory;
@@ -70,8 +70,9 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String contentProviderIssueId = data.getContentProviderIssueId();
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProviderConsumer.getContentProvider());
-        return newContentProviderLoanMetadataBuilder(data, expirationDate).build();
+        return newContentProviderLoanMetadataBuilder(data, expirationDate).issueId(contentProviderIssueId).build();
     }
 
     private Content makeContent(final String contentLinkHref) {

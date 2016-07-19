@@ -61,8 +61,8 @@ public class LoanBusinessController implements ILoanBusinessController {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final Patron patron = authInfo.getPatron();
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
-        final ContentProviderConsumer contentProviderConsumer =
-                contentProviderDataAccessorFacade.getContentProviderConsumer(ehubConsumer, contentProviderAlias);
+        final ContentProviderConsumer contentProviderConsumer = contentProviderDataAccessorFacade.getContentProviderConsumer(ehubConsumer,
+                contentProviderAlias);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final boolean isLoanPerProduct = contentProvider.isLoanPerProduct();
         final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);

@@ -31,11 +31,13 @@ public class ContentProviderLoanMetadata implements Serializable {
     protected ContentProviderLoanMetadata() {
     }
 
-    private ContentProviderLoanMetadata(final String id, final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration firstFormatDecoration) {
+    private ContentProviderLoanMetadata(final String id, final ContentProvider contentProvider, final Date expirationDate, final String recordId,
+                                        final String issueId, final FormatDecoration firstFormatDecoration) {
         this.id = id;
         this.contentProvider = contentProvider;
         this.expirationDate = DateFactory.create(expirationDate);
         this.recordId = recordId;
+        this.issueId = issueId;
         this.firstFormatDecoration = firstFormatDecoration;
     }
 
@@ -119,7 +121,7 @@ public class ContentProviderLoanMetadata implements Serializable {
      * {@link com.axiell.ehub.provider.ContentProvider}. Only used by JPA.
      *
      * @param firstFormatDecoration the decoration of the format of the loan at the
-     *                         {@link com.axiell.ehub.provider.ContentProvider} to set
+     *                              {@link com.axiell.ehub.provider.ContentProvider} to set
      */
     protected void setFirstFormatDecoration(final FormatDecoration firstFormatDecoration) {
         this.firstFormatDecoration = firstFormatDecoration;
@@ -135,7 +137,7 @@ public class ContentProviderLoanMetadata implements Serializable {
         this.recordId = recordId;
     }
 
-    @Column(name = "CONTENT_PROVIDER_ISSUE_ID", nullable = true)
+    @Column(name = "CONTENT_PROVIDER_ISSUE_ID")
     public String getContentProviderIssueId() {
         return issueId;
     }
@@ -169,12 +171,12 @@ public class ContentProviderLoanMetadata implements Serializable {
         }
 
         public Builder issueId(final String issueId) {
-            this.issueId=issueId;
+            this.issueId = issueId;
             return this;
         }
 
         public ContentProviderLoanMetadata build() {
-            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, firstFormatDecoration);
+            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, issueId, firstFormatDecoration);
         }
     }
 }
