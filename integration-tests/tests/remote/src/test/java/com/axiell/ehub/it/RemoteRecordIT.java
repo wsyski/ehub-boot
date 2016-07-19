@@ -77,4 +77,6 @@ public class RemoteRecordIT extends RemoteITFixture {
     protected boolean isLoanPerProduct() {
         return false;
     }
+
+
 }
