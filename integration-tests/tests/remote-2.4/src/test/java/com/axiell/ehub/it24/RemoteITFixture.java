@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.it24;
 
 import com.axiell.ehub.EhubException;
@@ -60,7 +57,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void initTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        testData = testDataResource.init(false);
+        testData = testDataResource.init(TestDataConstants.CONTENT_PROVIDER_TEST_EP, false);
         LOGGER.info("Test data initialized: " + testData.toString());
     }
 

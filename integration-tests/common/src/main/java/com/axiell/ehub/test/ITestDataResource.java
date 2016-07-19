@@ -11,7 +11,8 @@ public interface ITestDataResource {
 
     @POST
     @Path("test-data")
-    TestData init(@DefaultValue("false") @QueryParam("isLoanPerProduct") boolean isLoanPerProduct);
+    TestData init(@DefaultValue("TEST_EP") @QueryParam("contentProviderName") String contentProviderName,
+                  @DefaultValue("false") @QueryParam("isLoanPerProduct") boolean isLoanPerProduct);
 
     @DELETE
     @Path("test-data")
