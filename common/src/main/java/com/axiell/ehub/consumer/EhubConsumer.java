@@ -47,6 +47,7 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
         this.secretKey = secretKey;
         this.properties = properties;
         this.defaultLanguage = new Language(defaultLanguage);
+        this.contentProviderConsumers=new HashSet<>();
     }
 
     /**
