@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class RemoteRecordIT extends RemoteITFixture {
+public abstract class RemoteRecordITFixture extends RemoteITFixture {
     private static final long INVALID_EHUB_CONSUMER_ID = 0L;
 
     private Record record;
@@ -66,17 +66,11 @@ public class RemoteRecordIT extends RemoteITFixture {
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
-        record = underTest.getRecord(authInfo, CONTENT_PROVIDER_ALIAS, TestDataConstants.RECORD_0_ID, LANGUAGE);
+        record = underTest.getRecord(authInfo, getContentProviderAlias(), TestDataConstants.RECORD_0_ID, LANGUAGE);
     }
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {
         expectedException.expect(EhubException.class);
         return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID, TestDataConstants.EHUB_CONSUMER_SECRET_KEY).build();
     }
-
-    protected boolean isLoanPerProduct() {
-        return false;
-    }
-
-
 }

@@ -1,13 +1,11 @@
 package com.axiell.ehub.test;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Locale;
-import java.util.Map;
 
 public class TestDataConstants {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     public static final String EHUB_CONSUMER_DESCRIPTION = "Ehub Consumer Description";
+    public static final String CONTENT_PROVIDER_ALIAS_PREFIX = "Distribut\u00f6r: ";
 
     public static final String LMS_RECORD_ID = "lmsRecordId";
     public static final String LMS_LOAN_ID = "lmsLoanId";
@@ -36,7 +34,6 @@ public class TestDataConstants {
     public static final int ZINIO_LOAN_EXPIRATION_DAYS = 28;
     public static final String ZINIO_LIB_ID = "axielltest";
     public static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";
-
 
 
 }

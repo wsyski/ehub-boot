@@ -62,6 +62,11 @@ public class LpfRemoteLoanIT extends RemoteLoanITFixture {
         thenValidCheckoutMetadata(checkoutMetadata, false);
     }
 
+    @Override
+    protected String getContentProviderName() {
+        return TestDataConstants.CONTENT_PROVIDER_TEST_EP;
+    }
+    @Override
     protected boolean isLoanPerProduct() {
         return false;
     }
