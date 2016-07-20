@@ -1,12 +1,12 @@
 {
   "id": "newContentProviderLoanId",
   "contentLinks": [
-    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_0"},
-    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/content_1"}
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/audio-stream/content_0"},
+    {"href": "http:/localhost:16521/ep/api/v1/records/recordId_0/audio-stream/content_1"}
   ],
   "supplementLinks": [
-    {"name": "supplement_0", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_0"},
-    {"name": "supplement_1", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/ebook/supplement_1"}
+    {"name": "supplement_0", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/audio-stream/supplement_0"},
+    {"name": "supplement_1", "href": "http:/localhost:16521/ep/api/v1/records/recordId_0/audio-stream/supplement_1"}
   ],
   "expirationDate": "2016-01-01T00:00:00Z"
 }
