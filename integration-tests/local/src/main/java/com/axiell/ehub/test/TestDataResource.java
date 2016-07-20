@@ -169,7 +169,7 @@ public class TestDataResource implements ITestDataResource {
     private ContentProviderConsumer initContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
         final String contentProviderName=contentProvider.getName();
         Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> contentProviderConsumerProperties = CONTENT_PROVIDER_CONSUMER_PROPERTIES.get(contentProviderName);
-        final ContentProviderConsumer contentProviderConsumer = consumerAdminController.save( new ContentProviderConsumer(ehubConsumer, contentProvider, contentProviderConsumerProperties));
+        final ContentProviderConsumer contentProviderConsumer = consumerAdminController.save(new ContentProviderConsumer(ehubConsumer, contentProvider, contentProviderConsumerProperties));
         ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);
         consumerAdminController.save(ehubConsumer);
         return contentProviderConsumer;
