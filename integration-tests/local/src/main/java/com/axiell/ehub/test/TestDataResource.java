@@ -22,6 +22,7 @@ import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,12 +38,12 @@ import java.util.*;
 
 @Component
 public class TestDataResource implements ITestDataResource {
-    private static final Map<String, String[]> FORMAT_ID = ImmutableMap.<String, String[]>builder()
+    private static final Map<String, List<String>> FORMAT_IDS = ImmutableMap.<String, List<String>>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP,
-                    new String[]{TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID})
-            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, new String[]{ZinioDataAccessor.ZINIO_STREAM_FORMAT_ID}).build();
+                    Lists.newArrayList(TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID))
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, Lists.newArrayList(ZinioDataAccessor.ZINIO_STREAM_FORMAT_ID)).build();
 
-    private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTY =
+    private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTIES =
             ImmutableMap.<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>>builder()
                     .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY)
@@ -52,14 +53,20 @@ public class TestDataResource implements ITestDataResource {
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID, TestDataConstants.ZINIO_LIB_ID)
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN, TestDataConstants.ZINIO_TOKEN).build())
                     .build();
-    private static final Map<String, Map<ContentProvider.ContentProviderPropertyKey, String>> CONTENT_PROVIDER_PROPERTY =
+    private static final Map<String, Map<ContentProvider.ContentProviderPropertyKey, String>> CONTENT_PROVIDER_PROPERTIES =
             ImmutableMap.<String, Map<ContentProvider.ContentProviderPropertyKey, String>>builder()
                     .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, ImmutableMap.<ContentProvider.ContentProviderPropertyKey, String>builder()
                             .put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL).build())
                     .put(ContentProvider.CONTENT_PROVIDER_ZINIO, ImmutableMap.<ContentProvider.ContentProviderPropertyKey, String>builder()
                             .put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.ZINIO_API_BASE_URL)
-                            .put(ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS, String.valueOf(TestDataConstants.ZINIO_LOAN_EXPIRATION_DAYS)).build())
+                            .put(ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS, String.valueOf(TestDataConstants.ZINIO_LOAN_EXPIRATION_DAYS))
+                            .build())
                     .build();
+    private static final Map<EhubConsumer.EhubConsumerPropertyKey, String> EHUB_CONSUMER_PROPERTIES =
+            ImmutableMap.<EhubConsumer.EhubConsumerPropertyKey, String>builder()
+                    .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, TestDataConstants.ARENA_PALMA_URL)
+                    .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, TestDataConstants.ARENA_AGENCY_M_IDENTIFIER).build();
+
 
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
@@ -76,18 +83,13 @@ public class TestDataResource implements ITestDataResource {
     @Autowired
     private IAliasAdminController aliasAdminController;
 
-    private Platform platformDesktop;
-    private Platform platformAndroid;
-    private Platform platformIos;
-
     @Override
-    public TestData init(final boolean isLoanPerProduct) {
-        saveAlias(TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
-        saveAlias("Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP, TestDataConstants.CONTENT_PROVIDER_TEST_EP);
+    public TestData init(final String contentProviderName, final boolean isLoanPerProduct) {
+        saveAlias(contentProviderName, contentProviderName);
+        saveAlias("Distribut\u00f6r: " + contentProviderName, contentProviderName);
         initLanguage();
-        initPlatforms();
         final EhubConsumer ehubConsumer = initEhubConsumer();
-        final ContentProvider contentProvider = initContentProvider(isLoanPerProduct);
+        final ContentProvider contentProvider = initContentProvider(contentProviderName, isLoanPerProduct);
         initContentProviderConsumer(ehubConsumer, contentProvider);
         final Long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
         return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
@@ -132,67 +134,51 @@ public class TestDataResource implements ITestDataResource {
         languageAdminController.save(new Language(TestDataConstants.DEFAULT_LANGUAGE));
     }
 
-    private void initPlatforms() {
-        platformDesktop = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_DESKTOP));
-        platformIos = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_IOS));
-        platformAndroid = platformAdminController.save(new Platform(TestDataConstants.PLATFORM_ANDROID));
+    private Set<Platform> initPlatforms() {
+        return Sets.newHashSet(platformAdminController.save(new Platform(TestDataConstants.PLATFORM_DESKTOP)),
+                platformAdminController.save(new Platform(TestDataConstants.PLATFORM_IOS)),
+                platformAdminController.save(new Platform(TestDataConstants.PLATFORM_ANDROID)));
     }
 
-    private ContentProvider initContentProvider(final boolean isLoanPerProduct) {
-        Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = new HashMap<>();
-        contentProviderProperties.put(ContentProvider.ContentProviderPropertyKey.API_BASE_URL, TestDataConstants.TEST_EP_API_BASE_URL);
-        ContentProvider contentProvider = new ContentProvider(TestDataConstants.CONTENT_PROVIDER_TEST_EP, contentProviderProperties);
-        contentProvider = contentProviderAdminController.save(contentProvider);
+    private Map<String, FormatDecoration> initFormatDecorations(final ContentProvider contentProvider) {
+        final Set<Platform> platforms = initPlatforms();
+        final Map<String, FormatDecoration> formatDecorations = new HashMap<>();
+        final String contentProviderName = contentProvider.getName();
+        FORMAT_IDS.get(contentProviderName).forEach(formatId -> {
+            FormatDecoration formatDecoration = formatAdminController.save(new FormatDecoration(contentProvider, formatId, ContentDisposition.DOWNLOADABLE,
+                    platforms));
+            formatDecorations.put(formatId, formatDecoration);
+        });
+        return formatDecorations;
+    }
 
-        Map<String, FormatDecoration> formatDecorations = new HashMap<>();
-        FormatDecoration formatDecoration0 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_0_ID, ContentDisposition.DOWNLOADABLE,
-                Collections.singleton(platformAndroid));
-        FormatDecoration formatDecoration1 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_1_ID, ContentDisposition.STREAMING,
-                Collections.singleton(platformIos));
-        FormatDecoration formatDecoration2 = new FormatDecoration(contentProvider, TestDataConstants.TEST_EP_FORMAT_2_ID, ContentDisposition.DOWNLOADABLE,
-                Sets.newHashSet(platformDesktop, platformIos, platformAndroid));
-
-        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_0_ID, formatDecoration0);
-        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_1_ID, formatDecoration1);
-        formatDecorations.put(TestDataConstants.TEST_EP_FORMAT_2_ID, formatDecoration2);
-        for (Map.Entry<String, FormatDecoration> entry : formatDecorations.entrySet()) {
-            FormatDecoration value = formatAdminController.save(entry.getValue());
-            formatDecorations.put(entry.getKey(), value);
-        }
+    private ContentProvider initContentProvider(final String contentProviderName, final boolean isLoanPerProduct) {
+        final Map<ContentProvider.ContentProviderPropertyKey, String> contentProviderProperties = CONTENT_PROVIDER_PROPERTIES.get(contentProviderName);
+        final ContentProvider contentProvider = contentProviderAdminController.save(new ContentProvider(contentProviderName,
+                contentProviderProperties));
+        final Map<String, FormatDecoration> formatDecorations = initFormatDecorations(contentProvider);
         contentProvider.setFormatDecorations(formatDecorations);
         contentProvider.setLoanPerProduct(isLoanPerProduct);
-        contentProvider = contentProviderAdminController.save(contentProvider);
-        return contentProvider;
+        return contentProviderAdminController.save(contentProvider);
     }
 
     private EhubConsumer initEhubConsumer() {
-        EhubConsumer ehubConsumer = createEhubConsumer();
-        ehubConsumer = consumerAdminController.save(ehubConsumer);
-        ehubConsumer.setContentProviderConsumers(new HashSet<>());
-        return ehubConsumer;
+        return consumerAdminController.save( new EhubConsumer(TestDataConstants.EHUB_CONSUMER_DESCRIPTION, TestDataConstants.EHUB_CONSUMER_SECRET_KEY, EHUB_CONSUMER_PROPERTIES, TestDataConstants.DEFAULT_LANGUAGE));
     }
 
-    private EhubConsumer createEhubConsumer() {
-        Map<EhubConsumer.EhubConsumerPropertyKey, String> properties = new HashMap<>();
-        properties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, TestDataConstants.ARENA_PALMA_URL);
-        properties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, TestDataConstants.ARENA_AGENCY_M_IDENTIFIER);
-        return new EhubConsumer("Ehub Consumer Description", TestDataConstants.EHUB_CONSUMER_SECRET_KEY, properties, TestDataConstants.DEFAULT_LANGUAGE);
-    }
-
-    private ContentProviderConsumer initContentProviderConsumer(EhubConsumer ehubConsumer, ContentProvider contentProvider) {
-        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> properties = new HashMap<>();
-        properties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY);
-        properties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID, TestDataConstants.TEST_EP_SITE_ID);
-        properties.put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE, EpUserIdValue.PATRON_ID.name());
-        ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer(ehubConsumer, contentProvider, properties);
-        contentProviderConsumer = consumerAdminController.save(contentProviderConsumer);
+    private ContentProviderConsumer initContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
+        final String contentProviderName=contentProvider.getName();
+        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> contentProviderConsumerProperties = CONTENT_PROVIDER_CONSUMER_PROPERTIES.get(contentProviderName);
+        final ContentProviderConsumer contentProviderConsumer = consumerAdminController.save(new ContentProviderConsumer(ehubConsumer, contentProvider, contentProviderConsumerProperties));
         ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);
         consumerAdminController.save(ehubConsumer);
         return contentProviderConsumer;
     }
 
-    private Long initEhubLoan(EhubConsumer ehubConsumer, ContentProvider contentProvider) {
-        FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(TestDataConstants.TEST_EP_FORMAT_1_ID);
+    private Long initEhubLoan(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
+        final String contentProviderName=contentProvider.getName();
+        String contentProviderFormatId=FORMAT_IDS.get(contentProviderName).iterator().next();
+        FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
                 TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);

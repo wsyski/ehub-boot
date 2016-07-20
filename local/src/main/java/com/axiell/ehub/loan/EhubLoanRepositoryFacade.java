@@ -21,8 +21,9 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
         final String lmsLoanId = lmsLoan.getId();
         EhubLoan ehubLoan = ehubLoanRepository.findLoan(ehubConsumerId, lmsLoanId);
         if (ehubLoan != null) {
-            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.LMS_LOAN_ID, lmsLoanId);
-            throw new InternalServerErrorException(ErrorCause.LOAN_ALREADY_EXISTS, argument);
+            final ErrorCauseArgument argument0 = new ErrorCauseArgument(Type.LMS_LOAN_ID, lmsLoanId);
+            final ErrorCauseArgument argument1 = new ErrorCauseArgument(Type.EHUB_CONSUMER_ID, ehubConsumerId);
+            throw new InternalServerErrorException(ErrorCause.LOAN_ALREADY_EXISTS, argument0, argument1);
         }
         ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         return ehubLoanRepository.save(ehubLoan);
