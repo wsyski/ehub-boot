@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class TestDataConstants {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
-    public static final String CONTENT_PROVIDER_ZINIO = "ZINIO";
+    public static final String EHUB_CONSUMER_DESCRIPTION = "Ehub Consumer Description";
 
     public static final String LMS_RECORD_ID = "lmsRecordId";
     public static final String LMS_LOAN_ID = "lmsLoanId";
