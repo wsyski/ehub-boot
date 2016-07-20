@@ -11,17 +11,6 @@ public class LppRemoteLoanIT extends RemoteLoanITFixture {
 
     @Test
     public final void checkoutWithExistingContentProviderLoan() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
-        givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestActiveLoanResponse();
-        givenPalmaCheckoutResponse();
-        givenContentProviderGetCheckoutResponse();
-        Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, false);
-    }
-
-    @Test
-    public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestActiveLoanResponse();
@@ -32,14 +21,25 @@ public class LppRemoteLoanIT extends RemoteLoanITFixture {
     }
 
     @Test
+    public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenPalmaLoansWsdl();
+        givenPalmaCheckoutTestActiveLoanResponse();
+        givenPalmaCheckoutResponse();
+        givenContentProviderGetCheckoutResponse();
+        Checkout checkout = whenCheckout();
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, false);
+    }
+
+    @Test
     public final void checkoutWithNewContentProviderLoan() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestNewLoanResponse();
         givenPalmaCheckoutResponse();
         givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID, true);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, true);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class LppRemoteLoanIT extends RemoteLoanITFixture {
         givenReadyLoanId();
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenGetCheckoutByLoanId();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, false);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID, false);
     }
 
     @Test

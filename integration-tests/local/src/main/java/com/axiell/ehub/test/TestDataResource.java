@@ -176,7 +176,9 @@ public class TestDataResource implements ITestDataResource {
     }
 
     private Long initEhubLoan(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
-        FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        final String contentProviderName=contentProvider.getName();
+        String contentProviderFormatId=FORMAT_IDS.get(contentProviderName).iterator().next();
+        FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
                 TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);

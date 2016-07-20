@@ -29,7 +29,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void checkout() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestOkResponse();
         givenContentProviderCheckoutResponse();
@@ -57,7 +57,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void ehubException() {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();
         try {
