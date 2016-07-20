@@ -35,7 +35,6 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final String LF = System.getProperty("line.separator");
-    protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     private static final int PORT_NO = 16518;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
@@ -63,7 +62,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void initTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        testData = testDataResource.init(TestDataConstants.CONTENT_PROVIDER_TEST_EP, isLoanPerProduct());
+        testData = testDataResource.init(getContentProviderName(), isLoanPerProduct());
         LOGGER.info("Test data initialized: " + testData.toString());
     }
 
@@ -116,8 +115,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     protected void givenExpectedContentProviderErrorException(final String status) {
-        expectedException.expect(new ContentProviderErrorExceptionMatcher(EhubException.class, TestDataConstants.CONTENT_PROVIDER_TEST_EP,
-                status));
+        expectedException.expect(new ContentProviderErrorExceptionMatcher(EhubException.class, getContentProviderName(), status));
     }
 
     protected void givenExpectedLmsErrorException(final String status) {
@@ -128,5 +126,11 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         expectedException.expect(new EhubExceptionMatcher(EhubException.class,errorCause, arguments));
     }
 
+    protected String getContentProviderAlias() {
+       return TestDataConstants.CONTENT_PROVIDER_ALIAS_PREFIX+getContentProviderName();
+    }
+
     protected abstract boolean isLoanPerProduct();
+
+    protected abstract String getContentProviderName();
 }

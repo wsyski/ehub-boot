@@ -86,7 +86,7 @@ public class TestDataResource implements ITestDataResource {
     @Override
     public TestData init(final String contentProviderName, final boolean isLoanPerProduct) {
         saveAlias(contentProviderName, contentProviderName);
-        saveAlias("Distribut\u00f6r: " + contentProviderName, contentProviderName);
+        saveAlias(TestDataConstants.CONTENT_PROVIDER_ALIAS_PREFIX + contentProviderName, contentProviderName);
         initLanguage();
         final EhubConsumer ehubConsumer = initEhubConsumer();
         final ContentProvider contentProvider = initContentProvider(contentProviderName, isLoanPerProduct);
@@ -163,21 +163,25 @@ public class TestDataResource implements ITestDataResource {
     }
 
     private EhubConsumer initEhubConsumer() {
-        return consumerAdminController.save( new EhubConsumer(TestDataConstants.EHUB_CONSUMER_DESCRIPTION, TestDataConstants.EHUB_CONSUMER_SECRET_KEY, EHUB_CONSUMER_PROPERTIES, TestDataConstants.DEFAULT_LANGUAGE));
+        return consumerAdminController
+                .save(new EhubConsumer(TestDataConstants.EHUB_CONSUMER_DESCRIPTION, TestDataConstants.EHUB_CONSUMER_SECRET_KEY, EHUB_CONSUMER_PROPERTIES,
+                        TestDataConstants.DEFAULT_LANGUAGE));
     }
 
     private ContentProviderConsumer initContentProviderConsumer(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
-        final String contentProviderName=contentProvider.getName();
-        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> contentProviderConsumerProperties = CONTENT_PROVIDER_CONSUMER_PROPERTIES.get(contentProviderName);
-        final ContentProviderConsumer contentProviderConsumer = consumerAdminController.save(new ContentProviderConsumer(ehubConsumer, contentProvider, contentProviderConsumerProperties));
+        final String contentProviderName = contentProvider.getName();
+        Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String> contentProviderConsumerProperties =
+                CONTENT_PROVIDER_CONSUMER_PROPERTIES.get(contentProviderName);
+        final ContentProviderConsumer contentProviderConsumer =
+                consumerAdminController.save(new ContentProviderConsumer(ehubConsumer, contentProvider, contentProviderConsumerProperties));
         ehubConsumer.getContentProviderConsumers().add(contentProviderConsumer);
         consumerAdminController.save(ehubConsumer);
         return contentProviderConsumer;
     }
 
     private Long initEhubLoan(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
-        final String contentProviderName=contentProvider.getName();
-        String contentProviderFormatId=FORMAT_IDS.get(contentProviderName).iterator().next();
+        final String contentProviderName = contentProvider.getName();
+        String contentProviderFormatId = FORMAT_IDS.get(contentProviderName).iterator().next();
         FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
                 TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
