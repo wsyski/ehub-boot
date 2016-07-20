@@ -228,17 +228,17 @@
         <comment>Added text bundles to the Zinio format decorations</comment>
     </changeSet>
 
-    <changeSet id="20" author="ehub" dbms="oracle">
+    <changeSet id="20" author="ehub">
+        <sql>INSERT INTO FORMAT_DECORATION_PLATFORM(PLATFORM_ID,CONTENT_P_FORMAT_DECORATION_ID) SELECT platform.id,  content_p_format_decoration.id FROM PLATFORM, CONTENT_P_FORMAT_DECORATION WHERE content_p_format_decoration.id=1801</sql>
+        <comment>Initialize ZINIO format decoration platforms</comment>
+    </changeSet>
+
+    <changeSet id="21" author="ehub" dbms="oracle">
         <update tableName="CONTENT_PROVIDER">
             <column name="LOAN_PER_PRODUCT" value="1"/>
             <column name="MODIFY_DATETIME" valueComputed="${now}"/>
-            <where>ID=5 OR ID=6</where>
+            <where>ID IN (5,6,10)</where>
         </update>
-        <comment>Set loan per product for ELIB3 and Overdrive</comment>
-    </changeSet>
-
-    <changeSet id="21" author="ehub">
-        <sql>INSERT INTO FORMAT_DECORATION_PLATFORM(PLATFORM_ID,CONTENT_P_FORMAT_DECORATION_ID) SELECT platform.id,  content_p_format_decoration.id FROM PLATFORM, CONTENT_P_FORMAT_DECORATION WHERE content_p_format_decoration.id=1801</sql>
-        <comment>Initialize ZINIO format decoration platforms</comment>
+        <comment>Set loan per product</comment>
     </changeSet>
 </databaseChangeLog>
