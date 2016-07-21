@@ -67,7 +67,6 @@ public class TestDataResource implements ITestDataResource {
                     .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, TestDataConstants.ARENA_PALMA_URL)
                     .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, TestDataConstants.ARENA_AGENCY_M_IDENTIFIER).build();
 
-
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
     @Autowired

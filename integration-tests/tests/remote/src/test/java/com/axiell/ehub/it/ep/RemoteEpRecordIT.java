@@ -8,7 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 public class RemoteEpRecordIT extends RemoteRecordITFixture {
 
     @Override
-    protected void givenContentProviderGetFormatsResponse() {
+    protected void givenContentProviderGetRecordResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_0_ID))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/getRecordResponse.json").withHeader("Content-Type", "application/json")
                         .withStatus(200)));
@@ -22,5 +22,10 @@ public class RemoteEpRecordIT extends RemoteRecordITFixture {
     @Override
     protected boolean isLoanPerProduct() {
         return false;
+    }
+
+    @Override
+    protected int expectedIssueCount() {
+        return 1;
     }
 }
