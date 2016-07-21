@@ -30,7 +30,7 @@ public class TestDataConstants {
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "c2VjcmV0S2V5";
 
-    public static final String ZINIO_API_BASE_URL = "http://localhost:16521/zinio/api";
+    public static final String ZINIO_API_BASE_URL = "http://localhost:16521/zinio";
     public static final int ZINIO_LOAN_EXPIRATION_DAYS = 28;
     public static final String ZINIO_LIB_ID = "axielltest";
     public static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";

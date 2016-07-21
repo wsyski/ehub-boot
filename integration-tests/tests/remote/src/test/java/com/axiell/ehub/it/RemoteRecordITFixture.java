@@ -16,8 +16,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-
 public abstract class RemoteRecordITFixture extends RemoteITFixture {
     private static final long INVALID_EHUB_CONSUMER_ID = 0L;
 
@@ -25,39 +23,51 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
 
     @Test
     public final void getRecord() throws EhubException {
-        givenContentProviderGetFormatsResponse();
+        givenContentProviderGetRecordResponse();
         whenGetRecord(authInfo);
-        thenActualFormatsContainsExpectedComponents();
+        thenActualRecordContainsExpectedComponents();
     }
 
     @Test
     public void unauthorized() throws EhubException {
         AuthInfo invalidAuthInfo = givenInvalidAuthInfo();
-        givenExpectedEhubException(UnauthorizedException.class,ErrorCause.EHUB_CONSUMER_NOT_FOUND,
+        givenExpectedEhubException(UnauthorizedException.class, ErrorCause.EHUB_CONSUMER_NOT_FOUND,
                 new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, String.valueOf(INVALID_EHUB_CONSUMER_ID)));
         whenGetRecord(invalidAuthInfo);
     }
 
-    private void thenActualFormatsContainsExpectedComponents() {
+    private void thenActualRecordContainsExpectedComponents() {
         Assert.assertNotNull(record);
         List<Issue> issues = record.getIssues();
         Assert.assertNotNull(issues);
-        Assert.assertThat(issues.size(), Matchers.is(1));
-        List<Format> formats = issues.get(0).getFormats();
-        Assert.assertNotNull(formats);
-        Assert.assertFalse(formats.isEmpty());
-        for (Format format : formats) {
-            thenFormatContainsExpectedComponents(format);
-        }
+        int expectedIssueCount = expectedIssueCount();
+        Assert.assertThat(issues.size(), Matchers.is(expectedIssueCount));
+        issues.forEach(issue -> {
+            if (expectedIssueCount > 1) {
+                Assert.assertThat(issue.getId(), Matchers.notNullValue());
+                Assert.assertThat(issue.getTitle(), Matchers.notNullValue());
+                Assert.assertThat(issue.getImageUrl(), Matchers.notNullValue());
+            } else {
+                Assert.assertThat(issue.getId(), Matchers.nullValue());
+                Assert.assertThat(issue.getTitle(), Matchers.nullValue());
+                Assert.assertThat(issue.getImageUrl(), Matchers.nullValue());
+            }
+            List<Format> formats = issue.getFormats();
+            Assert.assertThat(formats, Matchers.notNullValue());
+            Assert.assertFalse(formats.isEmpty());
+            for (Format format : formats) {
+                thenFormatContainsExpectedComponents(format);
+            }
+        });
     }
 
     private void thenFormatContainsExpectedComponents(final Format format) {
         String id = format.getId();
-        Assert.assertNotNull(id);
+        Assert.assertThat(id, Matchers.notNullValue());
         String name = format.getName();
-        Assert.assertNotNull(name);
+        Assert.assertThat(name, Matchers.notNullValue());
         Set<String> platforms = format.getPlatforms();
-        Assert.assertTrue(platforms.size() > 0);
+        Assert.assertThat(platforms.size(), Matchers.is(3));
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
@@ -69,5 +79,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
         return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID, TestDataConstants.EHUB_CONSUMER_SECRET_KEY).build();
     }
 
-    protected abstract void givenContentProviderGetFormatsResponse();
+    protected abstract void givenContentProviderGetRecordResponse();
+
+    protected abstract int expectedIssueCount();
 }
