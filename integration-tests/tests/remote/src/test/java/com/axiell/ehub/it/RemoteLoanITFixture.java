@@ -61,11 +61,11 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentType errorCauseArgumentType) {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
-                aResponse().withBodyFile("errorDTO_" + errorCauseArgumentType.name() + ".json").withHeader("Content-Type", "application/json").withStatus(500)));
+                aResponse().withBodyFile("ep/errorDTO_" + errorCauseArgumentType.name() + ".json").withHeader("Content-Type", "application/json").withStatus(500)));
     }
 
     private String getResponseFilePrefix() {
-        return isLoanPerProduct() ? "lpp/" : "lpf/";
+        return isLoanPerProduct() ? "ep/lpp/" : "ep/lpf/";
     }
 
     protected void thenValidCheckout(final Checkout checkout, final String contentProviderFormatId, final boolean isNewLoan) {

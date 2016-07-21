@@ -1,4 +1,4 @@
-package com.axiell.ehub.it.lpf;
+package com.axiell.ehub.it.ep.lpf;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
