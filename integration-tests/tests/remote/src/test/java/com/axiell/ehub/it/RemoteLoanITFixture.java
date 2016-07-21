@@ -49,13 +49,13 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     protected void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID)).willReturn(
-                aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
+                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
                         .withStatus(200)));
     }
 
     protected void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
-                aResponse().withBodyFile(getResponseFilePrefix() + "CheckoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
+                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
                         .withStatus(201)));
     }
 
@@ -65,7 +65,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
     }
 
     private String getResponseFilePrefix() {
-        return isLoanPerProduct() ? "lpp" : "lpf";
+        return isLoanPerProduct() ? "lpp/" : "lpf/";
     }
 
     protected void thenValidCheckout(final Checkout checkout, final String contentProviderFormatId, final boolean isNewLoan) {
