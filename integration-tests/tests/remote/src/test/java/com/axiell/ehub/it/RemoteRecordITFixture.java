@@ -38,11 +38,6 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
         whenGetRecord(invalidAuthInfo);
     }
 
-    private void givenContentProviderGetFormatsResponse() {
-        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_0_ID))
-                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
-    }
-
     private void thenActualFormatsContainsExpectedComponents() {
         Assert.assertNotNull(record);
         List<Issue> issues = record.getIssues();
@@ -73,4 +68,6 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
         expectedException.expect(EhubException.class);
         return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID, TestDataConstants.EHUB_CONSUMER_SECRET_KEY).build();
     }
+
+    protected abstract void givenContentProviderGetFormatsResponse();
 }

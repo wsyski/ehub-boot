@@ -1,4 +1,4 @@
-package com.axiell.ehub.it.lpp;
+package com.axiell.ehub.it.ep.lpp;
 
 import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.Checkout;
