@@ -40,7 +40,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
         Assert.assertNotNull(record);
         List<Issue> issues = record.getIssues();
         Assert.assertNotNull(issues);
-        int expectedIssueCount = expectedIssueCount();
+        int expectedIssueCount = getExpectedIssueCount();
         Assert.assertThat(issues.size(), Matchers.is(expectedIssueCount));
         issues.forEach(issue -> {
             if (expectedIssueCount > 1) {
@@ -54,7 +54,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
             }
             List<Format> formats = issue.getFormats();
             Assert.assertThat(formats, Matchers.notNullValue());
-            Assert.assertFalse(formats.isEmpty());
+            Assert.assertThat(formats.size(),Matchers.is(getExpectedFormatCount()));
             for (Format format : formats) {
                 thenFormatContainsExpectedComponents(format);
             }
@@ -81,5 +81,6 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
 
     protected abstract void givenContentProviderGetRecordResponse();
 
-    protected abstract int expectedIssueCount();
+    protected abstract int getExpectedIssueCount();
+    protected abstract int getExpectedFormatCount();
 }

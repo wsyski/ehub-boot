@@ -12,21 +12,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TestData {
     private Long ehubConsumerId;
     private String ehubConsumerSecretKey;
-    private Long ehubLoanId;
+    private long ehubLoanId;
     private String patronId;
     private String libraryCard;
     private String pin;
+    private String email;
 
     protected TestData() {
     }
 
-    public TestData(Long ehubConsumerId, String ehubConsumerSecretKey, Long ehubLoanId, String patronId, String libraryCard, String pin) {
+    public TestData(final long ehubConsumerId, final String ehubConsumerSecretKey, final long ehubLoanId, final String patronId, final String libraryCard,
+                    final String pin, final String email) {
         this.ehubConsumerId = ehubConsumerId;
         this.ehubConsumerSecretKey = ehubConsumerSecretKey;
         this.ehubLoanId = ehubLoanId;
         this.patronId = patronId;
         this.libraryCard = libraryCard;
         this.pin = pin;
+        this.email = email;
     }
 
     @XmlAttribute(name = "ehubConsumerId", required = true)
@@ -48,7 +51,7 @@ public class TestData {
     }
 
     @XmlAttribute(name = "ehubLoanId", required = true)
-    public Long getEhubLoanId() {
+    public long getEhubLoanId() {
         return ehubLoanId;
     }
 
@@ -81,6 +84,15 @@ public class TestData {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    @XmlAttribute(name = "email", required = true)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

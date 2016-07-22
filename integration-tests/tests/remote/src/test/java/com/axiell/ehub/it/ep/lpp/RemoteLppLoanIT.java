@@ -3,22 +3,12 @@ package com.axiell.ehub.it.ep.lpp;
 import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.it.RemoteLoanITFixture;
+import com.axiell.ehub.it.ep.RemoteEpLoanITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Test;
 
-public class LppRemoteLoanIT extends RemoteLoanITFixture {
+public class RemoteLppLoanIT extends RemoteEpLoanITFixture {
 
-    @Test
-    public final void checkoutWithExistingContentProviderLoan() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
-        givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestActiveLoanResponse();
-        givenPalmaCheckoutResponse();
-        givenContentProviderGetCheckoutResponse();
-        Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID, false);
-    }
 
     @Test
     public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {

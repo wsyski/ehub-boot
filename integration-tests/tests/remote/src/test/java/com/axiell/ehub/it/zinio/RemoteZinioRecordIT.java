@@ -10,8 +10,11 @@ public class RemoteZinioRecordIT extends RemoteRecordITFixture {
 
     @Override
     protected void givenContentProviderGetRecordResponse() {
-        stubFor(get(urlEqualTo("/zinio/api?cmd=zinio_issues_by_magazines_and_library&lib_id="+TestDataConstants.ZINIO_LIB_ID+"&token="+TestDataConstants.ZINIO_TOKEN+"&zinio_magazine_rbid=" + TestDataConstants.RECORD_0_ID))
-                .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt").withHeader("Content-Type", "text/plain")
+        stubFor(get(urlEqualTo(
+                "/zinio/api?cmd=zinio_issues_by_magazines_and_library&lib_id=" + TestDataConstants.ZINIO_LIB_ID + "&token=" + TestDataConstants.ZINIO_TOKEN +
+                        "&zinio_magazine_rbid=" + TestDataConstants.RECORD_0_ID))
+                .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt")
+                        .withHeader("Content-Type", "text/plain")
                         .withStatus(200)));
     }
 
@@ -26,7 +29,12 @@ public class RemoteZinioRecordIT extends RemoteRecordITFixture {
     }
 
     @Override
-    protected int expectedIssueCount() {
-         return 8;
+    protected int getExpectedIssueCount() {
+        return 8;
+    }
+
+    @Override
+    protected int getExpectedFormatCount() {
+        return 1;
     }
 }

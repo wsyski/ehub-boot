@@ -5,12 +5,11 @@ import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.MessageFormat;
 
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static com.axiell.ehub.util.SHA512Function.sha512Hex;
 import static org.junit.Assert.*;
 
@@ -34,15 +33,15 @@ public class AuthInfoTest {
     public void setUp() {
         expInfoValue1 = MessageFormat
                 .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
-                        encode(String.valueOf(EHUB_CONSUMER_ID)), encode(sha512Hex(LIBRARY_CARD)), encode(LIBRARY_CARD), encode(PIN), encode(SIGNATURE_0));
+                        authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(sha512Hex(LIBRARY_CARD)), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(SIGNATURE_0));
         expInfoValue2 = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_signature=\"{1}\"",
-                encode(String.valueOf(EHUB_CONSUMER_ID)), encode(SIGNATURE_1));
+                authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(SIGNATURE_1));
         expInfoValue3 = MessageFormat
                 .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
-                        encode(String.valueOf(EHUB_CONSUMER_ID)), encode(PATRON_ID), encode(LIBRARY_CARD), encode(PIN), encode(SIGNATURE_2));
+                        authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(PATRON_ID), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(SIGNATURE_2));
         expInfoValue4 = MessageFormat
                 .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_email=\"{4}\", ehub_signature=\"{5}\"",
-                        encode(String.valueOf(EHUB_CONSUMER_ID)), encode(PATRON_ID), encode(LIBRARY_CARD), encode(PIN), encode(EMAIL), encode(SIGNATURE_3));
+                        authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(PATRON_ID), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(EMAIL), authInfoEncode(SIGNATURE_3));
     }
 
     /**

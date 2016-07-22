@@ -38,10 +38,13 @@ import java.util.*;
 
 @Component
 public class TestDataResource implements ITestDataResource {
+    private static final Map<String, Boolean> HAS_ISSUES = ImmutableMap.<String, Boolean>builder()
+            .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, false)
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, true).build();
     private static final Map<String, List<String>> FORMAT_IDS = ImmutableMap.<String, List<String>>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP,
                     Lists.newArrayList(TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID))
-            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, Lists.newArrayList(ZinioDataAccessor.ZINIO_STREAM_FORMAT_ID)).build();
+            .put(ContentProvider.CONTENT_PROVIDER_ZINIO, Lists.newArrayList(ZinioDataAccessor.ZINIO_FORMAT_0_ID)).build();
 
     private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTIES =
             ImmutableMap.<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>>builder()
@@ -90,9 +93,9 @@ public class TestDataResource implements ITestDataResource {
         final EhubConsumer ehubConsumer = initEhubConsumer();
         final ContentProvider contentProvider = initContentProvider(contentProviderName, isLoanPerProduct);
         initContentProviderConsumer(ehubConsumer, contentProvider);
-        final Long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
+        final long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
         return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
-                TestDataConstants.LIBRARY_CARD, TestDataConstants.PIN);
+                TestDataConstants.LIBRARY_CARD, TestDataConstants.PIN, TestDataConstants.EMAIL);
     }
 
     @Override
@@ -180,10 +183,12 @@ public class TestDataResource implements ITestDataResource {
 
     private Long initEhubLoan(final EhubConsumer ehubConsumer, final ContentProvider contentProvider) {
         final String contentProviderName = contentProvider.getName();
+        final boolean hasIssues = HAS_ISSUES.get(contentProviderName);
         String contentProviderFormatId = FORMAT_IDS.get(contentProviderName).iterator().next();
         FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
-                TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
+                TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderIssueId(hasIssues ? TestDataConstants.ISSUE_0_ID : null)
+                .contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);

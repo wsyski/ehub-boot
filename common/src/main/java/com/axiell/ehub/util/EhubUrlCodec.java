@@ -22,7 +22,7 @@ public final class EhubUrlCodec {
     }
     
     /**
-     * URL encodes the provided string.
+     * Auth Info URL encodes the provided string.
      * 
      * <p>
      * Note that the eHUB encodes some characters differently (same as OAuth).
@@ -31,14 +31,32 @@ public final class EhubUrlCodec {
      * @param str the string to URL encode
      * @return the URL encoded string
      */
-    public static String encode(String str) {
+    public static String authInfoEncode(String str) {
         try {
             return URL_CODEC.encode(str).replace("+", "%20").replace("*", "%2A").replace("%7E", "~");
         } catch (EncoderException e) {
             throw new InternalServerErrorException("Could not URL encode string '" + str + "'", e);
         }
     }
-    
+
+    /**
+     * URL encodes the provided string.
+     *
+     * <p>
+     * Note that the eHUB encodes some characters differently (same as OAuth).
+     * </p>
+     *
+     * @param str the string to URL encode
+     * @return the URL encoded string
+     */
+    public static String encode(String str) {
+        try {
+            return URL_CODEC.encode(str);
+        } catch (EncoderException e) {
+            throw new InternalServerErrorException("Could not URL encode string '" + str + "'", e);
+        }
+    }
+
     /**
      * URL decodes the provided string.
      * 

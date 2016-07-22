@@ -11,7 +11,7 @@ import com.axiell.ehub.patron.Patron;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 
 public class AuthInfo {
     static final String EHUB_SCHEME = "eHUB";
@@ -70,7 +70,7 @@ public class AuthInfo {
         }
         sb.append(name);
         sb.append("=\"");
-        sb.append(encode(value));
+        sb.append(authInfoEncode(value));
         sb.append("\"");
     }
 
