@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-public abstract class RemoteLoanITFixture extends RemoteITFixture {
+public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
     protected Fields fields;
     protected String lmsLoanId;
     protected Long readyLoanId;
