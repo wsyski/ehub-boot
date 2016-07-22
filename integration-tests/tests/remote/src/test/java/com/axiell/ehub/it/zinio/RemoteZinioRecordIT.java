@@ -12,7 +12,7 @@ public class RemoteZinioRecordIT extends RemoteRecordITFixture {
     protected void givenContentProviderGetRecordResponse() {
         stubFor(get(urlEqualTo(
                 "/zinio/api?cmd=zinio_issues_by_magazines_and_library&lib_id=" + TestDataConstants.ZINIO_LIB_ID + "&token=" + TestDataConstants.ZINIO_TOKEN +
-                        "&zinio_magazine_rbid=" + TestDataConstants.RECORD_0_ID))
+                        "&zinio_magazine_rbid=" + TestDataConstants.RECORD_ID_0))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt")
                         .withHeader("Content-Type", "text/plain")
                         .withStatus(200)));

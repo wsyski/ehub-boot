@@ -3,7 +3,7 @@ package com.axiell.ehub.it.ep;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.checkout.*;
-import com.axiell.ehub.it.RemoteLoanITFixture;
+import com.axiell.ehub.it.RemoteCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,11 +13,11 @@ import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupp
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertThat;
 
-public abstract class RemoteEpLoanITFixture extends RemoteLoanITFixture {
+public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture {
     @Test
     public final void checkoutWithContentProviderError() throws EhubException {
         givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN.name());
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_1);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestNewLoanResponse();
         givenPalmaCheckoutResponse();
@@ -75,7 +75,7 @@ public abstract class RemoteEpLoanITFixture extends RemoteLoanITFixture {
 
     @Override
     protected String getContentProviderFormatId() {
-        return TestDataConstants.TEST_EP_FORMAT_0_ID;
+        return TestDataConstants.TEST_EP_FORMAT_ID_0;
     }
 
     @Override
