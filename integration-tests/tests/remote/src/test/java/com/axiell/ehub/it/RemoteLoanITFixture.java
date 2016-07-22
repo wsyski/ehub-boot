@@ -23,7 +23,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
         fields.addValue("contentProviderAlias", getContentProviderAlias());
-        fields.addValue("contentProviderRecordId", TestDataConstants.RECORD_0_ID);
+        fields.addValue("contentProviderRecordId", TestDataConstants.RECORD_ID_0);
         fields.addValue("contentProviderIssueId", getContentProviderIssueId());
     }
 

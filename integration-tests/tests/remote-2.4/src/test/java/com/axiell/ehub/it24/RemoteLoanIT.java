@@ -24,12 +24,12 @@ public class RemoteLoanIT extends RemoteITFixture {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
         fields.addValue("contentProviderAlias", CONTENT_PROVIDER_ALIAS);
-        fields.addValue("contentProviderRecordId", TestDataConstants.RECORD_0_ID);
+        fields.addValue("contentProviderRecordId", TestDataConstants.RECORD_ID_0);
     }
 
     @Test
     public final void checkout() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_0);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestOkResponse();
         givenContentProviderCheckoutResponse();
@@ -57,7 +57,7 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     @Test
     public final void ehubException() {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_0_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_0);
         givenPalmaLoansWsdl();
         givenCheckoutTestErrorResponse();
         try {

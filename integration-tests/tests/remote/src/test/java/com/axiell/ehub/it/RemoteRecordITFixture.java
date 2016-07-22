@@ -71,7 +71,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
-        record = underTest.getRecord(authInfo, getContentProviderAlias(), TestDataConstants.RECORD_0_ID, LANGUAGE);
+        record = underTest.getRecord(authInfo, getContentProviderAlias(), TestDataConstants.RECORD_ID_0, LANGUAGE);
     }
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {
