@@ -29,7 +29,7 @@ public class RemoteZinioLoanIT extends RemoteLoanITFixture {
 
     @Override
     protected String getContentProviderIssueId() {
-        return TestDataConstants.ISSUE_0_ID;
+        return TestDataConstants.ISSUE_ID_0;
     }
 
     @Override

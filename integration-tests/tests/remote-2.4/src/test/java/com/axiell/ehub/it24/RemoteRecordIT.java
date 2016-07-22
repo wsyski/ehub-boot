@@ -39,7 +39,7 @@ public class RemoteRecordIT extends RemoteITFixture {
     }
 
     private void givenContentProviderGetFormatsResponse() {
-        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_0_ID))
+        stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_ID_0))
                 .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
     }
 
@@ -62,7 +62,7 @@ public class RemoteRecordIT extends RemoteITFixture {
     }
 
     private void whenGetRecord(final AuthInfo authInfo) throws EhubException {
-        record = underTest.getRecord(authInfo, CONTENT_PROVIDER_ALIAS, TestDataConstants.RECORD_0_ID, LANGUAGE);
+        record = underTest.getRecord(authInfo, CONTENT_PROVIDER_ALIAS, TestDataConstants.RECORD_ID_0, LANGUAGE);
     }
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {

@@ -43,7 +43,7 @@ public class TestDataResource implements ITestDataResource {
             .put(ContentProvider.CONTENT_PROVIDER_ZINIO, true).build();
     private static final Map<String, List<String>> FORMAT_IDS = ImmutableMap.<String, List<String>>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP,
-                    Lists.newArrayList(TestDataConstants.TEST_EP_FORMAT_0_ID, TestDataConstants.TEST_EP_FORMAT_1_ID, TestDataConstants.TEST_EP_FORMAT_2_ID))
+                    Lists.newArrayList(TestDataConstants.TEST_EP_FORMAT_ID_0, TestDataConstants.TEST_EP_FORMAT_ID_1, TestDataConstants.TEST_EP_FORMAT_ID_2))
             .put(ContentProvider.CONTENT_PROVIDER_ZINIO, Lists.newArrayList(ZinioDataAccessor.ZINIO_FORMAT_0_ID)).build();
 
     private static final Map<String, Map<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>> CONTENT_PROVIDER_CONSUMER_PROPERTIES =
@@ -187,7 +187,7 @@ public class TestDataResource implements ITestDataResource {
         String contentProviderFormatId = FORMAT_IDS.get(contentProviderName).iterator().next();
         FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
-                TestDataConstants.RECORD_1_ID, formatDecoration1).contentProviderIssueId(hasIssues ? TestDataConstants.ISSUE_0_ID : null)
+                TestDataConstants.RECORD_ID_1, formatDecoration1).contentProviderIssueId(hasIssues ? TestDataConstants.ISSUE_ID_0 : null)
                 .contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);

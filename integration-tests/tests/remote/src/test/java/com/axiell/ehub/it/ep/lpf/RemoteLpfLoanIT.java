@@ -16,7 +16,7 @@ public class RemoteLpfLoanIT extends RemoteEpLoanITFixture {
     public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
         givenExpectedEhubException(InternalServerErrorException.class,ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT,
                 new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP));
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_1);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestActiveLoanResponse();
         givenPalmaCheckoutResponse();
@@ -26,13 +26,13 @@ public class RemoteLpfLoanIT extends RemoteEpLoanITFixture {
 
     @Test
     public final void checkoutWithNewContentProviderLoan() throws EhubException {
-        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_1_ID);
+        givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_1);
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestNewLoanResponse();
         givenPalmaCheckoutResponse();
         givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_1_ID, true);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_ID_1, true);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class RemoteLpfLoanIT extends RemoteEpLoanITFixture {
         givenReadyLoanId();
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenGetCheckoutByLoanId();
-        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_0_ID, false);
+        thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_ID_0, false);
     }
 
     @Test
