@@ -10,7 +10,7 @@ public class EhubUrlCodecTest {
 
     @Test
     public void testEncode() throws Exception {
-        final String encoded = EhubUrlCodec.encode(URL);
+        final String encoded = EhubUrlCodec.authInfoEncode(URL);
         assertEquals("http%3A%2F%2Ftesturl.com%2Fface%3Fhi%3D2%2B1%26i%2Ai%3Di2%26a%21%21%3D10%26~%20", encoded);
     }
 

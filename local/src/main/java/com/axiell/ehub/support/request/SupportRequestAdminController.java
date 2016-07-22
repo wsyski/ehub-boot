@@ -90,7 +90,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
             final AuthInfo authInfo = makeAuthInfo(arguments);
             supportRequest.setAuthInfo(authInfo);
             final IContentProvidersResource_v1 contentProvidersResource = createResource(IContentProvidersResource_v1.class, baseUri);
-            final IRecordsResource_v1 recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.encode(contentProviderName));
+            final IRecordsResource_v1 recordsResource = contentProvidersResource.getRecords(EhubUrlCodec.authInfoEncode(contentProviderName));
             final Formats_v1 formats = recordsResource.getFormats(authInfo, contentProviderRecordId, language);
             return makeSupportResponse(supportRequest, STATUS_OK, formats);
         } catch (EhubException ex) {

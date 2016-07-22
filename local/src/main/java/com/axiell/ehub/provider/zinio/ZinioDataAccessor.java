@@ -16,14 +16,13 @@ import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
-    public static final String ZINIO_STREAM_FORMAT_ID = "ZINIO.stream";
+    public static final String ZINIO_FORMAT_0_ID = "ZINIO.stream";
 
     @Autowired
     private IFormatFactory formatFactory;
@@ -38,7 +37,7 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final Format format = formatFactory.create(contentProvider, ZINIO_STREAM_FORMAT_ID, language);
+        final Format format = formatFactory.create(contentProvider, ZINIO_FORMAT_0_ID, language);
         final List<IssueDTO> issuesDTO = zinioFacade.getIssues(contentProviderConsumer, contentProviderRecordId, language);
         return issuesDTO.stream().map(issueDTO -> issueDTO.toIssue(format)).collect(Collectors.toList());
     }
@@ -72,7 +71,7 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final String contentProviderIssueId = data.getContentProviderIssueId();
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProviderConsumer.getContentProvider());
-        return newContentProviderLoanMetadataBuilder(data, expirationDate).issueId(contentProviderIssueId).build();
+        return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderIssueId(contentProviderIssueId).build();
     }
 
     private Content makeContent(final String contentLinkHref) {

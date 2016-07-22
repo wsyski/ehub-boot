@@ -170,7 +170,7 @@ public class ContentProviderLoanMetadata implements Serializable {
             return this;
         }
 
-        public Builder issueId(final String issueId) {
+        public Builder contentProviderIssueId(final String issueId) {
             this.issueId = issueId;
             return this;
         }

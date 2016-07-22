@@ -25,7 +25,12 @@ public class RemoteEpRecordIT extends RemoteRecordITFixture {
     }
 
     @Override
-    protected int expectedIssueCount() {
+    protected int getExpectedIssueCount() {
         return 1;
+    }
+
+    @Override
+    protected int getExpectedFormatCount() {
+        return 3;
     }
 }

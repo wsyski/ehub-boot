@@ -70,7 +70,7 @@ public class ZinioFacade implements IZinioFacade {
         if (StringUtils.isBlank(contentProviderIssueId)) {
            throw createInternalServerErrorException("Blank contentProviderIssueId");
         }
-        return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.encode(contentProviderIssueId);
+        return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.authInfoEncode(contentProviderIssueId);
     }
 
     private IZinioResponse createZinioResponse(final ContentProviderConsumer contentProviderConsumer, final String language, final String response) {

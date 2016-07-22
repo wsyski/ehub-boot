@@ -4,6 +4,7 @@ public class FieldsBuilder {
     public static final String LMS_RECORD_ID = "recordId";
     public static final String CONTENT_PROVIDER_FORMAT_ID = "providerFormatId";
     public static final String CONTENT_PROVIDER_RECORD_ID = "providerRecordId";
+    public static final String CONTENT_PROVIDER_ISSUE_ID = "providerIssueId";
     public static final String CONTENT_PROVIDER_ALIAS = "ELIB3";
     private Fields fields;
 
@@ -28,6 +29,11 @@ public class FieldsBuilder {
 
     public FieldsBuilder withContentProviderAlias() {
         fields.addValue("contentProviderAlias", CONTENT_PROVIDER_ALIAS);
+        return this;
+    }
+
+    public FieldsBuilder withContentProviderIssueId() {
+        fields.addValue("contentProviderIssueId", CONTENT_PROVIDER_ALIAS);
         return this;
     }
 

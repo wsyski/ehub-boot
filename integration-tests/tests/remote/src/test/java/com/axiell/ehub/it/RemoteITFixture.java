@@ -1,6 +1,9 @@
 package com.axiell.ehub.it;
 
-import com.axiell.ehub.*;
+import com.axiell.ehub.EhubException;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionMatcher;
 import com.axiell.ehub.error.LmsErrorExceptionMatcher;
@@ -68,7 +71,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void deleteTestData() {
         ITestDataResource testDataResource = getTestDataResource();
-        javax.ws.rs.core.Response response=testDataResource.delete();
+        javax.ws.rs.core.Response response = testDataResource.delete();
         if (response.getStatus() == javax.ws.rs.core.Response.Status.OK.getStatusCode()) {
             LOGGER.info("Test data deleted");
         } else {
@@ -94,7 +97,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String authorizationHeaderAsString = authorizationHeader == null ? StringUtils.EMPTY : LF + HttpHeaders.AUTHORIZATION + ": " + authorizationHeader;
         LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
-                        LF + response.getStatus());
+                LF + response.getStatus());
     }
 
     private void setUpEhubClient() {
@@ -105,7 +108,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void initAuthInfo() throws EhubException {
         authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).patronId(testData.getPatronId()).build();
+                .pin(testData.getPin()).patronId(testData.getPatronId()).email(testData.getEmail()).build();
     }
 
     private ITestDataResource getTestDataResource() {
@@ -123,11 +126,11 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     protected void givenExpectedEhubException(final Class clazz, final ErrorCause errorCause, final ErrorCauseArgument... arguments) {
-        expectedException.expect(new EhubExceptionMatcher(EhubException.class,errorCause, arguments));
+        expectedException.expect(new EhubExceptionMatcher(EhubException.class, errorCause, arguments));
     }
 
     protected String getContentProviderAlias() {
-       return TestDataConstants.CONTENT_PROVIDER_ALIAS_PREFIX+getContentProviderName();
+        return TestDataConstants.CONTENT_PROVIDER_ALIAS_PREFIX + getContentProviderName();
     }
 
     protected abstract boolean isLoanPerProduct();
