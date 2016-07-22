@@ -35,6 +35,6 @@ public abstract class AbstractContentProviderDataAccessor implements IContentPro
         final String contentProviderIssueId = data.getContentProviderIssueId();
         final String contentProviderFormatId = data.getContentProviderFormatId();
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(contentProviderFormatId);
-        return new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).issueId(contentProviderIssueId);
+        return new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, contentProviderRecordId, formatDecoration).contentProviderIssueId(contentProviderIssueId);
     }
 }

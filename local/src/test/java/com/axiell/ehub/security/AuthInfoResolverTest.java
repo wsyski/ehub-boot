@@ -16,7 +16,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.text.MessageFormat;
 
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 
@@ -144,7 +144,7 @@ public class AuthInfoResolverTest {
 
     private void makeAuthorizationHeaderWithoutPatronIdButWithCardPin(String signature) {
         authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
-                EHUB_CONSUMER_ID, encode(CARD), encode(PIN), encode(signature));
+                EHUB_CONSUMER_ID, authInfoEncode(CARD), authInfoEncode(PIN), authInfoEncode(signature));
     }
 
     private void thenActualErrorCauseEqualsExpectedErrorCause(EhubRuntimeException e, ErrorCause expectedErrorCause) {

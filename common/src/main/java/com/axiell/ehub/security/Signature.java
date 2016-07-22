@@ -12,7 +12,7 @@ import java.security.MessageDigest;
 import java.util.List;
 
 import static com.axiell.ehub.security.HmacSha1Function.hmacSha1;
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
@@ -46,7 +46,7 @@ public final class Signature {
 
     private void appendParam(final String param, final StringBuilder builder) {
         if (param != null) {
-            final String encodedParam = encode(param);
+            final String encodedParam = authInfoEncode(param);
             builder.append(encodedParam);
         }
     }

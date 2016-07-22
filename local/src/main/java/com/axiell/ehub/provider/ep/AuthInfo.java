@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 import java.util.Date;
 import java.util.List;
 
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 
 class AuthInfo {
     private static final String AUTHORIZATION_HEADER_FORMAT =
@@ -33,12 +33,12 @@ class AuthInfo {
         ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         EhubConsumer ehubConsumer = contentProviderConsumer.getEhubConsumer();
         long ehubConsumerId = ehubConsumer.getId();
-        String encodedContentProviderName = encode(contentProvider.getName());
-        String encodedSiteId =  encode(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID));
+        String encodedContentProviderName = authInfoEncode(contentProvider.getName());
+        String encodedSiteId =  authInfoEncode(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID));
         String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY);
-        String encodedUserId =  getUserId()==null ? null : encode(getUserId());
+        String encodedUserId =  getUserId()==null ? null : authInfoEncode(getUserId());
         Signature signature = new Signature(getSignatureItems(encodedContentProviderName, encodedSiteId, ehubConsumerId, encodedUserId, timestamp), secretKey);
-        String encodedSignature = encode(signature.toString());
+        String encodedSignature = authInfoEncode(signature.toString());
         return String.format(AUTHORIZATION_HEADER_FORMAT, encodedContentProviderName, encodedSiteId, ehubConsumerId, encodedUserId, timestamp, encodedSignature);
     }
 

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.text.MessageFormat;
 
-import static com.axiell.ehub.util.EhubUrlCodec.encode;
+import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.junit.Assert.assertEquals;
 
 public class AuthHeaderParserTest {
@@ -185,7 +185,7 @@ public class AuthHeaderParserTest {
     private void givenNewAuthHeaderParserWithValidAuthorizationHeader() {
         authorizationHeader =
                 MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_email=\"{3}\", ehub_signature=\"{4}\"",
-                        encode(String.valueOf(EHUB_CONSUMER_ID)), encode(LIBRARY_CARD), encode(PIN), encode(EMAIL), SIGNATURE);
+                        authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(EMAIL), SIGNATURE);
         underTest = new AuthHeaderParser(authorizationHeader);
     }
 
