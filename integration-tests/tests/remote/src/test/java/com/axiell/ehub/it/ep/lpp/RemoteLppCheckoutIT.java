@@ -3,11 +3,11 @@ package com.axiell.ehub.it.ep.lpp;
 import com.axiell.ehub.*;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.it.ep.RemoteEpLoanITFixture;
+import com.axiell.ehub.it.ep.RemoteEpCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Test;
 
-public class RemoteLppLoanIT extends RemoteEpLoanITFixture {
+public class RemoteLppCheckoutIT extends RemoteEpCheckoutITFixture {
 
 
     @Test

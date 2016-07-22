@@ -6,11 +6,11 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
-import com.axiell.ehub.it.ep.RemoteEpLoanITFixture;
+import com.axiell.ehub.it.ep.RemoteEpCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Test;
 
-public class RemoteLpfLoanIT extends RemoteEpLoanITFixture {
+public class RemoteLpfCheckoutIT extends RemoteEpCheckoutITFixture {
 
     @Test
     public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
