@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 public abstract class AbstractContentProviderExceptionFactory<E> implements IContentProviderExceptionFactory<E> {
     static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";
-    public final String UNKNOWN_CONTENT_PROVIDER = "unknown";
+    static final String UNKNOWN_CONTENT_PROVIDER = "unknown";
     public static final String UNKNOWN_STATUS_CODE = "unknown";
     private final Class<E> clazz;
     private IEhubExceptionFactory ehubExceptionFactory;

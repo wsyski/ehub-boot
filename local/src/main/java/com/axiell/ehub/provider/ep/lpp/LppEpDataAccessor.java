@@ -32,7 +32,6 @@ public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final LppCheckoutDTO lppCheckoutDTO = epFacade.checkout(contentProviderConsumer, patron, contentProviderRecordId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, lppCheckoutDTO);
-        final FormatDecoration formatDecoration = loanMetadata.getFirstFormatDecoration();
         final String contentProviderFormatId = data.getContentProviderFormatId();
         final String language = data.getLanguage();
         final FormatMetadataDTO formatMetadataDTO =

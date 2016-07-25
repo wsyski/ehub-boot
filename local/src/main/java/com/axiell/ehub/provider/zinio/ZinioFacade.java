@@ -32,12 +32,12 @@ public class ZinioFacade implements IZinioFacade {
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
         try {
             String response = zinioResource.patronExists(IZinioResource.CMD_P_EXISTS, libraryId, token, email);
-            IZinioResponse zinioResponse = createZinioResponse(contentProviderConsumer, language, response);
+            createZinioResponse(contentProviderConsumer, language, response);
         } catch (InternalServerErrorException ex) {
             String password = getPassword();
             String libraryCard = patron.getLibraryCard();
             String response = zinioResource.addPatron(IZinioResource.CMD_P_ACCOUNT_CREATE, libraryId, token, email, password, password, NA, NA, libraryCard);
-            IZinioResponse zinioResponse = createZinioResponse(contentProviderConsumer, language, response);
+            createZinioResponse(contentProviderConsumer, language, response);
         }
         String response = zinioResource.login(IZinioResource.CMD_P_LOGIN, libraryId, token, email);
         IZinioResponse zinioResponse = createZinioResponse(contentProviderConsumer, language, response);
@@ -52,7 +52,7 @@ public class ZinioFacade implements IZinioFacade {
         final String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID);
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
         String response = zinioResource.checkout(IZinioResource.CMD_ZINIO_CHECKOUT_ISSUE, libraryId, token, email, contentProviderIssueId);
-        IZinioResponse zinioResponse = createZinioResponse(contentProviderConsumer, language, response);
+        createZinioResponse(contentProviderConsumer, language, response);
     }
 
     @Override
