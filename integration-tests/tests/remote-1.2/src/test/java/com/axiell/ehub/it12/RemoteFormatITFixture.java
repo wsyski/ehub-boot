@@ -8,6 +8,7 @@ import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public abstract class RemoteFormatITFixture extends RemoteITFixture {
 
     private void givenContentProviderGetFormatsResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_ID_0))
-                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_OK)));
     }
 
     protected abstract void whenGetFormats() throws EhubException;

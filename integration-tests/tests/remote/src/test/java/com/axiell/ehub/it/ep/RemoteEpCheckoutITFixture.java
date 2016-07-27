@@ -8,6 +8,8 @@ import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -28,7 +30,7 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentType errorCauseArgumentType) {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
                 aResponse().withBodyFile(getContentProviderName() + "/errorDTO_" + errorCauseArgumentType.name() + ".json")
-                        .withHeader("Content-Type", "application/json").withStatus(500)));
+                        .withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)));
     }
 
 
@@ -36,7 +38,7 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     protected void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
                 aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
-                        .withStatus(201)));
+                        .withStatus(HttpServletResponse.SC_CREATED)));
     }
 
     private String getResponseFilePrefix() {
@@ -47,7 +49,7 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     protected void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID)).willReturn(
                 aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
-                        .withStatus(200)));
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     @Override

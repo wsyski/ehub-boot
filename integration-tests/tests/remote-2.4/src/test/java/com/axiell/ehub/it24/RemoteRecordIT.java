@@ -10,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -40,7 +41,7 @@ public class RemoteRecordIT extends RemoteITFixture {
 
     private void givenContentProviderGetFormatsResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_ID_0))
-                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("getRecordResponse.json").withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void thenActualFormatsContainsExpectedComponents() {
