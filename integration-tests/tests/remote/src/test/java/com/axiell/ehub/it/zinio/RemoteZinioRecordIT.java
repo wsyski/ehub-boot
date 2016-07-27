@@ -4,6 +4,8 @@ import com.axiell.ehub.it.RemoteRecordITFixture;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.test.TestDataConstants;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class RemoteZinioRecordIT extends RemoteRecordITFixture {
@@ -15,7 +17,7 @@ public class RemoteZinioRecordIT extends RemoteRecordITFixture {
                         "&zinio_magazine_rbid=" + TestDataConstants.RECORD_ID_0))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt")
                         .withHeader("Content-Type", "text/plain")
-                        .withStatus(200)));
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     @Override

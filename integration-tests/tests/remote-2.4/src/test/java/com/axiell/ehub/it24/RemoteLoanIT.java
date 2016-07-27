@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -69,12 +70,13 @@ public class RemoteLoanIT extends RemoteITFixture {
 
     private void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(201)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(
+                        HttpServletResponse.SC_CREATED)));
     }
 
     private void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void thenValidCheckout(final Checkout checkout) {
