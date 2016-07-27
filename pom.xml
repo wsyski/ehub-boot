@@ -733,7 +733,7 @@
         <jmock.version>2.5.1</jmock.version>
         <mockito.version>1.9.5</mockito.version>
         <powermock.version>1.5</powermock.version>
-        <guava.version>18.0</guava.version>
+        <guava.version>19.0</guava.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <hibernate.version>5.2.1.Final</hibernate.version>

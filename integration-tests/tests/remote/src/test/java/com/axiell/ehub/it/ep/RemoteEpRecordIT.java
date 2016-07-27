@@ -3,6 +3,8 @@ package com.axiell.ehub.it.ep;
 import com.axiell.ehub.it.RemoteRecordITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class RemoteEpRecordIT extends RemoteRecordITFixture {
@@ -11,7 +13,7 @@ public class RemoteEpRecordIT extends RemoteRecordITFixture {
     protected void givenContentProviderGetRecordResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_ID_0))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/getRecordResponse.json").withHeader("Content-Type", "application/json")
-                        .withStatus(200)));
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     @Override

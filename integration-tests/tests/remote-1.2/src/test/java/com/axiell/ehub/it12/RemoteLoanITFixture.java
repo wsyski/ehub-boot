@@ -10,6 +10,7 @@ import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Locale;
 
@@ -78,22 +79,22 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
     private void givenCheckoutTestOkResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile(
-                "CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+                "CheckOutTestResponse_ok.xml").withHeader("Content-Type", "text/xml").withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(201)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_CREATED)));
     }
 
     private void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts"))
-                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(200)));
+                .willReturn(aResponse().withBodyFile("checkoutResponse.json").withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void givenCheckoutResponse() {
         stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOut xmlns")).willReturn(
-                aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+                aResponse().withBodyFile("CheckOutResponse.xml").withHeader("Content-Type", "text/xml").withStatus(HttpServletResponse.SC_OK)));
     }
 
     protected abstract void whenCreateLoan() throws EhubException;
@@ -141,7 +142,7 @@ public abstract class RemoteLoanITFixture extends RemoteITFixture {
 
 
     private void givenCheckoutTestErrorResponse() {
-        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withHeader("Content-Type", "text/xml").withStatus(200)));
+        stubFor(post(urlEqualTo("/arena.pa.palma/loans")).withRequestBody(containing(":CheckOutTest xmlns")).willReturn(aResponse().withBodyFile("CheckOutTestResponse_error.xml").withHeader("Content-Type", "text/xml").withStatus(HttpServletResponse.SC_OK)));
     }
 
     protected void thenCustomEhubExceptionValidation(EhubException e) {

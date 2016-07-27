@@ -8,6 +8,8 @@ import com.axiell.ehub.test.TestDataConstants;
 import com.axiell.ehub.util.EhubUrlCodec;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class RemoteZinioCheckoutIT extends RemoteCheckoutITFixture {
@@ -40,21 +42,21 @@ public class RemoteZinioCheckoutIT extends RemoteCheckoutITFixture {
                 "/zinio/api?cmd=p_exists&lib_id=" + TestDataConstants.ZINIO_LIB_ID + "&token=" + EhubUrlCodec.encode(TestDataConstants.ZINIO_TOKEN) +
                         "&email=" + EhubUrlCodec.encode(TestDataConstants.EMAIL)))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/p_exists.txt")
-                        .withHeader("Content-Type", "text/plain").withStatus(200)));
+                        .withHeader("Content-Type", "text/plain").withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void givenLoginResponse() {
         stubFor(post(urlEqualTo("/zinio/api")).withRequestBody(containing("cmd=p_login"))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/p_login.txt")
                         .withHeader("Content-Type", "text/plain")
-                        .withStatus(200)));
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void givenCheckoutResponse() {
         stubFor(post(urlEqualTo("/zinio/api")).withRequestBody(containing("cmd=zinio_checkout_issue"))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_checkout_issue.txt")
                         .withHeader("Content-Type", "text/plain")
-                        .withStatus(200)));
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     @Override
