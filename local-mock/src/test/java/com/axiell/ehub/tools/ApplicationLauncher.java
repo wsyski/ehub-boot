@@ -11,7 +11,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class ApplicationLauncher {
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("catalina.base", "../build/config/catalina");
+        System.setProperty("catalina.base", "./src/main");
         Server server = new Server();
         ServerConnector connector = new ServerConnector(server);
         connector.setSoLingerTime(-1);

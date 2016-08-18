@@ -28,7 +28,7 @@ public class EhubMessageUtility {
     private void configureEhubResponseDir() {
         final String ehubDir = System.getProperty("ehubDir");
         if (ehubDir == null || ehubDir.equals("")) {
-            ehubResponsesDir = System.getProperty("catalina.base") + File.separator + "webapps/config/ehub";
+            ehubResponsesDir = System.getProperty("catalina.base") + File.separator + "webapp"+ File.separator + "config"+ File.separator + "ehub";
         } else {
             ehubResponsesDir = ehubDir;
         }

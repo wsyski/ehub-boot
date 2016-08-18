@@ -9,15 +9,15 @@ import com.axiell.ehub.v1.provider.record.RecordsResource_v1;
 import org.springframework.beans.factory.annotation.Required;
 
 public final class ContentProvidersResource_v1 implements IContentProvidersResource_v1 {
-    private IIssueBusinessController formatBusinessController;
+    private IIssueBusinessController issueBusinessController;
 
     @Override
     public IRecordsResource_v1 getRecords(String contentProviderName) {
-        return new RecordsResource_v1(formatBusinessController, contentProviderName);
+        return new RecordsResource_v1(issueBusinessController, contentProviderName);
     }
 
     @Required
-    public void setFormatBusinessController(IIssueBusinessController contentProviderBusinessController) {
-        this.formatBusinessController = contentProviderBusinessController;
+    public void setIssueBusinessController(IIssueBusinessController contentProviderBusinessController) {
+        this.issueBusinessController = contentProviderBusinessController;
     }
 }

@@ -6,8 +6,5 @@
     <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver"/>
     <bean class="com.axiell.ehub.security.EhubParamConverterProvider"/>
 
-    <bean id="rootResource" class="com.axiell.ehub.RootResource">
-        <property name="formatBusinessController" ref="issueBusinessController" />
-        <property name="loanBusinessController" ref="loanBusinessController" />
-    </bean>
+    <bean id="rootResource" class="com.axiell.ehub.RootResource"/>
 </beans>
