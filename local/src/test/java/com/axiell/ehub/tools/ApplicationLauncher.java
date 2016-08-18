@@ -1,4 +1,4 @@
-package com.axiell.tools;
+package com.axiell.ehub.tools;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -73,7 +73,7 @@ public class ApplicationLauncher {
     }
 
     private static void setSystemProperties() throws IOException {
-        System.setProperty("catalina.home", "src/main");
+        System.setProperty("catalina.base", "src/main");
         final Properties properties = new Properties();
         properties.load(new FileInputStream("src/main/resources/hibernate.properties"));
         setSystemProperty(properties, "hibernate.connection.username");
