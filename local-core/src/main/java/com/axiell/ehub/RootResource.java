@@ -9,8 +9,11 @@ import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Produces(MediaType.APPLICATION_JSON)
 public class RootResource implements IRootResource {
     @Autowired
     private ILoanBusinessController loanBusinessController;
