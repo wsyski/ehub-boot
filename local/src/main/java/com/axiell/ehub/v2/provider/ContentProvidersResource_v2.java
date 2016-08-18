@@ -12,10 +12,10 @@ import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
 import com.axiell.ehub.v2.provider.record.RecordsResource_v2;
 
 public class ContentProvidersResource_v2 implements IContentProvidersResource_v2 {
-    private final IIssueBusinessController formatBusinessController;
+    private final IIssueBusinessController issueBusinessController;
 
-    public ContentProvidersResource_v2(IIssueBusinessController formatBusinessController) {
-        this.formatBusinessController = formatBusinessController;
+    public ContentProvidersResource_v2(IIssueBusinessController issueBusinessController) {
+        this.issueBusinessController = issueBusinessController;
     }
 
     @Override
@@ -30,6 +30,6 @@ public class ContentProvidersResource_v2 implements IContentProvidersResource_v2
 
     @Override
     public IRecordsResource_v2 records(String contentProviderAlias) {
-        return new RecordsResource_v2(formatBusinessController, contentProviderAlias);
+        return new RecordsResource_v2(issueBusinessController, contentProviderAlias);
     }
 }

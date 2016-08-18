@@ -9,12 +9,12 @@
 	<bean class="com.axiell.ehub.security.AuthInfoSecretKeyResolver"/>
 
 	<bean id="rootResourceV2" class="com.axiell.ehub.v2.RootResource_v2">
-		<property name="formatBusinessController" ref="issueBusinessController" />
+		<property name="issueBusinessController" ref="issueBusinessController" />
 		<property name="loanBusinessController" ref="loanBusinessController" />
 	</bean>
 
 	<bean id="contentProvidersResourceV1" class="com.axiell.ehub.v1.provider.ContentProvidersResource_v1">
-		<property name="formatBusinessController" ref="issueBusinessController" />
+		<property name="issueBusinessController" ref="issueBusinessController" />
 	</bean>
 
 	<bean id="loansResourceV1" class="com.axiell.ehub.v1.loan.LoansResource_v1">

@@ -8,6 +8,7 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 import org.slf4j.LoggerFactory;
 
 import java.util.logging.Level;
@@ -19,10 +20,8 @@ public class JaxRsApplication extends ResourceConfig {
     public JaxRsApplication() {
         property(ServerProperties.TRACING, "ALL");
         register(new LoggingFeature(LOGGER, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, LoggingFeature.DEFAULT_MAX_ENTITY_SIZE));
+        register(RequestContextFilter.class);
         register(RootResource.class);
-        register(CheckoutsResource.class);
-        register(RecordsResource.class);
-        register(ContentProvidersResource.class);
         registerClasses(com.axiell.ehub.security.EhubParamConverterProvider.class);
     }
 }

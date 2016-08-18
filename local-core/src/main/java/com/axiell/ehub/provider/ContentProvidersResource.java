@@ -10,10 +10,10 @@ import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.security.AuthInfo;
 
 public class ContentProvidersResource implements IContentProvidersResource {
-    private final IIssueBusinessController formatBusinessController;
+    private final IIssueBusinessController issueBusinessController;
 
-    public ContentProvidersResource(IIssueBusinessController formatBusinessController) {
-        this.formatBusinessController = formatBusinessController;
+    public ContentProvidersResource(IIssueBusinessController issueBusinessController) {
+        this.issueBusinessController = issueBusinessController;
     }
 
     @Override
@@ -28,6 +28,6 @@ public class ContentProvidersResource implements IContentProvidersResource {
 
     @Override
     public IRecordsResource records(String contentProviderAlias) {
-        return new RecordsResource(formatBusinessController, contentProviderAlias);
+        return new RecordsResource(issueBusinessController, contentProviderAlias);
     }
 }
