@@ -10,10 +10,11 @@
 
     <modules>
         <module>common</module>
+        <module>local-core</module>
         <module>local</module>
+        <module>local-mock</module>
         <module>remote</module>
         <module>integration-tests</module>
-        <module>mock-ehub</module>
     </modules>
 
     <organization>

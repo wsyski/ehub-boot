@@ -4,9 +4,9 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <util:properties id="httpClientFactoryProperties" location="classpath:http-client-factory.properties"/>
-
     <context:component-scan base-package="com.axiell.ehub"/>
+
+    <util:properties id="httpClientFactoryProperties" location="classpath:http-client-factory.properties"/>
 
     <bean id="ehubHttpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine">
        <constructor-arg name="httpClient" ref="ehubHttpClient"/>
