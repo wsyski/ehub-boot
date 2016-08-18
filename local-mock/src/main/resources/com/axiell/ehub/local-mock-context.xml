@@ -4,6 +4,12 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
+    <context:property-placeholder location="classpath:com/axiell/ehub/ehub.properties"/>
+
     <import resource="local-core-context.xml"/>
-    <bean class="com.axiell.ehub.security.AuthInfoSecretKeyResolver"/>
+    <bean class="com.axiell.ehub.security.AuthInfoSecretKeyResolver">
+        <constructor-arg name="secretKey" value="${ehub.secretKey}"/>
+    </bean>
+    <bean id="issueBusinessController" class="com.axiell.ehub.provider.record.issue.IssueBusinessController"/>
+    <bean id="loanBusinessController" class="com.axiell.ehub.loan.LoanBusinessController"/>
 </beans>
