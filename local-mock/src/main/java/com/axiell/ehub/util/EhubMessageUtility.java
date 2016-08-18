@@ -1,7 +1,8 @@
 package com.axiell.ehub.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EhubMessageUtility {
-    private static final Logger LOGGER = Logger.getLogger(EhubMessageUtility.class);
-    public static final int SEED = 1234;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EhubMessageUtility.class);
     private static String ehubResponsesDir;
     private static int ehubMaxTimeout;
     private static final String FILE_SUFFIX = ".json";
@@ -28,7 +28,7 @@ public class EhubMessageUtility {
     private void configureEhubResponseDir() {
         final String ehubDir = System.getProperty("ehubDir");
         if (ehubDir == null || ehubDir.equals("")) {
-            ehubResponsesDir = System.getProperty("catalina.home") + File.separator + "ehub";
+            ehubResponsesDir = System.getProperty("catalina.base") + File.separator + "webapps/config/ehub";
         } else {
             ehubResponsesDir = ehubDir;
         }
@@ -42,13 +42,19 @@ public class EhubMessageUtility {
         LOGGER.info("Using max timeout " + ehubMaxTimeout);
     }
 
-    public <T> T getEhubMessage(Class<T> klass, String... fileNamePart) throws IOException {
+    public <T> T getEhubMessage(Class<T> clazz, String... fileNamePart)  {
         final List<String> fileNames = getPossibleFileNames((String[]) fileNamePart);
         final File file = getEhubMessageFile(fileNames);
-        byte[] encoded = Files.readAllBytes(file.toPath());
-        String json = new String(encoded, Charset.forName("UTF-8"));;
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, klass);
+        try {
+            byte[] encoded = Files.readAllBytes(file.toPath());
+            String json = new String(encoded, Charset.forName("UTF-8"));
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(json, clazz);
+        }
+        catch(IOException ex) {
+            LOGGER.error(ex.getMessage(),ex);
+            return null;
+        }
     }
 
     /**
