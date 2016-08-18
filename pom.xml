@@ -13,6 +13,7 @@
         <module>local</module>
         <module>remote</module>
         <module>integration-tests</module>
+        <module>mock-ehub</module>
     </modules>
 
     <organization>
@@ -285,6 +286,12 @@
                         <artifactId>spring-tx</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
