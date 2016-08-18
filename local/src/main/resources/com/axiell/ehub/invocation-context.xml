@@ -4,11 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<import resource="business-controller-context.xml" />
+	<import resource="local-core-context.xml" />
 
-    <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver"/>
-	<bean class="com.axiell.ehub.security.EhubParamConverterProvider">
-			<property name="authInfoResolver" ref="authInfoResolver"/>
-	</bean>
+	<bean class="com.axiell.ehub.security.AuthInfoSecretKeyResolver"/>
 
     <bean id="rootResource" class="com.axiell.ehub.RootResource">
         <property name="formatBusinessController" ref="issueBusinessController" />
