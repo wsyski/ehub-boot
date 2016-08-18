@@ -18,7 +18,7 @@ public class JaxRsApplication extends ResourceConfig {
     private static final Logger LOGGER = Logger.getLogger("wire.server");
 
     public JaxRsApplication() {
-        property(ServerProperties.TRACING, "ALL");
+        // property(ServerProperties.TRACING, "ALL");
         register(new LoggingFeature(LOGGER, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, LoggingFeature.DEFAULT_MAX_ENTITY_SIZE));
         register(RequestContextFilter.class);
         register(RootResource.class);

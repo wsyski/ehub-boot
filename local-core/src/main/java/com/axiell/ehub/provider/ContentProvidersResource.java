@@ -9,6 +9,11 @@ import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.security.AuthInfo;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Produces(MediaType.APPLICATION_JSON)
 public class ContentProvidersResource implements IContentProvidersResource {
     private final IIssueBusinessController issueBusinessController;
 

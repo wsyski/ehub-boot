@@ -5,8 +5,12 @@ import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.security.AuthInfo;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+@Produces(MediaType.APPLICATION_JSON)
 public final class RecordsResource implements IRecordsResource {
     private final IIssueBusinessController issueBusinessController;
     private final String contentProviderAlias;

@@ -6,6 +6,10 @@ import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Produces(MediaType.APPLICATION_JSON)
 public class CheckoutsResource implements ICheckoutsResource {
     private final ILoanBusinessController loanBusinessController;
 
