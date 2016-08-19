@@ -1,20 +1,23 @@
 /*
  * Copyright (c) 2012 Axiell Group AB.
  */
-package com.axiell.ehub.v2.provider;
+package com.axiell.ehub.provider;
 
 import com.axiell.ehub.NotImplementedException;
-import com.axiell.ehub.provider.ContentProviderDTO;
-import com.axiell.ehub.provider.ContentProvidersDTO;
+import com.axiell.ehub.provider.record.IRecordsResource;
+import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.security.AuthInfo;
-import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
-import com.axiell.ehub.v2.provider.record.RecordsResource_v2;
 
-public class ContentProvidersResource_v2 implements IContentProvidersResource_v2 {
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Produces(MediaType.APPLICATION_JSON)
+public class ContentProvidersResource implements IContentProvidersResource {
     private final IIssueBusinessController issueBusinessController;
 
-    public ContentProvidersResource_v2(IIssueBusinessController issueBusinessController) {
+    public ContentProvidersResource(IIssueBusinessController issueBusinessController) {
         this.issueBusinessController = issueBusinessController;
     }
 
@@ -29,7 +32,7 @@ public class ContentProvidersResource_v2 implements IContentProvidersResource_v2
     }
 
     @Override
-    public IRecordsResource_v2 records(String contentProviderAlias) {
-        return new RecordsResource_v2(issueBusinessController, contentProviderAlias);
+    public IRecordsResource records(String contentProviderAlias) {
+        return new RecordsResource(issueBusinessController, contentProviderAlias);
     }
 }

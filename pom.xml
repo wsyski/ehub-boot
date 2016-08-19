@@ -10,7 +10,9 @@
 
     <modules>
         <module>common</module>
+        <module>local-core</module>
         <module>local</module>
+        <module>local-mock</module>
         <module>remote</module>
         <module>integration-tests</module>
     </modules>
@@ -285,6 +287,12 @@
                         <artifactId>spring-tx</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>

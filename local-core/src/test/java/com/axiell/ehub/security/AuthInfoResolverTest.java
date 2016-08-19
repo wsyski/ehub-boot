@@ -3,8 +3,6 @@ package com.axiell.ehub.security;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.patron.Patron;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,9 +29,7 @@ public class AuthInfoResolverTest {
 
     private AuthInfoResolver underTest;
     @Mock
-    private IConsumerBusinessController consumerBusinessController;
-    @Mock
-    private EhubConsumer ehubConsumer;
+    private IAuthInfoSecretKeyResolver authInfoSecretKeyResolver;
     private Patron patron;
     private String patronId;
     private String card;
@@ -46,9 +42,8 @@ public class AuthInfoResolverTest {
     @Before
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoResolver();
-        given(ehubConsumer.getSecretKey()).willReturn(SECRET_KEY);
-        given(consumerBusinessController.getEhubConsumer(anyLong())).willReturn(ehubConsumer);
-        ReflectionTestUtils.setField(underTest, "consumerBusinessController", consumerBusinessController);
+        given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
+        ReflectionTestUtils.setField(underTest, "authInfoSecretKeyResolver", authInfoSecretKeyResolver);
     }
 
     @Test

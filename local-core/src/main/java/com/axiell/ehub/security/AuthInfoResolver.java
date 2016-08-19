@@ -1,27 +1,24 @@
 package com.axiell.ehub.security;
 
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 class AuthInfoResolver implements IAuthInfoResolver {
 
     @Autowired
-    private IConsumerBusinessController consumerBusinessController;
+    private IAuthInfoSecretKeyResolver authInfoSecretKeyResolver;
 
     @Override
-    @Transactional(readOnly = true)
     public AuthInfo resolve(String authorizationHeader) {
         final AuthHeaderParser parser = new AuthHeaderParser(authorizationHeader);
         final Long ehubConsumerId = parser.getEhubConsumerId();
-        final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(ehubConsumerId);
-
+        if (ehubConsumerId == null) {
+            throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
+        }
         final Patron patron = makePatron(parser);
         final String actualSignature = parser.getActualSignature();
-        final String secretKey = ehubConsumer.getSecretKey();
+        final String secretKey = authInfoSecretKeyResolver.getSecretKey(ehubConsumerId);
         if (actualSignature == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
         }

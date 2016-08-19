@@ -6,13 +6,19 @@ import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.provider.ContentProvidersResource;
 import com.axiell.ehub.provider.IContentProvidersResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@Produces(MediaType.APPLICATION_JSON)
 public class RootResource implements IRootResource {
+    @Autowired
     private ILoanBusinessController loanBusinessController;
-    private IIssueBusinessController formatBusinessController;
+    @Autowired
+    private IIssueBusinessController issueBusinessController;
 
     @Override
     public Response root() {
@@ -21,21 +27,11 @@ public class RootResource implements IRootResource {
 
     @Override
     public IContentProvidersResource contentProviders() {
-        return new ContentProvidersResource(formatBusinessController);
+        return new ContentProvidersResource(issueBusinessController);
     }
 
     @Override
     public ICheckoutsResource checkouts() {
         return new CheckoutsResource(loanBusinessController);
-    }
-
-    @Required
-    public void setLoanBusinessController(ILoanBusinessController loanBusinessController) {
-        this.loanBusinessController = loanBusinessController;
-    }
-
-    @Required
-    public void setFormatBusinessController(IIssueBusinessController formatBusinessController) {
-        this.formatBusinessController = formatBusinessController;
     }
 }

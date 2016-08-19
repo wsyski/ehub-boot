@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 public class RootResource_v2 implements IRootResource_v2 {
     private ILoanBusinessController loanBusinessController;
-    private IIssueBusinessController formatBusinessController;
+    private IIssueBusinessController issueBusinessController;
 
     @Override
     public Response root() {
@@ -22,7 +22,7 @@ public class RootResource_v2 implements IRootResource_v2 {
 
     @Override
     public IContentProvidersResource_v2 contentProviders() {
-        return new ContentProvidersResource_v2(formatBusinessController);
+        return new ContentProvidersResource_v2(issueBusinessController);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class RootResource_v2 implements IRootResource_v2 {
     }
 
     @Required
-    public void setFormatBusinessController(IIssueBusinessController formatBusinessController) {
-        this.formatBusinessController = formatBusinessController;
+    public void setIssueBusinessController(IIssueBusinessController issueBusinessController) {
+        this.issueBusinessController = issueBusinessController;
     }
 }

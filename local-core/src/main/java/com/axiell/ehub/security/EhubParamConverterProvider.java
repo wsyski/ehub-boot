@@ -1,10 +1,6 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
@@ -15,6 +11,7 @@ import java.lang.reflect.Type;
 @Provider
 public class EhubParamConverterProvider implements ParamConverterProvider {
 
+    @Autowired
     private IAuthInfoResolver authInfoResolver;
 
     @Override
@@ -25,8 +22,4 @@ public class EhubParamConverterProvider implements ParamConverterProvider {
         return null;
     }
 
-    @Required
-    public void setAuthInfoResolver(final IAuthInfoResolver authInfoResolver) {
-        this.authInfoResolver = authInfoResolver;
-    }
 }
