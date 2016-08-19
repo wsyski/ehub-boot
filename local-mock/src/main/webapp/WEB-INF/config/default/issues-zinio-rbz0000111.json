@@ -1,0 +1,154 @@
+[
+  {
+    "id": "416342560",
+    "title": "July 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416342560/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416339371",
+    "title": "June 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416339371/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416335358",
+    "title": "May 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416335358/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416333467",
+    "title": "April 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416333467/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416330106",
+    "title": "March 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416330106/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416327511",
+    "title": "February 01, 2015",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2015/416327511/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416321041",
+    "title": "December 01, 2014",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2014/416321041/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "416317363",
+    "title": "November 01, 2014",
+    "imageUrl": "http://imgs.zinio.com/dag/500601921/2014/416317363/cover.jpg",
+    "formats": [
+      {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      }
+    ]
+  }
+]

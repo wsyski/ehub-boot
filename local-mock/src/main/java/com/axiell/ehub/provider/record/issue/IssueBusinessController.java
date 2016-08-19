@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.record.issue;
 
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ public class IssueBusinessController implements IIssueBusinessController {
 
     @Override
     public List<Issue> getIssues(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) {
-        IssueDTO[] issuesDTO = ehubMessageUtility.getEhubMessage(IssueDTO[].class,"issues",contentProviderName,contentProviderRecordId);
+        Patron patron = authInfo.getPatron();
+        IssueDTO[] issuesDTO = ehubMessageUtility.getEhubMessage(IssueDTO[].class, "issues", contentProviderName, contentProviderRecordId,
+                patron.getLibraryCard());
         return Arrays.stream(issuesDTO).map(Issue::new).collect(Collectors.toList());
     }
 }

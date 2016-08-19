@@ -15,4 +15,9 @@ public class AuthInfoSecretKeyResolver implements IAuthInfoSecretKeyResolver {
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(ehubConsumerId);
         return ehubConsumer.getSecretKey();
     }
+
+    @Override
+    public boolean isValidate() {
+        return true;
+    }
 }
