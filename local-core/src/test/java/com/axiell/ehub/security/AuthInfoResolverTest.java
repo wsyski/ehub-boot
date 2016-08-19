@@ -43,6 +43,7 @@ public class AuthInfoResolverTest {
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoResolver();
         given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
+        given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
         ReflectionTestUtils.setField(underTest, "authInfoSecretKeyResolver", authInfoSecretKeyResolver);
     }
 

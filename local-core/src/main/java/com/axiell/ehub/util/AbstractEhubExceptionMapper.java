@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.util;
 
 import org.slf4j.Logger;
