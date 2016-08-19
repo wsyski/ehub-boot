@@ -20,7 +20,7 @@ public class ApplicationLauncher {
 
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setServer(server);
-        webAppContext.setContextPath("/ehub");
+        webAppContext.setContextPath("");
         webAppContext.setWar("src/main/webapp");
 
 
