@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.InternalServerErrorException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,15 +37,17 @@ public class EhubMessageUtility {
     public <T> T getEhubMessage(Class<T> clazz, String... fileNamePart) {
         final List<String> fileNames = getPossibleFileNames((String[]) fileNamePart);
         final File file = getEhubMessageFile(fileNames);
-        try {
-            byte[] encoded = Files.readAllBytes(file.toPath());
-            String json = new String(encoded, Charset.forName("UTF-8"));
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(json, clazz);
-        } catch (IOException ex) {
-            LOGGER.error(ex.getMessage(), ex);
-            return null;
+        if (file!=null) {
+            try {
+                byte[] encoded = Files.readAllBytes(file.toPath());
+                String json = new String(encoded, Charset.forName("UTF-8"));
+                ObjectMapper mapper = new ObjectMapper();
+                return mapper.readValue(json, clazz);
+            } catch (IOException ex) {
+                LOGGER.error(ex.getMessage(), ex);
+            }
         }
+        return null;
     }
 
     /**
@@ -72,13 +75,12 @@ public class EhubMessageUtility {
         String responseDir = getResponseDir();
         for (String fileName : fileNames) {
             LOGGER.info("Look for file: " + fileName);
-            final File file = new File(responseDir + File.separator + fileName + FILE_SUFFIX);
+            final File file = new File(responseDir + File.separator + fileName.toLowerCase() + FILE_SUFFIX);
             if (file.exists() && file.isFile()) {
                 LOGGER.info("Found file: " + fileName);
                 return file;
             }
         }
-        LOGGER.error("Could not find any matching response file");
-        return null;
+        throw new InternalServerErrorException("Response file not found");
     }
 }

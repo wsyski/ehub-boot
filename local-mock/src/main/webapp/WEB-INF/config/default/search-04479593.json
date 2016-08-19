@@ -1,0 +1,27 @@
+{
+  "items": [
+    {
+      "id": 15760,
+      "lmsLoanId": "04479593",
+      "expirationDate": 1473976800000,
+      "isNewLoan": false,
+      "contentProviderIssueId": "416317363",
+      "format": {
+        "id": "ZINIO.stream",
+        "name": "Zinio (Stream)",
+        "locked": false,
+        "description": "Zinio streaming format",
+        "contentDisposition": "STREAMING",
+        "platforms": [
+          "DESKTOP",
+          "ANDROID",
+          "IOS"
+        ]
+      },
+      "newLoan": false
+    }
+  ],
+  "offset": 0,
+  "limit": 0,
+  "totalItems": 0
+}

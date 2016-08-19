@@ -4,12 +4,12 @@
 package com.axiell.ehub.security;
 
 import com.axiell.ehub.ErrorCause;
-import org.jboss.resteasy.core.ResourceMethodInvoker;
-import org.jboss.resteasy.core.interception.PostMatchContainerRequestContext;
 
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
@@ -20,16 +20,18 @@ import java.util.Arrays;
 @Priority(Integer.MIN_VALUE)
 public final class AuthorizationHeaderInterceptor implements ContainerRequestFilter {
 
+    @Context
+    private ResourceInfo resourceInfo;
+
     @Override
     public void filter(final ContainerRequestContext requestContext) throws IOException {
-        if (requestContext instanceof PostMatchContainerRequestContext) {
-            ResourceMethodInvoker resourceMethodInvoker = ((PostMatchContainerRequestContext) requestContext).getResourceMethod();
-            Method method = resourceMethodInvoker.getMethod();
+        Method method = resourceInfo.getResourceMethod();
+        if (method != null) {
             if (methodParametersContainAuthInfo(method)) {
                 final String authorization = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
                 if (authorization == null || authorization.isEmpty()) {
                     throw new UnauthorizedException(
-                            "The method '" + method.getName() + "' in the resource '" + resourceMethodInvoker.getResourceClass()
+                            "The method '" + method.getName() + "' in the resource '" + resourceInfo.getResourceClass()
                                     + "'expects an 'AuthInfo', but the request does not contain an Authorization header",
                             ErrorCause.MISSING_AUTHORIZATION_HEADER);
                 }

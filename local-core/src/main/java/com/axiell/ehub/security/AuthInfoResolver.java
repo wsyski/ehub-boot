@@ -16,22 +16,24 @@ class AuthInfoResolver implements IAuthInfoResolver {
         if (ehubConsumerId == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
         }
-        final Patron patron = makePatron(parser);
-        final String actualSignature = parser.getActualSignature();
+        boolean isValidate = authInfoSecretKeyResolver.isValidate();
         final String secretKey = authInfoSecretKeyResolver.getSecretKey(ehubConsumerId);
-        if (actualSignature == null) {
-            throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
-        }
-        final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secretKey);
+        final Patron patron = makePatron(parser);
+        if (isValidate) {
+            final String actualSignature = parser.getActualSignature();
+            if (actualSignature == null) {
+                throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
+            }
+            final Signature expectedSignature = new Signature(AuthInfo.getSignatureItems(ehubConsumerId, patron), secretKey);
 
-        //TODO: Remove when all Arena installations are upgraded
-        final Signature expectedCompatibilitySignature = new Signature(AuthInfo.getSignatureCompatibilityItems(ehubConsumerId, patron), secretKey);
+            //TODO: Remove when all Arena installations are upgraded
+            final Signature expectedCompatibilitySignature = new Signature(AuthInfo.getSignatureCompatibilityItems(ehubConsumerId, patron), secretKey);
 
-        if (expectedSignature.isValid(actualSignature) || expectedCompatibilitySignature.isValid(actualSignature)) {
-            return new AuthInfo(ehubConsumerId, patron, secretKey);
-        } else {
-            throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
+            if (!expectedSignature.isValid(actualSignature) && !expectedCompatibilitySignature.isValid(actualSignature)) {
+                throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
+            }
         }
+        return new AuthInfo(ehubConsumerId, patron, secretKey);
     }
 
     private Patron makePatron(AuthHeaderParser parser) {
