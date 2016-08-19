@@ -1,7 +1,7 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.*;
+import com.axiell.ehub.security.UnauthorizedException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -12,8 +12,25 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
 
     @Override
     public Response toResponse(final RuntimeException exception) {
-        LOGGER.error(exception.getMessage(), exception);
-        final EhubError ehubError = ErrorCause.INTERNAL_SERVER_ERROR.toEhubError();
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(getMediaType()).entity(ehubError).build();
+        final Throwable cause = exception.getCause();
+
+        if (cause instanceof UnauthorizedException) {
+            final UnauthorizedException ehubException = (UnauthorizedException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof ForbiddenException) {
+            final ForbiddenException ehubException = (ForbiddenException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof InternalServerErrorException) {
+            final InternalServerErrorException ehubException = (InternalServerErrorException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else {
+            LOGGER.error(exception.getMessage(), exception);
+            final EhubError ehubError = ErrorCause.INTERNAL_SERVER_ERROR.toEhubError();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(getMediaType()).entity(ehubError).build();
+        }
+    }
+
+    private Response handleEhubRuntimeException(final EhubRuntimeException ehubException) {
+        return ehubException.getResponse(getMediaType());
     }
 }
