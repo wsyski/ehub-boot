@@ -26,7 +26,7 @@ public class EhubMessageUtility {
         final String ehubDir = System.getProperty("ehubDir");
         String ehubResponseDir;
         if (StringUtils.isBlank(ehubDir)) {
-            ehubResponseDir = servletContext.getRealPath(servletContext.getContextPath()) + File.separator + "WEB-INF" + File.separator + "config" + File.separator + "default";
+            ehubResponseDir = servletContext.getRealPath("/") + File.separator + "WEB-INF" + File.separator + "config" + File.separator + "default";
         } else {
             ehubResponseDir = ehubDir;
         }
