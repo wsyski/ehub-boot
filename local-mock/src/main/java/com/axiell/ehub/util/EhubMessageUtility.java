@@ -24,17 +24,15 @@ public class EhubMessageUtility {
     private static final String KEY_SEPARATOR = "-";
 
     private String getResponseDir() {
-        final String ehubDir = System.getProperty("ehubDir");
-        String ehubResponseDir;
-        if (StringUtils.isBlank(ehubDir)) {
-            ehubResponseDir = servletContext.getRealPath("/") + File.separator + "WEB-INF" + File.separator + "config" + File.separator + "default";
+        final String responseDir = System.getProperty("com.axiell.ehub.responseDir");
+        if (StringUtils.isBlank(responseDir)) {
+            return servletContext.getRealPath("/") + File.separator + "WEB-INF" + File.separator + "config" + File.separator + "default";
         } else {
-            ehubResponseDir = ehubDir;
+            return responseDir;
         }
-        return ehubResponseDir;
     }
 
-    public <T> T getEhubMessage(Class<T> clazz, String... fileNamePart) {
+    public <T> T getEhubMessage(final Class<T> clazz, final String... fileNamePart) {
         final List<String> fileNames = getPossibleFileNames((String[]) fileNamePart);
         final File file = getEhubMessageFile(fileNames);
         if (file!=null) {
