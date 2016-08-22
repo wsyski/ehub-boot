@@ -14,7 +14,7 @@ import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class LoanBusinessController implements ILoanBusinessController {
+public class LoanBusinessController extends AbstractBusinessController implements ILoanBusinessController {
     @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
 
@@ -38,11 +38,9 @@ public class LoanBusinessController implements ILoanBusinessController {
         CheckoutDTO checkoutDTO = ehubMessageUtility.getEhubMessage(CheckoutDTO.class, "checkout", contentProviderAlias, contentProviderRecordId,
                 contentProviderIssueId, contentProviderFormatId, authInfo.getPatron().getLibraryCard());
         if (checkoutDTO == null) {
-            ContentProviderConsumer contentProviderConsumer=new ContentProviderConsumer();
-            ContentProvider contentProvider=new ContentProvider();
-            contentProvider.setName(contentProviderAlias);
-            contentProviderConsumer.setContentProvider(contentProvider);
-            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, ErrorCauseArgumentType.CREATE_LOAN_FAILED, language);
+            ContentProviderConsumer contentProviderConsumer=getContentProviderConsumer(contentProviderAlias);
+            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,
+                    ErrorCauseArgumentType.CREATE_LOAN_FAILED, language);
         }
         return new Checkout(checkoutDTO);
     }

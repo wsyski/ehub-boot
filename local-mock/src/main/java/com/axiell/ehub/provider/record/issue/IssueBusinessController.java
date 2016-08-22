@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.record.issue;
 
+import com.axiell.ehub.AbstractBusinessController;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IssueBusinessController implements IIssueBusinessController {
+public class IssueBusinessController extends AbstractBusinessController implements IIssueBusinessController {
 
     @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
@@ -27,13 +28,9 @@ public class IssueBusinessController implements IIssueBusinessController {
         IssueDTO[] issuesDTO = ehubMessageUtility.getEhubMessage(IssueDTO[].class, "issues", contentProviderName, contentProviderRecordId,
                 patron.getLibraryCard());
         if (issuesDTO == null) {
-            ContentProviderConsumer contentProviderConsumer = new ContentProviderConsumer();
-            ContentProvider contentProvider = new ContentProvider();
-            contentProvider.setName(contentProviderName);
-            contentProviderConsumer.setContentProvider(contentProvider);
-            throw ehubExceptionFactory
-                    .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, ErrorCauseArgumentType.PRODUCT_UNAVAILABLE,
-                            language);
+            ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(contentProviderName);
+            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,
+                    ErrorCauseArgumentType.PRODUCT_UNAVAILABLE, language);
         }
         return Arrays.stream(issuesDTO).map(Issue::new).collect(Collectors.toList());
     }
