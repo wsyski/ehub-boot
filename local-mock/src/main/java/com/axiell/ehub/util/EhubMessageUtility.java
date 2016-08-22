@@ -79,6 +79,6 @@ public class EhubMessageUtility {
                 return file;
             }
         }
-        throw new InternalServerErrorException("Response file not found");
+        return null;
     }
 }
