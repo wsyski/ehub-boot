@@ -1,0 +1,60 @@
+{
+  "id": "0D85564B-A4B3-43D5-875D-1DF3CA06AE65",
+  "issues": [
+    {
+      "id": null,
+      "title": null,
+      "imageUrl": null,
+      "formats": [
+        {
+          "id": "ebook-pdf-adobe",
+          "name": "Adobe PDF eBook",
+          "locked": true,
+          "description": "DRM protected Adobe PDF eBook",
+          "contentDisposition": "DOWNLOADABLE",
+          "platforms": [
+            "DESKTOP",
+            "ANDROID",
+            "IOS"
+          ]
+        },
+        {
+          "id": "ebook-epub-adobe",
+          "name": "Adobe EPUB eBook",
+          "locked": true,
+          "description": "DRM protected Adobe EPUB eBook",
+          "contentDisposition": "DOWNLOADABLE",
+          "platforms": [
+            "DESKTOP",
+            "ANDROID",
+            "IOS"
+          ]
+        },
+        {
+          "id": "ebook-kindle",
+          "name": "Kindle Book",
+          "locked": true,
+          "description": "Kindle Book",
+          "contentDisposition": "DOWNLOADABLE",
+          "platforms": [
+            "DESKTOP",
+            "ANDROID",
+            "IOS"
+          ]
+        },
+        {
+          "id": "ebook-overdrive",
+          "name": "OverDrive Read eBook",
+          "locked": false,
+          "description": "OverDrive Read eBook (browser-based)",
+          "contentDisposition": "STREAMING",
+          "platforms": [
+            "DESKTOP",
+            "ANDROID",
+            "IOS"
+          ]
+        }
+      ]
+    }
+  ]
+}

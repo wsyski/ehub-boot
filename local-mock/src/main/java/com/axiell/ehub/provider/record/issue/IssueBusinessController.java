@@ -5,7 +5,7 @@ import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ public class IssueBusinessController extends AbstractBusinessController implemen
     @Override
     public List<Issue> getIssues(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) {
         Patron patron = authInfo.getPatron();
-        IssueDTO[] issuesDTO = ehubMessageUtility.getEhubMessage(IssueDTO[].class, "issues", contentProviderName, contentProviderRecordId,
+        RecordDTO recordDTO = ehubMessageUtility.getEhubMessage(RecordDTO.class, "issues", contentProviderName, contentProviderRecordId,
                 patron.getLibraryCard());
-        if (issuesDTO == null) {
+        if (recordDTO == null) {
             ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(contentProviderName);
             throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,
                     ErrorCauseArgumentType.PRODUCT_UNAVAILABLE, language);
         }
-        return Arrays.stream(issuesDTO).map(Issue::new).collect(Collectors.toList());
+        return Arrays.stream(recordDTO.getIssues().toArray(new IssueDTO[0])).map(Issue::new).collect(Collectors.toList());
     }
 }

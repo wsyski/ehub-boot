@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "id": 15800,
+    "lmsLoanId": "9762313",
+    "contentProviderLoanId": "16445253",
+    "expirationDate": 1474243200000,
+    "isNewLoan": false,
+    "format": {
+      "id": "4002",
+      "name": "Audiobook (Flash)",
+      "locked": false,
+      "description": "E-audiobook in streaming Flash",
+      "contentDisposition": "STREAMING",
+      "platforms": [
+        "DESKTOP"
+      ]
+    },
+    "newLoan": false
+  },
+  "contentLinks": [
+    {
+      "href": "https://webservices.elib.se/v2/Fulfillment/?data=oLmSIPAVxrhlcN8mnYkjYg/fyIAuA1+x8rzE+Dfdr1xwmFUdlM300leqzxKSXbPUIFRTzaf4aW/KaA9Ih1vcLICDVPxeFVi6YQTTaQNfPk28YiuPwnfbvgMaZDok2QzQE3PvoFKErqCT0kw2xk/kG9874OlxqpXk2wGrFYoQsoFfrdTSr9aIYD+OLykSaGB2b7U113H32X+6cjgaiQG3TGNbMW+lz2Inv9pl3LOy55M="
+    }
+  ],
+  "supplementLinks": []
+}

@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "id": 15802,
+    "lmsLoanId": "CX000000001295",
+    "expirationDate": 1471910400000,
+    "isNewLoan": false,
+    "format": {
+      "id": "ebook-epub-adobe",
+      "name": "Adobe EPUB eBook",
+      "locked": true,
+      "description": "DRM protected Adobe EPUB eBook",
+      "contentDisposition": "DOWNLOADABLE",
+      "platforms": [
+        "DESKTOP",
+        "ANDROID",
+        "IOS"
+      ]
+    },
+    "newLoan": false
+  },
+  "contentLinks": [
+    {
+      "href": "https://fulfill.contentreserve.com/GameofThronesSongofIceandFireSeriesBo9780553897845.acsm?RetailerID=odapilib&Expires=1471868364&Token=bf3340ca-a90a-47ff-a1f5-a66a0078b04c&Signature=GLmWaNZROSjOd+FYmjZOg2qrykk="
+    }
+  ],
+  "supplementLinks": []
+}
