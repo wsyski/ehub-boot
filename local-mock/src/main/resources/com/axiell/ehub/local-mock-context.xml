@@ -14,4 +14,5 @@
     <bean id="issueBusinessController" class="com.axiell.ehub.provider.record.issue.IssueBusinessController"/>
     <bean id="loanBusinessController" class="com.axiell.ehub.loan.LoanBusinessController"/>
     <bean id="ehubMessageUtility" class="com.axiell.ehub.util.EhubMessageUtility"/>
+    <bean id="ehubExceptionFactory" class="com.axiell.ehub.error.EhubExceptionFactoryStub"/>
 </beans>
