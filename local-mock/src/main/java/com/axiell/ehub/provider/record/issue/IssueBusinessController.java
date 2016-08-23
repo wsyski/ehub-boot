@@ -25,7 +25,7 @@ public class IssueBusinessController extends AbstractBusinessController implemen
     @Override
     public List<Issue> getIssues(final AuthInfo authInfo, final String contentProviderName, final String contentProviderRecordId, final String language) {
         Patron patron = authInfo.getPatron();
-        RecordDTO recordDTO = ehubMessageUtility.getEhubMessage(RecordDTO.class, "issues", contentProviderName, contentProviderRecordId,
+        RecordDTO recordDTO = ehubMessageUtility.getEhubMessage(RecordDTO.class, "record", contentProviderName, contentProviderRecordId,
                 patron.getLibraryCard());
         if (recordDTO == null) {
             ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(contentProviderName);
