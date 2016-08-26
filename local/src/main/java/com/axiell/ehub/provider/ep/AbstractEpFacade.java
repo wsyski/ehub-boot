@@ -2,8 +2,11 @@ package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractEpFacade<C extends ICheckoutDTO, R extends ICheckoutRequestDTO, I extends IEpResource<C, R>> implements IEpFacade<C> {
+    @Autowired
+    private EpResourceFactory epResourceFactory;
 
     @Override
     public RecordDTO getRecord(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderRecordId) {
@@ -25,7 +28,7 @@ public abstract class AbstractEpFacade<C extends ICheckoutDTO, R extends IChecko
     }
 
     protected I getEpResource(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
-        return EpResourceFactory.create(getIEpResourceClass(), contentProviderConsumer, patron);
+        return epResourceFactory.create(getIEpResourceClass(), contentProviderConsumer, patron);
     }
 
     protected abstract Class<I> getIEpResourceClass();

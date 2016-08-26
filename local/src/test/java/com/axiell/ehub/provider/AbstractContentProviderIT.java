@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.mockito.BDDMockito.given;
 
@@ -37,5 +39,9 @@ public abstract class AbstractContentProviderIT {
 
     protected void givenEhubConsumer() {
         given(contentProviderConsumer.getEhubConsumer()).willReturn(ehubConsumer);
+    }
+
+    protected ApplicationContext getApplicationContext() {
+        return new ClassPathXmlApplicationContext(new String[]{"com/axiell/ehub/business-controller-context.xml"});
     }
 }
