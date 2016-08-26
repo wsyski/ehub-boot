@@ -52,9 +52,6 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
                 platformAdminController);
     }
 
-    /**
-     *
-     */
     @Test
     @Rollback(true)
     public void testFindEhubConsumer() {

@@ -5,6 +5,8 @@ import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 import static org.mockito.BDDMockito.given;
@@ -30,7 +32,10 @@ public class AbstractBorrowBoxIT extends AbstractContentProviderIT {
 
     @Before
     public void setUpUnderTest() {
+        ApplicationContext applicationContext = getApplicationContext();
+        BorrowBoxResourceFactory borrowBoxResourceFactory = (BorrowBoxResourceFactory) applicationContext.getBean("borrowBoxResourceFactory");
         underTest = new BorrowBoxFacade();
+        ReflectionTestUtils.setField(underTest, "borrowBoxResourceFactory", borrowBoxResourceFactory);
     }
 
     protected void givenConfigurationProperties() {
