@@ -1,6 +1,5 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.InternalServerErrorException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -59,6 +58,9 @@ public class EhubMessageUtility {
         final StringBuilder fileName = new StringBuilder();
         for (String part : fileNamePart) {
             if (part != null) {
+                if (part.toLowerCase().endsWith("elib")) {
+                    part = "elib";
+                }
                 if (fileName.length() > 0) {
                     fileName.append(KEY_SEPARATOR);
                 }
