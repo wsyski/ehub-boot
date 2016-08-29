@@ -27,5 +27,5 @@ public interface IAdminUserRepository extends CrudRepository<AdminUser, Long> {
      * @param name the name of the {@link AdminUser}
      * @return an {@link AdminUser}
      */
-    AdminUser findByName(String name);
+    AdminUser findOneByName(String name);
 }

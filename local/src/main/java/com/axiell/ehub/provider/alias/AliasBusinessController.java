@@ -21,7 +21,7 @@ class AliasBusinessController implements IAliasBusinessController {
     @Transactional(readOnly = true)
     public String getName(final String alias) {
         validateAlias(alias);
-        final AliasMapping aliasMapping = aliasMappingRepository.findByAlias(Alias.newInstance(alias));
+        final AliasMapping aliasMapping = aliasMappingRepository.findOneByAlias(Alias.newInstance(alias));
         validateMapping(alias, aliasMapping);
         return aliasMapping.getName();
     }

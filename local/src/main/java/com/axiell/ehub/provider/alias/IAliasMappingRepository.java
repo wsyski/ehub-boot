@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface IAliasMappingRepository extends CrudRepository<AliasMapping, Long> {
 
-    AliasMapping findByAlias(Alias alias);
+    AliasMapping findOneByAlias(Alias alias);
 
     @Query("SELECT a FROM AliasMapping a ORDER BY a.name ASC")
-    List<AliasMapping> findAllOrderByTarget();
+    List<AliasMapping> findAllOrderByName();
 
 
     @Modifying
