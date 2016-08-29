@@ -15,7 +15,7 @@ class AliasAdminController implements IAliasAdminController {
     @Override
     @Transactional(readOnly = true)
     public List<AliasMapping> getRoutingRules() {
-        return aliasMappingRepository.findAllOrderByTarget();
+        return aliasMappingRepository.findAllOrderByName();
     }
 
     @Override
@@ -27,7 +27,7 @@ class AliasAdminController implements IAliasAdminController {
     @Override
     @Transactional(readOnly = true)
     public boolean existsAlias(String alias) {
-        final AliasMapping aliasMapping = aliasMappingRepository.findByAlias(Alias.newInstance(alias));
+        final AliasMapping aliasMapping = aliasMappingRepository.findOneByAlias(Alias.newInstance(alias));
         return aliasMapping != null;
     }
 

@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 public interface IFormatDecorationRepository extends CrudRepository<FormatDecoration, Long> {
 
     @Query("select fd from FormatDecoration fd where fd.contentProvider.id = :contentProviderId and fd.contentProviderFormatId = :contentProviderFormatId")
-    FormatDecoration findByContentProviderIdAndContentProviderFormatId(@Param("contentProviderId") Long ehubConsumerId, @Param("contentProviderFormatId") String contentProviderFormatId);
+    FormatDecoration findOneByContentProviderIdAndContentProviderFormatId(@Param("contentProviderId") Long ehubConsumerId, @Param("contentProviderFormatId") String contentProviderFormatId);
 }
