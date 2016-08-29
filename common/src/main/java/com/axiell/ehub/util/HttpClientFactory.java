@@ -2,8 +2,10 @@ package com.axiell.ehub.util;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.ConnectionConfig;
-import org.apache.http.config.SocketConfig;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -12,30 +14,38 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.pool.PoolStats;
 import org.apache.http.ssl.SSLContexts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 public class HttpClientFactory {
-    private PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientFactory.class);
     private RequestConfig requestConfig = RequestConfig.DEFAULT;
-    private ConnectionConfig connectionConfig = ConnectionConfig.custom().setCharset(StandardCharsets.UTF_8).build();
-    private SocketConfig socketConfig = SocketConfig.DEFAULT;
+    private PoolingHttpClientConnectionManager connectionManager;
+
+    public HttpClientFactory() {
+        SSLContext sslContext;
+        try {
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
+        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException ex) {
+            LOGGER.error(ex.getMessage(), ex);
+            sslContext = SSLContexts.createDefault();
+        }
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", new PlainConnectionSocketFactory())
+                .register("https", sslConnectionSocketFactory).build();
+        connectionManager = new PoolingHttpClientConnectionManager(registry);
+    }
 
     public CloseableHttpClient createInstance() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
-        SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
         return HttpClientBuilder.create()
-                .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .setSSLSocketFactory(sslConnectionSocketFactory)
                 .setConnectionManager(connectionManager)
-                .setDefaultConnectionConfig(connectionConfig)
                 .setDefaultRequestConfig(requestConfig)
-                .setDefaultSocketConfig(socketConfig)
                 .build();
     }
 

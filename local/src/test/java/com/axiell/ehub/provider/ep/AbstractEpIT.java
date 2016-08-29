@@ -15,6 +15,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
@@ -45,7 +47,10 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
 
     @Before
     public void setUp() {
+        ApplicationContext applicationContext = getApplicationContext();
+        EpResourceFactory epResourceFactory = (EpResourceFactory) applicationContext.getBean("epResourceFactory");
         underTest = createEpFacade();
+        ReflectionTestUtils.setField(underTest, "epResourceFactory", epResourceFactory);
     }
 
     @After

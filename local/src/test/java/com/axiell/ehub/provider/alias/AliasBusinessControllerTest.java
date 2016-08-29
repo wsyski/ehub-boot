@@ -3,7 +3,6 @@ package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.provider.ContentProvider;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +71,7 @@ public class AliasBusinessControllerTest {
 
     private void givenRoutingRule() {
         given(aliasMapping.getName()).willReturn(CONTENT_PROVIDER_NAME);
-        given(aliasMappingRepository.findByAlias(any(Alias.class))).willReturn(aliasMapping);
+        given(aliasMappingRepository.findOneByAlias(any(Alias.class))).willReturn(aliasMapping);
     }
 
     private void givenKnownAlias() {

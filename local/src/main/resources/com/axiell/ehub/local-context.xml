@@ -6,6 +6,8 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<import resource="common-context.xml"/>
+    <import resource="provider-context.xml"/>
+
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
     <bean id="contentProviderResponseFailureAspect" class="com.axiell.ehub.provider.ContentProviderResponseFailureAspect"/>

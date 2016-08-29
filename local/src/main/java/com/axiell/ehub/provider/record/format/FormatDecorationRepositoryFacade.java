@@ -14,7 +14,7 @@ public class FormatDecorationRepositoryFacade implements IFormatDecorationReposi
     @Override
     public FormatDecoration find(final ContentProvider contentProvider, final String contentProviderFormatId) {
         FormatDecoration formatDecoration =
-                formatDecorationRepository.findByContentProviderIdAndContentProviderFormatId(contentProvider.getId(), contentProviderFormatId);
+                formatDecorationRepository.findOneByContentProviderIdAndContentProviderFormatId(contentProvider.getId(), contentProviderFormatId);
         if (formatDecoration == null) {
             final ErrorCauseArgument argument0 = new ErrorCauseArgument(ErrorCauseArgument.Type.FORMAT_ID, contentProviderFormatId);
             final ErrorCauseArgument argument1 = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
