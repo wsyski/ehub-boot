@@ -39,7 +39,7 @@ class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValue
     @Override
     @Transactional(readOnly = true)
     public ErrorCauseArgumentValue findBy(final ErrorCauseArgumentType type) {
-        ErrorCauseArgumentValue argumentValue = argumentValueRepository.findByType(type);
+        ErrorCauseArgumentValue argumentValue = argumentValueRepository.findOneByType(type);
         return initialize(argumentValue);
     }
 

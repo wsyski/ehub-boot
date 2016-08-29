@@ -15,6 +15,8 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
     private static final String STATUS_NO_COPY_AVAILABLE = "noCopyAvailable";
     private static final String STATUS_ALREADY_ON_LOAN = "alreadyOnLoan";
     private static final String STATUS_PRODUCT_NOT_AVAILABLE_ON_SITE = "productNotAvailableOnSite";
+    public static final String MESSAGE_INVALID_PATRON = "Not yet registered, you have to register first at the Borrowbox Frontend";
+
 
     public BorrowBoxExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                      final IEhubExceptionFactory ehubExceptionFactory) {
@@ -47,6 +49,11 @@ public class BorrowBoxExceptionFactory extends AbstractContentProviderExceptionF
                 type = ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED;
             } else if (STATUS_ALREADY_ON_LOAN.equals(code)) {
                 type = ErrorCauseArgumentType.ALREADY_ON_LOAN;
+            }
+        }
+        else if (message != null) {
+            if (message.contains(MESSAGE_INVALID_PATRON)) {
+                type = ErrorCauseArgumentType.INVALID_PATRON;
             }
         }
         return type;
