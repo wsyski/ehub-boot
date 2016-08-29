@@ -37,7 +37,7 @@ public class ErrorCauseArgumentBuilder {
     }
 
     private String getValue() {
-        final ErrorCauseArgumentValue errorCauseArgumentValue = errorCauseArgumentValueRepository.findByType(valueType);
+        final ErrorCauseArgumentValue errorCauseArgumentValue = errorCauseArgumentValueRepository.findOneByType(valueType);
         if (errorCauseArgumentValue == null) {
             LOGGER.warn("Missing error cause argument value for type: " + valueType.name());
             return valueType.name();
