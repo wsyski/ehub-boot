@@ -21,7 +21,7 @@ public class UserAdminController implements IUserAdminController {
     public LoginStatus login(final AdminUser providedUser) {
         final String name = providedUser.getName();
         final String clearPassword = providedUser.getClearPassword();
-        final AdminUser retrievedUser = adminUserRepository.findByName(name);
+        final AdminUser retrievedUser = adminUserRepository.findOneByName(name);
         
         if (retrievedUser == null) {
             return LoginStatus.USER_NOT_FOUND;

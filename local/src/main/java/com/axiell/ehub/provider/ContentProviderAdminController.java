@@ -42,14 +42,14 @@ public class ContentProviderAdminController implements IContentProviderAdminCont
     @Override
     @Transactional(readOnly = true)
     public ContentProvider getContentProvider(final String contentProviderName) {
-        ContentProvider contentProvider = contentProviderRepository.findByName(contentProviderName);
+        ContentProvider contentProvider = contentProviderRepository.findOneByName(contentProviderName);
         return initialize(contentProvider);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsContentProviderName(final String contentProviderName) {
-        final ContentProvider contentProvider = contentProviderRepository.findByName(contentProviderName);
+        final ContentProvider contentProvider = contentProviderRepository.findOneByName(contentProviderName);
         return contentProvider != null;
     }
     /**
