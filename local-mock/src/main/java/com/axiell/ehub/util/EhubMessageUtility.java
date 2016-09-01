@@ -1,6 +1,7 @@
 package com.axiell.ehub.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,10 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.io.FilenameUtils.removeExtension;
+
 public class EhubMessageUtility {
+    public static final String EXCEPTION = "exception";
     @Autowired
     private ServletContext servletContext;
 
@@ -34,11 +38,17 @@ public class EhubMessageUtility {
     public <T> T getEhubMessage(final Class<T> clazz, final String... fileNamePart) {
         final List<String> fileNames = getPossibleFileNames((String[]) fileNamePart);
         final File file = getEhubMessageFile(fileNames);
-        if (file!=null) {
+        if (file != null) {
             try {
                 byte[] encoded = Files.readAllBytes(file.toPath());
                 String json = new String(encoded, Charset.forName("UTF-8"));
                 ObjectMapper mapper = new ObjectMapper();
+
+                if (removeExtension(file.getName()).endsWith(EXCEPTION)) {
+                    EhubJsonException jsonError = mapper.readValue(json, EhubJsonException.class);
+                    throw jsonError.toException();
+                }
+
                 return mapper.readValue(json, clazz);
             } catch (IOException ex) {
                 LOGGER.error(ex.getMessage(), ex);
@@ -53,10 +63,12 @@ public class EhubMessageUtility {
      * @param fileNamePart parts that constructs the name of the eHUB response file
      * @return a {@link List} with possible file names sorted with the longest (most specific) first
      */
-    private List<String> getPossibleFileNames(final String... fileNamePart) {
+    private List<String> getPossibleFileNames(String... fileNamePart) {
+        List<String> fileNameParts = Lists.newArrayList(fileNamePart);
+        fileNameParts.add(EXCEPTION);
         final List<String> fileNames = new ArrayList<String>();
         final StringBuilder fileName = new StringBuilder();
-        for (String part : fileNamePart) {
+        for (String part : fileNameParts) {
             if (part != null) {
                 if (part.toLowerCase().endsWith("elib")) {
                     part = "elib";
