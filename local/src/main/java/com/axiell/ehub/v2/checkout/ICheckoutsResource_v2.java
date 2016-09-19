@@ -7,6 +7,7 @@ import com.axiell.ehub.search.SearchResultDTO;
 import com.axiell.ehub.security.AuthInfo;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -14,14 +15,14 @@ import javax.ws.rs.core.MediaType;
 public interface ICheckoutsResource_v2 {
 
     @GET
-    SearchResultDTO<CheckoutMetadataDTO_v2> search(@HeaderParam("Authorization") AuthInfo authInfo, @QueryParam("lmsLoanId") final String lmsLoanId,
-                                                @DefaultValue("en") @QueryParam("language") String language);
+    SearchResultDTO<CheckoutMetadataDTO_v2> search(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo, @QueryParam("lmsLoanId") final String lmsLoanId,
+                                                   @DefaultValue("en") @QueryParam("language") String language);
 
     @POST
-    CheckoutDTO_v2 checkout(@HeaderParam("Authorization") AuthInfo authInfo, FieldsDTO fields, @DefaultValue("en") @QueryParam("language") String language);
+    CheckoutDTO_v2 checkout(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo, FieldsDTO fields, @DefaultValue("en") @QueryParam("language") String language);
 
     @GET
     @Path("{id}")
-    CheckoutDTO_v2 getCheckout(@HeaderParam("Authorization") AuthInfo authInfo, @PathParam("id") Long ehubCheckoutId,
+    CheckoutDTO_v2 getCheckout(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo, @PathParam("id") Long ehubCheckoutId,
                             @DefaultValue("en") @QueryParam("language") String language);
 }
