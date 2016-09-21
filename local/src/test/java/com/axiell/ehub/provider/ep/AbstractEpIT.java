@@ -1,9 +1,8 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.ErrorCauseArgumentType;
-import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
+import com.axiell.ehub.error.WebApplicationExceptionMatcher;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.util.CollectionFinder;
@@ -18,6 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
@@ -76,7 +77,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
-        givenExpectedContentProviderErrorException(INVALID_CONTENT_PROVIDER_RECORD_ID);
+        givenExpectedWebApplicationException(NotFoundException.class, INVALID_CONTENT_PROVIDER_RECORD_ID);
         whenGetFormats(INVALID_RECORD_ID);
     }
 
@@ -133,9 +134,9 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         underTest.deleteCheckout(contentProviderConsumer, patron, checkoutId);
     }
 
-    protected void givenExpectedContentProviderErrorException(final ErrorCauseArgumentType errorCauseArgumentType) {
-        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, CONTENT_PROVIDER_TEST_EP,
-                errorCauseArgumentType.name()));
+    protected void givenExpectedWebApplicationException(final Class<? extends WebApplicationException> clazz,
+                                                        final ErrorCauseArgumentType errorCauseArgumentType) {
+        expectedException.expect(new WebApplicationExceptionMatcher(clazz, errorCauseArgumentType.name()));
     }
 
     protected abstract boolean isLoanPerProduct();
