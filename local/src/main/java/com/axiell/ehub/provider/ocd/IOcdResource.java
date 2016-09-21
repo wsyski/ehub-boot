@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.ocd;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -10,33 +11,33 @@ public interface IOcdResource {
 
     @GET
     @Path("v1/libraries/{libraryId}/media")
-    List<MediaDTO> getAllMedia(@HeaderParam("Authorization") BasicToken basicToken, @PathParam("libraryId") String libraryId);
+    List<MediaDTO> getAllMedia(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId);
 
     @POST
     @Path("v1/libraries/{libraryId}/patrons")
-    PatronDTO addPatron(@HeaderParam("Authorization") BasicToken basicToken, @PathParam("libraryId") String libraryId, PatronDTO patronDTO);
+    PatronDTO addPatron(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, PatronDTO patronDTO);
 
     @GET
     @Path("v1/libraries/{libraryId}/patrons")
-    List<PatronDTO> getAllPatrons(@HeaderParam("Authorization") BasicToken basicToken, @PathParam("libraryId") String libraryId);
+    List<PatronDTO> getAllPatrons(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId);
 
     @POST
     @Path("v1/tokens")
-    BearerToken newBearerToken(@HeaderParam("Authorization") BasicToken basicToken, PatronTokenDTO patronTokenDTO);
+    BearerToken newBearerToken(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, PatronTokenDTO patronTokenDTO);
 
     @POST
     @Path("v1/transactions/checkouts/{isbn}")
-    CheckoutDTO checkout(@HeaderParam("Authorization") BearerToken bearerToken, @HeaderParam("Accept-Media") String acceptMedia, @PathParam("isbn") String contentProviderRecordId);
+    CheckoutDTO checkout(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @HeaderParam("Accept-Media") String acceptMedia, @PathParam("isbn") String contentProviderRecordId);
 
     @DELETE
     @Path("v1/transactions/checkouts/{transactionId}")
-    void checkin(@HeaderParam("Authorization") BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
+    void checkin(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
 
     @GET
     @Path("v1/transactions/checkouts/{transactionId}")
-    List<CheckoutDTO> getCheckout(@HeaderParam("Authorization") BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
+    List<CheckoutDTO> getCheckout(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
 
     @GET
     @Path("v1/transactions/checkouts/all")
-    List<CheckoutDTO> getCheckouts(@HeaderParam("Authorization") BearerToken bearerToken);
+    List<CheckoutDTO> getCheckouts(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken);
 }

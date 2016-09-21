@@ -9,7 +9,7 @@ import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UlverscroftIT extends AbstractLppEpIT {
-    private static final String API_BASE_URL_VALUE = "https://xyzaeh.ulverscroftdigital.com";
+    private static final String API_BASE_URL_VALUE = "http://13.95.233.9/aeh";
     private static final String EP_SITE_ID = "1111";
     private static final String EP_SECRET_KEY = "c2VjcmV0S2V5";
     private static final String RECORD_ID = "9781407941011";
