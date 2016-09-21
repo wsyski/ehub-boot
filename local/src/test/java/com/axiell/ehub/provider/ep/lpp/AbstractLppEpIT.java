@@ -6,6 +6,7 @@ import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import org.junit.Test;
 
+import javax.ws.rs.InternalServerErrorException;
 import java.util.Map;
 
 import static junit.framework.Assert.assertNotNull;
@@ -18,9 +19,8 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
         givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
         givenContentProvider();
         givenEhubConsumer();
-        // checkout=underTest.getCheckout(contentProviderConsumer,patron,"21773");
-        // if (1==1) return;
-        //deleteCheckout("21802");
+        // checkout=underTest.getCheckout(contentProviderConsumer,patron,"21802");
+        // deleteCheckout("21802");
         whenCheckout();
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
@@ -34,7 +34,7 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
     }
 
     private void thenRepeatedCheckoutFails() {
-        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN);
+        givenExpectedWebApplicationException(InternalServerErrorException.class,ErrorCauseArgumentType.ALREADY_ON_LOAN);
         whenCheckout();
     }
 
