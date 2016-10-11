@@ -81,7 +81,7 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     }
 
     @Override
-    protected String getContentProviderIssueId() {
+    protected String getIssueId() {
         return null;
     }
 }

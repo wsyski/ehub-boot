@@ -123,7 +123,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void givenContentProviderIssueIdInCommandData() {
-        given(commandData.getContentProviderIssueId()).willReturn(ISSUE_ID);
+        given(commandData.getIssueId()).willReturn(ISSUE_ID);
     }
 
     protected void givenContentProviderAliasInCommandData() {
@@ -147,7 +147,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void givenContentProviderIssueIdInLoanMetadata() {
-        given(loanMetadata.getContentProviderIssueId()).willReturn(ISSUE_ID);
+        given(loanMetadata.getIssueId()).willReturn(ISSUE_ID);
     }
 
     protected void givenTextBundle() {

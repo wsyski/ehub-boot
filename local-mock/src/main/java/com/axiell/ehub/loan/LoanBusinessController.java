@@ -37,10 +37,10 @@ public class LoanBusinessController extends AbstractBusinessController implement
         String lmsRecordId = fields.getRequiredValue("lmsRecordId");
         String contentProviderAlias = fields.getRequiredValue("contentProviderAlias");
         String contentProviderRecordId = fields.getRequiredValue("contentProviderRecordId");
-        String contentProviderIssueId = fields.getValue("contentProviderIssueId");
+        String issueId = fields.getValue("issueId");
         String contentProviderFormatId = fields.getRequiredValue("contentProviderFormatId");
         CheckoutDTO checkoutDTO = ehubMessageUtility.getEhubMessage(CheckoutDTO.class, "checkout", contentProviderAlias, contentProviderRecordId,
-                contentProviderIssueId, contentProviderFormatId, authInfo.getPatron().getLibraryCard());
+                issueId, contentProviderFormatId, authInfo.getPatron().getLibraryCard());
         if (checkoutDTO == null) {
             ContentProviderConsumer contentProviderConsumer=getContentProviderConsumer(contentProviderAlias);
             throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,

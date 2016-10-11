@@ -45,13 +45,13 @@ public class ZinioFacade implements IZinioFacade {
     }
 
     @Override
-    public void checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String contentProviderIssueId,
+    public void checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String issueId,
                          final String language) {
         final IZinioResource zinioResource = ZinioResourceFactory.create(contentProviderConsumer);
         final String email = patron.getEmail();
         final String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID);
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
-        String response = zinioResource.checkout(IZinioResource.CMD_ZINIO_CHECKOUT_ISSUE, libraryId, token, email, contentProviderIssueId);
+        String response = zinioResource.checkout(IZinioResource.CMD_ZINIO_CHECKOUT_ISSUE, libraryId, token, email, issueId);
         createZinioResponse(contentProviderConsumer, language, response);
     }
 
@@ -66,11 +66,11 @@ public class ZinioFacade implements IZinioFacade {
     }
 
     @Override
-    public String getContentUrl(final String loginUrl, final String contentProviderIssueId) {
-        if (StringUtils.isBlank(contentProviderIssueId)) {
-           throw createInternalServerErrorException("Blank contentProviderIssueId");
+    public String getContentUrl(final String loginUrl, final String issueId) {
+        if (StringUtils.isBlank(issueId)) {
+           throw createInternalServerErrorException("Blank issueId");
         }
-        return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.authInfoEncode(contentProviderIssueId);
+        return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.authInfoEncode(issueId);
     }
 
     private IZinioResponse createZinioResponse(final ContentProviderConsumer contentProviderConsumer, final String language, final String response) {

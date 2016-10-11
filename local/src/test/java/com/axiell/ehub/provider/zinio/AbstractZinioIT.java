@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public abstract class AbstractZinioIT extends AbstractContentProviderIT {
     private static final long EHUB_CONSUMER_ID = 1L;
-    private static final String EMAIL = "wos@axiell.com";
+    private static final String EMAIL = "arenatest@axiell.com";
     private static final String API_BASE_URL = "http://www.rbdigitaltest.com";
     private static final String ZINIO_LIB_ID = "axielltest";
     private static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";

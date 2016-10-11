@@ -35,7 +35,7 @@ public class CommandDataMatcherHelper {
 
     public boolean isExpectedPendingLoan(PendingLoan expectedPendingLoan) {
         PendingLoan actualPendingLoan = new PendingLoan(new Fields().addValue("contentProviderAlias", expectedPendingLoan.contentProviderAlias()).addValue("lmsRecordId", expectedPendingLoan.lmsRecordId()).addValue("contentProviderRecordId", data.getContentProviderRecordId())
-                .addValue("contentProviderIssueId", data.getContentProviderIssueId()).addValue("contentProviderFormatId", data.getContentProviderFormatId()));
+                .addValue("issueId", data.getIssueId()).addValue("contentProviderFormatId", data.getContentProviderFormatId()));
         return expectedPendingLoan.equals(actualPendingLoan);
     }
 }

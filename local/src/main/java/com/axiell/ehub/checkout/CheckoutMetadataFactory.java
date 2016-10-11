@@ -20,11 +20,12 @@ public class CheckoutMetadataFactory implements ICheckoutMetadataFactory {
         Long id = ehubLoan.getId();
         ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();
         String contentProviderLoanId = contentProviderLoanMetadata.getId();
-        String contentProviderIssueId = contentProviderLoanMetadata.getContentProviderIssueId();
+        String issueId = contentProviderLoanMetadata.getIssueId();
+        String issueTitle = contentProviderLoanMetadata.getIssueTitle();
         Date expirationDate = contentProviderLoanMetadata.getExpirationDate();
         String lmsLoanId = ehubLoan.getLmsLoan().getId();
         Format format = formatFactory.create(formatDecoration, language);
         return new CheckoutMetadata(id, lmsLoanId, expirationDate, isNewLoan, format).contentProviderLoanId(contentProviderLoanId)
-                .contentProviderIssueId(contentProviderIssueId);
+                .issueId(issueId).issueTitle(issueTitle);
     }
 }

@@ -44,12 +44,21 @@ public class CheckoutMetadata implements Serializable {
         return checkoutMetadataDTO.isNewLoan();
     }
 
-    public String getContentProviderIssueId() {
-        return checkoutMetadataDTO.getContentProviderIssueId();
+    public String getIssueId() {
+        return checkoutMetadataDTO.getIssueId();
     }
 
-    public CheckoutMetadata contentProviderIssueId(final String contentProviderIssueId) {
-        checkoutMetadataDTO.contentProviderIssueId(contentProviderIssueId);
+    public CheckoutMetadata issueId(final String issueId) {
+        checkoutMetadataDTO.issueId(issueId);
+        return this;
+    }
+
+    public String getIssueTitle() {
+        return checkoutMetadataDTO.getIssueTitle();
+    }
+
+    public CheckoutMetadata issueTitle(final String issueTitle) {
+        checkoutMetadataDTO.issueTitle(issueTitle);
         return this;
     }
 

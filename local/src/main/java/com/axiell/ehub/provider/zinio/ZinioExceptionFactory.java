@@ -11,6 +11,7 @@ public class ZinioExceptionFactory extends AbstractContentProviderExceptionFacto
     static final String MESSAGE_NOT_EXISTS = "not exists";
     static final String MESSAGE_UNEXISTED_MAGAZINE_RBID = "unexisted magazine rbid";
 
+
     public ZinioExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                  final IEhubExceptionFactory ehubExceptionFactory) {
         super(contentProviderConsumer, language, ehubExceptionFactory, String.class);

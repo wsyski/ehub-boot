@@ -24,7 +24,7 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
         fields.addValue("contentProviderAlias", getContentProviderAlias());
         fields.addValue("contentProviderRecordId", TestDataConstants.RECORD_ID_0);
-        fields.addValue("contentProviderIssueId", getContentProviderIssueId());
+        fields.addValue("issueId", getIssueId());
     }
 
     @Test
@@ -64,6 +64,13 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
         Long id = checkoutMetadata.getId();
         Assert.assertNotNull(id);
         Assert.assertEquals(isNewLoan, checkoutMetadata.isNewLoan());
+        if (getIssueId()!=null) {
+            String issueId = checkoutMetadata.getIssueId();
+            Assert.assertNotNull(issueId);
+            Assert.assertEquals(issueId,getIssueId());
+            String issueTitle = checkoutMetadata.getIssueTitle();
+            Assert.assertNotNull(issueTitle);
+        }
     }
 
     protected void thenValidContentLinks(final ContentLinks contentLinks, final String contentProviderFormatId) {
@@ -99,5 +106,5 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
 
     protected abstract void givenContentProviderGetCheckoutResponse();
     protected abstract String getContentProviderFormatId();
-    protected abstract String getContentProviderIssueId();
+    protected abstract String getIssueId();
 }

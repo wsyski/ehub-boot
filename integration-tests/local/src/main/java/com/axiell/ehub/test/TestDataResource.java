@@ -187,8 +187,8 @@ public class TestDataResource implements ITestDataResource {
         String contentProviderFormatId = FORMAT_IDS.get(contentProviderName).iterator().next();
         FormatDecoration formatDecoration1 = contentProvider.getFormatDecoration(contentProviderFormatId);
         ContentProviderLoanMetadata contentProviderLoanMetadata = new ContentProviderLoanMetadata.Builder(contentProvider, new Date(),
-                TestDataConstants.RECORD_ID_1, formatDecoration1).contentProviderIssueId(hasIssues ? TestDataConstants.ISSUE_ID_0 : null)
-                .contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
+                TestDataConstants.RECORD_ID_1, formatDecoration1).issueId(hasIssues ? TestDataConstants.ISSUE_ID_0 : null)
+                .issueTitle(hasIssues ? TestDataConstants.ISSUE_TITLE_0 : null).contentProviderLoanId(TestDataConstants.CONTENT_PROVIDER_LOAN_ID).build();
         LmsLoan lmsLoan = new LmsLoan(TestDataConstants.LMS_LOAN_ID);
         EhubLoan ehubLoan = new EhubLoan(ehubConsumer, lmsLoan, contentProviderLoanMetadata);
         ehubLoan = ehubLoanRepository.save(ehubLoan);

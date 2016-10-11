@@ -20,6 +20,7 @@ public class RemoteZinioCheckoutIT extends RemoteCheckoutITFixture {
         givenPalmaLoansWsdl();
         givenPalmaCheckoutTestNewLoanResponse();
         givenPalmaCheckoutResponse();
+        givenContentProviderGetRecordResponse();
         givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout, TestDataConstants.ZINIO_FORMAT_0_ID, true);
@@ -35,6 +36,15 @@ public class RemoteZinioCheckoutIT extends RemoteCheckoutITFixture {
     protected void givenContentProviderGetCheckoutResponse() {
         givenLoginResponse();
         givenPatronExists();
+    }
+
+    private void givenContentProviderGetRecordResponse() {
+        stubFor(get(urlEqualTo(
+                "/zinio/api?cmd=zinio_issues_by_magazines_and_library&lib_id=" + TestDataConstants.ZINIO_LIB_ID + "&token=" + TestDataConstants.ZINIO_TOKEN +
+                        "&zinio_magazine_rbid=" + TestDataConstants.RECORD_ID_0))
+                .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt")
+                        .withHeader("Content-Type", "text/plain")
+                        .withStatus(HttpServletResponse.SC_OK)));
     }
 
     private void givenPatronExists() {
@@ -65,7 +75,7 @@ public class RemoteZinioCheckoutIT extends RemoteCheckoutITFixture {
     }
 
     @Override
-    protected String getContentProviderIssueId() {
+    protected String getIssueId() {
         return TestDataConstants.ISSUE_ID_0;
     }
 
