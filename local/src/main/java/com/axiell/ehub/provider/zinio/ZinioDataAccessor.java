@@ -34,23 +34,20 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
     @Override
     public List<Issue> getIssues(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String language = data.getLanguage();
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final Format format = formatFactory.create(contentProvider, ZINIO_FORMAT_0_ID, language);
-        final List<IssueDTO> issuesDTO = zinioFacade.getIssues(contentProviderConsumer, contentProviderRecordId, language);
-        return issuesDTO.stream().map(issueDTO -> issueDTO.toIssue(format)).collect(Collectors.toList());
+        return getIssues(contentProviderConsumer, contentProviderRecordId, language);
     }
 
     @Override
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final String contentProviderIssueId = data.getContentProviderIssueId();
+        final String issueId = data.getIssueId();
         final String language = data.getLanguage();
         final String loginUrl = zinioFacade.login(contentProviderConsumer, patron, language);
-        zinioFacade.checkout(contentProviderConsumer, patron, contentProviderIssueId, language);
-        final String contentUrl = zinioFacade.getContentUrl(loginUrl, contentProviderIssueId);
+        zinioFacade.checkout(contentProviderConsumer, patron, issueId, language);
+        final String contentUrl = zinioFacade.getContentUrl(loginUrl, issueId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data);
         final Content content = makeContent(contentUrl);
         return new ContentProviderLoan(loanMetadata, content);
@@ -63,19 +60,43 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String language = data.getLanguage();
         final String loginUrl = zinioFacade.login(contentProviderConsumer, patron, language);
-        final String contentUrl = zinioFacade.getContentUrl(loginUrl, loanMetadata.getContentProviderIssueId());
+        final String contentUrl = zinioFacade.getContentUrl(loginUrl, loanMetadata.getIssueId());
         return makeContent(contentUrl);
     }
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String contentProviderIssueId = data.getContentProviderIssueId();
+        final String contentProviderRecordId = data.getContentProviderRecordId();
+        final String issueId = data.getIssueId();
+        final String language = data.getLanguage();
         final Date expirationDate = expirationDateFactory.createExpirationDate(contentProviderConsumer.getContentProvider());
-        return newContentProviderLoanMetadataBuilder(data, expirationDate).contentProviderIssueId(contentProviderIssueId).build();
+        final String issueTitle = getIssueTitle(contentProviderConsumer, contentProviderRecordId, issueId, language);
+        return newContentProviderLoanMetadataBuilder(data, expirationDate).issueId(issueId).issueTitle(issueTitle).build();
     }
 
     private Content makeContent(final String contentLinkHref) {
         final ContentLinks contentLinks = createContentLinks(contentLinkHref);
         return new Content(contentLinks);
+    }
+
+    private List<Issue> getIssues(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final String language) {
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final Format format = formatFactory.create(contentProvider, ZINIO_FORMAT_0_ID, language);
+        final List<IssueDTO> issuesDTO = zinioFacade.getIssues(contentProviderConsumer, contentProviderRecordId, language);
+        return issuesDTO.stream().map(issueDTO -> issueDTO.toIssue(format)).collect(Collectors.toList());
+    }
+
+    private String getIssueTitle(final ContentProviderConsumer contentProviderConsumer, final String contentProviderRecordId, final String issueId,
+                                 final String language) {
+        if (issueId == null) {
+            return null;
+        }
+        List<Issue> issues = getIssues(contentProviderConsumer, contentProviderRecordId, language);
+        for (Issue issue : issues) {
+            if (issueId.equals(issue.getId())) {
+                return issue.getTitle();
+            }
+        }
+        return null;
     }
 }

@@ -63,7 +63,7 @@
                         </executions>
                         <configuration>
                             <!--
-                            <test>com.axiell.ehub.it.RemoteRecordIT#getRecord</test>
+                            <test>com.axiell.ehub.it.RRemoteZinioCheckoutIT#checkoutWithNewContentProviderLoan</test>
                             -->
                             <includes>
                                 <include>**/*IT.java</include>

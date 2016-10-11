@@ -20,7 +20,8 @@ public class CheckoutMetadataDTO implements Serializable {
     private String contentProviderLoanId;
     private Date expirationDate;
     private boolean isNewLoan;
-    private String contentProviderIssueId;
+    private String issueId;
+    private String issueTitle;
     private FormatDTO format;
 
     private CheckoutMetadataDTO() {
@@ -59,12 +60,21 @@ public class CheckoutMetadataDTO implements Serializable {
         return isNewLoan;
     }
 
-    public String getContentProviderIssueId() {
-        return contentProviderIssueId;
+    public String getIssueId() {
+        return issueId;
     }
 
-    public CheckoutMetadataDTO contentProviderIssueId(final String contentProviderIssueId) {
-        this.contentProviderIssueId = contentProviderIssueId;
+    public CheckoutMetadataDTO issueId(final String issueId) {
+        this.issueId = issueId;
+        return this;
+    }
+
+    public String getIssueTitle() {
+        return issueTitle;
+    }
+
+    public CheckoutMetadataDTO issueTitle(final String issueTitle) {
+        this.issueTitle = issueTitle;
         return this;
     }
 

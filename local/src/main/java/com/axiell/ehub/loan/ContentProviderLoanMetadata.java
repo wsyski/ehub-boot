@@ -23,6 +23,7 @@ public class ContentProviderLoanMetadata implements Serializable {
     private Date expirationDate;
     private FormatDecoration firstFormatDecoration;
     private String recordId;
+    private String issueTitle;
     private String issueId;
 
     /**
@@ -32,12 +33,13 @@ public class ContentProviderLoanMetadata implements Serializable {
     }
 
     private ContentProviderLoanMetadata(final String id, final ContentProvider contentProvider, final Date expirationDate, final String recordId,
-                                        final String issueId, final FormatDecoration firstFormatDecoration) {
+                                        final String issueId, final String issueTitle, final FormatDecoration firstFormatDecoration) {
         this.id = id;
         this.contentProvider = contentProvider;
         this.expirationDate = DateFactory.create(expirationDate);
         this.recordId = recordId;
         this.issueId = issueId;
+        this.issueTitle = issueTitle;
         this.firstFormatDecoration = firstFormatDecoration;
     }
 
@@ -137,13 +139,22 @@ public class ContentProviderLoanMetadata implements Serializable {
         this.recordId = recordId;
     }
 
-    @Column(name = "CONTENT_PROVIDER_ISSUE_ID")
-    public String getContentProviderIssueId() {
+    @Column(name = "ISSUE_ID")
+    public String getIssueId() {
         return issueId;
     }
 
-    protected void setContentProviderIssueId(final String issueId) {
+    protected void setIssueId(final String issueId) {
         this.issueId = issueId;
+    }
+
+    @Column(name = "ISSUE_TITLE")
+    public String getIssueTitle() {
+        return issueTitle;
+    }
+
+    protected void setIssueTitle(final String issueTitle) {
+        this.issueTitle = issueTitle;
     }
 
     public static class Builder {
@@ -153,6 +164,7 @@ public class ContentProviderLoanMetadata implements Serializable {
         private final String recordId;
         private String id;
         private String issueId;
+        private String issueTitle;
 
         public Builder(final ContentProvider contentProvider, final Date expirationDate, final String recordId, final FormatDecoration firstFormatDecoration) {
             Validate.isNotNull(contentProvider, "ContentProvider can't be null");
@@ -170,13 +182,19 @@ public class ContentProviderLoanMetadata implements Serializable {
             return this;
         }
 
-        public Builder contentProviderIssueId(final String issueId) {
+        public Builder issueId(final String issueId) {
             this.issueId = issueId;
             return this;
         }
 
+        public Builder issueTitle(final String issueTitle) {
+            this.issueTitle = issueTitle;
+            return this;
+        }
+
+
         public ContentProviderLoanMetadata build() {
-            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, issueId, firstFormatDecoration);
+            return new ContentProviderLoanMetadata(id, contentProvider, expirationDate, recordId, issueId, issueTitle, firstFormatDecoration);
         }
     }
 }

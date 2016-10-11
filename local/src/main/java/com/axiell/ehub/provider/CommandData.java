@@ -21,7 +21,7 @@ public class CommandData implements ICommandData {
     private final String language;
     private String contentProviderAlias;
     private String contentProviderRecordId;
-    private String contentProviderIssueId;
+    private String issueId;
     private String contentProviderFormatId;
     private ContentProviderLoanMetadata contentProviderLoanMetadata;
     private FormatDecoration formatDecoration;
@@ -60,8 +60,8 @@ public class CommandData implements ICommandData {
         return this;
     }
 
-    public String getContentProviderIssueId() {
-        return contentProviderIssueId;
+    public String getIssueId() {
+        return issueId;
     }
 
     public String getContentProviderFormatId() {
@@ -80,7 +80,7 @@ public class CommandData implements ICommandData {
     public CommandData setPendingLoan(final PendingLoan pendingLoan) {
         this.contentProviderAlias = pendingLoan.contentProviderAlias();
         this.contentProviderRecordId = pendingLoan.contentProviderRecordId();
-        this.contentProviderIssueId = pendingLoan.contentProviderIssueId();
+        this.issueId = pendingLoan.issueId();
         this.contentProviderFormatId = pendingLoan.contentProviderFormatId();
         return this;
     }
@@ -122,8 +122,8 @@ public class CommandData implements ICommandData {
     }
 
     public CommandData setContentLinkHrefs(final List<String> contentLinkHrefs) {
-        ContentLinks contentLinks =
-                contentLinkHrefs == null ? null : new ContentLinks(contentLinkHrefs.stream().map(ContentLink::new).collect(Collectors.toList()));
+        ContentLinks contentLinks = contentLinkHrefs == null ? null : new ContentLinks(contentLinkHrefs.stream().map(ContentLink::new)
+                .collect(Collectors.toList()));
         return setContentLinks(contentLinks);
     }
 

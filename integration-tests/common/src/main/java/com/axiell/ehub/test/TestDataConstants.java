@@ -24,6 +24,7 @@ public class TestDataConstants {
     public static final String RECORD_ID_0 = "recordId_0";
     public static final String RECORD_ID_1 = "recordId_1";
     public static final String ISSUE_ID_0 = "issueId_0";
+    public static final String ISSUE_TITLE_0 = "issueTitle_0";
 
     public static final String TEST_EP_FORMAT_ID_0 = "ebook";
     public static final String TEST_EP_FORMAT_ID_1 = "audio-stream";

@@ -24,8 +24,8 @@ public class PendingLoan {
         return fields.getRequiredValue("contentProviderRecordId");
     }
 
-    public String contentProviderIssueId() {
-        return fields.getValue("contentProviderIssueId");
+    public String issueId() {
+        return fields.getValue("issueId");
     }
 
     public String contentProviderFormatId() {
@@ -42,14 +42,14 @@ public class PendingLoan {
         }
         final PendingLoan rhs = (PendingLoan) obj;
         return new EqualsBuilder().append(lmsRecordId(), rhs.lmsRecordId()).append(contentProviderAlias(), rhs.contentProviderAlias())
-                .append(contentProviderRecordId(), rhs.contentProviderRecordId()).append(contentProviderIssueId(), rhs.contentProviderIssueId())
+                .append(contentProviderRecordId(), rhs.contentProviderRecordId()).append(issueId(), rhs.issueId())
                 .append(contentProviderFormatId(), rhs.contentProviderFormatId()).isEquals();
     }
 
     @Override
     public final int hashCode() {
         return new HashCodeBuilder(17, 31).append(lmsRecordId()).append(contentProviderAlias()).append(contentProviderRecordId())
-                .append(contentProviderIssueId()).append(contentProviderFormatId()).toHashCode();
+                .append(issueId()).append(contentProviderFormatId()).toHashCode();
     }
 
     @Override

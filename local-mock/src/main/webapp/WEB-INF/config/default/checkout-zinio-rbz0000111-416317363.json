@@ -4,7 +4,7 @@
     "lmsLoanId": "04479593",
     "expirationDate": 1474030147772,
     "isNewLoan": true,
-    "contentProviderIssueId": "416317363",
+    "issueId": "416317363",
     "format": {
       "id": "ZINIO.stream",
       "name": "Zinio (Stream)",

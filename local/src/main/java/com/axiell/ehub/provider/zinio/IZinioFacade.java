@@ -9,10 +9,10 @@ interface IZinioFacade {
 
     String login(ContentProviderConsumer contentProviderConsumer, Patron patron, String language);
 
-    void checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String contentProviderIssueId, String language);
+    void checkout(ContentProviderConsumer contentProviderConsumer, Patron patron, String issueId, String language);
 
     List<IssueDTO> getIssues(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language);
 
-    String getContentUrl(String loginUrl, String contentProviderIssueId);
+    String getContentUrl(String loginUrl, String issueId);
 
 }
