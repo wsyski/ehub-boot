@@ -11,14 +11,13 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 import static org.mockito.BDDMockito.given;
 
 public class AbstractOcdIT extends AbstractContentProviderIT {
-    protected static final String API_BASE_URL_VALUE = "http://api.oneclickdigital.us";
+    protected static final String API_BASE_URL_VALUE = "http://api.oneclickdigital.eu";
 
-    /* Test */
-    protected static final String BASIC_TOKEN = "e61459ee-a96d-436a-91c8-e5313c47d9e4";
-    protected static final String LIBRARY_ID = "504";
+    protected static final String BASIC_TOKEN = "E89CB7B3-82CF-48D0-9657-0437B5161D5E";
+    protected static final String LIBRARY_ID = "4047";
 
-    protected static final String RECORD_ID_EBOOK = "9780312870676";
-    protected static final String RECORD_ID_EAUDIO = "9781449868703";
+    protected static final String RECORD_ID_EBOOK = "9781781858417";
+    protected static final String RECORD_ID_EAUDIO = "9781407445496";
 
     protected static final String FORMAT_ID_EAUDIO = "eAudio";
     protected static final String FORMAT_ID_EBOOK = "eBook";

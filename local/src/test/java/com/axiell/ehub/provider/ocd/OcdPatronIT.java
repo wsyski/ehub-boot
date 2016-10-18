@@ -11,12 +11,11 @@ import static org.mockito.BDDMockito.given;
  * Remove the ignore annotation, change the card number and then run the test if adding a patron should be tested.
  */
 public class OcdPatronIT extends AbstractOcdIT {
-    private static final String CARD = "4100000009";
+    private static final String CARD = "20126001163574";
     private static final String PIN = "1234";
     private PatronDTO patronDTO;
 
     @Test
-    @Ignore
     public void addPatron() {
         givenApiBaseUrl();
         givenLibraryId();

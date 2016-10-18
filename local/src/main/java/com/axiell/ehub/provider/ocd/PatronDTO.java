@@ -2,13 +2,18 @@ package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.Md5Function;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonIgnoreProperties(value = {"libraryPin", "libraryId", "preferences"})
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PatronDTO {
     private static final String NA = "N/A";
     private static final String EMAIL_DOMAIN = "@axiell.com";
     private String patronId;
+    private String libraryId;
     private String libraryCardNumber;
     private String userName;
     private String password;
@@ -20,15 +25,15 @@ public class PatronDTO {
     public PatronDTO() {
     }
 
-    PatronDTO(Patron patron) {
-        libraryCardNumber = patron.getLibraryCard();
-        userName = patron.getLibraryCard();
-        //password = patron.getPin();
-        password = Md5Function.md5Hex(patron.getLibraryCard());
-        email = makeEmail();
-        firstName = NA;
-        lastName = NA;
-        postalCode = NA;
+    public PatronDTO(final Patron patron, final String libraryId) {
+        this.libraryId = libraryId;
+        this.libraryCardNumber = patron.getLibraryCard();
+        this.userName = patron.getLibraryCard();
+        this.password = Md5Function.md5Hex(patron.getLibraryCard());
+        this.email = makeEmail();
+        this.firstName = NA;
+        this.lastName = NA;
+        this.postalCode = NA;
     }
 
     private String makeEmail() {
@@ -37,6 +42,10 @@ public class PatronDTO {
 
     public String getPatronId() {
         return patronId;
+    }
+
+    public String getLibraryId() {
+        return libraryId;
     }
 
     public String getLibraryCardNumber() {
