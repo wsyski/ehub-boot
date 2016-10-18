@@ -37,9 +37,9 @@ public class OcdAllMediaIT extends AbstractOcdIT {
 
     private void whenGetAllMedia() {
         allMedia = underTest.getAllMedia(contentProviderConsumer);
-        //for(MediaDTO mediaDTO: allMedia) {
-        //    System.out.println(mediaDTO.getMediaType()+" "+mediaDTO.getIsbn());
-        //}
+        for(MediaDTO mediaDTO: allMedia) {
+            System.out.println(mediaDTO.getMediaType()+" "+mediaDTO.getIsbn());
+        }
     }
 
     private void thenExpectedMediaType(final String mediaType) throws IFinder.NotFoundException {

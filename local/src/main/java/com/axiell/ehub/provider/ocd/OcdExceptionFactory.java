@@ -11,6 +11,7 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
     static final String MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID = "PatronId and TitleId are invalid";
     static final String MESSAGE_CHECKOUT_LIMIT_REACHED = "Checkout limit of (";
     static final String MESSAGE_USER_EXISTS = "User with given name, email or library card already exists for library";
+    static final String MESSAGE_INVALID_LIBRARY_ID = "Invalid library id is provided or permission denied";
 
     public OcdExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                                final IEhubExceptionFactory ehubExceptionFactory) {
@@ -36,6 +37,8 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
             } else if (message.contains(MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID)) {
                 type = ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
             } else if (message.contains(MESSAGE_USER_EXISTS)) {
+                type = ErrorCauseArgumentType.INVALID_PATRON;
+            } else if (message.contains(MESSAGE_INVALID_LIBRARY_ID)) {
                 type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (message.contains(MESSAGE_CHECKOUT_LIMIT_REACHED)) {
                 type = ErrorCauseArgumentType.MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED;
