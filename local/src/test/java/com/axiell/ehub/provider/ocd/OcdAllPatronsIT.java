@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.List;
 
 public class OcdAllPatronsIT extends AbstractOcdIT {
-    protected static final String CARD = "4100000009";
+    protected static final String CARD = "20126001163574";
     private List<PatronDTO> allPatrons;
 
     @Test

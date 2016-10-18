@@ -24,7 +24,7 @@ class OcdFacade implements IOcdFacade {
     public PatronDTO addPatron(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final BasicToken basicToken = new BasicToken(contentProviderConsumer);
         final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
-        final PatronDTO patronDTO = new PatronDTO(patron);
+        final PatronDTO patronDTO = new PatronDTO(patron, libraryId);
         final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
         return ocdResource.addPatron(basicToken, libraryId, patronDTO);
     }
