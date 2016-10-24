@@ -3,13 +3,12 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 
 public class OcdAllPatronsIT extends AbstractOcdIT {
-    protected static final String CARD = "20126001163574";
     private List<PatronDTO> allPatrons;
 
     @Test

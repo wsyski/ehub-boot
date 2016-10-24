@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PatronDTO {
     private static final String NA = "N/A";
-    private static final String EMAIL_DOMAIN = "@axiell.com";
+    public static final String EMAIL_DOMAIN = "@axiell.com";
     private String patronId;
     private String libraryId;
     private String libraryCardNumber;

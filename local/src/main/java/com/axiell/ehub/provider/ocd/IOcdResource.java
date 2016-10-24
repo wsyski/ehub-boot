@@ -13,6 +13,10 @@ public interface IOcdResource {
     @Path("v1/libraries/{libraryId}/media")
     List<MediaDTO> getAllMedia(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId);
 
+    @GET
+    @Path("v1/rpc/libraries/{libraryId}/patrons/{email}")
+    PatronDTO getPatronByEmail(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, @PathParam("email") String email);
+
     @POST
     @Path("v1/libraries/{libraryId}/patrons")
     PatronDTO addPatron(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, PatronDTO patronDTO);

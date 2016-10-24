@@ -38,6 +38,14 @@ class OcdFacade implements IOcdFacade {
     }
 
     @Override
+    public PatronDTO getPatronByEmail(final ContentProviderConsumer contentProviderConsumer, final String email) {
+        final BasicToken basicToken = new BasicToken(contentProviderConsumer);
+        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
+        final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
+        return ocdResource.getPatronByEmail(basicToken, libraryId,email);
+    }
+
+    @Override
     public BearerToken newBearerToken(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final BasicToken basicToken = new BasicToken(contentProviderConsumer);
         final PatronTokenDTO patronTokenDTO = new PatronTokenDTO(contentProviderConsumer, patron);
