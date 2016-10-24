@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.ocd;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
+import static com.axiell.ehub.provider.ocd.PatronDTO.EMAIL_DOMAIN;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
@@ -11,8 +11,6 @@ import static org.mockito.BDDMockito.given;
  * Remove the ignore annotation, change the card number and then run the test if adding a patron should be tested.
  */
 public class OcdPatronIT extends AbstractOcdIT {
-    private static final String CARD = "20126001163574";
-    private static final String PIN = "1234";
     private PatronDTO patronDTO;
 
     @Test
@@ -23,6 +21,7 @@ public class OcdPatronIT extends AbstractOcdIT {
         givenContentProvider();
         givenCardPin();
         whenAddPatron();
+        thenGetPatronByEmailOk();
         thenPatronHasAnId();
     }
 
@@ -38,5 +37,9 @@ public class OcdPatronIT extends AbstractOcdIT {
 
     private void thenPatronHasAnId() {
         assertNotNull(patronDTO.getPatronId());
+    }
+
+    private void thenGetPatronByEmailOk() {
+        patronDTO = underTest.getPatronByEmail(contentProviderConsumer, CARD + EMAIL_DOMAIN);
     }
 }

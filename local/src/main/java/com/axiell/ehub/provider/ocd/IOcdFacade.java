@@ -13,6 +13,8 @@ interface IOcdFacade {
 
     List<PatronDTO> getAllPatrons(ContentProviderConsumer contentProviderConsumer);
 
+    PatronDTO getPatronByEmail(ContentProviderConsumer contentProviderConsumer, String email);
+
     BearerToken newBearerToken(ContentProviderConsumer contentProviderConsumer, Patron patron);
 
     CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, BearerToken bearerToken, String contentProviderRecordId);
