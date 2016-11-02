@@ -1,6 +1,5 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -21,21 +20,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
-
 @Component
 public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
 
-    @Autowired
-    private IOcdAuthenticator ocdAuthenticator;
     @Autowired
     private IOcdFormatHandler ocdFormatHandler;
     @Autowired
     private IFormatFactory formatFactory;
     @Autowired
     private IOcdCheckoutHandler ocdCheckoutHandler;
-    @Autowired
-    private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override
     public List<Issue> getIssues(final CommandData data) {
@@ -55,16 +48,10 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
 
     @Override
     public ContentProviderLoan createLoan(final CommandData data) {
-        final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
-        final Checkout checkout = ocdCheckoutHandler.checkout(bearerToken, data);
-        if (checkout.isSuccessful()) {
-            final String contentProviderLoanId = checkout.getTransactionId();
-            final Checkout completeCheckout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
-            final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, completeCheckout);
-            final Content contentLinks = makeContent(completeCheckout);
-            return new ContentProviderLoan(loanMetadata, contentLinks);
-        }
-        throw makeCreateLoanFailedException(data);
+        final Checkout checkout = ocdCheckoutHandler.checkout(data);
+        final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data, checkout);
+        final Content contentLinks = makeContent(checkout);
+        return new ContentProviderLoan(loanMetadata, contentLinks);
     }
 
     private ContentProviderLoanMetadata makeContentProviderLoanMetadata(final CommandData data, final Checkout checkout) {
@@ -79,18 +66,11 @@ public class OcdDataAccessor extends AbstractContentProviderDataAccessor {
         return new Content(contentLinks);
     }
 
-    private InternalServerErrorException makeCreateLoanFailedException(final CommandData data) {
-        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String language = data.getLanguage();
-        return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CREATE_LOAN_FAILED, language);
-    }
-
     @Override
     public Content getContent(final CommandData data) {
-        final BearerToken bearerToken = ocdAuthenticator.authenticate(data);
         final ContentProviderLoanMetadata loanMetadata = data.getContentProviderLoanMetadata();
         final String contentProviderLoanId = loanMetadata.getId();
-        final Checkout checkout = ocdCheckoutHandler.getCompleteCheckout(bearerToken, data, contentProviderLoanId);
+        final Checkout checkout = ocdCheckoutHandler.getCheckout(data, contentProviderLoanId);
         return makeContent(checkout);
     }
 }

@@ -1,17 +1,15 @@
 package com.axiell.ehub.provider.ocd;
 
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
-import com.axiell.ehub.util.CollectionFinder;
-import com.axiell.ehub.util.IFinder;
-import com.axiell.ehub.util.IMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import static com.axiell.ehub.ErrorCauseArgumentType.CHECKOUT_NOT_FOUND;
+import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
 
 @Component
 class OcdCheckoutHandler implements IOcdCheckoutHandler {
@@ -21,24 +19,40 @@ class OcdCheckoutHandler implements IOcdCheckoutHandler {
     private IEhubExceptionFactory ehubExceptionFactory;
 
     @Override
-    public Checkout checkout(BearerToken bearerToken, CommandData data) {
+    public Checkout checkout(CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String patronId = getPatronId(data);
         final String contentProviderRecordId = data.getContentProviderRecordId();
-        final CheckoutDTO checkoutDTO = ocdFacade.checkout(contentProviderConsumer, bearerToken, contentProviderRecordId);
+        final CheckoutDTO checkoutDTO = ocdFacade.checkout(contentProviderConsumer, patronId, contentProviderRecordId);
+        if (checkoutDTO == null) {
+            throw makeCreateLoanFailedException(data);
+        }
         return new Checkout(checkoutDTO);
     }
 
     @Override
-    public Checkout getCompleteCheckout(BearerToken bearerToken, CommandData data, String contentProviderLoanId) {
+    public Checkout getCheckout(final CommandData data, final String contentProviderLoanId) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final List<CheckoutDTO> checkouts = ocdFacade.getCheckouts(contentProviderConsumer, bearerToken);
-        final IMatcher<CheckoutDTO> matcher = new ContentProviderLoanIdCheckoutMatcher(contentProviderLoanId);
-        try {
-            final CheckoutDTO checkoutDTO = new CollectionFinder<CheckoutDTO>().find(matcher, checkouts);
-            return new Checkout(checkoutDTO);
-        } catch (IFinder.NotFoundException ex) {
+        final String patronId = getPatronId(data);
+        final CheckoutDTO checkoutDTO = ocdFacade.getCheckout(contentProviderConsumer, patronId, contentProviderLoanId);
+        if (checkoutDTO == null) {
             final String language = data.getLanguage();
-            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CHECKOUT_NOT_FOUND, language);
+            throw ehubExceptionFactory
+                    .createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CHECKOUT_NOT_FOUND, language);
         }
+        return new Checkout(checkoutDTO);
+    }
+
+    private InternalServerErrorException makeCreateLoanFailedException(final CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final String language = data.getLanguage();
+        return ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, CREATE_LOAN_FAILED, language);
+    }
+
+    private String getPatronId(CommandData data) {
+        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
+        final Patron patron = data.getPatron();
+        PatronDTO patronDTO = ocdFacade.getPatron(contentProviderConsumer, patron);
+        return patronDTO.getPatronId();
     }
 }

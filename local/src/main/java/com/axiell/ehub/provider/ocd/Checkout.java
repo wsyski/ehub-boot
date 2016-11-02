@@ -11,16 +11,10 @@ import java.util.stream.Collectors;
 import static com.axiell.ehub.provider.ocd.CheckoutDTO.FileDTO;
 
 class Checkout {
-    private static final String SUCCESS = "SUCCESS";
     private final CheckoutDTO checkoutDTO;
 
     Checkout(final CheckoutDTO checkoutDTO) {
         this.checkoutDTO = checkoutDTO;
-    }
-
-    boolean isSuccessful() {
-        final String output = checkoutDTO.getOutput();
-        return SUCCESS.equals(output);
     }
 
     String getTransactionId() {
@@ -32,8 +26,7 @@ class Checkout {
     }
 
     List<String> getDownloadUrls() {
-        String downloadUrl = checkoutDTO.getDownloadUrl();
-        return downloadUrl == null ? getFileDownloadUrls() : Collections.singletonList(downloadUrl);
+        return getFileDownloadUrls();
     }
 
     private List<String> getFileDownloadUrls() {
