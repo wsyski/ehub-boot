@@ -4,9 +4,9 @@ import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
+import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,8 +21,6 @@ import static org.mockito.Matchers.anyString;
 
 public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<OcdDataAccessor> {
 
-    @Mock
-    private IOcdAuthenticator ocdAuthenticator;
     @Mock
     private BearerToken bearerToken;
     @Mock
@@ -39,9 +37,7 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
     @Before
     public void setUpUnderTest() {
         underTest = new OcdDataAccessor();
-        ReflectionTestUtils.setField(underTest, "ocdAuthenticator", ocdAuthenticator);
         ReflectionTestUtils.setField(underTest, "ocdCheckoutHandler", ocdCheckoutHandler);
-        ReflectionTestUtils.setField(underTest, "ehubExceptionFactory", ehubExceptionFactory);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
         ReflectionTestUtils.setField(underTest, "ocdFormatHandler", ocdFormatHandler);
     }
@@ -76,50 +72,43 @@ public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<
 
     @Test
     public void createLoan_success() {
-        givenBearerToken();
         givenContentProviderConsumerInCommandData();
         givenFormatDecorationInContentProvider();
         givenContentProviderRecordIdInCommandData();
-        givenCheckoutIsSuccessful();
         givenCheckout();
         givenCompleteCheckout();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
 
-    private void givenBearerToken() {
-        given(ocdAuthenticator.authenticate(commandData)).willReturn(bearerToken);
-    }
-
     public void givenCheckout() {
-        given(ocdCheckoutHandler.checkout(any(BearerToken.class), any(CommandData.class))).willReturn(checkout);
+        given(ocdCheckoutHandler.checkout(any(CommandData.class))).willReturn(checkout);
     }
 
-    public void givenCheckoutIsSuccessful() {
-        given(checkout.isSuccessful()).willReturn(true);
+    public void givenCheckoutFailure() {
+        given(ocdCheckoutHandler.checkout(any(CommandData.class))).willThrow(InternalServerErrorException.class);
     }
 
     public void givenCompleteCheckout() {
         given(checkout.getExpirationDate()).willReturn(new Date());
         given(checkout.getDownloadUrls()).willReturn(Collections.singletonList(CONTENT_HREF));
-        given(ocdCheckoutHandler.getCompleteCheckout(any(BearerToken.class), any(CommandData.class), anyString())).willReturn(checkout);
+        given(ocdCheckoutHandler.getCheckout(any(CommandData.class), anyString())).willReturn(checkout);
     }
 
     @Test(expected = InternalServerErrorException.class)
     public void createLoan_unsuccessful() {
-        givenBearerToken();
+        givenCheckoutFailure();
         givenInternalServerErrorException();
-        givenCheckout();
         whenCreateLoan();
     }
 
     private void givenInternalServerErrorException() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), anyString())).willReturn(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class),
+                any(ErrorCauseArgumentType.class), anyString())).willReturn(internalServerErrorException);
     }
 
     @Test
     public void getContent() {
-        givenBearerToken();
         givenCompleteCheckout();
         givenContentProviderLoanMetadataInCommandData();
         givenFormatDecorationInCommandData();

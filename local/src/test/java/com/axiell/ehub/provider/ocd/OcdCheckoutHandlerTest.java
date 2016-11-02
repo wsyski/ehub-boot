@@ -4,16 +4,14 @@ import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -22,12 +20,14 @@ import static org.mockito.Matchers.anyString;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OcdCheckoutHandlerTest {
-    public static final String TRANSACTION_ID = "transactionId";
+    private static final String RECORD_ID = "recordId";
+    private static final String TRANSACTION_ID = "transactionId";
+    private static final String PATRON_ID = "patronId";
+    private static final String CARD = "card";
+    private static final String PIN = "pin";
     private OcdCheckoutHandler underTest;
     @Mock
     private IOcdFacade ocdFacade;
-    @Mock
-    private BearerToken bearerToken;
     @Mock
     private CommandData commandData;
     @Mock
@@ -37,8 +37,13 @@ public class OcdCheckoutHandlerTest {
     private String contentProviderLoanId;
     @Mock
     private CheckoutDTO checkoutDTO;
-    private List<CheckoutDTO> checkoutDTOs;
+    @Mock
+    private PatronDTO patronDTO;
+    @Mock
+    protected ContentProviderConsumer contentProviderConsumer;
+
     private Checkout actualCheckout;
+    private Patron patron = new Patron.Builder(CARD, PIN).build();
 
     @Before
     public void setUpUnderTest() {
@@ -49,59 +54,87 @@ public class OcdCheckoutHandlerTest {
 
     @Test
     public void checkout() {
+        givenPatronInCommandData();
+        givenContentProviderInCommandData();
+        givenContentProviderRecordIdInCommandData();
         givenTransactionIdInCheckoutDTO();
         givenCheckoutDTOFromOcdFacade();
+        givenPatronDTOFromOcdFacade();
         whenCheckout();
         thenActualTransactionIdEqualsExpectedTransactionId();
+    }
+
+    @Test
+    public void getCheckout_success() {
+        givenPatronInCommandData();
+        givenContentProviderInCommandData();
+        givenTransactionIdAsContentProviderLoanId();
+        givenTransactionIdInCheckoutDTO();
+        givenGetCheckoutDTOFromOcdFacade();
+        givenPatronDTOFromOcdFacade();
+        whenGetCompleteCheckout();
+        thenActualTransactionIdEqualsExpectedTransactionId();
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void getCheckout_checkoutNotFound() {
+        givenPatronInCommandData();
+        givenContentProviderInCommandData();
+        givenTransactionIdAsContentProviderLoanId();
+        givenPatronDTOFromOcdFacade();
+        givenInternalServerErrorExceptionFromEhubExceptionFactory();
+        whenGetCompleteCheckout();
     }
 
     public void givenTransactionIdInCheckoutDTO() {
         given(checkoutDTO.getTransactionId()).willReturn(TRANSACTION_ID);
     }
 
-    public void givenCheckoutDTOFromOcdFacade() {
-        given(ocdFacade.checkout(any(ContentProviderConsumer.class), any(BearerToken.class), anyString())).willReturn(checkoutDTO);
+    public void givenPatronDTOFromOcdFacade() {
+        given(ocdFacade.getPatron(any(ContentProviderConsumer.class), any(Patron.class))).willReturn(patronDTO);
+        given(patronDTO.getPatronId()).willReturn(PATRON_ID);
     }
 
     public void whenCheckout() {
-        actualCheckout = underTest.checkout(bearerToken, commandData);
+        actualCheckout = underTest.checkout(commandData);
     }
 
     public void thenActualTransactionIdEqualsExpectedTransactionId() {
         assertEquals(TRANSACTION_ID, actualCheckout.getTransactionId());
     }
 
-    @Test
-    public void getCompleteCheckout_success() {
-        givenTransactionIdAsContentProviderLoanId();
-        givenTransactionIdInCheckoutDTO();
-        givenListOfCheckoutDTOsFromOcdFacade();
-        whenGetCompleteCheckout();
-        thenActualTransactionIdEqualsExpectedTransactionId();
-    }
 
     public void givenTransactionIdAsContentProviderLoanId() {
         contentProviderLoanId = TRANSACTION_ID;
     }
 
-    public void givenListOfCheckoutDTOsFromOcdFacade() {
-        checkoutDTOs = Lists.newArrayList(checkoutDTO);
-        given(ocdFacade.getCheckouts(any(ContentProviderConsumer.class), any(BearerToken.class))).willReturn(checkoutDTOs);
+    public void givenGetCheckoutDTOFromOcdFacade() {
+        given(ocdFacade.getCheckout(any(ContentProviderConsumer.class), anyString(), anyString())).willReturn(checkoutDTO);
+    }
+
+    public void givenCheckoutDTOFromOcdFacade() {
+        given(ocdFacade.checkout(any(ContentProviderConsumer.class), anyString(), anyString())).willReturn(checkoutDTO);
+    }
+
+    public void givenContentProviderInCommandData() {
+        given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+    }
+
+    public void givenContentProviderRecordIdInCommandData() {
+        given(commandData.getContentProviderRecordId()).willReturn(RECORD_ID);
     }
 
     public void whenGetCompleteCheckout() {
-        actualCheckout = underTest.getCompleteCheckout(bearerToken, commandData, contentProviderLoanId);
+        actualCheckout = underTest.getCheckout(commandData, contentProviderLoanId);
     }
 
-    @Test(expected = InternalServerErrorException.class)
-    public void getCompleteCheckout_checkoutNotFound() {
-        givenTransactionIdAsContentProviderLoanId();
-        givenListOfCheckoutDTOsFromOcdFacade();
-        givenInternalServerErrorExceptionFromEhubExceptionFactory();
-        whenGetCompleteCheckout();
-    }
 
     public void givenInternalServerErrorExceptionFromEhubExceptionFactory() {
-        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class), any(ErrorCauseArgumentType.class), anyString())).willThrow(internalServerErrorException);
+        given(ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(any(ContentProviderConsumer.class),
+                any(ErrorCauseArgumentType.class), anyString())).willThrow(internalServerErrorException);
+    }
+
+    protected void givenPatronInCommandData() {
+        given(commandData.getPatron()).willReturn(patron);
     }
 }

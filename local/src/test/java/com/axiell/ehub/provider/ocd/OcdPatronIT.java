@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.axiell.ehub.provider.ocd.PatronDTO.EMAIL_DOMAIN;
@@ -13,22 +14,25 @@ import static org.mockito.BDDMockito.given;
 public class OcdPatronIT extends AbstractOcdIT {
     private PatronDTO patronDTO;
 
+    @Ignore
     @Test
     public void addPatron() {
         givenApiBaseUrl();
         givenLibraryId();
         givenBasicToken();
         givenContentProvider();
-        givenCardPin();
         whenAddPatron();
-        thenGetPatronByEmailOk();
         thenPatronHasAnId();
     }
 
-    private void givenCardPin() {
-        given(patron.hasLibraryCard()).willReturn(true);
-        given(patron.getLibraryCard()).willReturn(CARD);
-        given(patron.getPin()).willReturn(PIN);
+    @Test
+    public void getPatron() {
+        givenApiBaseUrl();
+        givenLibraryId();
+        givenBasicToken();
+        givenContentProvider();
+        whenGetPatronByEmail();
+        thenPatronHasAnId();
     }
 
     private void whenAddPatron() {
@@ -39,7 +43,7 @@ public class OcdPatronIT extends AbstractOcdIT {
         assertNotNull(patronDTO.getPatronId());
     }
 
-    private void thenGetPatronByEmailOk() {
-        patronDTO = underTest.getPatronByEmail(contentProviderConsumer, CARD + EMAIL_DOMAIN);
+    private void whenGetPatronByEmail() {
+        patronDTO = underTest.getPatron(contentProviderConsumer, patron);
     }
 }

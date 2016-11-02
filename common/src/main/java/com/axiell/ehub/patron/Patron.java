@@ -40,8 +40,9 @@ public class Patron {
     }
 
     public String getLibraryCard() {
-        if (hasLibraryCard())
+        if (hasLibraryCard()) {
             return libraryCard;
+        }
         throw new UnauthorizedException(ErrorCause.MISSING_LIBRARY_CARD);
     }
 
@@ -53,14 +54,14 @@ public class Patron {
         return pin;
     }
 
-
     public boolean hasEmail() {
         return !isBlank(email);
     }
 
     public String getEmail() {
-        if (hasEmail())
+        if (hasEmail()) {
             return email;
+        }
         throw new UnauthorizedException(ErrorCause.MISSING_EMAIL);
     }
 
