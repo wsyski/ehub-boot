@@ -5,8 +5,8 @@ import com.axiell.ehub.patron.Patron;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OCD_BASIC_TOKEN;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OCD_LIBRARY_ID;
 
 @Component
@@ -38,23 +38,48 @@ class OcdFacade implements IOcdFacade {
     }
 
     @Override
-    public BearerToken newBearerToken(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public PatronDTO getPatron(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final BasicToken basicToken = new BasicToken(contentProviderConsumer);
-        final PatronTokenDTO patronTokenDTO = new PatronTokenDTO(contentProviderConsumer, patron);
+        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
         final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        return ocdResource.newBearerToken(basicToken, patronTokenDTO);
+        final PatronDTO patronDTO = new PatronDTO(patron, libraryId);
+        return ocdResource.getPatronByEmail(basicToken, libraryId, patronDTO.getEmail());
     }
 
     @Override
-    public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final BearerToken bearerToken, final String contentProviderRecordId) {
+    public CheckoutDTO checkout(final ContentProviderConsumer contentProviderConsumer, final String patronId, final String contentProviderRecordId) {
+        final BasicToken basicToken = new BasicToken(contentProviderConsumer);
+        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
         final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        return ocdResource.checkout(bearerToken, "hypermedia", contentProviderRecordId);
+        final CheckoutSummaryDTO checkoutSummaryDTO = ocdResource.checkout(basicToken, libraryId, patronId, contentProviderRecordId);
+        if (checkoutSummaryDTO.isSuccessful()) {
+            return getCheckout(contentProviderConsumer, patronId, checkoutSummaryDTO.getTransactionId());
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public List<CheckoutDTO> getCheckouts(final ContentProviderConsumer contentProviderConsumer, final BearerToken bearerToken) {
+    public void checkin(final ContentProviderConsumer contentProviderConsumer, final String patronId, final String contentProviderRecordId) {
+        final BasicToken basicToken = new BasicToken(contentProviderConsumer);
+        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
         final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        return ocdResource.getCheckouts(bearerToken);
+        ocdResource.checkin(basicToken, libraryId, patronId, contentProviderRecordId);
     }
 
+    @Override
+    public List<CheckoutDTO> getCheckouts(final ContentProviderConsumer contentProviderConsumer, final String patronId) {
+        final BasicToken basicToken = new BasicToken(contentProviderConsumer);
+        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
+        final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
+        return ocdResource.getCheckouts(basicToken, libraryId, patronId);
+    }
+
+    @Override
+    public CheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final String patronId, final String transactionId) {
+        List<CheckoutDTO> checkoutDTOs = getCheckouts(contentProviderConsumer, patronId);
+        Optional<CheckoutDTO> optionalCheckoutDTO =
+                checkoutDTOs.stream().filter(checkoutDTO -> transactionId.equals(checkoutDTO.getTransactionId())).findFirst();
+        return optionalCheckoutDTO.isPresent() ? optionalCheckoutDTO.get() : null;
+    }
 }

@@ -10,31 +10,32 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
+import static org.junit.Assert.assertNotNull;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class OcdCheckoutIT extends AbstractOcdIT {
-    protected static final String CARD = "20126001163574";
-    protected static final String PIN = "1234";
 
-    private BearerToken bearerToken;
     private String contentProviderRecordId;
     private Checkout checkout;
+    private String patronId;
 
     @Override
     public void customSetUp() {
-        newBearerToken();
+        givenContentProvider();
+        givenApiBaseUrl();
+        givenApiBaseUrl();
+        givenLibraryId();
+        givenBasicToken();
+        PatronDTO patronDTO = underTest.getPatron(contentProviderConsumer, patron);
+        patronId = patronDTO.getPatronId();
     }
 
     @After
     public void checkin() {
-        IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
-        //ocdResource.getCheckout(bearerToken, checkout.getTransactionId());
+        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
         for (CheckoutDTO checkoutDTO : checkoutsDTO) {
-            ocdResource.checkin(bearerToken, checkoutDTO.getTransactionId());
+            underTest.checkin(contentProviderConsumer, patronId, checkoutDTO.getIsbn());
         }
     }
 
@@ -42,7 +43,6 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     public void eAudio() throws IFinder.NotFoundException {
         givenContentProviderRecordId(FORMAT_ID_EAUDIO);
         whenCheckout();
-        thenCheckoutIsSuccessful();
         thenPatronHasCheckoutInListOfCheckouts();
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
@@ -53,39 +53,19 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     public void eBook() throws IFinder.NotFoundException {
         givenContentProviderRecordId(FORMAT_ID_EBOOK);
         whenCheckout();
-        thenCheckoutIsSuccessful();
         thenPatronHasCheckoutInListOfCheckouts();
         thenCheckoutHasTransactionId();
         thenCheckoutHasExpirationDate();
         thenCheckoutHasDownloadUrl();
     }
 
-    private void newBearerToken() {
-        givenApiBaseUrl();
-        givenBasicToken();
-        givenContentProvider();
-        givenLibraryId();
-        givenPatron();
-        bearerToken = underTest.newBearerToken(contentProviderConsumer, patron);
-    }
-
-    private void givenPatron() {
-        given(patron.hasLibraryCard()).willReturn(true);
-        given(patron.getLibraryCard()).willReturn(CARD);
-        given(patron.getPin()).willReturn(PIN);
-    }
-
     private void whenCheckout() {
-        CheckoutDTO checkoutDTO = underTest.checkout(contentProviderConsumer, bearerToken, contentProviderRecordId);
+        CheckoutDTO checkoutDTO = underTest.checkout(contentProviderConsumer, patronId, contentProviderRecordId);
         checkout = new Checkout(checkoutDTO);
     }
 
-    private void thenCheckoutIsSuccessful() {
-        assertTrue(checkout.isSuccessful());
-    }
-
     private void thenPatronHasCheckoutInListOfCheckouts() throws IFinder.NotFoundException {
-        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, bearerToken);
+        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
         IMatcher<CheckoutDTO> matcher = new ContentProviderLoanIdCheckoutMatcher(checkout.getTransactionId());
         CheckoutDTO foundCheckoutDTO = new CollectionFinder<CheckoutDTO>().find(matcher, checkoutsDTO);
         checkout = new Checkout(foundCheckoutDTO);

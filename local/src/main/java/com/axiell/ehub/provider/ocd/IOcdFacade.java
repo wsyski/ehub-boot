@@ -13,9 +13,13 @@ interface IOcdFacade {
 
     List<PatronDTO> getAllPatrons(ContentProviderConsumer contentProviderConsumer);
 
-    BearerToken newBearerToken(ContentProviderConsumer contentProviderConsumer, Patron patron);
+    PatronDTO getPatron(ContentProviderConsumer contentProviderConsumer, Patron patron);
 
-    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, BearerToken bearerToken, String contentProviderRecordId);
+    CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, String patronId, String contentProviderRecordId);
 
-    List<CheckoutDTO> getCheckouts(ContentProviderConsumer contentProviderConsumer, BearerToken bearerToken);
+    void checkin(ContentProviderConsumer contentProviderConsumer, String patronId, String contentProviderRecordId);
+
+    CheckoutDTO getCheckout(ContentProviderConsumer contentProviderConsumer, String patronId, String transactionId);
+
+    List<CheckoutDTO> getCheckouts(ContentProviderConsumer contentProviderConsumer, String patronId);
 }

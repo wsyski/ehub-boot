@@ -13,6 +13,10 @@ public interface IOcdResource {
     @Path("v1/libraries/{libraryId}/media")
     List<MediaDTO> getAllMedia(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId);
 
+    @GET
+    @Path("v1/rpc/libraries/{libraryId}/patrons/{email}")
+    PatronDTO getPatronByEmail(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, @PathParam("email") String email);
+
     @POST
     @Path("v1/libraries/{libraryId}/patrons")
     PatronDTO addPatron(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, PatronDTO patronDTO);
@@ -22,22 +26,14 @@ public interface IOcdResource {
     List<PatronDTO> getAllPatrons(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId);
 
     @POST
-    @Path("v1/tokens")
-    BearerToken newBearerToken(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, PatronTokenDTO patronTokenDTO);
-
-    @POST
-    @Path("v1/transactions/checkouts/{isbn}")
-    CheckoutDTO checkout(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @HeaderParam("Accept-Media") String acceptMedia, @PathParam("isbn") String contentProviderRecordId);
+    @Path("v1/libraries/{libraryId}/patrons/{patronId}/checkouts/{isbn}")
+    CheckoutSummaryDTO checkout(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, @PathParam("patronId") String patronId, @PathParam("isbn") String contentProviderRecordId);
 
     @DELETE
-    @Path("v1/transactions/checkouts/{transactionId}")
-    void checkin(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
+    @Path("v1/libraries/{libraryId}/patrons/{patronId}/checkouts/{isbn}")
+    void checkin(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, @PathParam("patronId") String patronId, @PathParam("isbn") String contentProviderRecordId);
 
     @GET
-    @Path("v1/transactions/checkouts/{transactionId}")
-    List<CheckoutDTO> getCheckout(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken, @PathParam("transactionId") String contentProviderLoanId);
-
-    @GET
-    @Path("v1/transactions/checkouts/all")
-    List<CheckoutDTO> getCheckouts(@HeaderParam(HttpHeaders.AUTHORIZATION) BearerToken bearerToken);
+    @Path("v1/libraries/{libraryId}/patrons/{patronId}/checkouts")
+    List<CheckoutDTO> getCheckouts(@HeaderParam(HttpHeaders.AUTHORIZATION) BasicToken basicToken, @PathParam("libraryId") String libraryId, @PathParam("patronId") String patronId);
 }
