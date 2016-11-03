@@ -14,7 +14,6 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String CARD = "20126001163574";
     protected static final String PIN = "1234";
 
-
     protected static final String BASIC_TOKEN = "E89CB7B3-82CF-48D0-9657-0437B5161D5E";
     protected static final String LIBRARY_ID = "3511";
 
