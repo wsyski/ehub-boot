@@ -4,6 +4,7 @@ import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,8 +21,8 @@ public class OcdCheckoutIT extends AbstractOcdIT {
     private Checkout checkout;
     private String patronId;
 
-    @Override
-    public void customSetUp() {
+    @Before
+    public void  setUpCheckouts() {
         givenContentProvider();
         givenApiBaseUrl();
         givenApiBaseUrl();
@@ -29,10 +30,6 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         givenBasicToken();
         PatronDTO patronDTO = underTest.getPatron(contentProviderConsumer, patron);
         patronId = patronDTO.getPatronId();
-    }
-
-    @After
-    public void checkin() {
         List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
         for (CheckoutDTO checkoutDTO : checkoutsDTO) {
             underTest.checkin(contentProviderConsumer, patronId, checkoutDTO.getIsbn());
