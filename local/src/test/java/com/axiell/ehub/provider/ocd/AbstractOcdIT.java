@@ -30,11 +30,8 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     @Before
     public void setUpUnderTest() {
         underTest = new OcdFacade();
-        customSetUp();
     }
 
-    protected void customSetUp() {
-    }
 
     protected void givenApiBaseUrl() {
         given(contentProvider.getProperty(API_BASE_URL)).willReturn(API_BASE_URL_VALUE);

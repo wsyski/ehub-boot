@@ -26,7 +26,8 @@ class Checkout {
     }
 
     List<String> getDownloadUrls() {
-        return getFileDownloadUrls();
+        String downloadUrl = checkoutDTO.getDownloadUrl();
+        return downloadUrl == null ? getFileDownloadUrls() : Collections.singletonList(downloadUrl);
     }
 
     private List<String> getFileDownloadUrls() {
