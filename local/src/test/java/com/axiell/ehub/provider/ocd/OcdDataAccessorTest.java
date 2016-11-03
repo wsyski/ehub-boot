@@ -20,9 +20,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
 public class OcdDataAccessorTest extends ContentProviderDataAccessorTestFixture<OcdDataAccessor> {
-
-    @Mock
-    private BearerToken bearerToken;
     @Mock
     private IOcdCheckoutHandler ocdCheckoutHandler;
     @Mock

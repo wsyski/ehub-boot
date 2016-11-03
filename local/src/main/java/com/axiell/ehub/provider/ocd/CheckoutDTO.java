@@ -12,10 +12,15 @@ import java.util.List;
 public class CheckoutDTO extends AbstractCheckoutDTO {
     @JsonProperty(value = "expiration")
     private Date expirationDate;
+    private String downloadUrl;
     private List<FileDTO> files;
 
     public Date getExpirationDate() {
         return expirationDate;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 
     public List<FileDTO> getFiles() {
