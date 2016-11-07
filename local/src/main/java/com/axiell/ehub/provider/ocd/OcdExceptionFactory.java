@@ -7,6 +7,7 @@ import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
 
 public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO> implements IContentProviderExceptionFactory<ErrorDTO> {
+    static final String MESSAGE_CHECKOUT_ALREADY_EXISTS = "Checkout item already exists";
     static final String MESSAGE_NO_FULFILLMENT_COPY_AVAILABLE = "No fulfillment copy available";
     static final String MESSAGE_PATRON_ID_AND_TITLE_ID_INVALID = "PatronId and TitleId are invalid";
     static final String MESSAGE_CHECKOUT_LIMIT_REACHED = "Checkout limit of (";
@@ -40,6 +41,8 @@ public class OcdExceptionFactory extends AbstractContentProviderExceptionFactory
                 type = ErrorCauseArgumentType.INVALID_PATRON;
             } else if (message.contains(MESSAGE_INVALID_LIBRARY_ID)) {
                 type = ErrorCauseArgumentType.INVALID_PATRON;
+            } else if (message.contains(MESSAGE_CHECKOUT_ALREADY_EXISTS)) {
+                type = ErrorCauseArgumentType.ALREADY_ON_LOAN;
             } else if (message.contains(MESSAGE_CHECKOUT_LIMIT_REACHED)) {
                 type = ErrorCauseArgumentType.MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED;
             }
