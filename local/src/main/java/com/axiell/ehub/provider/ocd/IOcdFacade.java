@@ -9,11 +9,9 @@ interface IOcdFacade {
 
     List<MediaDTO> getAllMedia(ContentProviderConsumer contentProviderConsumer);
 
-    PatronDTO addPatron(ContentProviderConsumer contentProviderConsumer, Patron patron);
-
     List<PatronDTO> getAllPatrons(ContentProviderConsumer contentProviderConsumer);
 
-    PatronDTO getPatron(ContentProviderConsumer contentProviderConsumer, Patron patron);
+    String getOrCreatePatron(ContentProviderConsumer contentProviderConsumer, Patron patron);
 
     CheckoutDTO checkout(ContentProviderConsumer contentProviderConsumer, String patronId, String contentProviderRecordId);
 

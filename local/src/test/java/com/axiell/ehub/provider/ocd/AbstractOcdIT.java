@@ -11,8 +11,9 @@ import static org.mockito.BDDMockito.given;
 
 public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String API_BASE_URL_VALUE = "http://api.oneclickdigital.biz";
-    protected static final String CARD = "20126001163574";
+    protected static final String CARD = "20126000000000";
     protected static final String PIN = "1234";
+    protected static final String EMAIL = "wos@axiell.com";
 
     protected static final String BASIC_TOKEN = "E89CB7B3-82CF-48D0-9657-0437B5161D5E";
     protected static final String LIBRARY_ID = "3511";
@@ -24,7 +25,7 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String FORMAT_ID_EBOOK = "eBook";
 
     protected OcdFacade underTest;
-    protected Patron patron = new Patron.Builder(CARD, PIN).build();
+    protected Patron patron = new Patron.Builder(CARD, PIN).email(EMAIL).build();
 
     @Before
     public void setUpUnderTest() {
