@@ -29,10 +29,12 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         givenLibraryId();
         givenBasicToken();
         patronId = underTest.getOrCreatePatron(contentProviderConsumer, patron);
-        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
-        for (CheckoutDTO checkoutDTO : checkoutsDTO) {
-            underTest.checkin(contentProviderConsumer, patronId, checkoutDTO.getIsbn());
-        }
+        checkinAll();
+    }
+
+    @After
+    public void tearDown() {
+        checkinAll();
     }
 
     @Test
@@ -66,7 +68,12 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         CheckoutDTO foundCheckoutDTO = new CollectionFinder<CheckoutDTO>().find(matcher, checkoutsDTO);
         checkout = new Checkout(foundCheckoutDTO);
     }
-
+    private void checkinAll() {
+        List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
+        for (CheckoutDTO checkoutDTO : checkoutsDTO) {
+            underTest.checkin(contentProviderConsumer, patronId, checkoutDTO.getIsbn());
+        }
+    }
     private void thenCheckoutHasTransactionId() {
         assertNotNull(checkout.getTransactionId());
     }

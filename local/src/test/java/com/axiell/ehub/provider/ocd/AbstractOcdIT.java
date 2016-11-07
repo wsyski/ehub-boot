@@ -10,7 +10,7 @@ import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKe
 import static org.mockito.BDDMockito.given;
 
 public class AbstractOcdIT extends AbstractContentProviderIT {
-    protected static final String API_BASE_URL_VALUE = "http://api.oneclickdigital.biz";
+    protected static final String API_BASE_URL_VALUE = "http://api.oneclickdigital.eu";
     protected static final String CARD = "20126000000000";
     protected static final String PIN = "1234";
     protected static final String EMAIL = "wos@axiell.com";
