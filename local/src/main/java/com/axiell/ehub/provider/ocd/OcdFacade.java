@@ -4,6 +4,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,15 +22,6 @@ class OcdFacade implements IOcdFacade {
     }
 
     @Override
-    public PatronDTO addPatron(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
-        final BasicToken basicToken = new BasicToken(contentProviderConsumer);
-        final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
-        final PatronDTO patronDTO = new PatronDTO(patron, libraryId);
-        final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        return ocdResource.addPatron(basicToken, libraryId, patronDTO);
-    }
-
-    @Override
     public List<PatronDTO> getAllPatrons(final ContentProviderConsumer contentProviderConsumer) {
         final BasicToken basicToken = new BasicToken(contentProviderConsumer);
         final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
@@ -38,12 +30,22 @@ class OcdFacade implements IOcdFacade {
     }
 
     @Override
-    public PatronDTO getPatron(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
+    public String getOrCreatePatron(final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final BasicToken basicToken = new BasicToken(contentProviderConsumer);
         final String libraryId = contentProviderConsumer.getProperty(OCD_LIBRARY_ID);
         final IOcdResource ocdResource = OcdResourceFactory.create(contentProviderConsumer);
-        final PatronDTO patronDTO = new PatronDTO(patron, libraryId);
-        return ocdResource.getPatronByEmail(basicToken, libraryId, patronDTO.getEmail());
+        final PatronDTO queryPatronDTO = new PatronDTO(patron, libraryId);
+        PatronDTO patronDTO;
+        try {
+            patronDTO = ocdResource.getPatronByLibraryCard(basicToken, libraryId, queryPatronDTO.getLibraryCardNumber());
+        } catch (NotFoundException ex1) {
+            try {
+                patronDTO = ocdResource.getPatronByEmail(basicToken, libraryId, queryPatronDTO.getEmail());
+            } catch (NotFoundException ex2) {
+                patronDTO = ocdResource.addPatron(basicToken, libraryId, queryPatronDTO);
+            }
+        }
+        return patronDTO.getPatronId();
     }
 
     @Override

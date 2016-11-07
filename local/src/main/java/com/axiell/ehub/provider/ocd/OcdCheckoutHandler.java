@@ -52,7 +52,6 @@ class OcdCheckoutHandler implements IOcdCheckoutHandler {
     private String getPatronId(CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        PatronDTO patronDTO = ocdFacade.getPatron(contentProviderConsumer, patron);
-        return patronDTO.getPatronId();
+        return ocdFacade.getOrCreatePatron(contentProviderConsumer, patron);
     }
 }
