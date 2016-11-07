@@ -38,8 +38,6 @@ public class OcdCheckoutHandlerTest {
     @Mock
     private CheckoutDTO checkoutDTO;
     @Mock
-    private PatronDTO patronDTO;
-    @Mock
     protected ContentProviderConsumer contentProviderConsumer;
 
     private Checkout actualCheckout;
@@ -91,8 +89,7 @@ public class OcdCheckoutHandlerTest {
     }
 
     public void givenPatronDTOFromOcdFacade() {
-        given(ocdFacade.getPatron(any(ContentProviderConsumer.class), any(Patron.class))).willReturn(patronDTO);
-        given(patronDTO.getPatronId()).willReturn(PATRON_ID);
+        given(ocdFacade.getOrCreatePatron(any(ContentProviderConsumer.class), any(Patron.class))).willReturn(PATRON_ID);
     }
 
     public void whenCheckout() {

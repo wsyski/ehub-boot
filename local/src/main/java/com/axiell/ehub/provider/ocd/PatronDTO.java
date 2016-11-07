@@ -28,9 +28,9 @@ public class PatronDTO {
     public PatronDTO(final Patron patron, final String libraryId) {
         this.libraryId = libraryId;
         this.libraryCardNumber = patron.getLibraryCard();
-        this.userName = patron.getLibraryCard();
-        this.password = Md5Function.md5Hex(patron.getLibraryCard());
-        this.email = makeEmail();
+        this.email = patron.hasEmail() ? patron.getEmail() : makeEmail();
+        this.userName = this.email;
+        this.password = Md5Function.md5Hex(this.userName);
         this.firstName = NA;
         this.lastName = NA;
         this.postalCode = NA;

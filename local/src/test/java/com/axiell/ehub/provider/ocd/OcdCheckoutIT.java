@@ -28,8 +28,7 @@ public class OcdCheckoutIT extends AbstractOcdIT {
         givenApiBaseUrl();
         givenLibraryId();
         givenBasicToken();
-        PatronDTO patronDTO = underTest.getPatron(contentProviderConsumer, patron);
-        patronId = patronDTO.getPatronId();
+        patronId = underTest.getOrCreatePatron(contentProviderConsumer, patron);
         List<CheckoutDTO> checkoutsDTO = underTest.getCheckouts(contentProviderConsumer, patronId);
         for (CheckoutDTO checkoutDTO : checkoutsDTO) {
             underTest.checkin(contentProviderConsumer, patronId, checkoutDTO.getIsbn());
