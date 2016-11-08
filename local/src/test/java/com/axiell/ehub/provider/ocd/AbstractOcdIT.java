@@ -19,7 +19,7 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String LIBRARY_ID = "3511";
 
     protected static final String RECORD_ID_EBOOK = "9781470398897";
-    protected static final String RECORD_ID_EAUDIO = "9781471253270";
+    protected static final String RECORD_ID_EAUDIO = "9781407476025";
 
     protected static final String FORMAT_ID_EAUDIO = "eAudio";
     protected static final String FORMAT_ID_EBOOK = "eBook";
