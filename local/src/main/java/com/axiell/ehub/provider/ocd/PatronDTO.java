@@ -37,7 +37,7 @@ public class PatronDTO {
     }
 
     private String makeEmail() {
-        return userName + EMAIL_DOMAIN;
+        return libraryCardNumber + EMAIL_DOMAIN;
     }
 
     public String getPatronId() {
