@@ -21,6 +21,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -88,6 +89,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
         System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
         System.setProperty("catalina.base", "target");
         wireMockRule.addMockServiceRequestListener(this::logRequests);
+        wireMockRule.addMockServiceRequestListener(this::validateRequests);
     }
 
     private void logRequests(final Request request, final Response response) {
@@ -96,8 +98,15 @@ public abstract class RemoteITFixture extends PalmaITFixture {
                 requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF + request.getBodyAsString() : StringUtils.EMPTY;
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String authorizationHeaderAsString = authorizationHeader == null ? StringUtils.EMPTY : LF + HttpHeaders.AUTHORIZATION + ": " + authorizationHeader;
-        LOGGER.info(request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
+        LOGGER.info("wireMock: " + request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
                 LF + response.getStatus());
+    }
+
+    private void validateRequests(final Request request, final Response response) {
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (getContentProviderName().equals( TestDataConstants.CONTENT_PROVIDER_TEST_EP) && request.getUrl().startsWith("/ep/api/v1/")) {
+            Assert.assertNotNull(HttpHeaders.AUTHORIZATION +" header can not be null",authorizationHeader);
+        }
     }
 
     private void setUpEhubClient() {
