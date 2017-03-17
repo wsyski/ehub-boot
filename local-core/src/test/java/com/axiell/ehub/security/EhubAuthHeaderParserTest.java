@@ -10,14 +10,14 @@ import java.text.MessageFormat;
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.junit.Assert.assertEquals;
 
-public class AuthHeaderParserTest {
+public class EhubAuthHeaderParserTest {
     private static final Long EHUB_CONSUMER_ID = 1L;
     private static final String PATRON_ID = "patronId";
     private static final String LIBRARY_CARD = "card";
     private static final String PIN = "pin";
     private static final String EMAIL = "arena@axiell.com";
     private static final String SIGNATURE = "signature";
-    private AuthHeaderParser underTest;
+    private EhubAuthHeaderParser underTest;
     private String authorizationHeader;
     private Object actualReturnValue;
 
@@ -82,11 +82,10 @@ public class AuthHeaderParserTest {
         }
     }
 
-    @Test
+    @Test(expected = UnauthorizedException.class)
     public void missingLibraryCard() {
         givenNewAuthHeaderParserWithAuthorizationHeaderWithoutLibraryCard();
         whenGetLibraryCard();
-        thenActualReturnValueIsNull();
     }
 
     @Test
@@ -119,7 +118,7 @@ public class AuthHeaderParserTest {
     }
 
     private void whenNewAuthHeaderParser() {
-        underTest = new AuthHeaderParser(authorizationHeader);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void thenActualErrorCauseEqualsExpectedErrorCause(UnauthorizedException e, ErrorCause expectedErrorCause) {
@@ -134,8 +133,8 @@ public class AuthHeaderParserTest {
 
 
     private void givenNewAuthHeaderParserWithAuthorizationHeaderWithoutEhubConsumerId() {
-        authorizationHeader = MessageFormat.format("eHUB ehub_library_card=\"{0}\", ehub_pin=\"{1}\", ehub_signature=\"{2}\"", LIBRARY_CARD, PIN, SIGNATURE);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        authorizationHeader = MessageFormat.format("ehub_library_card=\"{0}\", ehub_pin=\"{1}\", ehub_signature=\"{2}\"", LIBRARY_CARD, PIN, SIGNATURE);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void whenGetEhubConsumerId() {
@@ -148,33 +147,33 @@ public class AuthHeaderParserTest {
     }
 
     private void givenNewAuthHeaderParserWithAuthorizationHeaderWithoutLibraryCard() {
-        authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_pin=\"{1}\", ehub_signature=\"{2}\"", EHUB_CONSUMER_ID, PIN, SIGNATURE);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        authorizationHeader = MessageFormat.format("ehub_consumer_id=\"{0}\", ehub_pin=\"{1}\", ehub_signature=\"{2}\"", EHUB_CONSUMER_ID, PIN, SIGNATURE);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void whenGetLibraryCard() {
-        actualReturnValue = underTest.getLibraryCard();
+        actualReturnValue = underTest.getPatron().getLibraryCard();
     }
 
 
     private void givenNewAuthHeaderParserWithAuthorizationHeaderWithoutPin() {
-        authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_signature=\"{2}\"", EHUB_CONSUMER_ID,
+        authorizationHeader = MessageFormat.format("ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_signature=\"{2}\"", EHUB_CONSUMER_ID,
                 LIBRARY_CARD, SIGNATURE);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void whenGetPin() {
-        actualReturnValue = underTest.getPin();
+        actualReturnValue = underTest.getPatron().getPin();
     }
 
     private void whenGetEmail() {
-        actualReturnValue = underTest.getEmail();
+        actualReturnValue = underTest.getPatron().getEmail();
     }
 
     private void givenNewAuthHeaderParserWithAuthorizationHeaderWithoutSignature() {
-        authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\"", EHUB_CONSUMER_ID, LIBRARY_CARD,
+        authorizationHeader = MessageFormat.format("ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\"", EHUB_CONSUMER_ID, LIBRARY_CARD,
                 PIN);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void whenGetSignature() {
@@ -184,9 +183,9 @@ public class AuthHeaderParserTest {
 
     private void givenNewAuthHeaderParserWithValidAuthorizationHeader() {
         authorizationHeader =
-                MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_email=\"{3}\", ehub_signature=\"{4}\"",
+                MessageFormat.format("ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_email=\"{3}\", ehub_signature=\"{4}\"",
                         authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(EMAIL), SIGNATURE);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     private void thenActualEhubConsumerIdEqualsExpectedEhubConsumerId() {
@@ -208,7 +207,7 @@ public class AuthHeaderParserTest {
     }
 
     private void whenGetPatronId() {
-        actualReturnValue = underTest.getPatronId();
+        actualReturnValue = underTest.getPatron().getId();
     }
 
     private void thenActualPatronIdEqualsExpectedPatronId() {
@@ -217,15 +216,19 @@ public class AuthHeaderParserTest {
 
     private void givenNewAuthHeaderParserWithValidAuthorizationHeaderIncludingPatronId() {
         authorizationHeader = MessageFormat
-                .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
+                .format("ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
                         EHUB_CONSUMER_ID, PATRON_ID, LIBRARY_CARD, PIN, SIGNATURE);
-        underTest = new AuthHeaderParser(authorizationHeader);
+        underTest = new EhubAuthHeaderParser(authorizationHeader);
     }
 
     @Test
     public void missingPatronId() {
         givenNewAuthHeaderParserWithValidAuthorizationHeader();
         whenGetPatronId();
-        thenActualReturnValueIsNull();
+        thenExpectedGeneratedPatronId();
+    }
+
+    private void thenExpectedGeneratedPatronId() {
+         Assert.assertEquals("9a926b04be1347e816be92bae34b87210dfeb58b3f5b043788a5da54796eea4ed32169bd32b8d23dc56b34514555ed1adf4fd9a57c3928ff09026d9ce9982eaa",actualReturnValue);
     }
 }
