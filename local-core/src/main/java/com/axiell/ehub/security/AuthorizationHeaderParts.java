@@ -1,6 +1,8 @@
 package com.axiell.ehub.security;
 
 public class AuthorizationHeaderParts {
+    public static final String BEARER_SCHEME = "Bearer";
+
     private String scheme;
     private String parameters;
 
