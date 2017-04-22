@@ -7,13 +7,17 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <import resource="common-context.xml"/>
+    <import resource="auth-info-context.xml"/>
 
     <util:properties id="remoteProperties" location="classpath:remote-client.properties"/>
 
+    <bean id="resteasyProviderFactory" class="org.jboss.resteasy.spi.ResteasyProviderFactory" factory-method="getInstance"/>
     <bean id="rootResourceProxy" class="com.axiell.ehub.util.RestClientProxyFactoryBean">
         <property name="serviceInterface" value="com.axiell.ehub.IRootResource"/>
         <property name="baseUri" ref="ehubUri"/>
         <property name="httpEngine" ref="ehubHttpEngine"/>
+        <property name="resteasyProviderFactory" ref="resteasyProviderFactory"/>
+        <property name="ehubParamConverterProvider" ref="ehubParamConverterProvider"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">

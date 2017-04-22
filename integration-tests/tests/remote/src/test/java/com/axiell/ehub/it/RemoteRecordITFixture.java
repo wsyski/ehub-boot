@@ -76,7 +76,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {
         expectedException.expect(EhubException.class);
-        return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID, TestDataConstants.EHUB_CONSUMER_SECRET_KEY).build();
+        return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID).build();
     }
 
     protected abstract void givenContentProviderGetRecordResponse();

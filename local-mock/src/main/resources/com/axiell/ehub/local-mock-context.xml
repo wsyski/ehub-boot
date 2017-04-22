@@ -7,9 +7,8 @@
     <context:property-placeholder location="classpath:com/axiell/ehub/ehub.properties"/>
 
     <import resource="local-core-context.xml"/>
-    <bean class="com.axiell.ehub.security.AuthInfoSecretKeyResolver">
+    <bean class="com.axiell.ehub.security.AuthHeaderSecretKeyResolver">
         <constructor-arg index="0" name="secretKey" value="${ehub.secretKey}"/>
-        <constructor-arg index="1" name="isValidate" value="${ehub.isValidate}"/>
     </bean>
     <bean id="issueBusinessController" class="com.axiell.ehub.provider.record.issue.IssueBusinessController"/>
     <bean id="loanBusinessController" class="com.axiell.ehub.loan.LoanBusinessController"/>

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.text.MessageFormat;
 
-import static com.axiell.ehub.security.AuthorizationHeaderParts.BEARER_SCHEME;
+import static com.axiell.ehub.security.IAuthHeaderParser.BEARER_SCHEME;
 
 
 public class AuthorizationHeaderParserTest {

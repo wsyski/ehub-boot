@@ -5,6 +5,9 @@
 
 	<import resource="persistence-context.xml"/>
     <import resource="facade-context.xml"/>
+    <import resource="business-controller-context.xml"/>
+    <import resource="secret-key-context.xml"/>
+    <import resource="auth-info-context.xml"/>
 
 	<!-- List only the Admin Controllers here -->
 	<bean id="consumerAdminController" class="com.axiell.ehub.consumer.ConsumerAdminController"/>
@@ -18,5 +21,6 @@
 
     <bean id="supportRequestAdminController" class="com.axiell.ehub.support.request.SupportRequestAdminController">
         <property name="httpEngine" ref="ehubHttpEngine"/>
-    </bean>
+		<property name="ehubParamConverterProvider" ref="ehubParamConverterProvider"/>
+	</bean>
 </beans>
