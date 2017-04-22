@@ -111,12 +111,12 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void setUpEhubClient() {
         @SuppressWarnings("resource")
-        ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/remote-client-context.xml"});
+        ApplicationContext springContext = new ClassPathXmlApplicationContext("/com/axiell/ehub/secret-key-context.xml","/com/axiell/ehub/remote-client-context.xml");
         underTest = IEhubService.class.cast(springContext.getBean("ehubClient"));
     }
 
     private void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId(), testData.getEhubConsumerSecretKey()).libraryCard(testData.getLibraryCard())
+        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId()).libraryCard(testData.getLibraryCard())
                 .pin(testData.getPin()).patronId(testData.getPatronId()).email(testData.getEmail()).build();
     }
 

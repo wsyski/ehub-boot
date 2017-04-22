@@ -6,7 +6,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class SignatureTest {
-    private static final String SIGNATURE = "GN+9mlD70ZER/x3ur7w7HJRgnYU=";
+    private static final String SIGNATURE = "FXJVD5e14lkgq8lmY751Rf5XF+I=";
+    private static final String COMPATIBILITY_SIGNATURE = "GN+9mlD70ZER/x3ur7w7HJRgnYU=";
     private Long ehubConsumerId;
     private String secret;
     private String patronId;
@@ -21,13 +22,17 @@ public class SignatureTest {
         givenSecret();
         givenCard();
         givenPin();
-        givenNewSignature();
+        givenNewCompatibilitySignature();
         whenToString();
-        thenActualSigntaureEqualsExpectedSignature();
+        thenActualSignatureEqualsExpectedCompatibilitySignature();
     }
 
-    private void thenActualSigntaureEqualsExpectedSignature() {
+    private void thenActualSignatureEqualsExpectedSignature() {
         assertEquals(SIGNATURE, actValue);
+    }
+
+    private void thenActualSignatureEqualsExpectedCompatibilitySignature() {
+        assertEquals(COMPATIBILITY_SIGNATURE, actValue);
     }
 
     private void whenToString() {
@@ -50,9 +55,26 @@ public class SignatureTest {
         pin = "4447";
     }
 
+    private void givenNewCompatibilitySignature() {
+        Patron patron = new Patron.Builder(card, pin).id(patronId).build();
+        underTest = new Signature(EhubAuthHeaderParser.getSignatureCompatibilityItems(ehubConsumerId, patron), secret);
+    }
+
     private void givenNewSignature() {
         Patron patron = new Patron.Builder(card, pin).id(patronId).build();
-        underTest = new Signature(AuthInfo.getSignatureCompatibilityItems(ehubConsumerId, patron), secret);
+        underTest = new Signature(EhubAuthHeaderParser.getSignatureItems(ehubConsumerId, patron), secret);
+    }
+
+    @Test
+    public void toString_withPatronId_compatibility() {
+        givenEhubConsumerId();
+        givenSecret();
+        givenPatronId();
+        givenCard();
+        givenPin();
+        givenNewCompatibilitySignature();
+        whenToString();
+        thenActualSignatureEqualsExpectedCompatibilitySignature();
     }
 
     @Test
@@ -64,7 +86,7 @@ public class SignatureTest {
         givenPin();
         givenNewSignature();
         whenToString();
-        thenActualSigntaureEqualsExpectedSignature();
+        thenActualSignatureEqualsExpectedSignature();
     }
 
     private void givenPatronId() {

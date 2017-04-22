@@ -6,6 +6,7 @@ import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.security.AuthInfo;
+import com.axiell.ehub.security.EhubParamConverterProvider;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.RestClientProxyFactoryBean;
 import com.axiell.ehub.v1.XjcSupport;
@@ -32,6 +33,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     private static final String STATUS_NOT_AVAILABLE = "N/A";
 
     private ClientHttpEngine httpEngine;
+    private EhubParamConverterProvider ehubParamConverterProvider;
 
     @Override
     public DefaultSupportResponse getRecord(final RequestArguments arguments) {
@@ -167,7 +169,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         final String patronId = arguments.getPatronId();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return new AuthInfo.Builder(ehubConsumer.getId(), ehubConsumer.getSecretKey()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
+        return new AuthInfo.Builder(ehubConsumer.getId()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
     }
 
     private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {
@@ -188,15 +190,21 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         proxyFactoryBean.setHttpEngine(httpEngine);
         try {
             proxyFactoryBean.setBaseUri(new URI(baseUri));
+            proxyFactoryBean.setEhubParamConverterProvider(ehubParamConverterProvider);
             proxyFactoryBean.afterPropertiesSet();
             return clazz.cast(proxyFactoryBean.getObject());
         } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage(),ex);
+            throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 
     @Required
     public void setHttpEngine(final ClientHttpEngine httpEngine) {
         this.httpEngine = httpEngine;
+    }
+
+    @Required
+    public void setEhubParamConverterProvider(final EhubParamConverterProvider ehubParamConverterProvider) {
+        this.ehubParamConverterProvider = ehubParamConverterProvider;
     }
 }

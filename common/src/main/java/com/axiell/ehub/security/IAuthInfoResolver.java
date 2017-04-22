@@ -1,6 +1,8 @@
 package com.axiell.ehub.security;
 
-interface IAuthInfoResolver {
+public interface IAuthInfoResolver {
 
     AuthInfo resolve(String authorizationHeader);
+
+    String serialize(AuthInfo authInfo);
 }

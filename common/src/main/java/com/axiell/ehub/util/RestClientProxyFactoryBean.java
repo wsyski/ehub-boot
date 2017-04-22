@@ -1,5 +1,6 @@
 package com.axiell.ehub.util;
 
+import com.axiell.ehub.security.EhubParamConverterProvider;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -18,6 +19,7 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
     private T proxy;
     private ClientHttpEngine httpEngine;
     private ResteasyProviderFactory resteasyProviderFactory;
+    private EhubParamConverterProvider ehubParamConverterProvider;
 
     public T getObject() throws Exception {
         return proxy;
@@ -32,14 +34,15 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
     }
 
     public void afterPropertiesSet() throws Exception {
-        if (resteasyProviderFactory != null) {
-            RegisterBuiltin.register(resteasyProviderFactory);
-        }
+        if (resteasyProviderFactory == null)
+            resteasyProviderFactory = ResteasyProviderFactory.getInstance();
+        RegisterBuiltin.register(resteasyProviderFactory);
 
         ResteasyClientBuilder clientBuilder = new ResteasyClientBuilder();
         if (httpEngine != null) {
             clientBuilder.httpEngine(httpEngine);
         }
+        clientBuilder.register(ehubParamConverterProvider);
         ResteasyClient client = clientBuilder.build();
         ResteasyWebTarget target = client.target(baseUri);
         proxy = target.proxy(serviceInterface);
@@ -63,7 +66,6 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
         this.baseUri = baseUri;
     }
 
-
     public ClientHttpEngine getHttpEngine() {
         return httpEngine;
     }
@@ -76,8 +78,12 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
         return resteasyProviderFactory;
     }
 
-    public void setResteasyProviderFactory(ResteasyProviderFactory resteasyProviderFactory) {
+    public void setResteasyProviderFactory(final ResteasyProviderFactory resteasyProviderFactory) {
         this.resteasyProviderFactory = resteasyProviderFactory;
     }
 
+    @Required
+    public void setEhubParamConverterProvider(final EhubParamConverterProvider ehubParamConverterProvider) {
+        this.ehubParamConverterProvider = ehubParamConverterProvider;
+    }
 }
