@@ -8,8 +8,8 @@ public class SupportRequest {
     private String uri;
     private String body;
 
-    String getAuthInfo() {
-        return authInfo == null ? null : authInfo.toString();
+    AuthInfo getAuthInfo() {
+        return authInfo;
     }
 
     void setAuthInfo(AuthInfo authInfo) {

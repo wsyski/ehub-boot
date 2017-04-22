@@ -1,6 +1,7 @@
 package com.axiell.ehub.security;
 
 import com.axiell.ehub.EhubError;
+import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.patron.Patron;
@@ -10,9 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +30,7 @@ public class AuthInfoResolverTest {
 
     private AuthInfoResolver underTest;
     @Mock
-    private IAuthInfoSecretKeyResolver authInfoSecretKeyResolver;
+    private IAuthHeaderSecretKeyResolver authInfoSecretKeyResolver;
     private Patron patron;
     private String patronId;
     private String card;
@@ -37,18 +38,22 @@ public class AuthInfoResolverTest {
     private String email;
     private Signature expSignature;
     private String authorizationHeader;
+    EhubAuthHeaderParser ehubAuthHeaderParser;
     private AuthInfo actualAuthInfo;
 
     @Before
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoResolver();
         given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
-        given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
-        ReflectionTestUtils.setField(underTest, "authInfoSecretKeyResolver", authInfoSecretKeyResolver);
+        given(authInfoSecretKeyResolver.isValidateSignature()).willReturn(true);
+        ehubAuthHeaderParser = new EhubAuthHeaderParser();
+        ehubAuthHeaderParser.setAuthHeaderSecretKeyResolver(authInfoSecretKeyResolver);
+        underTest.setDefaultScheme(IAuthHeaderParser.EHUB_SCHEME);
+        underTest.setAuthHeaderParsers(Collections.singletonMap(IAuthHeaderParser.EHUB_SCHEME, ehubAuthHeaderParser));
     }
 
     @Test
-    public void validSignature_withPatronId() {
+    public void validSignature_withPatronId() throws EhubException {
         givenPatronId();
         givenCard();
         givenPin();
@@ -60,7 +65,7 @@ public class AuthInfoResolverTest {
     }
 
     @Test
-    public void validSignature_withPatronIdAndEmail() {
+    public void validSignature_withPatronIdAndEmail() throws EhubException {
         givenPatronId();
         givenCard();
         givenPin();
@@ -84,13 +89,13 @@ public class AuthInfoResolverTest {
         email = EMAIL;
     }
 
-    private void givenAuthorizationHeader() {
-        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron, SECRET_KEY);
-        authorizationHeader = authInfo.toString();
+    private void givenAuthorizationHeader() throws EhubException {
+        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron);
+        authorizationHeader = ehubAuthHeaderParser.serialize(authInfo);
     }
 
     private void givenValidSignature() {
-        expSignature = new Signature(AuthInfo.getSignatureItems(EHUB_CONSUMER_ID, patron), SECRET_KEY);
+        expSignature = new Signature(EhubAuthHeaderParser.getSignatureItems(EHUB_CONSUMER_ID, patron), SECRET_KEY);
     }
 
     private void givenPatron() {
@@ -154,7 +159,7 @@ public class AuthInfoResolverTest {
     }
 
     @Test
-    public void validSignature_withoutPatronIdCardPin() {
+    public void validSignature_withoutPatronIdCardPin() throws EhubException {
         givenPatron();
         givenValidSignature();
         givenAuthorizationHeader();

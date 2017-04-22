@@ -31,8 +31,7 @@ public final class UnauthorizedException extends EhubRuntimeException {
      */
     public UnauthorizedException(final String message, final ErrorCause cause) {
         super(Status.UNAUTHORIZED.getStatusCode(), message, cause);
-        final String headerValue = new StringBuilder(AuthInfo.EHUB_SCHEME).append(" ").append(AuthInfo.REALM).toString();
-        addHeader("WWW-Authenticate", headerValue);
+        addHeader("WWW-Authenticate", "eHUB");
     }
 
     /**

@@ -91,7 +91,7 @@ public class LoanBusinessControllerTest {
 
     @Before
     public void setUpCommonArguments() throws EhubException {
-        authInfo = new AuthInfo.Builder(0L, "secret").libraryCard("libraryCard").pin("pin").build();
+        authInfo = new AuthInfo.Builder(0L).libraryCard("libraryCard").pin("pin").build();
     }
 
     @Before
