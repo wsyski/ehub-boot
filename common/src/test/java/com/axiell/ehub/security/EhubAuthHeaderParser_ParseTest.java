@@ -2,6 +2,7 @@ package com.axiell.ehub.security;
 
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.ErrorCause;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -62,11 +63,11 @@ public class EhubAuthHeaderParser_ParseTest extends EhubAuthHeaderParserFixture 
         }
     }
 
-    @Test(expected = UnauthorizedException.class)
+    @Test
     public void missingLibraryCard() {
         givenNewAuthHeaderParserWithAuthorizationHeaderWithoutLibraryCard();
         whenParse();
-        thenActualLibraryCardEqualsExpectedLibraryCard();
+        thenActualLibraryCardIsNull();
     }
 
     @Test
@@ -159,6 +160,9 @@ public class EhubAuthHeaderParser_ParseTest extends EhubAuthHeaderParserFixture 
         assertEquals(LIBRARY_CARD, authInfo.getPatron().getLibraryCard());
     }
 
+    private void thenActualLibraryCardIsNull() {
+        Assert.assertThat(authInfo.getPatron().getLibraryCard(), Matchers.nullValue());
+    }
 
     private void thenActualPinEqualsExpectedPin() {
         assertEquals(PIN, authInfo.getPatron().getPin());

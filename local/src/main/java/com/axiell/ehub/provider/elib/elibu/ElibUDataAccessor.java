@@ -16,6 +16,7 @@ import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.axiell.ehub.provider.record.issue.Issue;
+import com.axiell.ehub.util.PatronUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final String libraryCard = patron.getLibraryCard();
+        final String libraryCard= PatronUtil.getMandatoryLibraryCard(patron);
         final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);
         final String recordId = data.getContentProviderRecordId();
         final String formatId = data.getContentProviderFormatId();
@@ -103,7 +104,7 @@ public class ElibUDataAccessor extends AbstractContentProviderDataAccessor {
     public com.axiell.ehub.checkout.Content getContent(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final String libraryCard = patron.getLibraryCard();
+        final String libraryCard= PatronUtil.getMandatoryLibraryCard(patron);
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final FormatDecoration formatDecoration = data.getFormatDecoration();
         final Integer licenseId = consumeLicense(contentProviderConsumer, libraryCard);

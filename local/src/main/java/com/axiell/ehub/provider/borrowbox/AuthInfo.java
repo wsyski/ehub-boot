@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.util.PatronUtil;
 
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class AuthInfo {
         String siteId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID);
         String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_LIBRARY_ID);
         String secretKey = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SECRET_KEY);
-        String libraryCard = patron.getLibraryCard();
+        String libraryCard= PatronUtil.getMandatoryLibraryCard(patron);
         Signature signature = new Signature(siteId, libraryCard, secretKey, timestamp);
         return String.format(AUTHORIZATION_HEADER_FORMAT, libraryId, timestamp, signature.toString());
     }

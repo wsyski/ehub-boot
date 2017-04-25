@@ -73,6 +73,6 @@ public class GetContentCommandChainTest {
     private void givenCommandData() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getId()).willReturn(LOAN_ID);
-        data = CommandData.newInstance(contentProviderConsumer, new Patron.Builder("card", "pin").build(), "sv").setContentProviderLoanMetadata(loanMetadata).setFormatDecoration(formatDecoration);
+        data = CommandData.newInstance(contentProviderConsumer, new Patron.Builder().libraryCard("card").pin("pin").build(), "sv").setContentProviderLoanMetadata(loanMetadata).setFormatDecoration(formatDecoration);
     }
 }

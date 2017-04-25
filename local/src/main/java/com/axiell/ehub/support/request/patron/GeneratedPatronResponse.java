@@ -9,7 +9,7 @@ class GeneratedPatronResponse implements ISupportResponse {
 
     GeneratedPatronResponse(RequestArguments arguments) {
         String libraryCard = arguments.getLibraryCard();
-        Patron patron = new Patron.Builder(libraryCard, null).build();
+        Patron patron = new Patron.Builder().libraryCard(libraryCard).build();
         patronId = patron.getId();
     }
 

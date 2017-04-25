@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.util.Md5Function;
+import com.axiell.ehub.util.PatronUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,7 +28,7 @@ public class PatronDTO {
 
     public PatronDTO(final Patron patron, final String libraryId) {
         this.libraryId = libraryId;
-        this.libraryCardNumber = patron.getLibraryCard();
+        this.libraryCardNumber = PatronUtil.getMandatoryLibraryCard(patron);
         this.email = patron.hasEmail() ? patron.getEmail() : makeEmail();
         this.userName = this.email;
         this.password = Md5Function.md5Hex(this.userName);

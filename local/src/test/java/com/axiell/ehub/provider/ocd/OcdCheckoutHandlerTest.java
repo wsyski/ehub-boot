@@ -41,7 +41,7 @@ public class OcdCheckoutHandlerTest {
     protected ContentProviderConsumer contentProviderConsumer;
 
     private Checkout actualCheckout;
-    private Patron patron = new Patron.Builder(CARD, PIN).build();
+    private Patron patron = new Patron.Builder().libraryCard(CARD).pin(PIN).build();
 
     @Before
     public void setUpUnderTest() {

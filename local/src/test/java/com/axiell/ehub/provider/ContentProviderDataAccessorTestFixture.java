@@ -115,6 +115,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void givenPinInPatron() {
+        given(patron.hasPin()).willReturn(true);
         given(patron.getPin()).willReturn(PIN);
     }
 

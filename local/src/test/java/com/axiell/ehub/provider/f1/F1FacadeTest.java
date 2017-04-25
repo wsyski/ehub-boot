@@ -53,6 +53,7 @@ public class F1FacadeTest {
     public void setUpUnderTest() {
         underTest = new F1Facade();
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(patron.hasLibraryCard()).willReturn(true);
         given(patron.getLibraryCard()).willReturn(CARD);
         given(commandData.getPatron()).willReturn(patron);
         given(f1ServiceSoapFactory.getInstance(contentProviderConsumer)).willReturn(f1ServiceSoap);

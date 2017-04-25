@@ -3,6 +3,7 @@ package com.axiell.ehub.it;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.issue.Issue;
@@ -54,7 +55,7 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
             }
             List<Format> formats = issue.getFormats();
             Assert.assertThat(formats, Matchers.notNullValue());
-            Assert.assertThat(formats.size(),Matchers.is(getExpectedFormatCount()));
+            Assert.assertThat(formats.size(), Matchers.is(getExpectedFormatCount()));
             for (Format format : formats) {
                 thenFormatContainsExpectedComponents(format);
             }
@@ -76,11 +77,12 @@ public abstract class RemoteRecordITFixture extends RemoteITFixture {
 
     private AuthInfo givenInvalidAuthInfo() throws EhubException {
         expectedException.expect(EhubException.class);
-        return new AuthInfo.Builder(INVALID_EHUB_CONSUMER_ID).build();
+        return new AuthInfo(null, INVALID_EHUB_CONSUMER_ID, new Patron.Builder().build());
     }
 
     protected abstract void givenContentProviderGetRecordResponse();
 
     protected abstract int getExpectedIssueCount();
+
     protected abstract int getExpectedFormatCount();
 }

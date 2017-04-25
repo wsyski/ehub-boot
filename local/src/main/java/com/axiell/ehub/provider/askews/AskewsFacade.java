@@ -13,6 +13,7 @@ import com.axiell.ehub.logging.ISoapLoggingHandlerAppender;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
+import com.axiell.ehub.util.PatronUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,10 +74,10 @@ public class AskewsFacade implements IAskewsFacade {
     }
 
     private Integer getUserId(final Patron patron, final ContentProviderConsumer contentProviderConsumer) {
-        final String barcode = patron.getLibraryCard();
+        final String libraryCard = PatronUtil.getMandatoryLibraryCard(patron);
         final Integer authId = getAuthId(contentProviderConsumer);
         final String tokenKey = contentProviderConsumer.getProperty(ASKEWS_TOKEN_KEY);
-        final UserLookupResult userLookupResult = askewsService.getUserID(barcode, authId, tokenKey);
+        final UserLookupResult userLookupResult = askewsService.getUserID(libraryCard, authId, tokenKey);
         validateUserLookupWasSuccessful(userLookupResult);
         return userLookupResult.getUserid();
     }

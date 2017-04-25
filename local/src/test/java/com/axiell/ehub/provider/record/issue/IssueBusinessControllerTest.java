@@ -38,7 +38,7 @@ public class IssueBusinessControllerTest {
 
     @Before
     public void setUpCommonArguments() throws Exception {
-        authInfo = new AuthInfo.Builder(0L).libraryCard("libraryCard").pin("pin").build();
+        authInfo = new AuthInfo(null,0L,new Patron.Builder().libraryCard("libraryCard").pin("pin").build());
     }
 
     @Before

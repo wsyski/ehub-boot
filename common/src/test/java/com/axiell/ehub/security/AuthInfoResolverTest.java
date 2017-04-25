@@ -90,7 +90,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenAuthorizationHeader() throws EhubException {
-        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron);
+        AuthInfo authInfo = new AuthInfo(null,EHUB_CONSUMER_ID, patron);
         authorizationHeader = ehubAuthHeaderParser.serialize(authInfo);
     }
 
@@ -99,7 +99,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenPatron() {
-        patron = new Patron.Builder(card, pin).id(patronId).email(email).build();
+        patron = new Patron.Builder().id(patronId).libraryCard(card).pin(pin).email(email).build();
     }
 
     private void givenPatronId() {

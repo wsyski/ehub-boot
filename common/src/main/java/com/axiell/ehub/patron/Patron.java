@@ -1,68 +1,55 @@
 package com.axiell.ehub.patron;
 
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.security.UnauthorizedException;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import static com.axiell.ehub.util.SHA512Function.sha512Hex;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Patron {
-    private final String id;
-    private final String libraryCard;
-    private final String pin;
-    private final String email;
+    private final Builder builder;
 
-    private Patron(final String id, final String libraryCard, final String pin, final String email) {
-        this.libraryCard = libraryCard;
-        this.pin = pin;
-        this.email = email;
-        this.id = isBlank(id) ? generateId() : id;
+    private Patron(final Builder builder) {
+        this.builder = builder;
     }
 
     private String generateId() {
-        if (hasLibraryCard())
-            return sha512Hex(libraryCard);
-        else
+        if (hasLibraryCard()) {
+            return sha512Hex(builder.getLibraryCard());
+        } else {
             return null;
+        }
     }
 
     public boolean hasId() {
-        return !isBlank(id);
+        return !isBlank(builder.getId());
     }
 
     public String getId() {
-        return id;
+        return isBlank(builder.getId()) ? generateId() : builder.getId();
     }
 
     public boolean hasLibraryCard() {
-        return !isBlank(libraryCard);
+        return !isBlank(getLibraryCard());
     }
 
     public String getLibraryCard() {
-        if (hasLibraryCard()) {
-            return libraryCard;
-        }
-        throw new UnauthorizedException(ErrorCause.MISSING_LIBRARY_CARD);
+        return builder.getLibraryCard();
     }
 
     public boolean hasPin() {
-        return !isBlank(pin);
+        return !isBlank(builder.getPin());
     }
 
     public String getPin() {
-        return pin;
+        return builder.getPin();
     }
 
     public boolean hasEmail() {
-        return !isBlank(email);
+        return !isBlank(builder.getEmail());
     }
 
     public String getEmail() {
-        if (hasEmail()) {
-            return email;
-        }
-        throw new UnauthorizedException(ErrorCause.MISSING_EMAIL);
+        return builder.getEmail();
     }
 
     @Override
@@ -71,18 +58,25 @@ public class Patron {
     }
 
     public static class Builder {
-        private final String libraryCard;
-        private final String pin;
+        private String libraryCard;
+        private String pin;
         private String id;
         private String email;
-
-        public Builder(String libraryCard, String pin) {
-            this.libraryCard = libraryCard;
-            this.pin = pin;
-        }
+        private Long arenaUserId;
+        private String name;
 
         public Builder id(final String id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder libraryCard(final String libraryCard) {
+            this.libraryCard = libraryCard;
+            return this;
+        }
+
+        public Builder pin(final String pin) {
+            this.pin = pin;
             return this;
         }
 
@@ -91,8 +85,43 @@ public class Patron {
             return this;
         }
 
+        public Builder arenaUserId(final Long arenaUserId) {
+            this.arenaUserId = arenaUserId;
+            return this;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public Builder name(final String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getLibraryCard() {
+            return libraryCard;
+        }
+
+        public String getPin() {
+            return pin;
+        }
+
+
+        public String getEmail() {
+            return email;
+        }
+
+        public Long getArenaUserId() {
+            return arenaUserId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
         public Patron build() {
-            return new Patron(id, libraryCard, pin, email);
+            return new Patron(this);
         }
     }
 }

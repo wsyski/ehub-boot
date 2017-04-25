@@ -4,6 +4,7 @@ import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.security.EhubParamConverterProvider;
@@ -169,7 +170,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         final String patronId = arguments.getPatronId();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return new AuthInfo.Builder(ehubConsumer.getId()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
+        return new AuthInfo(null, ehubConsumer.getId(), new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).build());
     }
 
     private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {

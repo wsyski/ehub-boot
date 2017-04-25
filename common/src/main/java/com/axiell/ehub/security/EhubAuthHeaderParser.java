@@ -33,7 +33,10 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     public AuthInfo parse(final String value) {
         validateInputIsNotNull(value, ErrorCause.MISSING_AUTHORIZATION_HEADER);
         final Map<String, String> authHeaderParams = parseAuthorizationHeader(value);
-        long ehubConsumerId = getEhubConsumerId(authHeaderParams);
+        Long ehubConsumerId = getEhubConsumerId(authHeaderParams);
+        if (ehubConsumerId == null) {
+            throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
+        }
         Patron patron = getPatron(authHeaderParams);
         final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
         final String actualSignature = getActualSignature(authHeaderParams);
@@ -51,7 +54,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
                 throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
             }
         }
-        return new AuthInfo(ehubConsumerId, patron);
+        return new AuthInfo(null, ehubConsumerId, patron);
     }
 
     @Override
@@ -129,7 +132,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         }
     }
 
-    private static long getEhubConsumerId(final Map<String, String> authHeaderParams) {
+    private static Long getEhubConsumerId(final Map<String, String> authHeaderParams) {
         final String ehubConsumerId = authHeaderParams.get(EHUB_CONSUMER_ID);
         validateInputIsNotNull(ehubConsumerId, ErrorCause.MISSING_EHUB_CONSUMER_ID);
         return Long.parseLong(ehubConsumerId);
@@ -207,7 +210,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         final String libraryCard = getLibraryCard(authHeaderParams);
         final String pin = getPin(authHeaderParams);
         final String email = getEmail(authHeaderParams);
-        return new Patron.Builder(libraryCard, pin).id(patronId).email(email).build();
+        return new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).email(email).build();
     }
 
     @Required
