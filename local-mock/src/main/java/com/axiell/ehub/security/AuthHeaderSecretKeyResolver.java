@@ -1,5 +1,7 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+
 public class AuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
     private String secretKey;
 

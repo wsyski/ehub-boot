@@ -5,7 +5,7 @@ package com.axiell.ehub.v2.provider;
 
 import com.axiell.ehub.provider.ContentProviderDTO;
 import com.axiell.ehub.provider.ContentProvidersDTO;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
 
 import javax.ws.rs.*;

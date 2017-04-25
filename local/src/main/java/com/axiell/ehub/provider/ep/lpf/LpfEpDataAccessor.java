@@ -4,10 +4,9 @@ import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ep.AbstractEpDataAccessor;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

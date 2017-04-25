@@ -6,10 +6,7 @@ package com.axiell.ehub;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.provider.record.Record;
-import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.security.AuthInfo;
-
-import java.util.Set;
+import com.axiell.auth.AuthInfo;
 
 public interface IEhubService {
 

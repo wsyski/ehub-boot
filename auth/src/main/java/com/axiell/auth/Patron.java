@@ -1,8 +1,8 @@
-package com.axiell.ehub.patron;
+package com.axiell.auth;
 
+import com.axiell.auth.util.SHA512Function;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import static com.axiell.ehub.util.SHA512Function.sha512Hex;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Patron {
@@ -14,7 +14,7 @@ public class Patron {
 
     private String generateId() {
         if (hasLibraryCard()) {
-            return sha512Hex(builder.getLibraryCard());
+            return SHA512Function.sha512Hex(builder.getLibraryCard());
         } else {
             return null;
         }

@@ -1,5 +1,6 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.*;
 import com.axiell.ehub.ErrorCause;
 import org.springframework.beans.factory.annotation.Required;
 

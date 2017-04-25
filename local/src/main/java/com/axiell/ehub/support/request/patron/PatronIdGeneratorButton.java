@@ -1,6 +1,5 @@
 package com.axiell.ehub.support.request.patron;
 
-import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.support.request.*;
 
 class PatronIdGeneratorButton extends AbstractRequestGeneratorButton<GeneratedPatronResponse> {

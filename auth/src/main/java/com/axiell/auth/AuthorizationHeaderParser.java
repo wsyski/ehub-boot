@@ -1,4 +1,4 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

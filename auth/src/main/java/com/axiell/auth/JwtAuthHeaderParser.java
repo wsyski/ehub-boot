@@ -1,4 +1,4 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
 import org.springframework.beans.factory.annotation.Required;
 

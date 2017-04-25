@@ -1,10 +1,12 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +44,7 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
     }
 
     /**
-     * Test method for {@link com.axiell.ehub.security.AuthInfo#toString()}.
+     * Test method for {@link AuthInfo#toString()}.
      *
      * @throws EhubException
      */

@@ -1,8 +1,8 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 

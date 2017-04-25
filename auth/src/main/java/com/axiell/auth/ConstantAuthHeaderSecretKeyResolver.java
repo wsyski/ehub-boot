@@ -1,4 +1,4 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
 public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
     private String secretKey;

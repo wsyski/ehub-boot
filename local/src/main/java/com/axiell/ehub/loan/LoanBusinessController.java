@@ -8,12 +8,12 @@ import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatDecorationRepositoryFacade;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

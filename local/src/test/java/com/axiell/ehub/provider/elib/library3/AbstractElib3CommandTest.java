@@ -7,7 +7,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.AssertCommand;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;

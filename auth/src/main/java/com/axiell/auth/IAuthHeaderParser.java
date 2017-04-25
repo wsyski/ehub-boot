@@ -1,4 +1,4 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
 public interface IAuthHeaderParser {
     static final String BEARER_SCHEME = "Bearer";

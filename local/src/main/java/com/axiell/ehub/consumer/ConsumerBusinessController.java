@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.security.UnauthorizedException;
 
 /**
