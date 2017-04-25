@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.ocd;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.CommandData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

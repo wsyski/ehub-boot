@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.v1.loan;
 
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;

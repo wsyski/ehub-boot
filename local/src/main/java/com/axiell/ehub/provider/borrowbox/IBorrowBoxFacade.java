@@ -1,9 +1,7 @@
 package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
-
-import java.util.Locale;
+import com.axiell.auth.Patron;
 
 interface IBorrowBoxFacade {
 

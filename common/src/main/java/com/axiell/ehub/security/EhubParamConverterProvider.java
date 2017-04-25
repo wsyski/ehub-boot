@@ -1,5 +1,8 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthInfoResolver;
+
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;

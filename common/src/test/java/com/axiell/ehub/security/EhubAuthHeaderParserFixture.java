@@ -1,5 +1,7 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import org.junit.Before;
 
 public abstract class EhubAuthHeaderParserFixture {

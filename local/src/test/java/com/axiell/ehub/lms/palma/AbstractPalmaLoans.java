@@ -4,7 +4,7 @@ import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 
 import org.junit.Test;
 

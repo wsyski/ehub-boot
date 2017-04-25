@@ -1,4 +1,4 @@
-package com.axiell.ehub.patron;
+package com.axiell.auth;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

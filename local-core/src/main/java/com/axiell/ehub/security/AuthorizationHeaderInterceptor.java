@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.ErrorCause;
 
 import javax.annotation.Priority;

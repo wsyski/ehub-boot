@@ -1,6 +1,6 @@
 package com.axiell.ehub.security;
 
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

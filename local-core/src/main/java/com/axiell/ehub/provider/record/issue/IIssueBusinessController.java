@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.record.issue;
 
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractEpFacade<C extends ICheckoutDTO, R extends ICheckoutRequestDTO, I extends IEpResource<C, R>> implements IEpFacade<C> {

@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.v1.provider.record;
 
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 
 import javax.ws.rs.*;

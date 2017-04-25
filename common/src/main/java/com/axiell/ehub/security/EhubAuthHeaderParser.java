@@ -1,9 +1,12 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthHeaderParser;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;

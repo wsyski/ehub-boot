@@ -1,12 +1,11 @@
-package com.axiell.ehub.util;
+package com.axiell.auth.util;
 
-import com.axiell.ehub.InternalServerErrorException;
 import org.apache.commons.codec.binary.Hex;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static com.axiell.ehub.util.StringConverter.getBytesInUtf8;
 
 public class SHA512Function {
 
@@ -14,7 +13,7 @@ public class SHA512Function {
     }
 
     public static String sha512Hex(final String input) {
-        final byte[] inputAsBytes = getBytesInUtf8(input);
+        final byte[] inputAsBytes = input.getBytes(StandardCharsets.UTF_8);
         final byte[] digest = digest(inputAsBytes);
         return encodeHex(digest);
     }
@@ -23,8 +22,8 @@ public class SHA512Function {
         final MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-512");
-        } catch (NoSuchAlgorithmException e) {
-            throw new InternalServerErrorException("Could not get a MessageDigest for the SHA-512 algorithm", e);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new AuthRuntimeException(ex.getMessage(), ex);
         }
         return messageDigest.digest(input);
     }

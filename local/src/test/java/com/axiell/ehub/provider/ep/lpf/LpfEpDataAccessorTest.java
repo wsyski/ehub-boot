@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.ep.EpDataAccessorTestFixture;
 import com.axiell.ehub.provider.ep.FormatMetadataDTOBuilder;
 import org.junit.Before;

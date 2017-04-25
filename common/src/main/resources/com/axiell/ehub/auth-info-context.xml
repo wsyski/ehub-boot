@@ -8,7 +8,7 @@
         <property name="authHeaderSecretKeyResolver" ref="ehubAuthHeaderSecretKeyResolver"/>
     </bean>
 
-    <bean id="jwtAuthHeaderParser" class="com.axiell.ehub.security.JwtAuthHeaderParser">
+    <bean id="jwtAuthHeaderParser" class="com.axiell.auth.JwtAuthHeaderParser">
         <property name="authHeaderSecretKeyResolver" ref="jwtAuthHeaderSecretKeyResolver"/>
     </bean>
 
@@ -23,7 +23,7 @@
                 </entry>
                 <entry>
                     <key>
-                        <util:constant static-field="com.axiell.ehub.security.JwtAuthHeaderParser.BEARER_SCHEME"/>
+                        <util:constant static-field="com.axiell.auth.JwtAuthHeaderParser.BEARER_SCHEME"/>
                     </key>
                     <ref bean="jwtAuthHeaderParser"/>
                 </entry>
@@ -34,7 +34,7 @@
     <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver">
         <property name="authHeaderParsers" ref="authHeaderParsers"/>
         <property name="defaultScheme">
-            <util:constant static-field="com.axiell.ehub.security.IAuthHeaderParser.EHUB_SCHEME"/>
+            <util:constant static-field="com.axiell.auth.IAuthHeaderParser.EHUB_SCHEME"/>
         </property>
     </bean>
 

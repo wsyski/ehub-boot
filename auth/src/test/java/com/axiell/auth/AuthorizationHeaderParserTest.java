@@ -1,4 +1,4 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -6,8 +6,7 @@ import org.junit.Test;
 
 import java.text.MessageFormat;
 
-import static com.axiell.ehub.security.IAuthHeaderParser.BEARER_SCHEME;
-
+import static com.axiell.auth.IAuthHeaderParser.BEARER_SCHEME;
 
 public class AuthorizationHeaderParserTest {
     private static final String AUTHORIZATION_TOKEN_PARAMETERS = "parameters";

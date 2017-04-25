@@ -1,6 +1,6 @@
 package com.axiell.ehub.support.request.patron;
 
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.support.request.ISupportResponse;
 import com.axiell.ehub.support.request.RequestArguments;
 

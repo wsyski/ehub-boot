@@ -1,10 +1,13 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthHeaderParser;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

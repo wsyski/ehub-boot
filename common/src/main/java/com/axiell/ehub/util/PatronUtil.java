@@ -1,7 +1,7 @@
 package com.axiell.ehub.util;
 
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.security.UnauthorizedException;
 
 public class PatronUtil {

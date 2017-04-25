@@ -8,7 +8,7 @@ import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.CheckoutsSearchResult;
 import com.axiell.ehub.loan.*;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 public final class LoansResource_v1 implements ILoansResource_v1 {
     private ILoanBusinessController loanBusinessController;

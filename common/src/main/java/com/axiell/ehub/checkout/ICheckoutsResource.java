@@ -2,7 +2,7 @@ package com.axiell.ehub.checkout;
 
 import com.axiell.ehub.FieldsDTO;
 import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
