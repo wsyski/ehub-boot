@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.util.PatronUtil;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -24,9 +25,10 @@ public class BorrowBoxClientRequestFilter implements ClientRequestFilter {
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
+        String libraryCard= PatronUtil.getMandatoryLibraryCard(patron);
         headers.add(HttpHeaders.AUTHORIZATION, new AuthInfo(contentProviderConsumer, patron));
         headers.add("Accept-Language", language);
         headers.add("X-BorrowBox-Site", contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID));
-        headers.add("X-BorrowBox-User", patron.getLibraryCard());
+        headers.add("X-BorrowBox-User", libraryCard);
     }
 }

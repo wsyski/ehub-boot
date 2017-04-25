@@ -8,6 +8,7 @@ import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestR
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.util.PatronUtil;
 import com.axiell.ehub.util.XjcSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,13 +37,15 @@ class LoansFacade implements ILoansFacade {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
         com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory checkoutTestRequestObjectFactory =
                 new com.axiell.arena.services.palma.patron.checkouttestrequest.ObjectFactory();
+        String libraryCard = PatronUtil.getMandatoryLibraryCard(patron);
+        String pin = PatronUtil.getMandatoryPin(patron);
         CheckOutTestRequest checkOutTestRequest = checkoutTestRequestObjectFactory.createCheckOutTestRequest();
         checkOutTestRequest.setArenaMember(agencyMemberIdentifier);
         checkOutTestRequest.setRecordId(pendingLoan.lmsRecordId());
         checkOutTestRequest.setContentProviderFormatId(pendingLoan.contentProviderFormatId());
         checkOutTestRequest.setContentProviderName(pendingLoan.contentProviderAlias());
-        checkOutTestRequest.setUser(patron.getLibraryCard());
-        checkOutTestRequest.setPassword(patron.getPin());
+        checkOutTestRequest.setUser(libraryCard);
+        checkOutTestRequest.setPassword(pin);
         checkOutTestRequest.setIssueId(pendingLoan.issueId());
         checkOutTestRequest.setLoanPerProduct(isLoanPerProduct);
         return checkOutTestRequest;
@@ -59,14 +62,16 @@ class LoansFacade implements ILoansFacade {
     private static CheckOutRequest createCheckOutRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate,
                                                          final Patron patron, final boolean isLoanPerProduct) {
         String agencyMemberIdentifier = ehubConsumer.getProperties().get(ARENA_AGENCY_M_IDENTIFIER);
+        String libraryCard = PatronUtil.getMandatoryLibraryCard(patron);
+        String pin = PatronUtil.getMandatoryPin(patron);
         CheckOutRequest checkOutRequest = CHECKOUTREQUEST_OBJECT_FACTORY.createCheckOutRequest();
         checkOutRequest.setArenaMember(agencyMemberIdentifier);
         checkOutRequest.setRecordId(pendingLoan.lmsRecordId());
         checkOutRequest.setExpirationDate(XjcSupport.toXmlGregorianCalendar(expirationDate));
         checkOutRequest.setContentProviderFormatId(pendingLoan.contentProviderFormatId());
         checkOutRequest.setContentProviderName(pendingLoan.contentProviderAlias());
-        checkOutRequest.setUser(patron.getLibraryCard());
-        checkOutRequest.setPassword(patron.getPin());
+        checkOutRequest.setUser(libraryCard);
+        checkOutRequest.setPassword(pin);
         checkOutRequest.setIssueId(pendingLoan.issueId());
         checkOutRequest.setLoanPerProduct(isLoanPerProduct);
         return checkOutRequest;

@@ -1,13 +1,9 @@
 package com.axiell.ehub.patron;
 
-import com.axiell.ehub.util.SHA512Function;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static com.axiell.ehub.util.SHA512Function.sha512Hex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -39,7 +35,7 @@ public class PatronTest {
     }
 
     private void whenNewPatron() {
-        underTest = new Patron.Builder(card, PIN).id(id).build();
+        underTest = new Patron.Builder().id(id).libraryCard(card).pin(PIN).build();
     }
 
     private void thenActualIdEqualsProvidedId() {
@@ -64,7 +60,8 @@ public class PatronTest {
     }
 
     private void thenActualIdEqualsExpectedGeneratedId() {
-        assertEquals("3627909a29c31381a071ec27f7c9ca97726182aed29a7ddd2e54353322cfb30abb9e3a6df2ac2c20fe23436311d678564d0c8d305930575f60e2d3d048184d79", underTest.getId());
+        assertEquals("3627909a29c31381a071ec27f7c9ca97726182aed29a7ddd2e54353322cfb30abb9e3a6df2ac2c20fe23436311d678564d0c8d305930575f60e2d3d048184d79",
+                underTest.getId());
     }
 
     @Test

@@ -4,7 +4,9 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.patron.Patron;
+import com.axiell.ehub.security.UnauthorizedException;
 import com.axiell.ehub.util.EhubUrlCodec;
+import com.axiell.ehub.util.PatronUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,15 +29,15 @@ public class ZinioFacade implements IZinioFacade {
     @Override
     public String login(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
         final IZinioResource zinioResource = ZinioResourceFactory.create(contentProviderConsumer);
-        final String email = patron.getEmail();
+        final String email = PatronUtil.getMandatoryEmail(patron);
         final String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID);
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
         try {
             String response = zinioResource.patronExists(IZinioResource.CMD_P_EXISTS, libraryId, token, email);
             createZinioResponse(contentProviderConsumer, language, response);
         } catch (InternalServerErrorException ex) {
-            String password = getPassword();
-            String libraryCard = patron.getLibraryCard();
+            final String password = getPassword();
+            final String libraryCard = patron.getLibraryCard();
             String response = zinioResource.addPatron(IZinioResource.CMD_P_ACCOUNT_CREATE, libraryId, token, email, password, password, NA, NA, libraryCard);
             createZinioResponse(contentProviderConsumer, language, response);
         }
@@ -48,7 +50,7 @@ public class ZinioFacade implements IZinioFacade {
     public void checkout(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String issueId,
                          final String language) {
         final IZinioResource zinioResource = ZinioResourceFactory.create(contentProviderConsumer);
-        final String email = patron.getEmail();
+        final String email = PatronUtil.getMandatoryEmail(patron);
         final String libraryId = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID);
         final String token = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN);
         String response = zinioResource.checkout(IZinioResource.CMD_ZINIO_CHECKOUT_ISSUE, libraryId, token, email, issueId);

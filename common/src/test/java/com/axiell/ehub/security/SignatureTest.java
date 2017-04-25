@@ -56,12 +56,12 @@ public class SignatureTest {
     }
 
     private void givenNewCompatibilitySignature() {
-        Patron patron = new Patron.Builder(card, pin).id(patronId).build();
+        Patron patron = new Patron.Builder().id(patronId).libraryCard(card).pin(pin).build();
         underTest = new Signature(EhubAuthHeaderParser.getSignatureCompatibilityItems(ehubConsumerId, patron), secret);
     }
 
     private void givenNewSignature() {
-        Patron patron = new Patron.Builder(card, pin).id(patronId).build();
+        Patron patron = new Patron.Builder().id(patronId).libraryCard(card).pin(pin).build();
         underTest = new Signature(EhubAuthHeaderParser.getSignatureItems(ehubConsumerId, patron), secret);
     }
 

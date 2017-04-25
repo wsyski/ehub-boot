@@ -5,6 +5,7 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.patron.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.util.PatronUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.forlagett.api.F1ServiceSoap;
@@ -38,7 +39,7 @@ class F1Facade implements IF1Facade {
         final String contentProviderRecordId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
         final Patron patron = data.getPatron();
-        final String libraryCard = patron.getLibraryCard();
+        final String libraryCard= PatronUtil.getMandatoryLibraryCard(patron);
         final int mediaId = f1SoapServiceParameterHelper.getMediaId(contentProviderConsumer, contentProviderRecordId, language);
         final String username = contentProviderConsumer.getProperty(F1_USERNAME);
         final String password = contentProviderConsumer.getProperty(F1_PASSWORD);
