@@ -170,7 +170,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         final String patronId = arguments.getPatronId();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return new AuthInfo(null, ehubConsumer.getId(), new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).build());
+        return new AuthInfo.Builder().ehubConsumerId(ehubConsumer.getId()).patron(new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).build()).build();
     }
 
     private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {

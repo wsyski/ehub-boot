@@ -117,8 +117,8 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo(null,testData.getEhubConsumerId(),new Patron.Builder().libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).build());
+        authInfo = new AuthInfo.Builder().ehubConsumerId(testData.getEhubConsumerId()).patron(new Patron.Builder().libraryCard(testData.getLibraryCard())
+                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).build()).build();
     }
 
     private ITestDataResource getTestDataResource() {

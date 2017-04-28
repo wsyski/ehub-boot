@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AuthorizationHeaderParser {
-    private static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("\\s*(\\w*)\\s+(.*)");
+    private static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("\\s*(?:(\\w*)\\s+)?(.*)");
     private static final int FIRST_GROUP = 1;
     private static final int SECOND_GROUP = 2;
     private AuthorizationHeaderParts authorizationHeaderParts;

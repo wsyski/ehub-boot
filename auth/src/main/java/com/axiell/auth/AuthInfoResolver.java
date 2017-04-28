@@ -1,12 +1,12 @@
-package com.axiell.ehub.security;
+package com.axiell.auth;
 
-import com.axiell.auth.*;
-import com.axiell.ehub.ErrorCause;
+import com.axiell.auth.util.AuthRuntimeException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-class AuthInfoResolver implements IAuthInfoResolver {
+public class AuthInfoResolver implements IAuthInfoResolver {
     private Map<String, IAuthHeaderParser> authHeaderParsers;
     private String defaultScheme;
 
@@ -15,17 +15,13 @@ class AuthInfoResolver implements IAuthInfoResolver {
         final AuthorizationHeaderParser authorizationHeaderParser = new AuthorizationHeaderParser(authorizationHeader);
         final AuthorizationHeaderParts authorizationHeaderParts = authorizationHeaderParser.getAuthorizationHeaderParts();
         if (authorizationHeaderParts != null) {
-            if (authorizationHeaderParts.getScheme() == null) {
-                throw new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER);
+            String scheme = authorizationHeaderParts.getScheme() == null ? StringUtils.EMPTY : authorizationHeaderParts.getScheme();
+            IAuthHeaderParser authHeaderParser = authHeaderParsers.get(scheme);
+            if (authHeaderParser != null) {
+                return authHeaderParser.parse(authorizationHeaderParts.getParameters());
             }
-            IAuthHeaderParser authHeaderParser = authHeaderParsers.get(authorizationHeaderParts.getScheme());
-            if (authHeaderParser == null) {
-                throw new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER);
-            }
-            return authHeaderParser.parse(authorizationHeaderParts.getParameters());
-        } else {
-            throw new UnauthorizedException(ErrorCause.MISSING_AUTHORIZATION_HEADER);
         }
+        throw new AuthRuntimeException("Missing or Invalid Authorization Header");
     }
 
     @Override

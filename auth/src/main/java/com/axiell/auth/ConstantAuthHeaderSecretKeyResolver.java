@@ -11,9 +11,4 @@ public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKey
     public String getSecretKey(final Long ehubConsumerId) {
         return this.secretKey;
     }
-
-    @Override
-    public boolean isValidateSignature() {
-        return true;
-    }
 }

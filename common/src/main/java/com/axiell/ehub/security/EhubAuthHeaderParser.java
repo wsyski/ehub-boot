@@ -32,21 +32,19 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     private static final int SECOND_GROUP = 2;
 
     private IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
+    private  boolean isValidateSignature;
 
     public AuthInfo parse(final String value) {
         validateInputIsNotNull(value, ErrorCause.MISSING_AUTHORIZATION_HEADER);
         final Map<String, String> authHeaderParams = parseAuthorizationHeader(value);
-        Long ehubConsumerId = getEhubConsumerId(authHeaderParams);
-        if (ehubConsumerId == null) {
-            throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
-        }
+        long ehubConsumerId = getEhubConsumerId(authHeaderParams);
         Patron patron = getPatron(authHeaderParams);
         final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
         final String actualSignature = getActualSignature(authHeaderParams);
         if (actualSignature == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
         }
-        boolean isValidateSignature = authHeaderSecretKeyResolver.isValidateSignature();
+
         if (isValidateSignature) {
             final Signature expectedSignature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
 
@@ -57,7 +55,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
                 throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
             }
         }
-        return new AuthInfo(null, ehubConsumerId, patron);
+        return new AuthInfo.Builder().ehubConsumerId(ehubConsumerId).patron(patron).build();
     }
 
     @Override
@@ -135,7 +133,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         }
     }
 
-    private static Long getEhubConsumerId(final Map<String, String> authHeaderParams) {
+    private static long getEhubConsumerId(final Map<String, String> authHeaderParams) {
         final String ehubConsumerId = authHeaderParams.get(EHUB_CONSUMER_ID);
         validateInputIsNotNull(ehubConsumerId, ErrorCause.MISSING_EHUB_CONSUMER_ID);
         return Long.parseLong(ehubConsumerId);
@@ -219,5 +217,10 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     @Required
     public void setAuthHeaderSecretKeyResolver(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
         this.authHeaderSecretKeyResolver = authHeaderSecretKeyResolver;
+    }
+
+    @Required
+    public void setValidateSignature(boolean isValidateSignature) {
+        this.isValidateSignature = isValidateSignature;
     }
 }

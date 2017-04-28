@@ -1,6 +1,8 @@
 package com.axiell.auth;
 
 import com.axiell.auth.util.SHA512Function;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -50,6 +52,34 @@ public class Patron {
 
     public String getEmail() {
         return builder.getEmail();
+    }
+
+    public String getName() {
+        return builder.getName();
+    }
+
+    public Long getArenaUserId() {
+        return builder.getArenaUserId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Patron patron = (Patron) o;
+
+        return new EqualsBuilder()
+                .append(builder, patron.builder)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(builder)
+                .toHashCode();
     }
 
     @Override
@@ -122,6 +152,36 @@ public class Patron {
 
         public Patron build() {
             return new Patron(this);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Builder builder = (Builder) o;
+
+            return new EqualsBuilder()
+                    .append(getLibraryCard(), builder.getLibraryCard())
+                    .append(getPin(), builder.getPin())
+                    .append(getId(), builder.getId())
+                    .append(getEmail(), builder.getEmail())
+                    .append(getArenaUserId(), builder.getArenaUserId())
+                    .append(getName(), builder.getName())
+                    .isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(17, 37)
+                    .append(getLibraryCard())
+                    .append(getPin())
+                    .append(getId())
+                    .append(getEmail())
+                    .append(getArenaUserId())
+                    .append(getName())
+                    .toHashCode();
         }
     }
 }

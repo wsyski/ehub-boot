@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.consumer;
 
 import com.axiell.ehub.AbstractEhubRepositoryTest;
