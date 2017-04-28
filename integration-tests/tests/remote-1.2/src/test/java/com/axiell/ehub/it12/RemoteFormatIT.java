@@ -4,7 +4,7 @@ import com.axiell.ehub.EhubException;
 import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.TestDataConstants;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RemoteFormatIT extends RemoteFormatITFixture {

@@ -19,16 +19,6 @@ public class EhubAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyReso
         return ehubConsumer.getSecretKey();
     }
 
-    @Override
-    public boolean isValidateSignature() {
-        return isValidateSignature;
-    }
-
-    @Required
-    public void setValidateSignature(final boolean isValidateSignature) {
-        this.isValidateSignature = isValidateSignature;
-    }
-
     @Required
     public void setConsumerBusinessController(final IConsumerBusinessController consumerBusinessController) {
         this.consumerBusinessController = consumerBusinessController;

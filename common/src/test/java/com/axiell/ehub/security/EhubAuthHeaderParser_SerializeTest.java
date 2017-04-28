@@ -2,11 +2,11 @@ package com.axiell.ehub.security;
 
 import com.axiell.auth.AuthInfo;
 import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.auth.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,21 +50,21 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
      */
     @Test
     public void testSerialize() throws EhubException {
-        AuthInfo expInfo1 = new AuthInfo(null, EHUB_CONSUMER_ID, new Patron.Builder().libraryCard(LIBRARY_CARD).pin(PIN).build());
+        AuthInfo expInfo1 = new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(new Patron.Builder().libraryCard(LIBRARY_CARD).pin(PIN).build()).build();
         String actInfoValue1 = underTest.serialize(expInfo1);
         Assert.assertEquals(expInfoValue1, actInfoValue1);
 
-        AuthInfo expInfo2 = new AuthInfo(null, EHUB_CONSUMER_ID, new Patron.Builder().build());
+        AuthInfo expInfo2 = new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(new Patron.Builder().build()).build();
         String actInfoValue2 = underTest.serialize(expInfo2);
         Assert.assertEquals(expInfoValue2, actInfoValue2);
 
         AuthInfo expInfo3 =
-                new AuthInfo(null, EHUB_CONSUMER_ID, new Patron.Builder().id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).build());
+                new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(new Patron.Builder().id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).build()).build();
         String actInfoValue3 = underTest.serialize(expInfo3);
         Assert.assertEquals(expInfoValue3, actInfoValue3);
 
         AuthInfo expInfo4 =
-                new AuthInfo(null, EHUB_CONSUMER_ID, new Patron.Builder().id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).email(EMAIL).build());
+                new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(new Patron.Builder().id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).email(EMAIL).build()).build();
         String actInfoValue4 = underTest.serialize(expInfo4);
         Assert.assertEquals(expInfoValue4, actInfoValue4);
     }
@@ -75,7 +75,7 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
     @Test
     public void testMissingSecretKey() {
         try {
-            AuthInfo authInfo = new AuthInfo(null, Long.MAX_VALUE, null);
+            AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(Long.MAX_VALUE).build();
             underTest.setAuthHeaderSecretKeyResolver(new NullAuthHeaderSecretKeyResolver());
             underTest.serialize(authInfo);
             fail("An EhubException should have been thrown");
@@ -94,9 +94,5 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
             return null;
         }
 
-        @Override
-        public boolean isValidateSignature() {
-            return false;
-        }
     }
 }

@@ -1,13 +1,10 @@
 package com.axiell.ehub.security;
 
-import com.axiell.auth.AuthInfo;
-import com.axiell.auth.IAuthHeaderParser;
-import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.*;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
-import com.axiell.auth.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +45,8 @@ public class AuthInfoResolverTest {
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoResolver();
         given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
-        given(authInfoSecretKeyResolver.isValidateSignature()).willReturn(true);
         ehubAuthHeaderParser = new EhubAuthHeaderParser();
+        ehubAuthHeaderParser.setValidateSignature(true);
         ehubAuthHeaderParser.setAuthHeaderSecretKeyResolver(authInfoSecretKeyResolver);
         underTest.setDefaultScheme(IAuthHeaderParser.EHUB_SCHEME);
         underTest.setAuthHeaderParsers(Collections.singletonMap(IAuthHeaderParser.EHUB_SCHEME, ehubAuthHeaderParser));
@@ -93,7 +90,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenAuthorizationHeader() throws EhubException {
-        AuthInfo authInfo = new AuthInfo(null,EHUB_CONSUMER_ID, patron);
+        AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
         authorizationHeader = ehubAuthHeaderParser.serialize(authInfo);
     }
 

@@ -1,0 +1,45 @@
+package com.axiell.auth.jwt;
+
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.ConstantAuthHeaderSecretKeyResolver;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.Patron;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.hamcrest.core.Is.is;
+
+public class JwtAuthHeaderParserTest {
+    private static final long EXPIRATION_TIME_IN_SECONDS = 1000L;
+    private static final long ARENA_AGENCY_MEMBER_ID = 2000L;
+    private static final long ARENA_PORTAL_SITE_ID = 3000L;
+    private static final long EHUB_CONSUMER_ID = 4000L;
+    private static final String PATRON_ID = "patronId";
+    private static final String NAME = "name";
+    private static final long USER_ID = 10L;
+    private static final String EMAIL = "email";
+    private static final String PIN = "pin";
+    private static final String LIBRARY_CARD = "libraryCard";
+    private static final String SECRET_KEY = "c2VjcmV0S2V5"; // base64 encoded secretKey
+
+    private JwtAuthHeaderParser underTest;
+    private AuthInfo authInfo;
+
+    @Before
+    public void setUp() {
+        IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver = new ConstantAuthHeaderSecretKeyResolver(SECRET_KEY);
+        underTest = new JwtAuthHeaderParser();
+        underTest.setAuthHeaderSecretKeyResolver(authHeaderSecretKeyResolver);
+        underTest.setExpirationTimeInSeconds(EXPIRATION_TIME_IN_SECONDS);
+        Patron patron = new Patron.Builder().arenaUserId(USER_ID).email(EMAIL).name(NAME).id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).build();
+        authInfo = new AuthInfo.Builder().arenaAgencyMemberId(ARENA_AGENCY_MEMBER_ID).arenaPortalSiteId(ARENA_PORTAL_SITE_ID).ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
+    }
+
+    @Test
+    public void serializeAndParse() {
+        String authorizationHeader = underTest.serialize(authInfo);
+        AuthInfo actualAuthInfo = underTest.parse(authorizationHeader);
+        Assert.assertThat(actualAuthInfo, is(actualAuthInfo));
+    }
+}

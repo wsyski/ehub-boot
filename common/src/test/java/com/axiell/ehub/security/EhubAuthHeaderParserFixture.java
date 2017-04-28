@@ -27,10 +27,5 @@ public abstract class EhubAuthHeaderParserFixture {
         public String getSecretKey(Long ehubConsumerId) {
             return SECRET_KEY;
         }
-
-        @Override
-        public boolean isValidateSignature() {
-            return false;
-        }
     }
 }
