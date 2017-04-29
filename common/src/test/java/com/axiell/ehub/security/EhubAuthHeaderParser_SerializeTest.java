@@ -29,16 +29,16 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
     @Before
     public void setUp() {
         expInfoValue1 = MessageFormat
-                .format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
+                .format("ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
                         authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN), authInfoEncode(SIGNATURE_0));
-        expInfoValue2 = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_signature=\"{1}\"",
+        expInfoValue2 = MessageFormat.format("ehub_consumer_id=\"{0}\", ehub_signature=\"{1}\"",
                 authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(SIGNATURE_1));
         expInfoValue3 = MessageFormat
-                .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
+                .format("ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_signature=\"{4}\"",
                         authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(PATRON_ID), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN),
                         authInfoEncode(SIGNATURE_2));
         expInfoValue4 = MessageFormat
-                .format("eHUB ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_email=\"{4}\", ehub_signature=\"{5}\"",
+                .format("ehub_consumer_id=\"{0}\", ehub_patron_id=\"{1}\", ehub_library_card=\"{2}\", ehub_pin=\"{3}\", ehub_email=\"{4}\", ehub_signature=\"{5}\"",
                         authInfoEncode(String.valueOf(EHUB_CONSUMER_ID)), authInfoEncode(PATRON_ID), authInfoEncode(LIBRARY_CARD), authInfoEncode(PIN),
                         authInfoEncode(EMAIL), authInfoEncode(SIGNATURE_3));
     }
@@ -94,5 +94,14 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
             return null;
         }
 
+        @Override
+        public boolean isValidate() {
+            return true;
+        }
+
+        @Override
+        public long getExpirationTimeInSeconds() {
+            return 0;
+        }
     }
 }

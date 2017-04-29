@@ -2,7 +2,6 @@ package com.axiell.auth.jwt;
 
 import com.axiell.auth.AuthInfo;
 import com.axiell.auth.ConstantAuthHeaderSecretKeyResolver;
-import com.axiell.auth.IAuthHeaderSecretKeyResolver;
 import com.axiell.auth.Patron;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +10,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 
 public class JwtAuthHeaderParserTest {
-    private static final long EXPIRATION_TIME_IN_SECONDS = 1000L;
+    private static final long EXPIRATION_TIME_IN_SECONDS = 0L;
     private static final long ARENA_AGENCY_MEMBER_ID = 2000L;
     private static final long ARENA_PORTAL_SITE_ID = 3000L;
     private static final long EHUB_CONSUMER_ID = 4000L;
@@ -28,10 +27,12 @@ public class JwtAuthHeaderParserTest {
 
     @Before
     public void setUp() {
-        IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver = new ConstantAuthHeaderSecretKeyResolver(SECRET_KEY);
+        ConstantAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver = new ConstantAuthHeaderSecretKeyResolver();
+        authHeaderSecretKeyResolver.setSecretKey(SECRET_KEY);
+        authHeaderSecretKeyResolver.setExpirationTimeInSeconds(EXPIRATION_TIME_IN_SECONDS);
+        authHeaderSecretKeyResolver.setValidate(true);
         underTest = new JwtAuthHeaderParser();
         underTest.setAuthHeaderSecretKeyResolver(authHeaderSecretKeyResolver);
-        underTest.setExpirationTimeInSeconds(EXPIRATION_TIME_IN_SECONDS);
         Patron patron = new Patron.Builder().arenaUserId(USER_ID).email(EMAIL).name(NAME).id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).build();
         authInfo = new AuthInfo.Builder().arenaAgencyMemberId(ARENA_AGENCY_MEMBER_ID).arenaPortalSiteId(ARENA_PORTAL_SITE_ID).ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
     }

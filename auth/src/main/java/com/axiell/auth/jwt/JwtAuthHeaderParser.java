@@ -14,6 +14,9 @@ import com.axiell.auth.util.AuthRuntimeException;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 
 public class JwtAuthHeaderParser implements IAuthHeaderParser {
@@ -28,21 +31,13 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
     private static final String PRIVATE_CLAIM_EHUB_CONSUMER_ID = "ehubConsumerId";
 
     private IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
-    private long expirationTimeInSeconds;
 
     @Override
     public AuthInfo parse(final String value) {
-        String secretKey = authHeaderSecretKeyResolver.getSecretKey(null);
-        JWTVerifier jwtVerifier;
-        try {
-            jwtVerifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
-        } catch (UnsupportedEncodingException ex) {
-            throw new AuthRuntimeException(ex.getMessage(), ex);
-        }
-        DecodedJWT decodedJWT = jwtVerifier.verify(value);
+        DecodedJWT decodedJWT = JWT.decode(value);
+        Long ehubConsumerId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_EHUB_CONSUMER_ID);
         Long arenaAgencyMemberId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID);
         Long arenaPortalSiteId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_ARENA_PORTAL_SITE_ID);
-        Long ehubConsumerId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_EHUB_CONSUMER_ID);
         Patron.Builder patronBuilder = new Patron.Builder()
                 .email(getClaimAsString(decodedJWT, PUBLIC_CLAIM_EMAIL))
                 .name(getClaimAsString(decodedJWT, PUBLIC_CLAIM_NAME))
@@ -55,13 +50,28 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
                 .arenaPortalSiteId(arenaPortalSiteId)
                 .ehubConsumerId(ehubConsumerId)
                 .patron(patronBuilder.build());
-        return authInfoBuilder.build();
+        AuthInfo authInfo = authInfoBuilder.build();
+        if (authHeaderSecretKeyResolver.isValidate()) {
+            String secretKey = authHeaderSecretKeyResolver.getSecretKey(authInfo.getEhubConsumerId());
+            JWTVerifier jwtVerifier;
+            try {
+                jwtVerifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+            } catch (UnsupportedEncodingException ex) {
+                throw new AuthRuntimeException(ex.getMessage(), ex);
+            }
+            jwtVerifier.verify(value);
+        }
+        return authInfo;
     }
 
     @Override
     public String serialize(final AuthInfo authInfo) {
-        String secretKey = authHeaderSecretKeyResolver.getSecretKey(null);
-        JWTCreator.Builder tokenBuilder = JWT.create().withExpiresAt(getExpirationDate()).withIssuedAt(new Date());
+        JWTCreator.Builder tokenBuilder = JWT.create().withIssuedAt(new Date());
+        Date expirationDate = getExpirationDate();
+        if (expirationDate != null) {
+            tokenBuilder = tokenBuilder.withExpiresAt(expirationDate);
+        }
+        tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_EHUB_CONSUMER_ID, authInfo.getEhubConsumerId());
         tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID, authInfo.getArenaAgencyMemberId());
         tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_PORTAL_SITE_ID, authInfo.getArenaPortalSiteId());
         Patron patron = authInfo.getPatron();
@@ -73,6 +83,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
             tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_PATRON_ID, patron.getId());
             tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_USER_ID, patron.getArenaUserId());
         }
+        String secretKey = authHeaderSecretKeyResolver.getSecretKey(authInfo.getEhubConsumerId());
         try {
             return tokenBuilder.sign(Algorithm.HMAC256(secretKey));
         } catch (UnsupportedEncodingException ex) {
@@ -84,7 +95,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
         if (value instanceof String) {
             return builder.withClaim(key, String.class.cast(value));
         } else if (value instanceof Long) {
-            return builder.withClaim(key, (int)Long.class.cast(value).longValue());
+            return builder.withClaim(key, (int) Long.class.cast(value).longValue());
         } else if (value instanceof Integer) {
             return builder.withClaim(key, Integer.class.cast(value));
         } else if (value instanceof Boolean) {
@@ -107,12 +118,15 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
     }
 
     public Date getExpirationDate() {
-        return new Date(new Date().getTime() + expirationTimeInSeconds * 1000);
+        if (authHeaderSecretKeyResolver.getExpirationTimeInSeconds() > 0) {
+            return new Date(new Date().getTime() + authHeaderSecretKeyResolver.getExpirationTimeInSeconds() * 1000);
+        } else {
+            return null;
+        }
     }
 
-    @Required
-    public void setExpirationTimeInSeconds(final long expirationTimeInSeconds) {
-        this.expirationTimeInSeconds = expirationTimeInSeconds;
+    public String getSecretKey(final Long id) {
+        return new String(Base64.getDecoder().decode(authHeaderSecretKeyResolver.getSecretKey(id)), StandardCharsets.UTF_8);
     }
 
     @Required
