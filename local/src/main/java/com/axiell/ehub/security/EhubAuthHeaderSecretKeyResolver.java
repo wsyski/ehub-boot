@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class EhubAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
 
-    private boolean isValidateSignature;
+    private boolean isValidate;
+    private long expirationTimeInSeconds;
 
     private IConsumerBusinessController consumerBusinessController;
 
@@ -19,8 +20,30 @@ public class EhubAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyReso
         return ehubConsumer.getSecretKey();
     }
 
+
+
+    @Override
+    public boolean isValidate() {
+        return false;
+    }
+
+    @Override
+    public long getExpirationTimeInSeconds() {
+        return expirationTimeInSeconds;
+    }
+
     @Required
     public void setConsumerBusinessController(final IConsumerBusinessController consumerBusinessController) {
         this.consumerBusinessController = consumerBusinessController;
+    }
+
+    @Required
+    public void setValidate(final boolean isValidate) {
+        this.isValidate = isValidate;
+    }
+
+    @Required
+    public void setExpirationTimeInSeconds(final long expirationTimeInSeconds) {
+        this.expirationTimeInSeconds = expirationTimeInSeconds;
     }
 }

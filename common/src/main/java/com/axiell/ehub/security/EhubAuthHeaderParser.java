@@ -3,10 +3,10 @@ package com.axiell.ehub.security;
 import com.axiell.auth.AuthInfo;
 import com.axiell.auth.IAuthHeaderParser;
 import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.auth.Patron;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
@@ -32,20 +32,19 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     private static final int SECOND_GROUP = 2;
 
     private IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
-    private  boolean isValidateSignature;
 
     public AuthInfo parse(final String value) {
         validateInputIsNotNull(value, ErrorCause.MISSING_AUTHORIZATION_HEADER);
         final Map<String, String> authHeaderParams = parseAuthorizationHeader(value);
         long ehubConsumerId = getEhubConsumerId(authHeaderParams);
         Patron patron = getPatron(authHeaderParams);
-        final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
         final String actualSignature = getActualSignature(authHeaderParams);
         if (actualSignature == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
         }
+        if (authHeaderSecretKeyResolver.isValidate()) {
+            final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
 
-        if (isValidateSignature) {
             final Signature expectedSignature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
 
             //TODO: Remove when all Arena installations are upgraded
@@ -89,7 +88,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
             }
         }
         appendItem(sb, EHUB_SIGNATURE, getSignature(ehubConsumerId, patron, secretKey));
-        return EHUB_SCHEME + " " + sb.toString();
+        return sb.toString();
     }
 
     private void appendItem(final StringBuilder sb, final String name, final String value) {
@@ -217,10 +216,5 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     @Required
     public void setAuthHeaderSecretKeyResolver(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
         this.authHeaderSecretKeyResolver = authHeaderSecretKeyResolver;
-    }
-
-    @Required
-    public void setValidateSignature(boolean isValidateSignature) {
-        this.isValidateSignature = isValidateSignature;
     }
 }

@@ -27,7 +27,7 @@ public class AuthInfoResolver implements IAuthInfoResolver {
     @Override
     public String serialize(final AuthInfo authInfo) {
         IAuthHeaderParser authHeaderParser = authHeaderParsers.get(defaultScheme);
-        return authHeaderParser.serialize(authInfo);
+        return defaultScheme + " " + authHeaderParser.serialize(authInfo);
     }
 
     @Required

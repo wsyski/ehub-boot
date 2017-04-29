@@ -4,7 +4,13 @@
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <import resource="classpath:/com/axiell/auth/jwt/jwt-auth-context.xml"/>
+    <bean id="ehubAuthHeaderParser" class="com.axiell.ehub.security.EhubAuthHeaderParser">
+        <property name="authHeaderSecretKeyResolver" ref="authHeaderSecretKeyResolver"/>
+    </bean>
+
+    <bean id="jwtAuthHeaderParser" class="com.axiell.auth.jwt.JwtAuthHeaderParser">
+        <property name="authHeaderSecretKeyResolver" ref="authHeaderSecretKeyResolver"/>
+    </bean>
 
     <bean id="authHeaderParsers" class="java.util.HashMap">
         <constructor-arg>
@@ -28,7 +34,7 @@
     <bean id="authInfoResolver" class="com.axiell.auth.AuthInfoResolver">
         <property name="authHeaderParsers" ref="authHeaderParsers"/>
         <property name="defaultScheme">
-            <util:constant static-field="com.axiell.auth.IAuthHeaderParser.EHUB_SCHEME"/>
+            <util:constant static-field="com.axiell.auth.IAuthHeaderParser.BEARER_SCHEME"/>
         </property>
     </bean>
 
