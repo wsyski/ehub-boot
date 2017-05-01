@@ -4,7 +4,7 @@ import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
         Fields fields = new Fields().addValue("lmsRecordId", DevelopmentData.LMS_RECORD_ID).addValue("contentProviderAlias", CONTENT_PROVIDER_TEST_EP).addValue(
                 "contentProviderRecordId", DevelopmentData.TEST_EP_RECORD_0_ID).addValue("contentProviderFormatId", DevelopmentData.TEST_EP_FORMAT_0_ID);
         pendingLoan = new PendingLoan(fields);
-        patron = new Patron.Builder(DevelopmentData.LIBRARY_CARD, DevelopmentData.PIN).build();
+        patron = new Patron.Builder().libraryCard(DevelopmentData.LIBRARY_CARD).pin(DevelopmentData.PIN).build();
         isLoanPerProduct = false;
     }
 

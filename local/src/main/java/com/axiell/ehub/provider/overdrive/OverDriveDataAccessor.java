@@ -8,7 +8,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -22,6 +22,7 @@ import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
+import com.axiell.ehub.util.PatronUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -141,8 +142,8 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     private OAuthAccessToken getOAuthAccessToken(final CommandData data) {
         ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
-        final String libraryCard = patron.getLibraryCard();
-        final String pin = patron.getPin();
+        final String libraryCard = PatronUtil.getMandatoryLibraryCard(patron);
+        final String pin = PatronUtil.getMandatoryPin(patron);
         return overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
     }
 

@@ -4,7 +4,7 @@ import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.CommandData;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class OcdCheckoutHandlerTest {
     protected ContentProviderConsumer contentProviderConsumer;
 
     private Checkout actualCheckout;
-    private Patron patron = new Patron.Builder(CARD, PIN).build();
+    private Patron patron = new Patron.Builder().libraryCard(CARD).pin(PIN).build();
 
     @Before
     public void setUpUnderTest() {

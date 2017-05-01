@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 
@@ -25,7 +25,7 @@ public class AbstractOcdIT extends AbstractContentProviderIT {
     protected static final String FORMAT_ID_EBOOK = "eBook";
 
     protected OcdFacade underTest;
-    protected Patron patron = new Patron.Builder(CARD, PIN).email(EMAIL).build();
+    protected Patron patron = new Patron.Builder().libraryCard(CARD).pin(PIN).email(EMAIL).build();
 
     @Before
     public void setUpUnderTest() {

@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 import org.junit.Test;

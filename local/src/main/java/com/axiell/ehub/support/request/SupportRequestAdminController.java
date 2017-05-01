@@ -4,9 +4,10 @@ import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.ehub.security.AuthInfo;
-import com.axiell.ehub.security.EhubParamConverterProvider;
+import com.axiell.auth.AuthInfo;
+import com.axiell.ehub.security.AuthInfoParamConverterProvider;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.RestClientProxyFactoryBean;
 import com.axiell.ehub.v1.XjcSupport;
@@ -33,7 +34,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     private static final String STATUS_NOT_AVAILABLE = "N/A";
 
     private ClientHttpEngine httpEngine;
-    private EhubParamConverterProvider ehubParamConverterProvider;
+    private AuthInfoParamConverterProvider authInfoParamConverterProvider;
 
     @Override
     public DefaultSupportResponse getRecord(final RequestArguments arguments) {
@@ -169,7 +170,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         final String patronId = arguments.getPatronId();
         final String libraryCard = arguments.getLibraryCard();
         final String pin = arguments.getPin();
-        return new AuthInfo.Builder(ehubConsumer.getId()).patronId(patronId).libraryCard(libraryCard).pin(pin).build();
+        return new AuthInfo.Builder().ehubConsumerId(ehubConsumer.getId()).patron(new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).build()).build();
     }
 
     private DefaultSupportResponse makeSupportResponse(final SupportRequest supportRequest, final String status, final Object dto) {
@@ -190,7 +191,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         proxyFactoryBean.setHttpEngine(httpEngine);
         try {
             proxyFactoryBean.setBaseUri(new URI(baseUri));
-            proxyFactoryBean.setEhubParamConverterProvider(ehubParamConverterProvider);
+            proxyFactoryBean.setAuthInfoParamConverterProvider(authInfoParamConverterProvider);
             proxyFactoryBean.afterPropertiesSet();
             return clazz.cast(proxyFactoryBean.getObject());
         } catch (Exception ex) {
@@ -204,7 +205,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     }
 
     @Required
-    public void setEhubParamConverterProvider(final EhubParamConverterProvider ehubParamConverterProvider) {
-        this.ehubParamConverterProvider = ehubParamConverterProvider;
+    public void setAuthInfoParamConverterProvider(final AuthInfoParamConverterProvider authInfoParamConverterProvider) {
+        this.authInfoParamConverterProvider = authInfoParamConverterProvider;
     }
 }

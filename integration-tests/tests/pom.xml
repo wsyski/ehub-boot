@@ -14,6 +14,7 @@
     <modules>
         <module>remote-1.2</module>
         <module>remote-2.4</module>
+        <module>remote-2.6</module>
         <module>remote</module>
     </modules>
 
@@ -83,13 +84,19 @@
                                     <goal>deploy-war</goal>
                                 </goals>
                                 <configuration>
+                                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                                    <webApp>
+                                        <contextPath>/</contextPath>
+                                    </webApp>
+                                    <!--
+                                    <jettyXml>${project.basedir}/../../../local/config/jetty.xml</jettyXml>
+                                    -->
                                     <systemProperties>
                                         <systemProperty>
                                             <name>catalina.base</name>
                                             <value>target</value>
                                         </systemProperty>
                                     </systemProperties>
-                                    <scanIntervalSeconds>0</scanIntervalSeconds>
                                     <httpConnector>
                                         <port>16518</port>
                                     </httpConnector>
@@ -97,11 +104,7 @@
                                     <daemon>false</daemon>
                                     -->
                                     <daemon>true</daemon>
-                                    <scanIntervalSeconds>0</scanIntervalSeconds>
                                     <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
-                                    <webApp>
-                                        <contextPath>/</contextPath>
-                                    </webApp>
                                     <stopKey>STOP</stopKey>
                                     <stopPort>5005</stopPort>
                                 </configuration>
@@ -124,16 +127,4 @@
             </build>
         </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <ajdtVersion>none</ajdtVersion>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

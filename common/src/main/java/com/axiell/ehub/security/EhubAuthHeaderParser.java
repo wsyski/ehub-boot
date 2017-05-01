@@ -1,9 +1,12 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.IAuthHeaderParser;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.patron.Patron;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
@@ -35,13 +38,13 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         final Map<String, String> authHeaderParams = parseAuthorizationHeader(value);
         long ehubConsumerId = getEhubConsumerId(authHeaderParams);
         Patron patron = getPatron(authHeaderParams);
-        final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
         final String actualSignature = getActualSignature(authHeaderParams);
         if (actualSignature == null) {
             throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
         }
-        boolean isValidateSignature = authHeaderSecretKeyResolver.isValidateSignature();
-        if (isValidateSignature) {
+        if (authHeaderSecretKeyResolver.isValidate()) {
+            final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
+
             final Signature expectedSignature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
 
             //TODO: Remove when all Arena installations are upgraded
@@ -51,7 +54,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
                 throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
             }
         }
-        return new AuthInfo(ehubConsumerId, patron);
+        return new AuthInfo.Builder().ehubConsumerId(ehubConsumerId).patron(patron).build();
     }
 
     @Override
@@ -85,7 +88,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
             }
         }
         appendItem(sb, EHUB_SIGNATURE, getSignature(ehubConsumerId, patron, secretKey));
-        return EHUB_SCHEME + " " + sb.toString();
+        return sb.toString();
     }
 
     private void appendItem(final StringBuilder sb, final String name, final String value) {
@@ -207,7 +210,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         final String libraryCard = getLibraryCard(authHeaderParams);
         final String pin = getPin(authHeaderParams);
         final String email = getEmail(authHeaderParams);
-        return new Patron.Builder(libraryCard, pin).id(patronId).email(email).build();
+        return new Patron.Builder().id(patronId).libraryCard(libraryCard).pin(pin).email(email).build();
     }
 
     @Required

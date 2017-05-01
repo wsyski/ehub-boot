@@ -4,7 +4,7 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.security.Signature;
 import com.axiell.ehub.security.UnauthorizedException;

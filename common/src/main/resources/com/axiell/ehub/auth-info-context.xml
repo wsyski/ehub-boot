@@ -5,11 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="ehubAuthHeaderParser" class="com.axiell.ehub.security.EhubAuthHeaderParser">
-        <property name="authHeaderSecretKeyResolver" ref="ehubAuthHeaderSecretKeyResolver"/>
+        <property name="authHeaderSecretKeyResolver" ref="authHeaderSecretKeyResolver"/>
     </bean>
 
-    <bean id="jwtAuthHeaderParser" class="com.axiell.ehub.security.JwtAuthHeaderParser">
-        <property name="authHeaderSecretKeyResolver" ref="jwtAuthHeaderSecretKeyResolver"/>
+    <bean id="jwtAuthHeaderParser" class="com.axiell.auth.jwt.JwtAuthHeaderParser">
+        <property name="authHeaderSecretKeyResolver" ref="authHeaderSecretKeyResolver"/>
     </bean>
 
     <bean id="authHeaderParsers" class="java.util.HashMap">
@@ -23,7 +23,7 @@
                 </entry>
                 <entry>
                     <key>
-                        <util:constant static-field="com.axiell.ehub.security.JwtAuthHeaderParser.BEARER_SCHEME"/>
+                        <util:constant static-field="com.axiell.auth.jwt.JwtAuthHeaderParser.BEARER_SCHEME"/>
                     </key>
                     <ref bean="jwtAuthHeaderParser"/>
                 </entry>
@@ -31,14 +31,12 @@
         </constructor-arg>
     </bean>
 
-    <bean id="authInfoResolver" class="com.axiell.ehub.security.AuthInfoResolver">
+    <bean id="authInfoResolver" class="com.axiell.auth.AuthInfoResolver">
         <property name="authHeaderParsers" ref="authHeaderParsers"/>
         <property name="defaultScheme">
-            <util:constant static-field="com.axiell.ehub.security.IAuthHeaderParser.EHUB_SCHEME"/>
+            <util:constant static-field="com.axiell.auth.IAuthHeaderParser.BEARER_SCHEME"/>
         </property>
     </bean>
 
-    <bean id="ehubParamConverterProvider" class="com.axiell.ehub.security.EhubParamConverterProvider">
-        <constructor-arg ref="authInfoResolver"/>
-    </bean>
+    <bean id="ehubParamConverterProvider" class="com.axiell.ehub.security.AuthInfoParamConverterProvider"/>
 </beans>

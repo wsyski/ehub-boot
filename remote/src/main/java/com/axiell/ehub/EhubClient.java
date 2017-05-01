@@ -8,13 +8,9 @@ import com.axiell.ehub.provider.IContentProvidersResource;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.ehub.security.AuthInfo;
-import com.axiell.ehub.util.EhubUrlCodec;
+import com.axiell.auth.AuthInfo;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.Set;
 
 /**
  * The eHUB client is the only publicly accessible component of the {@link IEhubService}.

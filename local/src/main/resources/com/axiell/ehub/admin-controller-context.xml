@@ -21,6 +21,6 @@
 
     <bean id="supportRequestAdminController" class="com.axiell.ehub.support.request.SupportRequestAdminController">
         <property name="httpEngine" ref="ehubHttpEngine"/>
-		<property name="ehubParamConverterProvider" ref="ehubParamConverterProvider"/>
+		<property name="authInfoParamConverterProvider" ref="ehubParamConverterProvider"/>
 	</bean>
 </beans>

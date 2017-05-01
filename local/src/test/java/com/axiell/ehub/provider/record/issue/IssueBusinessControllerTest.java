@@ -7,9 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 
-import com.axiell.ehub.patron.Patron;
-import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
-import com.axiell.ehub.provider.record.issue.IssueBusinessController;
+import com.axiell.auth.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +20,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IssueBusinessControllerTest {
@@ -38,7 +36,7 @@ public class IssueBusinessControllerTest {
 
     @Before
     public void setUpCommonArguments() throws Exception {
-        authInfo = new AuthInfo.Builder(0L).libraryCard("libraryCard").pin("pin").build();
+        authInfo = new AuthInfo.Builder().ehubConsumerId(0L).patron(new Patron.Builder().libraryCard("libraryCard").pin("pin").build()).build();
     }
 
     @Before

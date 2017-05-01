@@ -1,10 +1,13 @@
 package com.axiell.ehub.security;
 
+import com.axiell.auth.AuthInfo;
+import com.axiell.auth.AuthInfoResolver;
+import com.axiell.auth.IAuthHeaderSecretKeyResolver;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.patron.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.text.MessageFormat;
 import java.util.Collections;
 
+import static com.axiell.auth.IAuthHeaderParser.EHUB_SCHEME;
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
@@ -38,18 +42,19 @@ public class AuthInfoResolverTest {
     private String email;
     private Signature expSignature;
     private String authorizationHeader;
-    EhubAuthHeaderParser ehubAuthHeaderParser;
+    private EhubAuthHeaderParser ehubAuthHeaderParser;
     private AuthInfo actualAuthInfo;
 
     @Before
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoResolver();
         given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
-        given(authInfoSecretKeyResolver.isValidateSignature()).willReturn(true);
+        given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
+        given(authInfoSecretKeyResolver.getExpirationTimeInSeconds()).willReturn(0L);
         ehubAuthHeaderParser = new EhubAuthHeaderParser();
         ehubAuthHeaderParser.setAuthHeaderSecretKeyResolver(authInfoSecretKeyResolver);
-        underTest.setDefaultScheme(IAuthHeaderParser.EHUB_SCHEME);
-        underTest.setAuthHeaderParsers(Collections.singletonMap(IAuthHeaderParser.EHUB_SCHEME, ehubAuthHeaderParser));
+        underTest.setDefaultScheme(EHUB_SCHEME);
+        underTest.setAuthHeaderParsers(Collections.singletonMap(EHUB_SCHEME, ehubAuthHeaderParser));
     }
 
     @Test
@@ -90,8 +95,8 @@ public class AuthInfoResolverTest {
     }
 
     private void givenAuthorizationHeader() throws EhubException {
-        AuthInfo authInfo = new AuthInfo(EHUB_CONSUMER_ID, patron);
-        authorizationHeader = ehubAuthHeaderParser.serialize(authInfo);
+        AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
+        authorizationHeader = EHUB_SCHEME + " " + ehubAuthHeaderParser.serialize(authInfo);
     }
 
     private void givenValidSignature() {
@@ -99,7 +104,7 @@ public class AuthInfoResolverTest {
     }
 
     private void givenPatron() {
-        patron = new Patron.Builder(card, pin).id(patronId).email(email).build();
+        patron = new Patron.Builder().id(patronId).libraryCard(card).pin(pin).email(email).build();
     }
 
     private void givenPatronId() {

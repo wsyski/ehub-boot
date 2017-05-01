@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub.consumer;
 
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 /**
  * Defines the business methods related to {@link EhubConsumer}s.

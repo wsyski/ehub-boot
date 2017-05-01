@@ -7,7 +7,8 @@ import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionMatcher;
 import com.axiell.ehub.error.LmsErrorExceptionMatcher;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.Patron;
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestData;
 import com.axiell.ehub.test.TestDataConstants;
@@ -116,8 +117,8 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder(testData.getEhubConsumerId()).libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).patronId(testData.getPatronId()).email(testData.getEmail()).build();
+        authInfo = new AuthInfo.Builder().ehubConsumerId(testData.getEhubConsumerId()).patron(new Patron.Builder().libraryCard(testData.getLibraryCard())
+                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).build()).build();
     }
 
     private ITestDataResource getTestDataResource() {

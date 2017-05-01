@@ -17,7 +17,7 @@
         <property name="baseUri" ref="ehubUri"/>
         <property name="httpEngine" ref="ehubHttpEngine"/>
         <property name="resteasyProviderFactory" ref="resteasyProviderFactory"/>
-        <property name="ehubParamConverterProvider" ref="ehubParamConverterProvider"/>
+        <property name="authInfoParamConverterProvider" ref="ehubParamConverterProvider"/>
     </bean>
 
     <bean id="ehubClient" class="com.axiell.ehub.EhubClient">

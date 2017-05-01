@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.askews;
 import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.LoanRequestResult;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 
 public interface IAskewsFacade {
     

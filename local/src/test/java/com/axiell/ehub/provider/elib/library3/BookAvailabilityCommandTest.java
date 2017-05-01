@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

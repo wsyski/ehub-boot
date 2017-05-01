@@ -9,7 +9,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.provider.record.issue.IssueBuilder;
@@ -115,6 +115,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void givenPinInPatron() {
+        given(patron.hasPin()).willReturn(true);
         given(patron.getPin()).willReturn(PIN);
     }
 

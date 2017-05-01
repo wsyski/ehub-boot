@@ -9,11 +9,11 @@ import com.axiell.ehub.error.EhubExceptionMatcher;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -91,7 +91,7 @@ public class LoanBusinessControllerTest {
 
     @Before
     public void setUpCommonArguments() throws EhubException {
-        authInfo = new AuthInfo.Builder(0L).libraryCard("libraryCard").pin("pin").build();
+        authInfo = new AuthInfo.Builder().ehubConsumerId(0L).patron(new Patron.Builder().libraryCard("libraryCard").pin("pin").build()).build();
     }
 
     @Before

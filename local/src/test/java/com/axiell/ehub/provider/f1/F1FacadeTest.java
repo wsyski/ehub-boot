@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Before;
@@ -53,6 +53,7 @@ public class F1FacadeTest {
     public void setUpUnderTest() {
         underTest = new F1Facade();
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(patron.hasLibraryCard()).willReturn(true);
         given(patron.getLibraryCard()).willReturn(CARD);
         given(commandData.getPatron()).willReturn(patron);
         given(f1ServiceSoapFactory.getInstance(contentProviderConsumer)).willReturn(f1ServiceSoap);

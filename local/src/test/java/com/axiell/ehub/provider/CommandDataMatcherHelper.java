@@ -4,7 +4,7 @@ import com.axiell.ehub.Fields;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.ehub.patron.Patron;
+import com.axiell.auth.Patron;
 
 public class CommandDataMatcherHelper {
     private final CommandData data;

@@ -2,7 +2,7 @@ package com.axiell.ehub.v1.provider.record;
 
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.provider.record.issue.Issue;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 import com.axiell.ehub.v1.provider.record.format.FormatsV1Converter;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 import org.apache.commons.lang3.StringUtils;

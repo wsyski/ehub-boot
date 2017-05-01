@@ -3,9 +3,7 @@
  */
 package com.axiell.ehub.v2.provider.record;
 
-import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.ehub.provider.record.RecordsDTO;
-import com.axiell.ehub.security.AuthInfo;
+import com.axiell.auth.AuthInfo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
