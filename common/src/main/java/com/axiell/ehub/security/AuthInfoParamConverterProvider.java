@@ -2,6 +2,7 @@ package com.axiell.ehub.security;
 
 import com.axiell.auth.AuthInfo;
 import com.axiell.auth.IAuthInfoResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
@@ -10,13 +11,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 @Provider
-public class EhubParamConverterProvider implements ParamConverterProvider {
+public class AuthInfoParamConverterProvider implements ParamConverterProvider {
 
+    @Autowired
     private IAuthInfoResolver authInfoResolver;
-
-    public EhubParamConverterProvider(final IAuthInfoResolver authInfoResolver) {
-        this.authInfoResolver = authInfoResolver;
-    }
 
     @Override
     public <T> ParamConverter<T> getConverter(final Class<T> rawType, final Type genericType, final Annotation[] annotations) {
