@@ -1,6 +1,6 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.security.EhubParamConverterProvider;
+import com.axiell.ehub.security.AuthInfoParamConverterProvider;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -19,7 +19,7 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
     private T proxy;
     private ClientHttpEngine httpEngine;
     private ResteasyProviderFactory resteasyProviderFactory;
-    private EhubParamConverterProvider ehubParamConverterProvider;
+    private AuthInfoParamConverterProvider authInfoParamConverterProvider;
 
     public T getObject() throws Exception {
         return proxy;
@@ -42,7 +42,7 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
         if (httpEngine != null) {
             clientBuilder.httpEngine(httpEngine);
         }
-        clientBuilder.register(ehubParamConverterProvider);
+        clientBuilder.register(authInfoParamConverterProvider);
         ResteasyClient client = clientBuilder.build();
         ResteasyWebTarget target = client.target(baseUri);
         proxy = target.proxy(serviceInterface);
@@ -83,7 +83,7 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
     }
 
     @Required
-    public void setEhubParamConverterProvider(final EhubParamConverterProvider ehubParamConverterProvider) {
-        this.ehubParamConverterProvider = ehubParamConverterProvider;
+    public void setAuthInfoParamConverterProvider(final AuthInfoParamConverterProvider authInfoParamConverterProvider) {
+        this.authInfoParamConverterProvider = authInfoParamConverterProvider;
     }
 }

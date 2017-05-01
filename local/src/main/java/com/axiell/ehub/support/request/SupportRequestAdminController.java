@@ -7,7 +7,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.auth.Patron;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.auth.AuthInfo;
-import com.axiell.ehub.security.EhubParamConverterProvider;
+import com.axiell.ehub.security.AuthInfoParamConverterProvider;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.RestClientProxyFactoryBean;
 import com.axiell.ehub.v1.XjcSupport;
@@ -34,7 +34,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     private static final String STATUS_NOT_AVAILABLE = "N/A";
 
     private ClientHttpEngine httpEngine;
-    private EhubParamConverterProvider ehubParamConverterProvider;
+    private AuthInfoParamConverterProvider authInfoParamConverterProvider;
 
     @Override
     public DefaultSupportResponse getRecord(final RequestArguments arguments) {
@@ -191,7 +191,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
         proxyFactoryBean.setHttpEngine(httpEngine);
         try {
             proxyFactoryBean.setBaseUri(new URI(baseUri));
-            proxyFactoryBean.setEhubParamConverterProvider(ehubParamConverterProvider);
+            proxyFactoryBean.setAuthInfoParamConverterProvider(authInfoParamConverterProvider);
             proxyFactoryBean.afterPropertiesSet();
             return clazz.cast(proxyFactoryBean.getObject());
         } catch (Exception ex) {
@@ -205,7 +205,7 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
     }
 
     @Required
-    public void setEhubParamConverterProvider(final EhubParamConverterProvider ehubParamConverterProvider) {
-        this.ehubParamConverterProvider = ehubParamConverterProvider;
+    public void setAuthInfoParamConverterProvider(final AuthInfoParamConverterProvider authInfoParamConverterProvider) {
+        this.authInfoParamConverterProvider = authInfoParamConverterProvider;
     }
 }

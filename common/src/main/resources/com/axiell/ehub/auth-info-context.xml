@@ -38,7 +38,5 @@
         </property>
     </bean>
 
-    <bean id="ehubParamConverterProvider" class="com.axiell.ehub.security.EhubParamConverterProvider">
-        <constructor-arg ref="authInfoResolver"/>
-    </bean>
+    <bean id="ehubParamConverterProvider" class="com.axiell.ehub.security.AuthInfoParamConverterProvider"/>
 </beans>
