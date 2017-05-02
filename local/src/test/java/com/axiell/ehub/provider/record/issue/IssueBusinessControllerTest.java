@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IssueBusinessControllerTest {

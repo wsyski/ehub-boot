@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.util.SHA512Function;
+import com.axiell.authinfo.util.SHA512Function;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_KEY;
 

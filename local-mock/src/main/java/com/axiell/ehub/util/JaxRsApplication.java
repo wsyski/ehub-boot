@@ -1,11 +1,10 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.security.AuthInfoParamConverterProvider;
+import com.axiell.authinfo.AuthInfoParamConverterProvider;
 import com.axiell.ehub.RootResource;
-import com.axiell.ehub.security.AuthorizationHeaderInterceptor;
+import com.axiell.authinfo.AuthorizationHeaderInterceptor;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 
 import java.util.logging.Level;

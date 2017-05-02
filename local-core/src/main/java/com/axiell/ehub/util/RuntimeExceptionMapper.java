@@ -1,5 +1,8 @@
 package com.axiell.ehub.util;
 
+import com.axiell.authinfo.InvalidAuthorizationHeaderSignatureRuntimeException;
+import com.axiell.authinfo.MissingOrUnparseableAuthorizationHeaderRuntimeException;
+import com.axiell.authinfo.MissingSecretKeyRuntimeException;
 import com.axiell.ehub.*;
 import com.axiell.ehub.security.UnauthorizedException;
 
@@ -22,6 +25,15 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
             return handleEhubRuntimeException(ehubException);
         } else if (cause instanceof InternalServerErrorException) {
             final InternalServerErrorException ehubException = (InternalServerErrorException) cause;
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof MissingOrUnparseableAuthorizationHeaderRuntimeException) {
+            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.MISSING_AUTHORIZATION_HEADER);
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof MissingSecretKeyRuntimeException) {
+            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.MISSING_SECRET_KEY);
+            return handleEhubRuntimeException(ehubException);
+        } else if (cause instanceof InvalidAuthorizationHeaderSignatureRuntimeException) {
+            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.INVALID_SIGNATURE);
             return handleEhubRuntimeException(ehubException);
         } else {
             LOGGER.error(exception.getMessage(), exception);

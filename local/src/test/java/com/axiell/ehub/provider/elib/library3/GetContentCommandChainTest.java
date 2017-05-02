@@ -5,7 +5,7 @@ import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;

@@ -4,7 +4,7 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.IExpirationDateFactory;

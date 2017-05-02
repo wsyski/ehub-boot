@@ -3,7 +3,7 @@ package com.axiell.ehub.provider;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

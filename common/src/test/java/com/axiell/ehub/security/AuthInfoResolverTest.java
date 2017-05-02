@@ -1,9 +1,6 @@
 package com.axiell.ehub.security;
 
-import com.axiell.auth.AuthInfo;
-import com.axiell.auth.AuthInfoResolver;
-import com.axiell.auth.IAuthHeaderSecretKeyResolver;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.*;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
@@ -18,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.text.MessageFormat;
 import java.util.Collections;
 
-import static com.axiell.auth.IAuthHeaderParser.EHUB_SCHEME;
+import static com.axiell.authinfo.IAuthHeaderParser.EHUB_SCHEME;
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
@@ -134,14 +131,10 @@ public class AuthInfoResolverTest {
         makeAuthorizationHeaderWithoutPatronIdButWithCardPin(expSignature.toString());
     }
 
-    @Test
+    @Test(expected = InvalidAuthorizationHeaderSignatureRuntimeException.class)
     public void invalidSignature() {
         givenInvalidSignatureInHeader();
-        try {
-            whenResolve();
-        } catch (UnauthorizedException e) {
-            thenActualErrorCauseEqualsExpectedErrorCause(e, ErrorCause.INVALID_SIGNATURE);
-        }
+        whenResolve();
     }
 
     private void givenInvalidSignatureInHeader() {
@@ -151,11 +144,6 @@ public class AuthInfoResolverTest {
     private void makeAuthorizationHeaderWithoutPatronIdButWithCardPin(String signature) {
         authorizationHeader = MessageFormat.format("eHUB ehub_consumer_id=\"{0}\", ehub_library_card=\"{1}\", ehub_pin=\"{2}\", ehub_signature=\"{3}\"",
                 EHUB_CONSUMER_ID, authInfoEncode(CARD), authInfoEncode(PIN), authInfoEncode(signature));
-    }
-
-    private void thenActualErrorCauseEqualsExpectedErrorCause(EhubRuntimeException e, ErrorCause expectedErrorCause) {
-        ErrorCause actualErrorCause = getActualErrorCause(e);
-        Assert.assertEquals(expectedErrorCause, actualErrorCause);
     }
 
     private ErrorCause getActualErrorCause(EhubRuntimeException e) {

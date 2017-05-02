@@ -9,7 +9,7 @@ import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 import org.springframework.beans.factory.annotation.Required;
 
 /**

@@ -1,7 +1,7 @@
 package com.axiell.ehub.lms.palma;
 
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 interface IResponseStatusChecker {
     void checkResponseStatus(com.axiell.arena.services.palma.util.status.Status status, EhubConsumer ehubConsumer, Patron patron);
