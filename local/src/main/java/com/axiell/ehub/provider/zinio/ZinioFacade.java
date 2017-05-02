@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.zinio;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.PatronUtil;
 import org.apache.commons.lang3.RandomStringUtils;

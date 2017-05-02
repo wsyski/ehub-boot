@@ -1,6 +1,6 @@
 package com.axiell.ehub.support.request;
 
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 public class SupportRequest {
     private AuthInfo authInfo;

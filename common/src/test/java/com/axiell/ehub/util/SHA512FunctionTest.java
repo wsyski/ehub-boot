@@ -1,6 +1,6 @@
 package com.axiell.ehub.util;
 
-import com.axiell.auth.util.SHA512Function;
+import com.axiell.authinfo.util.SHA512Function;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.Test;
 

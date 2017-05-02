@@ -7,7 +7,7 @@ import com.axiell.ehub.checkout.CheckoutMetadataDTO;
 import com.axiell.ehub.checkout.CheckoutsSearchResult;
 import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -2,9 +2,9 @@ package com.axiell.ehub.provider.record.issue;
 
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

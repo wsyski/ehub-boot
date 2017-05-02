@@ -4,7 +4,7 @@ import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.ehub.provider.record.issue.Issue;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 import java.util.List;
 

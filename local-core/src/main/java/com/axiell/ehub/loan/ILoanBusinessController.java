@@ -6,7 +6,7 @@ package com.axiell.ehub.loan;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutsSearchResult;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 /**
  * This interface should only be used by the resources of the eHUB REST interface or by other business controllers.

@@ -4,7 +4,7 @@ import com.axiell.ehub.Fields;
 import com.axiell.ehub.FieldsDTO;
 import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;

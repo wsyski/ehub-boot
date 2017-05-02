@@ -5,7 +5,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;

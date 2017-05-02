@@ -13,8 +13,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.axiell.ehub</groupId>
-            <artifactId>jwt-auth</artifactId>
+            <groupId>com.axiell.authinfo</groupId>
+            <artifactId>authinfo</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

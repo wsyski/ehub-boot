@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ocd;
 
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.Md5Function;
 import com.axiell.ehub.util.PatronUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;

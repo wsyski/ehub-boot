@@ -1,5 +1,7 @@
 package com.axiell.ehub.security;
 
+import com.axiell.authinfo.InvalidAuthorizationHeaderSignatureRuntimeException;
+import com.axiell.authinfo.MissingOrUnparseableAuthorizationHeaderRuntimeException;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.ErrorCause;
 import org.hamcrest.Matchers;
@@ -13,15 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 public class EhubAuthHeaderParser_ParseTest extends EhubAuthHeaderParserFixture {
 
-    @Test
+    @Test(expected = MissingOrUnparseableAuthorizationHeaderRuntimeException.class)
     public void missingAuthorizationHeader() {
         givenNoAuthorizationHeader();
-        try {
-            whenParse();
-            Assert.fail("An UnauthorizedException should have been thrown");
-        } catch (UnauthorizedException e) {
-            thenActualErrorCauseEqualsExpectedErrorCause(e, ErrorCause.MISSING_AUTHORIZATION_HEADER);
-        }
+        whenParse();
     }
 
     @Test
@@ -77,15 +74,10 @@ public class EhubAuthHeaderParser_ParseTest extends EhubAuthHeaderParserFixture 
         thenActualReturnValueIsNull();
     }
 
-    @Test
+    @Test(expected = InvalidAuthorizationHeaderSignatureRuntimeException.class)
     public void missingSignature() {
         givenNewAuthHeaderParserWithAuthorizationHeaderWithoutSignature();
-        try {
-            whenParse();
-            Assert.fail("An UnauthorizedException should have been thrown");
-        } catch (UnauthorizedException e) {
-            thenActualErrorCauseEqualsExpectedErrorCause(e, ErrorCause.MISSING_SIGNATURE);
-        }
+        whenParse();
     }
 
     @Test

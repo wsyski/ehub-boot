@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.f1;
 
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;

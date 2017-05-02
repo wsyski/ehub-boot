@@ -1,6 +1,6 @@
 package com.axiell.ehub.util;
 
-import com.axiell.ehub.security.AuthInfoParamConverterProvider;
+import com.axiell.authinfo.AuthInfoParamConverterProvider;
 import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;

@@ -9,7 +9,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.record.format.*;
 import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.provider.record.issue.IssueBuilder;

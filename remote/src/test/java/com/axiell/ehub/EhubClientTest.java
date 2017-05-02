@@ -4,7 +4,7 @@ import com.axiell.ehub.provider.IContentProvidersResource;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

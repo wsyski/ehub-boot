@@ -10,7 +10,7 @@ import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.logging.ISoapLoggingHandlerAppender;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 import com.axiell.ehub.util.PatronUtil;
