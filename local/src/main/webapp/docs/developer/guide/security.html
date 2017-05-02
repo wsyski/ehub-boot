@@ -1,0 +1,82 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHUB API Security</title>
+</head>
+<body>
+<h1>eHUB API Security</h1>
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../">Home</a></li>
+    <li><a title="eHUB Development" href="../">eHUB Development</a></li>
+    <li><a title="eHUB Development Guide" href="./">eHUB Development Guide</a></li>
+    <li class="active">eHUB API Security</li>
+</ol>
+<p>The eHUB API uses the standard HTTP Authorization header to pass authentication information. (The name of the
+    standard header is unfortunate because it carries authentication information, not authorization). Under the eHUB
+    authentication scheme, the Authorization header has the following form.</p>
+<code>Authorization: eHUB ehub_consumer_id="x1", ehub_library_card="x2", ehub_pin="x3", ehub_signature="x4"</code>
+<p>or</p>
+<code>Authorization: eHUB ehub_consumsr_id="x1", ehub_signature="x2"</code>
+<p>depending on whether end-user authentication is required or not.</p>
+<p>For example:</p>
+<code>Authorization: eHUB ehub_consumer_id="1", ehub_library_card="909265910", ehub_pin="4447",
+    ehub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"</code>
+
+<h4>Request Signature</h4>
+<p>A request signature is calculated according to the following algorithm:</p>
+<ol>
+    <li>
+        <p>First a Signature base string is created by concatenating the eHUB consumer ID, the percent-encoded library
+            card (if present) and the URL encoded pin (if present).</p>
+        <p>For example:</p>
+        <pre>If the eHUB consumer ID is 1, the library card is 909265910 and the pin is 4447 the base
+string would be 19092659104447.</pre>
+    </li>
+    <li>
+        <p>The HMAC-SHA1 function is used in the following way:</p>
+        <code>digest = HMAC-SHA1 (key, text)</code>
+        <p>where</p>
+        <ul>
+            <li>text: is set to the value of the signature base string from point 1 above</li>
+            <li>key: is set to the secret key of the eHUB Consumer</li>
+            <li>digest: is used to set the value of the "ehub_signature" parameter, after the result octet string is
+                base64-encoded
+            </li>
+        </ul>
+        <p>For example:</p>
+        <pre>If the Signature base string is 19092659104447 the base64 encoded digest would be
+GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D if the secret key is secret1.</pre>
+    </li>
+</ol>
+
+<h5>Percent Encoding</h5>
+<p>The existing percent-encoding methods do not guarantee a consistent construction of the signature base string.
+    Therefore the eHUB defines the following method for percent-encoding/URL-encoding strings:</p>
+<ol>
+    <li>Text values are first encoded as UTF-8 octets per [RFC3629] if they are not already. This does not include
+        binary values that are not intended for human consumption.
+    </li>
+    <li>
+        <p>The values are then escaped using the [RFC3986] percent-encoding (%XX) mechanism as follows</p>
+        <ol>
+            <li>
+                <p>Characters in the unreserved character set as defined by</p>
+                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html">RFC3986</a>,
+                    Section 2.3 (ALPHA, DIGIT, "-", ".", "_", "~") MUST NOT be encoded.</p>
+            </li>
+            <li>
+                <p>All other characters MUST be encoded.</p>
+            </li>
+            <li>
+                <p>The two hexadecimal characters used to represent encoded characters MUST be uppercase.</p>
+            </li>
+        </ol>
+    </li>
+</ol>
+<p>This method is used only in the construction of the signature base string. </p>
+<p>This method is different from the encoding scheme used by the "application/x-www-form-urlencoded" content-type (for
+    example, it encodes space characters as "%20" and not using the "+" character). It MAY be different from the
+    percent-encoding functions provided by web-development frameworks (e.g., encode different characters, use lowercase
+    hexadecimal characters).</p>
+</body>
+</html>
