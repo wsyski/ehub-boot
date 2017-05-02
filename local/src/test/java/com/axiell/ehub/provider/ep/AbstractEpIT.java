@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.ep;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.WebApplicationExceptionMatcher;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;

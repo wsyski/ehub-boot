@@ -7,7 +7,7 @@ import com.axiell.arena.services.palma.patron.checkouttestrequest.CheckOutTestRe
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.PatronUtil;
 import com.axiell.ehub.util.XjcSupport;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,9 +4,9 @@ import com.axiell.ehub.AbstractBusinessController;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 

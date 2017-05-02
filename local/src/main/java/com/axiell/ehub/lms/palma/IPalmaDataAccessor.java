@@ -7,7 +7,7 @@ import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 import java.util.Date;
 

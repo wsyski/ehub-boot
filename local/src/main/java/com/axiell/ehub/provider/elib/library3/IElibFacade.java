@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 interface IElibFacade {
 

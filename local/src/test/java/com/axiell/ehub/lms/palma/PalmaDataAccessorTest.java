@@ -15,7 +15,7 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 import com.axiell.ehub.provider.ContentProvider;
 import org.junit.Before;

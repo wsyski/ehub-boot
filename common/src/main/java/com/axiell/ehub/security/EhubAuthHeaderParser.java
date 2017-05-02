@@ -1,12 +1,8 @@
 package com.axiell.ehub.security;
 
-import com.axiell.auth.AuthInfo;
-import com.axiell.auth.IAuthHeaderParser;
-import com.axiell.auth.IAuthHeaderSecretKeyResolver;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.*;
 import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.InternalServerErrorException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
@@ -34,14 +30,13 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     private IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
 
     public AuthInfo parse(final String value) {
-        validateInputIsNotNull(value, ErrorCause.MISSING_AUTHORIZATION_HEADER);
+        if (StringUtils.isBlank(value)) {
+            throw new MissingOrUnparseableAuthorizationHeaderRuntimeException();
+        }
         final Map<String, String> authHeaderParams = parseAuthorizationHeader(value);
-        long ehubConsumerId = getEhubConsumerId(authHeaderParams);
+        Long ehubConsumerId = getEhubConsumerId(authHeaderParams);
         Patron patron = getPatron(authHeaderParams);
         final String actualSignature = getActualSignature(authHeaderParams);
-        if (actualSignature == null) {
-            throw new UnauthorizedException(ErrorCause.MISSING_SIGNATURE);
-        }
         if (authHeaderSecretKeyResolver.isValidate()) {
             final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
 
@@ -51,7 +46,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
             final Signature expectedCompatibilitySignature = new Signature(getSignatureCompatibilityItems(ehubConsumerId, patron), secretKey);
 
             if (!expectedSignature.isValid(actualSignature) && !expectedCompatibilitySignature.isValid(actualSignature)) {
-                throw new UnauthorizedException(ErrorCause.INVALID_SIGNATURE);
+                throw new InvalidAuthorizationHeaderSignatureRuntimeException();
             }
         }
         return new AuthInfo.Builder().ehubConsumerId(ehubConsumerId).patron(patron).build();
@@ -61,15 +56,7 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     public String serialize(final AuthInfo authInfo) {
         final StringBuilder sb = new StringBuilder();
         Long ehubConsumerId = authInfo.getEhubConsumerId();
-        if (ehubConsumerId == null) {
-            throw new InternalServerErrorException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
-        }
         final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
-        if (secretKey == null) {
-            final ErrorCauseArgument ehubConsumerIdArg = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumerId);
-            throw new InternalServerErrorException(ErrorCause.MISSING_SECRET_KEY, ehubConsumerIdArg);
-        }
-
         appendItem(sb, EHUB_CONSUMER_ID, String.valueOf(authInfo.getEhubConsumerId()));
         Patron patron = authInfo.getPatron();
         if (patron != null) {
@@ -101,7 +88,10 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         sb.append("\"");
     }
 
-    private static String getSignature(final long ehubConsumerId, final Patron patron, final String secretKey) {
+    private static String getSignature(final Long ehubConsumerId, final Patron patron, final String secretKey) {
+        if (StringUtils.isBlank(secretKey)) {
+            throw new MissingSecretKeyRuntimeException();
+        }
         Signature signature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
         return signature.toString();
     }
@@ -118,11 +108,6 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         return parameterMap;
     }
 
-    private static void validateInputIsNotNull(Object input, ErrorCause errorCause) {
-        if (input == null) {
-            throw new UnauthorizedException(errorCause);
-        }
-    }
 
     private static void putParameterToMap(final Map<String, String> parameterMap, Matcher matcher) {
         if (matcher.matches()) {
@@ -134,7 +119,9 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
 
     private static long getEhubConsumerId(final Map<String, String> authHeaderParams) {
         final String ehubConsumerId = authHeaderParams.get(EHUB_CONSUMER_ID);
-        validateInputIsNotNull(ehubConsumerId, ErrorCause.MISSING_EHUB_CONSUMER_ID);
+        if (StringUtils.isBlank(ehubConsumerId)) {
+            throw new UnauthorizedException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
+        }
         return Long.parseLong(ehubConsumerId);
     }
 
@@ -158,7 +145,9 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
 
     private static String getActualSignature(final Map<String, String> authHeaderParams) {
         final String base64EncodedSignature = authHeaderParams.get(EHUB_SIGNATURE);
-        validateInputIsNotNull(base64EncodedSignature, ErrorCause.MISSING_SIGNATURE);
+        if (StringUtils.isBlank(base64EncodedSignature)) {
+            throw new InvalidAuthorizationHeaderSignatureRuntimeException();
+        }
         return base64EncodedSignature;
     }
 

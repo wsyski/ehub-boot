@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;

@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.borrowbox;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import org.junit.Before;
 import org.mockito.Mock;

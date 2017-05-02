@@ -1,6 +1,6 @@
 package com.axiell.ehub.support.request;
 
-import com.axiell.auth.IAuthInfoResolver;
+import com.axiell.authinfo.IAuthInfoResolver;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;

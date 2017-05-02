@@ -11,7 +11,7 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package com.axiell.ehub.lms.palma;
 
 import com.axiell.arena.services.palma.util.status.Status;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

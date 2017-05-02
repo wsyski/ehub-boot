@@ -4,7 +4,7 @@ import com.askews.api.ArrayOfLoanDetails;
 import com.askews.api.LoanDetails;
 import com.askews.api.LoanRequestResult;
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 import org.junit.Assert;

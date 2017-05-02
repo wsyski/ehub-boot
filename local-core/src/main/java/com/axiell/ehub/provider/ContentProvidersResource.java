@@ -7,7 +7,7 @@ import com.axiell.ehub.NotImplementedException;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
-import com.axiell.auth.AuthInfo;
+import com.axiell.authinfo.AuthInfo;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;

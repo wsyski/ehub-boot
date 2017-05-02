@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.zinio;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 
 import java.util.List;
 

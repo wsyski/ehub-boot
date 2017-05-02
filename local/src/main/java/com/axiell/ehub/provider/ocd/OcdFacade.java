@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.ocd;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.NotFoundException;

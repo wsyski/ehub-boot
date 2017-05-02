@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.ep;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import org.hamcrest.Matchers;
 import org.junit.Test;

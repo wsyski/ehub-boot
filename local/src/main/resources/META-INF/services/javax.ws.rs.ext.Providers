@@ -1,4 +1,4 @@
-com.axiell.ehub.security.AuthorizationHeaderInterceptor
+com.axiell.authinfo.AuthorizationHeaderInterceptor
 com.axiell.ehub.logging.ClientLoggingFilter
 com.axiell.ehub.logging.ServerLoggingFilter
 com.axiell.ehub.logging.TimeLoggingClientFilter

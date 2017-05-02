@@ -5,7 +5,7 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.auth.Patron;
+import com.axiell.authinfo.Patron;
 import org.springframework.stereotype.Component;
 
 @Component

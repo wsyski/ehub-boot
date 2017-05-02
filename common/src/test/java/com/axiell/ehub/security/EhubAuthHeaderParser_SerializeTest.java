@@ -1,12 +1,10 @@
 package com.axiell.ehub.security;
 
-import com.axiell.auth.AuthInfo;
-import com.axiell.auth.IAuthHeaderSecretKeyResolver;
-import com.axiell.auth.Patron;
-import com.axiell.ehub.EhubError;
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.MissingSecretKeyRuntimeException;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.EhubException;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.InternalServerErrorException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +12,6 @@ import org.junit.Test;
 import java.text.MessageFormat;
 
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
-import static org.junit.Assert.*;
 
 public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixture {
     private String SIGNATURE_0 = "xG96OslJLhuDXYSiiEadvxL0L3Q=";
@@ -72,20 +69,11 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
     /**
      *
      */
-    @Test
+    @Test(expected = MissingSecretKeyRuntimeException.class)
     public void testMissingSecretKey() {
-        try {
-            AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(Long.MAX_VALUE).build();
-            underTest.setAuthHeaderSecretKeyResolver(new NullAuthHeaderSecretKeyResolver());
-            underTest.serialize(authInfo);
-            fail("An EhubException should have been thrown");
-        } catch (InternalServerErrorException e) {
-            assertNotNull(e);
-            EhubError ehubError = e.getEhubError();
-            assertNotNull(ehubError);
-            ErrorCause actCause = ehubError.getCause();
-            assertEquals(ErrorCause.MISSING_SECRET_KEY, actCause);
-        }
+        AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(Long.MAX_VALUE).build();
+        underTest.setAuthHeaderSecretKeyResolver(new NullAuthHeaderSecretKeyResolver());
+        underTest.serialize(authInfo);
     }
 
     protected static class NullAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
