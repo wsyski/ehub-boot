@@ -91,29 +91,7 @@
     </li>
 </ul>
 
-<h4 id="error">Error Handling</h4>
-<p>Since the eHUB API is a RESTful API the <a href="http://restpatterns.org/HTTP_Status_Codes">HTTP status code</a>
-    indicates the type of error. A JSON containing the cause of the error is also included in the body of the response.
-</p>
-<h5>Here's what an error response looks like</h5>
-<pre>
-{
-    "cause":"CONTENT_PROVIDER_ERROR",
-    "message":"The Content Provider ELIB3 returned the following error status code: The book is unavailable to loan when it lacks a valid business model ",
-    "arguments":[
-        {
-            "value":"ELIB3",
-            "type":"CONTENT_PROVIDER_NAME"
-        },
-        {
-            "value":"The book is unavailable to loan when it lacks a valid business model ",
-            "type":"CONTENT_PROVIDER_STATUS"
-        }
-    ]
-}
-</pre>
-
-<h3>Documents</h3>
+<h4>Documents</h4>
 <p>The following documents provide a brief overview of the eHUB APIs and the design and security principles used in
     their creation. Please read through these documents before starting the integration.</p>
 <ul>
@@ -122,6 +100,9 @@
     </li>
     <li>
         <a title="API Security" href="security.html">API Security</a>
+    </li>
+    <li>
+        <a title="eHUB API Error Handling" href="errors.html">eHUB API Error Handling</a>
     </li>
 </ul>
 </body>

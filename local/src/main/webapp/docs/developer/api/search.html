@@ -1,0 +1,117 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>search</title>
+</head>
+<body>
+<h1>search</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Reference" href="./">eHUB Provider API Reference</a></li>
+    <li class="active">search</li>
+</ol>
+
+<p>Fetches the checkout by the Local Management System id.</p>
+
+<h3>Request</h3>
+
+<p><code>GET /v3/checkouts?lmsLoanId=&lt;lms loan id&amp;gt;&language=&lt;language code&gt;</code></p>
+
+<table class="table">
+    <tr class="tab-row">
+        <td>lms loan id</td>
+        <td>The lms loan id ex: 42268539</td>
+    </tr>
+    <tr class="tab-row">
+        <td>language code</td>
+        <td>The language code ex: en</td>
+    </tr>
+</table>
+
+<h3>Response</h3>
+
+<pre>
+{
+    "metadata":{
+        "id":&lt;checkout id&gt;,
+        "lmsLoanId":"&lt;lms loan id&gt;",
+        "contentProviderLoanId":"&lt;content provider loan id&gt;",
+        "expirationDate":&lt;expiration date&gt;,
+        "format":{
+            "id":"&lt;format id&gt;",
+            "name":"&lt;format name&gt;",
+            "description":"&lt;format description&gt;",
+            "contentDisposition":"&lt;content disposition&gt;"
+        }
+    },
+    "contentLinks":[
+        {"href":"&lt;content url&gt;"},
+        {"href":"&lt;content url&gt;"}
+    },
+    "supplementLinks": [
+        {"href":"&lt;supplement link url&gt;", "name": "&lt;supplement link name&gt;"},
+        {"href":"&lt;supplement link url&gt;", "name": "&lt;supplement link name&gt;"}
+    ]
+}
+</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>format metadata</td>
+        <td>The format metadata is a JSON object with properties of format id. The value of each property is an object with value of properties "&lt;content
+            links&gt;" and "&lt;supplement links&gt;" where:
+            <table class="table">
+                <tr class="tab-row">
+                    <td>content links</td>
+                    <td>The media content links array. Every element in the array is an object with singleton property &lt;href&gt;. The property specifies the
+                        media url.
+                    </td>
+                </tr>
+                <tr class="tab-row">
+                    <td>supplement links</td>
+                    <td>The media supplement links array. Every element in the array is an object with properties &lt;name&gt; and &lt;href&gt;. The &lt;name&gt;
+                        property specifies the supplement link name and &lt;href&gt; specifies the supplement material url.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>expiration date</td>
+        <td>The checkout expiration date in seconds since epoch. See <a href="https://www.epochconverter.com">Epoch & Unix Timestamp Conversion Tools</a></td>
+    </tr>
+</table>
+<p>Example request:</p>
+<p><code>GET /v3/checkouts?lmsLoanId=7462892&amp;language=en</code></p>
+<p>Example response:</p>
+<pre>
+{
+    "metadata":{
+        "id":1271261,
+        "lmsLoanId":"7462892",
+        "contentProviderLoanId":"18727936",
+        "expirationDate":1494374400000,
+        "format":{
+            "id":"4002",
+            "name":"Listen on computer",
+            "description":"E-audiobook played in browser, Flash is required",
+            "contentDisposition":"DOWNLOADABLE"
+        }
+    },
+    "contentLinks":[
+        {"href":"https://zebservices.elib.se/v2/Fulfillment/?data=xxxxx"},
+        {"href":"https://zebservices.elib.se/v2/Fulfillment/?data=yyyyy"}
+    },
+    "supplementLinks": [
+        {"href":"https://zebservices.elib.se/v2/Fulfillment/?data=ttttt", "name": "Supplement 1"},
+        {"href":"https://zebservices.elib.se/v2/Fulfillment/?data=zzzzz", "name": "Supplement 2"}
+    ]
+}
+</pre>
+</body>
+</html>
