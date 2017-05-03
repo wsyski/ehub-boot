@@ -46,7 +46,7 @@ public class ApplicationLauncher {
             File configFile = new File(configFileName);
             if (configFile.exists() && configFile.isFile()) {
                 XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(configFile));
-                configuration.configure(server);
+                configuration.configure(webAppContext);
             } else {
                 System.err.println("Missing file: " + configFileName);
             }

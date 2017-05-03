@@ -11,72 +11,36 @@
     <li><a title="eHUB Development Guide" href="./">eHUB Development Guide</a></li>
     <li class="active">eHUB API Security</li>
 </ol>
-<p>The eHUB API uses the standard HTTP Authorization header to pass authentication information. (The name of the
-    standard header is unfortunate because it carries authentication information, not authorization). Under the eHUB
-    authentication scheme, the Authorization header has the following form.</p>
-<code>Authorization: eHUB ehub_consumer_id="x1", ehub_library_card="x2", ehub_pin="x3", ehub_signature="x4"</code>
-<p>or</p>
-<code>Authorization: eHUB ehub_consumsr_id="x1", ehub_signature="x2"</code>
-<p>depending on whether end-user authentication is required or not.</p>
-<p>For example:</p>
-<code>Authorization: eHUB ehub_consumer_id="1", ehub_library_card="909265910", ehub_pin="4447",
-    ehub_signature="GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D"</code>
-
-<h4>Request Signature</h4>
-<p>A request signature is calculated according to the following algorithm:</p>
-<ol>
-    <li>
-        <p>First a Signature base string is created by concatenating the eHUB consumer ID, the percent-encoded library
-            card (if present) and the URL encoded pin (if present).</p>
-        <p>For example:</p>
-        <pre>If the eHUB consumer ID is 1, the library card is 909265910 and the pin is 4447 the base
-string would be 19092659104447.</pre>
+<p>The eHUB API uses the standard JSON Web Token (JWT) Authorization header to pass the authentication information. JSON
+    Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+    Please see the <a href="https://jwt.io" target="_blank">JWT documentation</a>.</p>
+<p>The following JWT claims are in use by eHUB:</p>
+<ul>
+    <li>email (public, optional) - patron email</li>
+    <li>patronId (private, optional) - patron id</li>
+    <li>libraryCard (private, optional) - patron library card</li>
+    <li>pin (private, optional, deprecated) - patron pin. Currently required only by Overdrive e-media Provider.</li>
+    <li>ehubConsumerId (private, required) - ehub consumer id.</li>
+    <li>arenaAgencyMemberId (private, required) - arena agency member id. Required by arena by checkout teat and
+        checkout calls.
     </li>
-    <li>
-        <p>The HMAC-SHA1 function is used in the following way:</p>
-        <code>digest = HMAC-SHA1 (key, text)</code>
-        <p>where</p>
-        <ul>
-            <li>text: is set to the value of the signature base string from point 1 above</li>
-            <li>key: is set to the secret key of the eHUB Consumer</li>
-            <li>digest: is used to set the value of the "ehub_signature" parameter, after the result octet string is
-                base64-encoded
-            </li>
-        </ul>
-        <p>For example:</p>
-        <pre>If the Signature base string is 19092659104447 the base64 encoded digest would be
-GN%2B9mlD70ZER%2Fx3ur7w7HJRgnYU%3D if the secret key is secret1.</pre>
-    </li>
-</ol>
-
-<h5>Percent Encoding</h5>
-<p>The existing percent-encoding methods do not guarantee a consistent construction of the signature base string.
-    Therefore the eHUB defines the following method for percent-encoding/URL-encoding strings:</p>
-<ol>
-    <li>Text values are first encoded as UTF-8 octets per [RFC3629] if they are not already. This does not include
-        binary values that are not intended for human consumption.
-    </li>
-    <li>
-        <p>The values are then escaped using the [RFC3986] percent-encoding (%XX) mechanism as follows</p>
-        <ol>
-            <li>
-                <p>Characters in the unreserved character set as defined by</p>
-                <p><a title="See the RFC 3986 documentation" href="http://www.rfc-base.org/rfc-3986.html">RFC3986</a>,
-                    Section 2.3 (ALPHA, DIGIT, "-", ".", "_", "~") MUST NOT be encoded.</p>
-            </li>
-            <li>
-                <p>All other characters MUST be encoded.</p>
-            </li>
-            <li>
-                <p>The two hexadecimal characters used to represent encoded characters MUST be uppercase.</p>
-            </li>
-        </ol>
-    </li>
-</ol>
-<p>This method is used only in the construction of the signature base string. </p>
-<p>This method is different from the encoding scheme used by the "application/x-www-form-urlencoded" content-type (for
-    example, it encodes space characters as "%20" and not using the "+" character). It MAY be different from the
-    percent-encoding functions provided by web-development frameworks (e.g., encode different characters, use lowercase
-    hexadecimal characters).</p>
+</ul>
+<p>The Authorization header has the following form.</p>
+<p><code>Bearer
+    eyJhbGciOiJIUzI1NiJ9.eyJlaHViQ29uc3VtZXJJZCI6MTM5NjMsInBpbiI6IjExMTEiLCJwYXRyb25JZCI6IjMzMjc1YThhYTQ4ZWE5MThiZDUzYTkxODFhYTk3NWYxNWFiMGQwNjQ1Mzk4ZjU5MThhMDA2ZDA4Njc1YzFjYjI3ZDVjNjQ1ZGJkMDg0ZWVlNTZlNjc1ZTI1YmE0MDE5ZjJlY2VhMzdjYTllMjk5NWI0OWZjYjEyYzA5NmEwMzJlIiwibGlicmFyeUNhcmQiOiIxMTExIiwiaWF0IjoxNDkzODAyMDI1fQ.890Y-IyepLl-5p040V8ARV-SARh5UjeClC1kAHlWN4E</code>
+</p>
+<p>The above authorization header can be decoded into the following JSON object (please use the <a href="https://jwt.io"
+                                                                                                   target="_blank">JWT
+    Debugger</a>):</p>
+<pre>
+{
+  "ehubConsumerId": 13963,
+  "pin": "1111",
+  "patronId": "33275a8aa48ea918bd53a9181aa975f15ab0d0645398f5918a006d08675c1cb27d5c645dbd084eee56e675e25ba4019f2ecea37ca9e2995b49fcb12c096a032e",
+  "libraryCard": "1111",
+  "iat": 1493802025
+}
+</pre>
+<p></p>
 </body>
 </html>

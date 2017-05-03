@@ -348,11 +348,14 @@
                         <contextPath>/</contextPath>
                         <jettyEnvXml>config/jetty-env.xml</jettyEnvXml>
                     </webApp>
+                    <httpConnector>
+                        <port>16518</port>
+                    </httpConnector>
                     <!--
                     <jettyXml>config/jetty.xml</jettyXml>
                     -->
                     <stopKey>STOP</stopKey>
-                    <stopPort>9999</stopPort>
+                    <stopPort>5005</stopPort>
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                     <systemProperties>
                         <systemProperty>
@@ -370,6 +373,10 @@
                         <systemProperty>
                             <name>catalina.base</name>
                             <value>${project.build.directory}</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>org.eclipse.jetty.LEVEL</name>
+                            <value>DEBUG</value>
                         </systemProperty>
                     </systemProperties>
                     <scanTargetPatterns>
