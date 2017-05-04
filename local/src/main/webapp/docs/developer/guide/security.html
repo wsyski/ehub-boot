@@ -1,0 +1,46 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHUB API Security</title>
+</head>
+<body>
+<h1>eHUB API Security</h1>
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../">Home</a></li>
+    <li><a title="eHUB Development" href="../">eHUB Development</a></li>
+    <li><a title="eHUB Development Guide" href="./">eHUB Development Guide</a></li>
+    <li class="active">eHUB API Security</li>
+</ol>
+<p>The eHUB API uses the standard JSON Web Token (JWT) Authorization header to pass the authentication information. JSON
+    Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+    Please see the <a href="https://jwt.io" target="_blank">JWT documentation</a>.</p>
+<p>The following JWT claims are in use by eHUB:</p>
+<ul>
+    <li>email (public, optional) - patron email</li>
+    <li>patronId (private, optional) - patron id</li>
+    <li>libraryCard (private, optional) - patron library card</li>
+    <li>pin (private, optional, deprecated) - patron pin. Currently required only by Overdrive e-media Provider.</li>
+    <li>ehubConsumerId (private, required) - ehub consumer id.</li>
+    <li>arenaAgencyMemberId (private, required) - arena agency member id. Required by arena by checkout teat and
+        checkout calls.
+    </li>
+</ul>
+<p>The Authorization header has the following form.</p>
+<p><code>Bearer
+    eyJhbGciOiJIUzI1NiJ9.eyJlaHViQ29uc3VtZXJJZCI6MTM5NjMsInBpbiI6IjExMTEiLCJwYXRyb25JZCI6IjMzMjc1YThhYTQ4ZWE5MThiZDUzYTkxODFhYTk3NWYxNWFiMGQwNjQ1Mzk4ZjU5MThhMDA2ZDA4Njc1YzFjYjI3ZDVjNjQ1ZGJkMDg0ZWVlNTZlNjc1ZTI1YmE0MDE5ZjJlY2VhMzdjYTllMjk5NWI0OWZjYjEyYzA5NmEwMzJlIiwibGlicmFyeUNhcmQiOiIxMTExIiwiaWF0IjoxNDkzODAyMDI1fQ.890Y-IyepLl-5p040V8ARV-SARh5UjeClC1kAHlWN4E</code>
+</p>
+<p>The above authorization header can be decoded into the following JSON object (please use the <a href="https://jwt.io"
+                                                                                                   target="_blank">JWT
+    Debugger</a>):</p>
+<pre>
+{
+  "ehubConsumerId": 13963,
+  "pin": "1111",
+  "patronId": "33275a8aa48ea918bd53a9181aa975f15ab0d0645398f5918a006d08675c1cb27d5c645dbd084eee56e675e25ba4019f2ecea37ca9e2995b49fcb12c096a032e",
+  "libraryCard": "1111",
+  "iat": 1493802025
+}
+</pre>
+<p></p>
+</body>
+</html>

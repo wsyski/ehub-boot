@@ -1,0 +1,109 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHUB Development Guide</title>
+</head>
+<body>
+<h1>eHUB Development Guide</h1>
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../">Home</a></li>
+    <li><a title="eHUB Development" href="../">eHUB Development</a></li>
+    <li class="active">eHUB Development Guide</li>
+</ol>
+
+<p>Here you'll find a simple reference guide that will help you use eHUB APIs and understand how they work.</p>
+
+<h4>Common Terms</h4>
+<ul>
+    <li>
+        <b>Authroization header:</b> An HTTP header used to send authentication credentials when using HTTP
+        authentication.
+    </li>
+    <li>
+        <b>Content Provider:</b> A third party provider of e-media content.
+    </li>
+    <li>
+        <b>Content Provider Format ID:</b> The ID of a format at a specific Content Provider.
+    </li>
+    <li>
+        <b>Content Provider Loan:</b> The loan at a specific Content Provider.
+    </li>
+    <li>
+        <b>Content Provider Name:</b> The name of the Content Provider defined by the eHUB. Contact you Axiell sales
+        representative for currently supported Content Provider names.
+    </li>
+    <li>
+        <b>Content Provider Record ID:</b> The ID of a record at a specific Content Provider.
+    </li>
+    <li>
+        <b>eHUB Consumer:</b> Represents a consumer of the eHUB with access to one or several Content Providers.
+    </li>
+    <li>
+        <b>eHUB Consumer ID:</b> A value passed as part of the Authorization header (see the <a href="security.html">Security</a>
+        page). Think of it as a complex username generated for you.
+    </li>
+    <li>
+        <b>eHUB Consumer Secret key:</b> A value used when signing the requests (see the <a href="security.html">Security</a>
+        page). Think of it as a complex password generated for you.
+    </li>
+    <li>
+        <b>eHUB Loan ID:</b> A reference to the loan in the eHUB.
+    </li>
+    <li>
+        <b>Error Cause:</b> The cause of an error (see the <a title="Error handling" href="errors.html">Error Handling</a>
+        section below).
+    </li>
+    <li>
+        <b>Error Cause Argument:</b> Argument to an error. Can be used in combination of the error cause to build user
+        friendly error messages on the client side (see the <a title="Error handling" href="errors.html">Error Handling</a>
+        section below).
+    </li>
+    <li>
+        <b>LMS Loan ID:</b> A reference to the loan in the underlying Library Management System (LMS).
+    </li>
+    <li>
+        <b>LMS Record ID:</b> The ID of the record in the underlying Library Management System (LMS).
+    </li>
+    <li>
+        <b>Pending Loan:</b> Contains information necessary when creating a loan.
+    </li>
+    <li>
+        <b>Ready Loan:</b> Contains metadata about a created loan and the actual content of the loan.
+    </li>
+</ul>
+
+<h4>Best Practices</h4>
+<p>Below you'll find some points that will help you use the eHUB APIs effectively.</p>
+<ul>
+    <li>
+        It is recommended to always get the available formats before a loan is created, since the available formats for
+        a specific record may vary. See the <a title="getRecord" href="../api/getRecord.html">getRecord</a> for more
+        information.
+    </li>
+    <li>
+        It is not necessary to provide the user credentials when getting the formats, however it is still recommended to
+        do so when it opens up the possibility to check whether the end-user might be able to checkout a record or not.
+    </li>
+    <li>
+        Even though language is optional in all requests, it is still recommended to provide the <a title="ISO 639"
+                                                                                                    href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO
+        639</a> alpha-2 or alpha-3 language code of the desired language the response should be in.
+    </li>
+</ul>
+
+<h4>Documents</h4>
+<p>The following documents provide a brief overview of the eHUB APIs and the design and security principles used in
+    their creation. Please read through these documents before starting the integration.</p>
+<ul>
+    <li>
+        <a title="API Design" href="design.html">API Design</a>
+    </li>
+    <li>
+        <a title="API Security" href="security.html">API Security</a>
+    </li>
+    <li>
+        <a title="eHUB API Error Handling" href="errors.html">eHUB API Error Handling</a>
+    </li>
+</ul>
+</body>
+</html>
