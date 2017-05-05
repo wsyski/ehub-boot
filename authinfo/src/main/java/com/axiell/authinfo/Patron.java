@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Patron {
     private final Builder builder;
@@ -23,7 +24,7 @@ public class Patron {
     }
 
     public boolean hasId() {
-        return !isBlank(builder.getId());
+        return isNotBlank(builder.getId());
     }
 
     public String getId() {
@@ -31,7 +32,7 @@ public class Patron {
     }
 
     public boolean hasLibraryCard() {
-        return !isBlank(getLibraryCard());
+        return isNotBlank(getLibraryCard());
     }
 
     public String getLibraryCard() {
@@ -39,7 +40,7 @@ public class Patron {
     }
 
     public boolean hasPin() {
-        return !isBlank(builder.getPin());
+        return isNotBlank(builder.getPin());
     }
 
     public String getPin() {
@@ -47,7 +48,7 @@ public class Patron {
     }
 
     public boolean hasEmail() {
-        return !isBlank(builder.getEmail());
+        return isNotBlank(builder.getEmail());
     }
 
     public String getEmail() {
