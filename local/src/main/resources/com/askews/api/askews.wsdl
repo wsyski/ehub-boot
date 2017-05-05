@@ -870,7 +870,7 @@
 	</wsdl:binding>
 	<wsdl:service name="eBookService">
 		<wsdl:port name="BasicHttpBinding_IeBookService" binding="tns:BasicHttpBinding_IeBookService">
-			<soap:address location="http://80.193.130.134/AHLS/eBookService.svc" />
+			<soap:address location="http://api.libraryebooks.co.uk/AHLS/eBookService.svc" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
