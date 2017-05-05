@@ -143,7 +143,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final Patron patron = data.getPatron();
         final String libraryCard = PatronUtil.getMandatoryLibraryCard(patron);
-        final String pin = PatronUtil.getMandatoryPin(patron);
+        final String pin = patron.getPin();
         return overDriveFacade.getPatronOAuthAccessToken(contentProviderConsumer, libraryCard, pin);
     }
 

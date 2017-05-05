@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.overdrive;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
@@ -14,6 +15,7 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 class OverDriveFacade implements IOverDriveFacade {
     private static final String GRANT_TYPE_CLIENT_CREDENTIALS = "client_credentials";
     private static final String GRANT_TYPE_PASSWORD = "password";
+    private static final String DEFAULT_PIN = "1111";
 
     @Override
     public OAuthAccessToken getOAuthAccessToken(final ContentProviderConsumer contentProviderConsumer) {
@@ -48,7 +50,8 @@ class OverDriveFacade implements IOverDriveFacade {
         final IAccessTokenResource accessTokenResource = accessTokenResourceFactory.create(contentProviderConsumer);
         final OAuthAuthorizationHeader authorizationHeader = OAuthAuthorizationHeader.fromContentProviderConsumer(contentProviderConsumer);
         final Scope scope = Scope.fromContentProviderConsumer(contentProviderConsumer);
-        return accessTokenResource.getPatronAccessToken(authorizationHeader, GRANT_TYPE_PASSWORD, libraryCard, pin, scope);
+        final boolean isPasswordRequired = StringUtils.isNotBlank(pin);
+        return accessTokenResource.getPatronAccessToken(authorizationHeader, GRANT_TYPE_PASSWORD, libraryCard, isPasswordRequired ? pin : DEFAULT_PIN, isPasswordRequired, scope);
     }
 
     @Override
