@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 public class JwtAuthHeaderParserTest {
     private static final long EXPIRATION_TIME_IN_SECONDS = 0L;
     private static final long ARENA_AGENCY_MEMBER_ID = 2000L;
-    private static final long ARENA_PORTAL_SITE_ID = 3000L;
+    private static final String SITE_ID = "3000";
     private static final long EHUB_CONSUMER_ID = 4000L;
     private static final String PATRON_ID = "patronId";
     private static final String NAME = "name";
@@ -34,7 +34,7 @@ public class JwtAuthHeaderParserTest {
         underTest = new JwtAuthHeaderParser();
         underTest.setAuthHeaderSecretKeyResolver(authHeaderSecretKeyResolver);
         Patron patron = new Patron.Builder().arenaUserId(USER_ID).email(EMAIL).name(NAME).id(PATRON_ID).libraryCard(LIBRARY_CARD).pin(PIN).build();
-        authInfo = new AuthInfo.Builder().arenaAgencyMemberId(ARENA_AGENCY_MEMBER_ID).arenaPortalSiteId(ARENA_PORTAL_SITE_ID).ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
+        authInfo = new AuthInfo.Builder().arenaAgencyMemberId(ARENA_AGENCY_MEMBER_ID).siteId(SITE_ID).ehubConsumerId(EHUB_CONSUMER_ID).patron(patron).build();
     }
 
     @Test
