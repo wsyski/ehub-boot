@@ -19,8 +19,8 @@ public class AuthInfo {
         return builder.getArenaAgencyMemberId();
     }
 
-    public Long getArenaPortalSiteId() {
-        return builder.getArenaPortalSiteId();
+    public String getSiteId() {
+        return builder.getSiteId();
     }
 
     public Patron getPatron() {
@@ -55,7 +55,7 @@ public class AuthInfo {
     public static final class Builder {
         private Long ehubConsumerId;
         private Long arenaAgencyMemberId;
-        private Long arenaPortalSiteId;
+        private String siteId;
         private Patron patron;
 
         public Long getEhubConsumerId() {
@@ -66,8 +66,8 @@ public class AuthInfo {
             return arenaAgencyMemberId;
         }
 
-        public Long getArenaPortalSiteId() {
-            return arenaPortalSiteId;
+        public String getSiteId() {
+            return siteId;
         }
 
         public Patron getPatron() {
@@ -84,8 +84,8 @@ public class AuthInfo {
             return this;
         }
 
-        public Builder arenaPortalSiteId(final Long arenaPortalSiteId) {
-            this.arenaPortalSiteId = arenaPortalSiteId;
+        public Builder siteId(final String siteId) {
+            this.siteId = siteId;
             return this;
         }
 
@@ -109,7 +109,7 @@ public class AuthInfo {
             return new EqualsBuilder()
                     .append(getEhubConsumerId(), builder.getEhubConsumerId())
                     .append(getArenaAgencyMemberId(), builder.getArenaAgencyMemberId())
-                    .append(getArenaPortalSiteId(), builder.getArenaPortalSiteId())
+                    .append(getSiteId(), builder.getSiteId())
                     .append(getPatron(), builder.getPatron())
                     .isEquals();
         }
@@ -119,7 +119,7 @@ public class AuthInfo {
             return new HashCodeBuilder(17, 37)
                     .append(getEhubConsumerId())
                     .append(getArenaAgencyMemberId())
-                    .append(getArenaPortalSiteId())
+                    .append(getSiteId())
                     .append(getPatron())
                     .toHashCode();
         }

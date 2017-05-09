@@ -21,7 +21,6 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
     private static final String PRIVATE_CLAIM_PATRON_ID = "patronId";
     private static final String PRIVATE_CLAIM_ARENA_USER_ID = "arenaUserId";
     private static final String PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID = "arenaAgencyMemberId";
-    private static final String PRIVATE_CLAIM_ARENA_PORTAL_SITE_ID = "arenaPortalSiteId";
     private static final String PRIVATE_CLAIM_LIBRARY_CARD = "libraryCard";
     private static final String PRIVATE_CLAIM_PIN = "pin";
     private static final String PRIVATE_CLAIM_EHUB_CONSUMER_ID = "ehubConsumerId";
@@ -33,7 +32,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
         DecodedJWT decodedJWT = JWT.decode(value);
         Long ehubConsumerId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_EHUB_CONSUMER_ID);
         Long arenaAgencyMemberId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID);
-        Long arenaPortalSiteId = getClaimAsLong(decodedJWT, PRIVATE_CLAIM_ARENA_PORTAL_SITE_ID);
+        String siteId = decodedJWT.getIssuer();
         Patron.Builder patronBuilder = new Patron.Builder()
                 .email(getClaimAsString(decodedJWT, PUBLIC_CLAIM_EMAIL))
                 .name(getClaimAsString(decodedJWT, PUBLIC_CLAIM_NAME))
@@ -43,7 +42,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
                 .arenaUserId(getClaimAsLong(decodedJWT, PRIVATE_CLAIM_ARENA_USER_ID));
         AuthInfo.Builder authInfoBuilder = new AuthInfo.Builder()
                 .arenaAgencyMemberId(arenaAgencyMemberId)
-                .arenaPortalSiteId(arenaPortalSiteId)
+                .siteId(siteId)
                 .ehubConsumerId(ehubConsumerId)
                 .patron(patronBuilder.build());
         AuthInfo authInfo = authInfoBuilder.build();
@@ -65,14 +64,13 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
 
     @Override
     public String serialize(final AuthInfo authInfo) {
-        JWTCreator.Builder tokenBuilder = JWT.create().withIssuedAt(new Date());
+        JWTCreator.Builder tokenBuilder = JWT.create().withIssuedAt(new Date()).withIssuer(authInfo.getSiteId());
         Date expirationDate = getExpirationDate();
         if (expirationDate != null) {
             tokenBuilder = tokenBuilder.withExpiresAt(expirationDate);
         }
         tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_EHUB_CONSUMER_ID, authInfo.getEhubConsumerId());
         tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID, authInfo.getArenaAgencyMemberId());
-        tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_PORTAL_SITE_ID, authInfo.getArenaPortalSiteId());
         Patron patron = authInfo.getPatron();
         if (patron != null) {
             tokenBuilder = withClaim(tokenBuilder, PUBLIC_CLAIM_EMAIL, patron.getEmail());
