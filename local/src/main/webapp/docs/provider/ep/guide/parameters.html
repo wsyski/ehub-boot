@@ -29,23 +29,18 @@
             <tr class="tab-row">
                 <td>EP_SITE_ID</td>
                 <td>Unique site identifier at the eHUB Provider. If the provider does not use this parameter then it can be set to any nonempty value.
-                    This value is always sent in the Authorization Http header in every request originating at eHUB. See the
-                    <a title="eHUB Provider API Security" href="security.html">security</a> page for more information.
+                    This value is always sent in the Authorization Http header in every request originating at eHUB as part of JWT token.
                 </td>
             </tr>
             <tr class="tab-row">
                 <td>EP_SECRET_KEY</td>
-                <td>A UTF-8 encoded secret key used to produce the signature in the Authorization Http header in every request originating at eHUB.
-                    The string is converted into bytes and then used to produce HMAC-SHA1 digest of the Authorization http header. See the <a
-                            title="eHUB Provider API Security" href="security.html">security</a> page for more information.
+                <td>A base64 encoded secret key used to produce the JWT Authorization Http header in every request originating at eHUB.
+                    See the <a title="eHUB Provider API Security" href="security.html">security</a> page for more information.
                 </td>
             </tr>
             <tr class="tab-row">
                 <td>EP_TOKEN_EXPIRATION_TIME_IN_SECONDS</td>
-                <td>The valid values of this parameter are: LIBRARY_CARD and PATRON_ID. In the first case the patron library card (bar code) is used as the user
-                    id. In the second case the Local Management System (LMS) generated id is used as user id. See the discusion in <a
-                            title="eHUB Provider API Users" href="users.html">eHUB Provider API Users</a> page for more information.
-                </td>
+                <td>JSON Web Token expiration time in seconds. 0 means no expiration time.</td>
             </tr>
         </table>
     </li>

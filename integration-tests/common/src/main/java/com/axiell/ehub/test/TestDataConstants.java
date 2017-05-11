@@ -14,6 +14,7 @@ public class TestDataConstants {
     public static final String PIN = "pin";
     public static final String EMAIL = "wos@axiell.com";
     public static final String EHUB_CONSUMER_SECRET_KEY = "c2VjcmV0S2V5";
+    public static final long EHUB_CONSUMER_TOKEN_EXPIRATION_TIME_IN_SECONDS = 0L;
     public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";
@@ -32,7 +33,7 @@ public class TestDataConstants {
     public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "c2VjcmV0S2V5";
-    public static final long TEST_EP_TOKEN_EXPIRATION_TIME_IN_SECONDS = 86400L;
+    public static final long TEST_EP_TOKEN_EXPIRATION_TIME_IN_SECONDS = 0L;
 
     public static final String ZINIO_API_BASE_URL = "http://localhost:16521/zinio";
     public static final int ZINIO_LOAN_EXPIRATION_DAYS = 28;
