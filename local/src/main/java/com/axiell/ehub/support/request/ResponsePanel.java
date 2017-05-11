@@ -1,13 +1,15 @@
 package com.axiell.ehub.support.request;
 
-import com.axiell.authinfo.IAuthInfoResolver;
+import com.axiell.authinfo.AuthInfo;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import javax.ws.rs.ext.ParamConverter;
+
 class ResponsePanel extends Panel {
     @SpringBean
-    private IAuthInfoResolver authInfoResolver;
+    private ParamConverter<AuthInfo> authInfoConverter;
 
     ResponsePanel(String id, final DefaultSupportResponse response) {
         super(id);
@@ -17,7 +19,7 @@ class ResponsePanel extends Panel {
 
         addLabel("uri", request.getUri());
         addLabel("httpMethod", request.getHttpMethod());
-        addLabel("authInfo", authInfoResolver.serialize(request.getAuthInfo()));
+        addLabel("authInfo", authInfoConverter.toString(request.getAuthInfo()));
         addLabel("status", response.getStatus());
         addLabel("requestBody", request.getBody());
         addLabel("responseBody", response.getBody());

@@ -39,10 +39,10 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
                     .put(ContentProvider.CONTENT_PROVIDER_ZINIO, newHashSet(ZINIO_LIB_ID, ZINIO_TOKEN))
                     .build();
 
-    private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE);
+    private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(EP_SITE_ID, EP_SECRET_KEY, EP_TOKEN_EXPIRATION_TIME_IN_SECONDS);
     private static final Map<ContentProviderConsumerPropertyKey, Pattern> PROPERTY_PATTERNS =
             ImmutableMap.<ContentProviderConsumerPropertyKey, Pattern>builder()
-                    .put(EP_USER_ID_VALUE, Pattern.compile("PATRON_ID|LIBRARY_CARD")).build();
+                    .put(EP_TOKEN_EXPIRATION_TIME_IN_SECONDS, Pattern.compile("\\d+")).build();
 
     private EhubConsumer ehubConsumer;
     private ContentProvider contentProvider;
@@ -176,6 +176,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
         OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
         F1_USERNAME, F1_PASSWORD, F1_REGION_ID, OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY,
         ZINIO_LIB_ID, ZINIO_TOKEN,
-        EP_SITE_ID, EP_SECRET_KEY, EP_USER_ID_VALUE
+        EP_SITE_ID, EP_SECRET_KEY, EP_TOKEN_EXPIRATION_TIME_IN_SECONDS
     }
 }

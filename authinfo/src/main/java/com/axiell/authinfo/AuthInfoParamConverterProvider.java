@@ -12,12 +12,12 @@ import java.lang.reflect.Type;
 public class AuthInfoParamConverterProvider implements ParamConverterProvider {
 
     @Autowired
-    private IAuthInfoResolver authInfoResolver;
+    private ParamConverter<AuthInfo> authInfoConverter;
 
     @Override
     public <T> ParamConverter<T> getConverter(final Class<T> rawType, final Type genericType, final Annotation[] annotations) {
         if (rawType.getName().equals(AuthInfo.class.getName())) {
-            return (ParamConverter<T>) new AuthInfoConverter(authInfoResolver);
+            return (ParamConverter<T>) authInfoConverter;
         }
         return null;
     }

@@ -33,6 +33,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     private static final String LIBRARY_CARD = "D0200000000000";
     protected static final String INVALID_RECORD_ID = "invalidRecordId";
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
+    protected static final long EP_TOKEN_EXPIRATION_TIME_IN_SECONDS = 86400;
 
     protected RecordDTO record;
 
@@ -62,8 +63,8 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     @Test
     public void getFormats() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();
-        //givenPatronIdInPatron();
-        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
+        givenPatronIdInPatron();
+        givenConfigurationProperties();
         givenContentProvider();
         givenEhubConsumer();
         whenGetFormats(getRecordId());
@@ -73,23 +74,23 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     @Test
     public void getFormatsForInvalidRecordId() throws IFinder.NotFoundException {
         givenLibraryCardInPatron();
-        //givenPatronIdInPatron();
-        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
+        givenPatronIdInPatron();
+        givenConfigurationProperties();
         givenContentProvider();
         givenEhubConsumer();
         givenExpectedWebApplicationException(NotFoundException.class, INVALID_CONTENT_PROVIDER_RECORD_ID);
         whenGetFormats(INVALID_RECORD_ID);
     }
 
-    protected void givenConfigurationProperties(final EpUserIdValue epUserIdValue) {
+    protected void givenConfigurationProperties() {
         given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
         given(contentProvider.isLoanPerProduct()).willReturn(isLoanPerProduct());
         given(contentProvider.getProperty(API_BASE_URL)).willReturn(getApiBaseUri());
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID)).willReturn(getSiteId());
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY)).willReturn(getSecretKey());
-        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE))
-                .willReturn(epUserIdValue.name());
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_TOKEN_EXPIRATION_TIME_IN_SECONDS))
+                .willReturn(String.valueOf(EP_TOKEN_EXPIRATION_TIME_IN_SECONDS));
     }
 
     protected void thenCheckoutHasTransactionId() {
