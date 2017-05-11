@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
     private String secretKey;
-    private boolean isValidate;
+    private boolean isValidate = true;
     private long expirationTimeInSeconds;
 
     @Override
@@ -26,6 +26,10 @@ public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKey
         return expirationTimeInSeconds;
     }
 
+    public void setValidate(boolean validate) {
+        isValidate = validate;
+    }
+
     @Required
     public void setExpirationTimeInSeconds(final long expirationTimeInSeconds) {
         this.expirationTimeInSeconds = expirationTimeInSeconds;
@@ -34,10 +38,5 @@ public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKey
     @Required
     public void setSecretKey(final String secretKey) {
         this.secretKey = secretKey;
-    }
-
-    @Required
-    public void setValidate(boolean validate) {
-        isValidate = validate;
     }
 }

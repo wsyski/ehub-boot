@@ -21,7 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuthInfoResolverTest {
+public class AuthInfoConverterTest {
     private static final Long EHUB_CONSUMER_ID = 1L;
     private static final String SECRET_KEY = "c2VjcmV0S2V5";
     private static final String PATRON_ID = "patronId";
@@ -29,7 +29,7 @@ public class AuthInfoResolverTest {
     private static final String PIN = "pin";
     private static final String EMAIL = "arena@axiell.com";
 
-    private AuthInfoResolver underTest;
+    private AuthInfoConverter underTest;
     @Mock
     private IAuthHeaderSecretKeyResolver authInfoSecretKeyResolver;
     private Patron patron;
@@ -44,7 +44,7 @@ public class AuthInfoResolverTest {
 
     @Before
     public void setUpAuthInfoResolver() {
-        underTest = new AuthInfoResolver();
+        underTest = new AuthInfoConverter();
         given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
         given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
         given(authInfoSecretKeyResolver.getExpirationTimeInSeconds()).willReturn(0L);
@@ -109,7 +109,7 @@ public class AuthInfoResolverTest {
     }
 
     private void whenResolve() {
-        actualAuthInfo = underTest.resolve(authorizationHeader);
+        actualAuthInfo = underTest.fromString(authorizationHeader);
     }
 
     private void thenAuthInfoIsNotNull() {

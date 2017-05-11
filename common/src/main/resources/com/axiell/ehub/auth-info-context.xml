@@ -31,7 +31,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="authInfoResolver" class="com.axiell.authinfo.AuthInfoResolver">
+    <bean id="authInfoConverter" class="com.axiell.authinfo.AuthInfoConverter">
         <property name="authHeaderParsers" ref="authHeaderParsers"/>
         <property name="defaultScheme">
             <util:constant static-field="com.axiell.authinfo.IAuthHeaderParser.BEARER_SCHEME"/>

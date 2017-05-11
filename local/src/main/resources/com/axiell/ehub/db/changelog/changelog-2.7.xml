@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="systimestamp" dbms="oracle"/>
+
+    <changeSet id="1" author="ehub" dbms="oracle">
+        <insert tableName="CONTENT_P_CONSUMER_P_KEY">
+            <column name="PROPERTY_KEY" value="EP_TOKEN_EXPIRATION_TIME_IN_SECONDS"/>
+        </insert>
+        <comment>Added Ehub Provider Content Provider Consumer property key: EP_TOKEN_EXPIRATION_TIME_IN_SECONDS</comment>
+    </changeSet>
+
+    <changeSet id="2" author="ehub" dbms="oracle">
+        <update tableName="CONTENT_P_CONSUMER_PROPERTY">
+            <column name="PROPERTY_KEY" value="EP_TOKEN_EXPIRATION_TIME_IN_SECONDS"/>
+            <column name="PROPERTY_VALUE" value="86400"/>
+            <where>PROPERTY_KEY='EP_USER_ID_VALUE'</where>
+        </update>
+        <comment>Updated value of EP_TOKEN_EXPIRATION_TIME_IN_SECONDS</comment>
+    </changeSet>
+
+    <changeSet id="3" author="ehub" dbms="oracle">
+        <delete tableName="CONTENT_P_CONSUMER_P_KEY">
+            <where>PROPERTY_KEY='EP_USER_ID_VALUE'</where>
+        </delete>
+        <comment>Remove property key EP_USER_ID_VALUE</comment>
+    </changeSet>
+</databaseChangeLog>
