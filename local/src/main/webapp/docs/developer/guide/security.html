@@ -17,6 +17,8 @@
 <p>The following JWT claims are in use by eHUB:</p>
 <ul>
     <li>email (public, optional) - patron email</li>
+    <li>iat (public, mandatory) - issued at (time in seconds since epoch see <a href="https://www.epochconverter.com">Epoch & Unix Timestamp Conversion Tools</a>)</li>
+    <li>exp (public, optional) - expires at (time in seconds since epoch see <a href="https://www.epochconverter.com">Epoch & Unix Timestamp Conversion Tools</a>)</li>
     <li>patronId (private, optional) - patron id</li>
     <li>libraryCard (private, optional) - patron library card</li>
     <li>pin (private, optional, deprecated) - patron pin. Currently required only by Overdrive e-media Provider.</li>
@@ -41,6 +43,6 @@
   "iat": 1493802025
 }
 </pre>
-<p></p>
+<p>The secret key used in the above example was: c2VjcmV0S2V5 (base64 encoded)</p>
 </body>
 </html>
