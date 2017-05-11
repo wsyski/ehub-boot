@@ -19,6 +19,7 @@
     <li>email (public, optional) - patron email</li>
     <li>iat (public, mandatory) - issued at (time in seconds since epoch see <a href="https://www.epochconverter.com">Epoch & Unix Timestamp Conversion Tools</a>)</li>
     <li>exp (public, optional) - expires at (time in seconds since epoch see <a href="https://www.epochconverter.com">Epoch & Unix Timestamp Conversion Tools</a>)</li>
+    <li>iss (public, optional) - site id</li>
     <li>patronId (private, optional) - patron id</li>
     <li>libraryCard (private, optional) - patron library card</li>
     <li>pin (private, optional, deprecated) - patron pin. Currently required only by Overdrive e-media Provider.</li>
@@ -31,8 +32,7 @@
 <p><code>Bearer
     eyJhbGciOiJIUzI1NiJ9.eyJlaHViQ29uc3VtZXJJZCI6MTM5NjMsInBpbiI6IjExMTEiLCJwYXRyb25JZCI6IjMzMjc1YThhYTQ4ZWE5MThiZDUzYTkxODFhYTk3NWYxNWFiMGQwNjQ1Mzk4ZjU5MThhMDA2ZDA4Njc1YzFjYjI3ZDVjNjQ1ZGJkMDg0ZWVlNTZlNjc1ZTI1YmE0MDE5ZjJlY2VhMzdjYTllMjk5NWI0OWZjYjEyYzA5NmEwMzJlIiwibGlicmFyeUNhcmQiOiIxMTExIiwiaWF0IjoxNDkzODAyMDI1fQ.890Y-IyepLl-5p040V8ARV-SARh5UjeClC1kAHlWN4E</code>
 </p>
-<p>The above authorization header can be decoded into the following JSON object (please use the <a href="https://jwt.io"
-                                                                                                   target="_blank">JWT
+<p>The above authorization header can be decoded into the following JSON object (please use the <a href="https://jwt.io" target="_blank">JWT
     Debugger</a>):</p>
 <pre>
 {
