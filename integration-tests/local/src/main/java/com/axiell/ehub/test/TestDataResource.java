@@ -14,7 +14,6 @@ import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.alias.Alias;
 import com.axiell.ehub.provider.alias.AliasMapping;
 import com.axiell.ehub.provider.alias.IAliasAdminController;
-import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.platform.Platform;
 import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
@@ -51,7 +50,7 @@ public class TestDataResource implements ITestDataResource {
                     .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY, TestDataConstants.TEST_EP_SECRET_KEY)
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID, TestDataConstants.TEST_EP_SITE_ID)
-                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_USER_ID_VALUE, EpUserIdValue.PATRON_ID.name()).build())
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_TOKEN_EXPIRATION_TIME_IN_SECONDS, String.valueOf(TestDataConstants.TEST_EP_TOKEN_EXPIRATION_TIME_IN_SECONDS)).build())
                     .put(ContentProvider.CONTENT_PROVIDER_ZINIO, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID, TestDataConstants.ZINIO_LIB_ID)
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN, TestDataConstants.ZINIO_TOKEN).build())

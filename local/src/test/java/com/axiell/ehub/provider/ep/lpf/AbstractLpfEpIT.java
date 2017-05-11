@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.provider.ep.AbstractEpIT;
-import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import org.junit.Test;
 
@@ -12,7 +11,7 @@ public abstract class AbstractLpfEpIT extends AbstractEpIT<LpfEpFacade, LpfCheck
     @Test
     public void checkout()  {
         givenLibraryCardInPatron();
-        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
+        givenConfigurationProperties();
         givenContentProvider();
         givenEhubConsumer();
         whenCheckout();

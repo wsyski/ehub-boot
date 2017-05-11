@@ -2,7 +2,6 @@ package com.axiell.ehub.provider.ep.lpp;
 
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.ep.AbstractEpIT;
-import com.axiell.ehub.provider.ep.EpUserIdValue;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
 import org.junit.Test;
 
@@ -16,7 +15,7 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
     @Test
     public void checkout() {
         givenLibraryCardInPatron();
-        givenConfigurationProperties(EpUserIdValue.LIBRARY_CARD);
+        givenConfigurationProperties();
         givenContentProvider();
         givenEhubConsumer();
         // checkout=underTest.getCheckout(contentProviderConsumer,patron,"21802");
