@@ -1,5 +1,7 @@
 package com.axiell.ehub.security;
 
+import com.axiell.authinfo.AbstractAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.AuthInfo;
 import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -10,16 +12,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-public class EhubAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
+public class EhubAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
 
-    private boolean isValidate;
     private long expirationTimeInSeconds;
 
     private IConsumerBusinessController consumerBusinessController;
 
     @Transactional(readOnly = true)
     @Override
-    public String getSecretKey(final Long ehubConsumerId) {
+    public String getSecretKey(final AuthInfo authInfo) {
+        Long ehubConsumerId = authInfo.getEhubConsumerId();
         if (ehubConsumerId == null) {
             throw new InternalServerErrorException(ErrorCause.MISSING_EHUB_CONSUMER_ID);
         }
@@ -33,23 +35,13 @@ public class EhubAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyReso
     }
 
     @Override
-    public boolean isValidate() {
-        return isValidate;
-    }
-
-    @Override
-    public long getExpirationTimeInSeconds() {
+    public long getExpirationTimeInSeconds(final AuthInfo authInfo) {
         return expirationTimeInSeconds;
     }
 
     @Required
     public void setConsumerBusinessController(final IConsumerBusinessController consumerBusinessController) {
         this.consumerBusinessController = consumerBusinessController;
-    }
-
-    @Required
-    public void setValidate(final boolean isValidate) {
-        this.isValidate = isValidate;
     }
 
     @Required

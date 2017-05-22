@@ -2,9 +2,11 @@ package com.axiell.authinfo;
 
 public interface IAuthHeaderSecretKeyResolver {
 
-    String getSecretKey(Long id);
+    String getSecretKey(AuthInfo authInfo);
+
+    long getExpirationTimeInSeconds(AuthInfo authInfo);
 
     boolean isValidate();
 
-    long getExpirationTimeInSeconds();
+    boolean isDebug();
 }

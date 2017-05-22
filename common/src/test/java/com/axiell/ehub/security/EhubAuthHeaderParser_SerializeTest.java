@@ -1,9 +1,6 @@
 package com.axiell.ehub.security;
 
-import com.axiell.authinfo.AuthInfo;
-import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
-import com.axiell.authinfo.MissingSecretKeyRuntimeException;
-import com.axiell.authinfo.Patron;
+import com.axiell.authinfo.*;
 import com.axiell.ehub.EhubException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -76,19 +73,14 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
         underTest.serialize(authInfo);
     }
 
-    protected static class NullAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
+    protected static class NullAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
         @Override
-        public String getSecretKey(Long ehubConsumerId) {
+        public String getSecretKey(final AuthInfo authInfo) {
             return null;
         }
 
         @Override
-        public boolean isValidate() {
-            return true;
-        }
-
-        @Override
-        public long getExpirationTimeInSeconds() {
+        public long getExpirationTimeInSeconds(final AuthInfo authInfo) {
             return 0;
         }
     }

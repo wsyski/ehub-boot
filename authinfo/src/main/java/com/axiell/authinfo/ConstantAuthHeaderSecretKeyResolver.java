@@ -1,33 +1,19 @@
 package com.axiell.authinfo;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ConstantAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
+public class ConstantAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
     private String secretKey;
-    private boolean isValidate = true;
     private long expirationTimeInSeconds;
 
     @Override
-    public String getSecretKey(final Long ehubConsumerId) {
-        if (StringUtils.isBlank(secretKey)) {
-            throw new MissingSecretKeyRuntimeException();
-        }
+    public String getSecretKey(final AuthInfo authInfo) {
         return this.secretKey;
     }
 
     @Override
-    public boolean isValidate() {
-        return isValidate;
-    }
-
-    @Override
-    public long getExpirationTimeInSeconds() {
+    public long getExpirationTimeInSeconds(final AuthInfo authInfo) {
         return expirationTimeInSeconds;
-    }
-
-    public void setValidate(boolean validate) {
-        isValidate = validate;
     }
 
     @Required
