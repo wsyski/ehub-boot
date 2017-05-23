@@ -69,38 +69,38 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
         if (expirationDate != null) {
             tokenBuilder = tokenBuilder.withExpiresAt(expirationDate);
         }
-        tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_EHUB_CONSUMER_ID, authInfo.getEhubConsumerId());
-        tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID, authInfo.getArenaAgencyMemberId());
+        if (authInfo.getEhubConsumerId() != null) {
+            tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_EHUB_CONSUMER_ID, authInfo.getEhubConsumerId().intValue());
+        }
+        if (authInfo.getArenaAgencyMemberId() != null) {
+            tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID, authInfo.getArenaAgencyMemberId().intValue());
+        }
         Patron patron = authInfo.getPatron();
         if (patron != null) {
-            tokenBuilder = withClaim(tokenBuilder, PUBLIC_CLAIM_EMAIL, patron.getEmail());
-            tokenBuilder = withClaim(tokenBuilder, PUBLIC_CLAIM_NAME, patron.getName());
-            tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_LIBRARY_CARD, patron.getLibraryCard());
-            tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_PIN, patron.getPin());
-            tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_PATRON_ID, patron.getId());
-            tokenBuilder = withClaim(tokenBuilder, PRIVATE_CLAIM_ARENA_USER_ID, patron.getArenaUserId());
+            if (patron.hasEmail()) {
+                tokenBuilder = tokenBuilder.withClaim(PUBLIC_CLAIM_EMAIL, patron.getEmail());
+            }
+            if (patron.hasName()) {
+                tokenBuilder = tokenBuilder.withClaim(PUBLIC_CLAIM_NAME, patron.getName());
+            }
+            if (patron.hasLibraryCard()) {
+                tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_LIBRARY_CARD, patron.getLibraryCard());
+            }
+            if (patron.hasPin()) {
+                tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_PIN, patron.getPin());
+            }
+            if (patron.hasId()) {
+                tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_PATRON_ID, patron.getId());
+            }
+            if (patron.getArenaUserId() != null) {
+                tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_ARENA_USER_ID, patron.getArenaUserId().intValue());
+            }
         }
         String secretKey = getSecretKey(authInfo);
         try {
             return tokenBuilder.sign(Algorithm.HMAC256(secretKey));
         } catch (UnsupportedEncodingException ex) {
             throw new AuthInfoRuntimeException(ex.getMessage(), ex);
-        }
-    }
-
-    private static <T> JWTCreator.Builder withClaim(final JWTCreator.Builder builder, final String key, final T value) {
-        if (value instanceof String) {
-            return builder.withClaim(key, String.class.cast(value));
-        } else if (value instanceof Long) {
-            return builder.withClaim(key, Long.class.cast(value).intValue());
-        } else if (value instanceof Integer) {
-            return builder.withClaim(key, Integer.class.cast(value));
-        } else if (value instanceof Boolean) {
-            return builder.withClaim(key, Boolean.class.cast(value));
-        } else if (value instanceof Date) {
-            return builder.withClaim(key, Date.class.cast(value));
-        } else {
-            return builder;
         }
     }
 
