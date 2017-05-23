@@ -92,7 +92,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
         if (value instanceof String) {
             return builder.withClaim(key, String.class.cast(value));
         } else if (value instanceof Long) {
-            return builder.withClaim(key, (int) Long.class.cast(value).longValue());
+            return builder.withClaim(key, Long.class.cast(value).intValue());
         } else if (value instanceof Integer) {
             return builder.withClaim(key, Integer.class.cast(value));
         } else if (value instanceof Boolean) {
