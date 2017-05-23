@@ -59,6 +59,10 @@ public class Patron {
         return builder.getName();
     }
 
+    public boolean hasName() {
+        return isNotBlank(builder.getName());
+    }
+
     public Long getArenaUserId() {
         return builder.getArenaUserId();
     }
