@@ -37,8 +37,9 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
         Long ehubConsumerId = getEhubConsumerId(authHeaderParams);
         Patron patron = getPatron(authHeaderParams);
         final String actualSignature = getActualSignature(authHeaderParams);
+        AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(ehubConsumerId).patron(patron).build();
         if (authHeaderSecretKeyResolver.isValidate()) {
-            final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
+            final String secretKey = authHeaderSecretKeyResolver.getSecretKey(authInfo);
 
             final Signature expectedSignature = new Signature(getSignatureItems(ehubConsumerId, patron), secretKey);
 
@@ -49,15 +50,17 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
                 throw new InvalidAuthorizationHeaderSignatureRuntimeException();
             }
         }
-        return new AuthInfo.Builder().ehubConsumerId(ehubConsumerId).patron(patron).build();
+        return authInfo;
     }
 
     @Override
     public String serialize(final AuthInfo authInfo) {
         final StringBuilder sb = new StringBuilder();
+        final String secretKey = authHeaderSecretKeyResolver.getSecretKey(authInfo);
         Long ehubConsumerId = authInfo.getEhubConsumerId();
-        final String secretKey = authHeaderSecretKeyResolver.getSecretKey(ehubConsumerId);
-        appendItem(sb, EHUB_CONSUMER_ID, String.valueOf(authInfo.getEhubConsumerId()));
+        if (ehubConsumerId != null) {
+            appendItem(sb, EHUB_CONSUMER_ID, String.valueOf(ehubConsumerId));
+        }
         Patron patron = authInfo.getPatron();
         if (patron != null) {
             if (patron.hasId()) {

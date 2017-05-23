@@ -18,7 +18,7 @@ import java.util.Collections;
 import static com.axiell.authinfo.IAuthHeaderParser.EHUB_SCHEME;
 import static com.axiell.ehub.util.EhubUrlCodec.authInfoEncode;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthInfoConverterTest {
@@ -45,9 +45,9 @@ public class AuthInfoConverterTest {
     @Before
     public void setUpAuthInfoResolver() {
         underTest = new AuthInfoConverter();
-        given(authInfoSecretKeyResolver.getSecretKey(anyLong())).willReturn(SECRET_KEY);
+        given(authInfoSecretKeyResolver.getSecretKey(any())).willReturn(SECRET_KEY);
         given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
-        given(authInfoSecretKeyResolver.getExpirationTimeInSeconds()).willReturn(0L);
+        given(authInfoSecretKeyResolver.getExpirationTimeInSeconds(any())).willReturn(0L);
         ehubAuthHeaderParser = new EhubAuthHeaderParser();
         ehubAuthHeaderParser.setAuthHeaderSecretKeyResolver(authInfoSecretKeyResolver);
         underTest.setDefaultScheme(EHUB_SCHEME);
