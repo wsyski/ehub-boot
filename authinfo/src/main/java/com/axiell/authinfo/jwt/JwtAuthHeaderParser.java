@@ -55,7 +55,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
             } catch (UnsupportedEncodingException ex) {
                 throw new AuthInfoRuntimeException(ex.getMessage(), ex);
             } catch (JWTVerificationException ex) {
-                throw new InvalidAuthorizationHeaderSignatureRuntimeException();
+                throw new InvalidAuthorizationHeaderSignatureRuntimeException(ex);
             }
             jwtVerifier.verify(value);
         }
