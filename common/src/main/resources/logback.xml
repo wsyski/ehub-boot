@@ -18,7 +18,7 @@
     </appender>
 
 
-    <logger name="com.axiell" level="DEBUG"/>
+    <logger name="com.axiell" level="INFO"/>
     <logger name="time" level="INFO">
         <appender-ref ref="TIME"/>
     </logger>
@@ -27,8 +27,8 @@
     <logger name="org.springframework" level="ERROR"/>
     <logger name="org.hibernate" level="ERROR"/>
     <logger name="java.sql" level="ERROR"/>
-    <logger name="org.hibernate.SQL" level="DEBUG"/>
-    <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
+    <logger name="org.hibernate.SQL" level="INFO"/>
+    <logger name="org.hibernate.tool.hbm2ddl" level="INFO"/>
     <logger name="liquibase" level="INFO"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
