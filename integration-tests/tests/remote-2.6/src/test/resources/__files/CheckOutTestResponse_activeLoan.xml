@@ -3,8 +3,8 @@
 		<ns1:CheckOutTestResponse xmlns:ns1="http://loans.palma.services.arena.axiell.com/">
 			<checkOutTestResponse xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">
 				<status type="ok" xmlns="http://axiell.com/arena/services/palma/util/status"/>
-				<loanId xmlns="">lmsLoanId</loanId>
-				<testStatus xmlns="">activeLoan</testStatus>
+				<loanId xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">lmsLoanId</loanId>
+				<testStatus xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">activeLoan</testStatus>
 			</checkOutTestResponse>
 		</ns1:CheckOutTestResponse>
 	</soap:Body>

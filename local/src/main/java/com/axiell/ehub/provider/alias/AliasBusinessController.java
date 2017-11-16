@@ -8,14 +8,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.axiell.ehub.ErrorCause.MISSING_CONTENT_PROVIDER_NAME;
 import static com.axiell.ehub.ErrorCause.UNKNOWN_CONTENT_PROVIDER;
 import static com.axiell.ehub.ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME;
 
 @Component
 class AliasBusinessController implements IAliasBusinessController {
+
     @Autowired
     private IAliasMappingRepository aliasMappingRepository;
+
+    @Override
+    public Set<String> getAliases() {
+        Iterable<AliasMapping> aliasMappings = aliasMappingRepository.findAll();
+        Set<String> aliases = new HashSet<>();
+        aliasMappings.forEach(aliasMapping -> {
+            aliases.add(aliasMapping.getAlias().getValue());
+        });
+        return aliases;
+    }
 
     @Override
     @Transactional(readOnly = true)
