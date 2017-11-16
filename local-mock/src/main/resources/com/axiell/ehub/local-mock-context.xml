@@ -9,6 +9,7 @@
     <import resource="local-core-context.xml"/>
     <import resource="secret-key-context.xml"/>
     <import resource="auth-info-context.xml"/>
+    <bean id="aliasBusinessController" class="com.axiell.ehub.provider.alias.AliasBusinessController"/>
     <bean id="issueBusinessController" class="com.axiell.ehub.provider.record.issue.IssueBusinessController"/>
     <bean id="loanBusinessController" class="com.axiell.ehub.loan.LoanBusinessController"/>
     <bean id="ehubMessageUtility" class="com.axiell.ehub.util.EhubMessageUtility"/>

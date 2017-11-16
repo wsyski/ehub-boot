@@ -3,21 +3,30 @@
  */
 package com.axiell.ehub.provider;
 
+import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
-import com.axiell.authinfo.AuthInfo;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Set;
 
 @Produces(MediaType.APPLICATION_JSON)
 public class ContentProvidersResource implements IContentProvidersResource {
     private final IIssueBusinessController issueBusinessController;
+    private final IAliasBusinessController aliasBusinessController;
 
-    public ContentProvidersResource(IIssueBusinessController issueBusinessController) {
+    public ContentProvidersResource(final IIssueBusinessController issueBusinessController, final IAliasBusinessController aliasBusinessController) {
         this.issueBusinessController = issueBusinessController;
+        this.aliasBusinessController = aliasBusinessController;
+    }
+
+    @Override
+    public Set<String> getAliases(final AuthInfo authInfo) {
+        return aliasBusinessController.getAliases();
     }
 
     @Override

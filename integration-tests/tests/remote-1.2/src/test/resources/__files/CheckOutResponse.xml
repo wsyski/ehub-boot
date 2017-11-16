@@ -4,7 +4,7 @@
       <ns1:CheckOutResponse xmlns:ns1="http://loans.palma.services.arena.axiell.com/">
             <checkOutResponse xmlns="http://axiell.com/arena/services/palma/patron/checkOutResponse">
                 <status type="ok" xmlns="http://axiell.com/arena/services/palma/util/status"/>
-                <checkOutSuccess loanId="lmsLoanId" recordId="lmsRecordId" xmlns=""/>
+                <checkOutSuccess loanId="lmsLoanId" recordId="lmsRecordId" xmlns="http://axiell.com/arena/services/palma/patron/checkOutResponse"/>
             </checkOutResponse>
         </ns1:CheckOutResponse>
    </soap:Body>

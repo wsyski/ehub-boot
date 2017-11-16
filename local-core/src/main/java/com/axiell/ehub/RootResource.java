@@ -5,6 +5,7 @@ import com.axiell.ehub.checkout.ICheckoutsResource;
 import com.axiell.ehub.loan.ILoanBusinessController;
 import com.axiell.ehub.provider.ContentProvidersResource;
 import com.axiell.ehub.provider.IContentProvidersResource;
+import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -19,6 +20,8 @@ public class RootResource implements IRootResource {
     private ILoanBusinessController loanBusinessController;
     @Autowired
     private IIssueBusinessController issueBusinessController;
+    @Autowired
+    private IAliasBusinessController aliasBusinessController;
 
     @Override
     public Response root() {
@@ -27,7 +30,7 @@ public class RootResource implements IRootResource {
 
     @Override
     public IContentProvidersResource contentProviders() {
-        return new ContentProvidersResource(issueBusinessController);
+        return new ContentProvidersResource(issueBusinessController, aliasBusinessController);
     }
 
     @Override

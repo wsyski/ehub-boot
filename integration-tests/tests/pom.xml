@@ -64,7 +64,7 @@
                         </executions>
                         <configuration>
                             <!--
-                            <test>com.axiell.ehub.it.RRemoteZinioCheckoutIT#checkoutWithNewContentProviderLoan</test>
+                            <test>com.axiell.ehub.it.ep.lpp.RemoteLppCheckoutIT#checkoutWithNewContentProviderLoan</test>
                             -->
                             <includes>
                                 <include>**/*IT.java</include>
