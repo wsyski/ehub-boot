@@ -3,14 +3,13 @@ package com.axiell.ehub;
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.provider.IContentProvidersResource;
+import com.axiell.ehub.provider.alias.AliasMappingsDTO;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.search.SearchResultDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.Set;
 
 /**
  * The eHUB client is the only publicly accessible component of the {@link IEhubService}.
@@ -24,8 +23,8 @@ public final class EhubClient implements IEhubService {
             return false;
         }
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
-        Set<String> aliases = contentProvidersResource.getAliases(authInfo);
-        return aliases.contains(alias);
+        AliasMappingsDTO aliasMappings = contentProvidersResource.getAliasMappings(authInfo);
+        return aliasMappings.toDTO().stream().anyMatch(aliasMappingDTO -> aliasMappingDTO.getAlias().equals(alias));
     }
 
     @Override

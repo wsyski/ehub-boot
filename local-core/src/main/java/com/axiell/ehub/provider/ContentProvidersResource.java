@@ -5,6 +5,7 @@ package com.axiell.ehub.provider;
 
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.NotImplementedException;
+import com.axiell.ehub.provider.alias.AliasMappingsDTO;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
@@ -12,7 +13,6 @@ import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Set;
 
 @Produces(MediaType.APPLICATION_JSON)
 public class ContentProvidersResource implements IContentProvidersResource {
@@ -25,8 +25,8 @@ public class ContentProvidersResource implements IContentProvidersResource {
     }
 
     @Override
-    public Set<String> getAliases(final AuthInfo authInfo) {
-        return aliasBusinessController.getAliases();
+    public AliasMappingsDTO getAliasMappings(final AuthInfo authInfo) {
+        return new AliasMappingsDTO(aliasBusinessController.getAliasMappings());
     }
 
     @Override
