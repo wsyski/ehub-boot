@@ -17,9 +17,8 @@ class AliasBusinessController extends AbstractBusinessController implements IAli
     private EhubMessageUtility ehubMessageUtility;
 
     @Override
-    public Set<String> getAliases() {
-        Set<String> aliases = ehubMessageUtility.getEhubMessage(Set.class, "aliases");
-        return aliases;
+    public Set<AliasMapping> getAliasMappings() {
+        return ehubMessageUtility.getEhubMessage(AliasMappingsDTO.class, "alias-mappings").getAliasMappings();
     }
 
     public String getName(final String alias) {

@@ -4,11 +4,11 @@ import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.NotFoundException;
 
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.axiell.ehub.ErrorCause.MISSING_CONTENT_PROVIDER_NAME;
@@ -22,13 +22,9 @@ class AliasBusinessController implements IAliasBusinessController {
     private IAliasMappingRepository aliasMappingRepository;
 
     @Override
-    public Set<String> getAliases() {
+    public Set<AliasMapping> getAliasMappings() {
         Iterable<AliasMapping> aliasMappings = aliasMappingRepository.findAll();
-        Set<String> aliases = new HashSet<>();
-        aliasMappings.forEach(aliasMapping -> {
-            aliases.add(aliasMapping.getAlias().getValue());
-        });
-        return aliases;
+        return Sets.newHashSet(aliasMappings);
     }
 
     @Override
