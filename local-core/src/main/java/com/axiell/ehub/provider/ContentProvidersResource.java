@@ -25,7 +25,7 @@ public class ContentProvidersResource implements IContentProvidersResource {
     }
 
     @Override
-    public AliasMappingsDTO getAliasMappings(final AuthInfo authInfo) {
+    public AliasMappingsDTO getAliasMappings() {
         return new AliasMappingsDTO(aliasBusinessController.getAliasMappings());
     }
 

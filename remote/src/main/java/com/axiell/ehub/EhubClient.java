@@ -18,12 +18,12 @@ public final class EhubClient implements IEhubService {
     private IRootResource rootResource;
 
     @Override
-    public boolean isValidAlias(final AuthInfo authInfo, final String alias) {
+    public boolean isValidAlias(final String alias) {
         if (StringUtils.isBlank(alias)) {
             return false;
         }
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
-        AliasMappingsDTO aliasMappings = contentProvidersResource.getAliasMappings(authInfo);
+        AliasMappingsDTO aliasMappings = contentProvidersResource.getAliasMappings();
         return aliasMappings.toDTO().stream().anyMatch(aliasMappingDTO -> aliasMappingDTO.getAlias().equals(alias));
     }
 

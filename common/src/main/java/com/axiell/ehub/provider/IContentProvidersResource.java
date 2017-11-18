@@ -17,7 +17,7 @@ public interface IContentProvidersResource {
 
     @GET
     @Path("/alias-mappings")
-    AliasMappingsDTO getAliasMappings(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo);
+    AliasMappingsDTO getAliasMappings();
 
     @GET
     @Path("{alias}")

@@ -7,7 +7,7 @@ import com.axiell.authinfo.AuthInfo;
 
 public interface IEhubService {
 
-    boolean isValidAlias(AuthInfo authInfo, String alias);
+    boolean isValidAlias(String alias);
 
     CheckoutMetadata findCheckoutByLmsLoanId(AuthInfo authInfo, String lmsLoanId, String language) throws EhubException;
 
