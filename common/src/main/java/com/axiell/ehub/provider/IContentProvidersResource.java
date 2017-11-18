@@ -1,10 +1,8 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.authinfo.AuthInfo;
+import com.axiell.ehub.provider.alias.AliasMappingsDTO;
+import com.axiell.ehub.provider.record.IRecordsResource;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -16,6 +14,10 @@ public interface IContentProvidersResource {
 
     @GET
     ContentProvidersDTO root();
+
+    @GET
+    @Path("/alias-mappings")
+    AliasMappingsDTO getAliasMappings(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo);
 
     @GET
     @Path("{alias}")

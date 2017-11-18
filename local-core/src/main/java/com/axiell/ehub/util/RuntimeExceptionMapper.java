@@ -15,7 +15,7 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
 
     @Override
     public Response toResponse(final RuntimeException exception) {
-        final Throwable cause = exception.getCause();
+        final Throwable cause = exception.getCause() == null ? exception : exception.getCause();
 
         if (cause instanceof UnauthorizedException) {
             final UnauthorizedException ehubException = (UnauthorizedException) cause;
@@ -27,16 +27,16 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
             final InternalServerErrorException ehubException = (InternalServerErrorException) cause;
             return handleEhubRuntimeException(ehubException);
         } else if (cause instanceof MissingOrUnparseableAuthorizationHeaderRuntimeException) {
-            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.MISSING_AUTHORIZATION_HEADER);
+            EhubRuntimeException ehubException = new UnauthorizedException(cause.getMessage(), ErrorCause.MISSING_AUTHORIZATION_HEADER);
             return handleEhubRuntimeException(ehubException);
         } else if (cause instanceof MissingSecretKeyRuntimeException) {
-            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.MISSING_SECRET_KEY);
+            EhubRuntimeException ehubException = new UnauthorizedException(cause.getMessage(), ErrorCause.MISSING_SECRET_KEY);
             return handleEhubRuntimeException(ehubException);
         } else if (cause instanceof InvalidAuthorizationHeaderSignatureRuntimeException) {
-            EhubRuntimeException ehubException= new UnauthorizedException(cause.getMessage(),ErrorCause.INVALID_SIGNATURE);
+            EhubRuntimeException ehubException = new UnauthorizedException(cause.getMessage(), ErrorCause.INVALID_SIGNATURE);
             return handleEhubRuntimeException(ehubException);
         } else {
-            LOGGER.error(exception.getMessage(), exception);
+            LOGGER.error(cause.getMessage(), cause);
             final EhubError ehubError = ErrorCause.INTERNAL_SERVER_ERROR.toEhubError();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(getMediaType()).entity(ehubError).build();
         }

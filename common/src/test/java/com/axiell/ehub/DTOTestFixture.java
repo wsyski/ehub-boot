@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public abstract class DTOTestFixture<T> {
     private T underTest = getTestInstance();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Test
     public void serializeAndDeserialize() throws IOException {
@@ -19,12 +19,12 @@ public abstract class DTOTestFixture<T> {
         thenExpectedActualObject(actualObject);
     }
 
-    private T whenDeserializeObject(String json) throws IOException {
-        return objectMapper.readValue(json, getTestClass());
+    protected T whenDeserializeObject(String json) throws IOException {
+        return OBJECT_MAPPER.readValue(json, getTestClass());
     }
 
     private String givenSerializeObject() throws JsonProcessingException {
-        String json = objectMapper.writeValueAsString(underTest);
+        String json = OBJECT_MAPPER.writeValueAsString(underTest);
         System.out.println(json);
         return json;
     }

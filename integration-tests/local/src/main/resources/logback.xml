@@ -1,5 +1,5 @@
 <configuration scan="true">
-	<logger name="com.axiell" level="DEBUG" />
+	<logger name="com.axiell" level="INFO" />
 	<logger name="time" level="INFO" />
 	<logger name="org.apache.cxf" level="INFO" />
 	<logger name="net.javacrumbs.smock" level="INFO" />

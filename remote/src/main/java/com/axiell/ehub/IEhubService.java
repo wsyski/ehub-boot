@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub;
 
 import com.axiell.ehub.checkout.Checkout;
@@ -9,6 +6,8 @@ import com.axiell.ehub.provider.record.Record;
 import com.axiell.authinfo.AuthInfo;
 
 public interface IEhubService {
+
+    boolean isValidAlias(AuthInfo authInfo, String alias);
 
     CheckoutMetadata findCheckoutByLmsLoanId(AuthInfo authInfo, String lmsLoanId, String language) throws EhubException;
 
