@@ -1,6 +1,5 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.alias.IAliasAdminController;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;

@@ -4,6 +4,8 @@ import com.axiell.ehub.DisabledTextField;
 import com.axiell.ehub.TranslatedKeys;
 import com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.PropertyModel;
 
 class EhubConsumerEditForm extends AbstractEhubConsumerForm {
 
@@ -21,7 +23,8 @@ class EhubConsumerEditForm extends AbstractEhubConsumerForm {
     }
 
     private void addSecretKeyField(final EhubConsumer ehubConsumer) {
-        final DisabledTextField secretKeyField = new DisabledTextField("secretKey", ehubConsumer, "secretKey");
+        final TextField<String> secretKeyField = new TextField<>("secretKey", new PropertyModel<String>(ehubConsumer, "secretKey"));
+        secretKeyField.add(new SecretKeyValidator());
         secretKeyField.setOutputMarkupId(true);
         add(secretKeyField);
     }
