@@ -34,11 +34,13 @@ abstract class AbstractEhubConsumerForm extends StatelessForm<EhubConsumer> {
     private void addDescriptionField(final IModel<EhubConsumer> formModel) {
         final EhubConsumerDescriptionModel descriptionModel = new EhubConsumerDescriptionModel(formModel);
         final RequiredTextField<String> descriptionField = new RequiredTextField<>("description", descriptionModel);
+        descriptionField.setOutputMarkupId(true);
         add(descriptionField);
     }
 
     private void addDefaultLanguage() {
         final LanguageChoice languageChoice = new LanguageChoice("defaultLanguage", new EhubConsumerLanguageModel(formModel));
+        languageChoice.setOutputMarkupId(true);
         add(languageChoice);
     }
 

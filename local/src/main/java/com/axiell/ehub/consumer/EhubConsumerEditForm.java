@@ -23,7 +23,7 @@ class EhubConsumerEditForm extends AbstractEhubConsumerForm {
     }
 
     private void addSecretKeyField(final EhubConsumer ehubConsumer) {
-        final TextField<String> secretKeyField = new TextField<>("secretKey", new PropertyModel<String>(ehubConsumer, "secretKey"));
+        final TextField<String> secretKeyField = new TextField<>("secretKey", new PropertyModel<String>(formModel, "secretKey"));
         secretKeyField.add(new SecretKeyValidator());
         secretKeyField.setOutputMarkupId(true);
         add(secretKeyField);
