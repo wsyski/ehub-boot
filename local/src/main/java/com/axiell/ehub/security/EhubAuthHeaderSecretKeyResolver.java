@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EhubAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
 
     private long expirationTimeInSeconds;
+    private long leewayInSeconds;
 
     private IConsumerBusinessController consumerBusinessController;
 
@@ -39,9 +40,19 @@ public class EhubAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKey
         return expirationTimeInSeconds;
     }
 
+    @Override
+    public long getLeewayInSeconds(final AuthInfo authInfo) {
+        return leewayInSeconds;
+    }
+
     @Required
     public void setConsumerBusinessController(final IConsumerBusinessController consumerBusinessController) {
         this.consumerBusinessController = consumerBusinessController;
+    }
+
+    @Required
+    public void setLeewayInSeconds(final long leewayInSeconds) {
+        this.leewayInSeconds = leewayInSeconds;
     }
 
     @Required

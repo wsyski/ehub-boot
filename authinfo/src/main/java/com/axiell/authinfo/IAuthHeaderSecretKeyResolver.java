@@ -6,6 +6,8 @@ public interface IAuthHeaderSecretKeyResolver {
 
     long getExpirationTimeInSeconds(AuthInfo authInfo);
 
+    long getLeewayInSeconds(AuthInfo authInfo);
+
     boolean isValidate();
 
     boolean isDebug();

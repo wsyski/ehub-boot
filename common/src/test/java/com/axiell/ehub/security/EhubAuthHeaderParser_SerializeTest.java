@@ -83,5 +83,10 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
         public long getExpirationTimeInSeconds(final AuthInfo authInfo) {
             return 0;
         }
+
+        @Override
+        public long getLeewayInSeconds(final AuthInfo authInfo) {
+            return 0;
+        }
     }
 }

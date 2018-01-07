@@ -135,6 +135,10 @@ public class EhubRuntimeException extends RuntimeException implements IEhubExcep
     public final EhubError getEhubError() {
         return ehubError;
     }
+
+    public int getStatus() {
+        return status;
+    }
     
     /**
      * Adds a HTTP header to be included in the reponse.

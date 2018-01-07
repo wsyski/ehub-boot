@@ -479,13 +479,13 @@
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket</artifactId>
-                <version>${wicket.core.version}</version>
+                <version>${wicket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-extensions</artifactId>
-                <version>${wicket.core.version}</version>
+                <version>${wicket.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-codec</groupId>
@@ -742,7 +742,7 @@
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
         <jacoco-maven-plugin.version>0.7.1.201405082137</jacoco-maven-plugin.version>
         <jaxws-maven-plugin.version>2.3.1-b20150201.1248</jaxws-maven-plugin.version>
-        <java-jwt.version>3.2.0</java-jwt.version>
+        <java-jwt.version>3.3.0</java-jwt.version>
         <maven-jrebel-plugin.version>1.1.7</maven-jrebel-plugin.version>
         <maven-jaxb2-plugin.version>0.8.2</maven-jaxb2-plugin.version>
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
@@ -778,8 +778,7 @@
         <wiremock.version>2.6.0</wiremock.version>
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.7.2</slf4j.version>
-        <wicket.core.version>1.4.21</wicket.core.version>
-        <wicket.version>1.4.18</wicket.version>
+        <wicket.version>1.4.23</wicket.version>
         <aspectj.version>1.6.12</aspectj.version>
         <joda-time.version>2.1</joda-time.version>
         <xmlunit.version>1.5</xmlunit.version>

@@ -50,14 +50,13 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
             String secretKey = getSecretKey(authInfo);
             JWTVerifier jwtVerifier;
             try {
-                jwtVerifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+                jwtVerifier = JWT.require(Algorithm.HMAC256(secretKey)).acceptLeeway(authHeaderSecretKeyResolver.getLeewayInSeconds(authInfo)).build();
                 jwtVerifier.verify(value);
             } catch (UnsupportedEncodingException ex) {
                 throw new AuthInfoRuntimeException(ex.getMessage(), ex);
             } catch (JWTVerificationException ex) {
                 throw new InvalidAuthorizationHeaderSignatureRuntimeException(ex);
             }
-            jwtVerifier.verify(value);
         }
         return authInfo;
     }
