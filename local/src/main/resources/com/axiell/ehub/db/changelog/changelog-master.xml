@@ -11,4 +11,5 @@
     <include file="com/axiell/ehub/db/changelog/changelog-1.3.xml"/>
     <include file="com/axiell/ehub/db/changelog/changelog-2.5.xml"/>
     <include file="com/axiell/ehub/db/changelog/changelog-2.7.xml"/>
+    <include file="com/axiell/ehub/db/changelog/changelog-2.8.xml"/>
 </databaseChangeLog>
