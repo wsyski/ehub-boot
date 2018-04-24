@@ -35,7 +35,11 @@ public class HttpClientFactory {
             LOGGER.error(ex.getMessage(), ex);
             sslContext = SSLContexts.createDefault();
         }
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+                sslContext,
+                new String[]{"TLSv1", "TLSv1.1", "TLSv1.2"},
+                null,
+                NoopHostnameVerifier.INSTANCE);
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", new PlainConnectionSocketFactory())
                 .register("https", sslConnectionSocketFactory).build();
