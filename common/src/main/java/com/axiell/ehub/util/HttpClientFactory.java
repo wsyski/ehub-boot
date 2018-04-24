@@ -46,7 +46,7 @@ public class HttpClientFactory {
         connectionManager = new PoolingHttpClientConnectionManager(registry);
     }
 
-    public CloseableHttpClient createInstance() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public CloseableHttpClient createInstance() {
         return HttpClientBuilder.create()
                 .setConnectionManager(connectionManager)
                 .setDefaultRequestConfig(requestConfig)
