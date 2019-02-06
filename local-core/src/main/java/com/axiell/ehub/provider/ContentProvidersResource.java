@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.provider;
 
 import com.axiell.authinfo.AuthInfo;
@@ -12,6 +9,7 @@ import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.RecordsResource;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
+import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +27,7 @@ public class ContentProvidersResource implements IContentProvidersResource {
     }
 
     @Override
+    @Cache(maxAge=300, mustRevalidate = true, noStore = true, proxyRevalidate = true, sMaxAge = 300)
     public AliasMappingsDTO getAliasMappings() {
         return getAliasMappingsDTO(aliasBusinessController.getAliasMappings());
     }
