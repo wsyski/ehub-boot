@@ -63,9 +63,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <!--
-                            <test>com.axiell.ehub.it.ep.lpp.RemoteLppCheckoutIT#checkoutWithNewContentProviderLoan</test>
-                            -->
+                            <test>com.axiell.ehub.it.RemoteAliasIT#isValidAlias</test>
                             <includes>
                                 <include>**/*IT.java</include>
                                 <include>**/*IT_*.java</include>
