@@ -19,8 +19,7 @@ class ContentProviderExceptionFactoryResolver {
                                                    final IEhubExceptionFactory ehubExceptionFactory) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String contentProviderName = contentProvider.getName();
-        if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(contentProviderName) ||
-                ContentProvider.CONTENT_PROVIDER_F1.equals(contentProviderName)) {
+        if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(contentProviderName)) {
             return new DefaultContentProviderExceptionFactory(contentProviderConsumer, language, ehubExceptionFactory);
         } else if (ContentProvider.CONTENT_PROVIDER_ASKEWS.equals(contentProviderName)) {
             return new AskewsExceptionFactory(contentProviderConsumer, language, ehubExceptionFactory);

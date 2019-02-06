@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 class AliasBusinessController extends AbstractBusinessController implements IAliasBusinessController {
@@ -18,7 +19,19 @@ class AliasBusinessController extends AbstractBusinessController implements IAli
 
     @Override
     public Set<AliasMapping> getAliasMappings() {
-        return ehubMessageUtility.getEhubMessage(AliasMappingsDTO.class, "alias-mappings").getAliasMappings();
+        AliasMappingsDTO aliasMappingsDTO = ehubMessageUtility.getEhubMessage(AliasMappingsDTO.class, "alias-mappings");
+        return getAliasMappings(aliasMappingsDTO);
+    }
+
+    private Set<AliasMapping> getAliasMappings(final AliasMappingsDTO aliasMappingsDTO) {
+        return aliasMappingsDTO.toDTO().stream().map(aliasMappingDTO -> {
+            Alias alias = new Alias();
+            alias.setValue(aliasMappingDTO.getAlias());
+            AliasMapping aliasMapping = new AliasMapping();
+            aliasMapping.setAlias(alias);
+            aliasMapping.setName(aliasMappingDTO.getName());
+            return aliasMapping;
+        }).collect(Collectors.toSet());
     }
 
     public String getName(final String alias) {

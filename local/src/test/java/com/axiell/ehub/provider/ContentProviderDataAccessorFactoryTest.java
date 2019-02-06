@@ -6,7 +6,6 @@ import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
 import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
-import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
 import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
@@ -44,8 +43,6 @@ public class ContentProviderDataAccessorFactoryTest {
     @Mock
     private Elib3DataAccessor elib3DataAccessor;
     @Mock
-    private F1DataAccessor f1DataAccessor;
-    @Mock
     private OcdDataAccessor ocdDataAccessor;
     @Mock
     private ContentProvider contentProvider;
@@ -63,7 +60,6 @@ public class ContentProviderDataAccessorFactoryTest {
         ReflectionTestUtils.setField(underTest, "askewsDataAccessor", askewsDataAccessor);
         ReflectionTestUtils.setField(underTest, "overDriveDataAccessor", overDriveDataAccessor);
         ReflectionTestUtils.setField(underTest, "elib3DataAccessor", elib3DataAccessor);
-        ReflectionTestUtils.setField(underTest, "f1DataAccessor", f1DataAccessor);
         ReflectionTestUtils.setField(underTest, "ocdDataAccessor", ocdDataAccessor);
     }
 
@@ -123,13 +119,6 @@ public class ContentProviderDataAccessorFactoryTest {
         givenContentProvider(CONTENT_PROVIDER_OVERDRIVE, false);
         whenGetContentProviderDataAccessor();
         thenExpectedDataAccessorIsReturned(OverDriveDataAccessor.class);
-    }
-
-    @Test
-    public void f1DataAccessor() {
-        givenContentProvider(CONTENT_PROVIDER_F1, false);
-        whenGetContentProviderDataAccessor();
-        thenExpectedDataAccessorIsReturned(F1DataAccessor.class);
     }
 
     @Test

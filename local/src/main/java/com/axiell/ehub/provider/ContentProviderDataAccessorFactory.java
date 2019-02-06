@@ -6,7 +6,6 @@ import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
 import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
 import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
 import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
-import com.axiell.ehub.provider.f1.F1DataAccessor;
 import com.axiell.ehub.provider.ocd.OcdDataAccessor;
 import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
 import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
@@ -27,9 +26,6 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
 
     @Autowired
     private OverDriveDataAccessor overDriveDataAccessor;
-
-    @Autowired
-    private F1DataAccessor f1DataAccessor;
 
     @Autowired
     private OcdDataAccessor ocdDataAccessor;
@@ -57,8 +53,6 @@ public class ContentProviderDataAccessorFactory implements IContentProviderDataA
             return askewsDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_OVERDRIVE.equals(name)) {
             return overDriveDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_F1.equals(name)) {
-            return f1DataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_BORROWBOX.equals(name)) {
             return borrowBoxDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_ZINIO.equals(name)) {

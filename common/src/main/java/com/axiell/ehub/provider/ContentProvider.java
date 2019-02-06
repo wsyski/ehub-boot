@@ -32,7 +32,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
     public static final String CONTENT_PROVIDER_ELIBU = "ELIBU";
     public static final String CONTENT_PROVIDER_ASKEWS = "ASKEWS";
     public static final String CONTENT_PROVIDER_OVERDRIVE = "OVERDRIVE";
-    public static final String CONTENT_PROVIDER_F1 = "F1";
     public static final String CONTENT_PROVIDER_OCD = "OCD";
     public static final String CONTENT_PROVIDER_BORROWBOX = "BORROWBOX";
     public static final String CONTENT_PROVIDER_ZINIO = "ZINIO";
@@ -42,7 +41,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
             .put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL))
             .put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS))
             .put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL))
-            .put(CONTENT_PROVIDER_F1, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
             .put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL))
             .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL))
             .put(CONTENT_PROVIDER_ZINIO, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
@@ -216,7 +214,6 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
                 !CONTENT_PROVIDER_ELIBU.equals(name) &&
                 !CONTENT_PROVIDER_ASKEWS.equals(name) &&
                 !CONTENT_PROVIDER_OVERDRIVE.equals(name) &&
-                !CONTENT_PROVIDER_F1.equals(name) &&
                 !CONTENT_PROVIDER_OCD.equals(name) &&
                 !CONTENT_PROVIDER_BORROWBOX.equals(name) &&
                 !CONTENT_PROVIDER_ZINIO.equals(name);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="systimestamp" dbms="oracle"/>
+
+    <changeSet id="1" author="ehub" dbms="oracle">
+        <delete tableName="EHUB_LOAN">
+            <where>CONTENT_P_F_F_DECORATION_ID IN (SELECT ID FROM CONTENT_P_FORMAT_DECORATION WHERE CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1')))</where>
+        </delete>
+        <delete tableName="CONTENT_P_FORMAT_TEXT_BUNDLE">
+            <where>CONTENT_P_FORMAT_DECORATION_ID IN (SELECT ID FROM CONTENT_P_FORMAT_DECORATION WHERE CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1')))</where>
+        </delete>
+        <delete tableName="FORMAT_DECORATION_PLATFORM">
+            <where>CONTENT_P_FORMAT_DECORATION_ID IN (SELECT d.ID FROM CONTENT_P_FORMAT_DECORATION d, CONTENT_PROVIDER p WHERE d.CONTENT_PROVIDER_ID = p.ID AND p.NAME IN ('F1'))</where>
+        </delete>
+        <delete tableName="CONTENT_P_FORMAT_DECORATION">
+            <where>CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1'))</where>
+        </delete>
+        <delete tableName="CONTENT_P_CONSUMER_PROPERTY">
+            <where>CONTENT_PROVIDER_CONSUMER_ID IN (SELECT ID FROM CONTENT_PROVIDER_CONSUMER WHERE CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1')))</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER_CONSUMER">
+            <where>CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1'))</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER_ALIAS">
+            <where>NAME IN ('F1')</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER_PROPERTY">
+            <where>CONTENT_PROVIDER_ID IN (SELECT ID FROM CONTENT_PROVIDER WHERE NAME IN ('F1'))</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER">
+            <where>NAME IN ('F1')</where>
+        </delete>
+        <delete tableName="CONTENT_P_CONSUMER_P_KEY">
+            <where>PROPERTY_KEY IN ('F1_USERNAME', 'F1_PASSWORD', 'F1_REGION_ID')</where>
+        </delete>
+        <delete tableName="CONTENT_PROVIDER">
+            <where>NAME IN ('F1')</where>
+        </delete>
+        <comment>Deleted F1 provider</comment>
+    </changeSet>
+</databaseChangeLog>

@@ -8,7 +8,7 @@ public class AliasMappingsDTOTest extends DTOTestFixture<AliasMappingsDTO> {
 
     @Override
     protected AliasMappingsDTO getTestInstance() {
-        return AliasMappingsDTO.fromDTO(Collections.singleton(AliasMappingDTOBuilder.aliasMappingDTO()));
+        return new AliasMappingsDTO(Collections.singleton(AliasMappingDTOBuilder.aliasMappingDTO()));
     }
 
     @Override

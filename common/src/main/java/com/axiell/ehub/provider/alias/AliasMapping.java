@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
-import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.util.HashCodeBuilderFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 

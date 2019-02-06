@@ -21,24 +21,6 @@ public class AliasMappingsDTO {
     @JsonProperty(value="aliasMappings")
     private Set<AliasMappingDTO> aliasMappingsDTO = new HashSet<>();
 
-    public AliasMappingsDTO(final Set<AliasMapping> aliasMappings) {
-        if (aliasMappings != null) {
-            this.aliasMappingsDTO = aliasMappings.stream()
-                    .map(aliasMapping -> new AliasMappingDTO(aliasMapping.getAlias().getValue(), aliasMapping.getName())).collect(Collectors.toSet());
-        }
-    }
-
-    public Set<AliasMapping> getAliasMappings() {
-        return aliasMappingsDTO.stream().map(aliasMappingDTO -> {
-            Alias alias = new Alias();
-            alias.setValue(aliasMappingDTO.getAlias());
-            AliasMapping aliasMapping = new AliasMapping();
-            aliasMapping.setAlias(alias);
-            aliasMapping.setName(aliasMappingDTO.getName());
-            return aliasMapping;
-        }).collect(Collectors.toSet());
-    }
-
     public Set<AliasMappingDTO> toDTO() {
         return aliasMappingsDTO;
     }
@@ -46,13 +28,8 @@ public class AliasMappingsDTO {
     private AliasMappingsDTO() {
     }
 
-    private AliasMappingsDTO aliasMappingsDTO(final Set<AliasMappingDTO> aliasMappingsDTO) {
+    public AliasMappingsDTO(final Set<AliasMappingDTO> aliasMappingsDTO) {
         this.aliasMappingsDTO = aliasMappingsDTO;
-        return this;
-    }
-
-    public static AliasMappingsDTO fromDTO(final Set<AliasMappingDTO> aliasMappingsDTO) {
-        return new AliasMappingsDTO().aliasMappingsDTO(aliasMappingsDTO);
     }
 
     @Override
