@@ -11,6 +11,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.cache.CacheConfig;
+import org.apache.http.impl.client.cache.CachingHttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.pool.PoolStats;
 import org.apache.http.ssl.SSLContexts;
@@ -26,6 +28,7 @@ import java.security.cert.X509Certificate;
 public class HttpClientFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientFactory.class);
     private RequestConfig requestConfig = RequestConfig.DEFAULT;
+    private CacheConfig cacheConfig = CacheConfig.DEFAULT;
     private PoolingHttpClientConnectionManager connectionManager;
 
     public HttpClientFactory() {
@@ -49,6 +52,14 @@ public class HttpClientFactory {
 
     public CloseableHttpClient createInstance() {
         return HttpClientBuilder.create()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+    }
+
+    public CloseableHttpClient createCacheableInstance() {
+        return CachingHttpClientBuilder.create()
+                .setCacheConfig(cacheConfig)
                 .setConnectionManager(connectionManager)
                 .setDefaultRequestConfig(requestConfig)
                 .build();

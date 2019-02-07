@@ -3,6 +3,7 @@ package com.axiell.ehub.provider;
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.provider.alias.AliasMappingsDTO;
 import com.axiell.ehub.provider.record.IRecordsResource;
+import org.jboss.resteasy.annotations.cache.Cache;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 public interface IContentProvidersResource {
 
     @GET
+    @Cache(maxAge=300, sMaxAge = 300)
     AliasMappingsDTO root();
 
     @GET
