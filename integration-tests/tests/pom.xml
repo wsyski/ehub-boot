@@ -63,7 +63,9 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <test>com.axiell.ehub.it.RemoteAliasIT#isValidAlias</test>
+                            <!--
+                            <test>com.axiell.ehub.it.RemoteAliasIT#isValidAliasMultiple</test>
+                            -->
                             <includes>
                                 <include>**/*IT.java</include>
                                 <include>**/*IT_*.java</include>

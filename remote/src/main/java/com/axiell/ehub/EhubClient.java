@@ -23,8 +23,8 @@ public final class EhubClient implements IEhubService {
             return false;
         }
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
-        AliasMappingsDTO aliasMappings = contentProvidersResource.getAliasMappings();
-        return aliasMappings.toDTO().stream().anyMatch(aliasMappingDTO -> aliasMappingDTO.getAlias().equals(alias));
+        AliasMappingsDTO aliasMappings = contentProvidersResource.root();
+        return aliasMappings.toDTO().stream().anyMatch(aliasMappingDTO -> aliasMappingDTO.getAlias().equalsIgnoreCase(alias));
     }
 
     @Override

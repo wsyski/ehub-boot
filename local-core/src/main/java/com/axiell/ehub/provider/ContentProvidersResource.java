@@ -28,13 +28,8 @@ public class ContentProvidersResource implements IContentProvidersResource {
 
     @Override
     @Cache(maxAge=300, mustRevalidate = true, noStore = true, proxyRevalidate = true, sMaxAge = 300)
-    public AliasMappingsDTO getAliasMappings() {
+    public AliasMappingsDTO root() {
         return getAliasMappingsDTO(aliasBusinessController.getAliasMappings());
-    }
-
-    @Override
-    public ContentProvidersDTO root() {
-        throw new NotImplementedException("Root path in ContentProvidersResource has not been implemented yet");
     }
 
     @Override
@@ -50,7 +45,7 @@ public class ContentProvidersResource implements IContentProvidersResource {
     private AliasMappingsDTO getAliasMappingsDTO(final Set<AliasMapping> aliasMappings) {
         AliasMappingsDTO aliasMappingsDTO = null;
         if (aliasMappings != null) {
-            new AliasMappingsDTO(aliasMappings.stream()
+            aliasMappingsDTO = new AliasMappingsDTO(aliasMappings.stream()
                     .map(aliasMapping -> new AliasMappingDTO(aliasMapping.getAlias().getValue(), aliasMapping.getName())).collect(Collectors.toSet()));
         }
         return aliasMappingsDTO;

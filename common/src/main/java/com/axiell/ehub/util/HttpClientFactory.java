@@ -8,7 +8,7 @@ import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -21,6 +21,7 @@ import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 
 public class HttpClientFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientFactory.class);
@@ -30,7 +31,7 @@ public class HttpClientFactory {
     public HttpClientFactory() {
         SSLContext sslContext;
         try {
-            sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
+            sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustAnyCertificateStrategy()).build();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException ex) {
             LOGGER.error(ex.getMessage(), ex);
             sslContext = SSLContexts.createDefault();
@@ -120,5 +121,13 @@ public class HttpClientFactory {
             requestConfigBuilder.setProxy(proxy);
         }
         requestConfig = requestConfigBuilder.build();
+    }
+
+    public class TrustAnyCertificateStrategy implements TrustStrategy {
+
+        @Override
+        public boolean isTrusted(final X509Certificate[] chain, final String authType) {
+            return true;
+        }
     }
 }

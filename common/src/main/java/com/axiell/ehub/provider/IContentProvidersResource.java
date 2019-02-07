@@ -13,14 +13,10 @@ import javax.ws.rs.core.MediaType;
 public interface IContentProvidersResource {
 
     @GET
-    ContentProvidersDTO root();
+    AliasMappingsDTO root();
 
     @GET
-    @Path("/alias-mappings")
-    AliasMappingsDTO getAliasMappings();
-
-    @GET
-    @Path("{alias}")
+    @Path("/{alias}")
     ContentProviderDTO getContentProvider(@HeaderParam(HttpHeaders.AUTHORIZATION) AuthInfo authInfo, @PathParam("alias") String contentProviderAlias);
 
     @Path("/{alias}/records")
