@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.authinfo.AuthInfo;
-import com.axiell.ehub.provider.alias.AliasMappingsDTO;
+import com.axiell.ehub.provider.alias.AliasMappings;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import org.jboss.resteasy.annotations.cache.Cache;
 
@@ -15,7 +15,7 @@ public interface IContentProvidersResource {
 
     @GET
     @Cache(maxAge=300, sMaxAge = 300)
-    AliasMappingsDTO root();
+    ContentProvidersDTO root();
 
     @GET
     @Path("/{alias}")

@@ -30,7 +30,7 @@ public abstract class DTOTestFixture<T> {
     }
 
     private void thenExpectedActualObject(T actualObject) {
-        Assert.assertThat(actualObject, Matchers.is(underTest));
+        Assert.assertThat("Objects are not equal", actualObject, Matchers.is(underTest));
         customAssertion(underTest, actualObject);
     }
 

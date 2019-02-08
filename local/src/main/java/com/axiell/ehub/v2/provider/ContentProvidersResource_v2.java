@@ -4,8 +4,6 @@
 package com.axiell.ehub.v2.provider;
 
 import com.axiell.ehub.NotImplementedException;
-import com.axiell.ehub.provider.ContentProviderDTO;
-import com.axiell.ehub.provider.ContentProvidersDTO;
 import com.axiell.ehub.provider.record.issue.IIssueBusinessController;
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.v2.provider.record.IRecordsResource_v2;
@@ -19,12 +17,12 @@ public class ContentProvidersResource_v2 implements IContentProvidersResource_v2
     }
 
     @Override
-    public ContentProvidersDTO root() {
+    public ContentProvidersDTO_v2 root() {
         throw new NotImplementedException("Root path in ContentProvidersResource has not been implemented yet");
     }
 
     @Override
-    public ContentProviderDTO getContentProvider(AuthInfo authInfo, String contentProviderAlias) {
+    public ContentProviderDTO_v2 getContentProvider(AuthInfo authInfo, String contentProviderAlias) {
         throw new NotImplementedException("Get content provider path in ContentProvidersResource has not been implemented yet");
     }
 

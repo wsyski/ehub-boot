@@ -2,8 +2,9 @@ package com.axiell.ehub;
 
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.provider.ContentProvidersDTO;
 import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.alias.AliasMappingsDTO;
+import com.axiell.ehub.provider.alias.AliasMappings;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.ehub.provider.record.RecordDTO;
@@ -23,8 +24,9 @@ public final class EhubClient implements IEhubService {
             return false;
         }
         IContentProvidersResource contentProvidersResource = rootResource.contentProviders();
-        AliasMappingsDTO aliasMappings = contentProvidersResource.root();
-        return aliasMappings.toDTO().stream().anyMatch(aliasMappingDTO -> aliasMappingDTO.getAlias().equalsIgnoreCase(alias));
+        ContentProvidersDTO contentProvidersDTO = contentProvidersResource.root();
+        AliasMappings aliasMappings = AliasMappings.fromContentProvidersDTO(contentProvidersDTO);
+        return aliasMappings.entrySet().stream().anyMatch(aliasMapEntry -> aliasMapEntry.getValue().stream().anyMatch(value -> value.equalsIgnoreCase(alias)));
     }
 
     @Override
