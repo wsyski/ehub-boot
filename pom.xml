@@ -33,10 +33,10 @@
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <name>Arena Project-releases</name>
+            <name>Arena Repository</name>
             <url>http://jenkins.axiell.local:8081/artifactory/libs-release-local</url>
         </repository>
-        
+
         <snapshotRepository>
             <id>snapshots</id>
             <name>Arena Snapshot Repository</name>
