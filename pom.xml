@@ -36,6 +36,12 @@
             <name>Arena Project-releases</name>
             <url>http://jenkins.axiell.local:8081/artifactory/libs-release-local</url>
         </repository>
+        
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Arena Snapshot Repository</name>
+            <url>http://jenkins.axiell.local:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <reporting>
@@ -47,7 +53,7 @@
                     <aggregate>true</aggregate>
                     <encoding>UTF-8</encoding>
                     <links>
-                        <link>http://java.sun.com/javase/7/docs/api/</link>
+                        <link>http://java.sun.com/javase/8/docs/api/</link>
                     </links>
                 </configuration>
             </plugin>
