@@ -23,6 +23,13 @@
         <url>http://www.axiell.com</url>
     </organization>
 
+    <scm>
+        <connection>scm:git:git@github.com:axiell/eHub.git</connection>
+        <url>scm:git:git@github.com:axiell/eHub.git</url>
+        <developerConnection>scm:git:git@github.com:axiell/eHub.git</developerConnection>
+        <tag>${project.version}</tag>
+    </scm>
+
     <issueManagement>
         <system>JIRA</system>
         <url>http://agdtools.axiell.com/jira/secure/Dashboard.jspa</url>
