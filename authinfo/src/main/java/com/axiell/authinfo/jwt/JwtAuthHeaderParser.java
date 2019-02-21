@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Date;
 
 public class JwtAuthHeaderParser implements IAuthHeaderParser {
     private static final String PUBLIC_CLAIM_EMAIL = "email";
     private static final String PUBLIC_CLAIM_NAME = "name";
+    private static final String PUBLIC_CLAIM_BIRTH_DATE = "birthDate";
     private static final String PRIVATE_CLAIM_PATRON_ID = "patronId";
     private static final String PRIVATE_CLAIM_ARENA_USER_ID = "arenaUserId";
     private static final String PRIVATE_CLAIM_ARENA_AGENCY_MEMBER_ID = "arenaAgencyMemberId";
@@ -36,6 +39,7 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
         Patron.Builder patronBuilder = new Patron.Builder()
                 .email(getClaimAsString(decodedJWT, PUBLIC_CLAIM_EMAIL))
                 .name(getClaimAsString(decodedJWT, PUBLIC_CLAIM_NAME))
+                .birthDate(getClaimAsLocalDate(decodedJWT, PUBLIC_CLAIM_BIRTH_DATE))
                 .libraryCard(getClaimAsString(decodedJWT, PRIVATE_CLAIM_LIBRARY_CARD))
                 .pin(getClaimAsString(decodedJWT, PRIVATE_CLAIM_PIN))
                 .id(getClaimAsString(decodedJWT, PRIVATE_CLAIM_PATRON_ID))
@@ -82,6 +86,9 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
             if (patron.hasName()) {
                 tokenBuilder = tokenBuilder.withClaim(PUBLIC_CLAIM_NAME, patron.getName());
             }
+            if (patron.hasBirthDate()) {
+                tokenBuilder = tokenBuilder.withClaim(PUBLIC_CLAIM_BIRTH_DATE, patron.getBirthDate().format(DateTimeFormatter.ISO_DATE));
+            }
             if (patron.hasLibraryCard()) {
                 tokenBuilder = tokenBuilder.withClaim(PRIVATE_CLAIM_LIBRARY_CARD, patron.getLibraryCard());
             }
@@ -111,6 +118,11 @@ public class JwtAuthHeaderParser implements IAuthHeaderParser {
     private static String getClaimAsString(final DecodedJWT decodedJWT, final String key) {
         Claim claim = decodedJWT.getClaim(key);
         return (claim == null || claim.isNull()) ? null : claim.asString();
+    }
+
+    private static LocalDate getClaimAsLocalDate(final DecodedJWT decodedJWT, final String key) {
+        Claim claim = decodedJWT.getClaim(key);
+        return (claim == null || claim.isNull()) ? null : LocalDate.parse(claim.asString());
     }
 
     public Date getExpirationDate(final AuthInfo authInfo) {

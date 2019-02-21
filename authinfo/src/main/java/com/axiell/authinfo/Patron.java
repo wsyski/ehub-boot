@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.time.LocalDate;
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -63,6 +65,14 @@ public class Patron {
         return isNotBlank(builder.getName());
     }
 
+    public LocalDate getBirthDate() {
+        return builder.getBirthDate();
+    }
+
+    public boolean hasBirthDate() {
+        return builder.getBirthDate() != null;
+    }
+
     public Long getArenaUserId() {
         return builder.getArenaUserId();
     }
@@ -99,6 +109,7 @@ public class Patron {
         private String email;
         private Long arenaUserId;
         private String name;
+        private LocalDate birthDate;
 
         public Builder id(final String id) {
             this.id = id;
@@ -134,6 +145,11 @@ public class Patron {
             return this;
         }
 
+        public Builder birthDate(final LocalDate birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+
         public String getLibraryCard() {
             return libraryCard;
         }
@@ -141,7 +157,6 @@ public class Patron {
         public String getPin() {
             return pin;
         }
-
 
         public String getEmail() {
             return email;
@@ -153,6 +168,10 @@ public class Patron {
 
         public String getName() {
             return name;
+        }
+
+        public LocalDate getBirthDate() {
+            return birthDate;
         }
 
         public Patron build() {
@@ -174,6 +193,7 @@ public class Patron {
                     .append(getEmail(), builder.getEmail())
                     .append(getArenaUserId(), builder.getArenaUserId())
                     .append(getName(), builder.getName())
+                    .append(getBirthDate(), builder.getBirthDate())
                     .isEquals();
         }
 
@@ -186,6 +206,7 @@ public class Patron {
                     .append(getEmail())
                     .append(getArenaUserId())
                     .append(getName())
+                    .append(getBirthDate())
                     .toHashCode();
         }
     }
