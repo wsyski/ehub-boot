@@ -57,6 +57,10 @@ public class Patron {
         return builder.getEmail();
     }
 
+    public void setEmail(final String email) {
+        builder.email = email;
+    }
+
     public String getName() {
         return builder.getName();
     }
