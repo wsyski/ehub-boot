@@ -10,7 +10,7 @@ import com.axiell.ehub.error.LmsErrorExceptionMatcher;
 import com.axiell.authinfo.Patron;
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
-import com.axiell.ehub.test.TestData;
+import com.axiell.ehub.test.TestDataDTO;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -47,7 +47,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(16521);
 
-    protected TestData testData;
+    protected TestDataDTO testData;
     protected AuthInfo authInfo;
     protected IEhubService underTest;
 
@@ -117,8 +117,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private void initAuthInfo() throws EhubException {
-        authInfo = new AuthInfo.Builder().ehubConsumerId(testData.getEhubConsumerId()).patron(new Patron.Builder().libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).build()).build();
+        authInfo = new AuthInfo.Builder().ehubConsumerId(testData.getEhubConsumerId()).patron(getPatron()).build();
     }
 
     private ITestDataResource getTestDataResource() {
@@ -146,4 +145,10 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     protected abstract boolean isLoanPerProduct();
 
     protected abstract String getContentProviderName();
+
+    protected Patron getPatron() {
+        Patron.Builder patronBuilder= new Patron.Builder().libraryCard(testData.getLibraryCard())
+                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).name(testData.getName()).birthDate(testData.getBirthDate());
+        return patronBuilder.build();
+    }
 }

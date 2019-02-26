@@ -9,7 +9,7 @@ import com.axiell.ehub.it26.util.EhubExceptionMatcher;
 import com.axiell.ehub.it26.util.LmsErrorExceptionMatcher;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
-import com.axiell.ehub.test.TestData;
+import com.axiell.ehub.test.TestDataDTO;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -46,7 +46,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(16521);
 
-    protected TestData testData;
+    protected TestDataDTO testData;
     protected AuthInfo authInfo;
     protected IEhubService underTest;
 

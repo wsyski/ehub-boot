@@ -86,7 +86,7 @@ public class TestDataResource implements ITestDataResource {
     private IAliasAdminController aliasAdminController;
 
     @Override
-    public TestData init(final String contentProviderName, final boolean isLoanPerProduct) {
+    public TestDataDTO init(final String contentProviderName, final boolean isLoanPerProduct) {
         saveAlias(contentProviderName, contentProviderName);
         saveAlias(TestDataConstants.CONTENT_PROVIDER_ALIAS_PREFIX + contentProviderName, contentProviderName);
         initLanguage();
@@ -94,8 +94,8 @@ public class TestDataResource implements ITestDataResource {
         final ContentProvider contentProvider = initContentProvider(contentProviderName, isLoanPerProduct);
         initContentProviderConsumer(ehubConsumer, contentProvider);
         final long ehubLoanId = initEhubLoan(ehubConsumer, contentProvider);
-        return new TestData(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
-                TestDataConstants.LIBRARY_CARD, TestDataConstants.PIN, TestDataConstants.EMAIL);
+        return new TestDataDTO(ehubConsumer.getId(), TestDataConstants.EHUB_CONSUMER_SECRET_KEY, ehubLoanId, TestDataConstants.PATRON_ID,
+                TestDataConstants.LIBRARY_CARD, TestDataConstants.PIN, TestDataConstants.EMAIL, TestDataConstants.NAME, TestDataConstants.BIRTH_DATE);
     }
 
     @Override

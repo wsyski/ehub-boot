@@ -6,10 +6,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 
 @XmlRootElement(name = "testData")
 @XmlAccessorType(XmlAccessType.NONE)
-public class TestData {
+public class TestDataDTO {
     private Long ehubConsumerId;
     private String ehubConsumerSecretKey;
     private long ehubLoanId;
@@ -17,12 +20,14 @@ public class TestData {
     private String libraryCard;
     private String pin;
     private String email;
+    private String name;
+    private LocalDate birthDate;
 
-    protected TestData() {
+    protected TestDataDTO() {
     }
 
-    public TestData(final long ehubConsumerId, final String ehubConsumerSecretKey, final long ehubLoanId, final String patronId, final String libraryCard,
-                    final String pin, final String email) {
+    public TestDataDTO(final long ehubConsumerId, final String ehubConsumerSecretKey, final long ehubLoanId, final String patronId, final String libraryCard,
+                       final String pin, final String email, final String name, final LocalDate birthDate) {
         this.ehubConsumerId = ehubConsumerId;
         this.ehubConsumerSecretKey = ehubConsumerSecretKey;
         this.ehubLoanId = ehubLoanId;
@@ -30,6 +35,8 @@ public class TestData {
         this.libraryCard = libraryCard;
         this.pin = pin;
         this.email = email;
+        this.name = name;
+        this.birthDate = birthDate;
     }
 
     @XmlAttribute(name = "ehubConsumerId", required = true)
@@ -95,8 +102,39 @@ public class TestData {
         this.email = email;
     }
 
+    @XmlAttribute(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @XmlAttribute(name = "birthDate")
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
     }
+
+    public static class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
+        public LocalDate unmarshal(String v) {
+            return LocalDate.parse(v);
+        }
+
+        public String marshal(LocalDate v) {
+            return v.toString();
+        }
+    }
 }
+
+

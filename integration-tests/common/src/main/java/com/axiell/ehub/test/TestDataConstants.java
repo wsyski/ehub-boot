@@ -1,5 +1,6 @@
 package com.axiell.ehub.test;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 public class TestDataConstants {
@@ -19,6 +20,8 @@ public class TestDataConstants {
     public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";
+    public static final String NAME = "name";
+    public static final LocalDate BIRTH_DATE = LocalDate.parse("2001-01-01");
     public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
     public static final String PLATFORM_DESKTOP = "DESKTOP";
     public static final String PLATFORM_ANDROID = "ANDROID";

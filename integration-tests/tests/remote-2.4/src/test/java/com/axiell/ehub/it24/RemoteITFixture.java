@@ -4,7 +4,7 @@ import com.axiell.ehub.EhubException;
 import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.security.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
-import com.axiell.ehub.test.TestData;
+import com.axiell.ehub.test.TestDataDTO;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -34,7 +34,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     protected static final String CONTENT_PROVIDER_ALIAS = "Distribut\u00f6r: " + TestDataConstants.CONTENT_PROVIDER_TEST_EP;
 
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    protected TestData testData;
+    protected TestDataDTO testData;
     protected AuthInfo authInfo;
     protected IEhubService underTest;
 
