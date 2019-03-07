@@ -769,7 +769,7 @@
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
-        <resteasy.version>3.0.24.Final</resteasy.version>
+        <resteasy.version>3.0.26.Final</resteasy.version>
         <httpcomponents-httpclient.version>4.4.1</httpcomponents-httpclient.version>
         <spring.version>4.3.1.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>
@@ -792,7 +792,7 @@
         <jodatime.version>2.1</jodatime.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-codec.version>1.7</commons-codec.version>
-        <commons.io.version>2.4</commons.io.version>
+        <commons.io.version>2.6</commons.io.version>
         <oracle.version>18.3.0.0</oracle.version>
         <jetty.version>9.3.0.M1</jetty.version>
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
