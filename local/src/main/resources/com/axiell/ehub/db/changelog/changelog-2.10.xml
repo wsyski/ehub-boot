@@ -43,4 +43,32 @@
         </delete>
         <comment>Deleted F1 provider</comment>
     </changeSet>
+    <changeSet id="2" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_CAUSE_ARGUMENT_VALUE">
+            <column name="ID" value="18"/>
+            <column name="TYPE" value="UNFULFILLED_AGE_LIMIT"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added UNFULFILLED_AGE_LIMIT Error cause argument values</comment>
+    </changeSet>
+    <changeSet id="8" author="ehub" dbms="oracle">
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1041"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="18"/>
+            <column name="TEXT" value="Unfulfilled age limit"/>
+            <column name="LANGUAGE_ID" value="en"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <insert tableName="ERROR_C_A_V_TEXT_BUNDLE">
+            <column name="ID" value="1042"/>
+            <column name="ERROR_CAUSE_ARGUMENT_VALUE_ID" value="18"/>
+            <column name="TEXT" value="Ouppfylld åldersgräns"/>
+            <column name="LANGUAGE_ID" value="sv"/>
+            <column name="CREATE_DATETIME" valueComputed="${now}"/>
+            <column name="MODIFY_DATETIME" valueComputed="${now}"/>
+        </insert>
+        <comment>Added text bundles to UNFULFILLED_AGE_LIMIT Error cause argument values</comment>
+    </changeSet>
 </databaseChangeLog>
