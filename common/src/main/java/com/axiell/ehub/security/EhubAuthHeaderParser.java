@@ -166,8 +166,8 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
   @Override
   public String serialize(final AuthInfo authInfo) {
     final String secretKey = authHeaderSecretKeyResolver.getSecretKey(authInfo);
-    final StringJoiner claimJoiner = new StringJoiner(",");
-    BiConsumer<String, String> s = (c, v) -> claimJoiner.add(c + "=\"" + authInfoEncode(v) + "=\"");
+    final StringJoiner claimJoiner = new StringJoiner(", ");
+    BiConsumer<String, String> s = (c, v) -> claimJoiner.add(c + "=\"" + authInfoEncode(v) + "\"");
     Long eHubConsumerId = authInfo.getEhubConsumerId();
     if (Objects.nonNull(eHubConsumerId)) {
       s.accept(EHUB_CONSUMER_ID, String.valueOf(eHubConsumerId));
