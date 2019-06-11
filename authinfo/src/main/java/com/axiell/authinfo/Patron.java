@@ -5,12 +5,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class Patron {
+public class Patron implements Serializable {
     private final Builder builder;
 
     private Patron(final Builder builder) {
@@ -106,7 +107,7 @@ public class Patron {
         return ReflectionToStringBuilder.toString(this);
     }
 
-    public static class Builder {
+    public static class Builder implements Serializable {
         private String libraryCard;
         private String pin;
         private String id;

@@ -16,7 +16,7 @@
 <p>
     eHUB Provider API errors are communicated through HTTP status codes and a JSON messages that contain a more detailed explanation of the error. HTTP
     responses with a status code >399 should contain a message that explains the error. Aside from these the API might reply with a HTTP status code >= 500
-    for internal errors.
+    for internal errors. Please note that errors should never send responses with HTTP status 200 (OK). Usually HTTP status 500 (Internal Server Error) is a good choice.
 </p>
 
 <p>JSON messages have the following format:</p>
