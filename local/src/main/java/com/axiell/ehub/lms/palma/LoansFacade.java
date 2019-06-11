@@ -10,6 +10,7 @@ import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.PatronUtil;
 import com.axiell.ehub.util.XjcSupport;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +30,9 @@ class LoansFacade implements ILoansFacade {
     public CheckOutTestResponse checkOutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, Patron patron, final boolean isLoanPerProduct) {
         CheckOutTestRequest checkOutTest = createCheckOutTestRequest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         Loans loans = loansPortFactory.getInstance(ehubConsumer);
-        return loans.checkOutTest(checkOutTest);
+        CheckOutTestResponse checkOutTestResponse = loans.checkOutTest(checkOutTest);
+        Validate.notNull(checkOutTestResponse.getTestStatus(), "CheckOutTestResponse testStatus can not be null");
+        return checkOutTestResponse;
     }
 
     private CheckOutTestRequest createCheckOutTestRequest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron,
