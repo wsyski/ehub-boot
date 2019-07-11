@@ -17,9 +17,13 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
 
     @Override
     public com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTest(final CheckOutTestRequest parameters) {
-        verifyCheckOutTest(parameters);
-        return ((com.axiell.arena.services.palma.loans.CheckOutTestResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_XML))
-                .getCheckOutTestResponse();
+        if (parameters.getUser().equals(DevelopmentData.LIBRARY_CARD)) {
+            verifyCheckOutTestOk(parameters);
+            return ((com.axiell.arena.services.palma.loans.CheckOutTestResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_OK_XML)).getCheckOutTestResponse();
+        } else {
+            verifyCheckOutTestError(parameters);
+            return ((com.axiell.arena.services.palma.loans.CheckOutTestResponse) getFileResponseUnmarshaller().unmarshalFromFile(PALMA_CHECK_OUT_TEST_RESPONSE_ERROR_XML)).getCheckOutTestResponse();
+        }
     }
 
     @Override
@@ -44,11 +48,21 @@ public class PalmaLoansService_266 extends AbstractPalmaService implements Loans
         return CONTEXT_PATH;
     }
 
-    protected void verifyCheckOutTest(final CheckOutTestRequest checkOutTestRequest) {
+    protected void verifyCheckOutTestOk(final CheckOutTestRequest checkOutTestRequest) {
         Assert.assertNotNull(checkOutTestRequest);
         Assert.assertEquals(checkOutTestRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
         Assert.assertEquals(checkOutTestRequest.getRecordId(), DevelopmentData.LMS_RECORD_ID);
         Assert.assertEquals(checkOutTestRequest.getUser(), DevelopmentData.LIBRARY_CARD);
+        Assert.assertEquals(checkOutTestRequest.getPassword(), DevelopmentData.PIN);
+        Assert.assertEquals(checkOutTestRequest.getContentProviderFormatId(), DevelopmentData.TEST_EP_FORMAT_0_ID);
+        Assert.assertEquals(checkOutTestRequest.getContentProviderName(), DevelopmentData.CONTENT_PROVIDER_TEST_EP);
+    }
+
+    protected void verifyCheckOutTestError(final CheckOutTestRequest checkOutTestRequest) {
+        Assert.assertNotNull(checkOutTestRequest);
+        Assert.assertEquals(checkOutTestRequest.getArenaMember(), DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
+        Assert.assertEquals(checkOutTestRequest.getRecordId(), DevelopmentData.LMS_RECORD_ID);
+        Assert.assertEquals(checkOutTestRequest.getUser(), BLOCKED_LIBRARY_CARD);
         Assert.assertEquals(checkOutTestRequest.getPassword(), DevelopmentData.PIN);
         Assert.assertEquals(checkOutTestRequest.getContentProviderFormatId(), DevelopmentData.TEST_EP_FORMAT_0_ID);
         Assert.assertEquals(checkOutTestRequest.getContentProviderName(), DevelopmentData.CONTENT_PROVIDER_TEST_EP);

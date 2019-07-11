@@ -2,15 +2,19 @@ package com.axiell.ehub.lms.palma;
 
 import com.axiell.ehub.DevelopmentData;
 import com.axiell.ehub.Fields;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.authinfo.Patron;
 
 import org.junit.Test;
+import org.springframework.data.util.ReflectionUtils;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.ws.Endpoint;
 import java.util.Date;
 
+import static com.axiell.ehub.lms.palma.AbstractPalmaService.BLOCKED_LIBRARY_CARD;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -38,9 +42,14 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
     }
 
     @Test
-    public void checkOutTest() {
-        whenCheckOutTestExecuted();
+    public void checkOutTestOk() {
+        whenCheckOutTestExecuted(DevelopmentData.LIBRARY_CARD);
         thenActiveLoanReturned();
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void checkOutTestError() {
+        whenCheckOutTestExecuted(BLOCKED_LIBRARY_CARD);
     }
 
     @Test
@@ -60,7 +69,8 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
         assertEquals(DevelopmentData.LMS_LOAN_ID, preCheckoutAnalysis.getLmsLoanId());
     }
 
-    private void whenCheckOutTestExecuted() {
+    private void whenCheckOutTestExecuted(final String libraryCard) {
+        patron.setLibraryCard(libraryCard);
         preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
     }
 

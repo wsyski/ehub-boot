@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
+            <artifactId>wiremock-jre8</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -105,7 +105,7 @@
                                     <daemon>true</daemon>
                                     <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
                                     <stopKey>STOP</stopKey>
-                                    <stopPort>5005</stopPort>
+                                    <stopPort>5010</stopPort>
                                 </configuration>
                             </execution>
                             <execution>
@@ -119,7 +119,7 @@
                         <configuration>
                             <stopWait>30</stopWait>
                             <stopKey>STOP</stopKey>
-                            <stopPort>5005</stopPort>
+                            <stopPort>5010</stopPort>
                         </configuration>
                     </plugin>
                 </plugins>

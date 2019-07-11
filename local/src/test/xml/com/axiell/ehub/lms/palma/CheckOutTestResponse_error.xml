@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ns1:CheckOutTestResponse xmlns:ns1="http://loans.palma.services.arena.axiell.com/">
+    <checkOutTestResponse xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">
+        <status type="ok" xmlns="http://axiell.com/arena/services/palma/util/status"/>
+        <testStatus xmlns="http://axiell.com/arena/services/palma/patron/checkOutTestResponse">blockedBorrCard</testStatus>
+    </checkOutTestResponse>
+</ns1:CheckOutTestResponse>

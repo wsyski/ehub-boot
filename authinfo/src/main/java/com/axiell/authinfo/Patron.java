@@ -42,6 +42,10 @@ public class Patron implements Serializable {
         return builder.getLibraryCard();
     }
 
+    public void setLibraryCard(final String libraryCard) {
+        builder.libraryCard =libraryCard;
+    }
+
     public boolean hasPin() {
         return isNotBlank(builder.getPin());
     }
