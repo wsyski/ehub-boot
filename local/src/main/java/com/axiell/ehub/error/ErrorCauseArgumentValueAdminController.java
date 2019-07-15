@@ -17,7 +17,7 @@ import java.util.Map;
 import com.axiell.ehub.ErrorCauseArgumentType;
 
 @Component
-class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValueAdminController {
+public class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValueAdminController {
     @Autowired
     private IErrorCauseArgumentValueTextBundleRepository textBundleRepository;
     @Autowired

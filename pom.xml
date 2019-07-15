@@ -774,7 +774,6 @@
         <spring.version>4.3.1.RELEASE</spring.version>
         <commons-validator.version>1.4.0</commons-validator.version>
         <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
-        <smock.version>0.7</smock.version>
         <junit.version>4.12</junit.version>
         <jmock.version>2.5.1</jmock.version>
         <mockito.version>1.9.5</mockito.version>

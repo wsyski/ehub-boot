@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-class AliasAdminController implements IAliasAdminController {
+public class AliasAdminController implements IAliasAdminController {
 
     @Autowired
     private IAliasMappingRepository aliasMappingRepository;

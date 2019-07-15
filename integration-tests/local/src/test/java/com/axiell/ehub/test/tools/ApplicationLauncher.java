@@ -7,12 +7,6 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.xml.XmlConfiguration;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class ApplicationLauncher {
     private static final int PORT_NO = 16518;
@@ -73,18 +67,7 @@ public class ApplicationLauncher {
         }
     }
 
-    private static void setSystemProperties() throws IOException {
+    private static void setSystemProperties() {
         System.setProperty("catalina.base", "src/main");
-        /*
-        final Properties properties = new Properties();
-        properties.load(new FileInputStream("src/main/resources/hibernate.properties"));
-        setSystemProperty(properties, "hibernate.connection.username");
-        setSystemProperty(properties, "hibernate.connection.password");
-        setSystemProperty(properties, "hibernate.connection.url");
-        */
-    }
-
-    private static void setSystemProperty(final Properties properties, final String key) {
-        System.setProperty(key, properties.getProperty(key));
     }
 }
