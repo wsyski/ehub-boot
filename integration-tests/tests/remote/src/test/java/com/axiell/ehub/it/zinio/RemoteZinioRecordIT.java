@@ -17,6 +17,7 @@ public class RemoteZinioRecordIT extends RemoteRecordITFixture {
                         "&zinio_magazine_rbid=" + TestDataConstants.RECORD_ID_0))
                 .willReturn(aResponse().withBodyFile(getContentProviderName() + "/zinio_issues_by_magazines_and_library.txt")
                         .withHeader("Content-Type", "text/plain")
+                        .withHeader("Connection", "close")
                         .withStatus(HttpServletResponse.SC_OK)));
     }
 

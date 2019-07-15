@@ -13,6 +13,7 @@ import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestDataDTO;
 import com.axiell.ehub.test.TestDataConstants;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.http.Response;
@@ -41,11 +42,11 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     private static final Logger LOGGER = LoggerFactory.getLogger(RemoteITFixture.class);
     private static final String LF = System.getProperty("line.separator");
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
-    private static final int PORT_NO = 16518;
+    private static final int EHUB_PORT_NO = 16518;
+    private static final int STUB_PORT_NO = 16521;
     private static final String EHUB_SERVER_URI = "axiell-server-uri";
-
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(16521);
+    public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(STUB_PORT_NO).jettyStopTimeout(10000L));
 
     protected TestDataDTO testData;
     protected AuthInfo authInfo;
@@ -87,7 +88,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private void setEhubServer() {
-        System.setProperty(EHUB_SERVER_URI, "http://localhost:" + PORT_NO);
+        System.setProperty(EHUB_SERVER_URI, "http://localhost:" + EHUB_PORT_NO);
         System.setProperty("catalina.base", "target");
         wireMockRule.addMockServiceRequestListener(this::logRequests);
         wireMockRule.addMockServiceRequestListener(this::validateRequests);

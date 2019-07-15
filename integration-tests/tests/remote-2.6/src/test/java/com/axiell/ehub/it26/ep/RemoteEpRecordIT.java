@@ -12,7 +12,9 @@ public class RemoteEpRecordIT extends RemoteRecordITFixture {
     @Override
     protected void givenContentProviderGetRecordResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/records/" + TestDataConstants.RECORD_ID_0))
-                .willReturn(aResponse().withBodyFile(getContentProviderName() + "/getRecordResponse.json").withHeader("Content-Type", "application/json")
+                .willReturn(aResponse().withBodyFile(getContentProviderName() + "/getRecordResponse.json")
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Connection", "close")
                         .withStatus(HttpServletResponse.SC_OK)));
     }
 

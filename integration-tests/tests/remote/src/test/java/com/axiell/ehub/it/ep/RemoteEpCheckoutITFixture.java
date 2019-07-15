@@ -30,14 +30,18 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     protected void givenContentProviderCheckoutErrorResponse(final ErrorCauseArgumentType errorCauseArgumentType) {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
                 aResponse().withBodyFile(getContentProviderName() + "/errorDTO_" + errorCauseArgumentType.name() + ".json")
-                        .withHeader("Content-Type", "application/json").withStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)));
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Connection", "close")
+                        .withStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)));
     }
 
 
 
     protected void givenContentProviderCheckoutResponse() {
         stubFor(post(urlEqualTo("/ep/api/v1/checkouts")).willReturn(
-                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_newLoan.json").withHeader("Content-Type", "application/json")
+                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_newLoan.json")
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Connection", "close")
                         .withStatus(HttpServletResponse.SC_CREATED)));
     }
 
@@ -48,7 +52,9 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
     @Override
     protected void givenContentProviderGetCheckoutResponse() {
         stubFor(get(urlEqualTo("/ep/api/v1/checkouts/" + TestDataConstants.CONTENT_PROVIDER_LOAN_ID)).willReturn(
-                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_activeLoan.json").withHeader("Content-Type", "application/json")
+                aResponse().withBodyFile(getResponseFilePrefix() + "checkoutResponse_activeLoan.json")
+                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Connection", "close")
                         .withStatus(HttpServletResponse.SC_OK)));
     }
 
