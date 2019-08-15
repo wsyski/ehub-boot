@@ -4,14 +4,19 @@
 package com.axiell.ehub.lms.palma;
 
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
+import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestErrorStatusType;
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
 import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
-import com.axiell.ehub.*;
+import com.axiell.authinfo.Patron;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.ForbiddenException;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.util.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,22 +91,27 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
                                                          final CheckOutTestResponse checkOutTestResponse) {
         String lmsLoanId = null;
         Result result;
-        switch (checkOutTestResponse.getTestStatus()) {
-            case NEW_LOAN:
-                result = Result.NEW_LOAN;
-                break;
-            case ACTIVE_LOAN:
-                lmsLoanId = checkOutTestResponse.getLoanId();
-                result = Result.ACTIVE_LOAN;
-                break;
-            case CHECK_OUT_DENIED:
-                throw createCheckOutTestCheckoutDeniedException(ehubConsumer, pendingLoan, patron);
-            case INVALID_RECORD_ID:
-                throw createCheckOutTestNotFoundException(ehubConsumer, pendingLoan);
-            default:
-                throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse);
+        CheckOutTestErrorStatusType testStatus = checkOutTestResponse.getTestStatus();
+        if (testStatus != null) {
+            switch (testStatus) {
+                case NEW_LOAN:
+                    result = Result.NEW_LOAN;
+                    break;
+                case ACTIVE_LOAN:
+                    lmsLoanId = checkOutTestResponse.getLoanId();
+                    result = Result.ACTIVE_LOAN;
+                    break;
+                case CHECK_OUT_DENIED:
+                    throw createCheckOutTestCheckoutDeniedException(ehubConsumer, pendingLoan, patron);
+                case INVALID_RECORD_ID:
+                    throw createCheckOutTestNotFoundException(ehubConsumer, pendingLoan);
+                default:
+                    throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse);
+            }
+            return new CheckoutTestAnalysis(result, lmsLoanId);
+        } else {
+            throw new InternalServerErrorException("CheckOutTestResponse testStatus can not be null");
         }
-        return new CheckoutTestAnalysis(result, lmsLoanId);
     }
 
     private ForbiddenException createCheckOutTestCheckoutDeniedException(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan,

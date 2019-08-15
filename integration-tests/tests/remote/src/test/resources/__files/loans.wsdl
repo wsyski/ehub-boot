@@ -1861,7 +1861,7 @@
                         <xs:element ref="status:status"/>
                         <xs:element minOccurs="0" ref="util:fee"/>
                         <xs:element minOccurs="0" name="loanId" type="xs:string"/>
-                        <xs:element name="testStatus" type="checkOutTestErrorStatusType"/>
+                        <xs:element minOccurs="0" name="testStatus" type="checkOutTestErrorStatusType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

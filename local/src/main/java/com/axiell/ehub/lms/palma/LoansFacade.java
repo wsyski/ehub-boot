@@ -31,7 +31,6 @@ class LoansFacade implements ILoansFacade {
         CheckOutTestRequest checkOutTest = createCheckOutTestRequest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         Loans loans = loansPortFactory.getInstance(ehubConsumer);
         CheckOutTestResponse checkOutTestResponse = loans.checkOutTest(checkOutTest);
-        Validate.notNull(checkOutTestResponse.getTestStatus(), "CheckOutTestResponse testStatus can not be null");
         return checkOutTestResponse;
     }
 
