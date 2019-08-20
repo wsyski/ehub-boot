@@ -5,6 +5,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
@@ -20,6 +21,12 @@ interface IDiscoveryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("collections/{collectionToken}/products/{productId}")
-    ProductDTO getProduct(@HeaderParam(HttpHeaders.AUTHORIZATION) OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
-	    @PathParam("productId") String productId);
+    ProductDTO getProductById(@HeaderParam(HttpHeaders.AUTHORIZATION) OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
+                              @PathParam("productId") String productId);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("collections/{collectionToken}/products")
+    ProductDTO getProductByCrossRefId(@HeaderParam(HttpHeaders.AUTHORIZATION) OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
+                              @QueryParam("crossRefId") String crossRefId);
 }
