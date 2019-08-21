@@ -31,13 +31,7 @@ class OverDriveFacade implements IOverDriveFacade {
         final IAvailabilityResource availabilityResource = AvailabilityResourceFactory.create(contentProviderConsumer);
         final OAuthAccessToken accessToken = getOAuthAccessToken(contentProviderConsumer);
         final String collectionToken = getCollectionToken(contentProviderConsumer, discoveryResource, accessToken);
-        ProductDTO productDTO;
-        try {
-            productDTO = discoveryResource.getProductById(accessToken, collectionToken, productId);
-        }
-        catch(Exception ex) {
-            productDTO = discoveryResource.getProductByCrossRefId(accessToken, collectionToken, productId);
-        }
+        final ProductDTO productDTO = discoveryResource.getProductById(accessToken, collectionToken, productId);
         final AvailabilityDTO availabilityDTO = availabilityResource.getAvailability(accessToken, collectionToken, productId);
         return new Product(productDTO, availabilityDTO);
     }
