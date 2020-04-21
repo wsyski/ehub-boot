@@ -47,7 +47,7 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final String language = data.getLanguage();
         final String loginUrl = zinioFacade.login(contentProviderConsumer, patron, language);
         zinioFacade.checkout(contentProviderConsumer, patron, issueId, language);
-        final String contentUrl = zinioFacade.getContentUrl(loginUrl, issueId);
+        final String contentUrl = zinioFacade.getContentUrl(contentProviderConsumer, loginUrl, issueId);
         final ContentProviderLoanMetadata loanMetadata = makeContentProviderLoanMetadata(data);
         final Content content = makeContent(contentUrl);
         return new ContentProviderLoan(loanMetadata, content);
@@ -60,7 +60,7 @@ public class ZinioDataAccessor extends AbstractContentProviderDataAccessor {
         final Patron patron = data.getPatron();
         final String language = data.getLanguage();
         final String loginUrl = zinioFacade.login(contentProviderConsumer, patron, language);
-        final String contentUrl = zinioFacade.getContentUrl(loginUrl, loanMetadata.getIssueId());
+        final String contentUrl = zinioFacade.getContentUrl(contentProviderConsumer, loginUrl, loanMetadata.getIssueId());
         return makeContent(contentUrl);
     }
 
