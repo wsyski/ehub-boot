@@ -54,6 +54,7 @@ public class TestDataResource implements ITestDataResource {
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_TOKEN_LEEWAY_IN_SECONDS, String.valueOf(TestDataConstants.TEST_EP_TOKEN_LEEWAY_IN_SECONDS)).build())
                     .put(ContentProvider.CONTENT_PROVIDER_ZINIO, ImmutableMap.<ContentProviderConsumer.ContentProviderConsumerPropertyKey, String>builder()
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID, TestDataConstants.ZINIO_LIB_ID)
+                            .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_CONTENT_PATH, TestDataConstants.ZINIO_CONTENT_PATH)
                             .put(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN, TestDataConstants.ZINIO_TOKEN).build())
                     .build();
     private static final Map<String, Map<ContentProvider.ContentProviderPropertyKey, String>> CONTENT_PROVIDER_PROPERTIES =

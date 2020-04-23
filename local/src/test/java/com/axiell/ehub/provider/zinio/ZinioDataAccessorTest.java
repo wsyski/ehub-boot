@@ -99,7 +99,7 @@ public class ZinioDataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenContentUrl() {
-        given(zinioFacade.getContentUrl(LOGIN_URL, ISSUE_ID)).willReturn(CONTENT_URL);
+        given(zinioFacade.getContentUrl(any(ContentProviderConsumer.class), eq(LOGIN_URL), eq(ISSUE_ID))).willReturn(CONTENT_URL);
     }
 
     private void givenExpirationDateFactory() {

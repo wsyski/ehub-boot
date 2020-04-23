@@ -4,6 +4,7 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.authinfo.Patron;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.util.EhubUrlCodec;
 import com.axiell.ehub.util.PatronUtil;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -18,12 +19,10 @@ import java.util.List;
 @Component
 public class ZinioFacade implements IZinioFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZinioFacade.class);
-
-    @Autowired
-    private IZinioResponseFactory zinioResponseFactory;
-
     private final static int PASSWORD_LEN = 8;
     private static final String NA = "N/A";
+    @Autowired
+    private IZinioResponseFactory zinioResponseFactory;
 
     @Override
     public String login(final ContentProviderConsumer contentProviderConsumer, final Patron patron, final String language) {
@@ -67,11 +66,14 @@ public class ZinioFacade implements IZinioFacade {
     }
 
     @Override
-    public String getContentUrl(final String loginUrl, final String issueId) {
+    public String getContentUrl(final ContentProviderConsumer contentProviderConsumer, final String loginUrl, final String issueId) {
         if (StringUtils.isBlank(issueId)) {
-           throw createInternalServerErrorException("Blank issueId");
+            throw createInternalServerErrorException("Blank issueId");
         }
-        return loginUrl + "&url=http://www.rbdigitaltest.com/zinio/proxy/?zinio_issue_id=" + EhubUrlCodec.authInfoEncode(issueId);
+        final String contentPath = contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_CONTENT_PATH);
+        final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
+        final String apiBaseUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.API_BASE_URL);
+        return loginUrl + "&url=" + apiBaseUrl + "/" + contentPath + "?zinio_issue_id=" + EhubUrlCodec.authInfoEncode(issueId);
     }
 
     private IZinioResponse createZinioResponse(final ContentProviderConsumer contentProviderConsumer, final String language, final String response) {

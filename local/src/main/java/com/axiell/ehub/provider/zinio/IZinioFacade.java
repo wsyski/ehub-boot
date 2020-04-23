@@ -13,6 +13,6 @@ interface IZinioFacade {
 
     List<IssueDTO> getIssues(ContentProviderConsumer contentProviderConsumer, String contentProviderRecordId, String language);
 
-    String getContentUrl(String loginUrl, String issueId);
+    String getContentUrl(ContentProviderConsumer contentProviderConsumer, String loginUrl, String issueId);
 
 }

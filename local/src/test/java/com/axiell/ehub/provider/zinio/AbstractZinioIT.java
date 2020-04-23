@@ -24,6 +24,7 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
     private static final String EMAIL = "arenatest@axiell.com";
     private static final String API_BASE_URL = "http://www.rbdigitaltest.com";
     private static final String ZINIO_LIB_ID = "axielltest";
+    private static final String ZINIO_CONTENT_PATH = "magazines/proxy";
     private static final String ZINIO_TOKEN = "B5R7OfqTJaoeVeO0";
     private static final String LIBRARY_CARD = "12345";
     protected static final String RECORD_ID = "RBZ0000111";
@@ -52,6 +53,7 @@ public abstract class AbstractZinioIT extends AbstractContentProviderIT {
         given(contentProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ZINIO);
         given(contentProvider.isLoanPerProduct()).willReturn(false);
         given(contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.API_BASE_URL)).willReturn(API_BASE_URL);
+        given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_CONTENT_PATH)).willReturn(ZINIO_CONTENT_PATH);
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID)).willReturn(ZINIO_LIB_ID);
         given(contentProviderConsumer.getProperty(ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN)).willReturn(ZINIO_TOKEN);
     }
