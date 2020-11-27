@@ -24,9 +24,9 @@
     </organization>
 
     <scm>
-        <connection>scm:git:git@github.com:axiell/eHub.git</connection>
-        <url>scm:git:git@github.com:axiell/eHub.git</url>
-        <developerConnection>scm:git:git@github.com:axiell/eHub.git</developerConnection>
+        <connection>scm:git:git@gitto.axiell.com:pl/arena/eHub.git</connection>
+        <url>scm:git:git@gitto.axiell.com:pl/arena/eHub.git</url>
+        <developerConnection>scm:git:git@gitto.axiell.com:pl/arena/eHub.git</developerConnection>
         <tag>${project.version}</tag>
     </scm>
 
