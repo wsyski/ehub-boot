@@ -30,8 +30,8 @@ public abstract class AbstractPalma<T> {
         ehubConsumer = DevelopmentData.createEhubConsumer();
         ReflectionTestUtils.setField(ehubConsumer, "id", 1L);
 
-        String palmaUrl = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL);
-        endpoint = makeEndpoint(palmaUrl);
+        String arenaLocalApiEndpoint = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT);
+        endpoint = makeEndpoint(arenaLocalApiEndpoint);
         customSetUp();
     }
 

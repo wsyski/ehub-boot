@@ -15,6 +15,10 @@ public class Product {
         return productDTO.getId();
     }
 
+    public String getCrossRefId() {
+        return productDTO.getCrossRefId();
+    }
+
     public List<DiscoveryFormatDTO> getFormats() {
         return productDTO.getFormats();
     }

@@ -27,6 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -153,7 +154,7 @@ public class PalmaDataAccessorTest {
         ReflectionTestUtils.setField(underTest, "responseStatusChecker", new ResponseStatusChecker());
         pendingLoan = new PendingLoan(FieldsBuilder.defaultFields());
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperies = new HashMap<>();
-        ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, PALMA_URL);
+        ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT, PALMA_URL);
         ehubConsumerProperies.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, AGENCY_M_IDENTIFIER);
         given(patron.getLibraryCard()).willReturn(LIBRARY_CARD);
         given(patron.getPin()).willReturn(PIN);
@@ -275,15 +276,15 @@ public class PalmaDataAccessorTest {
     }
 
     private void whenCheckOutTest() {
-        preCheckoutAnalysis = underTest.checkoutTest(ehubConsumer, pendingLoan, patron, false);
+        preCheckoutAnalysis = underTest.checkoutTest(ehubConsumer, pendingLoan, patron, false, Locale.ENGLISH);
     }
 
     private void whenCheckOut() {
         Date expirationDate = new Date();
-        lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, patron, false);
+        lmsLoan = underTest.checkout(ehubConsumer, pendingLoan, expirationDate, patron, false, Locale.ENGLISH);
     }
 
     private void whenGetMediaClass() {
-        mediaClass = underTest.getMediaClass(ehubConsumer, ContentProvider.CONTENT_PROVIDER_OCD, PROVIDER_RECORD_ID);
+        mediaClass = underTest.getMediaClass(ehubConsumer, ContentProvider.CONTENT_PROVIDER_OCD, PROVIDER_RECORD_ID, Locale.ENGLISH);
     }
 }

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import javax.xml.ws.Endpoint;
 
+import java.util.Locale;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -29,7 +31,7 @@ public class PalmaSearch267Test extends AbstractPalma {
     }
 
     private String whenGetMediaClassExecuted() {
-        return palmaDataAccessor.getMediaClass(ehubConsumer, DevelopmentData.CONTENT_PROVIDER_TEST_EP, DevelopmentData.TEST_EP_RECORD_0_ID);
+        return palmaDataAccessor.getMediaClass(ehubConsumer, DevelopmentData.CONTENT_PROVIDER_TEST_EP, DevelopmentData.TEST_EP_RECORD_0_ID, Locale.ENGLISH);
     }
 
 

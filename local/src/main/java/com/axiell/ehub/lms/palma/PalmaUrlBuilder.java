@@ -3,13 +3,13 @@ package com.axiell.ehub.lms.palma;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.util.Validate;
 
-import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL;
+import static com.axiell.ehub.consumer.EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT;
 
 class PalmaUrlBuilder {
     private String url;
 
     PalmaUrlBuilder(EhubConsumer ehubConsumer) {
-        url = ehubConsumer.getProperties().get(ARENA_PALMA_URL);
+        url = ehubConsumer.getProperties().get(ARENA_LOCAL_API_ENDPOINT);
     }
 
     PalmaUrlBuilder appendPath(String path) {

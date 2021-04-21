@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.lms.palma;
 
 import com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse;
@@ -8,12 +5,10 @@ import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestE
 import com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse;
 import com.axiell.arena.services.palma.search.v267.service.SearchResponse;
 import com.axiell.authinfo.Patron;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.ErrorCauseArgument;
-import com.axiell.ehub.ForbiddenException;
-import com.axiell.ehub.InternalServerErrorException;
-import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.*;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.lms.BaseLmsDataAccessor;
+import com.axiell.ehub.lms.ILmsDataAccessor;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
@@ -21,18 +16,19 @@ import com.axiell.ehub.util.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
- * Default implementation of the {@link IPalmaDataAccessor}.
+ * Palma implementation of the {@link ILmsDataAccessor}.
  */
 @Component
-class PalmaDataAccessor implements IPalmaDataAccessor {
+@Qualifier("palmaDataAccessor")
+public class PalmaDataAccessor extends BaseLmsDataAccessor implements ILmsDataAccessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PalmaDataAccessor.class);
-
-    private static final String LMS_ERROR_MESSAGE = "Error in lms";
 
     @Autowired
     private ILoansFacade loansFacade;
@@ -43,7 +39,7 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
 
     @Override
     public CheckoutTestAnalysis checkoutTest(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Patron patron,
-                                             final boolean isLoanPerProduct) {
+                                             final boolean isLoanPerProduct, final Locale locale) {
         com.axiell.arena.services.palma.patron.checkouttestresponse.CheckOutTestResponse checkOutTestResponse =
                 loansFacade.checkOutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
         responseStatusChecker.checkResponseStatus(checkOutTestResponse.getStatus(), ehubConsumer, patron);
@@ -52,7 +48,7 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
 
     @Override
     public LmsLoan checkout(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan, final Date expirationDate, final Patron patron,
-                            final boolean isLoanPerProduct) {
+                            final boolean isLoanPerProduct, final Locale locale) {
         com.axiell.arena.services.palma.patron.checkoutresponse.CheckOutResponse checkOutResponse =
                 loansFacade.checkOut(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct);
         responseStatusChecker.checkResponseStatus(checkOutResponse.getStatus(), ehubConsumer, patron);
@@ -60,7 +56,7 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
     }
 
     @Override
-    public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderAlias, final String contentProviderRecordId) {
+    public String getMediaClass(final EhubConsumer ehubConsumer, final String contentProviderAlias, final String contentProviderRecordId, final Locale locale) {
         SearchResponse.SearchResult searchResult = catalogueFacade.search(ehubConsumer, contentProviderAlias, contentProviderRecordId);
         responseStatusChecker.checkResponseStatus(searchResult.getStatus(), ehubConsumer);
         String mediaClass = null;
@@ -106,34 +102,12 @@ class PalmaDataAccessor implements IPalmaDataAccessor {
                 case INVALID_RECORD_ID:
                     throw createCheckOutTestNotFoundException(ehubConsumer, pendingLoan);
                 default:
-                    throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse);
+                    throw createCheckOutTestInternalErrorException(ehubConsumer, checkOutTestResponse.getTestStatus().value());
             }
             return new CheckoutTestAnalysis(result, lmsLoanId);
         } else {
             throw new InternalServerErrorException("CheckOutTestResponse testStatus can not be null");
         }
-    }
-
-    private ForbiddenException createCheckOutTestCheckoutDeniedException(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan,
-                                                                         final Patron patron) {
-        final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
-        final ErrorCauseArgument argLmsRecordId = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_RECORD_ID, pendingLoan.lmsRecordId());
-        final ErrorCauseArgument argLibraryCard = new ErrorCauseArgument(ErrorCauseArgument.Type.LIBRARY_CARD, patron.getLibraryCard());
-        return new ForbiddenException(ErrorCause.LMS_CHECKOUT_DENIED, argLmsRecordId, argLibraryCard, argEhubConsumerId);
-    }
-
-    private NotFoundException createCheckOutTestNotFoundException(final EhubConsumer ehubConsumer, final PendingLoan pendingLoan) {
-        final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
-        final ErrorCauseArgument argLmsRecordId = new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_RECORD_ID, pendingLoan.lmsRecordId());
-        return new NotFoundException(ErrorCause.LMS_RECORD_NOT_FOUND, argLmsRecordId, argEhubConsumerId);
-    }
-
-    private InternalServerErrorException createCheckOutTestInternalErrorException(final EhubConsumer ehubConsumer,
-                                                                                  final CheckOutTestResponse checkOutTestResponse) {
-        final ErrorCauseArgument argEhubConsumerId = new ErrorCauseArgument(ErrorCauseArgument.Type.EHUB_CONSUMER_ID, ehubConsumer.getId());
-        final ErrorCauseArgument argStatus =
-                new ErrorCauseArgument(ErrorCauseArgument.Type.LMS_STATUS, checkOutTestResponse.getTestStatus().value());
-        return new InternalServerErrorException(LMS_ERROR_MESSAGE, ErrorCause.LMS_ERROR, argStatus, argEhubConsumerId);
     }
 
     private RuntimeException createCheckOutErrorException(final CheckOutResponse.CheckOutError checkOutError, final EhubConsumer ehubConsumer,

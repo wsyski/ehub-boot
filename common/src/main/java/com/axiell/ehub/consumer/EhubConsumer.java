@@ -223,6 +223,6 @@ public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
      * Enumeration for axiell consumer property keys.
      */
     public static enum EhubConsumerPropertyKey {
-        ARENA_PALMA_URL, ARENA_AGENCY_M_IDENTIFIER
+        ARENA_LOCAL_API_ENDPOINT, ARENA_AGENCY_M_IDENTIFIER
     }
 }

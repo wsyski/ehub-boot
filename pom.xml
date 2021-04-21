@@ -690,7 +690,16 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -801,7 +810,7 @@
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.7.2</slf4j.version>
         <wicket.version>1.4.23</wicket.version>
-        <aspectj.version>1.6.12</aspectj.version>
+        <aspectj.version>1.8.9</aspectj.version>
         <joda-time.version>2.1</joda-time.version>
         <xmlunit.version>1.5</xmlunit.version>
         <liquibase.core.version>3.5.1</liquibase.core.version>

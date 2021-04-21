@@ -33,7 +33,7 @@ public class DevelopmentData {
     public static final String LIBRARY_CARD = "libraryCard";
     public static final String PIN = "pin";
     public static final String EHUB_CONSUMER_SECRET_KEY = "ehubConsumerSecretKey";
-    public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
+    public static final String ARENA_LOCAL_API_ENDPOINT = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";
     public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
@@ -79,7 +79,7 @@ public class DevelopmentData {
 
     public static EhubConsumer createEhubConsumer() {
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, ARENA_PALMA_URL);
+        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT, ARENA_LOCAL_API_ENDPOINT);
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, ARENA_AGENCY_M_IDENTIFIER);
         EhubConsumer ehubConsumer = new EhubConsumer("Ehub Consumer Description", EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DEFAULT_LANGUAGE);
         return ehubConsumer;

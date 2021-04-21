@@ -68,7 +68,7 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
     @Rollback(true)
     public void testFindAllOrderedByDescription() {
         Map<EhubConsumer.EhubConsumerPropertyKey, String> ehubConsumerProperties = new HashMap<>();
-        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, DevelopmentData.ARENA_PALMA_URL);
+        ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT, DevelopmentData.ARENA_LOCAL_API_ENDPOINT);
         ehubConsumerProperties.put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, DevelopmentData.ARENA_AGENCY_M_IDENTIFIER);
         EhubConsumer expEhubConsumer2 =
                 new EhubConsumer("Description1", DevelopmentData.EHUB_CONSUMER_SECRET_KEY, ehubConsumerProperties, DevelopmentData.DEFAULT_LANGUAGE);
