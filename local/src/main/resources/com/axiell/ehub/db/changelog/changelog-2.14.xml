@@ -31,4 +31,9 @@
         <comment>Delete ARENA_PALMA_URL</comment>
     </changeSet>
 
+    <changeSet id="4" author="ehub" dbms="oracle">
+        <sql>UPDATE CONTENT_P_CONSUMER_PROPERTY SET PROPERTY_VALUE = '3600' WHERE PROPERTY_KEY='EP_TOKEN_LEEWAY_IN_SECONDS'</sql>
+        <comment>Updated value of EP_TOKEN_LEEWAY_IN_SECONDS</comment>
+    </changeSet>
+
 </databaseChangeLog>
