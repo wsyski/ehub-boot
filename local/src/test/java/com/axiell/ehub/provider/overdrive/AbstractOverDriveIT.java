@@ -23,10 +23,8 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     protected static final String BASE_URL = "http://api.overdrive.com";
     protected static final String OAUTH_URL = "https://oauth.overdrive.com/token";
     protected static final String FORMAT_TYPE = "ebook-overdrive";
-
-    // Card #1
-    private static final String LIBRARY_CARD = "D0200000000000";
-    private static final String PIN = "2053";
+    protected static final String OAUTH_PATRON_URL = "https://oauth-patron.overdrive.com/patrontoken";
+    protected static final String PATRON_BASE_URL = "http://patron.api.overdrive.com";
 
     // Card #2
     //private static final String LIBRARY_CARD = "D4000000255248";
@@ -43,13 +41,11 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     // Card #5
     // private static final String LIBRARY_CARD = "D0200000000000";
     // private static final String PIN = null;
-
-    protected static final String OAUTH_PATRON_URL = "https://oauth-patron.overdrive.com/patrontoken";
-    protected static final String PATRON_BASE_URL = "http://patron.api.overdrive.com";
-
     protected static final String WEBSITE_ID = "100300";
     protected static final String ILS_NAME = "dublinapitest";
-
+    // Card #1
+    private static final String LIBRARY_CARD = "D0200000000000";
+    private static final String PIN = "2053";
     private static final String ERROR_PAGE_URL = "ErrorPageurl";
     private static final String READ_AUTH_URL = "OdreadAuthUrl";
     private static final String CLIENT_KEY = "AXIELLGROUPAB";

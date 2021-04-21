@@ -13,6 +13,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.ws.Endpoint;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.axiell.ehub.lms.palma.AbstractPalmaService.BLOCKED_LIBRARY_CARD;
 import static org.junit.Assert.assertEquals;
@@ -71,12 +72,12 @@ public abstract class AbstractPalmaLoans<T> extends AbstractPalma {
 
     private void whenCheckOutTestExecuted(final String libraryCard) {
         patron.setLibraryCard(libraryCard);
-        preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
+        preCheckoutAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct, Locale.ENGLISH);
     }
 
     private void whenCheckOutExecuted() {
         Date expirationDate = new Date();
-        lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct);
+        lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, expirationDate, patron, isLoanPerProduct, Locale.ENGLISH);
     }
 
     protected abstract T getPalmaLoansServiceInstance();

@@ -17,7 +17,7 @@ public class TestDataConstants {
     public static final String EHUB_CONSUMER_SECRET_KEY = "c2VjcmV0S2V5";
     public static final long EHUB_CONSUMER_TOKEN_EXPIRATION_TIME_IN_SECONDS = 0L;
     public static final long EHUB_CONSUMER_TOKEN_LEEWAY_IN_SECONDS = 120L;
-    public static final String ARENA_PALMA_URL = "http://localhost:16521/arena.pa.palma";
+    public static final String ARENA_LOCAL_API_ENDPOINT = "http://localhost:16521/arena.pa.palma";
     public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
     public static final String PATRON_ID = "patronId";
     public static final String NAME = "name";

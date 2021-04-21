@@ -68,7 +68,7 @@ public class TestDataResource implements ITestDataResource {
                     .build();
     private static final Map<EhubConsumer.EhubConsumerPropertyKey, String> EHUB_CONSUMER_PROPERTIES =
             ImmutableMap.<EhubConsumer.EhubConsumerPropertyKey, String>builder()
-                    .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_PALMA_URL, TestDataConstants.ARENA_PALMA_URL)
+                    .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT, TestDataConstants.ARENA_LOCAL_API_ENDPOINT)
                     .put(EhubConsumer.EhubConsumerPropertyKey.ARENA_AGENCY_M_IDENTIFIER, TestDataConstants.ARENA_AGENCY_M_IDENTIFIER).build();
 
     @Autowired

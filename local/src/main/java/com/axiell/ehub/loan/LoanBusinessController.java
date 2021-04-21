@@ -5,9 +5,10 @@ import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
+import com.axiell.ehub.lms.ILmsDataAccessorFactory;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
-import com.axiell.ehub.lms.palma.IPalmaDataAccessor;
+import com.axiell.ehub.lms.ILmsDataAccessor;
 import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
@@ -17,12 +18,14 @@ import com.axiell.authinfo.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 public class LoanBusinessController implements ILoanBusinessController {
     @Autowired
     private IConsumerBusinessController consumerBusinessController;
 
     @Autowired
-    private IPalmaDataAccessor palmaDataAccessor;
+    private ILmsDataAccessorFactory lmsDataAccessorFactory;
 
     @Autowired
     private IEhubLoanRepositoryFacade ehubLoanRepositoryFacade;
@@ -60,18 +63,20 @@ public class LoanBusinessController implements ILoanBusinessController {
         final PendingLoan pendingLoan = new PendingLoan(fields);
         final EhubConsumer ehubConsumer = consumerBusinessController.getEhubConsumer(authInfo);
         final Patron patron = authInfo.getPatron();
+        final Locale locale = new Locale(language);
         final String contentProviderAlias = pendingLoan.contentProviderAlias();
         final ContentProviderConsumer contentProviderConsumer = contentProviderDataAccessorFacade.getContentProviderConsumer(ehubConsumer,
                 contentProviderAlias);
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final boolean isLoanPerProduct = contentProvider.isLoanPerProduct();
-        final CheckoutTestAnalysis checkoutTestAnalysis = palmaDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct);
+        final ILmsDataAccessor lmsDataAccessor = lmsDataAccessorFactory.getLmsDataAccessor(ehubConsumer);
+        final CheckoutTestAnalysis checkoutTestAnalysis = lmsDataAccessor.checkoutTest(ehubConsumer, pendingLoan, patron, isLoanPerProduct, locale);
         final Result result = checkoutTestAnalysis.getResult();
 
         switch (result) {
             case NEW_LOAN:
                 final ContentProviderLoan contentProviderLoan = contentProviderDataAccessorFacade.createLoan(ehubConsumer, patron, pendingLoan, language);
-                final LmsLoan lmsLoan = palmaDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron, isLoanPerProduct);
+                final LmsLoan lmsLoan = lmsDataAccessor.checkout(ehubConsumer, pendingLoan, contentProviderLoan.expirationDate(), patron, isLoanPerProduct, locale);
                 final EhubLoan ehubLoan = ehubLoanRepositoryFacade.saveEhubLoan(ehubConsumer, lmsLoan, contentProviderLoan);
                 final Content content = contentProviderLoan.content();
                 final ContentProviderLoanMetadata contentProviderLoanMetadata = ehubLoan.getContentProviderLoanMetadata();

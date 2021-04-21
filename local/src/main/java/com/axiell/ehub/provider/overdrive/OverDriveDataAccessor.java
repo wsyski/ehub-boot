@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.overdrive;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.checkout.Content;
@@ -8,7 +9,6 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
@@ -48,7 +48,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
         final String productId = data.getContentProviderRecordId();
         final String language = data.getLanguage();
-        final CheckoutDTO checkout = getCheckout(data, oAuthAccessToken);
+        final CheckoutDTO checkout = getCheckout(contentProviderConsumer, productId, oAuthAccessToken);
         if (checkout != null) {
             CirculationFormatsDTO circulationFormats = overDriveFacade.getCirculationFormats(contentProviderConsumer, oAuthAccessToken,
                     checkout.getReserveId());
@@ -71,7 +71,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final String formatType = data.getContentProviderFormatId();
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         DownloadLinkTemplateDTO downloadLinkTemplate;
-        CheckoutDTO checkout = getCheckout(data, oAuthAccessToken);
+        CheckoutDTO checkout = getCheckout(contentProviderConsumer, productId, oAuthAccessToken);
         if (checkout != null) {
             CirculationFormatsDTO circulationFormatsDTO = overDriveFacade.getCirculationFormats(contentProviderConsumer, oAuthAccessToken, productId);
             downloadLinkTemplate = downloadLinkTemplateFinder.findFromFormats(circulationFormatsDTO.getFormats());
@@ -124,9 +124,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         return Collections.singletonList(new Issue(formats));
     }
 
-    private CheckoutDTO getCheckout(final CommandData data, final OAuthAccessToken oAuthAccessToken) {
-        final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
-        final String productId = data.getContentProviderRecordId();
+    private CheckoutDTO getCheckout(final ContentProviderConsumer contentProviderConsumer, final String productId, final OAuthAccessToken oAuthAccessToken) {
         final CheckoutsDTO checkouts = overDriveFacade.getCheckouts(contentProviderConsumer, oAuthAccessToken);
         if (checkouts == null) {
             return null;

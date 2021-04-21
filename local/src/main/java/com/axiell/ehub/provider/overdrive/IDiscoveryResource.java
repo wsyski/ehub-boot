@@ -27,6 +27,6 @@ interface IDiscoveryResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("collections/{collectionToken}/products")
-    ProductDTO getProductByCrossRefId(@HeaderParam(HttpHeaders.AUTHORIZATION) OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
+    ProductsDTO getProductsByCrossRefId(@HeaderParam(HttpHeaders.AUTHORIZATION) OAuthAccessToken accessToken, @PathParam("collectionToken") String collectionToken,
                               @QueryParam("crossRefId") String crossRefId);
 }

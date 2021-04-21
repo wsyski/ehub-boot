@@ -1,10 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
-
-import java.util.List;
 
 public interface IOverDriveFacade {
 
