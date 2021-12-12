@@ -112,7 +112,7 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     }
 
     protected void whenGetProduct() {
-        product = underTest.getProduct(contentProviderConsumer, PRODUCT_ID);
+        product = underTest.getProduct(contentProviderConsumer, PRODUCT_ID, FORMAT_TYPE);
     }
 
     protected void givenPatronAccessToken() {

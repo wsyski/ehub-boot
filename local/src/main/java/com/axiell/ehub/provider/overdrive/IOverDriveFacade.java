@@ -7,7 +7,7 @@ public interface IOverDriveFacade {
 
     OAuthAccessToken getOAuthAccessToken(ContentProviderConsumer contentProviderConsumer);
 
-    Product getProduct(ContentProviderConsumer contentProviderConsumer, String productId);
+    Product getProduct(ContentProviderConsumer contentProviderConsumer, String crossRefId, String formatType);
 
     OAuthAccessToken getPatronOAuthAccessToken(ContentProviderConsumer contentProviderConsumer, String libraryCard, String pin);
 

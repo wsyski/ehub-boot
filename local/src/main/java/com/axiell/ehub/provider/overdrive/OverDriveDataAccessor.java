@@ -46,15 +46,17 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
-        final String productId = data.getContentProviderRecordId();
+        final String crossRefId = data.getContentProviderRecordId();
+        final String formatType = data.getContentProviderFormatId();
         final String language = data.getLanguage();
+        final Product product = overDriveFacade.getProduct(contentProviderConsumer, crossRefId, formatType);
+        final String productId = product.getId();
         final CheckoutDTO checkout = getCheckout(contentProviderConsumer, productId, oAuthAccessToken);
         if (checkout != null) {
             CirculationFormatsDTO circulationFormats = overDriveFacade.getCirculationFormats(contentProviderConsumer, oAuthAccessToken,
                     checkout.getReserveId());
             return makeIssues(contentProvider, language, circulationFormats.getFormats(), new CirculationFormatExtractor());
         } else {
-            final Product product = overDriveFacade.getProduct(contentProviderConsumer, productId);
             if (!product.isAvailable()) {
                 throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer, PRODUCT_UNAVAILABLE,
                         language);
@@ -67,8 +69,10 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     public ContentProviderLoan createLoan(final CommandData data) {
         final ContentProviderConsumer contentProviderConsumer = data.getContentProviderConsumer();
         final OAuthAccessToken oAuthAccessToken = getOAuthAccessToken(data);
-        final String productId = data.getContentProviderRecordId();
+        final String crossRefId = data.getContentProviderRecordId();
         final String formatType = data.getContentProviderFormatId();
+        final Product product = overDriveFacade.getProduct(contentProviderConsumer, crossRefId, formatType);
+        final String productId = product.getId();
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         DownloadLinkTemplateDTO downloadLinkTemplate;
         CheckoutDTO checkout = getCheckout(contentProviderConsumer, productId, oAuthAccessToken);
@@ -93,7 +97,7 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final FormatDecoration formatDecoration = contentProvider.getFormatDecoration(formatType);
         final ContentLinks contentLinks = createContentLinks(contentUrl);
         final Content content = new Content(contentLinks);
-        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, productId,
+        final ContentProviderLoanMetadata metadata = new ContentProviderLoanMetadata.Builder(contentProvider, expirationDate, crossRefId,
                 formatDecoration).build();
         return new ContentProviderLoan(metadata, content);
     }
@@ -105,8 +109,10 @@ public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
         final ContentProviderLoanMetadata contentProviderLoanMetadata = data.getContentProviderLoanMetadata();
         final FormatDecoration formatDecoration = data.getFormatDecoration();
         final CheckoutsDTO checkouts = overDriveFacade.getCheckouts(contentProviderConsumer, oAuthAccessToken);
-        final String productId = contentProviderLoanMetadata.getRecordId();
+        final String crossRefId = contentProviderLoanMetadata.getRecordId();
         final String formatType = formatDecoration.getContentProviderFormatId();
+        final Product product = overDriveFacade.getProduct(contentProviderConsumer, crossRefId, formatType);
+        final String productId = product.getId();
         final DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(productId, formatType);
         final DownloadLinkTemplateDTO downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckouts(checkouts);
         final String contentUrl = getContentUrl(contentProviderConsumer, oAuthAccessToken, downloadLinkTemplate);
