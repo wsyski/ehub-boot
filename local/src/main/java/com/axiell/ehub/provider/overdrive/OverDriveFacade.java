@@ -1,6 +1,9 @@
 package com.axiell.ehub.provider.overdrive;
 
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
 import org.apache.commons.lang3.StringUtils;
@@ -26,13 +29,18 @@ class OverDriveFacade implements IOverDriveFacade {
     }
 
     @Override
-    public Product getProduct(final ContentProviderConsumer contentProviderConsumer, final String productId) {
+    public Product getProduct(final ContentProviderConsumer contentProviderConsumer, final String crossRefId, final String formatType) {
         final IDiscoveryResource discoveryResource = DiscoveryResourceFactory.create(contentProviderConsumer);
         final IAvailabilityResource availabilityResource = AvailabilityResourceFactory.create(contentProviderConsumer);
         final OAuthAccessToken accessToken = getOAuthAccessToken(contentProviderConsumer);
         final String collectionToken = getCollectionToken(contentProviderConsumer, discoveryResource, accessToken);
-        final ProductDTO productDTO = discoveryResource.getProductById(accessToken, collectionToken, productId);
-        final AvailabilityDTO availabilityDTO = availabilityResource.getAvailability(accessToken, collectionToken, productId);
+        final ProductsDTO productsDTO = discoveryResource.getProductsByCrossRefId(accessToken, collectionToken, crossRefId);
+        if (productsDTO == null || productsDTO.getTotalItems() == 0) {
+            throw NotFoundExceptionFactory.create(ErrorCause.CONTENT_PROVIDER_RECORD_NOT_FOUND, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, crossRefId,
+                    formatType);
+        }
+        final ProductDTO productDTO = productsDTO.getProducts().get(0);
+        final AvailabilityDTO availabilityDTO = availabilityResource.getAvailability(accessToken, collectionToken, productDTO.getId());
         return new Product(productDTO, availabilityDTO);
     }
 

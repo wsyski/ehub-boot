@@ -31,6 +31,7 @@ import static org.mockito.Mockito.verify;
 
 public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture<OverDriveDataAccessor> {
     private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
+    protected static final String OVERDRIVE_RECORD_ID = "overdriveRecordId";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -77,6 +78,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
@@ -96,6 +98,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
@@ -107,6 +110,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenCirculationFormats();
         givenCirculationFormatType();
         givenTextBundle();
+        givenProduct();
         whenGetIssues();
         thenActualFormatEqualsExpected();
     }
@@ -116,6 +120,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatInFormatFactory();
         givenContentProviderConsumerInCommandData();
         givenContentProviderRecordIdInCommandData();
+        givenContentProviderFormatIdInCommandData();
         givenLanguageInCommandData();
         givenPatronInCommandData();
         givenLibraryCardInPatron();
@@ -153,6 +158,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
+        givenProduct();
         whenCreateLoan();
         thenActualLoanContainsContentLinkHref();
     }
@@ -181,6 +187,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
         givenLinks();
+        givenProduct();
         givenOverDriveContentLink();
         givenFormatDecorationInContentProvider();
         givenFormatIdFromFormatDecoration();
@@ -214,6 +221,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadUrl();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
+        givenProduct();
         whenGetContent();
         thenActualContentLinkContainsHref();
     }
@@ -234,6 +242,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenFormatIdFromFormatDecoration();
         givenClientResponse();
         givenClientResponseStatus();
+        givenProduct();
         givenErrorDetails();
         try {
             whenGetContent();
@@ -244,11 +253,11 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenLockFormat() {
-        given(overDriveFacade.lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(circulationFormat);
+        given(overDriveFacade.lockFormat(contentProviderConsumer, accessToken, OVERDRIVE_RECORD_ID, FORMAT_ID)).willReturn(circulationFormat);
     }
 
     private void thenLockFormatIsExecuted() {
-        verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID);
+        verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, OVERDRIVE_RECORD_ID, FORMAT_ID);
     }
 
     private void givenExpectedContentProviderErrorException(final String status) {
@@ -256,7 +265,9 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenProduct() {
-        given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID)).willReturn(product);
+        given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID, FORMAT_ID)).willReturn(product);
+        given(product.getCrossRefId()).willReturn(RECORD_ID);
+        given(product.getId()).willReturn(OVERDRIVE_RECORD_ID);
     }
 
     private void givenDiscoveryFormat() {
@@ -280,7 +291,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private void givenCirculationFormats() {
         List<CirculationFormatDTO> circulationFormats = Collections.singletonList(circulationFormat);
         given(checkout.getFormats()).willReturn(circulationFormats);
-        given(checkout.getReserveId()).willReturn(RECORD_ID);
+        given(checkout.getReserveId()).willReturn(OVERDRIVE_RECORD_ID);
     }
 
     private void givenCirculationFormatType() {
@@ -288,7 +299,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenCirculationFormatReserveId() {
-        given(circulationFormat.getReserveId()).willReturn(RECORD_ID);
+        given(circulationFormat.getReserveId()).willReturn(OVERDRIVE_RECORD_ID);
     }
 
     private void givenCirculationFormatLinkTemplates() {
@@ -304,13 +315,13 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenCheckout() {
-        given(overDriveFacade.checkout(contentProviderConsumer, accessToken, RECORD_ID, FORMAT_ID)).willReturn(checkout);
+        given(overDriveFacade.checkout(contentProviderConsumer, accessToken, OVERDRIVE_RECORD_ID, FORMAT_ID)).willReturn(checkout);
     }
 
     private void givenGetCirculationFormats() {
         CirculationFormatsDTO circulationFormats = new CirculationFormatsDTO();
         ReflectionTestUtils.setField(circulationFormats, "formats", Collections.singletonList(circulationFormat));
-        given(overDriveFacade.getCirculationFormats(contentProviderConsumer, accessToken, RECORD_ID)).willReturn(circulationFormats);
+        given(overDriveFacade.getCirculationFormats(contentProviderConsumer, accessToken, OVERDRIVE_RECORD_ID)).willReturn(circulationFormats);
     }
 
     private void givenExpirationDateInCheckout() {
