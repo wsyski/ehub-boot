@@ -72,11 +72,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.zeroturnaround</groupId>
-                    <artifactId>jrebel-maven-plugin</artifactId>
-                    <version>${maven-jrebel-plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven-resources-plugin.version}</version>
@@ -750,7 +745,6 @@
         <jacoco-maven-plugin.version>0.7.1.201405082137</jacoco-maven-plugin.version>
         <jaxws-maven-plugin.version>2.3.1-b20150201.1248</jaxws-maven-plugin.version>
         <java-jwt.version>3.3.0</java-jwt.version>
-        <maven-jrebel-plugin.version>1.1.7</maven-jrebel-plugin.version>
         <maven-jaxb2-plugin.version>0.8.2</maven-jaxb2-plugin.version>
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>2.3</maven-war-plugin.version>
@@ -797,29 +791,6 @@
     </properties>
 
     <profiles>
-        <profile>
-            <id>jrebel</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.zeroturnaround</groupId>
-                        <artifactId>jrebel-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>generate-rebel-xml</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>jacoco</id>
             <activation>
