@@ -4,7 +4,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-@Path("/v1")
+@Path("/v2")
 interface IAvailabilityResource {
 
     @GET
