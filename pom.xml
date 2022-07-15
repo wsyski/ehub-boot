@@ -751,7 +751,7 @@
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
         <resteasy.version>3.0.26.Final</resteasy.version>
         <httpcomponents-httpclient.version>4.5.9</httpcomponents-httpclient.version>
-        <spring.version>4.3.1.RELEASE</spring.version>
+        <spring.version>4.3.30.RELEASE</spring.version>
         <commons-validator.version>1.5.1</commons-validator.version>
         <spring-ws-test.version>2.1.2.RELEASE</spring-ws-test.version>
         <junit.version>4.12</junit.version>
