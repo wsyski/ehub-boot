@@ -8,7 +8,7 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 public abstract class AbstractEhubRepositoryTest<D extends DevelopmentData> extends AbstractTransactionalJUnit4SpringContextTests {
-    
+
     // Test data
     protected D developmentData;
 
@@ -26,6 +26,6 @@ public abstract class AbstractEhubRepositoryTest<D extends DevelopmentData> exte
     }
 
     protected static boolean isOnline() {
-        return System.getProperty("online") != null && Boolean.valueOf(System.getProperty("online"));
+        return System.getProperty("online") != null && Boolean.parseBoolean(System.getProperty("online"));
     }
 }
