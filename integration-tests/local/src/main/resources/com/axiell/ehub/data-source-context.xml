@@ -15,5 +15,5 @@
         <property name="databasePlatform" value="#{hibernateProperties['hibernate.dialect']}"/>
     </bean>
 
-    <jdbc:embedded-database id="dataSource" type="HSQL" />
+    <jdbc:embedded-database id="dataSource" type="HSQL" database-name="ehub"/>
 </beans>
