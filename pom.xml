@@ -712,16 +712,6 @@
                 <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
-            <dependency>
-                <groupId>jakarta.xml.ws</groupId>
-                <artifactId>jakarta.xml.ws-api</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.activation</groupId>
-                <artifactId>activation</artifactId>
-                <version>${javax.activation.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -817,8 +807,6 @@
         <ehub.release.version>2.16</ehub.release.version>
         <ehub.snapshot.version>2.16-SNAPSHOT</ehub.snapshot.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
-        <jaxb.version>2.3.2</jaxb.version>
-        <javax.activation.version>1.1.1</javax.activation.version>
     </properties>
 
     <profiles>
