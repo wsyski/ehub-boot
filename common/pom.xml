@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.axiell.authinfo</groupId>
             <artifactId>authinfo</artifactId>
-            <version>${project.version}</version>
+            <version>${authinfo.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
