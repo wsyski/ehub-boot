@@ -90,6 +90,7 @@
                             <httpConnector>
                                 <port>16518</port>
                             </httpConnector>
+                            <supportedPackagings>jar</supportedPackagings>
                             <!--
                             <daemon>false</daemon>
                             -->

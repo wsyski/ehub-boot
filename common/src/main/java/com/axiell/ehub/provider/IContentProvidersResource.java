@@ -1,7 +1,6 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.authinfo.AuthInfo;
-import com.axiell.ehub.provider.alias.AliasMappings;
 import com.axiell.ehub.provider.record.IRecordsResource;
 import org.jboss.resteasy.annotations.cache.Cache;
 
