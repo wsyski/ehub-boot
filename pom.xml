@@ -42,13 +42,13 @@
         <repository>
             <id>releases</id>
             <name>Arena Repository</name>
-            <url>http://jenkins.axiell.local:8081/artifactory/libs-release-local</url>
+            <url>http://artifactory.axiell.local:8081/artifactory/libs-release-local</url>
         </repository>
 
         <snapshotRepository>
             <id>snapshots</id>
             <name>Arena Snapshot Repository</name>
-            <url>http://jenkins.axiell.local:8081/artifactory/libs-snapshot-local</url>
+            <url>http://artifactory.axiell.local:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -456,13 +456,13 @@
             </dependency>
 
             <dependency>
-                <groupId>com.oracle.jdbc</groupId>
+                <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ojdbc8</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.oracle.jdbc</groupId>
+                <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ucp</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
