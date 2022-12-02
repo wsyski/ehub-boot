@@ -362,15 +362,6 @@
                     </schemas>
                     <verbose>true</verbose>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.sun</groupId>
-                        <artifactId>tools</artifactId>
-                        <version>${java.version}</version>
-                        <scope>system</scope>
-                        <systemPath>${java.home}/../lib/tools.jar</systemPath>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -384,6 +375,7 @@
                     <httpConnector>
                         <port>16518</port>
                     </httpConnector>
+                    <supportedPackagings>jar</supportedPackagings>
                     <!--
                     <jettyXml>config/jetty.xml</jettyXml>
                     -->
@@ -480,7 +472,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <groupId>com.helger.maven</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <executions>
                     <execution>
