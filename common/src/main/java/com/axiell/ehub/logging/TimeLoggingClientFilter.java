@@ -27,9 +27,8 @@ public class TimeLoggingClientFilter implements ClientRequestFilter, ClientRespo
     @Override
     public void filter(final ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         final StopWatch stopWatch = (StopWatch) requestContext.getProperty(STOP_WATCH_PROPERTY);
-        stopWatch.stop();
         String timeMessage = getTimeMessage(requestContext, responseContext, stopWatch.getTime());
-        TIME_LOGGER.info(timeMessage);
+        TIME_LOGGER.error("TEST MESSAGE: " + timeMessage);
     }
 
     private String getTimeMessage(final ClientRequestContext requestContext, final ClientResponseContext responseContext, final long elapsedTime) {

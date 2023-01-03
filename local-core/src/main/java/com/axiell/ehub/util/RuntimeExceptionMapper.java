@@ -5,6 +5,7 @@ import com.axiell.authinfo.MissingOrUnparseableAuthorizationHeaderRuntimeExcepti
 import com.axiell.authinfo.MissingSecretKeyRuntimeException;
 import com.axiell.ehub.*;
 import com.axiell.ehub.security.UnauthorizedException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -56,6 +57,6 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
         while (cause.getCause() != null) {
             cause = cause.getCause();
         }
-        return cause.getMessage();
+        return ExceptionUtils.getStackTrace(t);
     }
 }
