@@ -821,8 +821,8 @@
         <liquibase.core.version>3.5.1</liquibase.core.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <jackson.version>2.10.5</jackson.version>
-        <ehub.release.version>2.16</ehub.release.version>
-        <ehub.snapshot.version>2.16-SNAPSHOT</ehub.snapshot.version>
+        <ehub.release.version>2.18</ehub.release.version>
+        <ehub.snapshot.version>2.18-SNAPSHOT</ehub.snapshot.version>
         <authinfo.version>1.1-SNAPSHOT</authinfo.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
     </properties>
