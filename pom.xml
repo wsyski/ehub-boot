@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.axiell.ehub</groupId>
     <artifactId>ehub</artifactId>
-    <version>2.17</version>
+    <version>2.18-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -823,7 +823,7 @@
         <jackson.version>2.10.5</jackson.version>
         <ehub.release.version>2.16</ehub.release.version>
         <ehub.snapshot.version>2.16-SNAPSHOT</ehub.snapshot.version>
-        <authinfo.version>1.0-SNAPSHOT</authinfo.version>
+        <authinfo.version>1.1-SNAPSHOT</authinfo.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
     </properties>
 
