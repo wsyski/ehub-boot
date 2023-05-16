@@ -808,7 +808,7 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <commons-codec.version>1.12</commons-codec.version>
         <commons.io.version>2.6</commons.io.version>
-        <oracle.version>21.6.0.0.1</oracle.version>
+        <oracle.version>23.2.0.0</oracle.version>
         <jetty.version>9.4.27.v20200227</jetty.version>
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
         <wiremock.version>2.23.2</wiremock.version>
