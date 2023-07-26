@@ -9,7 +9,6 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import org.junit.Assert;
@@ -18,11 +17,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
 import static org.mockito.BDDMockito.given;
@@ -50,13 +51,13 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private CheckoutDTO checkout;
     @Mock
     private CirculationFormatDTO circulationFormat;
+
+    private Map<String, DownloadLinkTemplateDTO> CIRCULATION_LINKS = Collections.singletonMap("downloadRedirect", new DownloadLinkTemplateDTO(CONTENT_HREF));
     @Mock
     private LinkTemplatesDTO linkTemplates;
 
-    @Mock
-    private DownloadLinkTemplateDTO downloadLinkTemplate;
-    @Mock
-    private DownloadLinkDTO downloadLink;
+    private DownloadLinkTemplateDTO DOWNLOAD_LINK_TEMPLATE = new DownloadLinkTemplateDTO(CONTENT_HREF);
+    private DownloadLinkDTO DOWNLOAD_LINK = new DownloadLinkDTO(CONTENT_HREF);
     @Mock
     private Links links;
     @Mock
@@ -107,7 +108,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenCheckouts();
         givenCheckoutList();
         givenGetCirculationFormats();
-        givenCirculationFormats();
+        givenCirculationLinks();
         givenCirculationFormatType();
         givenTextBundle();
         givenProduct();
@@ -146,13 +147,12 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenPatronAccessToken();
         givenCheckout();
         givenExpirationDateInCheckout();
-        givenCirculationFormats();
+        givenCirculationLinks();
         givenCirculationFormatType();
         givenCirculationFormatReserveId();
         givenCirculationFormatLinkTemplates();
         givenDownloadLinkTemplate();
         givenDownloadLink();
-        givenLinks();
         givenOverDriveContentLink();
         givenDownloadUrl();
         givenFormatDecorationInContentProvider();
@@ -175,10 +175,9 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenCheckouts();
         givenCheckoutList();
         givenGetCirculationFormats();
-        givenCirculationFormats();
+        givenCirculationLinks();
         givenCirculationFormatType();
         givenExpirationDateInCheckout();
-        givenCirculationFormats();
         givenCirculationFormatLinkTemplates();
         givenDownloadLinkTemplate();
         givenLockFormat();
@@ -186,7 +185,6 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDownloadLink();
         givenFormatIdFromFormatDecoration();
         givenDownloadableContentDisposition();
-        givenLinks();
         givenProduct();
         givenOverDriveContentLink();
         givenFormatDecorationInContentProvider();
@@ -210,13 +208,12 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenRecordIdFromContentProviderLoanMetadata();
         givenFormatDecorationInContentProviderLoanMetadata();
         givenCheckoutList();
-        givenCirculationFormats();
+        givenCirculationLinks();
         givenCirculationFormatType();
         givenCirculationFormatReserveId();
         givenCirculationFormatLinkTemplates();
         givenDownloadLinkTemplate();
         givenDownloadLink();
-        givenLinks();
         givenOverDriveContentLink();
         givenDownloadUrl();
         givenFormatIdFromFormatDecoration();
@@ -288,9 +285,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         given(response.readEntity(ErrorDTO.class)).willReturn(errorDetails);
     }
 
-    private void givenCirculationFormats() {
-        List<CirculationFormatDTO> circulationFormats = Collections.singletonList(circulationFormat);
-        given(checkout.getFormats()).willReturn(circulationFormats);
+    private void givenCirculationLinks() {
+        given(checkout.getLinks()).willReturn(CIRCULATION_LINKS);
         given(checkout.getReserveId()).willReturn(OVERDRIVE_RECORD_ID);
     }
 
@@ -307,7 +303,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenDownloadLinkTemplate() {
-        given(linkTemplates.getDownloadLink()).willReturn(downloadLinkTemplate);
+        given(linkTemplates.getDownloadLink()).willReturn(DOWNLOAD_LINK_TEMPLATE);
     }
 
     public void givenPatronAccessToken() {
@@ -329,11 +325,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     }
 
     private void givenDownloadLink() {
-        given(overDriveFacade.getDownloadLink(contentProviderConsumer, accessToken, downloadLinkTemplate)).willReturn(downloadLink);
-    }
-
-    private void givenLinks() {
-        given(downloadLink.getLinks()).willReturn(links);
+        given(overDriveFacade.getDownloadLink(Mockito.eq(contentProviderConsumer), Mockito.eq(accessToken), Mockito.any(DOWNLOAD_LINK_TEMPLATE.getClass()))).willReturn(DOWNLOAD_LINK);
     }
 
     private void givenOverDriveContentLink() {

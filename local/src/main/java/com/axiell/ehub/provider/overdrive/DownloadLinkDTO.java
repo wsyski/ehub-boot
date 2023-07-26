@@ -13,6 +13,15 @@ public class DownloadLinkDTO {
         return links;
     }
 
+    private DownloadLinkDTO() {
+    }
+
+    public DownloadLinkDTO(final String href) {
+        links = new Links();
+        links.contentLink = new DownloadLinkDTO.Links.ContentLink();
+        links.contentLink.href = href;
+    }
+
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Links {

@@ -3,10 +3,9 @@ package com.axiell.ehub.provider.overdrive;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
 
 import java.util.List;
+import java.util.Map;
 
 class DownloadLinkTemplateFinder {
     private final CirculationFormatDTO providedFormat;
@@ -16,15 +15,19 @@ class DownloadLinkTemplateFinder {
     }
 
     DownloadLinkTemplateDTO findFromCheckout(final CheckoutDTO checkout) {
-        final List<CirculationFormatDTO> formats = checkout.getFormats();
-        return findFromFormats(formats);
+        final Map<String, DownloadLinkTemplateDTO> links = checkout.getLinks();
+        return findFromLinks(links);
+    }
+
+    DownloadLinkTemplateDTO findFromLinks(Map<String, DownloadLinkTemplateDTO> links) {
+        return links.get("downloadRedirect");
     }
 
     DownloadLinkTemplateDTO findFromFormats(List<CirculationFormatDTO> formats) {
 
         for (CirculationFormatDTO format : formats) {
             if (providedFormat.equals(format)) {
-                final LinkTemplatesDTO linkTemplates = format.getLinkTemplates();
+                final CirculationFormatDTO.LinkTemplatesDTO linkTemplates = format.getLinkTemplates();
                 return linkTemplates.getDownloadLink();
             }
         }

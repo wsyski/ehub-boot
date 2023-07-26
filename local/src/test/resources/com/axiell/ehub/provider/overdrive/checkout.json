@@ -1,0 +1,27 @@
+{
+  "reserveId": "e7844604-f059-4a71-954a-1d5baf4dc53e",
+  "crossRefId": 1214824,
+  "expires": "2023-07-25T14:00:14Z",
+  "isFormatLockedIn": true,
+  "links": {
+    "self": {
+      "href": "https://integration-patron.api.overdrive.com/v1/patrons/me/checkouts/e7844604-f059-4a71-954a-1d5baf4dc53e",
+      "type": "application/vnd.overdrive.circulation.api+json"
+    },
+    "metadata": {
+      "href": "https://integration.api.overdrive.com/v1/collections/v1P1BBQ0AAA2N/products/e7844604-f059-4a71-954a-1d5baf4dc53e/metadata",
+      "type": "application/vnd.overdrive.api+json"
+    },
+    "downloadRedirect": {
+      "href": "https://integration-patron.api.overdrive.com/v1/patrons/me/checkouts/e7844604-f059-4a71-954a-1d5baf4dc53e/formats/downloadredirect",
+      "type": "application/vnd.overdrive.circulation.api+json"
+    }
+  },
+  "actions": {
+    "earlyReturn": {
+      "href": "https://integration-patron.api.overdrive.com/v1/patrons/me/checkouts/e7844604-f059-4a71-954a-1d5baf4dc53e",
+      "method": "DELETE"
+    }
+  },
+  "checkoutDate": "2023-07-24T14:00:14Z"
+}

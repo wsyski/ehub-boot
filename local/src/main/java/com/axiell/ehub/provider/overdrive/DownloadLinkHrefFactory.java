@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_ERROR_PAGE_URL;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_READ_AUTH_URL;
