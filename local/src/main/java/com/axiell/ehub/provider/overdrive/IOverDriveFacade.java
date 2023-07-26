@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 
 public interface IOverDriveFacade {
 

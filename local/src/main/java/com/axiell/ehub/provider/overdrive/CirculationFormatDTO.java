@@ -59,17 +59,5 @@ public class CirculationFormatDTO {
             return downloadLink;
         }
 
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class DownloadLinkTemplateDTO {
-            private String href;
-
-            public String getHref() {
-                return href;
-            }
-
-            void setHref(String href) {
-                this.href = href;
-            }
-        }
     }
 }
