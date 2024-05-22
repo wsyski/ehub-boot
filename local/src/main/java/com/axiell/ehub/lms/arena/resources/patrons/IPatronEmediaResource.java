@@ -22,7 +22,8 @@ public interface IPatronEmediaResource {
             @PathParam("contentProviderName") String contentProviderName,
             @PathParam("formatId") String formatId,
             @QueryParam("issue") String issue,
-            @QueryParam("isLoanPerProduct") @DefaultValue("false") Boolean isLoanPerProduct) throws CheckedArenaException;
+            @QueryParam("isLoanPerProduct") @DefaultValue("false") Boolean isLoanPerProduct,
+            @QueryParam("origin") String origin) throws CheckedArenaException;
 
     @POST
     @Path("/records/{recordId}/providers/{contentProviderName}/formats/{formatId}/checkouts")
@@ -32,6 +33,7 @@ public interface IPatronEmediaResource {
             @PathParam("recordId") String recordId,
             @PathParam("contentProviderName") String contentProviderName,
             @PathParam("formatId") String formatId,
+            @QueryParam("origin") String origin,
             CheckoutEmediaRequestDTO checkoutEmediaRequestDTO) throws CheckedArenaException;
 
 }
