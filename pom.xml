@@ -40,15 +40,14 @@
     </ciManagement>
     <distributionManagement>
         <repository>
-            <id>releases</id>
-            <name>Arena Repository</name>
-            <url>https://artifactory.axiell.com/artifactory/libs-release-local</url>
+            <id>central</id>
+            <name>Artifactory-releases</name>
+            <url>https://artifactory.axiell.com/artifactory/mvn-repo</url>
         </repository>
-
         <snapshotRepository>
             <id>snapshots</id>
-            <name>Arena Snapshot Repository</name>
-            <url>https://artifactory.axiell.com/artifactory/libs-snapshot-local</url>
+            <name>Artifactory-snapshots</name>
+            <url>https://artifactory.axiell.com/artifactory/mvn-repo</url>
         </snapshotRepository>
     </distributionManagement>
 
