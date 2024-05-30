@@ -42,12 +42,12 @@
         <repository>
             <id>central</id>
             <name>Artifactory-releases</name>
-            <url>https://artifactory.axiell.com/artifactory/mvn-repo</url>
+            <url>http://artifactory.axiell.com:8081/artifactory/mvn-repo</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Artifactory-snapshots</name>
-            <url>https://artifactory.axiell.com/artifactory/mvn-repo</url>
+            <url>http://artifactory.axiell.com:8081/artifactory/mvn-repo</url>
         </snapshotRepository>
     </distributionManagement>
 
