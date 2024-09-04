@@ -350,9 +350,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.jboss.resteasy</groupId>
+                <groupId>org.jboss.resteasy.spring</groupId>
                 <artifactId>resteasy-spring</artifactId>
-                <version>${resteasy.version}</version>
+                <version>${resteasy-spring.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>resteasy-jettison-provider</artifactId>
@@ -854,7 +854,7 @@
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
-        <resteasy.version>4.7.9.Final</resteasy.version>
+        <resteasy.version>5.0.9.Final</resteasy.version>
         <httpcomponents-httpclient.version>4.5.9</httpcomponents-httpclient.version>
         <spring.version>5.2.22.RELEASE</spring.version>
         <commons-validator.version>1.5.1</commons-validator.version>
@@ -866,7 +866,7 @@
         <guava.version>19.0</guava.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
-        <rs-api.version>2.1</rs-api.version>
+        <rs-api.version>2.1.1</rs-api.version>
         <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
         <hibernate-validator.version>5.4.3.Final</hibernate-validator.version>
         <hibernate.version>5.4.33.Final</hibernate.version>
@@ -895,6 +895,7 @@
         <ehub.snapshot.version>2.21-SNAPSHOT</ehub.snapshot.version>
         <authinfo.version>1.2-SNAPSHOT</authinfo.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
+        <resteasy-spring.version>2.0.1.Final</resteasy-spring.version>
     </properties>
 
     <profiles>

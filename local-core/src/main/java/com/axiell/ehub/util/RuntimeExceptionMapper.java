@@ -57,6 +57,6 @@ public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeE
         while (cause.getCause() != null) {
             cause = cause.getCause();
         }
-        return ExceptionUtils.getStackTrace(t);
+        return cause.getMessage();
     }
 }
