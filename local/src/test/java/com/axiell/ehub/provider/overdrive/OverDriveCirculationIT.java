@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.util.CollectionFinder;

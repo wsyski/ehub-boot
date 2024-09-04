@@ -12,7 +12,7 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.provider.record.format.Format;

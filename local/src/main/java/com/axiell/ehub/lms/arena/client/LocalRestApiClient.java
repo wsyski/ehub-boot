@@ -24,6 +24,7 @@ import java.util.Set;
 
 public class LocalRestApiClient implements ILocalRestApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalRestApiClient.class);
+    private static final String ORIGIN_E_HUB = "E_HUB";
 
     private IRootResourceFactory rootResourceFactory;
 
@@ -31,7 +32,7 @@ public class LocalRestApiClient implements ILocalRestApiService {
     public CheckoutTestEmediaResponseDTO checkoutEmediaTest(final String localRestApiEndpoint, final Locale locale, final AuthInfo authInfo, final String recordId, final String contentProviderName, final String formatId, String issue, Boolean isLoanPerProduct) throws RestApiException {
         IPatronEmediaResource patronEmediaResource = getRootResource(localRestApiEndpoint, locale).getPatronsResource().getEmediaResource();
         try {
-            return patronEmediaResource.checkoutEmediaTest(authInfo, recordId, contentProviderName, formatId, issue, isLoanPerProduct);
+            return patronEmediaResource.checkoutEmediaTest(authInfo, recordId, contentProviderName, formatId, issue, isLoanPerProduct, ORIGIN_E_HUB);
         } catch (CheckedArenaException ex) {
             throw toRestApiException(ex);
         }
@@ -41,7 +42,7 @@ public class LocalRestApiClient implements ILocalRestApiService {
     public CheckoutEmediaResponseDTO checkoutEmedia(final String localRestApiEndpoint, final Locale locale, final AuthInfo authInfo, final String recordId, final String contentProviderName, final String formatId, final CheckoutEmediaRequestDTO checkoutEmediaRequestDTO) throws RestApiException {
         IPatronEmediaResource patronEmediaResource = getRootResource(localRestApiEndpoint, locale).getPatronsResource().getEmediaResource();
         try {
-            return patronEmediaResource.checkoutEmedia(authInfo, recordId, contentProviderName, formatId, checkoutEmediaRequestDTO);
+            return patronEmediaResource.checkoutEmedia(authInfo, recordId, contentProviderName, formatId, ORIGIN_E_HUB, checkoutEmediaRequestDTO);
         } catch (CheckedArenaException ex) {
             throw toRestApiException(ex);
         }

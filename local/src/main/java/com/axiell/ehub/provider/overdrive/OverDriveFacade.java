@@ -1,10 +1,11 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO.DownloadLinkTemplateDTO;
+import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
@@ -12,7 +13,17 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.Response;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
+import static com.axiell.ehub.util.EhubCharsets.UTF_8;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {
@@ -94,10 +105,23 @@ class OverDriveFacade implements IOverDriveFacade {
     public DownloadLinkDTO getDownloadLink(final ContentProviderConsumer contentProviderConsumer, final OAuthAccessToken patronAccessToken,
                                            final DownloadLinkTemplateDTO downloadLinkTemplate) {
         final String downloadLinkHref = DownloadLinkHrefFactory.create(contentProviderConsumer, downloadLinkTemplate);
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target(downloadLinkHref);
-        final IDownloadLinkResource downloadLinkResource = target.proxy(IDownloadLinkResource.class);
-        return downloadLinkResource.getDownloadLink(patronAccessToken);
+        try {
+            URL url = new URL(downloadLinkHref);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", patronAccessToken.toString());
+            connection.setInstanceFollowRedirects(false);
+            int status = connection.getResponseCode();
+            if (status != Response.Status.FOUND.getStatusCode()) {
+                throw new InternalServerErrorException("Invalid status from get fulfillment location");
+            }
+            String location = connection.getHeaderField("Location");
+            connection.disconnect();
+            return new DownloadLinkDTO(location);
+        } catch (IOException ex) {
+            throw new InternalServerErrorException("Could not get fulfillment location", ex);
+        }
     }
 
     @Override

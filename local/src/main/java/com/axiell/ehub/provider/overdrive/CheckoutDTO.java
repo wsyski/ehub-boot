@@ -1,34 +1,38 @@
 package com.axiell.ehub.provider.overdrive;
 
-import java.util.Date;
-import java.util.List;
-
+import com.axiell.ehub.util.DateFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.axiell.ehub.util.DateFactory;
+import java.util.Date;
+import java.util.Map;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CheckoutDTO {
     private String reserveId;
+
+    private String crossRefId;
+
     @JsonProperty(value = "expires")
     private Date expirationDate;
+
+    @JsonProperty(value = "isFormatLockedIn")
     private boolean isFormatLocked;
 
-    private List<CirculationFormatDTO> formats;
+    private Map<String, DownloadLinkTemplateDTO> links;
 
     public String getReserveId() {
         return reserveId;
     }
 
     public Date getExpirationDate() {
-	return DateFactory.create(expirationDate);
+        return DateFactory.create(expirationDate);
     }
-    
-    public List<CirculationFormatDTO> getFormats() {
-	return formats;
+
+    public Map<String, DownloadLinkTemplateDTO> getLinks() {
+        return links;
     }
 
     public boolean isFormatLocked() {
