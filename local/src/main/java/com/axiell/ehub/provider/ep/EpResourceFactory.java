@@ -7,6 +7,7 @@ import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.springframework.beans.factory.annotation.Required;
 
 public class EpResourceFactory {
@@ -16,7 +17,7 @@ public class EpResourceFactory {
     public <E> E create(final Class<E> clazz, final ContentProviderConsumer contentProviderConsumer, final Patron patron) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(ContentProvider.ContentProviderPropertyKey.API_BASE_URL);
-        ResteasyClient client = new ResteasyClientBuilder().httpEngine(httpEngine).build();
+        ResteasyClient client = new ResteasyClientBuilderImpl().httpEngine(httpEngine).build();
         client.register(new EpClientRequestFilter(contentProviderConsumer, patron));
         ResteasyWebTarget target = client.target(baseUrl);
         return target.proxy(clazz);

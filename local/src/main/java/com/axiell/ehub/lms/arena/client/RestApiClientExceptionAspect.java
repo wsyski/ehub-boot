@@ -6,7 +6,7 @@ import com.axiell.ehub.lms.arena.exception.RestApiException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.jboss.resteasy.client.exception.ResteasyClientException;
+import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +19,14 @@ public class RestApiClientExceptionAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(RestApiClientExceptionAspect.class);
 
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.lms.arena.client.LocalRestApiClient+.*(..))", throwing = "rce")
-    public void toRestaApiException(final JoinPoint joinPoint, final ResteasyClientException rce) throws RestApiException {
+    public void toRestaApiException(final JoinPoint joinPoint, final ResteasyWebApplicationException rce) throws RestApiException {
         LOGGER.error(rce.getMessage(), rce);
         throw new RestApiException(ErrorCause.BAD_REQUEST.toError(Collections.singletonMap("throwableClassName", rce.getClass().getName())));
     }
 
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.lms.arena.client.LocalRestApiClient+.*(..))", throwing = "cee")
     public void toBadRequestErrorException(final JoinPoint joinPoint, final WebApplicationException cee) throws RestApiException {
-        LOGGER.error(cee.getMessage(), cee);
+        LOGGER.error("TEST" +cee.getMessage(), cee);
         final Response response = cee.getResponse();
         throw getRestApiException(response);
     }

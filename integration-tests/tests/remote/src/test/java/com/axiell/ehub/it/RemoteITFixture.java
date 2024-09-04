@@ -1,5 +1,7 @@
 package com.axiell.ehub.it;
 
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -7,11 +9,9 @@ import com.axiell.ehub.IEhubService;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionMatcher;
 import com.axiell.ehub.error.LmsErrorExceptionMatcher;
-import com.axiell.authinfo.Patron;
-import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.test.ITestDataResource;
-import com.axiell.ehub.test.TestDataDTO;
 import com.axiell.ehub.test.TestDataConstants;
+import com.axiell.ehub.test.TestDataDTO;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -20,8 +20,8 @@ import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -106,14 +106,14 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void validateRequests(final Request request, final Response response) {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (getContentProviderName().equals( TestDataConstants.CONTENT_PROVIDER_TEST_EP) && request.getUrl().startsWith("/ep/api/v1/")) {
-            Assert.assertNotNull(HttpHeaders.AUTHORIZATION +" header can not be null",authorizationHeader);
+        if (getContentProviderName().equals(TestDataConstants.CONTENT_PROVIDER_TEST_EP) && request.getUrl().startsWith("/ep/api/v1/")) {
+            Assert.assertNotNull(HttpHeaders.AUTHORIZATION + " header can not be null", authorizationHeader);
         }
     }
 
     private void setUpEhubClient() {
         @SuppressWarnings("resource")
-        ApplicationContext springContext = new ClassPathXmlApplicationContext("/com/axiell/ehub/secret-key-context.xml","/com/axiell/ehub/remote-client-context.xml");
+        ApplicationContext springContext = new ClassPathXmlApplicationContext("/com/axiell/ehub/secret-key-context.xml", "/com/axiell/ehub/remote-client-context.xml");
         underTest = IEhubService.class.cast(springContext.getBean("ehubClient"));
     }
 
@@ -122,7 +122,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private ITestDataResource getTestDataResource() {
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyClient client = new ResteasyClientBuilderImpl().build();
         ResteasyWebTarget target = client.target(getTestDataServiceBaseUri());
         return target.proxy(ITestDataResource.class);
     }
@@ -148,7 +148,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     protected abstract String getContentProviderName();
 
     protected Patron getPatron() {
-        Patron.Builder patronBuilder= new Patron.Builder().libraryCard(testData.getLibraryCard())
+        Patron.Builder patronBuilder = new Patron.Builder().libraryCard(testData.getLibraryCard())
                 .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).name(testData.getName()).birthDate(testData.getBirthDate());
         return patronBuilder.build();
     }

@@ -7,6 +7,7 @@ import com.axiell.ehub.provider.record.issue.Issue;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
@@ -17,7 +18,7 @@ class ExceptionContentProviderDataAccessorStub implements IContentProviderDataAc
 
     @Override
     public List<Issue> getIssues(final CommandData commandData) {
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyClient client = new ResteasyClientBuilderImpl().build();
         ResteasyWebTarget target = client.target("http://www.googleapis.com/calendar/v3/calendars/calendarId/events");
         Response response = target.request().get();
         throw new ClientErrorException(response);

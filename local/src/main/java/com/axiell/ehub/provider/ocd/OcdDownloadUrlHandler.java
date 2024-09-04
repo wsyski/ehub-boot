@@ -3,6 +3,7 @@ package com.axiell.ehub.provider.ocd;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
@@ -10,7 +11,7 @@ import javax.ws.rs.core.Response;
 class OcdDownloadUrlHandler {
 
     static String resolve(final String url) {
-        ResteasyClient client = new ResteasyClientBuilder().build();
+        ResteasyClient client = new ResteasyClientBuilderImpl().build();
         ResteasyWebTarget target = client.target(url);
         Response response = target.request().get();
         if (response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {

@@ -6,6 +6,7 @@ import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -23,7 +24,7 @@ public class RootResourceFactory implements IRootResourceFactory {
     @Override
     public IRootResource createRootResource(final String localRestApiEndpoint, final Locale locale) {
         RegisterBuiltin.register(resteasyProviderFactory);
-        ResteasyClient client = new ResteasyClientBuilder()
+        ResteasyClient client = new ResteasyClientBuilderImpl()
                 .register(jacksonProvider)
                 .register(authInfoParamConverterProvider)
                 .register(new LocalRestApiClientRequestFilter(locale))

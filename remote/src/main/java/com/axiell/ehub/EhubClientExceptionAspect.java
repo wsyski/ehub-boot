@@ -6,7 +6,7 @@ package com.axiell.ehub;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.jboss.resteasy.client.exception.ResteasyClientException;
+import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class EhubClientExceptionAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(EhubClientExceptionAspect.class);
 
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "rce")
-    public void toEhubException(final JoinPoint joinPoint, final ResteasyClientException rce) throws EhubException {
+    public void toEhubException(final JoinPoint joinPoint, final ResteasyWebApplicationException rce) throws EhubException {
         LOGGER.error(rce.getMessage(), rce);
         throw new EhubException(ErrorCause.INTERNAL_SERVER_ERROR.toEhubError());
     }

@@ -263,7 +263,7 @@
 
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-jaxrs</artifactId>
+                <artifactId>resteasy-client-api</artifactId>
                 <version>${resteasy.version}</version>
                 <exclusions>
                     <exclusion>
@@ -273,6 +273,60 @@
                     <exclusion>
                         <groupId>javassist</groupId>
                         <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                        <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-core</artifactId>
+                <version>${resteasy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                        <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-core-spi</artifactId>
+                <version>${resteasy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javassist</groupId>
+                        <artifactId>javassist</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                        <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -800,7 +854,7 @@
         <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
         <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
-        <resteasy.version>3.14.0.Final</resteasy.version>
+        <resteasy.version>4.7.9.Final</resteasy.version>
         <httpcomponents-httpclient.version>4.5.9</httpcomponents-httpclient.version>
         <spring.version>5.2.22.RELEASE</spring.version>
         <commons-validator.version>1.5.1</commons-validator.version>
@@ -812,7 +866,7 @@
         <guava.version>19.0</guava.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
-        <rs-api.version>2.1.1</rs-api.version>
+        <rs-api.version>2.1</rs-api.version>
         <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
         <hibernate-validator.version>5.4.3.Final</hibernate-validator.version>
         <hibernate.version>5.4.33.Final</hibernate.version>
@@ -825,7 +879,7 @@
         <commons-codec.version>1.12</commons-codec.version>
         <commons.io.version>2.6</commons.io.version>
         <oracle.version>23.2.0.0</oracle.version>
-        <jetty.version>9.4.27.v20200227</jetty.version>
+        <jetty.version>9.4.55.v20240627</jetty.version>
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
         <wiremock.version>2.23.2</wiremock.version>
         <logback.version>1.0.7</logback.version>

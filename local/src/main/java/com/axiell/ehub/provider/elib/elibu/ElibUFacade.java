@@ -2,7 +2,6 @@ package com.axiell.ehub.provider.elib.elibu;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import org.jboss.resteasy.client.ProxyFactory;
 import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.*;

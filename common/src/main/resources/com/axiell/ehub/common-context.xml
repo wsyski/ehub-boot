@@ -8,7 +8,7 @@
 
     <util:properties id="httpClientFactoryProperties" location="classpath:http-client-factory.properties"/>
 
-    <bean id="ehubHttpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient4Engine">
+    <bean id="ehubHttpEngine" class="org.jboss.resteasy.client.jaxrs.engines.ApacheHttpClient43Engine">
        <constructor-arg name="httpClient" ref="ehubHttpClient"/>
     </bean>
 
