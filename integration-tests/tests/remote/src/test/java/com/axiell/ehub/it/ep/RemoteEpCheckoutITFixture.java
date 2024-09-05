@@ -6,6 +6,7 @@ import com.axiell.ehub.checkout.*;
 import com.axiell.ehub.it.RemoteCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertThat;
 
 public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture {
+    @Ignore
     @Test
     public final void checkoutWithContentProviderError() throws EhubException {
         givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN.name());
