@@ -7,6 +7,7 @@ import com.axiell.ehub.InternalServerErrorException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.jboss.resteasy.client.exception.WebApplicationExceptionWrapper;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.WebApplicationException;
@@ -21,7 +22,8 @@ public class ContentProviderResponseFailureAspect extends AbstractContentProvide
 
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.provider.IContentProviderDataAccessor.*(..))", throwing = "cee")
     public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException cee) {
-        final Response response = cee.getResponse();
+        WebApplicationException unwrappedException = WebApplicationExceptionWrapper.unwrap(cee);
+        final Response response = unwrappedException.getResponse();
         throw getContentProviderException(response, joinPoint);
     }
 
