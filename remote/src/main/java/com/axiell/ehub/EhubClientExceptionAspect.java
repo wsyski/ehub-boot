@@ -7,6 +7,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
+import org.jboss.resteasy.client.exception.WebApplicationExceptionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,8 @@ public class EhubClientExceptionAspect {
 
     @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "cee")
     public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException cee) throws EhubException {
-        final Response response = cee.getResponse();
+        WebApplicationException unwrappedException = WebApplicationExceptionWrapper.unwrap(cee);
+        final Response response = unwrappedException.getResponse();
         throw getEhubException(response);
     }
 
