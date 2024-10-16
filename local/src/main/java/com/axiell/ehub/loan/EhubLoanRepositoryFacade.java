@@ -42,12 +42,11 @@ public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
 
     @Override
     public EhubLoan findEhubLoan(final long readyLoanId) {
-        final EhubLoan ehubLoan = ehubLoanRepository.findOne(readyLoanId);
-        if (ehubLoan == null) {
-            final ErrorCauseArgument argument = new ErrorCauseArgument(Type.READY_LOAN_ID, readyLoanId);
-            throw new NotFoundException(ErrorCause.LOAN_BY_ID_NOT_FOUND, argument);
-        }
-        return ehubLoan;
+        return ehubLoanRepository.findById(readyLoanId)
+                .orElseThrow(() -> {
+                    final ErrorCauseArgument argument = new ErrorCauseArgument(Type.READY_LOAN_ID, readyLoanId);
+                    return new NotFoundException(ErrorCause.LOAN_BY_ID_NOT_FOUND, argument);
+                });
     }
 
     @Override

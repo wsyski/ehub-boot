@@ -3,13 +3,26 @@ package com.axiell.ehub;
 import com.axiell.ehub.language.Language;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Map;
 
 @Entity
 @Table(name = "ERROR_CAUSE_ARGUMENT_VALUE")
 @Access(AccessType.PROPERTY)
-public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<Long> {
+public class ErrorCauseArgumentValue extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private ErrorCauseArgumentType type;
     private Map<Language, ErrorCauseArgumentValueTextBundle> textBundles;
 

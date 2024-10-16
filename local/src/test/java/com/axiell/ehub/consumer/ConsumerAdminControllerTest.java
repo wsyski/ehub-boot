@@ -1,10 +1,5 @@
 package com.axiell.ehub.consumer;
 
-import static org.mockito.BDDMockito.given;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +7,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConsumerAdminControllerTest {
@@ -45,7 +46,7 @@ public class ConsumerAdminControllerTest {
     }
 
     private void givenEhubConsumer() {
-	given(ehubConsumerRepository.findOne(EHUB_CONSUMER_ID)).willReturn(ehubConsumer);
+	given(ehubConsumerRepository.findById(EHUB_CONSUMER_ID)).willReturn(Optional.ofNullable(ehubConsumer));
 	given(underTest.save(ehubConsumer)).willReturn(ehubConsumer);
     }
 

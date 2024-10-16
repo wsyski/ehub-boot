@@ -2,22 +2,29 @@ package com.axiell.ehub.it.ep;
 
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCauseArgumentType;
-import com.axiell.ehub.checkout.*;
+import com.axiell.ehub.checkout.Checkout;
+import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ContentLinks;
+import com.axiell.ehub.checkout.SupplementLink;
+import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.it.RemoteCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
 
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertThat;
 
 public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture {
-    @Ignore
+
     @Test
     public final void checkoutWithContentProviderError() throws EhubException {
         givenExpectedContentProviderErrorException(ErrorCauseArgumentType.ALREADY_ON_LOAN.name());
@@ -36,7 +43,6 @@ public abstract class RemoteEpCheckoutITFixture extends RemoteCheckoutITFixture 
                         .withHeader("Connection", "close")
                         .withStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)));
     }
-
 
 
     protected void givenContentProviderCheckoutResponse() {

@@ -16,7 +16,7 @@ public class DatabaseChangeLogAdminController implements IDatabaseChangeLogAdmin
     @Override
     @Transactional(readOnly = true)
     public DatabaseChangeLog getLatestDatabaseChange() {
-        final Sort sortByOrderExecutedDesc = new Sort(DESC, "orderExecuted");
+        final Sort sortByOrderExecutedDesc = Sort.by(DESC, "orderExecuted");
         final List<DatabaseChangeLog> changeLogs = databaseChangeLogRepository.findAll(sortByOrderExecutedDesc);
         return changeLogs.isEmpty() ? null : changeLogs.iterator().next();
     }

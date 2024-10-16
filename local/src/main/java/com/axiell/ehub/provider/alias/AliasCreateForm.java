@@ -5,7 +5,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-class AliasCreateForm extends StatelessForm<AliasMapping> {
+import java.io.Serializable;
+
+class AliasCreateForm extends StatelessForm<AliasMapping>  implements Serializable {
     private final AliasMediator mediator;
 
     AliasCreateForm(final String id, final AliasMediator mediator) {
