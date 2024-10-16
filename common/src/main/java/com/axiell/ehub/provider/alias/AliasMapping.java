@@ -4,12 +4,18 @@ import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.util.HashCodeBuilderFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "CONTENT_PROVIDER_ALIAS")
 @Access(AccessType.PROPERTY)
-public class AliasMapping extends AbstractTimestampAwarePersistable<Long> {
+public class AliasMapping extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private Alias alias;
     private String name;
 

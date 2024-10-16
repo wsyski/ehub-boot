@@ -1,5 +1,6 @@
 package com.axiell.ehub.error;
 
+import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import com.axiell.ehub.language.Language;
@@ -13,8 +14,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import com.axiell.ehub.ErrorCauseArgumentType;
 
 @Component
 public class ErrorCauseArgumentValueAdminController implements IErrorCauseArgumentValueAdminController {
@@ -66,7 +65,7 @@ public class ErrorCauseArgumentValueAdminController implements IErrorCauseArgume
     @Transactional(readOnly = false)
     public void deleteErrorCauseArgumentValueTextBundles(final Language language) {
         final List<ErrorCauseArgumentValueTextBundle> textBundles = textBundleRepository.findByLanguage(language);
-        textBundleRepository.delete(textBundles);
+        textBundleRepository.deleteAll(textBundles);
     }
 
     private ErrorCauseArgumentValue initialize(ErrorCauseArgumentValue argumentValue) {

@@ -20,7 +20,7 @@ public class PlatformAdminController implements IPlatformAdminController {
     @Override
     @Transactional(readOnly = true)
     public Platform getPlatform(final Long id) {
-        return platformRepository.findOne(id);
+        return platformRepository.findById(id).orElse(null);
     }
 
     @Override

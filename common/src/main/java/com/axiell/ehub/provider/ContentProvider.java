@@ -12,12 +12,40 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.text.Collator;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.*;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.CONSUME_LICENSE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.LOAN_EXPIRATION_DAYS;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.OAUTH_PATRON_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.OAUTH_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PATRON_API_BASE_URL;
+import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PRODUCT_URL;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -27,7 +55,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 @Table(name = "CONTENT_PROVIDER")
 @Access(AccessType.PROPERTY)
-public class ContentProvider extends AbstractTimestampAwarePersistable<Long> {
+public class ContentProvider extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     public static final String CONTENT_PROVIDER_ELIB3 = "ELIB3";
     public static final String CONTENT_PROVIDER_ELIBU = "ELIBU";
     public static final String CONTENT_PROVIDER_ASKEWS = "ASKEWS";

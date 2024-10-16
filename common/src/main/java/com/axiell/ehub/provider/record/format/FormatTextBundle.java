@@ -7,7 +7,16 @@ import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 
 /**
  * Contains language specific texts related to a specific format at a {@link ContentProvider}.
@@ -15,7 +24,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "CONTENT_P_FORMAT_TEXT_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_P_FORMAT_DECORATION_ID", "LANGUAGE_ID"}))
 @Access(AccessType.PROPERTY)
-public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> {
+public class FormatTextBundle extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private static final long serialVersionUID = 8478816548440529433L;
     private FormatDecoration formatDecoration;
     private Language language;

@@ -4,7 +4,9 @@ import com.axiell.ehub.ConfirmationLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-class AliasDeleteLink extends ConfirmationLink<AliasMapping> {
+import java.io.Serializable;
+
+class AliasDeleteLink extends ConfirmationLink<AliasMapping> implements Serializable {
     private final AliasMediator mediator;
 
     @SpringBean(name = "aliasAdminController")

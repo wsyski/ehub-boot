@@ -9,7 +9,24 @@ import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.platform.Platform;
 import org.apache.commons.lang3.Validate;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +40,7 @@ import java.util.stream.Collectors;
 @Table(name = "CONTENT_P_FORMAT_DECORATION", uniqueConstraints = @UniqueConstraint(columnNames = {"CONTENT_PROVIDER_ID", "FORMAT_ID"},
         name = "UK_CONTENT_P_FORMAT_DECORATION"))
 @Access(AccessType.PROPERTY)
-public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> {
+public class FormatDecoration extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private static final long serialVersionUID = 1562910983744673362L;
     private ContentProvider contentProvider;
     private String contentProviderFormatId;

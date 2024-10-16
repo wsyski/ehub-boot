@@ -96,7 +96,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     }
 
     private void whenFindLoanByReadyLoanId() {
-        actualEhubLoan = underTest.findOne(expectedEhubLoan.getId());
+        actualEhubLoan = underTest.findById(expectedEhubLoan.getId()).orElse(null);
     }
 
     @Test

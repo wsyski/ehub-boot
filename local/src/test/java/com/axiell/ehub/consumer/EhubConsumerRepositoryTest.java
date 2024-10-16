@@ -52,7 +52,7 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
     @Test
     @Rollback(true)
     public void testFindEhubConsumer() {
-        EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(developmentData.getEhubConsumerId());
+        EhubConsumer ehubConsumer = ehubConsumerRepository.findById(developmentData.getEhubConsumerId()).orElse(null);
         Assert.assertEquals(2, ehubConsumer.getProperties().size());
         Assert.assertEquals(1, ehubConsumer.getContentProviderConsumers().size());
     }
@@ -60,7 +60,7 @@ public class EhubConsumerRepositoryTest extends AbstractEhubRepositoryTest<Devel
     @Test
     @Rollback(true)
     public void testNoEhubConsumerFound() {
-        EhubConsumer ehubConsumer = ehubConsumerRepository.findOne(0L);
+        EhubConsumer ehubConsumer = ehubConsumerRepository.findById(0L).orElse(null);
         Assert.assertNull(ehubConsumer);
     }
 

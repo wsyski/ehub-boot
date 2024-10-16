@@ -9,8 +9,29 @@ import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 import com.google.common.collect.ImmutableMap;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -20,7 +41,7 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "EHUB_CONSUMER")
 @Access(AccessType.PROPERTY)
-public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> {
+public class EhubConsumer extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private static final Map<EhubConsumerPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<EhubConsumerPropertyKey, Pattern>builder().build();
 
     private String description;

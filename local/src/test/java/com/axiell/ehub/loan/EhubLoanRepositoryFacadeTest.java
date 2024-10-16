@@ -1,10 +1,10 @@
 package com.axiell.ehub.loan;
 
-import static org.junit.Assert.assertNull;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,15 +12,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import com.axiell.ehub.EhubError;
-import com.axiell.ehub.ErrorCause;
-import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.provider.record.format.FormatDecoration;
+import java.util.Optional;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EhubLoanRepositoryFacadeTest {
@@ -64,7 +63,7 @@ public class EhubLoanRepositoryFacadeTest {
     }
 
     private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId() {
-        given(ehubLoanRepository.findOne(anyLong())).willReturn(null);
+        given(ehubLoanRepository.findById(anyLong())).willReturn(Optional.empty());
     }
 
     private void whenGetReadyLoanByReadyLoanId() {
@@ -115,7 +114,7 @@ public class EhubLoanRepositoryFacadeTest {
     }
 
     private void givenEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenReadyLoanId() {
-        given(ehubLoanRepository.findOne(anyLong())).willReturn(expectedEhubLoan);
+        given(ehubLoanRepository.findById(anyLong())).willReturn(Optional.ofNullable(expectedEhubLoan));
     }
 
     private void thenActualEhubLoanEqualsExpectedEhubLoan() {
