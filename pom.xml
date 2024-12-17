@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.axiell.ehub</groupId>
     <artifactId>ehub</artifactId>
-    <version>5.7.0-SNAPSHOT</version>
+    <version>5.7.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -61,7 +61,7 @@
                     <additionalOptions>-Xdoclint:none</additionalOptions>
                     <encoding>UTF-8</encoding>
                     <links>
-                        <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
+                        <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
                     </links>
                 </configuration>
                 <reportSets>
@@ -204,12 +204,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <compilerVersion>${java.version}</compilerVersion>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <debug>true</debug>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <optimize>false</optimize>
                 </configuration>
             </plugin>
             <plugin>
@@ -218,6 +217,7 @@
                 <configuration>
                     <useManifestOnlyJar>false</useManifestOnlyJar>
                     <useSystemClassLoader>true</useSystemClassLoader>
+                    <argLine>${jdk.java.options} -Xmx1024m -Djava.net.preferIPv4Stack=true -Dtest.solr.allowed.securerandom=NativePRNG</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -507,13 +507,13 @@
 
             <dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
-                <artifactId>ojdbc8</artifactId>
+                <artifactId>ojdbc17</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.oracle.database.jdbc</groupId>
-                <artifactId>ucp</artifactId>
+                <artifactId>ucp17</artifactId>
                 <version>${oracle.version}</version>
             </dependency>
 
@@ -806,8 +806,10 @@
     </dependencies>
 
     <properties>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <java.version>17</java.version>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <jdk.java.options>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED --add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED</jdk.java.options>
         <sonar.jdbc.url>jdbc:mysql://buildserver:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true</sonar.jdbc.url>
         <sonar.jdbc.username>sonar</sonar.jdbc.username>
         <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
@@ -815,7 +817,6 @@
         <sonar.host.url>http://buildserver/sonar</sonar.host.url>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
         <javax.el-api.version>3.0.0</javax.el-api.version>
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
         <maven-failsafe.plugin.version>3.2.5</maven-failsafe.plugin.version>
@@ -858,7 +859,7 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <commons-codec.version>1.12</commons-codec.version>
         <commons.io.version>2.6</commons.io.version>
-        <oracle.version>23.2.0.0</oracle.version>
+        <oracle.version>23.6.0.24.10</oracle.version>
         <jetty.version>9.4.55.v20240627</jetty.version>
         <jetty-maven-plugin.version>${jetty.version}</jetty-maven-plugin.version>
         <wiremock.version>2.35.2</wiremock.version>
@@ -871,7 +872,7 @@
         <liquibase.core.version>3.5.1</liquibase.core.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <jackson.version>2.17.2</jackson.version>
-        <authinfo.version>5.7.0-SNAPSHOT</authinfo.version>
+        <authinfo.version>5.7.2-SNAPSHOT</authinfo.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
         <resteasy-spring.version>2.0.1.Final</resteasy-spring.version>
     </properties>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub</artifactId>
-        <version>5.7.0-SNAPSHOT</version>
+        <version>5.7.2-SNAPSHOT</version>
     </parent>
     <artifactId>ehub-local</artifactId>
     <name>${project.artifactId}</name>
@@ -220,12 +220,12 @@
 
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
+            <artifactId>ojdbc17</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ucp</artifactId>
+            <artifactId>ucp17</artifactId>
         </dependency>
 
         <dependency>
@@ -475,12 +475,12 @@
                 <dependencies>
                     <dependency>
                         <groupId>com.oracle.database.jdbc</groupId>
-                        <artifactId>ojdbc8</artifactId>
+                        <artifactId>ojdbc17</artifactId>
                         <version>${oracle.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.oracle.database.jdbc</groupId>
-                        <artifactId>ucp</artifactId>
+                        <artifactId>ucp17</artifactId>
                         <version>${oracle.version}</version>
                     </dependency>
                 </dependencies>
@@ -659,7 +659,7 @@
                         <dependencies>
                             <dependency>
                                 <groupId>com.oracle.database.jdbc</groupId>
-                                <artifactId>ojdbc8</artifactId>
+                                <artifactId>ojdbc17</artifactId>
                                 <version>${oracle.version}</version>
                             </dependency>
                         </dependencies>
