@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.axiell.ehub</groupId>
     <artifactId>ehub</artifactId>
-    <version>5.8.0-SNAPSHOT</version>
+    <version>5.8.0</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -872,7 +872,7 @@
         <liquibase.core.version>3.5.1</liquibase.core.version>
         <liquibase.slf4j.version>2.0.0</liquibase.slf4j.version>
         <jackson.version>2.17.2</jackson.version>
-        <authinfo.version>5.8.0-SNAPSHOT</authinfo.version>
+        <authinfo.version>5.8.0</authinfo.version>
         <jcabi-manifests.version>0.8.2</jcabi-manifests.version>
         <resteasy-spring.version>2.0.1.Final</resteasy-spring.version>
     </properties>
