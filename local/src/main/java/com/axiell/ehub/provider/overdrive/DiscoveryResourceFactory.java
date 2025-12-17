@@ -2,10 +2,11 @@ package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 
@@ -17,8 +18,8 @@ final class DiscoveryResourceFactory {
     static IDiscoveryResource create(final ContentProviderConsumer contentProviderConsumer) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final String baseUrl = contentProvider.getProperty(API_BASE_URL);
-        ResteasyClient client = new ResteasyClientBuilderImpl().build();
-        ResteasyWebTarget target = client.target(baseUrl);
-        return target.proxy(IDiscoveryResource.class);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(baseUrl);
+        return WebResourceFactory.newResource(IDiscoveryResource.class, target);
     }
 }

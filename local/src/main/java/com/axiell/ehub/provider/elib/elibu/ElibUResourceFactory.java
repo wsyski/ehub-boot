@@ -1,14 +1,10 @@
 package com.axiell.ehub.provider.elib.elibu;
 
-import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.elib.library3.IElibResource;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
 
-import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 
 final class ElibUResourceFactory {
 
@@ -16,8 +12,9 @@ final class ElibUResourceFactory {
     }
 
     public static IElibUResource create(final String baseUrl) {
-        ResteasyClient client = new ResteasyClientBuilderImpl().build();
-        ResteasyWebTarget target = client.target(baseUrl);
-        return target.proxy(IElibUResource.class);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(baseUrl);
+        return WebResourceFactory.newResource(IElibUResource.class, target);
+
     }
 }

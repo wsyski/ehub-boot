@@ -1,52 +1,61 @@
 package com.axiell.ehub.util;
 
 import com.axiell.authinfo.AuthInfoParamConverterProvider;
-import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
-import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.net.URI;
 
 public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, InitializingBean {
     private Class<T> serviceInterface;
     private URI baseUri;
     private T proxy;
-    private ClientHttpEngine httpEngine;
-    private ResteasyProviderFactory resteasyProviderFactory;
+    private CloseableHttpClient httpClient;
     private AuthInfoParamConverterProvider authInfoParamConverterProvider;
 
+    @Override
     public T getObject() throws Exception {
         return proxy;
     }
 
+    @Override
     public Class<T> getObjectType() {
         return serviceInterface;
     }
 
+    @Override
     public boolean isSingleton() {
         return true;
     }
 
+    @Override
     public void afterPropertiesSet() throws Exception {
-        if (resteasyProviderFactory == null)
-            resteasyProviderFactory = ResteasyProviderFactory.getInstance();
-        RegisterBuiltin.register(resteasyProviderFactory);
+        ClientConfig config = new ClientConfig();
+        config.connectorProvider(new ApacheConnectorProvider());
 
-        ResteasyClientBuilder clientBuilder = new ResteasyClientBuilderImpl();
-        if (httpEngine != null) {
-            clientBuilder.httpEngine(httpEngine);
+        if (httpClient != null) {
+            config.property(ApacheClientProperties.CONNECTION_MANAGER_SHARED, true);
         }
-        clientBuilder.register(authInfoParamConverterProvider);
-        ResteasyClient client = clientBuilder.build();
-        ResteasyWebTarget target = client.target(baseUri);
-        proxy = target.proxy(serviceInterface);
+
+        Client client = ClientBuilder.newClient(config)
+                .register(JacksonJsonProvider.class);
+
+        if (authInfoParamConverterProvider != null) {
+            client.register(authInfoParamConverterProvider);
+        }
+
+        WebTarget target = client.target(baseUri);
+        proxy = WebResourceFactory.newResource(serviceInterface, target);
     }
 
     public Class<T> getServiceInterface() {
@@ -67,20 +76,8 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
         this.baseUri = baseUri;
     }
 
-    public ClientHttpEngine getHttpEngine() {
-        return httpEngine;
-    }
-
-    public void setHttpEngine(ClientHttpEngine httpEngine) {
-        this.httpEngine = httpEngine;
-    }
-
-    public ResteasyProviderFactory getResteasyProviderFactory() {
-        return resteasyProviderFactory;
-    }
-
-    public void setResteasyProviderFactory(final ResteasyProviderFactory resteasyProviderFactory) {
-        this.resteasyProviderFactory = resteasyProviderFactory;
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Required

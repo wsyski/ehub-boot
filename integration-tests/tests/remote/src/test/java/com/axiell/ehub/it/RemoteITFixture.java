@@ -19,9 +19,7 @@ import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.HttpHeaders;
 import java.util.Locale;
 
@@ -96,12 +97,10 @@ public abstract class RemoteITFixture extends PalmaITFixture {
 
     private void logRequests(final Request request, final Response response) {
         RequestMethod requestMethod = request.getMethod();
-        String requestBodyAsString =
-                requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF + request.getBodyAsString() : StringUtils.EMPTY;
+        String requestBodyAsString = requestMethod.equals(RequestMethod.POST) || requestMethod.equals(RequestMethod.PUT) ? LF + request.getBodyAsString() : StringUtils.EMPTY;
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String authorizationHeaderAsString = authorizationHeader == null ? StringUtils.EMPTY : LF + HttpHeaders.AUTHORIZATION + ": " + authorizationHeader;
-        LOGGER.info("wireMock: " + request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() +
-                LF + response.getStatus());
+        LOGGER.info("wireMock: " + request.getMethod() + " " + request.getAbsoluteUrl() + authorizationHeaderAsString + requestBodyAsString + LF + response.getBodyAsString() + LF + response.getStatus());
     }
 
     private void validateRequests(final Request request, final Response response) {
@@ -112,8 +111,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private void setUpEhubClient() {
-        @SuppressWarnings("resource")
-        ApplicationContext springContext = new ClassPathXmlApplicationContext("/com/axiell/ehub/secret-key-context.xml", "/com/axiell/ehub/remote-client-context.xml");
+        @SuppressWarnings("resource") ApplicationContext springContext = new ClassPathXmlApplicationContext("/com/axiell/ehub/secret-key-context.xml", "/com/axiell/ehub/remote-client-context.xml");
         underTest = IEhubService.class.cast(springContext.getBean("ehubClient"));
     }
 
@@ -122,9 +120,9 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private ITestDataResource getTestDataResource() {
-        ResteasyClient client = new ResteasyClientBuilderImpl().build();
-        ResteasyWebTarget target = client.target(getTestDataServiceBaseUri());
-        return target.proxy(ITestDataResource.class);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(getTestDataServiceBaseUri());
+        return WebResourceFactory.newResource(ITestDataResource.class, target);
     }
 
     protected void givenExpectedContentProviderErrorException(final String status) {
@@ -148,8 +146,7 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     protected abstract String getContentProviderName();
 
     protected Patron getPatron() {
-        Patron.Builder patronBuilder = new Patron.Builder().libraryCard(testData.getLibraryCard())
-                .pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).name(testData.getName()).birthDate(testData.getBirthDate());
+        Patron.Builder patronBuilder = new Patron.Builder().libraryCard(testData.getLibraryCard()).pin(testData.getPin()).id(testData.getPatronId()).email(testData.getEmail()).name(testData.getName()).birthDate(testData.getBirthDate());
         return patronBuilder.build();
     }
 }

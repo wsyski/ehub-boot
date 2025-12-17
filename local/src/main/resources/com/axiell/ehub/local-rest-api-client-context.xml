@@ -7,7 +7,7 @@
     <import resource="classpath:/com/axiell/ehub/auth-info-context.xml"/>
 
     <bean id="rootResourceFactory" class="com.axiell.ehub.lms.arena.client.RootResourceFactory">
-        <property name="httpEngine" ref="ehubHttpEngine"/>
+        <property name="httpClient" ref="ehubHttpClient"/>
         <property name="authInfoParamConverterProvider" ref="ehubParamConverterProvider"/>
         <property name="jacksonProvider" ref="arenaJacksonProvider"/>
     </bean>

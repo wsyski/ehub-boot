@@ -5,25 +5,16 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.NotFoundExceptionFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 import com.axiell.ehub.util.EhubAddress;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.Response;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
-import static com.axiell.ehub.util.EhubCharsets.UTF_8;
 
 @Component
 class OverDriveFacade implements IOverDriveFacade {

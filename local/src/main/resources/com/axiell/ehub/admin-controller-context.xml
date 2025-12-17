@@ -20,7 +20,6 @@
 	<bean id="loanAdminController" class="com.axiell.ehub.loan.LoanAdminController"/>
 
     <bean id="supportRequestAdminController" class="com.axiell.ehub.support.request.SupportRequestAdminController">
-        <property name="httpEngine" ref="ehubHttpEngine"/>
 		<property name="authInfoParamConverterProvider" ref="ehubParamConverterProvider"/>
 	</bean>
 </beans>

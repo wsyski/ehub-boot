@@ -17,9 +17,7 @@ import com.github.tomakehurst.wiremock.http.RequestMethod;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,6 +30,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.util.Locale;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 
 public abstract class RemoteITFixture extends PalmaITFixture {
     @Rule
@@ -121,11 +122,16 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private ITestDataResource getTestDataResource() {
-        ResteasyClient client = new ResteasyClientBuilder().build();
-        ResteasyWebTarget target = client.target(getTestDataServiceBaseUri());
-        return target.proxy(ITestDataResource.class);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(getTestDataServiceBaseUri());
+        return WebResourceFactory.newResource(ITestDataResource.class, target);
     }
 
+    private ITestDataResource getTestDataResource() {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(getTestDataServiceBaseUri());
+        return WebResourceFactory.newResource(ITestDataResource.class, target);
+    }
     protected void givenExpectedContentProviderErrorException(final String status) {
         expectedException.expect(new ContentProviderErrorExceptionMatcher(EhubException.class, getContentProviderName(), status));
     }

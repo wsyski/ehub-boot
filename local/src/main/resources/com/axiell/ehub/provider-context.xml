@@ -5,11 +5,9 @@
     <import resource="common-context.xml"/>
 
     <bean id="epResourceFactory" class="com.axiell.ehub.provider.ep.EpResourceFactory">
-        <property name="httpEngine" ref="ehubHttpEngine"/>
     </bean>
 
     <bean id="borrowBoxResourceFactory" class="com.axiell.ehub.provider.borrowbox.BorrowBoxResourceFactory">
-        <property name="httpEngine" ref="ehubHttpEngine"/>
     </bean>
 
 </beans>

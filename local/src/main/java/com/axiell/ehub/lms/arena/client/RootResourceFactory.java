@@ -2,40 +2,42 @@ package com.axiell.ehub.lms.arena.client;
 
 import com.axiell.authinfo.AuthInfoParamConverterProvider;
 import com.axiell.ehub.lms.arena.resources.IRootResource;
-import org.jboss.resteasy.client.jaxrs.ClientHttpEngine;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
-import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.apache.http.client.HttpClient;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import java.util.Locale;
 
 public class RootResourceFactory implements IRootResourceFactory {
     private static final String PATH = "";
-    private final ResteasyProviderFactory resteasyProviderFactory = ResteasyProviderFactory.getInstance();
-    private ClientHttpEngine httpEngine;
-    private String baseUrl;
+    private HttpClient httpClient;
     private JacksonProvider jacksonProvider;
     private AuthInfoParamConverterProvider authInfoParamConverterProvider;
 
     @Override
     public IRootResource createRootResource(final String localRestApiEndpoint, final Locale locale) {
-        RegisterBuiltin.register(resteasyProviderFactory);
-        ResteasyClient client = new ResteasyClientBuilderImpl()
+        ClientConfig config = new ClientConfig();
+        config.connectorProvider(new ApacheConnectorProvider());
+        config.property(org.glassfish.jersey.apache.connector.ApacheClientProperties.CONNECTION_MANAGER,
+                httpClient.getConnectionManager());
+
+        Client client = ClientBuilder.newClient(config)
                 .register(jacksonProvider)
                 .register(authInfoParamConverterProvider)
-                .register(new LocalRestApiClientRequestFilter(locale))
-                .httpEngine(httpEngine).build();
-        ResteasyWebTarget target = client.target(localRestApiEndpoint).path(PATH);
-        return target.proxy(IRootResource.class);
+                .register(new LocalRestApiClientRequestFilter(locale));
+
+        WebTarget target = client.target(localRestApiEndpoint).path(PATH);
+        return WebResourceFactory.newResource(IRootResource.class, target);
     }
 
     @Required
-    public void setHttpEngine(final ClientHttpEngine httpEngine) {
-        this.httpEngine = httpEngine;
+    public void setHttpClient(final HttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Required
