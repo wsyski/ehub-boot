@@ -1,6 +1,7 @@
 package com.axiell.ehub.it;
 
 import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.AuthInfoParamConverterProvider;
 import com.axiell.authinfo.Patron;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.ErrorCause;
@@ -12,6 +13,7 @@ import com.axiell.ehub.error.LmsErrorExceptionMatcher;
 import com.axiell.ehub.test.ITestDataResource;
 import com.axiell.ehub.test.TestDataConstants;
 import com.axiell.ehub.test.TestDataDTO;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Request;
@@ -120,7 +122,9 @@ public abstract class RemoteITFixture extends PalmaITFixture {
     }
 
     private ITestDataResource getTestDataResource() {
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient()
+                .register(JacksonJaxbJsonProvider.class)
+                .register(AuthInfoParamConverterProvider.class);
         WebTarget target = client.target(getTestDataServiceBaseUri());
         return WebResourceFactory.newResource(ITestDataResource.class, target);
     }

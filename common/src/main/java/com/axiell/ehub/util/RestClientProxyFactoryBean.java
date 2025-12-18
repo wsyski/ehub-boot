@@ -1,7 +1,8 @@
 package com.axiell.ehub.util;
 
 import com.axiell.authinfo.AuthInfoParamConverterProvider;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -47,12 +48,15 @@ public class RestClientProxyFactoryBean<T> implements FactoryBean<T>, Initializi
             config.property(ApacheClientProperties.CONNECTION_MANAGER_SHARED, true);
         }
 
-        Client client = ClientBuilder.newClient(config)
-                .register(JacksonJsonProvider.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
 
-        if (authInfoParamConverterProvider != null) {
-            client.register(authInfoParamConverterProvider);
-        }
+        JacksonJaxbJsonProvider jacksonProvider = new JacksonJaxbJsonProvider();
+        jacksonProvider.setMapper(objectMapper);
+
+        Client client = ClientBuilder.newClient(config)
+                .register(jacksonProvider)
+                .register(authInfoParamConverterProvider);
 
         WebTarget target = client.target(baseUri);
         proxy = WebResourceFactory.newResource(serviceInterface, target);

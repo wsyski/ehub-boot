@@ -9,6 +9,7 @@ import com.axiell.ehub.IRootResource;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.RecordDTO;
 import com.axiell.ehub.util.EhubUrlCodec;
+import com.axiell.ehub.util.RestClientProxyFactoryBean;
 import com.axiell.ehub.v1.XjcSupport;
 import com.axiell.ehub.v1.loan.ILoansResource_v1;
 import com.axiell.ehub.v1.loan.PendingLoan_v1;
@@ -17,17 +18,10 @@ import com.axiell.ehub.v1.provider.record.IRecordsResource_v1;
 import com.axiell.ehub.v1.provider.record.format.Formats_v1;
 import com.axiell.ehub.v2.IRootResource_v2;
 import com.axiell.ehub.v2.provider.record.RecordDTO_v2;
-import org.glassfish.jersey.apache.connector.ApacheClientProperties;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -191,15 +185,12 @@ public class SupportRequestAdminController implements ISupportRequestAdminContro
 
     private <T> T createResource(final Class<T> clazz, String baseUri) {
         try {
-            ClientConfig config = new ClientConfig();
-            config.connectorProvider(new ApacheConnectorProvider());
-            config.property(ApacheClientProperties.CONNECTION_MANAGER_SHARED, true);
-
-            Client client = ClientBuilder.newClient(config)
-                    .register(authInfoParamConverterProvider);
-
-            WebTarget target = client.target(new URI(baseUri));
-            return WebResourceFactory.newResource(clazz, target);
+            RestClientProxyFactoryBean<T> proxyFactoryBean = new RestClientProxyFactoryBean<>();
+            proxyFactoryBean.setServiceInterface(clazz);
+            proxyFactoryBean.setBaseUri(new URI(baseUri));
+            proxyFactoryBean.setAuthInfoParamConverterProvider(authInfoParamConverterProvider);
+            proxyFactoryBean.afterPropertiesSet();
+            return clazz.cast(proxyFactoryBean.getObject());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
