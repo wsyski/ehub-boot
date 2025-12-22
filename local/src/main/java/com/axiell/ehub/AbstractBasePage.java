@@ -3,6 +3,9 @@
  */
 package com.axiell.ehub;
 
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebPage;
 
 /**
@@ -10,4 +13,13 @@ import org.apache.wicket.markup.html.WebPage;
  * extend this class.
  */
 public abstract class AbstractBasePage extends WebPage {
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
+        response.render(CssHeaderItem.forUrl("css/bootstrap.min.css"));
+        response.render(CssHeaderItem.forUrl("css/ehub.css"));
+    }
+
+
 }

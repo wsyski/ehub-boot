@@ -6,12 +6,13 @@ import com.axiell.ehub.provider.AbstractContentProviderDataAccessor;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.record.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Component(value = "elib3DataAccessor")
 public class Elib3DataAccessor extends AbstractContentProviderDataAccessor {
 
     @Autowired

@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * Indicates that a requested resource could not be found. It will result in an error response with status code 404.  

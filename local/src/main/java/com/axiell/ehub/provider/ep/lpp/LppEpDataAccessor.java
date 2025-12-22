@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.CREATE_LOAN_FAILED;
 
-@Component
+@Component(value = "lppEpDataAccessor")
 public class LppEpDataAccessor extends AbstractEpDataAccessor<ILppEpFacade> {
 
     @Autowired

@@ -7,16 +7,16 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 class FormatDecorationMediator implements Serializable, IContentDispositionChangedAwareMediator {
     private FormatDecorationPanel formatDecorationPanel;
     private PlayerContainer playerContainer;
-    
+
     void registerFormatDecorationPanel(final FormatDecorationPanel formatDecorationPanel) {
 	this.formatDecorationPanel = formatDecorationPanel;
     }
-    
+
     @Override
     public void registerPlayerContainer(final PlayerContainer playerContainer) {
 	this.playerContainer = playerContainer;
     }
-    
+
     void afterSavedTexts() {
 	formatDecorationPanel.activate(formatDecorationPanel);
     }
@@ -24,14 +24,14 @@ class FormatDecorationMediator implements Serializable, IContentDispositionChang
     void afterDeleteTexts() {
 	formatDecorationPanel.activate(formatDecorationPanel);
     }
-    
+
     @Override
     public void afterContentDispositionChanged(final AjaxRequestTarget target) {
 	if (target != null) {
-	    target.addComponent(playerContainer);
-	}	   
+	    target.add(playerContainer);
+	}
     }
-    
+
     void afterEditFormatDecoration() {
 	formatDecorationPanel.activate(formatDecorationPanel);
     }

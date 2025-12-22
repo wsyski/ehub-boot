@@ -1,7 +1,7 @@
 package com.axiell.ehub;
 
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class EhubAssert {
 
@@ -12,10 +12,10 @@ public class EhubAssert {
     }
 
     public static void thenInternalServerErrorExceptionIsThrown(InternalServerErrorException e) {
-        Assert.assertNotNull(e);
+        Assertions.assertNotNull(e);
     }
 
     public static void thenNotFoundExceptionIsThrown(NotFoundException e) {
-        Assert.assertNotNull(e);
+        Assertions.assertNotNull(e);
     }
 }

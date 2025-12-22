@@ -13,7 +13,6 @@ import com.axiell.ehub.support.SupportBreadCrumbBarPanel;
 import com.axiell.ehub.user.AdminUser;
 import com.axiell.ehub.user.LogoutPanel;
 import org.apache.commons.lang3.Validate;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -30,12 +29,13 @@ public class EhubAdminPage extends AbstractBasePage {
         Validate.notNull(adminUser, "Invalid usage of this page - the user must be logged in to access this page");
         addLogoutPanel();
         addTabbedPanel();
-        addPrettifyJavaScript();
     }
 
-    private void addPrettifyJavaScript() {
-        add(JavascriptPackageResource.getHeaderContribution("https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"));
+    /*
+    public void renderHead(IHeaderResponse response) {
+        response.renderJavaScriptReference("https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js");
     }
+     */
 
     private void addLogoutPanel() {
         final LogoutPanel logoutPanel = new LogoutPanel("logout");

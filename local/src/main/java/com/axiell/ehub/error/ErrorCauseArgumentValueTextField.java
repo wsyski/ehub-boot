@@ -1,7 +1,10 @@
 package com.axiell.ehub.error;
 
+import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.validator.StringValidator;
+
 
 class ErrorCauseArgumentValueTextField extends TextField<String> {
 
@@ -11,7 +14,7 @@ class ErrorCauseArgumentValueTextField extends TextField<String> {
     }
 
     private void addLengthValidator() {
-        final ErrorCauseArgumentValueTextLengthValidator lengthValidator = new ErrorCauseArgumentValueTextLengthValidator();
+        final StringValidator lengthValidator = new StringValidator(1, ErrorCauseArgumentValueTextBundle.MAX_TEXT_LENGTH);
         add(lengthValidator);
     }
 }

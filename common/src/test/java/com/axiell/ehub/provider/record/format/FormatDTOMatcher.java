@@ -1,9 +1,9 @@
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.controller.external.v5_0.provider.dto.FormatDTO;
 import com.google.common.collect.Sets;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 
 public class FormatDTOMatcher extends BaseMatcher<FormatDTO> {
     private final FormatDTO expFormatDTO;
@@ -12,7 +12,6 @@ public class FormatDTOMatcher extends BaseMatcher<FormatDTO> {
         this.expFormatDTO = expFormatDTO;
     }
 
-    @Factory
     public static FormatDTOMatcher matchesExpectedFormatDTO(FormatDTO expFormatDTO) {
         return new FormatDTOMatcher(expFormatDTO);
     }

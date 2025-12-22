@@ -3,14 +3,15 @@
  */
 package com.axiell.ehub.language;
 
-import java.util.List;
-
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import java.util.List;
 
 final class LanguagesPanel extends BreadCrumbPanel {
     private final LanguagesListView languagesListView;
@@ -20,30 +21,29 @@ final class LanguagesPanel extends BreadCrumbPanel {
     private ILanguageAdminController languageAdminController;
 
     LanguagesPanel(final String panelId, final IBreadCrumbModel breadCrumbModel) {
-	super(panelId, breadCrumbModel);
-	final LanguagesMediator mediator = new LanguagesMediator();
-	mediator.registerLanguagesPanel(this);
+        super(panelId, breadCrumbModel);
+        final LanguagesMediator mediator = new LanguagesMediator();
+        mediator.registerLanguagesPanel(this);
 
-	languagesListView = new LanguagesListView("languages", mediator);
-	add(languagesListView);
+        languagesListView = new LanguagesListView("languages", mediator);
+        add(languagesListView);
 
-	languageForm = new LanguageForm("languageForm", mediator);
-	add(languageForm);
+        languageForm = new LanguageForm("languageForm", mediator);
+        add(languageForm);
     }
 
     @Override
-    public String getTitle() {
-	final StringResourceModel model = new StringResourceModel("txtBreadCrumbPanelTitle", this, new Model<>());
-	return model.getString();
+    public IModel<String> getTitle() {
+        return new StringResourceModel("txtBreadCrumbPanelTitle", this, new Model<>());
     }
 
     @Override
     public void onActivate(IBreadCrumbParticipant previous) {
-	final List<Language> languages = languageAdminController.getLanguages();
-	languagesListView.setList(languages);
+        final List<Language> languages = languageAdminController.getLanguages();
+        languagesListView.setList(languages);
 
-	languageForm.resetForm();
+        languageForm.resetForm();
 
-	super.onActivate(previous);
+        super.onActivate(previous);
     }
 }

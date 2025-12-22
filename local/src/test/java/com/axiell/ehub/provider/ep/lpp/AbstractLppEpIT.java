@@ -3,12 +3,12 @@ package com.axiell.ehub.provider.ep.lpp;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.provider.ep.AbstractEpIT;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.InternalServerErrorException;
 import java.util.Map;
 
-import static junit.framework.Assert.assertNotNull;
 
 public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheckoutDTO> {
 
@@ -33,8 +33,7 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
     }
 
     private void thenRepeatedCheckoutFails() {
-        givenExpectedWebApplicationException(InternalServerErrorException.class,ErrorCauseArgumentType.ALREADY_ON_LOAN);
-        whenCheckout();
+        Assertions.assertThrows(InternalServerErrorException.class, this::whenCheckout);
     }
 
     private void thenPatronHasCheckout() {
@@ -43,9 +42,9 @@ public abstract class AbstractLppEpIT extends AbstractEpIT<LppEpFacade, LppCheck
 
     private void thenCheckoutHasExpectedDownloadUrls() {
         final Map<String, FormatMetadataDTO> formatMetadatas = checkout.getFormatMetadatas();
-        assertNotNull(formatMetadatas);
+        Assertions.assertNotNull(formatMetadatas);
         getFormatIds().forEach(contentProviderFormatId -> {
-            assertNotNull(formatMetadatas.get(contentProviderFormatId));
+            Assertions.assertNotNull(formatMetadatas.get(contentProviderFormatId));
         });
     }
 

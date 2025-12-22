@@ -5,10 +5,10 @@ package com.axiell.ehub.loan;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import  jakarta.persistence.Access;
+import  jakarta.persistence.AccessType;
+import  jakarta.persistence.Column;
+import  jakarta.persistence.Embeddable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 

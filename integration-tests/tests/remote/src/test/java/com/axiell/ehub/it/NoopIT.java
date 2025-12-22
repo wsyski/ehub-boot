@@ -1,6 +1,6 @@
 package com.axiell.ehub.it;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NoopIT {
 

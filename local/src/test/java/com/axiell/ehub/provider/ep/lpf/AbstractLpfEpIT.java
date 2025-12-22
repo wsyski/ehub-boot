@@ -2,14 +2,13 @@ package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.provider.ep.AbstractEpIT;
 import com.axiell.ehub.provider.ep.FormatMetadataDTO;
-import org.junit.Test;
-
-import static junit.framework.Assert.assertNotNull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public abstract class AbstractLpfEpIT extends AbstractEpIT<LpfEpFacade, LpfCheckoutDTO> {
 
     @Test
-    public void checkout()  {
+    public void checkout() {
         givenLibraryCardInPatron();
         givenConfigurationProperties();
         givenContentProvider();
@@ -31,8 +30,8 @@ public abstract class AbstractLpfEpIT extends AbstractEpIT<LpfEpFacade, LpfCheck
 
     private void thenCheckoutHasExpectedDownloadUrls() {
         final FormatMetadataDTO formatMetadata = checkout.getFormatMetadata();
-        assertNotNull(formatMetadata);
-        assertNotNull(formatMetadata.getContentLinks());
+        Assertions.assertNotNull(formatMetadata);
+        Assertions.assertNotNull(formatMetadata.getContentLinks());
     }
 
     @Override

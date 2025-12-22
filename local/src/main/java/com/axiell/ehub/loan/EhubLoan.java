@@ -3,21 +3,18 @@
  */
 package com.axiell.ehub.loan;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.hibernate.annotations.ForeignKey;
-
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.util.HashCodeBuilderFactory;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
  * Represents an eHUB loan, which basically connects an LMS loan, a Content Provider loan and the eHUB consumer who
@@ -58,7 +55,6 @@ public class EhubLoan extends AbstractTimestampAwarePersistable<Long> {
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID", nullable = false)
-    @ForeignKey(name = "FK_EHUB_LOAN_EHUB_CONSUMER")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
     }

@@ -2,7 +2,7 @@ package com.axiell.ehub.util;
 
 import com.axiell.authinfo.util.SHA512Function;
 import org.hamcrest.text.IsEqualIgnoringCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 

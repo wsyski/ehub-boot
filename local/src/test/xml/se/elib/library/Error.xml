@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xs1:response xmlns:xs1="https://www.elib.se/webservices/schema/createloan.xsd">
-    <status>
-        <code>119</code>
-        <message>Error - Maximum number of loans per period reached for customer</message>
-    </status>
-    <data />
-</xs1:response>

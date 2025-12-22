@@ -3,13 +3,18 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.checkout.ContentBuilder;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.loan.ContentProviderLoan;
+import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.FormatBuilder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
@@ -17,9 +22,11 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixture<Elib3DataAccessor> {
 
     @Mock
@@ -35,7 +42,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
 
     private List<Format> expectedFormats = Collections.singletonList(FormatBuilder.streamingFormat());
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new Elib3DataAccessor();
         ReflectionTestUtils.setField(underTest, "commandChainFactory", commandChainFactory);
@@ -66,7 +73,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedContent() {
-        given(getContentCommandChain.execute(any(Elib3CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
+        given(getContentCommandChain.execute(any(CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
 
     private void givenGetContentCommandChain() {
@@ -78,7 +85,7 @@ public class Elib3DataAccessorTest extends ContentProviderDataAccessorTestFixtur
     }
 
     private void givenExpectedLoan() {
-        given(createLoanCommandChain.execute(any(Elib3CommandData.class))).willReturn(expectedLoan);
+        given(createLoanCommandChain.execute(any(CommandData.class))).willReturn(expectedLoan);
     }
 
     private void givenCreateLoanCommandChain() {

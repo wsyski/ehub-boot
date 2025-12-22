@@ -2,7 +2,15 @@ package com.axiell.ehub.provider.overdrive;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ErrorDTO {
@@ -18,9 +26,5 @@ public class ErrorDTO {
 
     public String getMessage() {
         return message==null ? error_description  : message;
-    }
-
-    public String getToken() {
-        return token;
     }
 }

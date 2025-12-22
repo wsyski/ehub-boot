@@ -5,12 +5,11 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.AbstractContentProviderExceptionFactory;
 import com.axiell.ehub.provider.IContentProviderExceptionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<ErrorDTO>
         implements IContentProviderExceptionFactory<ErrorDTO> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EpExceptionFactory.class);
 
     public EpExceptionFactory(final ContentProviderConsumer contentProviderConsumer, final String language,
                               final IEhubExceptionFactory ehubExceptionFactory) {
@@ -34,7 +33,7 @@ public class EpExceptionFactory extends AbstractContentProviderExceptionFactory<
             try {
                 type = ErrorCauseArgumentType.valueOf(code);
             } catch (IllegalArgumentException ex) {
-                LOGGER.info("Unknown content provider code: " + code);
+                log.info("Unknown content provider code: " + code);
             }
         }
         return type;

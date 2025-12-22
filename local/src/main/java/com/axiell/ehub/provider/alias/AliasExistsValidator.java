@@ -1,28 +1,28 @@
 package com.axiell.ehub.provider.alias;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 
-class AliasExistsValidator extends AbstractValidator<String> {
+public class AliasExistsValidator implements IValidator<String> {
     @SpringBean(name = "aliasAdminController")
     private IAliasAdminController aliasAdminController;
 
-    AliasExistsValidator() {
-        InjectorHolder.getInjector().inject(this);
+    public AliasExistsValidator() {
+        Injector.get().inject(this);
     }
 
     @Override
-    protected void onValidate(final IValidatable<String> validatable) {
+    public void validate(final IValidatable<String> validatable) {
         final String aliasValue = validatable.getValue();
         final boolean exists = aliasAdminController.existsAlias(aliasValue);
 
         if (exists)
-            error(validatable, resourceKey());
+            validatable.error(new ValidationError().addKey(resourceKey()));
     }
 
-    @Override
     protected String resourceKey() {
         return "msgAliasAlreadyExists";
     }

@@ -6,8 +6,8 @@ package com.axiell.ehub;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 /**
  * Skeletal implementation of the eHUB {@link RuntimeException}. It should be sub-classed to provide the specific

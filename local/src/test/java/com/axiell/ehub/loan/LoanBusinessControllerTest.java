@@ -1,45 +1,62 @@
 package com.axiell.ehub.loan;
 
-import com.axiell.ehub.*;
-import com.axiell.ehub.checkout.*;
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.Patron;
+import com.axiell.ehub.EhubError;
+import com.axiell.ehub.EhubException;
+import com.axiell.ehub.ErrorCause;
+import com.axiell.ehub.ErrorCauseArgument;
+import com.axiell.ehub.Fields;
+import com.axiell.ehub.FieldsBuilder;
+import com.axiell.ehub.InternalServerErrorException;
+import com.axiell.ehub.NotFoundException;
+import com.axiell.ehub.checkout.Checkout;
+import com.axiell.ehub.checkout.CheckoutMetadata;
+import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
+import com.axiell.ehub.checkout.CheckoutsSearchResult;
+import com.axiell.ehub.checkout.Content;
+import com.axiell.ehub.checkout.ContentLink;
+import com.axiell.ehub.checkout.ICheckoutFactory;
+import com.axiell.ehub.checkout.ICheckoutMetadataFactory;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.error.EhubExceptionMatcher;
-import com.axiell.ehub.lms.ILmsDataAccessorFactory;
-import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
-import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
+import com.axiell.ehub.lms.CheckoutTestAnalysis;
+import com.axiell.ehub.lms.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.ILmsDataAccessor;
-import com.axiell.authinfo.Patron;
+import com.axiell.ehub.lms.ILmsDataAccessorFactory;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import com.axiell.authinfo.AuthInfo;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.Locale;
 
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class LoanBusinessControllerTest {
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
 
     private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
 
@@ -93,13 +110,13 @@ public class LoanBusinessControllerTest {
     private Checkout actualCheckout;
     private CheckoutsSearchResult actualSearchResult;
 
-    @Before
+    @BeforeEach
     public void setUpCommonArguments() throws EhubException {
         given(lmsDataAccessorFactory.getLmsDataAccessor(any(EhubConsumer.class))).willReturn(lmsDataAccessor);
         authInfo = new AuthInfo.Builder().ehubConsumerId(0L).patron(new Patron.Builder().libraryCard("libraryCard").pin("pin").build()).build();
     }
 
-    @Before
+    @BeforeEach
     public void setUpLoanBusinessController() {
         checkoutMetadata = CheckoutMetadataBuilder.checkoutMetadataWithStreamingFormat();
         given(contentProviderLoanMetadata.getFirstFormatDecoration()).willReturn(formatDecoration);
@@ -115,34 +132,36 @@ public class LoanBusinessControllerTest {
         ReflectionTestUtils.setField(underTest, "checkoutFactory", checkoutFactory);
     }
 
-    @Before
+    @BeforeEach
     public void setUpEhubLoan() {
         given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(ehubLoan.getLmsLoan()).willReturn(lmsLoan);
     }
 
-    @Before
+    @BeforeEach
     public void setUpEhubConsumer() {
         given(consumerBusinessController.getEhubConsumer(any(Long.class))).willReturn(ehubConsumer);
+        given(consumerBusinessController.getEhubConsumer(authInfo)).willReturn(ehubConsumer);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderNameFromExistingLoan() {
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderLoan() {
         given(contentProviderDataAccessorFacade.createLoan(any(EhubConsumer.class), any(Patron.class), any(PendingLoan.class), any(String.class))).willReturn(
                 contentProviderLoan);
     }
-    @Before
+
+    @BeforeEach
     public void setUpGetContentProviderConsumer() {
         given(contentProviderDataAccessorFacade.getContentProviderConsumer(any(EhubConsumer.class), any(String.class))).willReturn(contentProviderConsumer);
     }
 
-    @Before
+    @BeforeEach
     public void setUpSavedEhubLoan() {
         given(ehubLoanRepositoryFacade.saveEhubLoan(any(EhubConsumer.class), any(LmsLoan.class), any(ContentProviderLoan.class))).willReturn(ehubLoan);
     }
@@ -151,7 +170,10 @@ public class LoanBusinessControllerTest {
     @Test
     public void createNewLoan() throws EhubException {
         givenNewLoanAsPreCheckoutAnalysisResult();
+        given(contentProviderLoan.expirationDate()).willReturn(new Date());
         given(contentProviderLoan.content()).willReturn(content);
+        given(lmsDataAccessor.checkout(any(EhubConsumer.class), any(PendingLoan.class), any(Date.class), any(Patron.class), any(boolean.class), any(Locale.class))).willReturn(
+                lmsLoan);
         whenCreateLoan();
         thenNewEhubLoanIsSavedInTheEhubDatabase();
     }
@@ -181,8 +203,9 @@ public class LoanBusinessControllerTest {
         givenActiveLoanAsPreCheckoutAnalysisResult();
         givenEhubLoanCanBeFoundInTheEhubDatabaseByEhubConsumerIdAndLmsLoanId();
         givenContentProviderFormatId(NEW_CONTENT_PROVIDER_FORMAT_ID);
-        givenExpectedUnsupportedLoanPerProduct();
-        whenCreateLoan();
+        Exception exception = Assertions.assertThrows(InternalServerErrorException.class, this::whenCreateLoan);
+        final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
+        assertThat(exception, is(new EhubExceptionMatcher(InternalServerErrorException.class, ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument)));
     }
 
     @Test
@@ -206,14 +229,8 @@ public class LoanBusinessControllerTest {
         given(formatDecoration.getContentProviderFormatId()).willReturn(contentProviderFormatId);
     }
 
-    private void givenExpectedUnsupportedLoanPerProduct() {
-        final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, contentProvider.getName());
-        expectedException.expect(new EhubExceptionMatcher(InternalServerErrorException.class,ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT, argument));
-    }
-
-
     private ErrorCause getErrorCause(final NotFoundException e) {
-        Assert.assertNotNull(e);
+        Assertions.assertNotNull(e);
         EhubError ehubError = e.getEhubError();
         return ehubError.getCause();
     }
@@ -296,9 +313,9 @@ public class LoanBusinessControllerTest {
     private void thenSearchResultDoesNotContainLoanWithExpectedLmsLoanId() {
         try {
             actualSearchResult.findCheckoutByLmsLoanId(LMS_LOAN_ID);
-            fail("A NotFoundException should have been thrown");
-        } catch (NotFoundException e) {
-            assertNotNull(e);
+            Assertions.fail("A NotFoundException should have been thrown");
+        } catch (NotFoundException ex) {
+            Assertions.assertNotNull(ex);
         }
     }
 }

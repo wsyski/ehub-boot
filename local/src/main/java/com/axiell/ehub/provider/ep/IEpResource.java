@@ -1,6 +1,6 @@
 package com.axiell.ehub.provider.ep;
 
-import javax.ws.rs.*;
+import jakarta.ws.rs.*;
 
 public interface IEpResource<C extends ICheckoutDTO, R extends ICheckoutRequestDTO> {
 

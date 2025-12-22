@@ -1,14 +1,18 @@
 package com.axiell.ehub.checkout;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CheckoutMetadataTest {
     private static final String LMS_LOAN_ID = "lmsLoanId";
     private CheckoutMetadata underTest;
@@ -37,6 +41,6 @@ public class CheckoutMetadataTest {
     }
 
     private void thenActualLmsLoanIdEqualsExpectedLmsLoanId() {
-        assertEquals(LMS_LOAN_ID, actLmsLoanId);
+        Assertions.assertEquals(LMS_LOAN_ID, actLmsLoanId);
     }
 }

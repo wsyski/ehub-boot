@@ -1,23 +1,28 @@
 package com.axiell.ehub;
 
-import com.axiell.ehub.provider.IContentProvidersResource;
-import com.axiell.ehub.provider.record.IRecordsResource;
+import com.axiell.ehub.controller.external.IRootResource;
+import com.axiell.ehub.controller.external.v5_0.IV5_0_Resource;
+import com.axiell.ehub.controller.external.v5_0.provider.IContentProvidersResource;
+import com.axiell.ehub.controller.external.v5_0.provider.IRecordsResource;
 import com.axiell.ehub.provider.record.Record;
-import com.axiell.ehub.provider.record.RecordDTO;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.RecordDTO;
 import com.axiell.authinfo.AuthInfo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import static org.junit.Assert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class EhubClientTest {
     private EhubClient underTest;
     private static final String CONTENT_PROVIDER_ALIAS = "content provider alias";
@@ -31,6 +36,9 @@ public class EhubClientTest {
     private IRootResource rootResource;
 
     @Mock
+    private IV5_0_Resource iV5_0_Resource;
+
+    @Mock
     private IRecordsResource recordsResource;
 
     @Mock
@@ -39,7 +47,7 @@ public class EhubClientTest {
     @Mock
     private RecordDTO recordDTO;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new EhubClient();
         underTest.setRootResource(rootResource);
@@ -47,7 +55,8 @@ public class EhubClientTest {
 
     @Test
     public void getRecord() throws EhubException {
-        givenRootResourceReturnsContentProviderResource();
+        givenRootResourceReturnsV5_0_Resource();
+        givenV5_0_ResourceReturnsContentProviderResource();
         givenContentProviderResourceReturnsRecordsResource();
         givenRecordsResourceReturnsRecord();
         Record record = whenGetRecordExecuted();
@@ -55,8 +64,8 @@ public class EhubClientTest {
     }
 
     private void thenContentProvidersResourceIsCalledWithEncodedAlias(Record record) {
-        assertSame(recordDTO, record.toDTO());
-        verify(contentProvidersResource, times(1)).records(CONTENT_PROVIDER_ALIAS);
+        Assertions.assertSame(recordDTO, record.toDTO());
+        verify(contentProvidersResource, times(1)).getRecordsResource(CONTENT_PROVIDER_ALIAS);
     }
 
     private Record whenGetRecordExecuted() throws EhubException {
@@ -68,10 +77,14 @@ public class EhubClientTest {
     }
 
     private void givenContentProviderResourceReturnsRecordsResource() {
-        given(contentProvidersResource.records(CONTENT_PROVIDER_ALIAS)).willReturn(recordsResource);
+        given(contentProvidersResource.getRecordsResource(CONTENT_PROVIDER_ALIAS)).willReturn(recordsResource);
     }
 
-    private void givenRootResourceReturnsContentProviderResource() {
-        given(rootResource.contentProviders()).willReturn(contentProvidersResource);
+    private void givenRootResourceReturnsV5_0_Resource() {
+        given(rootResource.getIV5_0_Resource()).willReturn(iV5_0_Resource);
+    }
+
+    private void givenV5_0_ResourceReturnsContentProviderResource() {
+        given(iV5_0_Resource.contentProviders()).willReturn(contentProvidersResource);
     }
 }

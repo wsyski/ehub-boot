@@ -5,14 +5,13 @@ package com.axiell.ehub.consumer;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
-/**
- * Default implementation of the {@link IConsumerAdminController}.
- */
+@Component
 public class ConsumerAdminController implements IConsumerAdminController {
 
     @Autowired

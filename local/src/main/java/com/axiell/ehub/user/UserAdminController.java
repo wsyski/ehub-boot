@@ -4,11 +4,10 @@
 package com.axiell.ehub.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Default implementation of the {@link IUserAdminController}.
- */
+@Component
 public class UserAdminController implements IUserAdminController {
     @Autowired
     private IAdminUserRepository adminUserRepository;
@@ -22,7 +21,7 @@ public class UserAdminController implements IUserAdminController {
         final String name = providedUser.getName();
         final String clearPassword = providedUser.getClearPassword();
         final AdminUser retrievedUser = adminUserRepository.findOneByName(name);
-        
+
         if (retrievedUser == null) {
             return LoginStatus.USER_NOT_FOUND;
         } else if (retrievedUser.isValid(clearPassword)) {

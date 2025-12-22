@@ -1,13 +1,13 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
+import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-import org.glassfish.jersey.client.proxy.WebResourceFactory;
+import org.apache.cxf.ext.logging.LoggingFeature;
+import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
+import java.util.Collections;
 
 abstract class AbstractAccessTokenResourceFactory {
 
@@ -16,11 +16,9 @@ abstract class AbstractAccessTokenResourceFactory {
     IAccessTokenResource create(final ContentProviderConsumer contentProviderConsumer) {
         final ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
         final ContentProviderPropertyKey oauthUrlPropertyKey = getOAuthUrlPropertyKey();
-        final String oauthUrl = contentProvider.getProperty(oauthUrlPropertyKey);
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(oauthUrl);
-        return WebResourceFactory.newResource(IAccessTokenResource.class, target);
-
+        final String baseUrl = contentProvider.getProperty(oauthUrlPropertyKey);
+        final LoggingFeature loggingFeature = new LoggingFeature();
+        final JsonProvider jsonProvider = new JsonProvider();
+        return JAXRSClientFactory.create(baseUrl, IAccessTokenResource.class, Collections.singletonList(jsonProvider), Collections.singletonList(loggingFeature), null);
     }
 }

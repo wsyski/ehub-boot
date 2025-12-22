@@ -2,8 +2,9 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Collections;
@@ -11,10 +12,8 @@ import java.util.Date;
 
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
 import static com.axiell.ehub.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
 
 public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private static final String LOAN_ID = "1";
@@ -27,7 +26,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     private ContentProviderLoanMetadata loanMetadata;
     private ContentLinks contentLinks;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new GetLoansCommand(elibFacade, exceptionFactory);
     }
@@ -59,23 +58,23 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenContentProviderLoanMetadataHasExpectedRecordId() {
-        assertEquals(PRODUCT_ID, loanMetadata.getRecordId());
+        Assertions.assertEquals(PRODUCT_ID, loanMetadata.getRecordId());
     }
 
     private void thenContentProviderLoanMetadataHasExpectedLoanId() {
-        assertEquals(LOAN_ID, loanMetadata.getId());
+        Assertions.assertEquals(LOAN_ID, loanMetadata.getId());
     }
 
     private void thenContentProviderLoanMetadataHasExpectedFirstFormatDecoration() {
-        assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
+        Assertions.assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
     }
 
     private void thenActualContentUrlEqualsExpectedUrl() {
-        assertEquals(CONTENT_URL, contentLinks.getContentLinks().get(0).href());
+        Assertions.assertEquals(CONTENT_URL, contentLinks.getContentLinks().get(0).href());
     }
 
     private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
-        assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
+        Assertions.assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
     }
 
     private void givenLoanWithProductId() {
@@ -108,7 +107,7 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenContentUrlIsNull() {
-        assertNull(contentLinks);
+        Assertions.assertNull(contentLinks);
     }
 
     private void givenCommandOnPatronHasNoLoanWithProductId() {
@@ -116,6 +115,6 @@ public class GetLoansCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenContentProviderLoanMetadataIsNull() {
-        assertNull(loanMetadata);
+        Assertions.assertNull(loanMetadata);
     }
 }

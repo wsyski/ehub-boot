@@ -5,26 +5,27 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class EhubLoanRepositoryFacadeTest {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
+    private static final Long READY_LOAN_ID = 1L;
+    private static final Long EHUB_CONSUMER_ID = 1L;
 
     private IEhubLoanRepositoryFacade underTest;
 
@@ -32,7 +33,6 @@ public class EhubLoanRepositoryFacadeTest {
     private IEhubLoanRepository ehubLoanRepository;
     @Mock
     private EhubConsumer ehubConsumer;
-    private Long readyLoanId = 1L;
     @Mock
     private EhubLoan expectedEhubLoan;
     private EhubLoan actualEhubLoan;
@@ -44,10 +44,15 @@ public class EhubLoanRepositoryFacadeTest {
     private FormatDecoration formatDecoration;
     private long actualCount;
 
-    @Before
+    @BeforeEach
     public void setUpEhubLoanRepositoryFacade() {
         underTest = new EhubLoanRepositoryFacade();
         ReflectionTestUtils.setField(underTest, "ehubLoanRepository", ehubLoanRepository);
+    }
+
+    @BeforeEach
+    public void setUpEhubConsumer() {
+        given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
     }
 
     @Test
@@ -56,7 +61,7 @@ public class EhubLoanRepositoryFacadeTest {
 
         try {
             whenGetReadyLoanByReadyLoanId();
-            Assert.fail("A NotFoundException should have been thrown");
+            Assertions.fail("A NotFoundException should have been thrown");
         } catch (NotFoundException e) {
             thenErrorCauseIsLoanByIdNotFound(e);
         }
@@ -67,30 +72,25 @@ public class EhubLoanRepositoryFacadeTest {
     }
 
     private void whenGetReadyLoanByReadyLoanId() {
-        actualEhubLoan = underTest.findEhubLoan(readyLoanId);
+        actualEhubLoan = underTest.findEhubLoan(READY_LOAN_ID);
     }
 
     private void thenErrorCauseIsLoanByIdNotFound(NotFoundException e) {
         ErrorCause errorCause = getErrorCause(e);
-        Assert.assertEquals(ErrorCause.LOAN_BY_ID_NOT_FOUND, errorCause);
+        Assertions.assertEquals(ErrorCause.LOAN_BY_ID_NOT_FOUND, errorCause);
     }
 
     private ErrorCause getErrorCause(NotFoundException e) {
-        Assert.assertNotNull(e);
+        Assertions.assertNotNull(e);
         EhubError ehubError = e.getEhubError();
         return ehubError.getCause();
     }
 
     @Test
     public void ehubLoanNotFoundByLmsLoanId() {
-        givenExpectedNotFoundException();
         givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId();
-        whenGetReadyLoanByLmsLoanId();
-        thenErrorCauseIsLoanByLmsIdNotFound();
-     }
-
-    private void givenExpectedNotFoundException() {
-        exception.expect(NotFoundException.class);
+        Exception exception = Assertions.assertThrows(NotFoundException.class, this::whenGetReadyLoanByLmsLoanId);
+        thenErrorCauseIsLoanByLmsIdNotFound(exception);
     }
 
     private void givenNoEhubLoanCanBeFoundInTheEhubDatabaseForTheGivenEhubConsumerIdAndLmsLoanId() {
@@ -101,9 +101,9 @@ public class EhubLoanRepositoryFacadeTest {
         actualEhubLoan = underTest.findEhubLoan(ehubConsumer, "lmsLoanId");
     }
 
-    private void thenErrorCauseIsLoanByLmsIdNotFound() {
+    private void thenErrorCauseIsLoanByLmsIdNotFound(Exception exception) {
         ErrorCause errorCause = getErrorCause(NotFoundException.class.cast(exception));
-        Assert.assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);
+        Assertions.assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class EhubLoanRepositoryFacadeTest {
     }
 
     private void thenActualEhubLoanEqualsExpectedEhubLoan() {
-        Assert.assertEquals(expectedEhubLoan, actualEhubLoan);
+        Assertions.assertEquals(expectedEhubLoan, actualEhubLoan);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class EhubLoanRepositoryFacadeTest {
     }
 
     private void thenActualCountIsZero() {
-        Assert.assertEquals(0, actualCount);
+        Assertions.assertEquals(0, actualCount);
     }
 
     @Test

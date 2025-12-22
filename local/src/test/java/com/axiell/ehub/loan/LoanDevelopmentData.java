@@ -15,6 +15,8 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 
+import javax.sql.DataSource;
+
 /**
  *
  */
@@ -22,14 +24,12 @@ public class LoanDevelopmentData extends DevelopmentData {
     private IEhubLoanRepository ehubLoanRepository;
     private Long elibehubLoanId;
 
-    /**
-     * @param contentProviderAdminController
-     * @param formatAdminController
-     * @param consumerAdminController
-     */
-    public LoanDevelopmentData(IContentProviderAdminController contentProviderAdminController, IFormatAdminController formatAdminController,
-                               IConsumerAdminController consumerAdminController, IEhubLoanRepository ehubLoanRepository,
-                               ILanguageAdminController languageAdminController, IPlatformAdminController platformAdminController) {
+    public LoanDevelopmentData(final IContentProviderAdminController contentProviderAdminController,
+                               final IFormatAdminController formatAdminController,
+                               final IConsumerAdminController consumerAdminController,
+                               final IEhubLoanRepository ehubLoanRepository,
+                               final ILanguageAdminController languageAdminController,
+                               final IPlatformAdminController platformAdminController) {
         super(contentProviderAdminController, formatAdminController, consumerAdminController, languageAdminController, platformAdminController);
         this.ehubLoanRepository = ehubLoanRepository;
     }
@@ -41,15 +41,6 @@ public class LoanDevelopmentData extends DevelopmentData {
     public void init() throws Exception {
         super.init();
         initELibEhubLoan(getEhubConsumer(), getContentProvider());
-    }
-
-    /**
-     * @see com.axiell.ehub.DevelopmentData#destroy()
-     */
-    @Override
-    public void destroy() throws Exception {
-        ehubLoanRepository.deleteAll();
-        super.destroy();
     }
 
     /**

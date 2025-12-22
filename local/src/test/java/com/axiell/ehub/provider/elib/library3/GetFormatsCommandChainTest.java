@@ -1,35 +1,43 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.Format;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.google.common.collect.Lists;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class GetFormatsCommandChainTest {
     private static final String CP_RECORD_ID = "CP_RECORD_ID";
     private static final String FORMAT_ID = "FORMAT_ID";
+    protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
     private GetFormatsCommandChain underTest;
     @Mock
     private IElibFacade elibFacade;
@@ -63,7 +71,7 @@ public class GetFormatsCommandChainTest {
     private LoanDTO loan;
     private Format actualFormat;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new GetFormatsCommandChain(elibFacade, exceptionFactory, formatFactory);
     }
@@ -127,7 +135,7 @@ public class GetFormatsCommandChainTest {
     }
 
     private void thenActualFormatSetIsNotEmpty() {
-        Assert.assertFalse(actualFormatSet.isEmpty());
+        Assertions.assertFalse(actualFormatSet.isEmpty());
     }
 
     private void givenExpectedFormat() {
@@ -140,6 +148,7 @@ public class GetFormatsCommandChainTest {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
         given(commandData.getPatron()).willReturn(patron);
         given(commandData.getContentProviderRecordId()).willReturn("contentProviderRecordId");
+        given(commandData.getLanguage()).willReturn(LANGUAGE);
         elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 
@@ -188,7 +197,7 @@ public class GetFormatsCommandChainTest {
     }
 
     private void thenActualFormatSetIsEmpty() {
-        assertTrue(actualFormatSet.isEmpty());
+        Assertions.assertTrue(actualFormatSet.isEmpty());
     }
 
     private void thenLibraryProductIsInvoked() {

@@ -3,7 +3,7 @@ package com.axiell.ehub.error;
 import com.axiell.ehub.ErrorCauseArgumentValue;
 import com.axiell.ehub.ErrorCauseArgumentValueTextBundle;
 import com.axiell.ehub.language.Language;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -18,7 +18,7 @@ class ErrorCauseArgumentValueTextModel implements IModel<String> {
     private IErrorCauseArgumentValueAdminController argumentValueAdminController;
 
     ErrorCauseArgumentValueTextModel(final IModel<ErrorCauseArgumentValue> formModel, final Language language) {
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
         this.formModel = formModel;
         this.language = language;
     }

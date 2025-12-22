@@ -3,8 +3,9 @@ package com.axiell.ehub.provider.elib.library3;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.authinfo.Patron;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Collections;
@@ -12,19 +13,18 @@ import java.util.Date;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.MISSING_CONTENT_IN_LOAN;
 import static com.axiell.ehub.provider.elib.library3.CreateLoanCommand.Result.LOAN_CREATED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     private static final String URL = "url";
     private CreateLoanCommand underTest;
+
     @Mock
     private CreatedLoan createdLoan;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         underTest = new CreateLoanCommand(elibFacade, exceptionFactory);
     }
@@ -60,11 +60,11 @@ public class CreateLoanCommandTest extends AbstractElib3CommandTest {
     }
 
     private void thenCommandDataContainsContentUrl() {
-        assertEquals(URL, data.getContentLinks().getContentLinks().get(0).href());
+        Assertions.assertEquals(URL, data.getContentLinks().getContentLinks().get(0).href());
     }
 
     private void thenCommandDataContainsContentProviderLoanMetadata() {
-        assertNotNull(data.getContentProviderLoanMetadata());
+        Assertions.assertNotNull(data.getContentProviderLoanMetadata());
     }
 
     private void givenProductIdInPendingLoan() {

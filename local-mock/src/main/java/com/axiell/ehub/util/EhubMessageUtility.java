@@ -2,12 +2,12 @@ package com.axiell.ehub.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import jakarta.servlet.ServletContext;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,14 +17,14 @@ import java.util.List;
 
 import static org.apache.commons.io.FilenameUtils.removeExtension;
 
+@Slf4j
+@Component
 public class EhubMessageUtility {
     public static final String EXCEPTION = "exception";
-    @Autowired
-    private ServletContext servletContext;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(EhubMessageUtility.class);
     private static final String FILE_SUFFIX = ".json";
     private static final String KEY_SEPARATOR = "-";
+    @Autowired
+    private ServletContext servletContext;
 
     private String getResponseDir() {
         final String responseDir = System.getProperty("com.axiell.ehub.responseDir");
@@ -51,7 +51,7 @@ public class EhubMessageUtility {
 
                 return mapper.readValue(json, clazz);
             } catch (IOException ex) {
-                LOGGER.error(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
             }
         }
         return null;
@@ -86,10 +86,10 @@ public class EhubMessageUtility {
     private File getEhubMessageFile(final List<String> fileNames) {
         String responseDir = getResponseDir();
         for (String fileName : fileNames) {
-            LOGGER.info("Look for file: " + fileName);
+            log.info("Look for file: " + fileName);
             final File file = new File(responseDir + File.separator + fileName.toLowerCase() + FILE_SUFFIX);
             if (file.exists() && file.isFile()) {
-                LOGGER.info("Found file: " + fileName);
+                log.info("Found file: " + fileName);
                 return file;
             }
         }

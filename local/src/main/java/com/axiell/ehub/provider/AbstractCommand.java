@@ -1,13 +1,14 @@
 package com.axiell.ehub.provider;
 
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+@Slf4j
 public abstract class AbstractCommand<D extends ICommandData> implements ICommand<D> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     private ICommand next = null;
     private final Map<ICommandResult, ICommand> forwards = Maps.newHashMap();
 
@@ -31,10 +32,8 @@ public abstract class AbstractCommand<D extends ICommandData> implements IComman
     }
 
     private void logForwardToDebug(final ICommandResult result, final D data) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(toString());
-            LOGGER.debug("Forwarding " + result + " with data: " + data);
-        }
+            log.debug(toString());
+            log.debug("Forwarding " + result + " with data: " + data);
     }
 
     @Override

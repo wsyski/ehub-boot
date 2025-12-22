@@ -1,8 +1,8 @@
 package com.axiell.ehub.lms.arena.exception;
 
-import com.axiell.ehub.lms.arena.error.RestApiError;
+import com.axiell.ehub.lms.arena.error.ArenaLocalRestApiError;
 
 public interface IRestApiException {
-    RestApiError getRestApiError();
+    ArenaLocalRestApiError getRestApiError();
 
 }

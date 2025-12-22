@@ -10,7 +10,7 @@ import com.axiell.ehub.provider.ep.AbstractEpDataAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component(value = "lpfEpDataAccessor")
 public class LpfEpDataAccessor extends AbstractEpDataAccessor<ILpfEpFacade> {
 
     @Autowired

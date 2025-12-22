@@ -3,18 +3,21 @@ package com.axiell.ehub.provider.ep;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extends AbstractEpDataAccessor> extends ContentProviderDataAccessorTestFixture<A> {
 
     @Mock
@@ -26,7 +29,7 @@ public abstract class EpDataAccessorTestFixture<C extends ICheckoutDTO, A extend
     @Mock
     private FormatDTO format;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = createEpDataAccessor();
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);

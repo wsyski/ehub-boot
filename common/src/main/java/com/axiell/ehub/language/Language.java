@@ -7,10 +7,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import  jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,7 +20,6 @@ import java.util.Locale;
 @Entity
 @Table(name = "LANGUAGE")
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
 public class Language implements Serializable {
     private String id;
 
@@ -44,7 +40,6 @@ public class Language implements Serializable {
      */
     @Id
     @Column(name = "ID")
-    @XmlAttribute(name = "languageCode", required = true)
     public String getId() {
         return id;
     }

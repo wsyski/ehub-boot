@@ -9,7 +9,6 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 public class EhubAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKeyResolver implements IAuthHeaderSecretKeyResolver {
@@ -45,17 +44,14 @@ public class EhubAuthHeaderSecretKeyResolver extends AbstractAuthHeaderSecretKey
         return leewayInSeconds;
     }
 
-    @Required
     public void setConsumerBusinessController(final IConsumerBusinessController consumerBusinessController) {
         this.consumerBusinessController = consumerBusinessController;
     }
 
-    @Required
     public void setLeewayInSeconds(final long leewayInSeconds) {
         this.leewayInSeconds = leewayInSeconds;
     }
 
-    @Required
     public void setExpirationTimeInSeconds(final long expirationTimeInSeconds) {
         this.expirationTimeInSeconds = expirationTimeInSeconds;
     }

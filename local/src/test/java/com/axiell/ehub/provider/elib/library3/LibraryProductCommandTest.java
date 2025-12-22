@@ -2,24 +2,27 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(value = MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class LibraryProductCommandTest extends AbstractElib3CommandTest {
     private LibraryProductCommand underTest;
     @Mock
     private LibraryProduct libraryProduct;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new LibraryProductCommand(elibFacade, exceptionFactory);
     }

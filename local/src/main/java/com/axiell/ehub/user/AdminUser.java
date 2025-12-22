@@ -9,12 +9,12 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import  jakarta.persistence.Access;
+import  jakarta.persistence.AccessType;
+import  jakarta.persistence.Column;
+import  jakarta.persistence.Entity;
+import  jakarta.persistence.Table;
+import  jakarta.persistence.Transient;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.Validate;

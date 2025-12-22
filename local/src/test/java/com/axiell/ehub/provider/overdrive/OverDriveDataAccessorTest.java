@@ -11,11 +11,10 @@ import com.axiell.ehub.provider.ContentProviderDataAccessorTestFixture;
 import com.axiell.ehub.provider.overdrive.CirculationFormatDTO.LinkTemplatesDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,17 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 import static com.axiell.ehub.EhubAssert.thenNotFoundExceptionIsThrown;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFixture<OverDriveDataAccessor> {
-    private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
     protected static final String OVERDRIVE_RECORD_ID = "overdriveRecordId";
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
+    private static final String OVERDRIVE_FORMAT_NAME = "OverDriveFormat";
     @Mock
     private IOverDriveFacade overDriveFacade;
     @Mock
@@ -66,8 +62,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
     private CheckoutsDTO checkouts;
     private IEhubExceptionFactory ehubExceptionFactory = new EhubExceptionFactoryStub();
 
-    @Before
-    public void setUpElibUDataAccessor() {
+    @BeforeEach
+    public void setUpOverdriveDataAccessor() {
         underTest = new OverDriveDataAccessor();
         ReflectionTestUtils.setField(underTest, "overDriveFacade", overDriveFacade);
         ReflectionTestUtils.setField(underTest, "formatFactory", formatFactory);
@@ -132,8 +128,8 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenDiscoveryFormat();
         givenFormatIdInDiscoveryFormat();
         givenTextBundle();
-        givenExpectedContentProviderErrorException(ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name());
-        whenGetIssues();
+        Exception exception = Assertions.assertThrows(InternalServerErrorException.class, this::whenGetIssues);
+        assertThat(exception, Matchers.is(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, ErrorCauseArgumentType.PRODUCT_UNAVAILABLE.name())));
     }
 
     @Test
@@ -243,7 +239,7 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         givenErrorDetails();
         try {
             whenGetContent();
-            Assert.fail("A NotFoundException should have been thrown");
+            Assertions.fail("A NotFoundException should have been thrown");
         } catch (NotFoundException e) {
             thenNotFoundExceptionIsThrown(e);
         }
@@ -257,10 +253,11 @@ public class OverDriveDataAccessorTest extends ContentProviderDataAccessorTestFi
         verify(overDriveFacade, times(1)).lockFormat(contentProviderConsumer, accessToken, OVERDRIVE_RECORD_ID, FORMAT_ID);
     }
 
-    private void givenExpectedContentProviderErrorException(final String status) {
-        expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, status));
-    }
-
+    /*
+        private void givenExpectedContentProviderErrorException(final String status) {
+            expectedException.expect(new ContentProviderErrorExceptionMatcher(InternalServerErrorException.class, ContentProvider.CONTENT_PROVIDER_OVERDRIVE, status));
+        }
+    */
     private void givenProduct() {
         given(overDriveFacade.getProduct(contentProviderConsumer, RECORD_ID, FORMAT_ID)).willReturn(product);
         given(product.getCrossRefId()).willReturn(RECORD_ID);

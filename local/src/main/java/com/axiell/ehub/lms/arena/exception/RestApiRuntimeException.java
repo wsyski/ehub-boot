@@ -1,6 +1,6 @@
 package com.axiell.ehub.lms.arena.exception;
 
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.WebApplicationException;
 
 public class RestApiRuntimeException extends WebApplicationException {
 

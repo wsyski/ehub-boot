@@ -1,19 +1,22 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import junit.framework.Assert;
 import org.hamcrest.text.IsEqualIgnoringCase;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ChecksumBuilderTest {
 //    private static final String SERVICE_ID = "1";
 //    private static final String SERVICE_KEY = "secret";
@@ -32,7 +35,7 @@ public class ChecksumBuilderTest {
     private ContentProviderConsumer contentProviderConsumer;
     private String actualChecksum;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         givenSecretKey();
         underTest = new ChecksumBuilder(SERVICE_ID, contentProviderConsumer);
@@ -49,7 +52,7 @@ public class ChecksumBuilderTest {
     public void chechsumForGetProducts() {
         underTest.appendParameter("2014-05-16");
         whenBuildChecksum();
-        Assert.assertEquals(EXP_CHECSUM_GET_PRODUCTS, actualChecksum);
+        Assertions.assertEquals(EXP_CHECSUM_GET_PRODUCTS, actualChecksum);
     }
 
     @Test

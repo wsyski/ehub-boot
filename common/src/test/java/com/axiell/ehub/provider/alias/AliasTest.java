@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.alias;
 
 
-import junit.framework.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AliasTest {
     private Alias underTest;
@@ -50,7 +50,7 @@ public class AliasTest {
     }
 
     private void thenActualValueEqualsToStringValueOfSource() {
-        Assert.assertEquals(underTest.toString(), actualValue);
+        Assertions.assertEquals(underTest.toString(), actualValue);
     }
 
     private void givenSetValue() {
@@ -79,6 +79,6 @@ public class AliasTest {
     }
 
     private void thenActualValueEqualsUpperCaseOfGivenValue() {
-        Assert.assertEquals(givenValue.toUpperCase(), actualValue);
+        Assertions.assertEquals(givenValue.toUpperCase(), actualValue);
     }
 }

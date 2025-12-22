@@ -7,20 +7,23 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.ContentProviderErrorExceptionMatcher;
 import com.axiell.ehub.error.EhubExceptionFactoryStub;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public abstract class ContentProviderExceptionFactoryTestFixture<E> {
     protected static final String LANGUAGE = "en";
 
@@ -38,7 +41,7 @@ public abstract class ContentProviderExceptionFactoryTestFixture<E> {
 
     protected IContentProviderExceptionFactory<E> underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         givenContentProviderConsumer();
         givenContentProvider();

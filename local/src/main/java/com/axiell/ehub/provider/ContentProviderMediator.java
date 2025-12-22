@@ -1,10 +1,16 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.record.format.*;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.FormatDecorationCreateFormPanel;
+import com.axiell.ehub.provider.record.format.FormatDecorationCreateLink;
+import com.axiell.ehub.provider.record.format.FormatDecorationPanelFactory;
+import com.axiell.ehub.provider.record.format.IContentDispositionChangedAwareMediator;
+import com.axiell.ehub.provider.record.format.PlayerContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class ContentProviderMediator implements Serializable, IContentDispositionChangedAwareMediator {
     private ContentProviderPanel contentProviderPanel;
@@ -37,12 +43,11 @@ public class ContentProviderMediator implements Serializable, IContentDispositio
         contentProviderPanel.activate(contentProviderPanel);
     }
 
-    public void afterClickOnFormatDecorationCreateLink(final AjaxRequestTarget target) {
+    public void afterClickOnFormatDecorationCreateLink(final Optional<AjaxRequestTarget> targetOptional) {
         formatDecorationCreateFormPanel.setVisible(true);
-
-        if (target != null) {
-            target.addComponent(formatDecorationCreateFormPanel);
-        }
+        targetOptional.ifPresent(
+                target -> target.add(formatDecorationCreateFormPanel)
+        );
     }
 
     public void afterNewFormatDecoration(final FormatDecoration formatDecoration) {
@@ -50,20 +55,22 @@ public class ContentProviderMediator implements Serializable, IContentDispositio
         contentProviderPanel.activate(factory);
     }
 
-    public void afterCancelNewFormatDecoration(final AjaxRequestTarget target) {
+    public void afterCancelNewFormatDecoration(final Optional<AjaxRequestTarget> targetOptional) {
         formatDecorationCreateFormPanel.setVisible(false);
         formatDecorationCreateLink.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(formatDecorationCreateFormPanel);
-            target.addComponent(formatDecorationCreateLink);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(formatDecorationCreateFormPanel);
+                    target.add(formatDecorationCreateLink);
+                }
+        );
     }
 
     @Override
     public void afterContentDispositionChanged(AjaxRequestTarget target) {
         if (target != null) {
-            target.addComponent(playerContainer);
+            target.add(playerContainer);
         }
     }
 }

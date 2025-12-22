@@ -2,6 +2,7 @@ package com.axiell.ehub.provider.alias;
 
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
 
 class AliasField extends RequiredTextField<String> {
 
@@ -12,7 +13,7 @@ class AliasField extends RequiredTextField<String> {
     }
 
     private void addLengthValidator() {
-        final AliasLengthValidator validator = new AliasLengthValidator();
+        final StringValidator validator = new StringValidator(1, Alias.LENGTH);
         add(validator);
     }
 

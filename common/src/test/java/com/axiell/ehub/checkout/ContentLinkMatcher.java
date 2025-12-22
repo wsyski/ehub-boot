@@ -2,7 +2,6 @@ package com.axiell.ehub.checkout;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 
 public class ContentLinkMatcher  extends BaseMatcher<ContentLink> {
     private final ContentLink expectedContentLink;
@@ -24,7 +23,6 @@ public class ContentLinkMatcher  extends BaseMatcher<ContentLink> {
         description.appendText("matching a ContentLink");
     }
 
-    @Factory
     public static ContentLinkMatcher matchesExpectedContentLink(ContentLink expectedContentLink) {
         return new ContentLinkMatcher(expectedContentLink);
     }

@@ -1,9 +1,10 @@
 package com.axiell.ehub.it;
 
 import com.axiell.ehub.test.TestDataConstants;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class RemoteAliasIT extends RemoteITFixture {
@@ -34,7 +35,7 @@ public class RemoteAliasIT extends RemoteITFixture {
     }
 
     private void thenExpectedIsValidAlias(final boolean value) {
-        Assert.assertThat(isValidAlias, is(value));
+        assertThat(isValidAlias, is(value));
     }
 
     private void whenIsValidAlias(final String alias) {

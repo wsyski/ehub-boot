@@ -1,8 +1,8 @@
 package com.axiell.ehub;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 
-public class OnClickConfirmation extends SimpleAttributeModifier {
+public class OnClickConfirmation extends AttributeModifier {
 
     public OnClickConfirmation(String confirmationText) {
 	super("onclick", "return confirm('" + confirmationText + "');");

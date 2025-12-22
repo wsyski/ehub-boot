@@ -1,5 +1,6 @@
 package com.axiell.ehub.checkout;
 
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
 import com.axiell.ehub.provider.record.format.Format;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

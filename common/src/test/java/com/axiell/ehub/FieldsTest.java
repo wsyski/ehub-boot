@@ -1,18 +1,21 @@
 package com.axiell.ehub;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class FieldsTest {
     private static final String KEY = "key1";
     private static final String VALUE = "value1";
@@ -46,7 +49,7 @@ public class FieldsTest {
     }
 
     private void thenActualValueEqualsExpectedValue() {
-        assertEquals(VALUE, actValue);
+        Assertions.assertEquals(VALUE, actValue);
     }
 
     @Test
@@ -54,11 +57,11 @@ public class FieldsTest {
         givenFieldsInstanceWithProvidedDTO();
         try {
             whenGetRequiredValue();
-            fail("A BadRequestException should have been thrown");
+            Assertions.fail("A BadRequestException should have been thrown");
         } catch (BadRequestException e) {
             EhubError ehubError = e.getEhubError();
             ErrorCause errorCause = ehubError.getCause();
-            assertEquals(ErrorCause.MISSING_FIELD, errorCause);
+            Assertions.assertEquals(ErrorCause.MISSING_FIELD, errorCause);
         }
     }
 
@@ -82,7 +85,7 @@ public class FieldsTest {
     }
 
     private void thenActualValueIsNull() {
-        assertNull(actValue);
+        Assertions.assertNull(actValue);
     }
 
     @Test
@@ -98,7 +101,7 @@ public class FieldsTest {
 
     private void thenValueIsPutToUnderlyingMap() {
         verify(fieldsDTO).getFields();
-        verify(fieldsMap).put(Matchers.eq(KEY), Matchers.eq(VALUE));
+        verify(fieldsMap).put(eq(KEY), eq(VALUE));
     }
 
     @Test
@@ -113,7 +116,7 @@ public class FieldsTest {
     }
 
     private void thenActualDTOEqualsExpectedDTO() {
-        assertEquals(fieldsDTO, actFieldsDTO);
+        Assertions.assertEquals(fieldsDTO, actFieldsDTO);
     }
 
     @Test
@@ -128,6 +131,6 @@ public class FieldsTest {
     }
 
     private void thenActualDTOIsNotNull() {
-        assertNotNull(actFieldsDTO);
+        Assertions.assertNotNull(actFieldsDTO);
     }
 }

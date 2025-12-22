@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.checkout.CheckoutMetadataBuilder;
 import com.axiell.ehub.checkout.Content;
 import com.axiell.ehub.checkout.ContentLink;
@@ -9,30 +10,37 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.authinfo.Patron;
-import com.axiell.ehub.provider.record.format.*;
+import com.axiell.ehub.provider.record.format.ContentDisposition;
+import com.axiell.ehub.provider.record.format.Format;
+import com.axiell.ehub.provider.record.format.FormatBuilder;
+import com.axiell.ehub.provider.record.format.FormatDTOMatcher;
+import com.axiell.ehub.provider.record.format.FormatDecoration;
+import com.axiell.ehub.provider.record.format.FormatTextBundle;
+import com.axiell.ehub.provider.record.format.IFormatFactory;
 import com.axiell.ehub.provider.record.issue.Issue;
 import com.axiell.ehub.provider.record.issue.IssueBuilder;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public abstract class ContentProviderDataAccessorTestFixture<A extends IContentProviderDataAccessor> {
     protected static final Format DOWNLOADABLE_FORMAT = FormatBuilder.downloadableFormat();
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
@@ -82,7 +90,7 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     protected List<Issue> actualIssues;
     protected A underTest;
 
-    @Before
+    @BeforeEach
     public void fixtureSetUp() {
         given(ehubConsumer.getId()).willReturn(EHUB_CONSUMER_ID);
         given(contentProviderConsumer.getId()).willReturn(CONTENT_PROVIDER_CONSUMER_ID);
@@ -94,7 +102,6 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     protected void givenContentProviderConsumerInCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
     }
-
 
     protected void givenPatronInCommandData() {
         given(commandData.getPatron()).willReturn(patron);
@@ -193,33 +200,33 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected void thenActualLoanContainsContentLinkHref() {
-        Assert.assertNotNull(actualLoan);
+        Assertions.assertNotNull(actualLoan);
         actualContent = actualLoan.content();
         thenActualContentLinkContainsHref();
     }
 
     protected void thenActualContentLinkContainsHref() {
-        Assert.assertEquals(CONTENT_HREF, getActualContentLink().href());
+        Assertions.assertEquals(CONTENT_HREF, getActualContentLink().href());
     }
 
     protected void thenActualFormatEqualsExpected() {
         List<Format> formats = getActualFormats();
-        Assert.assertFalse(formats.isEmpty());
+        Assertions.assertFalse(formats.isEmpty());
         Format actualFormat = formats.iterator().next();
         assertThat(actualFormat.toDTO(), FormatDTOMatcher.matchesExpectedFormatDTO(DOWNLOADABLE_FORMAT.toDTO()));
     }
 
     private void thenFormatsNotNull() {
-        Assert.assertNotNull(getActualFormats());
+        Assertions.assertNotNull(getActualFormats());
     }
 
     protected void thenActualFormatsContainsOneFormat() {
-        Assert.assertTrue(getActualFormats().size() == 1);
+        Assertions.assertTrue(getActualFormats().size() == 1);
     }
 
     protected void thenFormatsEmpty() {
         thenFormatsNotNull();
-        assertTrue(getActualFormats().isEmpty());
+        Assertions.assertTrue(getActualFormats().isEmpty());
     }
 
     protected void whenGetIssues() {
@@ -235,21 +242,21 @@ public abstract class ContentProviderDataAccessorTestFixture<A extends IContentP
     }
 
     protected List<Format> getActualFormats() {
-        Assert.assertThat(actualIssues, Matchers.notNullValue());
-        Assert.assertThat(actualIssues.size(), Matchers.greaterThan(0));
+        assertThat(actualIssues, Matchers.notNullValue());
+        assertThat(actualIssues.size(), Matchers.greaterThan(0));
         return actualIssues.iterator().next().getFormats();
     }
 
     protected ContentLink getActualContentLink() {
-        Assert.assertThat(actualContent, Matchers.notNullValue());
+        assertThat(actualContent, Matchers.notNullValue());
         List<ContentLink> contentLinks = actualContent.getContentLinks().getContentLinks();
-        Assert.assertThat(contentLinks, Matchers.notNullValue());
-        Assert.assertThat(contentLinks.size(), Matchers.greaterThan(0));
+        assertThat(contentLinks, Matchers.notNullValue());
+        assertThat(contentLinks.size(), Matchers.greaterThan(0));
         return contentLinks.iterator().next();
     }
 
     protected void thenActualLoanHasExpirationDateCreatedByExpirationDateFactory() {
-        assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
+        Assertions.assertEquals(EXPIRATION_DATE, actualLoan.expirationDate());
     }
 
     protected abstract String getContentProviderName();

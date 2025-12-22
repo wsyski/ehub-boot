@@ -3,7 +3,7 @@ package com.axiell.ehub.provider.record.format;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -12,12 +12,12 @@ import com.axiell.ehub.language.Language;
 abstract class AbstractTextModel implements IModel<String> {
     private final IModel<FormatDecoration> formModel;
     private final Language language;
-    
-    @SpringBean(name = "formatAdminController") 
+
+    @SpringBean(name = "formatAdminController")
     private IFormatAdminController formatAdminController;
 
     protected AbstractTextModel(final IModel<FormatDecoration> formModel, final Language language) {
-	InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
         this.formModel = formModel;
         this.language = language;
     }
@@ -55,7 +55,7 @@ abstract class AbstractTextModel implements IModel<String> {
 
         setText(textBundle, value);
     }
-    
+
     @Override
     public void detach() {
         formModel.detach();

@@ -1,7 +1,8 @@
 package com.axiell.ehub.provider.record;
 
+import com.axiell.ehub.controller.external.v5_0.provider.dto.RecordDTO;
 import com.axiell.ehub.provider.record.issue.Issue;
-import com.axiell.ehub.provider.record.issue.IssueDTO;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.IssueDTO;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

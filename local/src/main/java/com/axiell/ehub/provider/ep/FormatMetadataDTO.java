@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.checkout.ContentLinkDTO;
-import com.axiell.ehub.checkout.SupplementLinkDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.ContentLinkDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.SupplementLinkDTO;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.EqualsBuilder;

@@ -5,6 +5,7 @@ import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 final class ContentProvidersMediator implements Serializable {
     private ContentProvidersPanel contentProvidersPanel;
@@ -27,22 +28,24 @@ final class ContentProvidersMediator implements Serializable {
         contentProvidersPanel.activate(contentProvidersPanel);
     }
 
-    void afterCancelNewContentProvider(final AjaxRequestTarget target) {
+    void afterCancelNewContentProvider(final Optional<AjaxRequestTarget> targetOptional) {
         contentProviderFormContainer.setVisible(false);
         contentProviderCreateLink.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(contentProviderFormContainer);
-            target.addComponent(contentProviderCreateLink);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(contentProviderFormContainer);
+                    target.add(contentProviderCreateLink);
+                });
     }
 
-    void afterClickOnContentProviderCreateLink(final AjaxRequestTarget target) {
+    void afterClickOnContentProviderCreateLink(final Optional<AjaxRequestTarget> targetOptional) {
         contentProviderFormContainer.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(contentProviderFormContainer);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(contentProviderFormContainer);
+                });
     }
 
     void afterNewContentProvider(final ContentProvider contentProvider) {

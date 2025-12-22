@@ -7,15 +7,15 @@ import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.provider.ContentProvider;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import  jakarta.persistence.Access;
+import  jakarta.persistence.AccessType;
+import  jakarta.persistence.Column;
+import  jakarta.persistence.Entity;
+import  jakarta.persistence.ForeignKey;
+import  jakarta.persistence.JoinColumn;
+import  jakarta.persistence.ManyToOne;
+import  jakarta.persistence.Table;
+import  jakarta.persistence.UniqueConstraint;
 import java.io.Serializable;
 
 /**

@@ -3,22 +3,21 @@ package com.axiell.ehub.consumer;
 import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import com.axiell.ehub.provider.ContentProvider;
 import com.google.common.collect.ImmutableMap;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.MapKeyEnumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import org.apache.commons.lang3.Validate;
-import org.hibernate.annotations.ForeignKey;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +25,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_AUTH_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ASKEWS_TOKEN_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_LIBRARY_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SECRET_KEY;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.BORROWBOX_SITE_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIBU_SERVICE_KEY;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_KEY;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SECRET_KEY;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_SITE_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.EP_TOKEN_EXPIRATION_TIME_IN_SECONDS;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OCD_BASIC_TOKEN;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OCD_LIBRARY_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDIRVE_WEBSITE_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_CLIENT_KEY;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_CLIENT_SECRET;
@@ -47,10 +37,6 @@ import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderCo
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_ILS_NAME;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_LIBRARY_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_READ_AUTH_URL;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.SUBSCRIPTION_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_CONTENT_PATH;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_LIB_ID;
-import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ZINIO_TOKEN;
 import static com.google.common.collect.Sets.newHashSet;
 
 /**
@@ -65,14 +51,9 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     private static final Map<String, Set<ContentProviderConsumerPropertyKey>> VALID_PROPERTY_KEYS =
             ImmutableMap.<String, Set<ContentProviderConsumerPropertyKey>>builder()
                     .put(ContentProvider.CONTENT_PROVIDER_ELIB3, newHashSet(ELIB_SERVICE_ID, ELIB_SERVICE_KEY))
-                    .put(ContentProvider.CONTENT_PROVIDER_ELIBU, newHashSet(ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID))
-                    .put(ContentProvider.CONTENT_PROVIDER_ASKEWS, newHashSet(ASKEWS_AUTH_ID, ASKEWS_TOKEN_KEY))
                     .put(ContentProvider.CONTENT_PROVIDER_OVERDRIVE,
                             newHashSet(OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL,
                                     OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID, OVERDRIVE_ILS_NAME))
-                    .put(ContentProvider.CONTENT_PROVIDER_OCD, newHashSet(OCD_LIBRARY_ID, OCD_BASIC_TOKEN))
-                    .put(ContentProvider.CONTENT_PROVIDER_BORROWBOX, newHashSet(BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY))
-                    .put(ContentProvider.CONTENT_PROVIDER_ZINIO, newHashSet(ZINIO_LIB_ID, ZINIO_CONTENT_PATH, ZINIO_TOKEN))
                     .build();
 
     private static final Set<ContentProviderConsumerPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(EP_SITE_ID, EP_SECRET_KEY, EP_TOKEN_EXPIRATION_TIME_IN_SECONDS);
@@ -111,7 +92,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      */
     @ManyToOne
     @JoinColumn(name = "EHUB_CONSUMER_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_C_EHUB_C")
     public EhubConsumer getEhubConsumer() {
         return ehubConsumer;
     }
@@ -132,7 +112,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
      */
     @ManyToOne
     @JoinColumn(name = "CONTENT_PROVIDER_ID", nullable = false)
-    @ForeignKey(name = "FK_CONTENT_P_C_CONTENT_P")
     public ContentProvider getContentProvider() {
         return contentProvider;
     }
@@ -156,7 +135,6 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     @MapKeyEnumerated(EnumType.STRING)
     @MapKeyColumn(name = "PROPERTY_KEY", nullable = false)
     @Column(name = "PROPERTY_VALUE")
-    @ForeignKey(name = "FK_CONTENT_P_C_P_CONTENT_P_C")
     public Map<ContentProviderConsumerPropertyKey, String> getProperties() {
         return properties;
     }
@@ -206,12 +184,8 @@ public class ContentProviderConsumer extends AbstractTimestampAwarePersistable<L
     }
 
     public enum ContentProviderConsumerPropertyKey {
-        ELIBU_SERVICE_ID, ELIBU_SERVICE_KEY, SUBSCRIPTION_ID, PUBLIT_USERNAME, PUBLIT_PASSWORD, ASKEWS_AUTH_ID,
-        ASKEWS_TOKEN_KEY,
         OVERDRIVE_CLIENT_KEY, OVERDRIVE_CLIENT_SECRET, OVERDRIVE_LIBRARY_ID, OVERDRIVE_ERROR_PAGE_URL, OVERDRIVE_READ_AUTH_URL, OVERDIRVE_WEBSITE_ID,
         OVERDRIVE_ILS_NAME, ELIB_SERVICE_ID, ELIB_SERVICE_KEY,
-        OCD_LIBRARY_ID, OCD_BASIC_TOKEN, BORROWBOX_SITE_ID, BORROWBOX_LIBRARY_ID, BORROWBOX_SECRET_KEY,
-        ZINIO_LIB_ID, ZINIO_CONTENT_PATH, ZINIO_TOKEN,
         EP_SITE_ID, EP_SECRET_KEY, EP_TOKEN_EXPIRATION_TIME_IN_SECONDS, EP_TOKEN_LEEWAY_IN_SECONDS
     }
 }

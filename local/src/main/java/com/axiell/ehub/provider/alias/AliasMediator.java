@@ -4,6 +4,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 class AliasMediator implements Serializable {
     private AliasesPanel aliasesPanel;
@@ -22,8 +23,11 @@ class AliasMediator implements Serializable {
         this.createFeedbackPanel = feedback;
     }
 
-    void showCreateWindow(final AjaxRequestTarget target) {
-        createModalWindow.show(target);
+    void showCreateWindow(final Optional<AjaxRequestTarget> targetOptional) {
+        targetOptional.ifPresent(
+                target -> {
+                    createModalWindow.show(target);
+                });
     }
 
     void afterAliasWasCreated(final AjaxRequestTarget target) {
@@ -33,7 +37,7 @@ class AliasMediator implements Serializable {
 
     void onCreateError(final AjaxRequestTarget target) {
         if (target != null)
-            target.addComponent(createFeedbackPanel);
+            target.add(createFeedbackPanel);
     }
 
     void afterAliasWasDeleted() {
@@ -46,6 +50,6 @@ class AliasMediator implements Serializable {
         aliasesPanel = newAliasesPanel;
 
         if (target != null)
-            target.addComponent(newAliasesPanel);
+            target.add(newAliasesPanel);
     }
 }

@@ -9,11 +9,10 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.ErrorCauseArgument.Type;
 import com.axiell.ehub.security.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Default implementation of the {@link IConsumerBusinessController}.
- */
+@Component
 public class ConsumerBusinessController implements IConsumerBusinessController {
     @Autowired
     private IEhubConsumerRepository ehubConsumerRepository;

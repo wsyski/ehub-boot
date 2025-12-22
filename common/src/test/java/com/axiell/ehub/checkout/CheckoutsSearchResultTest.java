@@ -3,20 +3,23 @@ package com.axiell.ehub.checkout;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.search.SearchResultDTO;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.SearchResultDTO;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CheckoutsSearchResultTest {
     private static final String LMS_LOAN_ID = "lmsLoanId";
     private CheckoutsSearchResult underTest;
@@ -55,7 +58,7 @@ public class CheckoutsSearchResultTest {
     }
 
     private void thenActualLmsLoanIdEqualsExpectedLmsLoanId() {
-        assertEquals(LMS_LOAN_ID, actCheckout.getLmsLoanId());
+        Assertions.assertEquals(LMS_LOAN_ID, actCheckout.getLmsLoanId());
     }
 
     @Test
@@ -64,11 +67,11 @@ public class CheckoutsSearchResultTest {
         givenCheckoutsInstance();
         try {
             whenFindByLmsLoanId();
-            fail("A NotFoundException should have been thrown");
+            Assertions.fail("A NotFoundException should have been thrown");
         } catch (NotFoundException e) {
             EhubError ehubError = e.getEhubError();
             ErrorCause errorCause = ehubError.getCause();
-            assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);
+            Assertions.assertEquals(ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND, errorCause);
         }
     }
 }

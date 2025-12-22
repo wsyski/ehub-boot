@@ -8,13 +8,12 @@ import com.axiell.ehub.consumer.IEhubConsumerRepository;
 import com.axiell.ehub.error.IErrorCauseArgumentValueAdminController;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Default implementation of the {@link ILanguageAdminController}.
- */
+@Component
 public class LanguageAdminController implements ILanguageAdminController {
     @Autowired
     private ILanguageRepository languageRepository;

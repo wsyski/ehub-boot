@@ -5,13 +5,12 @@ package com.axiell.ehub.provider.record.platform;
 
 import com.axiell.ehub.provider.platform.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Default implementation of the {@link IPlatformAdminController}.
- */
+@Component
 public class PlatformAdminController implements IPlatformAdminController {
 
     @Autowired

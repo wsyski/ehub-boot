@@ -4,25 +4,28 @@ import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.provider.record.format.Format;
-import com.axiell.ehub.provider.record.format.FormatDTO;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.FormatDTO;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 
 import static com.axiell.ehub.provider.record.format.FormatBuilder.streamingFormat;
 import static com.axiell.ehub.provider.record.format.FormatDTOMatcher.matchesExpectedFormatDTO;
-import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CheckoutMetadataFactoryTest {
     private static final long EHUB_LOAN_ID = 2L;
     private static final Date EXP_DATE = new Date();
@@ -45,7 +48,7 @@ public class CheckoutMetadataFactoryTest {
     private IFormatFactory formatFactory;
     private CheckoutMetadata actualCheckoutMetadata;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new CheckoutMetadataFactory();
         format = streamingFormat();
@@ -75,19 +78,19 @@ public class CheckoutMetadataFactoryTest {
     }
 
     private void thenActualEhubLoanIdEqualsExpected() {
-        assertEquals(EHUB_LOAN_ID, actualCheckoutMetadata.getId());
+        Assertions.assertEquals(EHUB_LOAN_ID, actualCheckoutMetadata.getId());
     }
 
     private void thenActualExpirationDateEqualsExpected() {
-        assertEquals(EXP_DATE, actualCheckoutMetadata.getExpirationDate());
+        Assertions.assertEquals(EXP_DATE, actualCheckoutMetadata.getExpirationDate());
     }
 
     private void thenActualContentProviderLoanEqualsExpected() {
-        assertEquals(CP_LOAN_ID, actualCheckoutMetadata.getContentProviderLoanId());
+        Assertions.assertEquals(CP_LOAN_ID, actualCheckoutMetadata.getContentProviderLoanId());
     }
 
     private void thenLmsLoanIdEqualsExpected() {
-        assertEquals(LMS_LOAN_ID, actualCheckoutMetadata.getLmsLoanId());
+        Assertions.assertEquals(LMS_LOAN_ID, actualCheckoutMetadata.getLmsLoanId());
     }
 
     private void thenActualFormatEqualsExpected() {

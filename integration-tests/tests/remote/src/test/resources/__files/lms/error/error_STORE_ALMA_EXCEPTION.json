@@ -1,0 +1,7 @@
+{
+	"cause": "STORE_ALMA_EXCEPTION",
+	"message": "Patron card is blocked",
+	"arguments": {
+		"msgId": "blockedBorrCard"
+	}
+}

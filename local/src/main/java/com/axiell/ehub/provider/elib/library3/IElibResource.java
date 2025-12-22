@@ -1,7 +1,7 @@
 package com.axiell.ehub.provider.elib.library3;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 public interface IElibResource {
 

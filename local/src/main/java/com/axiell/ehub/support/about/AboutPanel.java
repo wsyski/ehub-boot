@@ -7,39 +7,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-class AboutPanel extends BreadCrumbPanel {
+public class AboutPanel extends BreadCrumbPanel {
 
-    @SpringBean(name = "databaseChangeLogAdminController")
-    private IDatabaseChangeLogAdminController databaseChangeLogAdminController;
-
-    AboutPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
+    public AboutPanel(final String id, final IBreadCrumbModel breadCrumbModel) {
         super(id, breadCrumbModel);
         addManifestInfo();
-        addDatabaseInfo();
     }
 
     @Override
-    public String getTitle() {
-        return getString("txtBreadCrumbPanelTitle");
+    public IModel<String> getTitle() {
+        return new StringResourceModel("txtBreadCrumbPanelTitle", this, new Model<>());
     }
 
     private void addManifestInfo() {
-        final WarFileManifest warFileManifest = WarFileManifestRetriever.retrieve();
+        final WarFileManifest warFileManifest = new WarFileManifest();
+        addLabel(warFileManifest, "implementationBuild", "warFileBuild");
         addLabel(warFileManifest, "implementationVersion", "warFileVersion");
         addLabel(warFileManifest, "buildTime", "warFileBuildTime");
-    }
-
-    private void addDatabaseInfo() {
-        final DatabaseChangeLog latestDatabaseChange = databaseChangeLogAdminController.getLatestDatabaseChange();
-        addLabel(latestDatabaseChange, "id", "id");
-        addLabel(latestDatabaseChange, "author", "author");
-        addLabel(latestDatabaseChange, "fileName", "fileName");
-        addLabel(latestDatabaseChange, "dateExecuted", "dateExecuted");
-        addLabel(latestDatabaseChange, "orderExecuted", "orderExecuted");
-        addLabel(latestDatabaseChange, "comments", "comments");
-        addLabel(latestDatabaseChange, "tag", "tag");
     }
 
     private void addLabel(final Object modelObject, final String expression, final String labelId) {

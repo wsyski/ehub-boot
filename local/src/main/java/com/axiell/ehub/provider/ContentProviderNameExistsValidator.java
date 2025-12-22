@@ -1,29 +1,29 @@
 package com.axiell.ehub.provider;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 
-class ContentProviderNameExistsValidator extends AbstractValidator<String> {
+public class ContentProviderNameExistsValidator implements IValidator<String> {
     @SpringBean(name = "contentProviderAdminController")
     private IContentProviderAdminController contentProviderAdminController;
 
-    ContentProviderNameExistsValidator() {
-        InjectorHolder.getInjector().inject(this);
+    public ContentProviderNameExistsValidator() {
+        Injector.get().inject(this);
     }
 
     @Override
-    protected void onValidate(final IValidatable<String> validatable) {
+    public void validate(final IValidatable<String> validatable) {
         final String contentProviderName = validatable.getValue();
         final boolean exists = contentProviderAdminController.existsContentProviderName(contentProviderName);
 
         if (exists)
-            error(validatable, resourceKey());
+            validatable.error(new ValidationError().addKey(resourceKey()));
     }
 
-    @Override
-    protected String resourceKey() {
+    private String resourceKey() {
         return "msgContentProviderNameAlreadyExists";
     }
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.axiell.ehub</groupId>
         <artifactId>ehub-it</artifactId>
-        <version>5.12.0-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>ehub-it-tests</artifactId>
     <name>${project.artifactId}</name>
@@ -17,19 +17,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.axiell.ehub</groupId>
-            <artifactId>ehub-it-common</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock-jre8-standalone</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -38,9 +32,6 @@
             <id>integration-test</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
-                <file>
-                    <exists>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</exists>
-                </file>
             </activation>
             <dependencies>
                 <dependency>
@@ -77,16 +68,13 @@
                         </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-maven-plugin</artifactId>
+                        <groupId>org.eclipse.jetty.ee10</groupId>
+                        <artifactId>jetty-ee10-maven-plugin</artifactId>
                         <configuration>
-                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <scan>10</scan>
                             <webApp>
                                 <contextPath>/</contextPath>
                             </webApp>
-                            <!--
-                            <jettyXml>${project.basedir}/../../../local/config/jetty.xml</jettyXml>
-                            -->
                             <systemProperties>
                                 <systemProperty>
                                     <name>catalina.base</name>
@@ -96,12 +84,13 @@
                             <httpConnector>
                                 <port>16518</port>
                             </httpConnector>
-                            <supportedPackagings>jar</supportedPackagings>
+                            <supportedPackagings>
+                                <supportedPackaging>jar</supportedPackaging>
+                            </supportedPackagings>
                             <!--
                             <daemon>false</daemon>
-                            -->
                             <daemon>true</daemon>
-                            <war>${project.basedir}/../../local/target/ehub-it-local-${project.version}.war</war>
+                             -->
                             <stopKey>STOP</stopKey>
                             <stopPort>5010</stopPort>
                             <stopWait>30</stopWait>
@@ -111,8 +100,7 @@
                                 <id>start-jetty</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
-                                    <goal>stop</goal>
-                                    <goal>deploy-war</goal>
+                                    <goal>start</goal>
                                 </goals>
                             </execution>
                             <execution>

@@ -5,8 +5,8 @@ import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerP
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.PATRON_API_BASE_URL;
@@ -59,7 +59,7 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     protected IOverDriveFacade underTest;
     protected Product product;
 
-    @Before
+    @BeforeEach
     public void setUpOverDriveFacade() {
         underTest = new OverDriveFacade();
     }
@@ -77,15 +77,15 @@ public abstract class AbstractOverDriveIT extends AbstractContentProviderIT {
     }
 
     protected void thenAccessTokenIsNotNull() {
-        Assert.assertNotNull(accessToken);
+        Assertions.assertNotNull(accessToken);
     }
 
     protected void thenAccessTokenValueIsNotNull() {
-        Assert.assertNotNull(accessToken.getAccessToken());
+        Assertions.assertNotNull(accessToken.getAccessToken());
     }
 
     protected void thenTokenTypeIsNotNull() {
-        Assert.assertNotNull(accessToken.getTokenType());
+        Assertions.assertNotNull(accessToken.getTokenType());
     }
 
     protected void givenOAuthAccessToken() {

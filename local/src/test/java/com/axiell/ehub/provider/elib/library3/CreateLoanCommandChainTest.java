@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.checkout.ContentBuilder;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.checkout.SupplementLinkBuilder;
@@ -8,16 +9,16 @@ import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 import java.util.Date;
@@ -26,11 +27,12 @@ import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContent
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CreateLoanCommandChainTest {
     private static final Date EXPIRATION_DATE = new Date();
     private static final String CP_LOAN_ID = "CP_LOAN_ID";
@@ -69,12 +71,12 @@ public class CreateLoanCommandChainTest {
 
     private ContentProviderLoan actualLoan;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new CreateLoanCommandChain(elibFacade, exceptionFactory);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderLoanWithDefaultData() {
         given(contentProviderLoan.expirationDate()).willReturn(EXPIRATION_DATE);
         given(contentProviderLoan.content()).willReturn(ContentBuilder.contentWithSupplementLinks());
@@ -137,9 +139,9 @@ public class CreateLoanCommandChainTest {
     }
 
     private void thenActualLoanEqualsToExpectedLoan() {
-        Assert.assertThat(actualLoan.content().getContentLinks().getContentLinks().get(0),
+        assertThat(actualLoan.content().getContentLinks().getContentLinks().get(0),
                 matchesExpectedContentLink(contentProviderLoan.content().getContentLinks().getContentLinks().get(0)));
-        Assert.assertThat(actualLoan.content().getSupplementLinks().getSupplementLinks().get(0),
+        assertThat(actualLoan.content().getSupplementLinks().getSupplementLinks().get(0),
                 matchesExpectedSupplementLink(contentProviderLoan.content().getSupplementLinks().getSupplementLinks().get(0)));
         assertThat(actualLoan.expirationDate(), is(contentProviderLoan.expirationDate()));
         assertThat(actualLoan.getMetadata().getContentProvider(), is(contentProviderLoan.getMetadata().getContentProvider()));

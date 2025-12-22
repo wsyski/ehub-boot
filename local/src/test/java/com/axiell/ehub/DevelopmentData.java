@@ -12,14 +12,13 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
 import com.google.common.collect.Sets;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 
 import static com.axiell.ehub.provider.record.format.ContentDisposition.DOWNLOADABLE;
 import static com.axiell.ehub.provider.record.format.ContentDisposition.STREAMING;
@@ -33,8 +32,8 @@ public class DevelopmentData {
     public static final String LIBRARY_CARD = "libraryCard";
     public static final String PIN = "pin";
     public static final String EHUB_CONSUMER_SECRET_KEY = "ehubConsumerSecretKey";
-    public static final String ARENA_LOCAL_API_ENDPOINT = "http://localhost:16521/arena.pa.palma";
-    public static final String ARENA_AGENCY_M_IDENTIFIER = "MSE000001";
+    public static final String ARENA_LOCAL_API_ENDPOINT = "http://localhost:16520/local-rest/api";
+    public static final String ARENA_AGENCY_M_IDENTIFIER = "30006";
     public static final String PATRON_ID = "patronId";
     public static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
 
@@ -46,7 +45,7 @@ public class DevelopmentData {
     public static final String TEST_EP_FORMAT_1_NAME = "eAudio stream format";
     public static final String TEST_EP_FORMAT_2_ID = "audio-downloadable";
     public static final String TEST_EP_FORMAT_2_NAME = "eAudio downloadable format";
-    public static final String TEST_EP_API_BASE_URL = "http://localhost:16521/ep/api";
+    public static final String TEST_EP_API_BASE_URL = "http://localhost:16520/ep/api";
     public static final String TEST_EP_SITE_ID = "siteId";
     public static final String TEST_EP_SECRET_KEY = "testEpSecretKey";
     public static final String PLATFORM_DESKTOP = "DESKTOP";
@@ -58,6 +57,7 @@ public class DevelopmentData {
     protected IConsumerAdminController consumerAdminController;
     protected ILanguageAdminController languageAdminController;
     protected IPlatformAdminController platformAdminController;
+    protected DataSource dataSource;
 
     // Global data
     private Long ehubConsumerId;
@@ -67,9 +67,12 @@ public class DevelopmentData {
     private Platform platformAndroid;
     private Platform platformIos;
 
-    public DevelopmentData(final IContentProviderAdminController contentProviderAdminController, final IFormatAdminController formatAdminController,
-                           final IConsumerAdminController consumerAdminController, final ILanguageAdminController languageAdminController,
-                           final IPlatformAdminController platformAdminController) {
+    public DevelopmentData(
+            final IContentProviderAdminController contentProviderAdminController,
+            final IFormatAdminController formatAdminController,
+            final IConsumerAdminController consumerAdminController,
+            final ILanguageAdminController languageAdminController,
+            final IPlatformAdminController platformAdminController) {
         this.contentProviderAdminController = contentProviderAdminController;
         this.formatAdminController = formatAdminController;
         this.consumerAdminController = consumerAdminController;
@@ -93,57 +96,6 @@ public class DevelopmentData {
         initContentConsumer(getEhubConsumer(), getContentProvider());
     }
 
-    public void destroy() throws Exception {
-        destroy(null);
-    }
-
-    /**
-     * All table IDENTITY sequences and all SEQUENCE objects in the schema are reset to their start values, see <a
-     * href="http://hsqldb.org/doc/2.0/guide/dataaccess-chapt.html#dac_truncate_statement">HSQL Documentation<a>.
-     *
-     * @param dataSource
-     * @throws Exception
-     */
-    public void destroy(DataSource dataSource) throws Exception {
-        if (dataSource == null) {
-            dataSource = getDataSource();
-        }
-
-        Connection connection = null;
-        try {
-            connection = dataSource.getConnection();
-            try {
-                executeStatement(connection);
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            }
-        } finally {
-            closeConnection(connection);
-        }
-    }
-
-    private DataSource getDataSource() {
-        @SuppressWarnings("resource")
-        ApplicationContext springContext = new ClassPathXmlApplicationContext(new String[]{"/com/axiell/ehub/data-source-context.xml"});
-        return (DataSource) springContext.getBean("dataSource");
-    }
-
-    private void executeStatement(Connection connection) throws SQLException {
-        Statement stmt = connection.createStatement();
-        try {
-            stmt.execute("TRUNCATE SCHEMA PUBLIC RESTART IDENTITY AND COMMIT NO CHECK");
-            connection.commit();
-        } finally {
-            stmt.close();
-        }
-    }
-
-    private void closeConnection(Connection connection) throws SQLException {
-        if (connection != null) {
-            connection.close();
-        }
-    }
 
     public Long getEhubConsumerId() {
         return ehubConsumerId;

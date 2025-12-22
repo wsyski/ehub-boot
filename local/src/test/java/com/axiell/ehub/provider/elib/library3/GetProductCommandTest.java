@@ -4,19 +4,29 @@ import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.CommandData;
 import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.List;
+import java.util.Locale;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_INACTIVE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class GetProductCommandTest extends AbstractElib3CommandTest {
     private static final String FORMAT_ID = "FORMAT_ID";
+    private static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
+    private static final String LANGUAGE = Locale.ENGLISH.getLanguage();
+
     private GetProductCommand underTest;
     @Mock
     private Product product;
@@ -26,7 +36,7 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
     private CommandData commandData;
     private Elib3CommandData elib3CommandData;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new GetProductCommand(elibFacade, exceptionFactory);
     }
@@ -44,6 +54,7 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
 
     @Test
     public void isInactive() {
+        givenLanguage();
         givenCommandData();
         givenInactiveProduct();
         givenProductFromElib();
@@ -70,6 +81,8 @@ public class GetProductCommandTest extends AbstractElib3CommandTest {
 
     private void givenCommandData() {
         given(commandData.getContentProviderConsumer()).willReturn(contentProviderConsumer);
+        given(commandData.getLanguage()).willReturn(LANGUAGE);
+        given(commandData.getContentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
         elib3CommandData = Elib3CommandData.newInstance(commandData);
     }
 

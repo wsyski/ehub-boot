@@ -1,5 +1,6 @@
 package com.axiell.ehub.checkout;
 
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.ContentLinkDTO;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

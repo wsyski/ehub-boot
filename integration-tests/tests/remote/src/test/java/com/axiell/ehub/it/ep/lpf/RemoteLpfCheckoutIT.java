@@ -8,28 +8,31 @@ import com.axiell.ehub.checkout.Checkout;
 import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.it.ep.RemoteEpCheckoutITFixture;
 import com.axiell.ehub.test.TestDataConstants;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class RemoteLpfCheckoutIT extends RemoteEpCheckoutITFixture {
 
     @Test
     public final void checkoutWithExistingContentProviderLoanAndNewFormat() throws EhubException {
-        givenExpectedEhubException(InternalServerErrorException.class,ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT,
-                new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP));
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_1);
-        givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestActiveLoanResponse();
-        givenPalmaCheckoutResponse();
+        givenLmsCheckoutTestActiveLoanResponse(isLoanPerProduct(), TestDataConstants.LMS_RECORD_ID, TestDataConstants.TEST_EP_FORMAT_ID_1);
+        givenLmsCheckoutResponse(TestDataConstants.LMS_RECORD_ID, TestDataConstants.TEST_EP_FORMAT_ID_1);
         givenContentProviderGetCheckoutResponse();
-        Checkout checkout = whenCheckout();
+        Exception exception = Assertions.assertThrows(EhubException.class, () -> {
+            Checkout checkout = whenCheckout();
+        });
+
+        thenExpectedEhubException(exception, InternalServerErrorException.class, ErrorCause.CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT,
+                new ErrorCauseArgument(ErrorCauseArgument.Type.CONTENT_PROVIDER_NAME, TestDataConstants.CONTENT_PROVIDER_TEST_EP));
+
     }
 
     @Test
     public final void checkoutWithNewContentProviderLoan() throws EhubException {
         givenContentProviderFormatId(TestDataConstants.TEST_EP_FORMAT_ID_1);
-        givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestNewLoanResponse();
-        givenPalmaCheckoutResponse();
+        givenLmsCheckoutTestNewLoanResponse(isLoanPerProduct(), TestDataConstants.LMS_RECORD_ID, TestDataConstants.TEST_EP_FORMAT_ID_1);
+        givenLmsCheckoutResponse(TestDataConstants.LMS_RECORD_ID, TestDataConstants.TEST_EP_FORMAT_ID_1);
         givenContentProviderCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout, TestDataConstants.TEST_EP_FORMAT_ID_1, true);
@@ -55,6 +58,7 @@ public class RemoteLpfCheckoutIT extends RemoteEpCheckoutITFixture {
     protected String getContentProviderName() {
         return TestDataConstants.CONTENT_PROVIDER_TEST_EP;
     }
+
     @Override
     protected boolean isLoanPerProduct() {
         return false;

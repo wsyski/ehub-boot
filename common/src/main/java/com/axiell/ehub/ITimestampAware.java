@@ -15,10 +15,10 @@
  */
 package com.axiell.ehub;
 
-import org.joda.time.DateTime;
 import org.springframework.data.domain.Persistable;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * Interface for timestamp aware entities. Allows storing and retrieving creation and modification information.
@@ -32,26 +32,26 @@ public interface ITimestampAware<I extends Serializable> extends Persistable<I> 
      *
      * @return the createdDate
      */
-    DateTime getCreatedDate();
+    Instant getCreatedDate();
 
     /**
      * Sets the creation date of the entity.
      *
      * @param createdDate the creation date to set
      */
-    void setCreatedDate(final DateTime createdDate);
+    void setCreatedDate(final Instant createdDate);
 
     /**
      * Returns the date of the last modification.
      *
      * @return the modifiedDate
      */
-    DateTime getModifiedDate();
+    Instant getModifiedDate();
 
     /**
      * Sets the date of the last modification.
      *
      * @param modifiedDate the date of the last modification to set
      */
-    void setModifiedDate(final DateTime modifiedDate);
+    void setModifiedDate(final Instant modifiedDate);
 }

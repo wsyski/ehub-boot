@@ -2,15 +2,15 @@ package com.axiell.ehub;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 public abstract class DTOTestFixture<T> {
-    private T underTest = getTestInstance();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private T underTest = getTestInstance();
 
     @Test
     public void serializeAndDeserialize() throws IOException {
@@ -30,7 +30,7 @@ public abstract class DTOTestFixture<T> {
     }
 
     private void thenExpectedActualObject(T actualObject) {
-        Assert.assertThat("Objects are not equal", actualObject, Matchers.is(underTest));
+        MatcherAssert.assertThat("Objects are not equal", actualObject, Matchers.is(underTest));
         customAssertion(underTest, actualObject);
     }
 

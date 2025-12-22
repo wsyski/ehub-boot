@@ -4,25 +4,34 @@
 package com.axiell.ehub.provider;
 
 import com.axiell.ehub.InternalServerErrorException;
+import jakarta.ws.rs.ClientErrorException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.jboss.resteasy.client.exception.WebApplicationExceptionWrapper;
-
-import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
 
 /**
  * This Aspect converts {@link ClientErrorException}s thrown by the {@link IContentProviderDataAccessor}s to
  * {@link InternalServerErrorException}s.
  */
+@Slf4j
 @Aspect
+@EnableAspectJAutoProxy
+@Component
 public class ContentProviderResponseFailureAspect extends AbstractContentProviderResponseFailureAspect {
 
-    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.provider.IContentProviderDataAccessor.*(..))", throwing = "cee")
-    public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException cee) {
-        WebApplicationException unwrappedException = WebApplicationExceptionWrapper.unwrap(cee);
+    private static WebApplicationException unwrapException(WebApplicationException ex) {
+        return ex.getCause() == null ? ex : (WebApplicationException) ex.getCause();
+    }
+
+    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.provider.IContentProviderDataAccessor.*(..))", throwing = "wae")
+    public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException wae) {
+        WebApplicationException unwrappedException = unwrapException(wae);
+        log.info("WebApplicationException: {}", unwrappedException.getMessage());
         final Response response = unwrappedException.getResponse();
         throw getContentProviderException(response, joinPoint);
     }

@@ -4,16 +4,12 @@ import com.axiell.ehub.AbstractTimestampAwarePersistable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import  jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "PLATFORM", uniqueConstraints = @UniqueConstraint(columnNames = {"NAME"}, name = "UK_PLATFORM"))
 @Access(AccessType.PROPERTY)
-@XmlAccessorType(XmlAccessType.NONE)
 public class Platform extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     private String name;
 
@@ -25,7 +21,6 @@ public class Platform extends AbstractTimestampAwarePersistable<Long> implements
     }
 
     @Column(name = "NAME")
-    @XmlAttribute(name = "name", required = true)
     public String getName() {
         return name;
     }

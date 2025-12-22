@@ -10,6 +10,8 @@ import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.List;
@@ -70,8 +72,8 @@ final class EhubConsumerPanel extends BreadCrumbPanel {
     }
 
     @Override
-    public String getTitle() {
-        return ehubConsumer.getDescription();
+    public IModel<String> getTitle() {
+        return new Model<>(ehubConsumer.getDescription());
     }
 
     @Override

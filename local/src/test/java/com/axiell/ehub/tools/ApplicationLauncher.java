@@ -1,20 +1,9 @@
 package com.axiell.ehub.tools;
 
-import oracle.jdbc.datasource.OracleDataSource;
-import org.eclipse.jetty.plus.webapp.EnvConfiguration;
-import org.eclipse.jetty.plus.webapp.PlusConfiguration;
-import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.util.component.LifeCycle;
-import org.eclipse.jetty.webapp.Configuration;
-import org.eclipse.jetty.webapp.WebAppContext;
-import org.eclipse.jetty.webapp.WebXmlConfiguration;
-import org.eclipse.jetty.xml.XmlConfiguration;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -26,34 +15,24 @@ public class ApplicationLauncher {
         setSystemProperties();
 
         Server server = new Server();
-
-        //Enable parsing of jndi-related parts of web.xml and jetty-env.xml
-        Configuration.ClassList classlist = Configuration.ClassList.setServerDefault(server);
-        classlist.addAfter(org.eclipse.jetty.webapp.FragmentConfiguration.class.getName(),
-                org.eclipse.jetty.plus.webapp.EnvConfiguration.class.getName(),
-                org.eclipse.jetty.plus.webapp.PlusConfiguration.class.getName());
-        // classlist.addBefore(org.eclipse.jetty.webapp.JettyWebXmlConfiguration.class.getName());
         ServerConnector connector = new ServerConnector(server);
-        connector.setSoLingerTime(-1);
         connector.setPort(PORT_NO);
         server.addConnector(connector);
 
         WebAppContext webAppContext = new WebAppContext();
+        /*
+        OracleDataSource dataSource = new oracle.jdbc.pool.OracleDataSource();
+        dataSource.setURL(System.getProperty("connection.url"));
+        dataSource.setUser(System.getProperty("connection.username"));
+        dataSource.setPassword(System.getProperty("connection.password"));
+        new org.eclipse.jetty.plus.jndi.Resource(webAppContext, "jdbc/ehub", dataSource);
+        */
         webAppContext.setServer(server);
 
         webAppContext.setContextPath("/");
-        // webAppContext.setExtraClasspath("target/classes");
+        webAppContext.setExtraClasspath("target/classes");
         webAppContext.setWar("src/main/webapp");
-        HandlerCollection handlers = new HandlerCollection();
-        handlers.setHandlers(new Handler[]{webAppContext, new DefaultHandler()});
-        server.setHandler(handlers);
-
-        OracleDataSource dataSource = new oracle.jdbc.pool.OracleDataSource();
-        dataSource.setURL(System.getProperty("hibernate.connection.url"));
-        dataSource.setUser(System.getProperty("hibernate.connection.username"));
-        dataSource.setPassword(System.getProperty("hibernate.connection.password"));
-
-        new org.eclipse.jetty.plus.jndi.Resource(webAppContext, "jdbc/ehub", dataSource);
+        server.setHandler(webAppContext);
 
         try {
             server.start();
@@ -67,25 +46,25 @@ public class ApplicationLauncher {
         }
     }
 
-    private static Properties getHibernateProperties() {
+    private static Properties getPersistenceProperties() {
 
-        final Properties hibernateProperties = new Properties();
+        final Properties persistenceProperties = new Properties();
         try {
-            hibernateProperties.load(new FileInputStream("src/main/resources/hibernate.properties"));
+            persistenceProperties.load(new FileInputStream("src/main/resources/persistence.properties"));
         } catch (IOException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         }
         final Properties systemProperties = new Properties();
-        systemProperties.setProperty("hibernate.connection.username", hibernateProperties.getProperty("hibernate.connection.username"));
-        systemProperties.setProperty("hibernate.connection.password", hibernateProperties.getProperty("hibernate.connection.password"));
-        systemProperties.setProperty("hibernate.connection.url", hibernateProperties.getProperty("hibernate.connection.url"));
+        systemProperties.setProperty("connection.username", persistenceProperties.getProperty("connection.username"));
+        systemProperties.setProperty("connection.password", persistenceProperties.getProperty("connection.password"));
+        systemProperties.setProperty("connection.url", persistenceProperties.getProperty("connection.url"));
 
         return systemProperties;
     }
 
     private static void setSystemProperties() throws IOException {
         // System.setProperty("catalina.base", "src/main");
-        final Properties systemProperties = getHibernateProperties();
+        final Properties systemProperties = getPersistenceProperties();
         System.getProperties().putAll(systemProperties);
     }
 }

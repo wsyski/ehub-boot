@@ -1,29 +1,34 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.checkout.ContentLink;
 import com.axiell.ehub.checkout.ContentLinkBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class GetContentCommandChainTest {
     private static final String LOAN_ID = "loanId";
+    private static final String FORMAT_ID = "formatId";
+
     private GetContentCommandChain underTest;
     @Mock
     private IElibFacade elibFacade;
@@ -39,10 +44,11 @@ public class GetContentCommandChainTest {
     private FormatDecoration formatDecoration;
     @Mock
     private LoanDTO loan;
+
     private CommandData data;
     private ContentLink actualContentLink;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new GetContentCommandChain(elibFacade, exceptionFactory);
     }
@@ -66,12 +72,13 @@ public class GetContentCommandChainTest {
     }
 
     private void thenActualContentEqualsExpectedContent() {
-        Assert.assertEquals(ContentLinkBuilder.HREF, actualContentLink.href());
+        Assertions.assertEquals(ContentLinkBuilder.HREF, actualContentLink.href());
     }
 
     private void givenCommandData() {
         given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
         given(loanMetadata.getId()).willReturn(LOAN_ID);
+        given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
         data = CommandData.newInstance(contentProviderConsumer, new Patron.Builder().libraryCard("card").pin("pin").build(), "sv").setContentProviderLoanMetadata(loanMetadata).setFormatDecoration(formatDecoration);
     }
 }

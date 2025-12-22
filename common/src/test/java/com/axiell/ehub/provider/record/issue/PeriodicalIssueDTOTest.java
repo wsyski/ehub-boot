@@ -1,6 +1,7 @@
 package com.axiell.ehub.provider.record.issue;
 
 import com.axiell.ehub.DTOTestFixture;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.IssueDTO;
 
 public class PeriodicalIssueDTOTest extends DTOTestFixture<IssueDTO> {
 

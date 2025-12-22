@@ -4,11 +4,15 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.util.TimestampAwareEntityListener;
-import org.joda.time.DateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -32,8 +36,8 @@ public abstract class AbstractTimestampAwarePersistable<P extends Serializable> 
     /*
      * Gets the created date
      */
-    public DateTime getCreatedDate() {
-        return createdDate == null ? null : new DateTime(createdDate);
+    public Instant getCreatedDate() {
+        return createdDate == null ? null : createdDate.toInstant();
     }
 
     /**
@@ -41,15 +45,15 @@ public abstract class AbstractTimestampAwarePersistable<P extends Serializable> 
      *
      * @param createdDate created date.
      */
-    public void setCreatedDate(final DateTime createdDate) {
-        this.createdDate = createdDate == null ? null : createdDate.toDate();
+    public void setCreatedDate(final Instant createdDate) {
+        this.createdDate = createdDate == null ? null : Date.from(createdDate);
     }
 
     /*
      * Gets the modified date.
      */
-    public DateTime getModifiedDate() {
-        return modifiedDate == null ? null : new DateTime(modifiedDate);
+    public Instant getModifiedDate() {
+        return modifiedDate == null ? null : modifiedDate.toInstant();
     }
 
     /**
@@ -57,7 +61,7 @@ public abstract class AbstractTimestampAwarePersistable<P extends Serializable> 
      *
      * @param modifiedDate modified date.
      */
-    public void setModifiedDate(final DateTime modifiedDate) {
-        this.modifiedDate = modifiedDate == null ? null : modifiedDate.toDate();
+    public void setModifiedDate(final Instant modifiedDate) {
+        this.modifiedDate = modifiedDate == null ? null : Date.from(modifiedDate);
     }
 }

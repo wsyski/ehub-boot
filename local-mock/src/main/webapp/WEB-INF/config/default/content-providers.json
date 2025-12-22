@@ -1,5 +1,12 @@
 {
-  "contentProviders":  [
-    {"name":"ELIB3","aliases":["ELIB","ELIB3","DISTRIBUT\u00d6R: ELIB"]}
+  "contentProviders": [
+    {
+      "name": "ELIB3",
+      "aliases": [
+        "ELIB",
+        "ELIB3",
+        "DISTRIBUT\u00d6R: ELIB"
+      ]
+    }
   ]
 }

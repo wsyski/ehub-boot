@@ -1,20 +1,21 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ProductMatcherTest {
     public static final String ID_1 = "1";
     public static final String ID_2 = "2";
@@ -26,7 +27,7 @@ public class ProductMatcherTest {
     private BookAvailability.Product product2;
     private boolean result;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         given(product1.getProductId()).willReturn(ID_1);
         given(product1.isAvailable()).willReturn(false);
@@ -44,12 +45,12 @@ public class ProductMatcherTest {
     @Test
     public void product1_notAvailable() throws Exception {
         result = underTest.matches(ID_1);
-        assertFalse(result);
+        Assertions.assertFalse(result);
     }
 
     @Test
     public void product2_available() throws Exception {
         result = underTest.matches(ID_2);
-        assertTrue(result);
+        Assertions.assertTrue(result);
     }
 }

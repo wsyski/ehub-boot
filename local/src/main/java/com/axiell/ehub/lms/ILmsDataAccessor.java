@@ -5,7 +5,6 @@ package com.axiell.ehub.lms;
 
 import com.axiell.ehub.ForbiddenException;
 import com.axiell.ehub.consumer.EhubConsumer;
-import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
 import com.axiell.ehub.loan.LmsLoan;
 import com.axiell.ehub.loan.PendingLoan;
 import com.axiell.authinfo.Patron;

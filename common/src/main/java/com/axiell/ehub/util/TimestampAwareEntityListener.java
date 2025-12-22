@@ -4,12 +4,11 @@
 package com.axiell.ehub.util;
 
 import com.axiell.ehub.ITimestampAware;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import  jakarta.persistence.PrePersist;
+import  jakarta.persistence.PreUpdate;
+import java.time.Instant;
 
 /**
  * JPA entity listener to capture auditing information on persiting and updating entities. To get this one flying be
@@ -25,8 +24,8 @@ import javax.persistence.PreUpdate;
  * &lt;/persistence-unit-metadata&gt;
  * </pre>
  */
+@Slf4j
 public class TimestampAwareEntityListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimestampAwareEntityListener.class);
 
     /**
      * Sets modification and creation date and auditor on the target object in case it implements {@link ITimestampAware} on
@@ -55,16 +54,15 @@ public class TimestampAwareEntityListener {
             return;
         }
         ITimestampAware<?> timestampAware = (ITimestampAware<?>) target;
-        DateTime now = touchDate(timestampAware, isNew);
+        Instant now = touchDate(timestampAware, isNew);
         logTime(isNew, timestampAware, now);
     }
 
-    private void logTime(boolean isNew, ITimestampAware<?> timestampAware, DateTime now) {
-        if (LOGGER.isDebugEnabled()) {
-            if (isNew)
-                LOGGER.debug("Pre-persist {} - at {}", timestampAware, now);
-            else
-                LOGGER.debug("Pre-update {} - at {}", timestampAware, now);
+    private void logTime(boolean isNew, ITimestampAware<?> timestampAware, Instant now) {
+        if (isNew) {
+            log.debug("Pre-persist {} - at {}", timestampAware, now);
+        } else {
+            log.debug("Pre-update {} - at {}", timestampAware, now);
         }
     }
 
@@ -76,8 +74,8 @@ public class TimestampAwareEntityListener {
      * @param isNew          true if a new entity.
      * @return the touched timestamp.
      */
-    private DateTime touchDate(final ITimestampAware<?> timeStampAware, final boolean isNew) {
-        DateTime now = DateTime.now();
+    private Instant touchDate(final ITimestampAware<?> timeStampAware, final boolean isNew) {
+        Instant now = Instant.now();
         if (isNew) {
             timeStampAware.setCreatedDate(now);
         }

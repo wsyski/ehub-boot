@@ -1,5 +1,6 @@
 package com.axiell.ehub.loan;
 
+import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.AbstractBusinessController;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
@@ -7,17 +8,17 @@ import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.Fields;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.checkout.Checkout;
-import com.axiell.ehub.checkout.CheckoutDTO;
-import com.axiell.ehub.checkout.CheckoutMetadataDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
 import com.axiell.ehub.checkout.CheckoutsSearchResult;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.search.SearchResultDTO;
-import com.axiell.authinfo.AuthInfo;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.SearchResultDTO;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class LoanBusinessController extends AbstractBusinessController implements ILoanBusinessController {
     @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;
@@ -29,7 +30,7 @@ public class LoanBusinessController extends AbstractBusinessController implement
     public CheckoutsSearchResult search(final AuthInfo authInfo, final String lmsLoanId, final String language) {
         SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = ehubMessageUtility.getEhubMessage(SearchResultDTO.class, "search",
                 String.valueOf(lmsLoanId), authInfo.getPatron().getLibraryCard());
-        return new CheckoutsSearchResult(searchResultDTO==null ? new SearchResultDTO<>() : searchResultDTO);
+        return new CheckoutsSearchResult(searchResultDTO == null ? new SearchResultDTO<>() : searchResultDTO);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class LoanBusinessController extends AbstractBusinessController implement
         CheckoutDTO checkoutDTO = ehubMessageUtility.getEhubMessage(CheckoutDTO.class, "checkout", contentProviderAlias, contentProviderRecordId,
                 issueId, contentProviderFormatId, authInfo.getPatron().getLibraryCard());
         if (checkoutDTO == null) {
-            ContentProviderConsumer contentProviderConsumer=getContentProviderConsumer(contentProviderAlias);
+            ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(contentProviderAlias);
             throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,
                     ErrorCauseArgumentType.CREATE_LOAN_FAILED, language);
         }

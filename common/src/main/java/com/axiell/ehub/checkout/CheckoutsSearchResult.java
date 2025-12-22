@@ -3,7 +3,8 @@ package com.axiell.ehub.checkout;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.NotFoundException;
-import com.axiell.ehub.search.SearchResultDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.SearchResultDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,12 @@
 package com.axiell.ehub.consumer;
 
 import com.axiell.ehub.provider.ContentProvider;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,62 +15,53 @@ import java.util.Set;
 import static org.mockito.BDDMockito.given;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EhubConsumerTest {
-    private static final String CONTENT_PROVIDER_TEST_EP="TEST_EP";
+    private static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     private EhubConsumer underTest;
 
     @Mock
-    private ContentProviderConsumer askewsConsumer;
-    @Mock
-    private ContentProviderConsumer overDriveConsumer;
+    private ContentProvider epProvider;
     @Mock
     private ContentProviderConsumer epConsumer;
-    @Mock
-    private ContentProvider askewsProvider;
+
     @Mock
     private ContentProvider overDriveProvider;
     @Mock
-    private ContentProvider epProvider;
+    private ContentProviderConsumer overDriveConsumer;
+
     private List<ContentProviderConsumer> consumerList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new EhubConsumer();
     }
 
     @Test
     public void getContentProviderConsumersAsList() {
-        givenAskewsContentProviderConsumer();
+        givenEpContentProviderConsumer();
         givenOverDriveContentProviderConsumer();
-        givenPublitContentProviderConsumer();
         givenContentProvderConsumers();
         whenContentProviderConsumersAsList();
-        thenFirstConsumerEqualsAskewsConsumer();
-        thenSecondConsumerEqualsOverDriveConsumer();
-        thenThirdConsumerEqualsPublitConsumer();
+        thenFirstConsumerEqualsOverDriveConsumer();
     }
 
-    private void givenAskewsContentProviderConsumer() {
-        given(askewsConsumer.getContentProvider()).willReturn(askewsProvider);
-        given(askewsProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_ASKEWS);
+    private void givenEpContentProviderConsumer() {
+        given(epConsumer.getContentProvider()).willReturn(epProvider);
+        given(epProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
+
 
     private void givenOverDriveContentProviderConsumer() {
         given(overDriveConsumer.getContentProvider()).willReturn(overDriveProvider);
         given(overDriveProvider.getName()).willReturn(ContentProvider.CONTENT_PROVIDER_OVERDRIVE);
     }
 
-    private void givenPublitContentProviderConsumer() {
-        given(epConsumer.getContentProvider()).willReturn(epProvider);
-        given(epProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
-    }
 
     private void givenContentProvderConsumers() {
         Set<ContentProviderConsumer> consumers = new HashSet<>();
         consumers.add(overDriveConsumer);
         consumers.add(epConsumer);
-        consumers.add(askewsConsumer);
         underTest.setContentProviderConsumers(consumers);
     }
 
@@ -78,20 +69,11 @@ public class EhubConsumerTest {
         consumerList = underTest.getContentProviderConsumersAsList();
     }
 
-    private void thenFirstConsumerEqualsAskewsConsumer() {
-        ContentProviderConsumer consumer1 = consumerList.get(0);
-        Assert.assertEquals(askewsConsumer, consumer1);
+    private void thenFirstConsumerEqualsOverDriveConsumer() {
+        ContentProviderConsumer consumer0 = consumerList.get(0);
+        Assertions.assertEquals(overDriveConsumer, consumer0);
     }
 
-    private void thenSecondConsumerEqualsOverDriveConsumer() {
-        ContentProviderConsumer consumer2 = consumerList.get(1);
-        Assert.assertEquals(overDriveConsumer, consumer2);
-    }
-
-    private void thenThirdConsumerEqualsPublitConsumer() {
-        ContentProviderConsumer consumer3 = consumerList.get(2);
-        Assert.assertEquals(epConsumer, consumer3);
-    }
 
     @Test
     public void getContentProviderConsumersAsListWhenNoContentProviderConsumers() {
@@ -101,10 +83,10 @@ public class EhubConsumerTest {
     }
 
     private void thenConsumerListIsNotNull() {
-        Assert.assertNotNull(consumerList);
+        Assertions.assertNotNull(consumerList);
     }
 
     private void thenConsumerListIsEmpty() {
-        Assert.assertTrue(consumerList.isEmpty());
+        Assertions.assertTrue(consumerList.isEmpty());
     }
 }

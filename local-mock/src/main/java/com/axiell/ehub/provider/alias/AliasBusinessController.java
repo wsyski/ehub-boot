@@ -2,7 +2,7 @@ package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.AbstractBusinessController;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.ehub.provider.ContentProvidersDTO;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProvidersDTO;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

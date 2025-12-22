@@ -2,17 +2,20 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ElibResourceFactoryTest {
     @Mock
     private ContentProviderConsumer contentProviderConsumer;
@@ -42,7 +45,7 @@ public class ElibResourceFactoryTest {
     }
 
     private void thenElibResourceIsCreated() {
-        Assert.assertNotNull(elibResource);
+        Assertions.assertNotNull(elibResource);
     }
 
     private void thenApiBaseUrlPropertyIsRetrievedFromContentProvider() {

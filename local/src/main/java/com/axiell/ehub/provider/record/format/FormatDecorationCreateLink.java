@@ -1,9 +1,10 @@
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.provider.ContentProviderMediator;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 
-import com.axiell.ehub.provider.ContentProviderMediator;
+import java.util.Optional;
 
 public final class FormatDecorationCreateLink extends IndicatingAjaxFallbackLink<Void> {
     private final ContentProviderMediator contentProviderMediator;
@@ -14,13 +15,13 @@ public final class FormatDecorationCreateLink extends IndicatingAjaxFallbackLink
     }
 
     @Override
-    public void onClick(AjaxRequestTarget target) {
+    public void onClick(final Optional<AjaxRequestTarget> targetOptional) {
         setVisible(false);
 
-        if (target != null) {
-            target.addComponent(this);
-        }
-        
-        contentProviderMediator.afterClickOnFormatDecorationCreateLink(target);
+        targetOptional.ifPresent(
+                target -> target.add(this)
+        );
+        contentProviderMediator.afterClickOnFormatDecorationCreateLink(targetOptional);
+
     }
 }

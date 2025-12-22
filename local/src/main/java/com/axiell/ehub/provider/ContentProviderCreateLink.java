@@ -3,6 +3,8 @@ package com.axiell.ehub.provider;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 
+import java.util.Optional;
+
 final class ContentProviderCreateLink extends IndicatingAjaxFallbackLink<Void> {
     private final ContentProvidersMediator contentProvidersMediator;
 
@@ -13,13 +15,14 @@ final class ContentProviderCreateLink extends IndicatingAjaxFallbackLink<Void> {
     }
 
     @Override
-    public void onClick(AjaxRequestTarget target) {
+    public void onClick(final Optional<AjaxRequestTarget> targetOptional) {
         setVisible(false);
 
-        if (target != null) {
-            target.addComponent(this);
-        }
-        
-        contentProvidersMediator.afterClickOnContentProviderCreateLink(target);
+        targetOptional.ifPresent(
+                target -> {
+            target.add(this);
+        });
+
+        contentProvidersMediator.afterClickOnContentProviderCreateLink(targetOptional);
     }
 }

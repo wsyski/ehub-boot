@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.alias;
 
+import com.axiell.ehub.controller.external.v5_0.provider.dto.AliasMappingDTO;
 import com.axiell.ehub.provider.ContentProvider;
 
 public class AliasMappingDTOBuilder {

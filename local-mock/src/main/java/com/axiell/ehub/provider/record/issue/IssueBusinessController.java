@@ -1,19 +1,22 @@
 package com.axiell.ehub.provider.record.issue;
 
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.AbstractBusinessController;
 import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.IssueDTO;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
-import com.axiell.authinfo.Patron;
-import com.axiell.ehub.provider.record.RecordDTO;
-import com.axiell.authinfo.AuthInfo;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.RecordDTO;
 import com.axiell.ehub.util.EhubMessageUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class IssueBusinessController extends AbstractBusinessController implements IIssueBusinessController {
 
     @Autowired

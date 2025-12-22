@@ -3,6 +3,7 @@
  */
 package com.axiell.ehub.provider.record.format;
 
+import com.axiell.ehub.controller.external.v5_0.provider.dto.FormatDTO;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

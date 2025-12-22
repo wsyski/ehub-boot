@@ -5,6 +5,8 @@ import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.axiell.ehub.ErrorCauseArgumentType;
@@ -26,8 +28,8 @@ class ErrorCauseArgumentValuePanel extends BreadCrumbPanel {
     }
 
     @Override
-    public String getTitle() {
-        return type.name();
+    public IModel<String> getTitle() {
+        return new Model<>(type.name());
     }
 
     @Override

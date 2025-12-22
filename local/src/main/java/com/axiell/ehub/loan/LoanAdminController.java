@@ -2,8 +2,10 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component
 public class LoanAdminController implements ILoanAdminController {
 
     @Autowired

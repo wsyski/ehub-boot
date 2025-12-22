@@ -2,23 +2,28 @@ package com.axiell.ehub.provider.record.format;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.provider.ContentProvider;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.axiell.ehub.provider.record.format.FormatBuilder.*;
+import static com.axiell.ehub.provider.record.format.FormatBuilder.FORMAT_DESCRIPTION;
+import static com.axiell.ehub.provider.record.format.FormatBuilder.FORMAT_ID;
+import static com.axiell.ehub.provider.record.format.FormatBuilder.FORMAT_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class FormatFactoryTest {
     private static final String LANGUAGE = "en";
     private static final String PLATFORM = "platform";
@@ -34,12 +39,12 @@ public class FormatFactoryTest {
     private FormatTextBundle textBundle;
     private Format actualFormat;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new FormatFactory();
     }
 
-    @Before
+    @BeforeEach
     public void setUpFormatDecoration() {
         given(formatDecoration.getContentProviderFormatId()).willReturn(FORMAT_ID);
         given(formatDecoration.getPlatformNames()).willReturn(Collections.singleton(PLATFORM));

@@ -5,46 +5,44 @@ package com.axiell.ehub.loan;
 
 import com.axiell.ehub.AbstractEhubRepositoryTest;
 import com.axiell.ehub.DevelopmentData;
+import com.axiell.ehub.config.DataSourceConfig;
+import com.axiell.ehub.config.PersistenceConfig;
 import com.axiell.ehub.consumer.EhubConsumer;
+import com.axiell.ehub.consumer.EhubConsumerRepositoryTest;
 import com.axiell.ehub.consumer.IConsumerAdminController;
 import com.axiell.ehub.language.ILanguageAdminController;
 import com.axiell.ehub.provider.IContentProviderAdminController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Tests showing the basic usage of {@link IEhubLoanRepository}.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/com/axiell/ehub/admin-controller-context.xml")
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {DataSourceConfig.class, PersistenceConfig.class, EhubConsumerRepositoryTest.TestConfig.class})
 public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevelopmentData> {
-
     @Autowired
     private IContentProviderAdminController contentProviderAdminController;
-
     @Autowired
     private IFormatAdminController formatAdminController;
-
     @Autowired
     private IConsumerAdminController consumerAdminController;
-
     @Autowired
     private IEhubLoanRepository underTest;
-
     @Autowired
     private ILanguageAdminController languageAdminController;
-
     @Autowired
     private IPlatformAdminController platformAdminController;
-
     private EhubLoan expectedEhubLoan;
     private FormatDecoration formatDecoration;
     private EhubLoan actualEhubLoan;
@@ -55,7 +53,12 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
      */
     @Override
     protected LoanDevelopmentData initDevelopmentData() {
-        return new LoanDevelopmentData(contentProviderAdminController, formatAdminController, consumerAdminController, underTest, languageAdminController,
+        return new LoanDevelopmentData(
+                contentProviderAdminController,
+                formatAdminController,
+                consumerAdminController,
+                underTest,
+                languageAdminController,
                 platformAdminController);
     }
 
@@ -69,12 +72,12 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
         whenFindLoanByLmsLoanId();
 
         thenActualEhubLoanIsNotNull();
-        Assert.assertEquals(DevelopmentData.LMS_LOAN_ID, actualEhubLoan.getLmsLoan().getId());
+        Assertions.assertEquals(DevelopmentData.LMS_LOAN_ID, actualEhubLoan.getLmsLoan().getId());
     }
 
     private void givenExpectedEhubLoan() {
         Iterable<EhubLoan> iterable = underTest.findAll();
-        Assert.assertTrue(iterable.iterator().hasNext());
+        Assertions.assertTrue(iterable.iterator().hasNext());
         expectedEhubLoan = iterable.iterator().next();
     }
 
@@ -84,7 +87,7 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     }
 
     private void thenActualEhubLoanIsNotNull() {
-        Assert.assertNotNull(actualEhubLoan);
+        Assertions.assertNotNull(actualEhubLoan);
     }
 
     @Test
@@ -119,6 +122,11 @@ public class EhubLoanRepositoryTest extends AbstractEhubRepositoryTest<LoanDevel
     }
 
     private void thenActualCountIsOne() {
-        Assert.assertEquals(1, actualCount);
+        Assertions.assertEquals(1, actualCount);
+    }
+
+    @Configuration
+    @ComponentScan(basePackages = "com.axiell.ehub")
+    public static class TestConfig {
     }
 }

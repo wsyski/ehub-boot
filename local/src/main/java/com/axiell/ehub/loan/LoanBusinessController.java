@@ -6,8 +6,8 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.consumer.IConsumerBusinessController;
 import com.axiell.ehub.lms.ILmsDataAccessorFactory;
-import com.axiell.ehub.lms.palma.CheckoutTestAnalysis;
-import com.axiell.ehub.lms.palma.CheckoutTestAnalysis.Result;
+import com.axiell.ehub.lms.CheckoutTestAnalysis;
+import com.axiell.ehub.lms.CheckoutTestAnalysis.Result;
 import com.axiell.ehub.lms.ILmsDataAccessor;
 import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.ContentProvider;
@@ -16,10 +16,12 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatDecorationRepositoryFacade;
 import com.axiell.authinfo.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 
+@Component
 public class LoanBusinessController implements ILoanBusinessController {
     @Autowired
     private IConsumerBusinessController consumerBusinessController;

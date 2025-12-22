@@ -4,10 +4,9 @@ import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Component
@@ -39,9 +38,8 @@ public class ExpirationDateFactory implements IExpirationDateFactory {
     }
 
     private Date toDate(final String expirationDays) {
-        final DateTime today = DateTime.now(DateTimeZone.UTC).withHourOfDay(HOUR_OF_DAY);
         final int expirationDaysAsInt = Integer.parseInt(expirationDays);
-        final DateTime expirationDaysDateTime = today.plusDays(expirationDaysAsInt);
-        return expirationDaysDateTime.toDate();
+        final Date now = Date.from(Instant.now());
+        return new Date(now.getTime() + (long) expirationDaysAsInt * 86400000);
     }
 }

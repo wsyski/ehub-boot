@@ -1,48 +1,45 @@
 package com.axiell.ehub;
 
-import javax.xml.bind.JAXBException;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.axiell.ehub.ErrorCauseArgument.Type;
-import com.axiell.ehub.util.XjcSupport;
+import com.axiell.ehub.controller.provider.json.JsonProvider;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class EhubErrorTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EhubErrorTest.class);
-    private String expXml;
+    private String exceptionAsJson;
     private EhubError expEhubError;
     private EhubError actEhubError;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-	final ErrorCauseArgument argument = new ErrorCauseArgument(Type.LMS_LOAN_ID, "unknownLmsLoanId1");
-	expEhubError = ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND.toEhubError(argument);
+        final ErrorCauseArgument argument = new ErrorCauseArgument(Type.LMS_LOAN_ID, "unknownLmsLoanId1");
+        expEhubError = ErrorCause.LOAN_BY_LMS_LOAN_ID_NOT_FOUND.toEhubError(argument);
     }
 
     @Test
-    public void unmarshalEhubErrorXml() throws JAXBException {
-	givenEhubErrorAsXml();
-	whenUnmarshalEhubErrorXml();
-	thenActualEhubErrorEqualsExpectedEhubError();
+    public void ehubError() throws JsonProcessingException {
+        givenEhubErrorAsJson();
+        whenDeserializeEhubError();
+        thenActualEhubErrorEqualsExpectedEhubError();
     }
 
-    private void givenEhubErrorAsXml() {
-	expXml = XjcSupport.marshal(expEhubError);
-	LOGGER.debug(expXml);
+    private void givenEhubErrorAsJson() throws JsonProcessingException {
+        exceptionAsJson = JsonProvider.OBJECT_MAPPER.writeValueAsString(expEhubError);
+        log.debug(exceptionAsJson);
     }
 
-    private void whenUnmarshalEhubErrorXml() throws JAXBException {
-	actEhubError = (EhubError) XjcSupport.unmarshal(expXml);
+    private void whenDeserializeEhubError() throws JsonProcessingException {
+        actEhubError = JsonProvider.OBJECT_MAPPER.readValue(exceptionAsJson, EhubError.class);
     }
 
     private void thenActualEhubErrorEqualsExpectedEhubError() {
-	Assert.assertEquals(expEhubError.getCause(), actEhubError.getCause());
-	Assert.assertEquals(expEhubError.getMessage(), actEhubError.getMessage());
-	Assert.assertNotNull(actEhubError.getArguments());
-	Assert.assertEquals(expEhubError.getArguments().size(), actEhubError.getArguments().size());
+        Assertions.assertEquals(expEhubError.getCause(), actEhubError.getCause());
+        Assertions.assertEquals(expEhubError.getMessage(), actEhubError.getMessage());
+        Assertions.assertNotNull(actEhubError.getArguments());
+        Assertions.assertEquals(expEhubError.getArguments().size(), actEhubError.getArguments().size());
     }
 }

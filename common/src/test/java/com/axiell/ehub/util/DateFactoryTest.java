@@ -1,9 +1,9 @@
 package com.axiell.ehub.util;
 
-import java.util.Date;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.Date;
 
 public class DateFactoryTest {
     private Date providedDate;
@@ -11,30 +11,30 @@ public class DateFactoryTest {
 
     @Test
     public void createWhenDateIsNull() {
-	whenCreate();
-	thenActualDateIsNull();
+        whenCreate();
+        thenActualDateIsNull();
     }
 
     private void whenCreate() {
-	actualDate = DateFactory.create(providedDate);
+        actualDate = DateFactory.create(providedDate);
     }
 
     private void thenActualDateIsNull() {
-	Assert.assertNull(actualDate);
+        Assertions.assertNull(actualDate);
     }
-    
+
     @Test
     public void create() {
-	givenNonNullProvidedDate();
-	whenCreate();
-	thenActualDateTimeEqualsProvidedDateTime();
+        givenNonNullProvidedDate();
+        whenCreate();
+        thenActualDateTimeEqualsProvidedDateTime();
     }
 
     private void givenNonNullProvidedDate() {
-	providedDate = new Date();
+        providedDate = new Date();
     }
-    
+
     private void thenActualDateTimeEqualsProvidedDateTime() {
-	Assert.assertEquals(providedDate.getTime(), actualDate.getTime());
+        Assertions.assertEquals(providedDate.getTime(), actualDate.getTime());
     }
 }

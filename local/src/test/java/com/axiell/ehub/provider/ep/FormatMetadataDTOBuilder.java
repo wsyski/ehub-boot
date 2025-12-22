@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.ep;
 
 import com.axiell.ehub.checkout.ContentLinkBuilder;
-import com.axiell.ehub.checkout.ContentLinkDTO;
-import com.axiell.ehub.checkout.SupplementLinkDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.ContentLinkDTO;
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.SupplementLinkDTO;
 import com.google.common.collect.Lists;
 
 import java.util.List;

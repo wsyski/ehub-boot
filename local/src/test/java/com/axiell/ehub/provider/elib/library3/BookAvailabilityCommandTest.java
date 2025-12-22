@@ -1,18 +1,21 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
-import com.axiell.authinfo.Patron;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static com.axiell.ehub.ErrorCauseArgumentType.*;
+import static com.axiell.ehub.ErrorCauseArgumentType.BORROWER_LIMIT_REACHED;
+import static com.axiell.ehub.ErrorCauseArgumentType.LIBRARY_LIMIT_REACHED;
+import static com.axiell.ehub.ErrorCauseArgumentType.MAX_NO_OF_DOWNLOADS_FOR_PRODUCT_REACHED;
+import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.AVAILABILITY_NOT_RETRIEVED_WHEN_NO_CARD;
 import static com.axiell.ehub.provider.elib.library3.BookAvailabilityCommand.Result.PRODUCT_AVAILABLE;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
 public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
@@ -20,7 +23,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
     @Mock
     private BookAvailability bookAvailability;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new BookAvailabilityCommand(elibFacade, exceptionFactory);
     }
@@ -142,9 +145,7 @@ public class BookAvailabilityCommandTest extends AbstractElib3CommandTest {
         given(bookAvailability.isBorrowerLimitReached(anyString())).willReturn(true);
     }
 
-    private void givenLanguage() {
-        language = LANGUAGE;
-    }
+
 
     private void givenMaxNoOfDownloadsReachedInBookAvailability() {
         given(bookAvailability.isMaxNumberOfDownloadsForProductReached(anyString())).willReturn(true);

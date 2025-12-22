@@ -5,6 +5,8 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import java.util.Optional;
+
 class AliasCreateButton extends AjaxButton {
     private final AliasMediator mediator;
 
@@ -17,14 +19,14 @@ class AliasCreateButton extends AjaxButton {
     }
 
     @Override
-    protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-        final AliasMapping aliasMapping = (AliasMapping) form.getModelObject();
+    protected void onSubmit(final AjaxRequestTarget target) {
+        final AliasMapping aliasMapping = (AliasMapping) getForm().getModelObject();
         aliasAdminController.save(aliasMapping);
         mediator.afterAliasWasCreated(target);
     }
 
     @Override
-    protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+    protected void onError(final AjaxRequestTarget target) {
         mediator.onCreateError(target);
     }
 }

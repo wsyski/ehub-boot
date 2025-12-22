@@ -8,8 +8,8 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.core.Response;
 
 public abstract class AbstractContentProviderExceptionFactory<E> implements IContentProviderExceptionFactory<E> {
     static final String DEFAULT_MESSAGE = "An unepected exception occurred while trying to connect to the Content Provider";

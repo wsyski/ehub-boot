@@ -3,6 +3,8 @@ package com.axiell.ehub.consumer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 
+import java.util.Optional;
+
 final class EhubConsumerCancelLink extends IndicatingAjaxFallbackLink<Void> {
     private final ConsumersMediator consumersMediator;
 
@@ -12,7 +14,7 @@ final class EhubConsumerCancelLink extends IndicatingAjaxFallbackLink<Void> {
     }
 
     @Override
-    public void onClick(AjaxRequestTarget target) {
-        consumersMediator.afterCancelNewEhubConsumerConsumer(target);
+    public void onClick(final Optional<AjaxRequestTarget> targetOptional) {
+        consumersMediator.afterCancelNewEhubConsumerConsumer(targetOptional);
     }
 }

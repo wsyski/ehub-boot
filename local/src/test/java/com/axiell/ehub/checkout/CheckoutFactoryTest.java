@@ -3,27 +3,30 @@ package com.axiell.ehub.checkout;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static com.axiell.ehub.checkout.CheckoutMetadataBuilder.checkoutMetadataWithDownloadableFormat;
 import static com.axiell.ehub.checkout.CheckoutMetadataDTOMatcher.matchesExpectedCheckoutMetadataDTO;
-import static com.axiell.ehub.checkout.ContentLinkBuilder.defaultContentLink;
 import static com.axiell.ehub.checkout.ContentBuilder.contentWithSupplementLinks;
-import static com.axiell.ehub.checkout.SupplementLinkBuilder.defaultSupplementLink;
+import static com.axiell.ehub.checkout.ContentLinkBuilder.defaultContentLink;
 import static com.axiell.ehub.checkout.ContentLinkMatcher.matchesExpectedContentLink;
+import static com.axiell.ehub.checkout.SupplementLinkBuilder.defaultSupplementLink;
 import static com.axiell.ehub.checkout.SupplementLinkMatcher.matchesExpectedSupplementLink;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class CheckoutFactoryTest {
     private static final String LANGUAGE = "en";
     @Mock
@@ -39,7 +42,7 @@ public class CheckoutFactoryTest {
     private CheckoutFactory underTest;
     private Checkout actualCheckout;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new CheckoutFactory();
         ReflectionTestUtils.setField(underTest, "checkoutMetadataFactory", checkoutMetadataFactory);

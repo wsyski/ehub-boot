@@ -1,6 +1,0 @@
-com.axiell.authinfo.AuthorizationHeaderInterceptor
-com.axiell.ehub.logging.ClientLoggingFilter
-com.axiell.ehub.logging.ServerLoggingFilter
-com.axiell.ehub.logging.TimeLoggingClientFilter
-com.axiell.ehub.util.EhubRuntimeExceptionMapper
-com.axiell.ehub.util.RuntimeExceptionMapper

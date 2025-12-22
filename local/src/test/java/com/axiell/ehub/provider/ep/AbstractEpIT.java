@@ -1,40 +1,42 @@
 package com.axiell.ehub.provider.ep;
 
-import com.axiell.ehub.ErrorCauseArgumentType;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.error.WebApplicationExceptionMatcher;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
 import org.hamcrest.Matchers;
-import org.junit.*;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.INVALID_CONTENT_PROVIDER_RECORD_ID;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
-import static junit.framework.Assert.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> extends AbstractContentProviderIT {
-    private static final long EHUB_CONSUMER_ID = 1L;
-    private static final String PATRON_ID = "patronId";
-    private static final String LIBRARY_CARD = "D0200000000000";
     protected static final String INVALID_RECORD_ID = "invalidRecordId";
     protected static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     protected static final long EP_TOKEN_EXPIRATION_TIME_IN_SECONDS = 86400;
-
+    private static final long EHUB_CONSUMER_ID = 1L;
+    private static final String PATRON_ID = "patronId";
+    private static final String LIBRARY_CARD = "D0200000000000";
     protected RecordDTO record;
 
     protected C checkout;
@@ -44,10 +46,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     @Mock
     protected Patron patron;
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         ApplicationContext applicationContext = getApplicationContext();
         EpResourceFactory epResourceFactory = (EpResourceFactory) applicationContext.getBean("epResourceFactory");
@@ -55,7 +54,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         ReflectionTestUtils.setField(underTest, "epResourceFactory", epResourceFactory);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         deleteCheckout();
     }
@@ -78,8 +77,10 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         givenConfigurationProperties();
         givenContentProvider();
         givenEhubConsumer();
-        givenExpectedWebApplicationException(NotFoundException.class, INVALID_CONTENT_PROVIDER_RECORD_ID);
-        whenGetFormats(INVALID_RECORD_ID);
+        Exception exception = Assertions.assertThrows(NotFoundException.class, () -> {
+            whenGetFormats(INVALID_RECORD_ID);
+        });
+        assertThat(exception, Matchers.is(new WebApplicationExceptionMatcher(NotFoundException.class, INVALID_CONTENT_PROVIDER_RECORD_ID.name())));
     }
 
     protected void givenConfigurationProperties() {
@@ -94,11 +95,11 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
     }
 
     protected void thenCheckoutHasTransactionId() {
-        assertNotNull(checkout.getId());
+        Assertions.assertNotNull(checkout.getId());
     }
 
     protected void thenCheckoutHasExpirationDate() {
-        assertNotNull(checkout.getExpirationDate());
+        Assertions.assertNotNull(checkout.getExpirationDate());
     }
 
     protected void givenPatronIdInPatron() {
@@ -119,7 +120,7 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         getFormatIds().forEach(contentProviderFormatId -> {
             IMatcher<FormatDTO> matcher = new FormatIdFormatMatcher(contentProviderFormatId);
             FormatDTO format = new CollectionFinder<FormatDTO>().find(matcher, record.getFormats());
-            Assert.assertThat(contentProviderFormatId, Matchers.is(format.getId()));
+            assertThat(contentProviderFormatId, Matchers.is(format.getId()));
         });
 
     }
@@ -135,10 +136,13 @@ public abstract class AbstractEpIT<F extends IEpFacade, C extends ICheckoutDTO> 
         underTest.deleteCheckout(contentProviderConsumer, patron, checkoutId);
     }
 
+    /*
     protected void givenExpectedWebApplicationException(final Class<? extends WebApplicationException> clazz,
                                                         final ErrorCauseArgumentType errorCauseArgumentType) {
+
         expectedException.expect(new WebApplicationExceptionMatcher(clazz, errorCauseArgumentType.name()));
     }
+     */
 
     protected abstract boolean isLoanPerProduct();
 

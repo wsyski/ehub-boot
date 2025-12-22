@@ -1,11 +1,13 @@
 package com.axiell.ehub.consumer;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashSet;
@@ -14,11 +16,12 @@ import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ConsumerAdminControllerTest {
     private static final Long EHUB_CONSUMER_ID = 1L;
     private IConsumerAdminController underTest;
-    
+
     @Mock
     private IEhubConsumerRepository ehubConsumerRepository;
     @Mock
@@ -29,43 +32,43 @@ public class ConsumerAdminControllerTest {
     private EhubConsumer ehubConsumer;
     private ContentProviderConsumer actualContentProviderConsumer;
 
-    @Before
+    @BeforeEach
     public void setUpConsumerAdminController() {
-	underTest = new ConsumerAdminController();
-	ReflectionTestUtils.setField(underTest, "ehubConsumerRepository", ehubConsumerRepository);
-	ReflectionTestUtils.setField(underTest, "contentProviderConsumerRepository", contentProviderConsumerRepository);
+        underTest = new ConsumerAdminController();
+        ReflectionTestUtils.setField(underTest, "ehubConsumerRepository", ehubConsumerRepository);
+        ReflectionTestUtils.setField(underTest, "contentProviderConsumerRepository", contentProviderConsumerRepository);
     }
-    
+
     @Test
     public void addContentProviderConsumerToEhubConsumer() {
-	givenEhubConsumer();
-	givenContentProviderConsumer();
-	givenContentProviderConsumers();
-	whenAddContentProviderConsumerToEhubConsumer();
-	thenActualContentProviderConsumerEqualsExpectedContentProviderConsumer();
+        givenEhubConsumer();
+        givenContentProviderConsumer();
+        givenContentProviderConsumers();
+        whenAddContentProviderConsumerToEhubConsumer();
+        thenActualContentProviderConsumerEqualsExpectedContentProviderConsumer();
     }
 
     private void givenEhubConsumer() {
-	given(ehubConsumerRepository.findById(EHUB_CONSUMER_ID)).willReturn(Optional.ofNullable(ehubConsumer));
-	given(underTest.save(ehubConsumer)).willReturn(ehubConsumer);
+        given(ehubConsumerRepository.findById(EHUB_CONSUMER_ID)).willReturn(Optional.ofNullable(ehubConsumer));
+        given(underTest.save(ehubConsumer)).willReturn(ehubConsumer);
     }
 
     private void givenContentProviderConsumer() {
-	given(contentProviderConsumerRepository.save(contentProviderConsumer)).willReturn(contentProviderConsumer);
+        given(contentProviderConsumerRepository.save(contentProviderConsumer)).willReturn(contentProviderConsumer);
     }
-    
-    private void givenContentProviderConsumers() {	
-	Set<ContentProviderConsumer> contentProviderConsumers = new HashSet<>();
-	contentProviderConsumers.add(contentProviderConsumer);
-	given(ehubConsumer.getContentProviderConsumers()).willReturn(contentProviderConsumers);
+
+    private void givenContentProviderConsumers() {
+        Set<ContentProviderConsumer> contentProviderConsumers = new HashSet<>();
+        contentProviderConsumers.add(contentProviderConsumer);
+        given(ehubConsumer.getContentProviderConsumers()).willReturn(contentProviderConsumers);
     }
-    
+
     private void whenAddContentProviderConsumerToEhubConsumer() {
-	actualContentProviderConsumer = underTest.add(EHUB_CONSUMER_ID, contentProviderConsumer);
+        actualContentProviderConsumer = underTest.add(EHUB_CONSUMER_ID, contentProviderConsumer);
     }
-    
+
     private void thenActualContentProviderConsumerEqualsExpectedContentProviderConsumer() {
-	Assert.assertNotNull(actualContentProviderConsumer);	
-	Assert.assertEquals(contentProviderConsumer, actualContentProviderConsumer);
+        Assertions.assertNotNull(actualContentProviderConsumer);
+        Assertions.assertEquals(contentProviderConsumer, actualContentProviderConsumer);
     }
 }

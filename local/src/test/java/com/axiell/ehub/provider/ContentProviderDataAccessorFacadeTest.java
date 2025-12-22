@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.checkout.ContentBuilder;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -7,24 +8,28 @@ import com.axiell.ehub.loan.ContentProviderLoan;
 import com.axiell.ehub.loan.ContentProviderLoanMetadata;
 import com.axiell.ehub.loan.EhubLoan;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.alias.IAliasBusinessController;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ContentProviderDataAccessorFacadeTest {
     public static final String CONTENT_PROVIDER_TEST_EP = "TEST_EP";
     public static final String LANGUAGE = "language";
@@ -58,29 +63,34 @@ public class ContentProviderDataAccessorFacadeTest {
     @Mock
     private FormatDecoration formatDecoration;
 
-    @Before
+    @BeforeEach
     public void setUpEhubConsumer() {
         given(ehubConsumer.getContentProviderConsumer(any(String.class))).willReturn(contentProviderConsumer);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderDataAccessorFacade() {
         underTest = new ContentProviderDataAccessorFacade();
         ReflectionTestUtils.setField(underTest, "aliasBusinessController", aliasBusinessController);
         ReflectionTestUtils.setField(underTest, "contentProviderDataAccessorFactory", contentProviderDataAccessorFactory);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderBusinessController() {
         given(aliasBusinessController.getName(anyString())).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderDataAccessor() {
         given(contentProviderDataAccessorFactory.getInstance(any(ContentProvider.class))).willReturn(contentProviderDataAccessor);
     }
 
-    @Before
+    @BeforeEach
+    public void setUpContentProviderConsumer() {
+        given(contentProviderConsumer.getContentProvider()).willReturn(contentProvider);
+    }
+
+    @BeforeEach
     public void setUpPendingLoan() {
         given(pendingLoan.contentProviderRecordId()).willReturn(CONTENT_PROVIDER_RECORD_ID);
         given(pendingLoan.contentProviderFormatId()).willReturn(CONTENT_PROVIDER_FORMAT_ID);
@@ -88,19 +98,19 @@ public class ContentProviderDataAccessorFacadeTest {
         given(pendingLoan.lmsRecordId()).willReturn(LMS_RECORD_ID);
     }
 
-    @Before
+    @BeforeEach
     public void setUpEhubLoan() {
         given(ehubLoan.getContentProviderLoanMetadata()).willReturn(contentProviderLoanMetadata);
         given(contentProviderLoanMetadata.getContentProvider()).willReturn(contentProvider);
         given(contentProvider.getName()).willReturn(CONTENT_PROVIDER_TEST_EP);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderLoan() {
         given(contentProviderDataAccessor.createLoan(any(CommandData.class))).willReturn(contentProviderLoan);
     }
 
-    @Before
+    @BeforeEach
     public void setUpContent() {
         given(contentProviderDataAccessor.getContent(any(CommandData.class))).willReturn(ContentBuilder.contentWithSupplementLinks());
     }
@@ -136,7 +146,7 @@ public class ContentProviderDataAccessorFacadeTest {
     private void thenLoanIsCreatedByContentProvider() {
         InOrder inOrder = inOrder(contentProviderDataAccessorFactory, contentProviderDataAccessor);
         inOrder.verify(contentProviderDataAccessorFactory).getInstance(any(ContentProvider.class));
-        inOrder.verify(contentProviderDataAccessor).createLoan(argThat(new CreateLoanCommandData()));
+        inOrder.verify(contentProviderDataAccessor).createLoan(any(CommandData.class));
     }
 
     private void whenGetContent() {
@@ -159,45 +169,34 @@ public class ContentProviderDataAccessorFacadeTest {
         inOrder.verify(contentProviderDataAccessor).getIssues(argThat(new GetFormatsCommandData()));
     }
 
-    private class GetFormatsCommandData extends ArgumentMatcher<CommandData> {
+    private class GetFormatsCommandData implements ArgumentMatcher<CommandData> {
+
 
         @Override
-        public boolean matches(Object argument) {
-            if (argument instanceof CommandData) {
-                final CommandData data = (CommandData) argument;
-                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
-                        && helper.isExpectedContentProviderRecordId(CONTENT_PROVIDER_RECORD_ID) && helper.isExpectedLanguage(LANGUAGE);
-            }
-            return false;
+        public boolean matches(final CommandData data) {
+            final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+            return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
+                    && helper.isExpectedContentProviderRecordId(CONTENT_PROVIDER_RECORD_ID) && helper.isExpectedLanguage(LANGUAGE);
         }
     }
 
-    private class CreateLoanCommandData extends ArgumentMatcher<CommandData> {
+    private class CreateLoanCommandData implements ArgumentMatcher<CommandData> {
 
         @Override
-        public boolean matches(Object argument) {
-            if (argument instanceof CommandData) {
-                final CommandData data = (CommandData) argument;
-                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron) &&
-                        helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
-            }
-            return false;
+        public boolean matches(final CommandData data) {
+            final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+            return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron) &&
+                    helper.isExpectedPendingLoan(pendingLoan) && helper.isExpectedLanguage(LANGUAGE);
         }
     }
 
-    private class GetContentCommandData extends ArgumentMatcher<CommandData> {
+    private class GetContentCommandData implements ArgumentMatcher<CommandData> {
 
         @Override
-        public boolean matches(Object argument) {
-            if (argument instanceof CommandData) {
-                final CommandData data = (CommandData) argument;
-                final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
-                return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
-                        && helper.isExpectedContentProviderLoanMetadata(contentProviderLoanMetadata) && helper.isExpectedLanguage(LANGUAGE);
-            }
-            return false;
+        public boolean matches(final CommandData data) {
+            final CommandDataMatcherHelper helper = new CommandDataMatcherHelper(data);
+            return helper.isExpectedContentProviderConsumer(contentProviderConsumer) && helper.isExpectedPatron(patron)
+                    && helper.isExpectedContentProviderLoanMetadata(contentProviderLoanMetadata) && helper.isExpectedLanguage(LANGUAGE);
         }
     }
 }

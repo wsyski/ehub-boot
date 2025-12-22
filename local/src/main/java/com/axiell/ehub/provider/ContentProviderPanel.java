@@ -12,6 +12,8 @@ import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 final class ContentProviderPanel extends BreadCrumbPanel {
@@ -61,8 +63,8 @@ final class ContentProviderPanel extends BreadCrumbPanel {
     }
 
     @Override
-    public String getTitle() {
-        return contentProviderName.toString();
+    public IModel<String> getTitle() {
+        return new Model<>(contentProviderName);
     }
 
     @Override

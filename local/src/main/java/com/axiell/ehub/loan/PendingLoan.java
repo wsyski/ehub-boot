@@ -12,6 +12,10 @@ public class PendingLoan {
         this.fields = fields;
     }
 
+    public Fields getFields() {
+        return fields;
+    }
+
     public String lmsRecordId() {
         return fields.getRequiredValue("lmsRecordId");
     }

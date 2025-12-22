@@ -7,9 +7,9 @@ import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.checkout.ContentLinks;
 import com.axiell.ehub.checkout.SupplementLinks;
 import com.axiell.ehub.test.TestDataConstants;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
@@ -18,7 +18,7 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
     protected String lmsLoanId;
     protected Long readyLoanId;
 
-    @Before
+    @BeforeEach
     public void initFields() {
         fields = new Fields();
         fields.addValue("lmsRecordId", TestDataConstants.LMS_RECORD_ID);
@@ -30,9 +30,8 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
     @Test
     public final void checkoutWithExistingContentProviderLoan() throws EhubException {
         givenContentProviderFormatId(getContentProviderFormatId());
-        givenPalmaLoansWsdl();
-        givenPalmaCheckoutTestActiveLoanResponse();
-        givenPalmaCheckoutResponse();
+        givenLmsCheckoutTestActiveLoanResponse(isLoanPerProduct(), TestDataConstants.LMS_RECORD_ID, getContentProviderFormatId());
+        givenLmsCheckoutResponse(TestDataConstants.LMS_RECORD_ID, getContentProviderFormatId());
         givenContentProviderGetCheckoutResponse();
         Checkout checkout = whenCheckout();
         thenValidCheckout(checkout, getContentProviderFormatId(), false);
@@ -40,36 +39,39 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
 
     @Test
     public final void checkoutWithLmsError() throws EhubException {
-        givenExpectedLmsErrorException("blockedBorrCard");
+
         givenContentProviderFormatId(getContentProviderFormatId());
-        givenPalmaLoansWsdl();
-        givenCheckoutTestErrorResponse();
-        Checkout checkout = whenCheckout();
+        givenLmsCheckoutTestErrorResponse(isLoanPerProduct(), TestDataConstants.LMS_RECORD_ID, getContentProviderFormatId(), "STORE_ALMA_EXCEPTION");
+
+        Exception exception = Assertions.assertThrows(EhubException.class, () -> {
+            Checkout checkout = whenCheckout();
+        });
+        thenExpectedLmsErrorException(exception, "blockedBorrCard");
     }
 
 
     protected void thenValidCheckout(final Checkout checkout, final String contentProviderFormatId, final boolean isNewLoan) {
-        Assert.assertNotNull(checkout);
+        Assertions.assertNotNull(checkout);
         thenValidCheckoutMetadata(checkout.metadata(), isNewLoan);
         thenValidSupplementLinks(checkout.supplementLinks(), contentProviderFormatId);
         thenValidContentLinks(checkout.contentLinks(), contentProviderFormatId);
     }
 
     protected void thenValidCheckoutMetadata(final CheckoutMetadata checkoutMetadata, final boolean isNewLoan) {
-        Assert.assertNotNull(checkoutMetadata);
+        Assertions.assertNotNull(checkoutMetadata);
         Date expirationDate = checkoutMetadata.getExpirationDate();
-        Assert.assertNotNull(expirationDate);
+        Assertions.assertNotNull(expirationDate);
         String lmsLoanId = checkoutMetadata.getLmsLoanId();
-        Assert.assertNotNull(lmsLoanId);
+        Assertions.assertNotNull(lmsLoanId);
         Long id = checkoutMetadata.getId();
-        Assert.assertNotNull(id);
-        Assert.assertEquals(isNewLoan, checkoutMetadata.isNewLoan());
-        if (getIssueId()!=null) {
+        Assertions.assertNotNull(id);
+        Assertions.assertEquals(isNewLoan, checkoutMetadata.isNewLoan());
+        if (getIssueId() != null) {
             String issueId = checkoutMetadata.getIssueId();
-            Assert.assertNotNull(issueId);
-            Assert.assertEquals(issueId,getIssueId());
+            Assertions.assertNotNull(issueId);
+            Assertions.assertEquals(issueId, getIssueId());
             String issueTitle = checkoutMetadata.getIssueTitle();
-            Assert.assertNotNull(issueTitle);
+            Assertions.assertNotNull(issueTitle);
         }
     }
 
@@ -92,7 +94,7 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
     }
 
     protected Checkout whenCheckout() throws EhubException {
-        Assert.assertNotNull(fields.getRequiredValue("contentProviderFormatId"));
+        Assertions.assertNotNull(fields.getRequiredValue("contentProviderFormatId"));
         return underTest.checkout(authInfo, fields, LANGUAGE);
     }
 
@@ -104,7 +106,7 @@ public abstract class RemoteCheckoutITFixture extends RemoteITFixture {
         return underTest.getCheckout(authInfo, readyLoanId, LANGUAGE);
     }
 
-    protected abstract void givenContentProviderGetCheckoutResponse();
     protected abstract String getContentProviderFormatId();
+
     protected abstract String getIssueId();
 }

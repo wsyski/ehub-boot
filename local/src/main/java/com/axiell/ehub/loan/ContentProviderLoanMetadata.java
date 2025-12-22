@@ -8,7 +8,7 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.util.DateFactory;
 import com.axiell.ehub.util.Validate;
 
-import javax.persistence.*;
+import  jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 

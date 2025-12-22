@@ -1,5 +1,7 @@
 package com.axiell.ehub.checkout;
 
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutDTO;
+
 import java.io.Serializable;
 
 public class Checkout implements Serializable {

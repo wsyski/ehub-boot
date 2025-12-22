@@ -1,30 +1,30 @@
 package com.axiell.ehub.provider.overdrive;
 
-import com.axiell.ehub.provider.overdrive.DownloadLinkTemplateDTO;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links;
 import com.axiell.ehub.provider.overdrive.DownloadLinkDTO.Links.ContentLink;
 import com.axiell.ehub.util.CollectionFinder;
 import com.axiell.ehub.util.IFinder;
 import com.axiell.ehub.util.IMatcher;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 public class OverDriveCirculationIT extends AbstractOverDriveIT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OverDriveCirculationIT.class);
 
     private CheckoutDTO checkout;
     private CheckoutsDTO checkouts;
     private DownloadLinkTemplateDTO downloadLinkTemplate;
     private DownloadLinkDTO downloadLink;
 
-    @After
+    @AfterEach
     public void afterTest() {
         givenCheckinAll();
     }
@@ -46,18 +46,18 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
     }
 
     private void thenCheckoutIsNotNull() {
-        Assert.assertNotNull(checkout);
+        Assertions.assertNotNull(checkout);
     }
 
     private void thenCheckoutHasDownloadLinkTemplate() {
         DownloadLinkTemplateFinder downloadLinkTemplateFinder = new DownloadLinkTemplateFinder(PRODUCT_ID, FORMAT_TYPE);
         downloadLinkTemplate = downloadLinkTemplateFinder.findFromCheckout(checkout);
-        Assert.assertNotNull(downloadLinkTemplate);
+        Assertions.assertNotNull(downloadLinkTemplate);
     }
 
     private void thenCheckoutHasExpirationDate() {
         final Date expirationDate = checkout.getExpirationDate();
-        Assert.assertNotNull(expirationDate);
+        Assertions.assertNotNull(expirationDate);
     }
 
     @Test
@@ -81,10 +81,10 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
     }
 
     private void thenCheckoutListContainsCheckout() throws IFinder.NotFoundException {
-        Assert.assertNotNull(checkouts);
+        Assertions.assertNotNull(checkouts);
         final List<CheckoutDTO> checkoutList = checkouts.getCheckouts();
-        Assert.assertTrue(checkoutList.size() > 0);
-        IMatcher<CheckoutDTO> matcher=new CheckoutMatcher(PRODUCT_ID);
+        Assertions.assertTrue(checkoutList.size() > 0);
+        IMatcher<CheckoutDTO> matcher = new CheckoutMatcher(PRODUCT_ID);
         checkout = new CollectionFinder<CheckoutDTO>().find(matcher, checkoutList);
     }
 
@@ -105,25 +105,24 @@ public class OverDriveCirculationIT extends AbstractOverDriveIT {
     }
 
     private void thenDownloadLinkHasContentLinkHref() {
-        Assert.assertNotNull(downloadLink);
+        Assertions.assertNotNull(downloadLink);
         final Links links = downloadLink.getLinks();
-        Assert.assertNotNull(links);
+        Assertions.assertNotNull(links);
         final ContentLink contentLink = links.getContentLink();
-        Assert.assertNotNull(contentLink);
+        Assertions.assertNotNull(contentLink);
         final String contentLinkHref = contentLink.getHref();
-        Assert.assertNotNull(contentLinkHref);
+        Assertions.assertNotNull(contentLinkHref);
     }
 
     private void givenCheckinAll() {
         final CheckoutsDTO checkouts = underTest.getCheckouts(contentProviderConsumer, accessToken);
-        for (CheckoutDTO checkout: checkouts.getCheckouts()) {
+        for (CheckoutDTO checkout : checkouts.getCheckouts()) {
             try {
                 if (!checkout.isFormatLocked()) {
                     underTest.checkin(contentProviderConsumer, accessToken, checkout.getReserveId());
                 }
-            }
-            catch (BadRequestException ex) {
-                LOGGER.error("Can not checkin product id: "+checkout.getReserveId());
+            } catch (BadRequestException ex) {
+                log.error("Can not checkin product id: " + checkout.getReserveId());
             }
         }
     }

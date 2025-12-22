@@ -13,7 +13,7 @@ final class TextsListView extends ListView<Language> {
     private IModel<FormatDecoration> formModel;
     private final FormatDecorationMediator formatDecorationMediator;
 
-    TextsListView(final String id, final List<? extends Language> languages, final IModel<FormatDecoration> formModel, final FormatDecorationMediator formatDecorationMediator) {
+    TextsListView(final String id, final List<Language> languages, final IModel<FormatDecoration> formModel, final FormatDecorationMediator formatDecorationMediator) {
         super(id, languages);
         this.formModel = formModel;
         this.formatDecorationMediator = formatDecorationMediator;

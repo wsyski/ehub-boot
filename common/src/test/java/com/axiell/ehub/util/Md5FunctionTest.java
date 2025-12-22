@@ -1,7 +1,7 @@
 package com.axiell.ehub.util;
 
 import org.hamcrest.text.IsEqualIgnoringCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 

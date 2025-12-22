@@ -1,64 +1,35 @@
 package com.axiell.ehub.provider;
 
-import com.axiell.ehub.provider.askews.AskewsDataAccessor;
-import com.axiell.ehub.provider.borrowbox.BorrowBoxDataAccessor;
-import com.axiell.ehub.provider.elib.elibu.ElibUDataAccessor;
-import com.axiell.ehub.provider.elib.library3.Elib3DataAccessor;
-import com.axiell.ehub.provider.ep.lpf.LpfEpDataAccessor;
-import com.axiell.ehub.provider.ep.lpp.LppEpDataAccessor;
-import com.axiell.ehub.provider.ocd.OcdDataAccessor;
-import com.axiell.ehub.provider.overdrive.OverDriveDataAccessor;
-import com.axiell.ehub.provider.zinio.ZinioDataAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContentProviderDataAccessorFactory implements IContentProviderDataAccessorFactory {
 
     @Autowired
-    private Elib3DataAccessor elib3DataAccessor;
+    @Qualifier("elib3DataAccessor")
+    private IContentProviderDataAccessor elib3DataAccessor;
 
     @Autowired
-    private ElibUDataAccessor elibUDataAccessor;
+    @Qualifier("overDriveDataAccessor")
+    private IContentProviderDataAccessor overDriveDataAccessor;
 
     @Autowired
-    private AskewsDataAccessor askewsDataAccessor;
+    @Qualifier("lpfEpDataAccessor")
+    private IContentProviderDataAccessor lpfEpDataAccessor;
 
     @Autowired
-    private OverDriveDataAccessor overDriveDataAccessor;
-
-    @Autowired
-    private OcdDataAccessor ocdDataAccessor;
-
-    @Autowired
-    private BorrowBoxDataAccessor borrowBoxDataAccessor;
-
-    @Autowired
-    private ZinioDataAccessor zinioDataAccessor;
-
-    @Autowired
-    private LpfEpDataAccessor lpfEpDataAccessor;
-
-    @Autowired
-    private LppEpDataAccessor lppEpDataAccessor;
+    @Qualifier("lppEpDataAccessor")
+    private IContentProviderDataAccessor lppEpDataAccessor;
 
     @Override
     public IContentProviderDataAccessor getInstance(final ContentProvider contentProvider) {
         final String name = contentProvider.getName();
         if (ContentProvider.CONTENT_PROVIDER_ELIB3.equals(name)) {
             return elib3DataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ELIBU.equals(name)) {
-            return elibUDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ASKEWS.equals(name)) {
-            return askewsDataAccessor;
         } else if (ContentProvider.CONTENT_PROVIDER_OVERDRIVE.equals(name)) {
             return overDriveDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_BORROWBOX.equals(name)) {
-            return borrowBoxDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_ZINIO.equals(name)) {
-            return zinioDataAccessor;
-        } else if (ContentProvider.CONTENT_PROVIDER_OCD.equals(name)) {
-            return ocdDataAccessor;
         } else {
             boolean isLoanPerProduct = contentProvider.isLoanPerProduct();
             return isLoanPerProduct ? lppEpDataAccessor : lpfEpDataAccessor;

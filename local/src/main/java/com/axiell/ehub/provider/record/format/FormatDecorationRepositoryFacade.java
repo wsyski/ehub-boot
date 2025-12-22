@@ -5,7 +5,9 @@ import com.axiell.ehub.ErrorCauseArgument;
 import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.provider.ContentProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FormatDecorationRepositoryFacade implements IFormatDecorationRepositoryFacade {
 
     @Autowired

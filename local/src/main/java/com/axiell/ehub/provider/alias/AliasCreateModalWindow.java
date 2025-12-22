@@ -1,6 +1,5 @@
 package com.axiell.ehub.provider.alias;
 
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 
 class AliasCreateModalWindow extends ModalWindow {
 

@@ -1,97 +1,97 @@
 package com.axiell.ehub.provider.record.format;
 
-import static org.mockito.BDDMockito.given;
+import com.axiell.ehub.language.Language;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
-import com.axiell.ehub.language.Language;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FormatDecorationTest {
     private static final Language LANGUAGE_SWEDISH = new Language("sv");
     private static final Language LANGUAGE_ENGLISH = new Language("en");
-    private FormatDecoration underTest;    
-    
+    private FormatDecoration underTest;
+
     @Mock
     private Map<Language, FormatTextBundle> textBundles;
     @Mock
     private FormatTextBundle swedishTextBundle;
     @Mock
     private FormatTextBundle defaultTextBundle;
-    
-    private FormatTextBundle actualTextBundle;
-    
 
-    @Before
+    private FormatTextBundle actualTextBundle;
+
+
+    @BeforeEach
     public void setUp() {
-	underTest = new FormatDecoration();
+        underTest = new FormatDecoration();
     }
-    
+
     @Test
     public void getNoTextBundle() {
-	whenGetTextBundle();
-	thenActualTextBundleIsNull();
+        whenGetTextBundle();
+        thenActualTextBundleIsNull();
     }
 
     private void whenGetTextBundle() {
-	actualTextBundle = underTest.getTextBundle(LANGUAGE_SWEDISH.getId());
+        actualTextBundle = underTest.getTextBundle(LANGUAGE_SWEDISH.getId());
     }
 
     private void thenActualTextBundleIsNull() {
-	Assert.assertNull(actualTextBundle);
+        Assertions.assertNull(actualTextBundle);
     }
-    
+
     @Test
     public void getSpecificTextBundle() {
-	givenTextBundles();
-	givenSwedishTextBundle();
-	whenGetTextBundle();
-	thenActualTextBundleIsNotNull();
-	thenActualTextBundleEqualsSwedishTextBundle();
+        givenTextBundles();
+        givenSwedishTextBundle();
+        whenGetTextBundle();
+        thenActualTextBundleIsNotNull();
+        thenActualTextBundleEqualsSwedishTextBundle();
     }
 
     private void givenTextBundles() {
-	underTest.setTextBundles(textBundles);
+        underTest.setTextBundles(textBundles);
     }
 
     private void givenSwedishTextBundle() {
-	given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(swedishTextBundle);
+        given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(swedishTextBundle);
     }
 
     private void thenActualTextBundleIsNotNull() {
-	Assert.assertNotNull(actualTextBundle);
+        Assertions.assertNotNull(actualTextBundle);
     }
-    
+
     private void thenActualTextBundleEqualsSwedishTextBundle() {
-	Assert.assertEquals(swedishTextBundle, actualTextBundle);
+        Assertions.assertEquals(swedishTextBundle, actualTextBundle);
     }
-    
+
     @Test
     public void getDefaultTextBundle() {
-	givenTextBundles();
-	givenNoSwedishTextBundle();
-	givenDefaultTextBundle();
-	whenGetTextBundle();
-	thenActualTextBundleIsNotNull();
-	thenActualTextBundleEqualsDefaultTextBundle();
+        givenTextBundles();
+        givenNoSwedishTextBundle();
+        givenDefaultTextBundle();
+        whenGetTextBundle();
+        thenActualTextBundleIsNotNull();
+        thenActualTextBundleEqualsDefaultTextBundle();
     }
 
     private void givenNoSwedishTextBundle() {
-	given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(null);
+        given(textBundles.get(LANGUAGE_SWEDISH)).willReturn(null);
     }
-    
+
     private void givenDefaultTextBundle() {
-	given(textBundles.get(LANGUAGE_ENGLISH)).willReturn(defaultTextBundle);
-	
+        given(textBundles.get(LANGUAGE_ENGLISH)).willReturn(defaultTextBundle);
+
     }
 
     private void thenActualTextBundleEqualsDefaultTextBundle() {
-	Assert.assertEquals(defaultTextBundle, actualTextBundle);
+        Assertions.assertEquals(defaultTextBundle, actualTextBundle);
     }
 }

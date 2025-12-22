@@ -1,6 +1,6 @@
 package com.axiell.ehub.consumer;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -14,7 +14,7 @@ class EhubConsumerEditButton extends Button {
 
     EhubConsumerEditButton(final String id, final ConsumersMediator consumersMediator, final IModel<EhubConsumer> formModel) {
         super(id);
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
         this.consumersMediator = consumersMediator;
         this.formModel = formModel;
     }

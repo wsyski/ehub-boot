@@ -10,6 +10,8 @@ import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
 
 import com.axiell.ehub.provider.ContentProvider;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 /**
  * A Panel that displays a ContentProviderConsumer. It also provides the possibility to modify the
@@ -23,18 +25,18 @@ final class ContentProviderConsumerPanel extends BreadCrumbPanel {
         super(panelId, breadCrumbModel);
         addFeedbackPanel();
         this.contentProviderConsumer = contentProviderConsumer;
-        
+
         final ConsumersMediator consumersMediator = new ConsumersMediator();
         consumersMediator.registerContentProviderConsumerPanel(this);
-        
+
         contentProviderConsumerForm = new ContentProviderConsumerEditForm("cpcForm", contentProviderConsumer, consumersMediator);
         add(contentProviderConsumerForm);
     }
 
     @Override
-    public String getTitle() {
+    public IModel<String> getTitle() {
         ContentProvider contentProvider = contentProviderConsumer.getContentProvider();
-        return contentProvider.getName().toString();
+        return new Model<>(contentProvider.getName());
     }
 
     @Override

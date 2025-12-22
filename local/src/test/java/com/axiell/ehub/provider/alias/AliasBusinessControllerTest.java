@@ -3,20 +3,21 @@ package com.axiell.ehub.provider.alias;
 
 import com.axiell.ehub.BadRequestException;
 import com.axiell.ehub.NotFoundException;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class AliasBusinessControllerTest {
     private static final String CONTENT_PROVIDER_NAME = "TEST_EP";
     private AliasBusinessController underTest;
@@ -27,7 +28,7 @@ public class AliasBusinessControllerTest {
     private String aliasValue;
     private String actualContentProviderName;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new AliasBusinessController();
         ReflectionTestUtils.setField(underTest, "aliasMappingRepository", aliasMappingRepository);
@@ -38,11 +39,11 @@ public class AliasBusinessControllerTest {
         givenNoAlias();
         try {
             whenGetName();
-            fail("A BadRequestException should have been thrown");
+            Assertions.fail("A BadRequestException should have been thrown");
         } catch (NullPointerException e) {
-            fail("A NullPointerException should not be thrown");
+            Assertions.fail("A NullPointerException should not be thrown");
         } catch (BadRequestException e) {
-            assertNotNull(e);
+            Assertions.assertNotNull(e);
         }
     }
 
@@ -51,9 +52,9 @@ public class AliasBusinessControllerTest {
         givenUnknownAlias();
         try {
             whenGetName();
-            fail("A NotFoundException should have been thrown");
+            Assertions.fail("A NotFoundException should have been thrown");
         } catch (NotFoundException e) {
-            assertNotNull(e);
+            Assertions.assertNotNull(e);
         }
     }
 
@@ -66,7 +67,7 @@ public class AliasBusinessControllerTest {
     }
 
     private void thenActualContentProviderNameEqualsExpectedContentProviderName() {
-        Assert.assertEquals(CONTENT_PROVIDER_NAME, actualContentProviderName);
+        Assertions.assertEquals(CONTENT_PROVIDER_NAME, actualContentProviderName);
     }
 
     private void givenRoutingRule() {

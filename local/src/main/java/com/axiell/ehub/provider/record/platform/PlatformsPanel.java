@@ -7,6 +7,7 @@ import com.axiell.ehub.provider.platform.Platform;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -33,9 +34,8 @@ final class PlatformsPanel extends BreadCrumbPanel {
     }
 
     @Override
-    public String getTitle() {
-        final StringResourceModel model = new StringResourceModel("txtBreadCrumbPanelTitle", this, new Model<>());
-        return model.getString();
+    public IModel<String> getTitle() {
+        return new StringResourceModel("txtBreadCrumbPanelTitle", this, new Model<>());
     }
 
     @Override

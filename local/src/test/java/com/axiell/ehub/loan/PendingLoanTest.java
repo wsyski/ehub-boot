@@ -1,20 +1,26 @@
 package com.axiell.ehub.loan;
 
 import com.axiell.ehub.FieldsBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import static com.axiell.ehub.FieldsBuilder.*;
+import static com.axiell.ehub.FieldsBuilder.CONTENT_PROVIDER_ALIAS;
+import static com.axiell.ehub.FieldsBuilder.CONTENT_PROVIDER_FORMAT_ID;
+import static com.axiell.ehub.FieldsBuilder.CONTENT_PROVIDER_RECORD_ID;
+import static com.axiell.ehub.FieldsBuilder.LMS_RECORD_ID;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class PendingLoanTest {
     private PendingLoan underTest;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new PendingLoan(FieldsBuilder.defaultFields());
     }

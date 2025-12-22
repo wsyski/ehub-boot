@@ -2,7 +2,8 @@ package com.axiell.ehub.provider.ep.lpf;
 
 import com.axiell.ehub.DTOTestFixture;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LpfCheckoutDTOTest extends DTOTestFixture<LpfCheckoutDTO> {
 
@@ -18,6 +19,6 @@ public class LpfCheckoutDTOTest extends DTOTestFixture<LpfCheckoutDTO> {
 
     @Override
     protected void customAssertion(final LpfCheckoutDTO underTest, final LpfCheckoutDTO actualObject) {
-        Assert.assertThat(actualObject.getExpirationDate(), Matchers.is(underTest.getExpirationDate()));
+        assertThat(actualObject.getExpirationDate(), Matchers.is(underTest.getExpirationDate()));
     }
 }

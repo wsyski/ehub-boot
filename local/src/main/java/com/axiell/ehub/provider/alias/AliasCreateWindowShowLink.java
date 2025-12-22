@@ -3,6 +3,8 @@ package com.axiell.ehub.provider.alias;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 
+import java.util.Optional;
+
 class AliasCreateWindowShowLink extends IndicatingAjaxFallbackLink<Void> {
     private final AliasMediator mediator;
 
@@ -12,7 +14,7 @@ class AliasCreateWindowShowLink extends IndicatingAjaxFallbackLink<Void> {
     }
 
     @Override
-    public void onClick(final AjaxRequestTarget target) {
-        mediator.showCreateWindow(target);
+    public void onClick(final Optional<AjaxRequestTarget> targetOptional) {
+        mediator.showCreateWindow(targetOptional);
     }
 }

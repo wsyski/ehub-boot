@@ -12,22 +12,22 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import  jakarta.persistence.Access;
+import  jakarta.persistence.AccessType;
+import  jakarta.persistence.CollectionTable;
+import  jakarta.persistence.Column;
+import  jakarta.persistence.ElementCollection;
+import  jakarta.persistence.Entity;
+import  jakarta.persistence.EnumType;
+import  jakarta.persistence.FetchType;
+import  jakarta.persistence.ForeignKey;
+import  jakarta.persistence.JoinColumn;
+import  jakarta.persistence.MapKey;
+import  jakarta.persistence.MapKeyColumn;
+import  jakarta.persistence.MapKeyEnumerated;
+import  jakarta.persistence.OneToMany;
+import  jakarta.persistence.Table;
+import  jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -57,21 +57,11 @@ import static com.google.common.collect.Sets.newHashSet;
 @Access(AccessType.PROPERTY)
 public class ContentProvider extends AbstractTimestampAwarePersistable<Long> implements Serializable {
     public static final String CONTENT_PROVIDER_ELIB3 = "ELIB3";
-    public static final String CONTENT_PROVIDER_ELIBU = "ELIBU";
-    public static final String CONTENT_PROVIDER_ASKEWS = "ASKEWS";
     public static final String CONTENT_PROVIDER_OVERDRIVE = "OVERDRIVE";
-    public static final String CONTENT_PROVIDER_OCD = "OCD";
-    public static final String CONTENT_PROVIDER_BORROWBOX = "BORROWBOX";
-    public static final String CONTENT_PROVIDER_ZINIO = "ZINIO";
 
     private static final Map<String, Set<ContentProviderPropertyKey>> VALID_PROPERTY_KEYS = ImmutableMap.<String, Set<ContentProviderPropertyKey>>builder()
             .put(CONTENT_PROVIDER_ELIB3, newHashSet(API_BASE_URL))
-            .put(CONTENT_PROVIDER_ELIBU, newHashSet(PRODUCT_URL, CONSUME_LICENSE_URL))
-            .put(CONTENT_PROVIDER_ASKEWS, newHashSet(LOAN_EXPIRATION_DAYS))
             .put(CONTENT_PROVIDER_OVERDRIVE, newHashSet(OAUTH_URL, OAUTH_PATRON_URL, API_BASE_URL, PATRON_API_BASE_URL))
-            .put(CONTENT_PROVIDER_OCD, newHashSet(API_BASE_URL))
-            .put(CONTENT_PROVIDER_BORROWBOX, newHashSet(API_BASE_URL))
-            .put(CONTENT_PROVIDER_ZINIO, newHashSet(LOAN_EXPIRATION_DAYS, API_BASE_URL))
             .build();
     private static final Set<ContentProviderPropertyKey> EP_VALID_PROPERTY_KEYS = newHashSet(API_BASE_URL);
     private static final Map<ContentProviderPropertyKey, Pattern> PROPERTY_PATTERNS = ImmutableMap.<ContentProviderPropertyKey, Pattern>builder()
@@ -239,12 +229,7 @@ public class ContentProvider extends AbstractTimestampAwarePersistable<Long> imp
     @Transient
     public boolean isEhubProvider() {
         return !CONTENT_PROVIDER_ELIB3.equals(name) &&
-                !CONTENT_PROVIDER_ELIBU.equals(name) &&
-                !CONTENT_PROVIDER_ASKEWS.equals(name) &&
-                !CONTENT_PROVIDER_OVERDRIVE.equals(name) &&
-                !CONTENT_PROVIDER_OCD.equals(name) &&
-                !CONTENT_PROVIDER_BORROWBOX.equals(name) &&
-                !CONTENT_PROVIDER_ZINIO.equals(name);
+                !CONTENT_PROVIDER_OVERDRIVE.equals(name);
     }
 
     @Transient

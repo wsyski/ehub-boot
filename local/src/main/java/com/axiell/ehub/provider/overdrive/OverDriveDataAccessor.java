@@ -30,7 +30,7 @@ import java.util.*;
 
 import static com.axiell.ehub.ErrorCauseArgumentType.PRODUCT_UNAVAILABLE;
 
-@Component
+@Component(value="overDriveDataAccessor")
 public class OverDriveDataAccessor extends AbstractContentProviderDataAccessor {
     @Autowired
     private IEhubExceptionFactory ehubExceptionFactory;

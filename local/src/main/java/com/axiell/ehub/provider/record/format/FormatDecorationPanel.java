@@ -6,6 +6,8 @@ package com.axiell.ehub.provider.record.format;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbModel;
 import org.apache.wicket.extensions.breadcrumb.IBreadCrumbParticipant;
 import org.apache.wicket.extensions.breadcrumb.panel.BreadCrumbPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 public final class FormatDecorationPanel extends BreadCrumbPanel {
@@ -13,16 +15,16 @@ public final class FormatDecorationPanel extends BreadCrumbPanel {
     private FormatDecoration formatDecoration;
     private final FormatDecorationMediator formatDecorationMediator;
 
-    @SpringBean(name = "formatAdminController") 
+    @SpringBean(name = "formatAdminController")
     private IFormatAdminController formatAdminController;
-    
+
     public FormatDecorationPanel(final String panelId, final IBreadCrumbModel breadCrumbModel, final FormatDecoration formatDecoration) {
         super(panelId, breadCrumbModel);
         formatDecorationMediator = new FormatDecorationMediator();
         formatDecorationMediator.registerFormatDecorationPanel(this);
-        
+
         this.formatDecoration = formatDecoration;
-        
+
         decorationFormPanel = new FormatDecorationEditFormPanel("decorationFormPanel", formatDecorationMediator, formatDecoration);
         add(decorationFormPanel);
 
@@ -35,8 +37,8 @@ public final class FormatDecorationPanel extends BreadCrumbPanel {
     }
 
     @Override
-    public String getTitle() {
-        return formatDecoration.getContentProviderFormatId();
+    public IModel<String> getTitle() {
+        return new Model<>(formatDecoration.getContentProviderFormatId());
     }
 
     @Override

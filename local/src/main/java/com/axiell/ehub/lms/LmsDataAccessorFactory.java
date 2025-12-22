@@ -7,16 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LmsDataAccessorFactory implements ILmsDataAccessorFactory {
-    @Autowired
-    @Qualifier("palmaDataAccessor")
-    private ILmsDataAccessor palmaDataAccessor;
 
     @Autowired
-    @Qualifier("arenaLocalApiDataAccessor")
     private ILmsDataAccessor arenaLocalApiDataAccessor;
 
     public ILmsDataAccessor getLmsDataAccessor(final EhubConsumer ehubConsumer) {
-        String arenaLocalApiEndpoint = ehubConsumer.getProperties().get(EhubConsumer.EhubConsumerPropertyKey.ARENA_LOCAL_API_ENDPOINT);
-        return (arenaLocalApiEndpoint.contains("arena.pa.palma")) ? palmaDataAccessor : arenaLocalApiDataAccessor;
+        return arenaLocalApiDataAccessor;
     }
 }

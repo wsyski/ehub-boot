@@ -2,7 +2,6 @@ package com.axiell.ehub.checkout;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 
 public class SupplementLinkMatcher extends BaseMatcher<SupplementLink> {
     private final SupplementLink expectedSupplementLink;
@@ -11,7 +10,6 @@ public class SupplementLinkMatcher extends BaseMatcher<SupplementLink> {
         this.expectedSupplementLink = expectedContentLink;
     }
 
-    @Factory
     public static SupplementLinkMatcher matchesExpectedSupplementLink(final SupplementLink expectedSupplementLink) {
         return new SupplementLinkMatcher(expectedSupplementLink);
     }

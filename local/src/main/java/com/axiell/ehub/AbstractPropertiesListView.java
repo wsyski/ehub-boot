@@ -47,7 +47,7 @@ public abstract class AbstractPropertiesListView<M, T> extends ListView<Translat
 
     private AttributeModifier makeTitle(final TranslatedKey<T> translatedKey) {
         final String title = translatedKey.getTitle();
-        return new AttributeModifier("title", true, new Model<>(title));
+        return new AttributeModifier("title", new Model<>(title));
     }
 
     private Label makePropertyFieldLabel(final TranslatedKey<T> translatedKey) {

@@ -3,12 +3,11 @@
  */
 package com.axiell.ehub.user;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * 
+ *
  */
 public class AdminUserTest {
 
@@ -18,8 +17,8 @@ public class AdminUserTest {
     @Test
     public void testIsValid() {
         final AdminUser adminUser = new AdminUser("admin", "!gogetit1");
-        assertTrue(adminUser.isValid("!gogetit1"));
-        assertFalse(adminUser.isValid("1gogetit!"));
+        Assertions.assertTrue(adminUser.isValid("!gogetit1"));
+        Assertions.assertFalse(adminUser.isValid("1gogetit!"));
     }
 
 }

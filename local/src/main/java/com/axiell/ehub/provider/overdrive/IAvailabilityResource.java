@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.overdrive;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("/v2")
 interface IAvailabilityResource {

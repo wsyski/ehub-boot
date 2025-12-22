@@ -3,7 +3,7 @@
  */
 package com.axiell.ehub;
 
-import org.apache.wicket.Request;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.protocol.http.WebSession;
 
 import com.axiell.ehub.user.AdminUser;
@@ -17,7 +17,7 @@ public final class EhubAdminSession extends WebSession {
 
     /**
      * Constructs a new {@link EhubAdminSession}.
-     * 
+     *
      * @param request the request
      */
     public EhubAdminSession(Request request) {
@@ -26,7 +26,7 @@ public final class EhubAdminSession extends WebSession {
 
     /**
      * Returns the {@link AdminUser}.
-     * 
+     *
      * @return the {@link AdminUser}, <code>null</code> the end-user is not logged in
      */
     public AdminUser getAdminUser() {
@@ -35,7 +35,7 @@ public final class EhubAdminSession extends WebSession {
 
     /**
      * Sets the {@link AdminUser}.
-     * 
+     *
      * @param adminUser the {@link AdminUser} to set
      */
     public void setAdminUser(AdminUser adminUser) {

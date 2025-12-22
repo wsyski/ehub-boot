@@ -8,7 +8,9 @@ import com.axiell.ehub.NotFoundException;
 import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EhubLoanRepositoryFacade implements IEhubLoanRepositoryFacade {
 
     @Autowired

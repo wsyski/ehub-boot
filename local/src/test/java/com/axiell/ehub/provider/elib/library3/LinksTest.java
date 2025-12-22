@@ -1,9 +1,9 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,7 +19,7 @@ public class LinksTest {
     private ObjectMapper mapper;
     private List<String> contentUrls;
 
-    @Before
+    @BeforeEach
     public void setUpObjectMapper() {
         mapper = new ObjectMapper();
     }
@@ -51,6 +51,6 @@ public class LinksTest {
     }
 
     private void thenActualUrlEqualsExpectedUrl() {
-        Assert.assertEquals(EXP_URL, contentUrls.get(0));
+        Assertions.assertEquals(EXP_URL, contentUrls.get(0));
     }
 }

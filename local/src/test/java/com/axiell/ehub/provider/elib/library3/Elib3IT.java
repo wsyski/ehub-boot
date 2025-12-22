@@ -2,11 +2,14 @@ package com.axiell.ehub.provider.elib.library3;
 
 import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AbstractContentProviderIT;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,10 +17,10 @@ import java.util.List;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_ID;
 import static com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.ELIB_SERVICE_KEY;
 import static com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey.API_BASE_URL;
-import static junit.framework.Assert.*;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class Elib3IT extends AbstractContentProviderIT {
     private static final String API_BASE_URL_VALUE = "https://webservices.elib.se/library/v3.0";
     private static final String ELIB_SERVICE_ID_VALUE = "1873";
@@ -44,18 +47,18 @@ public class Elib3IT extends AbstractContentProviderIT {
     private LibraryProduct libraryProduct;
     private GetLoansResponse getLoansResponse;
 
-    @Before
+    @BeforeEach
     public void setElibFacade() {
         underTest = new Elib3Facade();
     }
 
-    @Before
+    @BeforeEach
     public void setUpPatronWithoutLoans() {
         given(patronWithoutLoans.hasId()).willReturn(true);
         given(patronWithoutLoans.getId()).willReturn(PATRON_ID_0);
     }
 
-    @Before
+    @BeforeEach
     public void setUpPatronWithLoans() {
         given(patronWithLoans.hasId()).willReturn(true);
         given(patronWithLoans.getId()).willReturn(PATRON_ID_1);
@@ -107,7 +110,7 @@ public class Elib3IT extends AbstractContentProviderIT {
 
     private void thenProductHasExpectedFormat() {
         List<Product.AvailableFormat> formats = product.getFormats();
-        assertFalse(formats.isEmpty());
+        Assertions.assertFalse(formats.isEmpty());
 
         Iterator<Product.AvailableFormat> itr = formats.iterator();
         boolean formatFound = false;
@@ -115,7 +118,7 @@ public class Elib3IT extends AbstractContentProviderIT {
             Product.AvailableFormat format = itr.next();
             formatFound = expectedFormatId.equals(format.getId());
         }
-        assertTrue(formatFound);
+        Assertions.assertTrue(formatFound);
     }
 
     private void givenAudiobookProductId() {
@@ -153,33 +156,33 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenProductHasEbookProductId() {
-        assertEquals(EBOOK_PRODUCT_ID, product.getProductId());
+        Assertions.assertEquals(EBOOK_PRODUCT_ID, product.getProductId());
     }
 
     private void thenProductHasAudiobookProductId() {
-        assertEquals(AUDIOBOOK_PRODUCT_ID, product.getProductId());
+        Assertions.assertEquals(AUDIOBOOK_PRODUCT_ID, product.getProductId());
     }
 
     private void thenCreatedLoanHasExpectedProductId() {
-        assertEquals(EBOOK_PRODUCT_ID, createdLoan.getProductId());
+        Assertions.assertEquals(EBOOK_PRODUCT_ID, createdLoan.getProductId());
     }
 
     private void thenProductIsNotNull() {
-        assertNotNull(product);
+        Assertions.assertNotNull(product);
     }
 
     private void thenRetrievedLoanIsNotNull() {
-        assertNotNull(loan);
+        Assertions.assertNotNull(loan);
     }
 
     private void thenRetrievedLoanHasExpectedLoanId() {
-        assertEquals(ELIB_LOAN_ID_VALUE, loan.getLoanId());
+        Assertions.assertEquals(ELIB_LOAN_ID_VALUE, loan.getLoanId());
     }
 
     private void thenRetrievedLoanHasContentIfLoanIsActive() {
         if (loan.isActive()) {
-            assertEquals(1, loan.getContentUrlsFor(HTML5_FORMAT_ID).size());
-            assertNotNull(loan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
+            Assertions.assertEquals(1, loan.getContentUrlsFor(HTML5_FORMAT_ID).size());
+            Assertions.assertNotNull(loan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
         }
     }
 
@@ -188,20 +191,20 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenLibraryProductIsNotNull() {
-        assertNotNull(libraryProduct);
+        Assertions.assertNotNull(libraryProduct);
     }
 
     private void thenLibraryProductContainsExpectedProductId() {
-        assertEquals(EBOOK_PRODUCT_ID, libraryProduct.getProductId());
+        Assertions.assertEquals(EBOOK_PRODUCT_ID, libraryProduct.getProductId());
     }
 
     private void thenCreatedLoanHasContent() {
-        assertEquals(1, createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).size());
-        assertNotNull(createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
+        Assertions.assertEquals(1, createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).size());
+        Assertions.assertNotNull(createdLoan.getContentUrlsFor(HTML5_FORMAT_ID).get(0));
     }
 
     private void thenLibraryProductHasAvailableModel() {
-        assertTrue(libraryProduct.hasAvailableModel());
+        Assertions.assertTrue(libraryProduct.hasAvailableModel());
     }
 
     private void givenApiBaseUrl() {
@@ -219,11 +222,11 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenBookAvailabilityResponseContainsExpectedProduct() {
-        assertNotNull(bookAvailability);
+        Assertions.assertNotNull(bookAvailability);
         final List<BookAvailability.Product> products = bookAvailability.getProducts();
-        assertFalse(products.isEmpty());
+        Assertions.assertFalse(products.isEmpty());
         final boolean expectedProductFound = findExpectedProduct(products);
-        assertTrue(expectedProductFound);
+        Assertions.assertTrue(expectedProductFound);
     }
 
     private boolean findExpectedProduct(List<BookAvailability.Product> products) {
@@ -249,7 +252,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenCreatedLoanIsNotNull() {
-        assertNotNull(createdLoan);
+        Assertions.assertNotNull(createdLoan);
     }
 
     @Test
@@ -265,7 +268,7 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenLoanExpirationDateIsNotNull() {
-        assertNotNull(loan.getExpirationDate());
+        Assertions.assertNotNull(loan.getExpirationDate());
     }
 
     private void givenPatronWithLoans() {
@@ -273,11 +276,11 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenGetLoansResponseIsNotNull() {
-        assertNotNull(getLoansResponse);
+        Assertions.assertNotNull(getLoansResponse);
     }
 
     private void thenLoanWithExpectedProductIdExists() {
-        assertNotNull(loan);
+        Assertions.assertNotNull(loan);
     }
 
     private void whenGetLoans() {
@@ -300,6 +303,6 @@ public class Elib3IT extends AbstractContentProviderIT {
     }
 
     private void thenLoanWithExpectedProductIdDoesNotExist() {
-        assertNull(loan);
+        Assertions.assertNull(loan);
     }
 }

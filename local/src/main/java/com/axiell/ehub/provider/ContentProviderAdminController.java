@@ -10,14 +10,13 @@ import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-/**
- * Default implementation of the {@link IContentProviderAdminController}.
- */
+@Component
 public class ContentProviderAdminController implements IContentProviderAdminController {
     @Autowired
     private IContentProviderRepository contentProviderRepository;

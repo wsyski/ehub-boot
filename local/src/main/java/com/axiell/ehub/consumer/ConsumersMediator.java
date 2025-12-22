@@ -7,6 +7,7 @@ import org.apache.wicket.extensions.breadcrumb.panel.IBreadCrumbPanelFactory;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 final class ConsumersMediator implements Serializable {
     private EhubConsumerPanel ehubConsumerPanel;
@@ -59,22 +60,24 @@ final class ConsumersMediator implements Serializable {
         ehubConsumerPanel.activate(ehubConsumerPanel);
     }
 
-    void afterNewContentProviderConsumerLinkClick(final AjaxRequestTarget target) {
+    void afterNewContentProviderConsumerLinkClick(final Optional<AjaxRequestTarget> targetOptional) {
         contentProviderConsumerCreateFormContainer.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(contentProviderConsumerCreateFormContainer);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(contentProviderConsumerCreateFormContainer);
+                });
     }
 
-    void afterCancelNewContentProviderConsumer(final AjaxRequestTarget target) {
+    void afterCancelNewContentProviderConsumer(final Optional<AjaxRequestTarget> targetOptional) {
         contentProviderConsumerCreateFormContainer.setVisible(false);
         contentProviderConsumerCreateLink.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(contentProviderConsumerCreateFormContainer);
-            target.addComponent(contentProviderConsumerCreateLink);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(contentProviderConsumerCreateFormContainer);
+                    target.add(contentProviderConsumerCreateLink);
+                });
     }
 
     void afterEditEhubConsumer() {
@@ -90,7 +93,7 @@ final class ConsumersMediator implements Serializable {
         contentProviderConsumerPropertiesListView.setList(translatedKeys);
 
         if (target != null) {
-            target.addComponent(contentProviderConsumerPropertiesContainer);
+            target.add(contentProviderConsumerPropertiesContainer);
         }
     }
 
@@ -102,22 +105,24 @@ final class ConsumersMediator implements Serializable {
         ehubConsumersPanel.activate(ehubConsumersPanel);
     }
 
-    void afterCancelNewEhubConsumerConsumer(final AjaxRequestTarget target) {
+    void afterCancelNewEhubConsumerConsumer(final Optional<AjaxRequestTarget> targetOptional) {
         ehubConsumerFormContainer.setVisible(false);
         ehubConsumerCreateLink.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(ehubConsumerFormContainer);
-            target.addComponent(ehubConsumerCreateLink);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(ehubConsumerFormContainer);
+                    target.add(ehubConsumerCreateLink);
+                });
     }
 
-    void afterClickOnEhubConsumerCreateLink(final AjaxRequestTarget target) {
+    void afterClickOnEhubConsumerCreateLink(final Optional<AjaxRequestTarget> targetOptional) {
         ehubConsumerFormContainer.setVisible(true);
 
-        if (target != null) {
-            target.addComponent(ehubConsumerFormContainer);
-        }
+        targetOptional.ifPresent(
+                target -> {
+                    target.add(ehubConsumerFormContainer);
+                });
     }
 
     void afterNewEhubConsumer(final EhubConsumer ehubConsumer) {

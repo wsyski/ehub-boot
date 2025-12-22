@@ -1,14 +1,13 @@
 package com.axiell.ehub.provider.elib.library3;
 
 import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 public class ProductTest {
     private Product underTest;
@@ -19,7 +18,7 @@ public class ProductTest {
     private Product.AvailableFormat flash = ElibFormats.FLASH.toAvailableFormat();
     private List<Product.AvailableFormat> actualFormats;
 
-    @Before
+    @BeforeEach
     public void setUpUnderTest() {
         underTest = new Product();
     }
@@ -78,26 +77,26 @@ public class ProductTest {
     }
 
     private void thenActualFormatsDoesNotContainPdf() {
-        assertFalse(actualFormats.contains(pdf));
+        Assertions.assertFalse(actualFormats.contains(pdf));
     }
 
     private void thenActualFormatsContainsEpubOffline() {
-        assertTrue(actualFormats.contains(epubOffline));
+        Assertions.assertTrue(actualFormats.contains(epubOffline));
     }
 
     private void thenActualFormatsContainsEpubOnline() {
-        assertTrue(actualFormats.contains(epubOnline));
+        Assertions.assertTrue(actualFormats.contains(epubOnline));
     }
 
     private void thenActualFormatsContainsFlash() {
-        assertTrue(actualFormats.contains(flash));
+        Assertions.assertTrue(actualFormats.contains(flash));
     }
 
     private void thenActualFormatsDoesNotContainEpubOffline() {
-        assertFalse(actualFormats.contains(epubOffline));
+        Assertions.assertFalse(actualFormats.contains(epubOffline));
     }
 
     private void thenActualFormatsContainsPdf() {
-        assertTrue(actualFormats.contains(pdf));
+        Assertions.assertTrue(actualFormats.contains(pdf));
     }
 }

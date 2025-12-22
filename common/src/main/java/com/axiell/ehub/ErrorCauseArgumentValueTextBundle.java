@@ -1,9 +1,13 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.language.Language;
-import org.hibernate.annotations.ForeignKey;
-
-import javax.persistence.*;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ERROR_C_A_V_TEXT_BUNDLE")
@@ -25,7 +29,6 @@ public class ErrorCauseArgumentValueTextBundle extends AbstractTimestampAwarePer
 
     @ManyToOne
     @JoinColumn(name = "ERROR_CAUSE_ARGUMENT_VALUE_ID", nullable = false)
-    @ForeignKey(name = "FK_ERROR_C_A_V_T_B_ERROR_C_A_V")
     public ErrorCauseArgumentValue getArgumentValue() {
         return argumentValue;
     }
@@ -36,7 +39,6 @@ public class ErrorCauseArgumentValueTextBundle extends AbstractTimestampAwarePer
 
     @ManyToOne
     @JoinColumn(name = "LANGUAGE_ID", nullable = false)
-    @ForeignKey(name = "FK_ERROR_C_A_V_T_B_LANGUAGE")
     public Language getLanguage() {
         return language;
     }

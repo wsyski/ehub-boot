@@ -1,5 +1,6 @@
 package com.axiell.ehub.provider.elib.library3;
 
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.ErrorCauseArgumentType;
 import com.axiell.ehub.InternalServerErrorException;
 import com.axiell.ehub.consumer.ContentProviderConsumer;
@@ -7,23 +8,25 @@ import com.axiell.ehub.consumer.EhubConsumer;
 import com.axiell.ehub.error.IEhubExceptionFactory;
 import com.axiell.ehub.language.Language;
 import com.axiell.ehub.loan.PendingLoan;
-import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.AssertCommand;
 import com.axiell.ehub.provider.CommandData;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Locale;
 
-import static junit.framework.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public abstract class AbstractElib3CommandTest {
     protected static final String PRODUCT_ID = "id";
     protected static final String LANGUAGE = Locale.ENGLISH.getLanguage();
@@ -44,7 +47,6 @@ public abstract class AbstractElib3CommandTest {
     protected FormatDecoration formatDecoration;
     @Mock
     protected Patron patron;
-
     @Mock
     private EhubConsumer ehubConsumer;
 
@@ -53,17 +55,23 @@ public abstract class AbstractElib3CommandTest {
     protected AssertCommand next;
     protected CommandData data;
 
-    @Before
+
+    @BeforeEach
     public void setUpAssertCommand() {
         next = new AssertCommand();
     }
 
-    @Before
+    @BeforeEach
     public void setUpContentProviderConsumer() {
         givenContentProviderConsumer();
     }
 
+    protected void givenLanguage() {
+        language = LANGUAGE;
+    }
+
     protected void givenBasicCommandData() {
+        given(pendingLoan.contentProviderRecordId()).willReturn(PRODUCT_ID);
         given(pendingLoan.contentProviderFormatId()).willReturn("contentProviderFormatId");
         data = CommandData.newInstance(contentProviderConsumer, patron, language).setPendingLoan(pendingLoan);
     }
@@ -79,7 +87,7 @@ public abstract class AbstractElib3CommandTest {
     }
 
     protected void thenInternalServerErrorExceptionShouldHaveBeenThrown() {
-        fail("An InternalServerErrorException should have been thrown");
+        Assertions.fail("An InternalServerErrorException should have been thrown");
     }
 
     protected void givenContentProviderFromContentProviderConsumer() {

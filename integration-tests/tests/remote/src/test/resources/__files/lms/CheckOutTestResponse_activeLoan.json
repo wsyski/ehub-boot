@@ -1,0 +1,8 @@
+{
+  "fee": {
+    "currency": "SEK",
+    "amount": 6.6
+  },
+  "loanId": "lmsLoanId",
+  "status": "ACTIVE_LOAN"
+}

@@ -7,7 +7,7 @@ import com.axiell.ehub.EhubRuntimeException;
 import com.axiell.ehub.ErrorCause;
 import com.axiell.ehub.ErrorCauseArgument;
 
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 /**
  * Indicates that the request requires user authentication. It will result in an error response with status code 401.

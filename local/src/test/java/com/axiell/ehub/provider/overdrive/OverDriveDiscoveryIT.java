@@ -1,8 +1,8 @@
 package com.axiell.ehub.provider.overdrive;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class OverDriveDiscoveryIT extends AbstractOverDriveIT {
     }
 
     private void thenProductIsNotNull() {
-        Assert.assertNotNull(product);
+        Assertions.assertNotNull(product);
     }
 
     private void thenProductHasFormats() {
@@ -41,23 +41,23 @@ public class OverDriveDiscoveryIT extends AbstractOverDriveIT {
     }
 
     private void thenFormatListIsNotNull(List<DiscoveryFormatDTO> formats) {
-        Assert.assertNotNull(formats);
+        Assertions.assertNotNull(formats);
     }
 
     private void thenFormatListIsNotEmpty(List<DiscoveryFormatDTO> formats) {
-        Assert.assertFalse(formats.isEmpty());
+        Assertions.assertFalse(formats.isEmpty());
     }
 
     private void thenFormatHasId(DiscoveryFormatDTO format) {
-        Assert.assertNotNull(format.getId());
+        Assertions.assertNotNull(format.getId());
     }
 
     private void thenFormatHasName(DiscoveryFormatDTO format) {
-        Assert.assertNotNull(format.getName());
+        Assertions.assertNotNull(format.getName());
     }
 
     private void thenProductIsAvailable() {
-        Assert.assertTrue(product.isAvailable());
+        Assertions.assertTrue(product.isAvailable());
     }
 
 }

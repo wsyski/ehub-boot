@@ -1,14 +1,18 @@
 package com.axiell.ehub.checkout;
 
+import com.axiell.ehub.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
 
 public class CheckoutMetadataDTOMatcher extends BaseMatcher<CheckoutMetadataDTO> {
     private final CheckoutMetadataDTO expCheckoutMetadataDTO;
 
     private CheckoutMetadataDTOMatcher(final CheckoutMetadataDTO expCheckoutMetadataDTO) {
         this.expCheckoutMetadataDTO = expCheckoutMetadataDTO;
+    }
+
+    public static CheckoutMetadataDTOMatcher matchesExpectedCheckoutMetadataDTO(CheckoutMetadataDTO expCheckoutMetadataDTO) {
+        return new CheckoutMetadataDTOMatcher(expCheckoutMetadataDTO);
     }
 
     @Override
@@ -23,10 +27,5 @@ public class CheckoutMetadataDTOMatcher extends BaseMatcher<CheckoutMetadataDTO>
     @Override
     public void describeTo(Description description) {
         description.appendText("matching a CheckoutMetadataDTO");
-    }
-
-    @Factory
-    public static CheckoutMetadataDTOMatcher matchesExpectedCheckoutMetadataDTO(CheckoutMetadataDTO expCheckoutMetadataDTO) {
-        return new CheckoutMetadataDTOMatcher(expCheckoutMetadataDTO);
     }
 }

@@ -6,13 +6,12 @@ import com.axiell.authinfo.Patron;
 import com.axiell.ehub.provider.IContentProviderDataAccessorFacade;
 import com.axiell.authinfo.AuthInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Default implementation of the {@link IIssueBusinessController}.
- */
+@Component
 public class IssueBusinessController implements IIssueBusinessController {
 
     @Autowired

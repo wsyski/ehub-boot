@@ -1,0 +1,9 @@
+{
+    "loanId": "newLmsLoanId",
+    "recordId": "lmsRecordId",
+    "dueDate": "2016-01-30T23:00:00Z",
+    "fee": {
+        "currency": "SEK",
+        "amount": 10
+    }
+}
