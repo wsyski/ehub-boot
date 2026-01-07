@@ -2,7 +2,6 @@ package com.axiell.ehub.security;
 
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.authinfo.ConstantAuthHeaderSecretKeyResolver;
-import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
 import org.junit.Before;
 
 public abstract class EhubAuthHeaderParserFixture {
@@ -20,12 +19,9 @@ public abstract class EhubAuthHeaderParserFixture {
 
     @Before
     public void setUpFixture() {
-        ConstantAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver = new ConstantAuthHeaderSecretKeyResolver();
-        authHeaderSecretKeyResolver.setSecretKey(SECRET_KEY);
-        authHeaderSecretKeyResolver.setExpirationTimeInSeconds(EXPIRATION_TIME_IN_SECONDS);
+        ConstantAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver = new ConstantAuthHeaderSecretKeyResolver(SECRET_KEY, EXPIRATION_TIME_IN_SECONDS, 0L);
         authHeaderSecretKeyResolver.setValidate(false);
-        underTest = new EhubAuthHeaderParser();
-        underTest.setAuthHeaderSecretKeyResolver(authHeaderSecretKeyResolver);
+        underTest = new EhubAuthHeaderParser(authHeaderSecretKeyResolver);
     }
 
 }

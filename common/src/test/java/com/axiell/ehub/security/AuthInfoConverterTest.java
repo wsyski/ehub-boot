@@ -1,6 +1,10 @@
 package com.axiell.ehub.security;
 
-import com.axiell.authinfo.*;
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.AuthInfoConverter;
+import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.InvalidAuthorizationHeaderSignatureRuntimeException;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.EhubError;
 import com.axiell.ehub.EhubException;
 import com.axiell.ehub.EhubRuntimeException;
@@ -44,14 +48,11 @@ public class AuthInfoConverterTest {
 
     @Before
     public void setUpAuthInfoResolver() {
-        underTest = new AuthInfoConverter();
         given(authInfoSecretKeyResolver.getSecretKey(any())).willReturn(SECRET_KEY);
         given(authInfoSecretKeyResolver.isValidate()).willReturn(true);
         given(authInfoSecretKeyResolver.getExpirationTimeInSeconds(any())).willReturn(0L);
-        ehubAuthHeaderParser = new EhubAuthHeaderParser();
-        ehubAuthHeaderParser.setAuthHeaderSecretKeyResolver(authInfoSecretKeyResolver);
-        underTest.setDefaultScheme(EHUB_SCHEME);
-        underTest.setAuthHeaderParsers(Collections.singletonMap(EHUB_SCHEME, ehubAuthHeaderParser));
+        ehubAuthHeaderParser = new EhubAuthHeaderParser(authInfoSecretKeyResolver);
+        underTest = new AuthInfoConverter(Collections.singletonMap(EHUB_SCHEME, ehubAuthHeaderParser), EHUB_SCHEME);
     }
 
     @Test

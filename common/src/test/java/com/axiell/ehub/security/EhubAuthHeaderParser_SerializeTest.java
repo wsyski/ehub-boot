@@ -1,6 +1,10 @@
 package com.axiell.ehub.security;
 
-import com.axiell.authinfo.*;
+import com.axiell.authinfo.AbstractAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.MissingSecretKeyRuntimeException;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.EhubException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -69,7 +73,7 @@ public class EhubAuthHeaderParser_SerializeTest extends EhubAuthHeaderParserFixt
     @Test(expected = MissingSecretKeyRuntimeException.class)
     public void testMissingSecretKey() {
         AuthInfo authInfo = new AuthInfo.Builder().ehubConsumerId(Long.MAX_VALUE).build();
-        underTest.setAuthHeaderSecretKeyResolver(new NullAuthHeaderSecretKeyResolver());
+        underTest = new EhubAuthHeaderParser(new NullAuthHeaderSecretKeyResolver());
         underTest.serialize(authInfo);
     }
 
