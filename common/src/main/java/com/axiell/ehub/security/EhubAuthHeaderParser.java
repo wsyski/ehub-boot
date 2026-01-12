@@ -1,12 +1,22 @@
 package com.axiell.ehub.security;
 
-import com.axiell.authinfo.*;
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.authinfo.IAuthHeaderParser;
+import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
+import com.axiell.authinfo.InvalidAuthorizationHeaderSignatureRuntimeException;
+import com.axiell.authinfo.MissingOrUnparseableAuthorizationHeaderRuntimeException;
+import com.axiell.authinfo.MissingSecretKeyRuntimeException;
+import com.axiell.authinfo.Patron;
 import com.axiell.ehub.ErrorCause;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,9 +37,13 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
   private static final int FIRST_GROUP = 1;
   private static final int SECOND_GROUP = 2;
 
-  private IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
+  private final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver;
 
-  private static String getSignature(final Long ehubConsumerId, final Patron patron, final String secretKey) {
+    public EhubAuthHeaderParser(IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
+        this.authHeaderSecretKeyResolver = authHeaderSecretKeyResolver;
+    }
+
+    private static String getSignature(final Long ehubConsumerId, final Patron patron, final String secretKey) {
     if (StringUtils.isBlank(secretKey)) {
       throw new MissingSecretKeyRuntimeException();
     }
@@ -184,8 +198,8 @@ public class EhubAuthHeaderParser implements IAuthHeaderParser {
     return claimJoiner.toString();
   }
 
-  @Required
-  public void setAuthHeaderSecretKeyResolver(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
-    this.authHeaderSecretKeyResolver = authHeaderSecretKeyResolver;
-  }
+//  @Required
+//  public void setAuthHeaderSecretKeyResolver(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
+//    this.authHeaderSecretKeyResolver = authHeaderSecretKeyResolver;
+//  }
 }
