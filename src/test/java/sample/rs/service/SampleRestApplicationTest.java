@@ -33,7 +33,7 @@ public class SampleRestApplicationTest {
     private int port;
     @Test
     public void testHelloRequest() throws Exception {
-        WebClient wc = WebClient.create("http://localhost:" + port + "/services/helloservice");
+        WebClient wc = WebClient.create("http://localhost:" + port + "/api");
         wc.accept("text/plain");
         
         // HelloServiceImpl1

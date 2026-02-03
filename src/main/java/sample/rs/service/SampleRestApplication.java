@@ -68,10 +68,10 @@ public class SampleRestApplication {
         openApiFeature.setVersion("1.0.0");
         openApiFeature.setSwaggerUiConfig(
             new SwaggerUiConfig()
-                .url("/services/helloservice/openapi.json"));
+                .url("/api/openapi.json"));
         return openApiFeature;
     }
-    
+
     @Bean
     public MetricsFeature metricsFeature() {
         return new MetricsFeature(metricsProvider);

@@ -13,10 +13,10 @@ spring:
       ddl-auto: none
 
 cxf:
-  path: /services/helloservice
+  path: /api
   jaxrs:
     client:
-      address: http://localhost:8080/services/helloservice
+      address: http://localhost:8080/api
       classes-scan-packages: sample.rs.service.api
       headers:
         accept: text/plain
