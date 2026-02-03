@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: ehub
+
+  datasource:
+    driverClassName: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))
+    username: ehub1
+    password: eehub1
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+cxf:
+  path: /services/helloservice
+  jaxrs:
+    client:
+      address: http://localhost:8080/services/helloservice
+      classes-scan-packages: sample.rs.service.api
+      headers:
+        accept: text/plain
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
