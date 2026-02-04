@@ -66,7 +66,7 @@ public class EhubApplication {
                 + " with Spring Boot. This demo has two JAX-RS class resources being"
                 + " deployed in a single JAX-RS endpoint.");
         openApiFeature.setVersion("1.0.0");
-        SwaggerUiConfig swaggerUiConfig = new SwaggerUiConfig().url("/api/openapi.json").queryConfigEnabled(true);
+        SwaggerUiConfig swaggerUiConfig = new SwaggerUiConfig().url("/api/openapi.json").queryConfigEnabled(false);
         openApiFeature.setSwaggerUiConfig(swaggerUiConfig);
         return openApiFeature;
     }
