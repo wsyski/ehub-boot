@@ -1,3 +1,15 @@
+server:
+  port: ${SERVICE_PORT:16518}
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+info:
+  component: "@project.name@"        #getting service name
+  description: "@project.description@" #getting service description
+  version: "@project.version@"        #getting the service version
+
 spring:
   application:
     name: ehub
@@ -16,10 +28,13 @@ cxf:
   path: /api
   jaxrs:
     client:
-      address: http://localhost:8080/api
+      address: http://localhost:16518/api
       classes-scan-packages: sample.rs.service.api
       headers:
         accept: text/plain
+
+logging:
+  config: classpath:log4j2-default.xml
 
 management:
   endpoints:

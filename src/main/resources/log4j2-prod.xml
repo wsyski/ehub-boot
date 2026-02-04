@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Configuration strict="true" status="ERROR">
+    <Appenders>
+        <RollingFile
+                name="FILE"
+                fileName="${sys:LOG_PATH}/arena-ehub.log"
+                filePattern="${sys:LOG_PATH}/arena-ehub.%d{yyyy-MM-dd}.%i.log.gz"
+                ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="32 MB" />
+                <TimeBasedTriggeringPolicy interval="24" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Logger name="com.axiell" level="INFO" additivity="false">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="org.springframework" level="ERROR" additivity="false">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Logger name="org.apache.cxf" level="ERROR" additivity="false">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>

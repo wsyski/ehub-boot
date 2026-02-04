@@ -1,0 +1,6 @@
+debug: true
+
+logging:
+  level:
+    root: INFO
+    com.axiell: DEBUG

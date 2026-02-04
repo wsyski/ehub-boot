@@ -1,0 +1,6 @@
+debug: true
+
+logging:
+  file:
+    path: ${federation.basepath}/logs
+  config: classpath:log4j2-prod.xml
