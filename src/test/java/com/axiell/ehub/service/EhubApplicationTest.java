@@ -18,6 +18,7 @@
  */
 package com.axiell.ehub.service;
 
+import com.axiell.ehub.controller.EhubApplication;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,22 +33,17 @@ public class EhubApplicationTest {
     @LocalServerPort
     private int port;
     @Test
-    public void testHelloRequest() throws Exception {
+    public void testHelloRequest()  {
         WebClient wc = WebClient.create("http://localhost:" + port + "/api");
         wc.accept("text/plain");
 
         // HelloServiceImpl1
-        wc.path("sayHello").path("ApacheCxfUser");
+        wc.path("v5.0/hello/sayHello").path("wos");
         String greeting = wc.get(String.class);
-        assertEquals("Hello ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting);
+        assertEquals("Hello wos, Welcome to CXF RS Spring Boot World!!!", greeting);
 
         // Reverse to the starting URI
         wc.back(true);
-
-        // HelloServiceImpl2
-        wc.path("sayHello2").path("ApacheCxfUser");
-        greeting = wc.get(String.class);
-        assertEquals("Hello2 ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting);
     }
 
 }

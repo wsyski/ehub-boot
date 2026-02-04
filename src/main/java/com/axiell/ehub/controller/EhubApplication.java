@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -16,9 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.axiell.ehub.service;
-import java.util.Arrays;
+package com.axiell.ehub.controller;
 
+import com.axiell.ehub.controller.external.RootResource;
+import com.axiell.ehub.controller.external.v5_0.V5_0_Resource;
+import com.axiell.ehub.controller.external.v5_0.hello.HelloResource;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -32,8 +34,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.axiell.ehub.service.hello1.HelloServiceImpl1;
-import com.axiell.ehub.service.hello2.HelloServiceImpl2;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class EhubApplication {
@@ -50,7 +51,7 @@ public class EhubApplication {
     public Server rsServer() {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
-        endpoint.setServiceBeans(Arrays.<Object>asList(new HelloServiceImpl1(), new HelloServiceImpl2()));
+        endpoint.setServiceBeans(Arrays.<Object>asList(new RootResource()));
         endpoint.setAddress("/");
         endpoint.setFeatures(Arrays.asList(createOpenApiFeature(), metricsFeature(), new LoggingFeature()));
         return endpoint.create();

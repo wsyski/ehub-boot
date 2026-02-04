@@ -29,7 +29,7 @@ cxf:
   jaxrs:
     client:
       address: http://localhost:16518/api
-      classes-scan-packages: com.axiell.ehub.service.api
+      classes-scan-packages: com.axiell.ehub.controller.external
       headers:
         accept: text/plain
 

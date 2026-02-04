@@ -149,7 +149,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.axiell.ehub.service.EhubApplication</mainClass>
+                    <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -198,7 +198,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>com.axiell.ehub.service.EhubApplication</mainClass>
+                            <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

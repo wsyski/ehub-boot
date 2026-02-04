@@ -18,7 +18,7 @@
  */
 package com.axiell.ehub.client;
 
-import org.apache.cxf.jaxrs.client.WebClient;
+import com.axiell.ehub.controller.external.IRootResource;
 import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
 import org.apache.cxf.jaxrs.client.spring.EnableJaxRsWebClient;
 import org.springframework.boot.CommandLineRunner;
@@ -26,8 +26,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-
-import com.axiell.ehub.service.api.HelloService;
 
 @SpringBootApplication
 @EnableJaxRsWebClient
@@ -38,25 +36,15 @@ public class EhubClientApplication {
             .web(WebApplicationType.NONE)
             .run(args);
     }
+
     @Bean
-    CommandLineRunner initWebClientRunner(final WebClient webClient) {
+    CommandLineRunner initProxyClientRunner(final IRootResource rootResource) {
 
         return new CommandLineRunner() {
 
             @Override
             public void run(String... runArgs) throws Exception {
-                System.out.println(webClient.path("sayHello/ApacheCxfWebClientUser").get(String.class));
-            }
-        };
-    }
-    @Bean
-    CommandLineRunner initProxyClientRunner(final HelloService client) {
-
-        return new CommandLineRunner() {
-
-            @Override
-            public void run(String... runArgs) throws Exception {
-                System.out.println(client.sayHello("ApacheCxfProxyUser"));
+                System.out.println(rootResource.getIV5_0_Resource().getHelloResource().sayHello("wos"));
             }
         };
     }
