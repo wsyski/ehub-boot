@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package sample.rs.service;
+package com.axiell.ehub.service;
 import java.util.Arrays;
 
 import org.apache.cxf.Bus;
@@ -32,18 +32,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import sample.rs.service.hello1.HelloServiceImpl1;
-import sample.rs.service.hello2.HelloServiceImpl2;
+import com.axiell.ehub.service.hello1.HelloServiceImpl1;
+import com.axiell.ehub.service.hello2.HelloServiceImpl2;
 
 @SpringBootApplication
-public class SampleRestApplication {
+public class EhubApplication {
     @Autowired
     private Bus bus;
     @Autowired
     private MetricsProvider metricsProvider;
 
     public static void main(String[] args) {
-        SpringApplication.run(SampleRestApplication.class, args);
+        SpringApplication.run(EhubApplication.class, args);
     }
 
     @Bean
@@ -66,9 +66,8 @@ public class SampleRestApplication {
                 + " with Spring Boot. This demo has two JAX-RS class resources being"
                 + " deployed in a single JAX-RS endpoint.");
         openApiFeature.setVersion("1.0.0");
-        openApiFeature.setSwaggerUiConfig(
-            new SwaggerUiConfig()
-                .url("/api/openapi.json"));
+        SwaggerUiConfig swaggerUiConfig = new SwaggerUiConfig().url("/api/openapi.json").queryConfigEnabled(true);
+        openApiFeature.setSwaggerUiConfig(swaggerUiConfig);
         return openApiFeature;
     }
 

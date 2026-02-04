@@ -16,14 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package sample.rs.service.hello1;
+package com.axiell.ehub.service.hello2;
 
-import sample.rs.service.api.HelloService;
+import jakarta.ws.rs.Path;
 
-public class HelloServiceImpl1 implements HelloService {
+import com.axiell.ehub.service.api.HelloService;
+
+@Path("/sayHello2")
+public class HelloServiceImpl2 implements HelloService {
 
     public String sayHello(String a) {
-        return "Hello " + a + ", Welcome to CXF RS Spring Boot World!!!";
+        return "Hello2 " + a + ", Welcome to CXF RS Spring Boot World!!!";
     }
 
 }

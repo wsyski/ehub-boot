@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package sample.rs.service;
+package com.axiell.ehub.service;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = SampleRestApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
-public class SampleRestApplicationTest {
+@SpringBootTest(classes = EhubApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+public class EhubApplicationTest {
 
     @LocalServerPort
     private int port;
@@ -35,19 +35,19 @@ public class SampleRestApplicationTest {
     public void testHelloRequest() throws Exception {
         WebClient wc = WebClient.create("http://localhost:" + port + "/api");
         wc.accept("text/plain");
-        
+
         // HelloServiceImpl1
         wc.path("sayHello").path("ApacheCxfUser");
         String greeting = wc.get(String.class);
-        assertEquals("Hello ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting); 
- 
+        assertEquals("Hello ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting);
+
         // Reverse to the starting URI
         wc.back(true);
 
         // HelloServiceImpl2
         wc.path("sayHello2").path("ApacheCxfUser");
         greeting = wc.get(String.class);
-        assertEquals("Hello2 ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting); 
+        assertEquals("Hello2 ApacheCxfUser, Welcome to CXF RS Spring Boot World!!!", greeting);
     }
 
 }

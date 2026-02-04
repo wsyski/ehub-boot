@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package sample.rs.client;
+package com.axiell.ehub.client;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
@@ -27,14 +27,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 
-import sample.rs.service.api.HelloService;
+import com.axiell.ehub.service.api.HelloService;
 
 @SpringBootApplication
 @EnableJaxRsWebClient
 @EnableJaxRsProxyClient
-public class SampleRestClientApplication {
+public class EhubClientApplication {
     public static void main(String[] args) {
-        new SpringApplicationBuilder(SampleRestClientApplication.class)
+        new SpringApplicationBuilder(EhubClientApplication.class)
             .web(WebApplicationType.NONE)
             .run(args);
     }

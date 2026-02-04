@@ -16,17 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package sample.rs.service.hello2;
-
+package com.axiell.ehub.service.api;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
-import sample.rs.service.api.HelloService;
+import org.springframework.stereotype.Service;
 
-@Path("/sayHello2")
-public class HelloServiceImpl2 implements HelloService {
+@Path("/sayHello")
+@Service
+public interface HelloService {
 
-    public String sayHello(String a) {
-        return "Hello2 " + a + ", Welcome to CXF RS Spring Boot World!!!";
-    }
+    @GET
+    @Path("/{a}")
+    @Produces(MediaType.TEXT_PLAIN)
+    String sayHello(@PathParam("a") String a);
 
 }
