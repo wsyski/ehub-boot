@@ -61,12 +61,7 @@ public class EhubApplication {
     public OpenApiFeature createOpenApiFeature() {
         final OpenApiFeature openApiFeature = new OpenApiFeature();
         openApiFeature.setPrettyPrint(true);
-        openApiFeature.setTitle("Spring Boot CXF REST Application");
-        openApiFeature.setContactName("The Apache CXF team");
-        openApiFeature.setDescription("This sample project demonstrates how to use CXF JAX-RS services"
-                + " with Spring Boot. This demo has two JAX-RS class resources being"
-                + " deployed in a single JAX-RS endpoint.");
-        openApiFeature.setVersion("1.0.0");
+        openApiFeature.setPropertiesLocation("/swagger.properties");
         SwaggerUiConfig swaggerUiConfig = new SwaggerUiConfig().url("/api/openapi.json").queryConfigEnabled(false);
         openApiFeature.setSwaggerUiConfig(swaggerUiConfig);
         return openApiFeature;
