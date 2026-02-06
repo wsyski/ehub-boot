@@ -16,8 +16,10 @@
     <version>5.0.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>17</java.version>
         <authinfo.version>5.12.0-SNAPSHOT</authinfo.version>
+        <cxf.version>4.1.4</cxf.version>
+        <java.version>17</java.version>
+        <jackson.version>2.21.0</jackson.version>
         <jcabi-manifests.version>2.2.0</jcabi-manifests.version>
     </properties>
 
@@ -67,6 +69,20 @@
                 <groupId>com.jcabi</groupId>
                 <artifactId>jcabi-manifests</artifactId>
                 <version>${jcabi-manifests.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-bom</artifactId>
+                <version>${cxf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
