@@ -1,16 +1,16 @@
 <!--
-         _            _       _    _                  _       
-        /\ \         / /\    / /\ /\_\               / /\     
-       /  \ \       / / /   / / // / /         _    / /  \    
-      / /\ \ \     / /_/   / / / \ \ \__      /\_\ / / /\ \   
-     / / /\ \_\   / /\ \__/ / /   \ \___\    / / // / /\ \ \  
-    / /_/_ \/_/  / /\ \___\/ /     \__  /   / / // / /\ \_\ \ 
+         _            _       _    _                  _
+        /\ \         / /\    / /\ /\_\               / /\
+       /  \ \       / / /   / / // / /         _    / /  \
+      / /\ \ \     / /_/   / / / \ \ \__      /\_\ / / /\ \
+     / / /\ \_\   / /\ \__/ / /   \ \___\    / / // / /\ \ \
+    / /_/_ \/_/  / /\ \___\/ /     \__  /   / / // / /\ \_\ \
    / /____/\    / / /\/___/ /      / / /   / / // / /\ \ \___\
   / /\____\/   / / /   / / /      / / /   / / // / /  \ \ \__/
- / / /______  / / /   / / /      / / /___/ / // / /____\_\ \  
-/ / /_______\/ / /   / / /      / / /____\/ // / /__________\ 
-\/__________/\/_/    \/_/       \/_________/ \/_____________/ 
-                                                              
+ / / /______  / / /   / / /      / / /___/ / // / /____\_\ \
+/ / /_______\/ / /   / / /      / / /____\/ // / /__________\
+\/__________/\/_/    \/_/       \/_________/ \/_____________/
+
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
@@ -23,7 +23,22 @@
 <body>
     <h1>Axiell eHUB</h1>
     <h4>
-    	<a title="Administration" href="admin/">Administration</a>
+        <a title="Services" href="api/services">Services</a>
+    </h4>
+    <h4>
+    	<a title="Administration" href="admin">Administration</a>
+    </h4>
+    <h4>
+        <a title="Actuator Health" href="/actuator/health">Actuator Health</a>
+    </h4>
+    <h4>
+        <a title="Actuator Metrics" href="/actuator/metrics">Actuator Metrics</a>
+    </h4>
+    <h4>
+        <a title="Actuator CXF Metrics" href="/actuator/metrics/cxf.server.requests">Actuator CXF Metrics</a>
+    </h4>
+    <h4>
+        <a title="Client sayHello" href="/api/v5.0/hello/sayHello/wos">Client sayHello</a>
     </h4>
     <h4>
         <a title="Documentation" href="docs/">Documentation</a>

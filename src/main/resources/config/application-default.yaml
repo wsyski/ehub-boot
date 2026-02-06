@@ -31,6 +31,8 @@ spring:
 cxf:
   path: /api
   jaxrs:
+    classes-scan-packages: com.axiell.ehub.controller.external
+
     client:
       address: http://localhost:16518/api
       classes-scan-packages: com.axiell.ehub.controller.external
