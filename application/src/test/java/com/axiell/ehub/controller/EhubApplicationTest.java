@@ -18,6 +18,7 @@
  */
 package com.axiell.ehub.controller;
 
+import com.axiell.ehub.EhubApplication;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

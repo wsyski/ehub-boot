@@ -31,6 +31,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-local-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc17</artifactId>
             <scope>runtime</scope>
@@ -110,7 +116,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
+                    <mainClass>com.axiell.ehub.EhubApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -148,7 +154,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
+                            <mainClass>com.axiell.ehub.EhubApplication</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>

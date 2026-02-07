@@ -16,11 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.axiell.ehub.controller;
+package com.axiell.ehub;
 
 import com.axiell.ehub.controller.external.RootResource;
-import com.axiell.ehub.controller.external.v5_0.V5_0_Resource;
-import com.axiell.ehub.controller.external.v5_0.hello.HelloResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
@@ -34,12 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.axiell.ehub")
 public class EhubApplication {
     @Autowired
     private Bus bus;
