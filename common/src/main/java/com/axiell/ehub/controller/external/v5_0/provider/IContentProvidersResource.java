@@ -2,13 +2,16 @@ package com.axiell.ehub.controller.external.v5_0.provider;
 
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProviderDTO;
-import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProvidersDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import org.springframework.stereotype.Service;
