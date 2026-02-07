@@ -4,9 +4,10 @@
 package com.axiell.ehub;
 
 import com.axiell.ehub.user.LoginPanel;
-import com.giffing.wicket.spring.boot.context.scan.WicketHomePage;
 
-@WicketHomePage
+/**
+ * The home page of the {@link EhubAdminApplication}.
+ */
 public class IndexPage extends AbstractBasePage {
 
     /**

@@ -48,17 +48,3 @@ management:
       exposure:
         include: '*'
 
-wicket:
-  core:
-    settings:
-      general:
-        configuration-type: development
-      debug:
-        enabled: true
-        ajaxDebugModeEnabled: true
-        component-use-check: true
-        development-utilities-enabled: true
-
-  external:
-    beanvalidation:
-      enabled: true

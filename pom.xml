@@ -22,7 +22,7 @@
         <jackson.version>2.21.0</jackson.version>
         <jcabi-manifests.version>2.2.0</jcabi-manifests.version>
         <oracle.version>23.6.0.24.10</oracle.version>
-        <wicket.version>10.6.0</wicket.version>
+        <wicket.version>10.8.0</wicket.version>
         <swagger.ui.version>5.31.0</swagger.ui.version>
     </properties>
 
@@ -87,12 +87,38 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-extensions</artifactId>
+                <artifactId>wicket-core</artifactId>
+                <version>${wicket.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket-request</artifactId>
                 <version>${wicket.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.wicket</groupId>
                 <artifactId>wicket-bean-validation</artifactId>
+                <version>${wicket.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket-extensions</artifactId>
+                <version>${wicket.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-codec</groupId>
+                        <artifactId>commons-codec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-httpclient</groupId>
+                        <artifactId>commons-httpclient</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.wicket</groupId>
+                <artifactId>wicket-spring</artifactId>
                 <version>${wicket.version}</version>
             </dependency>
             <dependency>
