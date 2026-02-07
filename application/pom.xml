@@ -18,8 +18,16 @@
     <dependencies>
         <dependency>
             <groupId>com.axiell.ehub</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>ehub-common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-common</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

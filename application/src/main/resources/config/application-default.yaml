@@ -6,9 +6,9 @@ server:
       force: true
 
 info:
-  component: "@project.name@"        #getting service name
-  description: "@project.description@" #getting service description
-  version: "@project.version@"        #getting the service version
+  component: "@project.name@"        #getting controller name
+  description: "@project.description@" #getting controller description
+  version: "@project.version@"        #getting the controller version
 
 spring:
   application:

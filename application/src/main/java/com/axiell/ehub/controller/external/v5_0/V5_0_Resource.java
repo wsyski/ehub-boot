@@ -10,10 +10,12 @@ import jakarta.ws.rs.Path;
 
 public class V5_0_Resource implements IV5_0_Resource {
 
+    @Override
     public IContentProvidersResource contentProviders() {
         return new ContentProvidersResource();
     }
 
+    @Override
     public ICheckoutsResource checkouts() {
         return new CheckoutsResource();
     }

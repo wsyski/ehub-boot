@@ -21,6 +21,7 @@ package com.axiell.ehub.controller;
 import com.axiell.ehub.controller.external.RootResource;
 import com.axiell.ehub.controller.external.v5_0.V5_0_Resource;
 import com.axiell.ehub.controller.external.v5_0.hello.HelloResource;
+import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -33,10 +34,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Arrays;
 
 @SpringBootApplication
+@ComponentScan(basePackages = "com.axiell.ehub")
 public class EhubApplication {
     @Autowired
     private Bus bus;
@@ -48,12 +51,13 @@ public class EhubApplication {
     }
 
     @Bean
-    public Server rsServer() {
+    public Server rsServer(final AuthInfoParamConverterProvider authInfoParamConverterProvider) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
         endpoint.setServiceBeans(Arrays.<Object>asList(new RootResource()));
         endpoint.setAddress("/");
-        endpoint.setFeatures(Arrays.asList(createOpenApiFeature(), metricsFeature(), new LoggingFeature()));
+        endpoint.setProviders(Arrays.<Object>asList(authInfoParamConverterProvider));
+        endpoint.setFeatures(Arrays.asList(createOpenApiFeature(), metricsFeature(), loggingFeature()));
         return endpoint.create();
     }
 
@@ -70,5 +74,10 @@ public class EhubApplication {
     @Bean
     public MetricsFeature metricsFeature() {
         return new MetricsFeature(metricsProvider);
+    }
+
+    @Bean
+    public LoggingFeature loggingFeature() {
+        return new LoggingFeature();
     }
 }
