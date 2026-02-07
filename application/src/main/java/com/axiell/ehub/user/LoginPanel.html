@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+    <body>
+        <wicket:panel>
+        	<div wicket:id="feedback"></div>
+        	<form wicket:id="loginForm">
+        		<div>
+        			<label wicket:for="name">
+        				<wicket:message key="fldName.label"/>
+        			</label>
+        			<input wicket:id="name" type="text" wicket:message="title:fldName.title"></input>
+        		</div>
+        		<div>
+        			<label wicket:for="clearPassword">
+        				<wicket:message key="fldPassword.label"/>
+        			</label>
+        			<input wicket:id="clearPassword" type="password" wicket:message="title:fldPassword.title"></input>
+        		</div>
+        		<div>
+        			<input wicket:id="submit" type="submit" wicket:message="value:btnLogin.label,title:btnLogin.title"></input>
+        		</div>
+        	</form>
+        </wicket:panel>
+    </body>
+</html>

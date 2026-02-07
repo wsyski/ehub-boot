@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:panel>
+    <form wicket:id="formPlatform">
+        <div>
+            <input wicket:id="fldId" type="hidden"></input>
+            <label wicket:for="fldName">
+                <wicket:message key="fldName.label"/>
+            </label>
+            <input wicket:id="fldName" type="text" wicket:message="title:fldName.title"></input>
+        </div>
+        <div>
+            <input class="btn btn-primary" wicket:id="btnSubmit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
+        </div>
+    </form>
+</wicket:panel>
+</body>
+</html>

@@ -1,27 +1,36 @@
 package com.axiell.ehub.config;
 
-import com.axiell.authinfo.ConstantAuthHeaderSecretKeyResolver;
 import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
+import com.axiell.ehub.consumer.IConsumerBusinessController;
+import com.axiell.ehub.security.EhubAuthHeaderSecretKeyResolver;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource("classpath:ehub.properties")
 public class SecretKeyResolverConfig {
-    public static final String SECRET_KEY = "c2VjcmV0S2V5MTM5NDA=";
-    public static final long TOKEN_EXPIRATION_TIME_IN_SECONDS = 0L;
-    public static final long TOKEN_LEEWAY_IN_SECONDS = 3600L;
-    public static final boolean IS_TOKEN_DEBUG = true;
-    public static final boolean IS_TOKEN_VALIDATE = true;
+    @Value("${auth.expirationTimeInSeconds}")
+    private int expirationTimeInSeconds;
+    @Value("${auth.leewayInSeconds}")
+    private int leewayInSeconds;
+    @Value("${auth.debug}")
+    private boolean debug;
+    @Value("${auth.validate}")
+    private boolean validate;
 
     @Bean
-    public IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver() {
-        ConstantAuthHeaderSecretKeyResolver resolver = new ConstantAuthHeaderSecretKeyResolver(
-                SECRET_KEY,
-                TOKEN_EXPIRATION_TIME_IN_SECONDS,
-                TOKEN_LEEWAY_IN_SECONDS
-        );
-        resolver.setValidate(IS_TOKEN_VALIDATE);
-        resolver.setDebug(IS_TOKEN_DEBUG);
+    public IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver(
+            IConsumerBusinessController consumerBusinessController
+
+    ) {
+        EhubAuthHeaderSecretKeyResolver resolver = new EhubAuthHeaderSecretKeyResolver();
+        resolver.setConsumerBusinessController(consumerBusinessController);
+        resolver.setValidate(validate);
+        resolver.setDebug(debug);
+        resolver.setExpirationTimeInSeconds(expirationTimeInSeconds);
+        resolver.setLeewayInSeconds(leewayInSeconds);
         return resolver;
     }
 }
