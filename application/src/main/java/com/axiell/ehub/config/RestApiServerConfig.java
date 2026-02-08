@@ -1,5 +1,6 @@
 package com.axiell.ehub.config;
 
+import com.axiell.ehub.controller.external.IRootResource;
 import com.axiell.ehub.controller.external.RootResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
@@ -21,6 +22,7 @@ public class RestApiServerConfig {
 
     @Bean
     public Server restApiServer(
+            IRootResource rootResource,
             Bus bus,
             AuthInfoParamConverterProvider authInfoParamConverterProvider,
             JsonProvider jsonProvider,
@@ -54,6 +56,10 @@ public class RestApiServerConfig {
         return new MetricsFeature(metricsProvider);
     }
 
+    @Bean
+    public IRootResource rootResource() {
+        return new RootResource();
+    }
 }
 
 
