@@ -9,12 +9,13 @@ import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.ext.Provider;
 import org.springframework.stereotype.Component;
 
 @Provider
-@Consumes({"application/json", "application/*+json", "text/json"})
-@Produces({"application/json", "application/*+json", "text/json"})
+@Consumes(MediaType.WILDCARD) // NOTE: required to support "non-standard" JSON variants
+@Produces({MediaType.APPLICATION_JSON, "text/json", MediaType.WILDCARD})
 public class JsonProvider extends JacksonJsonProvider {
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .setDateFormat(new ISO8601DateFormat())

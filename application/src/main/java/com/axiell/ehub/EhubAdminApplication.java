@@ -4,12 +4,12 @@
 package com.axiell.ehub;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
 /**
@@ -26,7 +26,7 @@ public final class EhubAdminApplication extends WebApplication {
     }
 
     /**
-     * @see org.apache.wicket.protocol.http.WebApplication#init()
+     * @see WebApplication#init()
      */
     @Override
     protected void init() {
@@ -38,7 +38,7 @@ public final class EhubAdminApplication extends WebApplication {
     }
 
     /**
-     * @see org.apache.wicket.protocol.http.WebApplication#newSession(org.apache.wicket.request.Request, org.apache.wicket.request.Response)
+     * @see WebApplication#newSession(Request, Response)
      */
     @Override
     public Session newSession(Request request, Response response) {

@@ -13,7 +13,7 @@ public class IndexPage extends AbstractBasePage {
     /**
      * Constructs a new {@link IndexPage}.
      */
-    public IndexPage() {
+    public IndexPage() {    
         final LoginPanel loginPanel = new LoginPanel("login");
         add(loginPanel);
     }

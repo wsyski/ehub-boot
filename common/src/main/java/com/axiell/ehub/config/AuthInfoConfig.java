@@ -5,7 +5,6 @@ import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
 import com.axiell.authinfo.jwt.JwtAuthHeaderParser;
 import com.axiell.ehub.controller.provider.converter.AuthInfoConverter;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
-import com.axiell.ehub.security.EhubAuthHeaderParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,19 +17,13 @@ import java.util.Map;
 public class AuthInfoConfig {
 
     @Bean
-    public EhubAuthHeaderParser ehubAuthHeaderParser(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
-        return new EhubAuthHeaderParser(authHeaderSecretKeyResolver);
-    }
-
-    @Bean
     public JwtAuthHeaderParser jwtAuthHeaderParser(final IAuthHeaderSecretKeyResolver authHeaderSecretKeyResolver) {
         return new JwtAuthHeaderParser(authHeaderSecretKeyResolver);
     }
 
     @Bean
-    public AuthInfoConverter authInfoConverter(final EhubAuthHeaderParser ehubAuthHeaderParser, final JwtAuthHeaderParser jwtAuthHeaderParser) {
+    public AuthInfoConverter authInfoConverter(final JwtAuthHeaderParser jwtAuthHeaderParser) {
         Map<String, IAuthHeaderParser> authHeaderParsers = new HashMap<>();
-        authHeaderParsers.put(EhubAuthHeaderParser.EHUB_SCHEME, ehubAuthHeaderParser);
         authHeaderParsers.put(JwtAuthHeaderParser.BEARER_SCHEME, jwtAuthHeaderParser);
         return new AuthInfoConverter(authHeaderParsers, IAuthHeaderParser.BEARER_SCHEME);
     }
