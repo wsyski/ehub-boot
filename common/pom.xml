@@ -36,6 +36,11 @@
             <artifactId>cxf-rt-rs-service-description-openapi-v3</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-features-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!--
         <dependency>

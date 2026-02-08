@@ -54,11 +54,6 @@ public class RestApiServerConfig {
         return new MetricsFeature(metricsProvider);
     }
 
-    @Bean
-    public LoggingFeature loggingFeature() {
-        return new LoggingFeature();
-    }
-
 }
 
 
