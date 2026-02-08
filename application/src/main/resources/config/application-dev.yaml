@@ -4,5 +4,5 @@ logging:
   level:
     root: INFO
     com.axiell: DEBUG
-    org.apache.cxf: DEBUG
-    io.swagger: DEBUG
+    org.apache.cxf: INFO
+    io.swagger: INFO

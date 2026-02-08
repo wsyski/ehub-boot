@@ -16,9 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.axiell.ehub.service;
+package com.axiell.ehub;
 
-import com.axiell.ehub.controller.EhubApplication;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
