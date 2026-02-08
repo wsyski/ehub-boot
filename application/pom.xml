@@ -10,16 +10,24 @@
     <artifactId>application</artifactId>
     <name>${project.artifactId}</name>
 
-    <properties>
-        <cxf.version>4.1.4</cxf.version>
-        <oracle.version>23.6.0.24.10</oracle.version>
-        <swagger.ui.version>5.31.0</swagger.ui.version>
-        <wicket-spring-boot-starter.version>4.1.1</wicket-spring-boot-starter.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.axiell.ehub</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>ehub-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-common</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-local-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -33,7 +41,7 @@
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ucp17</artifactId>
             <version>${oracle.version}</version>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -45,26 +53,47 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>swagger-ui</artifactId>
-            <version>${swagger.ui.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-rs-service-description-openapi-v3</artifactId>
-            <version>${cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-features-metrics</artifactId>
-            <version>${cxf.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-features-logging</artifactId>
-            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-request</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-bean-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-extensions</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,13 +105,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.giffing.wicket.spring.boot.starter</groupId>
-            <artifactId>wicket-spring-boot-starter</artifactId>
-            <version>${wicket-spring-boot-starter.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
@@ -98,25 +120,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
+                    <mainClass>com.axiell.ehub.EhubApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -154,7 +166,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>com.axiell.ehub.controller.EhubApplication</mainClass>
+                            <mainClass>com.axiell.ehub.EhubApplication</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
