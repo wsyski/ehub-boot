@@ -1,8 +1,14 @@
 debug: true
 
+spring:
+  mvc:
+    log-request-details: true
+
 logging:
   level:
-    root: INFO
+    root: WARN
     com.axiell: DEBUG
     org.apache.cxf: INFO
-    io.swagger: INFO
+    org.apache.wicket: DEBUG
+    io.swagger: WARN
+    org.springframework.web: WARN
