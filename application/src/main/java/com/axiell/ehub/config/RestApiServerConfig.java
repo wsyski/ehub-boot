@@ -4,6 +4,8 @@ import com.axiell.ehub.controller.external.IRootResource;
 import com.axiell.ehub.controller.external.RootResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
+import com.axiell.ehub.controller.provider.mapper.EhubRuntimeExceptionMapper;
+import com.axiell.ehub.controller.provider.mapper.RuntimeExceptionMapper;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -25,6 +27,8 @@ public class RestApiServerConfig {
             IRootResource rootResource,
             Bus bus,
             AuthInfoParamConverterProvider authInfoParamConverterProvider,
+            EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper,
+            RuntimeExceptionMapper runtimeExceptionMapper,
             JsonProvider jsonProvider,
             OpenApiFeature openApiFeature,
             MetricsFeature metricsFeature,
@@ -34,9 +38,19 @@ public class RestApiServerConfig {
         endpoint.setBus(bus);
         endpoint.setServiceBeans(Arrays.<Object>asList(rootResource));
         endpoint.setAddress("/");
-        endpoint.setProviders(Arrays.asList(authInfoParamConverterProvider, jsonProvider));
+        endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jsonProvider));
         endpoint.setFeatures(Arrays.asList(openApiFeature, metricsFeature, loggingFeature));
         return endpoint.create();
+    }
+
+    @Bean
+    public RuntimeExceptionMapper runtimeExceptionMapper() {
+        return new RuntimeExceptionMapper();
+    }
+
+    @Bean
+    public EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper() {
+        return new EhubRuntimeExceptionMapper();
     }
 
     @Bean
