@@ -18,6 +18,11 @@ public class ContentProvidersResource implements IContentProvidersResource {
     }
 
     @Override
+    public ContentProvidersDTO root() {
+        return AliasMappings.fromAliasMappingCollection(aliasBusinessController.getAliasMappings()).toContentProvidersDTO();
+    }
+
+    @Override
     public ContentProviderDTO getContentProvider(final AuthInfo authInfo, final String contentProviderAlias) {
         AliasMappings aliasMappings = AliasMappings.fromAliasMappingCollection(aliasBusinessController.getAliasMappings());
         ContentProvidersDTO contentProvidersDTO = aliasMappings.toContentProvidersDTO();

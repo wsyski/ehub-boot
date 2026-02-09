@@ -30,6 +30,7 @@
         <module>common</module>
         <module>local-core</module>
         <module>application</module>
+        <module>remote</module>
     </modules>
 
     <dependencies>

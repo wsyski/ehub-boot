@@ -2,6 +2,7 @@ package com.axiell.ehub.controller.external.v5_0.provider;
 
 import com.axiell.authinfo.AuthInfo;
 import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProviderDTO;
+import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProvidersDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,6 +22,19 @@ import org.springframework.stereotype.Service;
 @Produces(MediaType.APPLICATION_JSON)
 @Service
 public interface IContentProvidersResource {
+
+    @GET
+    @Operation(
+            summary = "Get content providers",
+            description = "Get content providers"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successful search operation"),
+            @ApiResponse(responseCode = "400", description = "Bad request: Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Not found: Resource not available"),
+            @ApiResponse(responseCode = "500", description = "Internal server error: Something went wrong on the server")
+    })
+    ContentProvidersDTO root();
 
     @GET
     @Path("{alias}")

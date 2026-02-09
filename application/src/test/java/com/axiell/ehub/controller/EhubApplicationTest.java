@@ -19,19 +19,39 @@
 package com.axiell.ehub.controller;
 
 import com.axiell.ehub.EhubApplication;
+import com.axiell.ehub.controller.external.IRootResource;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@EnableJaxRsProxyClient
 @SpringBootTest(classes = EhubApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EhubApplicationTest {
 
     @LocalServerPort
     private int port;
+
+    /*
+    @Bean
+    CommandLineRunner initProxyClientRunner(final IRootResource client) {
+
+        return new CommandLineRunner() {
+
+            @Override
+            public void run(String... runArgs) throws Exception {
+                System.out.println(client.getIV5_0_Resource().contentProviders().getContentProvider(null,""));
+            }
+        };
+    }
+    */
+
     @Test
     public void testHelloRequest()  {
         /*
