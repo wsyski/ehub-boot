@@ -20,22 +20,31 @@ package com.axiell.ehub.controller;
 
 import com.axiell.ehub.EhubApplication;
 import com.axiell.ehub.IEhubService;
-import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
+import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-@SpringBootTest(classes = EhubApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = EhubApplication.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class EhubApplicationTest {
 
     @LocalServerPort
     private int port;
 
+    @Value("${local.server.port}")
+    private Integer serverPort;
+
     @Autowired
     private IEhubService ehubClient;
+
+    @PostConstruct
+    private void postConstruct() {
+        String baseUrl = "http://localhost:" + serverPort + "/api/v1/";
+    }
 
     @Test
     public void validAlias() {
