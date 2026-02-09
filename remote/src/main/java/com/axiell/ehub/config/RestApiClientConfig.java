@@ -8,6 +8,7 @@ import com.axiell.ehub.controller.provider.json.JsonProvider;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.feature.Feature;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.metrics.MetricsFeature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,9 +26,13 @@ public class RestApiClientConfig {
     private String baseUri;
 
     @Bean
-    public IEhubService ehubClient(final LoggingFeature loggingFeature, final JsonProvider jsonProvider, final AuthInfoParamConverterProvider authInfoParamConverterProvider) {
+    public IEhubService ehubClient(
+            final AuthInfoParamConverterProvider authInfoParamConverterProvider,
+            final JsonProvider jsonProvider,
+            final MetricsFeature metricsFeature,
+            final LoggingFeature loggingFeature) {
         final List<?> providers = Arrays.asList(jsonProvider, authInfoParamConverterProvider);
-        final List<Feature> features = List.of(loggingFeature);
+        final List<Feature> features = List.of(loggingFeature, metricsFeature);
         IRootResource rootResource = JAXRSClientFactory.create(baseUri, IRootResource.class, providers, features, null);
         EhubClient ehubClient = new EhubClient();
         ehubClient.setRootResource(rootResource);

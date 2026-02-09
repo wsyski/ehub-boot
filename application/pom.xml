@@ -28,6 +28,13 @@
 
         <dependency>
             <groupId>com.axiell.ehub</groupId>
+            <artifactId>ehub-remote</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.axiell.ehub</groupId>
             <artifactId>ehub-local-core</artifactId>
             <version>${project.version}</version>
         </dependency>

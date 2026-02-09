@@ -2,6 +2,8 @@ package com.axiell.ehub.config;
 
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import org.apache.cxf.ext.logging.LoggingFeature;
+import org.apache.cxf.metrics.MetricsFeature;
+import org.apache.cxf.metrics.MetricsProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,5 +28,10 @@ public class ProviderConfig {
         loggingFeature.setPrettyLogging(prettyLogging);
         loggingFeature.setVerbose(verbose);
         return loggingFeature;
+    }
+
+    @Bean
+    public MetricsFeature metricsFeature(final MetricsProvider metricsProvider) {
+        return new MetricsFeature(metricsProvider);
     }
 }

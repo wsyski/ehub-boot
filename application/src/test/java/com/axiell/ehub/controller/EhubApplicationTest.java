@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,53 +19,28 @@
 package com.axiell.ehub.controller;
 
 import com.axiell.ehub.EhubApplication;
-import com.axiell.ehub.controller.external.IRootResource;
-import org.apache.cxf.jaxrs.client.WebClient;
+import com.axiell.ehub.IEhubService;
 import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@EnableJaxRsProxyClient
 @SpringBootTest(classes = EhubApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EhubApplicationTest {
 
     @LocalServerPort
     private int port;
 
-    /*
-    @Bean
-    CommandLineRunner initProxyClientRunner(final IRootResource client) {
-
-        return new CommandLineRunner() {
-
-            @Override
-            public void run(String... runArgs) throws Exception {
-                System.out.println(client.getIV5_0_Resource().contentProviders().getContentProvider(null,""));
-            }
-        };
-    }
-    */
+    @Autowired
+    private IEhubService ehubClient;
 
     @Test
-    public void testHelloRequest()  {
-        /*
-        WebClient wc = WebClient.create("http://localhost:" + port + "/api");
-        wc.accept("text/plain");
-
-        // HelloServiceImpl1
-        wc.path("v5.0/hello/sayHello").path("wos");
-        String greeting = wc.get(String.class);
-        assertEquals("Hello wos, Welcome to CXF RS Spring Boot World!!!", greeting);
-
-        // Reverse to the starting URI
-        wc.back(true);
-         */
+    public void validAlias() {
+        boolean validAlias = ehubClient.isValidAlias("test");
+        Assertions.assertEquals(false, validAlias);
     }
 
 }

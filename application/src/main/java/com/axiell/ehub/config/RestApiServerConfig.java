@@ -13,7 +13,6 @@ import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.openapi.OpenApiFeature;
 import org.apache.cxf.jaxrs.swagger.ui.SwaggerUiConfig;
 import org.apache.cxf.metrics.MetricsFeature;
-import org.apache.cxf.metrics.MetricsProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,11 +62,6 @@ public class RestApiServerConfig {
                 .queryConfigEnabled(false);
         openApiFeature.setSwaggerUiConfig(swaggerUiConfig);
         return openApiFeature;
-    }
-
-    @Bean
-    public MetricsFeature metricsFeature(MetricsProvider metricsProvider) {
-        return new MetricsFeature(metricsProvider);
     }
 
     @Bean
