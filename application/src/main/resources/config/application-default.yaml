@@ -17,16 +17,15 @@ spring:
   main:
     banner-mode: "off"
 
-
   datasource:
-    driverClassName: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))
-    username: ehub1
-    password: eehub1
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;sql.enforce_strict_size=true;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
 
 cxf:
   path: /api
@@ -37,10 +36,15 @@ cxf:
       address: http://localhost:16518/api
       classes-scan-packages: com.axiell.ehub.controller.external
       headers:
-        accept: text/plain
+        accept: application/json
 
 logging:
+  level:
+    root: WARN
+
   config: classpath:log4j2-default.xml
+  file:
+    path: ${LOG_PATH:logs}
 
 management:
   endpoints:

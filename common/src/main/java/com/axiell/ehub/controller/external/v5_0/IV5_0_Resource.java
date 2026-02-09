@@ -1,7 +1,6 @@
 package com.axiell.ehub.controller.external.v5_0;
 
 import com.axiell.ehub.controller.external.v5_0.checkout.ICheckoutsResource;
-import com.axiell.ehub.controller.external.v5_0.hello.IHelloResource;
 import com.axiell.ehub.controller.external.v5_0.provider.IContentProvidersResource;
 import jakarta.ws.rs.Path;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,4 @@ public interface IV5_0_Resource {
     @Path("checkouts")
     ICheckoutsResource checkouts();
 
-    @Path("hello")
-    IHelloResource getHelloResource();
 }

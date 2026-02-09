@@ -1,8 +1,15 @@
-<?xml version="1.0"?>
-<Configuration strict="true" status="ERROR">
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="https://logging.apache.org/xml/ns"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="
+                   https://logging.apache.org/xml/ns
+                   https://logging.apache.org/xml/ns/log4j-config-2.xsd">
     <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
         <RollingFile
-                name="FILE"
+                name="MAIN"
                 fileName="${sys:LOG_PATH}/arena-ehub.log"
                 filePattern="${sys:LOG_PATH}/arena-ehub.%d{yyyy-MM-dd}.%i.log.gz"
                 ignoreExceptions="false">
@@ -15,20 +22,23 @@
             </Policies>
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
-
     </Appenders>
     <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="CONSOLE" level="ERROR"/>
+            <AppenderRef ref="MAIN"/>
+        </Root>
         <Logger name="com.axiell" level="INFO" additivity="false">
-            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="MAIN"/>
+        </Logger>
+        <Logger name="com.axiell" level="INFO" additivity="false">
+            <AppenderRef ref="MAIN"/>
         </Logger>
         <Logger name="org.springframework" level="ERROR" additivity="false">
-            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="MAIN"/>
         </Logger>
         <Logger name="org.apache.cxf" level="ERROR" additivity="false">
-            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="MAIN"/>
         </Logger>
-        <Root level="ERROR">
-            <AppenderRef ref="FILE"/>
-        </Root>
     </Loggers>
 </Configuration>
