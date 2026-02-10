@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(classes = {EhubApplication.class, RestApiClientConfig.class}, webEnvironment = WebEnvironment.DEFINED_PORT)
-public class EhubApplicationTest {
+public class EhubApplication_EhubClientIT {
 
     @Autowired
     private IEhubService ehubClient;
