@@ -10,7 +10,7 @@ The sample uses Maven. It can be built and run from the command line using Maven
 
 ---- With Maven ----
 
-$ mvn -Pserver
+$ mvn -pl application -Pserver
 
 ---- With Java ----
 

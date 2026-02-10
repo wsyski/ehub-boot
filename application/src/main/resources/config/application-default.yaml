@@ -16,6 +16,9 @@ spring:
   application:
     name: ehub
 
+  profiles:
+    validate: true
+
   main:
     banner-mode: "off"
 
@@ -32,7 +35,7 @@ spring:
 cxf:
   path: /api
   jaxrs:
-    classes-scan-packages: com.axiell.ehub.controller.external
+    classes-scan-packages: com.axiell.ehub.controller
     client:
       address: http://localhost:${server.port}/api
 
