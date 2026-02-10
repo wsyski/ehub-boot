@@ -26,7 +26,8 @@ public class EhubClient implements IEhubService {
     private IRootResource rootResource;
 
     @Override
-    public boolean isValidAlias(final String alias) {
+    public boolean
+    isValidAlias(final String alias) {
         if (StringUtils.isBlank(alias)) {
             return false;
         }

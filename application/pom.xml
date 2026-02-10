@@ -210,7 +210,7 @@
                                 <include>**/*IT.java</include>
                                 <include>**/*IT_*.java</include>
                             </includes>
-                            <argLine>${jdk.java.options} -Xmx1024m -Djava.net.preferIPv4Stack=true</argLine>
+                            <argLine>${jdk.java.options} -Xmx1024m</argLine>
                         </configuration>
                     </plugin>
                 </plugins>

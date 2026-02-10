@@ -1,11 +1,8 @@
 server:
   port: ${SERVICE_PORT:16518}
-  http2:
-    enabled: true
   servlet:
     encoding:
       charset: UTF-8
-      force: true
 
 info:
   component: "@project.name@"        #getting controller name

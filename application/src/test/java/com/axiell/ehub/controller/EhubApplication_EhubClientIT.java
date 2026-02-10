@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest(classes = {EhubApplication.class, RestApiClientConfig.class}, webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(classes = {EhubApplication.class, RestApiClientConfig.class}, webEnvironment = WebEnvironment.RANDOM_PORT, properties = "server.port=0")
+@DirtiesContext
 public class EhubApplication_EhubClientIT {
 
     @Autowired
@@ -20,4 +22,15 @@ public class EhubApplication_EhubClientIT {
         boolean validAlias = ehubClient.isValidAlias("test");
         Assertions.assertFalse(validAlias);
     }
+/*
+    @Lazy
+    @TestConfiguration
+    public static class CxfJaxrsClientAddressConfig {
+
+        @Bean(name = "cxfJaxrsClientAddress")
+        public String cxfJaxrsClientAddress(@Value("${local.server.port}") int port) {
+            return "http://localhost:" + port + "/api";
+        }
+    }
+ */
 }
