@@ -16,24 +16,6 @@ $ mvn -Pserver
 
 $ java -jar target/spring-boot-sample-rs-cxf.jar
 
----- With Docker ----
-
-Install Docker, create the demo image:
---
-$ mvn dockerfile:build
---
-
-Optional step, push the image.
-Create a DockerHub id, for example, make this id set to your current ${username}
---
-$ docker login
-$ mvn dockerfile:push
---
-
-Run the container:
---
-docker run -p 16518:16518 -t ${username}/apachecxf:spring-boot-sample-rs
---
 
 = Testing the server =
 
@@ -65,7 +47,14 @@ The Apache CXF specific metrics are available under:
 ---- From the command line ----
 
 --
-$ mvn -Pclient
+$ mvn verify -pl application -Pintegration-test
 --
+
+Links:
+https://dev.to/rodnan-sol/testing-with-maven-organizing-unit-and-integration-tests-35oh
+https://github.com/rodnansol/articles-posts/blob/main/Testing-with-Maven/parent-module/simple-test-setup/pom.xml
+https://github.com/dmakariev/examples
+https://github.com/ityouknow/spring-boot-examples
+https://github.com/gyandarpan22/Spring-Boot-Tutorial
 
 
