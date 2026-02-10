@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../../css/ehub.css"/>
+    <title>eHUB Provider API Design</title>
+</head>
+<body>
+<h1>eHUB Provider API Design</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Guide" href="./">eHUB Provider API Guide</a></li>
+    <li class="active">eHUB Provider API Design</li>
+</ol>
+
+<h4>RESTful Design</h4>
+
+<p>The eHUB API is a <a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank">REST</a> API over HTTP. RESTful applications are
+    designed to work the way the web works, using HTTP verbs (GET, POST, PUT and DELETE) to operate on resources. However, it does not use hyperlinks
+    (i.e. embedded links within the returned response), but instead it's up to the developer to get possible necessary information from a previous response when
+    creating a request.</p>
+
+<h4>Authentication</h4>
+
+<p>The eHUB API uses the standard HTTP Authorization header for authentication. Therefore the Authorization header is required in all eHUB API requests. See the
+    <a title="eHUB Provider API Security" href="security.html">security</a> page for more information.</p>
+
+<h4>Versioning</h4>
+
+<p>The API uses the <a href="http://semver.org" target="_blank">semantic versioning scheme</a> with the major version number being included in the path element
+    of the url (e.g.
+    /{version}/checkouts/{checkoutId}). If new functionality is added or changes are made which aren't backwards compatible, we will increment
+    the major version and provide new calls or incompatible ones under the new version number. The old version will only be decommissioned if the transition of
+    API clients to the new API version is
+    complete. Field additions to existing calls are seen as non-breaking changes, thus API clients should be able to handle new fields in all responses without
+    any code changes. The current version of API is v5.0</p>
+
+<h4>Response Format</h4>
+
+<p>The eHUB Provider API is a RESTful API based on the JSON format for data exchange. All requests and responses are in JSON format.</p>
+
+<h4>Encoding</h4>
+
+<p>All eHUB Provider API responses are UTF-8 encoded.</p>
+
+</body>
+</html>

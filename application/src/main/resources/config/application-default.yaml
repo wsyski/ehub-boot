@@ -1,5 +1,7 @@
 server:
   port: ${SERVICE_PORT:16518}
+  http2:
+    enabled: true
   servlet:
     encoding:
       charset: UTF-8
@@ -33,17 +35,11 @@ cxf:
     classes-scan-packages: com.axiell.ehub.controller.external
     client:
       address: http://localhost:${server.port}/api
-      classes-scan-packages: com.axiell.ehub.controller.external
-      headers:
-        accept: application/json
 
 logging:
   level:
     root: WARN
-
   config: classpath:log4j2-default.xml
-  file:
-    path: ${LOG_PATH:logs}
 
 management:
   endpoints:

@@ -1,0 +1,148 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../../../css/ehub.css"/>
+    <title>getCheckout</title>
+</head>
+<body>
+<h1>getCheckout</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Reference" href="../">eHUB Provider API Reference</a></li>
+    <li><a title="Loan per product" href="./">Loan per product</a></li>
+    <li class="active">getCheckout</li>
+</ol>
+
+<p>Fetches the checkout by the checkout id.</p>
+
+<h3>Request</h3>
+
+<p><code>GET /v5.0/checkouts/&lt;checkout id&gt;</code></p>
+
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+</table>
+
+<h3>Response</h3>
+
+<pre>
+    {
+    "id": "&lt;checkout id&gt;",
+    "formatMetadata": {
+      "&lt;format id&gt;": {
+          "contentLinks": "&lt;content links&gt;",
+          "supplementLinks": "&lt;supplement links&gt;",
+       }
+    }
+    "expirationDate": "&lt;expiration date&gt;"
+    }
+</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>format metadata</td>
+        <td>The format metadata is a JSON object with properties of format id. The value of each property is an object with value of properties "&lt;content
+            links&gt;" and "&lt;supplement links&gt;" where:
+            <table class="table">
+                <tr class="tab-row">
+                    <td>content links</td>
+                    <td>The media content links array. Every element in the array is an object with singleton property &lt;href&gt;. The property specifies the
+                        media url.
+                    </td>
+                </tr>
+                <tr class="tab-row">
+                    <td>supplement links</td>
+                    <td>The media supplement links array. Every element in the array is an object with properties &lt;name&gt; and &lt;href&gt;. The &lt;name&gt;
+                        property specifies the supplement link name and &lt;href&gt; specifies the supplement material url.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>expiration date</td>
+        <td>The checkout expiration date in <a title="ISO 8601 Date format" href="https://sv.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601 format</a>.
+        </td>
+    </tr>
+</table>
+
+<p>Example request:</p>
+<p><code>GET /v5.0/checkouts/checkoutId</code></p>
+<p>Example response:</p>
+<pre>
+   {
+  "id": "checkoutId",
+  "formatMetadata": {
+    "ebook": {
+      "contentLinks": [
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/content_0"
+        },
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/content_1"
+        }
+      ],
+      "supplementLinks": [
+        {
+          "name": "supplement_0",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/supplement_0"
+        },
+        {
+          "name": "supplement_1",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/supplement_1"
+        }
+      ]
+    },
+    "audio-stream": {
+      "contentLinks": [
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-stream/content_0"
+        },
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-stream/content_1"
+        }
+      ],
+      "supplementLinks": [
+        {
+          "name": "supplement_0",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-stream/supplement_0"
+        },
+        {
+          "name": "supplement_1",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-stream/supplement_1"
+        }
+      ]
+    },
+    "audio-downloadable": {
+      "contentLinks": [
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-downloadable/content_0"
+        },
+        {
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-downloadable/content_1"
+        }
+      ],
+      "supplementLinks": [
+        {
+          "name": "supplement_0",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-downloadable/supplement_0"
+        },
+        {
+          "name": "supplement_1",
+          "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/audio-downloadable/supplement_1"
+        }
+      ]
+    }
+  },
+  "expirationDate": "2016-01-01T00:00:00Z"
+}
+</pre>
+</body>
+</html>

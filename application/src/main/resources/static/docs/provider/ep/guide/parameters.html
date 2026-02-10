@@ -1,0 +1,49 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../../css/ehub.css"/>
+    <title>eHUB Provider API Parameters</title>
+</head>
+<body>
+<h1>eHUB Provider API Parameters</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Guide" href="./">eHUB Provider API Guide</a></li>
+    <li class="active">eHUB Provider API Parameters</li>
+</ol>
+
+<ul>
+    <li>The following parameters are used for each eHUB Provider API instance:
+        <table class="table">
+            <tr class="tab-row">
+                <td>API_BASE_URL</td>
+                <td>eHUB Provider API base url ex. if API_BASE_URL="https://provider.com/ehub-api", then the checkout url is:
+                    "https://provider.com/ehub-api/v5.0/checkouts".
+                </td>
+            </tr>
+        </table>
+    </li>
+    <li>The following parameters are used for each eHUB Provider API instance and eHUB Consumer combination:
+        <table class="table">
+            <tr class="tab-row">
+                <td>EP_SITE_ID</td>
+                <td>Unique site identifier at the eHUB Provider. If the provider does not use this parameter then it can be set to any nonempty value.
+                    This value is always sent in the Authorization Http header in every request originating at eHUB as part of JWT token.
+                </td>
+            </tr>
+            <tr class="tab-row">
+                <td>EP_SECRET_KEY</td>
+                <td>A base64 encoded secret key used to produce the JWT Authorization Http header in every request originating at eHUB.
+                    See the <a title="eHUB Provider API Security" href="security.html">security</a> page for more information.
+                </td>
+            </tr>
+            <tr class="tab-row">
+                <td>EP_TOKEN_EXPIRATION_TIME_IN_SECONDS</td>
+                <td>JSON Web Token expiration time in seconds. 0 means no expiration time.</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</body>
+</html>

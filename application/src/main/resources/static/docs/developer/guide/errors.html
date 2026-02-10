@@ -1,0 +1,230 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../css/ehub.css"/>
+    <title>eHUB API Error Handling</title>
+</head>
+<body>
+<h1>eHUB API Error Handling</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../">Home</a></li>
+    <li><a title="eHUB Development" href="../">eHUB Development</a></li>
+    <li><a title="eHUB Development Guide" href="./">eHUB Development Guide</a></li>
+    <li class="active">eHUB API Error Handling</li>
+</ol>
+
+<p>
+    eHUB API errors are communicated through HTTP status codes and a JSON messages that contain a more detailed
+    explanation of the error. HTTP
+    responses with a status code >399 should contain a message that explains the error. Aside from these the API might
+    reply with a HTTP status code >= 500
+    for internal errors.
+</p>
+
+<p>JSON messages have the following format:</p>
+<pre>
+{
+    "cause":"&lt;error cause code&gt;",
+    "message":"&lt;error message&gt;",
+    "arguments":[
+        {
+            "value":"&lt;argument value&gt;",
+            "type":"&lt;argument type&gt;"
+        },
+        {
+            "value":"&lt;argument value&gt;",
+            "type":"&lt;argument type&gt;"
+        }
+    ]
+}
+</pre>
+
+<p>In the above:</p>
+<table class="table">
+    <tr class="tab-row">
+        <td>&lt;error cause code&gt;</td>
+        <td>Error cause code. The error codes are translated into localized messages in eHUB and shown to the eHUB
+            user
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;error message&gt;</td>
+        <td>A detailed error message explaining the problem. This message is not shown to the eHUB users, but logged in
+            the application log.
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;argument value&gt;</td>
+        <td>Argument value</td>
+    </tr>
+    <tr class="tab-row">
+        <td>&lt;argument type&gt;</td>
+        <td>Argument type ex: CONTENT_PROVIDER_NAME</td>
+    </tr>
+</table>
+ex.:
+<pre>
+{
+    "cause":"CONTENT_PROVIDER_ERROR",
+    "message":"The Content Provider ELIB3 returned the following error status code: The book is unavailable to loan when it lacks a valid business model ",
+    "arguments":[
+        {
+            "value":"ELIB3",
+            "type":"CONTENT_PROVIDER_NAME"
+        },
+        {
+            "value":"The book is unavailable to loan when it lacks a valid business model ",
+            "type":"CONTENT_PROVIDER_STATUS"
+        }
+    ]
+}
+</pre>
+
+<p>The following standard error codes are defined in eHUB Provider API</p>
+<table class="table">
+    <tr class="tab-row">
+        <td>BAD_REQUEST</td>
+        <td>Some parameter(s) in your URL or XML are not correct. Please see the eHUB API documentation and review your request.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_CONTENT_PROVIDER_NAME</td>
+        <td>The getContent provider name is missing in your request. Please see the eHUB API documentation and review your request.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_AUTHORIZATION_HEADER</td>
+        <td>Authorization header is missing</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_EHUB_CONSUMER_ID</td>
+        <td>The eHUB Consumer ID is missing in the authentication information</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_SIGNATURE</td>
+        <td>The signature is missing in the authentication information</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_LIBRARY_CARD</td>
+        <td>The library card is missing in the authentication information</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_PIN</td>
+        <td>The pin is missing in the authentication information</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_EMAIL</td>
+        <td>Patron has no registered email address</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_FORMAT</td>
+        <td>The format is missing in the request</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_FIELD</td>
+        <td>The field with name {0} is missing in the request. Please see the API documentation for more information.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INVALID_SIGNATURE</td>
+        <td>Invalid signature</td>
+    </tr>
+    <tr class="tab-row">
+        <td>EHUB_CONSUMER_NOT_FOUND</td>
+        <td>An eHUB Consumer with ID {0} could not be found</td>
+    </tr>
+    <tr class="tab-row">
+        <td>EHUB_CONSUMER_INVALID_PROPERTY</td>
+        <td>Invalid property {0} with the value {1} for the eHUB Consumer with ID {2}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_SECRET_KEY</td>
+        <td>A secret key has not been provided for the eHUB Consumer with ID {0}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>UNKNOWN_CONTENT_PROVIDER</td>
+        <td>The getContent provider with name {0} is unknown to the eHUB</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LOAN_BY_LMS_LOAN_ID_NOT_FOUND</td>
+        <td>The loan with LMS loan ID {0} could not be found</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LOAN_ALREADY_EXISTS</td>
+        <td>The loan with LMS loan ID {0} already exists for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LOAN_BY_ID_NOT_FOUND</td>
+        <td>The loan with ID {0} could not be found</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_LOAN_NOT_FOUND</td>
+        <td>The loan with ID {0} at the Content Provider {1} could not be found</td>
+    </tr>
+    <tr class="tab-row">
+        <td>MISSING_CONTENT_PROVIDER_LOAN_ID</td>
+        <td>The ID of the loan at the Content Provider is missing</td>
+    </tr>
+    <tr class="tab-row">
+        <td>FORMAT_NOT_FOUND</td>
+        <td>The format with ID {0} could not be found for the Content Provider {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_RECORD_NOT_FOUND</td>
+        <td>The record with ID {0} in the format {1} could not be found at the Content Provider {2}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_RECORD_NOT_CHECKED_OUT</td>
+        <td>The record with ID {0} in the format {1} is not checked out at the Content Provider {2}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_CONSUMER_NOT_FOUND</td>
+        <td>A Consumer for Content Provider with name {0} could not be found for EhubConsumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>INTERNAL_SERVER_ERROR</td>
+        <td>The eHUB server encountered an unexpected condition which prevented it from fulfilling the request. Please contact the Axiell Support.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_ERROR</td>
+        <td>The Content Provider {0} returned the following error status code: {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>CONTENT_PROVIDER_UNSUPPORTED_LOAN_PER_PRODUCT</td>
+        <td>The Content Provider {0} does not support loan per product</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_CHECKOUT_DENIED</td>
+        <td>Checkout of record with ID {0} to the holder of library card {1} is denied for the eHUB Consumer with ID {2}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_BLOCKED_LIBRARY_CARD</td>
+        <td>Blocked library card {0} for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_LIBRARY_CARD_NOT_FOUND</td>
+        <td>The library card {0} not found for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_INVALID_ACCOUNT_CARD</td>
+        <td>Invalid account for the library card {0} for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_INVALID_LIBRARY_CARD</td>
+        <td>Invalid library card {0} for the eHUB Consumer with ID {1}"),
+    <tr class="tab-row">
+        <td>LMS_INVALID_PIN_CODE</td>
+        <td>Invalid pin code for the library card {0} for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_RECORD_NOT_FOUND</td>
+        <td>The record with ID {0} can not be found for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>LMS_ERROR</td>
+        <td>LMS error with code {0} for the eHUB Consumer with ID {1}</td>
+    </tr>
+    <tr class="tab-row">
+        <td>NOT_IMPLEMENTED</td>
+        <td>The eHUB server does not support the functionality required to fulfill the request. Please contact the Axiell Support.</td>
+    </tr>
+</table>
+</body>
+</html>

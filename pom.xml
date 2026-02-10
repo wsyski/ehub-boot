@@ -21,7 +21,7 @@
         <java.version>17</java.version>
         <jackson.version>2.21.0</jackson.version>
         <jcabi-manifests.version>2.2.0</jcabi-manifests.version>
-        <oracle.version>23.6.0.24.10</oracle.version>
+        <oracle.version>23.26.1.0.0</oracle.version>
         <wicket.version>10.8.0</wicket.version>
         <swagger.ui.version>5.31.0</swagger.ui.version>
     </properties>
