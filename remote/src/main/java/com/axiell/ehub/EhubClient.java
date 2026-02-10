@@ -15,8 +15,12 @@ import com.axiell.ehub.controller.external.v5_0.provider.dto.ContentProvidersDTO
 import com.axiell.ehub.controller.external.v5_0.provider.dto.RecordDTO;
 import com.axiell.ehub.provider.alias.AliasMappings;
 import com.axiell.ehub.provider.record.Record;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
+@Setter
 public class EhubClient implements IEhubService {
 
     private IRootResource rootResource;
@@ -60,9 +64,5 @@ public class EhubClient implements IEhubService {
         IRecordsResource recordsResource = contentProvidersResource.getRecordsResource(contentProviderAlias);
         RecordDTO recordDTO = recordsResource.getRecord(authInfo, contentProviderRecordId, language);
         return new Record(recordDTO);
-    }
-
-    public void setRootResource(IRootResource rootResource) {
-        this.rootResource = rootResource;
     }
 }
