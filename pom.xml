@@ -28,10 +28,11 @@
     </properties>
 
     <modules>
+        <module>application</module>
         <module>common</module>
         <module>local-core</module>
-        <module>application</module>
         <module>remote</module>
+        <module>test-data</module>
     </modules>
 
     <dependencies>
@@ -133,7 +134,6 @@
                 <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ucp17</artifactId>
                 <version>${oracle.version}</version>
-                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
