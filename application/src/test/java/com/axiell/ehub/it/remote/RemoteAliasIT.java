@@ -11,13 +11,11 @@ import lombok.Getter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
-@DirtiesContext
+@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RemoteAliasIT extends RemoteITFixture {
     private static final String INVALID_ALIAS = "invalidAlias";
 

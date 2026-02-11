@@ -15,10 +15,8 @@ import lombok.Getter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
-@DirtiesContext
+@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RemoteLppCheckoutIT extends RemoteEpCheckoutITFixture {
 
     @Getter

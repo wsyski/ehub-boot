@@ -10,7 +10,6 @@
     <artifactId>application</artifactId>
     <name>${project.artifactId}</name>
 
-
     <dependencies>
         <dependency>
             <groupId>com.axiell.ehub</groupId>
@@ -125,6 +124,16 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>
             <version>${cxf.version}</version>
+            <exclusions><!-- CXF uses java.util.logging by default -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <exclusions><!-- CXF uses java.util.logging by default -->
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>

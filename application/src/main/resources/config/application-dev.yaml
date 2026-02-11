@@ -6,9 +6,5 @@ spring:
 
 logging:
   level:
-    root: WARN
-    com.axiell: INFO
-    org.apache.cxf: WARN
-    org.apache.wicket: WARN
-    io.swagger: WARN
-    org.springframework.web: WARN
+    root: DEV
+

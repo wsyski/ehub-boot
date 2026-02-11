@@ -15,8 +15,10 @@ import org.apache.cxf.jaxrs.swagger.ui.SwaggerUiConfig;
 import org.apache.cxf.metrics.MetricsFeature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 public class RestApiServerConfig {
@@ -35,7 +37,7 @@ public class RestApiServerConfig {
     ) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
-        endpoint.setServiceBeans(Arrays.<Object>asList(rootResource));
+        endpoint.setServiceBeans(Collections.singletonList(rootResource));
         endpoint.setAddress("/");
         endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jsonProvider));
         endpoint.setFeatures(Arrays.asList(openApiFeature, metricsFeature, loggingFeature));

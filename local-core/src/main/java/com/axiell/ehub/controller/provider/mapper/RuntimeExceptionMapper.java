@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Provider
-@Component(value = "runtimeExceptionMapper")
 public class RuntimeExceptionMapper extends AbstractEhubExceptionMapper<RuntimeException> implements ExceptionMapper<RuntimeException> {
 
     @Override

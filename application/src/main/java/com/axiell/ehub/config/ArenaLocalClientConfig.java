@@ -6,15 +6,12 @@ import com.axiell.ehub.lms.arena.client.ArenaLocalRootResourceFactory;
 import com.axiell.ehub.lms.arena.client.IArenaLocalRootResourceFactory;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "com.axiell.ehub")
 public class ArenaLocalClientConfig {
 
-
-    @Bean(name = "arenaLocalRootResourceFactory")
+    @Bean
     public IArenaLocalRootResourceFactory arenaLocalRootResourceFactory(
             final AuthInfoParamConverterProvider authInfoParamConverterProvider,
             final JsonProvider jsonProvider,
