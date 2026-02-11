@@ -5,7 +5,7 @@ import com.axiell.ehub.checkout.CheckoutMetadata;
 import com.axiell.ehub.provider.record.Record;
 import com.axiell.authinfo.AuthInfo;
 
-public interface IEhubService {
+public interface IEhubServiceClient {
 
     boolean isValidAlias(String alias);
 

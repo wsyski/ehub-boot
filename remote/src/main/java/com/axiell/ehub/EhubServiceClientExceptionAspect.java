@@ -14,25 +14,25 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 /**
- * This Aspect converts exceptions thrown by the {@link EhubClient} to {@link EhubException}s.
+ * This Aspect converts exceptions thrown by the {@link EhubServiceClient} to {@link EhubException}s.
  */
 @Slf4j
 @Aspect
 @EnableAspectJAutoProxy
 @Component
-public class EhubClientExceptionAspect {
+public class EhubServiceClientExceptionAspect {
 
     private static WebApplicationException unwrapException(WebApplicationException ex) {
         return ex.getCause() == null ? ex : (WebApplicationException) ex.getCause();
     }
 
-    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "pe")
+    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubServiceClient.*(..))", throwing = "pe")
     public void toEhubException(final JoinPoint joinPoint, final ProcessingException pe) throws EhubException {
         log.error(pe.getMessage(), pe);
         throw new EhubException(ErrorCause.INTERNAL_SERVER_ERROR.toEhubError());
     }
 
-    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubService.*(..))", throwing = "wae")
+    @AfterThrowing(pointcut = "execution(* com.axiell.ehub.IEhubServiceClient.*(..))", throwing = "wae")
     public void toInternalServerErrorException(final JoinPoint joinPoint, final WebApplicationException wae) throws EhubException {
         WebApplicationException unwrappedException = unwrapException(wae);
         log.info("WebApplicationException: {}", unwrappedException.getMessage());

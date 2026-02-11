@@ -21,13 +21,12 @@ import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter
-public class EhubClient implements IEhubService {
+class EhubServiceClient implements IEhubServiceClient {
 
     private IRootResource rootResource;
 
     @Override
-    public boolean
-    isValidAlias(final String alias) {
+    public boolean isValidAlias(final String alias) {
         if (StringUtils.isBlank(alias)) {
             return false;
         }

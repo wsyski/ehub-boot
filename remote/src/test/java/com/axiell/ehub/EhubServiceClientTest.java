@@ -23,8 +23,8 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class EhubClientTest {
-    private EhubClient underTest;
+public class EhubServiceClientTest {
+    private EhubServiceClient underTest;
     private static final String CONTENT_PROVIDER_ALIAS = "content provider alias";
     private static final String LANGUAGE = "en";
     private static final String CONTENT_PROVIDER_RECORD_ID = "contentProviderRecordId";
@@ -49,7 +49,7 @@ public class EhubClientTest {
 
     @BeforeEach
     public void setUp() {
-        underTest = new EhubClient();
+        underTest = new EhubServiceClient();
         underTest.setRootResource(rootResource);
     }
 
