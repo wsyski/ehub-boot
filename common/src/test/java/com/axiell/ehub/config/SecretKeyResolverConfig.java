@@ -3,10 +3,10 @@ package com.axiell.ehub.config;
 import com.axiell.authinfo.ConstantAuthHeaderSecretKeyResolver;
 import com.axiell.authinfo.IAuthHeaderSecretKeyResolver;
 import com.axiell.ehub.test.TestSecretKeyConstants;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@TestConfiguration
 public class SecretKeyResolverConfig {
 
     @Bean

@@ -1,5 +1,7 @@
 package com.axiell.ehub.test.config;
 
+import com.axiell.ehub.controller.external.RootResource;
+import com.axiell.ehub.test.controller.internal.ITestDataRootResource;
 import com.axiell.ehub.test.controller.internal.TestDataRootResource;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import org.apache.cxf.Bus;
@@ -17,23 +19,27 @@ import java.util.List;
 
 @Configuration
 public class TestDataRestApiServerConfig {
-    @Autowired
-    private Bus bus;
 
     @Bean
     public Server testRestApiServer(
-            final TestDataRootResource testRootResource,
+            final Bus bus,
+            final ITestDataRootResource testDataRootResource,
             final JsonProvider jsonProvider,
             final MetricsFeature metricsFeature,
             final LoggingFeature loggingFeature) {
         final JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
         endpoint.setAddress("/test");
-        endpoint.setServiceBean(testRootResource);
+        endpoint.setServiceBean(testDataRootResource);
         final List<?> providers = Collections.singletonList(jsonProvider);
         final List<Feature> features = List.of(loggingFeature, metricsFeature);
         endpoint.setProviders(providers);
         endpoint.setFeatures(features);
         return endpoint.create();
+    }
+
+    @Bean
+    public ITestDataRootResource testDataRootResource() {
+        return new TestDataRootResource();
     }
 }

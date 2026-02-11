@@ -23,15 +23,15 @@ public class RestApiServerConfig {
 
     @Bean
     public Server restApiServer(
-            IRootResource rootResource,
-            Bus bus,
-            AuthInfoParamConverterProvider authInfoParamConverterProvider,
-            EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper,
-            RuntimeExceptionMapper runtimeExceptionMapper,
-            JsonProvider jsonProvider,
-            OpenApiFeature openApiFeature,
-            MetricsFeature metricsFeature,
-            LoggingFeature loggingFeature
+            final Bus bus,
+            final IRootResource rootResource,
+            final AuthInfoParamConverterProvider authInfoParamConverterProvider,
+            final EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper,
+            final RuntimeExceptionMapper runtimeExceptionMapper,
+            final JsonProvider jsonProvider,
+            final OpenApiFeature openApiFeature,
+            final MetricsFeature metricsFeature,
+            final LoggingFeature loggingFeature
     ) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);

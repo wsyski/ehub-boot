@@ -1,7 +1,5 @@
 package com.axiell.ehub.test;
 
-import com.axiell.ehub.controller.external.IRootResource;
-import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.test.controller.internal.ITestDataRootResource;
 import lombok.Getter;
