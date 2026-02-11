@@ -1,4 +1,4 @@
-package com.axiell.ehub.controller.internal;
+package com.axiell.ehub.test.controller.internal;
 
 import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.consumer.EhubConsumer;
@@ -19,9 +19,8 @@ import com.axiell.ehub.provider.record.format.ContentDisposition;
 import com.axiell.ehub.provider.record.format.FormatDecoration;
 import com.axiell.ehub.provider.record.format.IFormatAdminController;
 import com.axiell.ehub.provider.record.platform.IPlatformAdminController;
-import com.axiell.ehub.test.ITestRootResource;
 import com.axiell.ehub.test.TestDataConstants;
-import com.axiell.ehub.test.TestDataDTO;
+import com.axiell.ehub.test.controller.internal.dto.TestDataDTO;
 import com.axiell.ehub.test.TestSecretKeyConstants;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;

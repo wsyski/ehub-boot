@@ -1,4 +1,4 @@
-package com.axiell.ehub.test;
+package com.axiell.ehub.test.controller.internal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

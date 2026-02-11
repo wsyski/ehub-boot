@@ -1,7 +1,6 @@
-package com.axiell.ehub.config;
+package com.axiell.ehub.test.config;
 
-import com.axiell.ehub.controller.internal.TestRootResource;
-import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
+import com.axiell.ehub.test.controller.internal.TestRootResource;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

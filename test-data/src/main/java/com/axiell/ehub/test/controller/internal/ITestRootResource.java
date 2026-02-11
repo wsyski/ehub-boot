@@ -1,5 +1,6 @@
-package com.axiell.ehub.test;
+package com.axiell.ehub.test.controller.internal;
 
+import com.axiell.ehub.test.controller.internal.dto.TestDataDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
