@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ITestRootResource {
+public interface ITestDataRootResource {
 
     @POST
     @Path("v5.0/data")

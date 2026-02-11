@@ -1,6 +1,6 @@
 package com.axiell.ehub.test.config;
 
-import com.axiell.ehub.test.controller.internal.TestRootResource;
+import com.axiell.ehub.test.controller.internal.TestDataRootResource;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
@@ -16,13 +16,13 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class TestRestApiServerConfig {
+public class TestDataRestApiServerConfig {
     @Autowired
     private Bus bus;
 
     @Bean
     public Server testRestApiServer(
-            final TestRootResource testRootResource,
+            final TestDataRootResource testRootResource,
             final JsonProvider jsonProvider,
             final MetricsFeature metricsFeature,
             final LoggingFeature loggingFeature) {

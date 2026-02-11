@@ -48,7 +48,7 @@ import java.util.Set;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Component(value = "testRootResource")
-public class TestRootResource implements ITestRootResource {
+public class TestDataRootResource implements ITestDataRootResource {
     private static final Map<String, Boolean> HAS_ISSUES = ImmutableMap.<String, Boolean>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, false).build();
     private static final Map<String, List<String>> FORMAT_IDS = ImmutableMap.<String, List<String>>builder()
