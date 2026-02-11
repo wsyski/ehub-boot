@@ -17,10 +17,12 @@ import com.axiell.ehub.provider.alias.AliasMappings;
 import com.axiell.ehub.provider.record.Record;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter
+@Slf4j
 class EhubServiceClient implements IEhubServiceClient {
 
     private IRootResource rootResource;

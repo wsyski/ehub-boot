@@ -45,7 +45,6 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-
 public class TestDataRootResource implements ITestDataRootResource {
     private static final Map<String, Boolean> HAS_ISSUES = ImmutableMap.<String, Boolean>builder()
             .put(TestDataConstants.CONTENT_PROVIDER_TEST_EP, false).build();

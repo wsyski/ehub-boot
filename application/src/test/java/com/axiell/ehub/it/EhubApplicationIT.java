@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = "server.port=0")
 @DirtiesContext
-public class EhubApplication_HealthIT {
+public class EhubApplicationIT {
 
     @LocalServerPort
     private int port;

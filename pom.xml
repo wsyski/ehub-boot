@@ -16,15 +16,16 @@
     <version>5.0.0-SNAPSHOT</version>
 
     <properties>
-        <jdk.java.options>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED --add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED</jdk.java.options>
         <authinfo.version>5.12.0-SNAPSHOT</authinfo.version>
         <cxf.version>4.1.4</cxf.version>
         <java.version>17</java.version>
         <jackson.version>2.21.0</jackson.version>
         <jcabi-manifests.version>2.2.0</jcabi-manifests.version>
+        <jdk.java.options>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED --add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED</jdk.java.options>
         <oracle.version>23.26.1.0.0</oracle.version>
-        <wicket.version>10.8.0</wicket.version>
         <swagger.ui.version>5.31.0</swagger.ui.version>
+        <wicket.version>10.8.0</wicket.version>
+        <wiremock.version>3.13.2</wiremock.version>
     </properties>
 
     <modules>
@@ -134,6 +135,12 @@
                 <groupId>com.oracle.database.jdbc</groupId>
                 <artifactId>ucp17</artifactId>
                 <version>${oracle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wiremock</groupId>
+                <artifactId>wiremock-standalone</artifactId>
+                <version>${wiremock.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
