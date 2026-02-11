@@ -1,4 +1,4 @@
-package com.axiell.ehub.controller;
+package com.axiell.ehub.it;
 
 import com.axiell.ehub.EhubApplication;
 import com.axiell.ehub.IEhubServiceClient;

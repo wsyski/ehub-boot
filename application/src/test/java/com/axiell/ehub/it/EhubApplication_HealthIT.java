@@ -1,4 +1,4 @@
-package com.axiell.ehub.controller;
+package com.axiell.ehub.it;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

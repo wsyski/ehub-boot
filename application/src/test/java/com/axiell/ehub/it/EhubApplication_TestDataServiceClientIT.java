@@ -1,7 +1,6 @@
-package com.axiell.ehub.controller;
+package com.axiell.ehub.it;
 
 import com.axiell.ehub.EhubApplication;
-import com.axiell.ehub.IEhubServiceClient;
 import com.axiell.ehub.test.ITestDataServiceClient;
 import com.axiell.ehub.test.ITestDataServiceClientFactory;
 import com.axiell.ehub.test.TestDataConstants;
@@ -27,7 +26,7 @@ public class EhubApplication_TestDataServiceClientIT {
 
     @Test
     public void initDelete() {
-        TestDataDTO testDataDTO= testDataServiceClient.init(TestDataConstants.CONTENT_PROVIDER_TEST_EP,true);
+        TestDataDTO testDataDTO = testDataServiceClient.init(TestDataConstants.CONTENT_PROVIDER_TEST_EP, true);
         Assertions.assertEquals(TestDataConstants.NAME, testDataDTO.getName());
         testDataServiceClient.delete();
     }
