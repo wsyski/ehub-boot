@@ -6,14 +6,15 @@ package com.axiell.ehub;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 /**
- * Skeletal implementation of the eHUB {@link RuntimeException}. It should be sub-classed to provide the specific
+ * Skeletal implementation of the eHUB {@link WebApplicationException}. It should be sub-classed to provide the specific
  * exceptions.
  */
-public class EhubRuntimeException extends RuntimeException implements IEhubException {
+public class EhubRuntimeException extends WebApplicationException implements IEhubException {
     private final int status;
     private final EhubError ehubError;
     private final String message;

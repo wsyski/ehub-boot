@@ -1,6 +1,7 @@
 package com.axiell.ehub.config;
 
 import com.axiell.ehub.controller.provider.json.JsonProvider;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.metrics.MetricsFeature;
 import org.apache.cxf.metrics.MetricsProvider;
@@ -17,8 +18,8 @@ public class ProviderConfig {
     @Value("${logging.prettyLogging}")
     private boolean prettyLogging;
 
-    @Bean(name = "jsonProvider")
-    public JsonProvider jsonProvider() {
+    @Bean
+    public JacksonJsonProvider jacksonJsonProvider() {
         return new JsonProvider();
     }
 

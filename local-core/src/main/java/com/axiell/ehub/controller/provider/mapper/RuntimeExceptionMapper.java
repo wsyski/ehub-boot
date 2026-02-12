@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @Provider

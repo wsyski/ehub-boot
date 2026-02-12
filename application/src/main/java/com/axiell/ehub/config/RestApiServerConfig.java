@@ -6,6 +6,7 @@ import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvi
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.controller.provider.mapper.EhubRuntimeExceptionMapper;
 import com.axiell.ehub.controller.provider.mapper.RuntimeExceptionMapper;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -15,7 +16,6 @@ import org.apache.cxf.jaxrs.swagger.ui.SwaggerUiConfig;
 import org.apache.cxf.metrics.MetricsFeature;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class RestApiServerConfig {
             final AuthInfoParamConverterProvider authInfoParamConverterProvider,
             final EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper,
             final RuntimeExceptionMapper runtimeExceptionMapper,
-            final JsonProvider jsonProvider,
+            final JacksonJsonProvider jacksonJsonProvider,
             final OpenApiFeature openApiFeature,
             final MetricsFeature metricsFeature,
             final LoggingFeature loggingFeature
@@ -39,7 +39,7 @@ public class RestApiServerConfig {
         endpoint.setBus(bus);
         endpoint.setServiceBeans(Collections.singletonList(rootResource));
         endpoint.setAddress("/");
-        endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jsonProvider));
+        endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jacksonJsonProvider));
         endpoint.setFeatures(Arrays.asList(openApiFeature, metricsFeature, loggingFeature));
         return endpoint.create();
     }

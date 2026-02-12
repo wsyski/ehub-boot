@@ -2,7 +2,7 @@ package com.axiell.ehub;
 
 import com.axiell.ehub.controller.external.IRootResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
-import com.axiell.ehub.controller.provider.json.JsonProvider;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -22,7 +22,7 @@ public class EhubServiceClientFactory implements IEhubServiceClientFactory {
     @Autowired
     private AuthInfoParamConverterProvider authInfoParamConverterProvider;
     @Autowired
-    private JsonProvider jsonProvider;
+    private JacksonJsonProvider jacksonJsonProvider;
     @Autowired
     private MetricsFeature metricsFeature;
     @Autowired
@@ -30,7 +30,7 @@ public class EhubServiceClientFactory implements IEhubServiceClientFactory {
 
     @Override
     public IEhubServiceClient create(final String baseUri) {
-        final List<?> providers = Arrays.asList(jsonProvider, authInfoParamConverterProvider);
+        final List<?> providers = Arrays.asList(jacksonJsonProvider, authInfoParamConverterProvider);
         final List<Feature> features = List.of(loggingFeature, metricsFeature);
         IRootResource rootResource = JAXRSClientFactory.create(baseUri, IRootResource.class, providers, features, null);
         EhubServiceClient ehubServiceClient = new EhubServiceClient();

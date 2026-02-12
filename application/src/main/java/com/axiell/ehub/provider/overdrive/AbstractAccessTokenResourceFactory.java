@@ -4,6 +4,7 @@ import com.axiell.ehub.consumer.ContentProviderConsumer;
 import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.provider.ContentProvider;
 import com.axiell.ehub.provider.ContentProvider.ContentProviderPropertyKey;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 
@@ -18,7 +19,7 @@ abstract class AbstractAccessTokenResourceFactory {
         final ContentProviderPropertyKey oauthUrlPropertyKey = getOAuthUrlPropertyKey();
         final String baseUrl = contentProvider.getProperty(oauthUrlPropertyKey);
         final LoggingFeature loggingFeature = new LoggingFeature();
-        final JsonProvider jsonProvider = new JsonProvider();
-        return JAXRSClientFactory.create(baseUrl, IAccessTokenResource.class, Collections.singletonList(jsonProvider), Collections.singletonList(loggingFeature), null);
+        final JacksonJsonProvider jacksonJsonProvider = new JsonProvider();
+        return JAXRSClientFactory.create(baseUrl, IAccessTokenResource.class, Collections.singletonList(jacksonJsonProvider), Collections.singletonList(loggingFeature), null);
     }
 }

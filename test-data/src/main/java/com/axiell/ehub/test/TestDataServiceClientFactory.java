@@ -1,7 +1,7 @@
 package com.axiell.ehub.test;
 
-import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.test.controller.internal.ITestDataRootResource;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.cxf.ext.logging.LoggingFeature;
@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class TestDataServiceClientFactory implements ITestDataServiceClientFactory {
     @Autowired
-    private JsonProvider jsonProvider;
+    private JacksonJsonProvider jacksonJsonProvider;
     @Autowired
     private MetricsFeature metricsFeature;
     @Autowired
@@ -27,7 +27,7 @@ public class TestDataServiceClientFactory implements ITestDataServiceClientFacto
 
     @Override
     public ITestDataServiceClient create(final String baseUri) {
-        final List<?> providers = Arrays.asList(jsonProvider);
+        final List<?> providers = Arrays.asList(jacksonJsonProvider);
         final List<Feature> features = List.of(loggingFeature, metricsFeature);
         ITestDataRootResource testDataRootResource = JAXRSClientFactory.create(baseUri, ITestDataRootResource.class, providers, features, null);
         TestDataServiceClient testDataServiceClient = new TestDataServiceClient();
