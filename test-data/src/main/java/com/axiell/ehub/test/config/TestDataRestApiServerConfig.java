@@ -23,7 +23,7 @@ import java.util.List;
 @ComponentScan(basePackages = "com.axiell.ehub")
 public class TestDataRestApiServerConfig {
 
-    @Bean
+    @Bean("testRestApiServer")
     public Server testRestApiServer(
             final Bus bus,
             final ITestDataRootResource testDataRootResource,

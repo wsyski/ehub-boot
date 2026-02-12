@@ -3,7 +3,6 @@ package com.axiell.ehub.config;
 import com.axiell.ehub.controller.external.IRootResource;
 import com.axiell.ehub.controller.external.RootResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
-import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.controller.provider.mapper.EhubRuntimeExceptionMapper;
 import com.axiell.ehub.controller.provider.mapper.RuntimeExceptionMapper;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 @Configuration
 public class RestApiServerConfig {
@@ -37,7 +35,7 @@ public class RestApiServerConfig {
     ) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
-        endpoint.setServiceBeans(Collections.singletonList(rootResource));
+        endpoint.setServiceBean(rootResource);
         endpoint.setAddress("/");
         endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jacksonJsonProvider));
         endpoint.setFeatures(Arrays.asList(openApiFeature, metricsFeature, loggingFeature));
@@ -70,6 +68,7 @@ public class RestApiServerConfig {
     public IRootResource rootResource() {
         return new RootResource();
     }
+
 }
 
 
