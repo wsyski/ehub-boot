@@ -1,0 +1,38 @@
+package com.axiell.ehub.local.provider.record.format;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
+import java.io.Serializable;
+
+class FormatDecorationMediator implements Serializable, IContentDispositionChangedAwareMediator {
+    private FormatDecorationPanel formatDecorationPanel;
+    private PlayerContainer playerContainer;
+
+    void registerFormatDecorationPanel(final FormatDecorationPanel formatDecorationPanel) {
+        this.formatDecorationPanel = formatDecorationPanel;
+    }
+
+    @Override
+    public void registerPlayerContainer(final PlayerContainer playerContainer) {
+        this.playerContainer = playerContainer;
+    }
+
+    void afterSavedTexts() {
+        formatDecorationPanel.activate(formatDecorationPanel);
+    }
+
+    void afterDeleteTexts() {
+        formatDecorationPanel.activate(formatDecorationPanel);
+    }
+
+    @Override
+    public void afterContentDispositionChanged(final AjaxRequestTarget target) {
+        if (target != null) {
+            target.add(playerContainer);
+        }
+    }
+
+    void afterEditFormatDecoration() {
+        formatDecorationPanel.activate(formatDecorationPanel);
+    }
+}

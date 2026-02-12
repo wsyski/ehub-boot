@@ -1,0 +1,15 @@
+debug: true
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+spring:
+  mvc:
+    log-request-details: true
+
+logging:
+  level:
+    root: INFO
+

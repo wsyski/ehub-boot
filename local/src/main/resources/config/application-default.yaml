@@ -1,0 +1,52 @@
+ehub:
+  authinfo:
+    expirationTimeInSeconds: 86400
+    leewayInSeconds: 3600
+    debug: false
+    validate: true
+
+server:
+  port: ${SERVICE_PORT:16518}
+
+info:
+  component: "@project.name@"        #getting controller name
+  description: "@project.description@" #getting controller description
+  version: "@project.version@"        #getting the controller version
+
+spring:
+  application:
+    name: ehub
+
+  profiles:
+    validate: true
+
+  main:
+    banner-mode: "off"
+
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;sql.enforce_strict_size=true;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+  servlet:
+    encoding:
+      charset: UTF-8
+
+cxf:
+  path: /api
+
+logging:
+  level:
+    root: WARN
+  config: classpath:log4j2.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

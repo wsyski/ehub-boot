@@ -1,0 +1,120 @@
+package com.axiell.ehub.local.provider.elib.library3;
+
+import com.axiell.ehub.common.checkout.ContentLinks;
+import com.axiell.ehub.local.loan.ContentProviderLoanMetadata;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
+import java.util.Collections;
+import java.util.Date;
+
+import static com.axiell.ehub.local.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_LOAN_WITH_PRODUCT_ID;
+import static com.axiell.ehub.local.provider.elib.library3.GetLoansCommand.Result.PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+
+public class GetLoansCommandTest extends AbstractElib3CommandTest {
+    private static final String LOAN_ID = "1";
+    private static final String CONTENT_URL = "url";
+    private GetLoansCommand underTest;
+    @Mock
+    private GetLoansResponse getLoansResponse;
+    @Mock
+    private LoanDTO loan;
+    private ContentProviderLoanMetadata loanMetadata;
+    private ContentLinks contentLinks;
+
+    @BeforeEach
+    public void setUp() {
+        underTest = new GetLoansCommand(elibFacade, exceptionFactory);
+    }
+
+    @Test
+    public void patronHasLoanWithProductId() {
+        givenProductIdInPendingLoan();
+        givenFormatDecorationForFormatId();
+        givenContentProviderFromContentProviderConsumer();
+        givenBasicCommandData();
+        givenLoanWithProductId();
+        givenGetLoansResponse();
+        givenCommandOnPatronHasLoanWithProductId();
+        whenRun();
+        thenContentProviderLoanMetadataHasExpectedLoanId();
+        thenContentProviderLoanMetadataHasExpectedRecordId();
+        thenContentProviderLoanMetadataHasExpectedFirstFormatDecoration();
+        thenActualContentUrlEqualsExpectedUrl();
+        thenActualFormatDecorationEqualsExpectedFormatDecoration();
+        thenCommandIsInvoked();
+    }
+
+    private void givenProductIdInPendingLoan() {
+        given(pendingLoan.contentProviderRecordId()).willReturn(PRODUCT_ID);
+    }
+
+    private void givenCommandOnPatronHasLoanWithProductId() {
+        underTest.on(PATRON_HAS_LOAN_WITH_PRODUCT_ID, next);
+    }
+
+    private void thenContentProviderLoanMetadataHasExpectedRecordId() {
+        Assertions.assertEquals(PRODUCT_ID, loanMetadata.getRecordId());
+    }
+
+    private void thenContentProviderLoanMetadataHasExpectedLoanId() {
+        Assertions.assertEquals(LOAN_ID, loanMetadata.getId());
+    }
+
+    private void thenContentProviderLoanMetadataHasExpectedFirstFormatDecoration() {
+        Assertions.assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
+    }
+
+    private void thenActualContentUrlEqualsExpectedUrl() {
+        Assertions.assertEquals(CONTENT_URL, contentLinks.getContentLinks().get(0).href());
+    }
+
+    private void thenActualFormatDecorationEqualsExpectedFormatDecoration() {
+        Assertions.assertEquals(formatDecoration, loanMetadata.getFirstFormatDecoration());
+    }
+
+    private void givenLoanWithProductId() {
+        given(loan.getLoanId()).willReturn(LOAN_ID);
+        given(loan.getProductId()).willReturn(PRODUCT_ID);
+        given(loan.getExpirationDate()).willReturn(new Date());
+        given(loan.getContentUrlsFor(anyString())).willReturn(Collections.singletonList(CONTENT_URL));
+        given(getLoansResponse.getLoanWithProductId(anyString())).willReturn(loan);
+    }
+
+    private void givenGetLoansResponse() {
+        given(elibFacade.getLoans(contentProviderConsumer, patron)).willReturn(getLoansResponse);
+    }
+
+    private void whenRun() {
+        underTest.run(data);
+        loanMetadata = data.getContentProviderLoanMetadata();
+        contentLinks = data.getContentLinks();
+    }
+
+    @Test
+    public void patronHasNoLoanWithProductId() {
+        givenBasicCommandData();
+        givenGetLoansResponse();
+        givenCommandOnPatronHasNoLoanWithProductId();
+        whenRun();
+        thenContentProviderLoanMetadataIsNull();
+        thenContentUrlIsNull();
+        thenCommandIsInvoked();
+    }
+
+    private void thenContentUrlIsNull() {
+        Assertions.assertNull(contentLinks);
+    }
+
+    private void givenCommandOnPatronHasNoLoanWithProductId() {
+        underTest.on(PATRON_HAS_NO_LOAN_WITH_PRODUCT_ID, next);
+    }
+
+    private void thenContentProviderLoanMetadataIsNull() {
+        Assertions.assertNull(loanMetadata);
+    }
+}

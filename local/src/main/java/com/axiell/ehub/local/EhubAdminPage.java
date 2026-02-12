@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) 2012 Axiell Group AB.
+ */
+package com.axiell.ehub.local;
+
+import com.axiell.ehub.local.consumer.EhubConsumersBreadCrumbBarPanel;
+import com.axiell.ehub.local.error.ErrorCausesBreadCrumbBarPanel;
+import com.axiell.ehub.local.home.HomePanel;
+import com.axiell.ehub.local.language.LanguagesBreadCrumbBarPanel;
+import com.axiell.ehub.local.provider.ContentProvidersBreadCrumbBarPanel;
+import com.axiell.ehub.local.provider.record.platform.PlatformsBreadCrumbBarPanel;
+import com.axiell.ehub.local.support.SupportBreadCrumbBarPanel;
+import com.axiell.ehub.local.user.AdminUser;
+import com.axiell.ehub.local.user.LogoutPanel;
+import org.apache.commons.lang3.Validate;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * The main page of the {@link EhubAdminApplication} when the user is logged in.
+ */
+public class EhubAdminPage extends AbstractBasePage {
+
+    public EhubAdminPage(final AdminUser adminUser) {
+        Validate.notNull(adminUser, "Invalid usage of this page - the user must be logged in to access this page");
+        addLogoutPanel();
+        addTabbedPanel();
+    }
+
+    /*
+    public void renderHead(IHeaderResponse response) {
+        response.renderJavaScriptReference("https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js");
+    }
+     */
+
+    private void addLogoutPanel() {
+        final LogoutPanel logoutPanel = new LogoutPanel("logout");
+        add(logoutPanel);
+    }
+
+    private void addTabbedPanel() {
+        final EhubAdminTabbedPanelBuilder builder = new EhubAdminTabbedPanelBuilder("tabs", this);
+        final Panel tabbedPanel = builder.getPanel();
+        add(tabbedPanel);
+    }
+
+    /**
+     * Represents a tab in the tabbed panel.
+     */
+    private static enum Tab {
+        HOME, EHUB_CONSUMERS, CONTENT_PROVIDERS, ERROR_CAUSES, LANGUAGES, PLATFORMS, SUPPORT;
+    }
+
+    private static class EhubAdminTabbedPanelBuilder extends AbstractTabbedPanelBuilder<Tab> {
+        private final EhubAdminPage ehubAdminPage;
+
+        private EhubAdminTabbedPanelBuilder(final String panelId, final EhubAdminPage ehubAdminPage) {
+            super(panelId);
+            this.ehubAdminPage = ehubAdminPage;
+        }
+
+        @Override
+        public Panel getContentPanel(final String panelId, final Tab identifier) {
+            switch (identifier) {
+                case HOME:
+                    return new HomePanel(panelId);
+                case EHUB_CONSUMERS:
+                    return new EhubConsumersBreadCrumbBarPanel(panelId);
+                case CONTENT_PROVIDERS:
+                    return new ContentProvidersBreadCrumbBarPanel(panelId);
+                case ERROR_CAUSES:
+                    return new ErrorCausesBreadCrumbBarPanel(panelId);
+                case LANGUAGES:
+                    return new LanguagesBreadCrumbBarPanel(panelId);
+                case PLATFORMS:
+                    return new PlatformsBreadCrumbBarPanel(panelId);
+                case SUPPORT:
+                    return new SupportBreadCrumbBarPanel(panelId);
+                default:
+                    throw new IllegalArgumentException("Unknown tab identifier '" + identifier + "'");
+            }
+        }
+
+        @Override
+        protected List<Tab> getIdentifiers() {
+            return Arrays.asList(Tab.values());
+        }
+
+        @Override
+        protected String getTitle(final Tab identifier) {
+            final String titleKey = identifier.toString();
+            final StringResourceModel titleModel = new StringResourceModel(titleKey, ehubAdminPage, new Model<>());
+            return titleModel.getString();
+        }
+    }
+}

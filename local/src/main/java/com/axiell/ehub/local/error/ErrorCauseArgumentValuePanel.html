@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:panel>
+    <div>
+        <h4>
+            <wicket:message key="txtTextsHeader"/>
+        </h4>
+    </div>
+    <div wicket:id="feedback"/>
+    <form wicket:id="textsForm">
+
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    <wicket:message key="fldLanguage.label"/>
+                </th>
+                <th>
+                    <wicket:message key="fldText.label"/>
+                </th>
+            </tr>
+            <tr wicket:id="texts">
+                <td><span wicket:id="language"/></td>
+                <td><input class="input-block-level" wicket:id="text" type="text" wicket:message="title:fldText.title"/></td>
+            </tr>
+        </table>
+
+        <div>
+            <input class="btn btn-primary" wicket:id="save" type="submit" wicket:message="value:btnSaveTextBundle.label,title:btnSaveTextBundle.title"/>
+        </div>
+    </form>
+</wicket:panel>
+</body>
+</html>

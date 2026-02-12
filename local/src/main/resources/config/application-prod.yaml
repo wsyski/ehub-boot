@@ -1,0 +1,31 @@
+server:
+  http2:
+    enabled: true
+logging:
+  level:
+    root: ERROR
+  config: classpath:log4j2-prod.xml
+  file:
+    path: ${LOG_PATH:log}
+
+spring:
+  datasource:
+    driverClassName: oracle.jdbc.OracleDriver
+    type: oracle.ucp.jdbc.PoolDataSource
+    url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=ehub-db)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ehub)))
+    username: ehub1
+    password: eehub1
+    oracleucp:
+      connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+      sql-for-validate-connection: select * from dual
+      connection-pool-name: ehub
+      initial-pool-size: 8
+      min-pool-size: 8
+      max-pool-size: 256
+      inactive-connection-timeout: 60
+      abandoned-connection-timeout: 30
+      validate-connection-on-borrow: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none

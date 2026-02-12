@@ -1,0 +1,27 @@
+package com.axiell.ehub.local.provider.record.platform;
+
+import com.axiell.ehub.common.provider.platform.Platform;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+class PlatformModel extends LoadableDetachableModel<Platform> {
+    private Long id;
+
+    @SpringBean(name = "platformAdminController")
+    private IPlatformAdminController platformAdminController;
+
+    PlatformModel(final Long id) {
+        Injector.get().inject(this);
+        this.id = id;
+    }
+
+    PlatformModel(final Platform platform) {
+        this(platform.getId());
+    }
+
+    @Override
+    protected Platform load() {
+        return id == null ? new Platform() : platformAdminController.getPlatform(id);
+    }
+}

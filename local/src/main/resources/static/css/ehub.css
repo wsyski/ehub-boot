@@ -1,0 +1,82 @@
+body {
+    font-family: 'Ubuntu', Arial, sans-serif;
+    margin: 0 auto;
+    padding: 50px 0;
+    width: 700px;
+}
+
+h1 {
+    color: #cc0000;
+}
+
+.loginBoxes form label {
+    margin-top: 10px;
+}
+
+.logoutContainer {
+    position: absolute;
+    right: 10px;
+    text-align: right;
+    top: 5px;
+}
+
+/* THE MENU */
+.tab-row ul {
+    border-bottom: 1px solid #0088CC;
+    margin-bottom: 32px;
+    margin-left: 0;
+    padding-bottom: 10px;
+}
+
+.tab-row ul li {
+    display: inline;
+    margin-right: 25px;
+}
+
+.contentFormatCell {
+    min-width: 50px;
+}
+
+div.wicket-modal div.w_content {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+    padding: 15px;
+    width: 100%;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.language-header {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.routing-rule-description {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"],
+input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"],
+input[type="week"], input[type="number"], input[type="email"], input[type="url"],
+input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    min-height: 30px;
+}
+
+.table td.text-right {
+    text-align: right;
+}
+
+.table td.text-center {
+    text-align: center;
+}
+
+pre {
+    margin: 0 0 20px;
+}

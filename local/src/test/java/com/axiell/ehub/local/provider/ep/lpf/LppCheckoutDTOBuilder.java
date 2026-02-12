@@ -1,0 +1,13 @@
+package com.axiell.ehub.local.provider.ep.lpf;
+
+import com.axiell.ehub.local.provider.ep.FormatMetadataDTOBuilder;
+
+import java.util.Date;
+
+public class LppCheckoutDTOBuilder {
+    public static final String ID = "id";
+
+    public static LpfCheckoutDTO defaultCheckoutDTO() {
+        return new LpfCheckoutDTO(ID, FormatMetadataDTOBuilder.defaultFormatMetadataDTO(), new Date());
+    }
+}

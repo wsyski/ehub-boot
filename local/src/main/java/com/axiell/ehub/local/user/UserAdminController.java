@@ -1,0 +1,33 @@
+/*
+ * Copyright (c) 2012 Axiell Group AB.
+ */
+package com.axiell.ehub.local.user;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+public class UserAdminController implements IUserAdminController {
+    @Autowired
+    private IAdminUserRepository adminUserRepository;
+
+    /**
+     * @see IUserAdminController#login(AdminUser)
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public LoginStatus login(final AdminUser providedUser) {
+        final String name = providedUser.getName();
+        final String clearPassword = providedUser.getClearPassword();
+        final AdminUser retrievedUser = adminUserRepository.findOneByName(name);
+
+        if (retrievedUser == null) {
+            return LoginStatus.USER_NOT_FOUND;
+        } else if (retrievedUser.isValid(clearPassword)) {
+            return LoginStatus.SUCCESS;
+        } else {
+            return LoginStatus.INVALID_PASSWORD;
+        }
+    }
+}

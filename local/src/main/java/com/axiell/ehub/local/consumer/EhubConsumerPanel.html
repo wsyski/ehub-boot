@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:panel>
+    <div>
+        <div wicket:id="feedback"/>
+        <form wicket:id="ehubConsumerForm">
+            <div>
+                <label wicket:for="description">
+                    <wicket:message key="fldDescription.label"/>
+                </label>
+                <input wicket:id="description" type="text" wicket:message="title:fldDescription.title"></input>
+            </div>
+            <div>
+                <label wicket:for="id">
+                    <wicket:message key="fldId.label"/>
+                </label>
+                <input wicket:id="id" type="text" wicket:message="title:fldId.title"></input>
+            </div>
+            <div>
+                <label wicket:for="secretKey">
+                    <wicket:message key="fldSecretKey.label"/>
+                </label>
+                <input wicket:id="secretKey" type="text" wicket:message="title:fldSecretKey.title"></input>
+            </div>
+
+            <div>
+                <label wicket:for="defaultLanguage">
+                    <wicket:message key="fldDefaultLanguage.label"/>
+                </label>
+                <select wicket:id="defaultLanguage" wicket:message="title:fldDefaultLanguage.title"/><span/>
+            </div>
+
+            <div wicket:id="ecProperties">
+                <label wicket:for="property">
+                    <span wicket:id="propertyLabel"></span>
+                </label>
+                <input wicket:id="property" type="text"></input>
+            </div>
+            <div>
+                <input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnSave.label,title:btnSave.title"></input>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <wicket:message key="txtContentProviderConsumersHeader"/>
+    </div>
+    <div wicket:id="contentProviderConsumers">
+        <a wicket:id="contentProviderConsumerLink" wicket:message="title:lnkContentProviderConsumer.title">
+            <span wicket:id="contentProviderConsumerLinkLabel"></span>
+        </a>
+        <a wicket:id="deleteLink" wicket:message="title:lnkDelete.title">
+            <i class="icon-remove"></i>
+            <wicket:message key="lnkDelete.label"/>
+        </a>
+    </div>
+
+    <a wicket:id="newCpcLink" wicket:message="title:lnkCpc.title">
+        <wicket:message key="lnkCpc.label"/>
+    </a>
+
+    <div wicket:id="contentProviderConsumerFormContainer">
+        <div>
+            <wicket:message key="txtContentProviderConsumerFormHeader"/>
+        </div>
+        <form wicket:id="contentProviderConsumerForm">
+            <div>
+                <label wicket:for="contentProvider">
+                    <wicket:message key="lnkContentProvider.label"/>
+                </label>
+                <select wicket:id="contentProvider" wicket:message="title:lnkContentProvider.title"></select>
+            </div>
+            <div wicket:id="cpcPropertiesContainer">
+                <div wicket:id="cpcProperties">
+                    <label wicket:for="property">
+                        <span wicket:id="propertyLabel"></span>
+                    </label>
+                    <input wicket:id="property" type="text"></input>
+                </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" wicket:id="submit" type="submit" wicket:message="value:btnAdd.label,title:btnAdd.title"></input>
+            </div>
+        </form>
+        <a wicket:id="cancelNewCpcLink" wicket:message="title:lnkCancelNewCpc.title">
+            <wicket:message key="lnkCancelNewCpc.label"/>
+        </a>
+    </div>
+</wicket:panel>
+</body>
+</html>

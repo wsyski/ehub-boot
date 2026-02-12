@@ -64,7 +64,7 @@ public final class Strings {
      *
      * @return <p>A string comparator that uses the current locale's order rules and handles embedded numbers
      *         correctly.</p>
-     * @see #getNaturalComparator(java.text.Collator)
+     * @see #getNaturalComparator(Collator)
      */
     public static Comparator<String> getNaturalComparator() {
         Collator collator = Collator.getInstance();
@@ -101,7 +101,7 @@ public final class Strings {
      *         numbers correctly.</p>
      *         <b>Do not use</b> if your app might ever run on any locale that uses more than 7-bit ascii characters.
      * @see #getNaturalComparator()
-     * @see #getNaturalComparator(java.text.Collator)
+     * @see #getNaturalComparator(Collator)
      */
     public static Comparator<String> getNaturalComparatorAscii() {
         return NATURAL_COMPARATOR_ASCII;
@@ -115,7 +115,7 @@ public final class Strings {
      * @return <p>a string comparator that does case insensitive comparisons on pure ascii strings and handles embedded
      *         numbers correctly.</p>
      * @see #getNaturalComparator()
-     * @see #getNaturalComparator(java.text.Collator)
+     * @see #getNaturalComparator(Collator)
      */
     public static Comparator<String> getNaturalComparatorIgnoreCaseAscii() {
         return IGNORE_CASE_NATURAL_COMPARATOR_ASCII;
@@ -126,8 +126,8 @@ public final class Strings {
      * values.</p>
      * <p>This is probably the best default comparison to use.</p>
      * <p>If you know that the texts to be compared are in a certain language that differs from the default locale's
-     * langage, then get a collator for the desired locale ({@link java.text.Collator#getInstance(java.util.Locale)})
-     * and pass it to {@link #compareNatural(java.text.Collator, String, String)}</p>
+     * langage, then get a collator for the desired locale ({@link Collator#getInstance(java.util.Locale)})
+     * and pass it to {@link #compareNatural(Collator, String, String)}</p>
      *
      * @param s first string
      * @param t second string

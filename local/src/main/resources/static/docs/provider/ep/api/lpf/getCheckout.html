@@ -1,0 +1,80 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../../../../css/ehub.css"/>
+    <title>getCheckout</title>
+</head>
+<body>
+<h1>getCheckout</h1>
+
+<ol class="breadcrumb">
+    <li><a title="eHUB Documentation" href="../../../../../">Home</a></li>
+    <li><a title="Adding a new media provider" href="../../../">Adding a new media provider</a></li>
+    <li><a title="eHUB Provider API Reference" href="../">eHUB Provider API Reference</a></li>
+    <li><a title="Loan per format" href="./">Loan per format</a></li>
+    <li class="active">getCheckout</li>
+</ol>
+
+<p>Fetches the checkout by the checkout id.</p>
+
+<h3>Request</h3>
+
+<p><code>GET /v5.0/checkouts/&lt;checkout id&gt;</code></p>
+
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+</table>
+
+<h3>Response</h3>
+
+<pre>
+    {
+    "id": "&lt;checkout id&gt;",
+    "contentLinks": "&lt;content links&gt;",
+    "supplementLinks": "&lt;supplement links&gt;",
+    "expirationDate": "&lt;expiration date&gt;"
+    }
+</pre>
+<table class="table">
+    <tr class="tab-row">
+        <td>checkout id</td>
+        <td>The checkout id.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>content links</td>
+        <td>The media content links array. Every element in the array is an object with singleton property &lt;href&gt;. The property specifies the media url.</td>
+    </tr>
+    <tr class="tab-row">
+        <td>supplement links</td>
+        <td>The media supplement links array. Every element in the array is an object with properties &lt;name&gt; and &lt;href&gt;. The &lt;name&gt; property specifies the supplement link name and
+            &lt;href&gt; specifies the supplement material url.
+        </td>
+    </tr>
+    <tr class="tab-row">
+        <td>expiration date</td>
+        <td>The checkout expiration date in <a title="ISO 8601 Date format" href="https://sv.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601 format</a>.
+        </td>
+    </tr>
+</table>
+
+<p>Example request:</p>
+<p><code>GET /v5.0/checkouts/checkoutId</code></p>
+<p>Example response:</p>
+<pre>
+{
+  "id": "checkoutId",
+  "contentLinks": [
+    {"href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/content_0"},
+    {"href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/content_1"}
+  ],
+  "supplementLinks": [
+    {"name": "supplement_0", "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/supplement_0"},
+    {"name": "supplement_1", "href": "http:/localhost:16520/ep/api/v5.0/records/recordId_0/ebook/supplement_1"}
+  ],
+  "expirationDate": "2016-01-01T00:00:00Z"
+}
+</pre>
+</body>
+</html>

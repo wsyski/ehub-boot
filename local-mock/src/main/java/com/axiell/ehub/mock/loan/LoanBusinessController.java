@@ -1,0 +1,64 @@
+package com.axiell.ehub.mock.loan;
+
+import com.axiell.authinfo.AuthInfo;
+import com.axiell.ehub.common.ErrorCause;
+import com.axiell.ehub.common.ErrorCauseArgument;
+import com.axiell.ehub.common.ErrorCauseArgumentType;
+import com.axiell.ehub.common.Fields;
+import com.axiell.ehub.common.NotFoundException;
+import com.axiell.ehub.common.checkout.Checkout;
+import com.axiell.ehub.common.checkout.CheckoutsSearchResult;
+import com.axiell.ehub.common.consumer.ContentProviderConsumer;
+import com.axiell.ehub.common.controller.external.v5_0.checkout.dto.CheckoutDTO;
+import com.axiell.ehub.common.controller.external.v5_0.checkout.dto.CheckoutMetadataDTO;
+import com.axiell.ehub.common.controller.external.v5_0.checkout.dto.SearchResultDTO;
+import com.axiell.ehub.core.error.IEhubExceptionFactory;
+import com.axiell.ehub.core.loan.ILoanBusinessController;
+import com.axiell.ehub.mock.AbstractBusinessController;
+import com.axiell.ehub.mock.util.EhubMessageUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class LoanBusinessController extends AbstractBusinessController implements ILoanBusinessController {
+    @Autowired
+    private IEhubExceptionFactory ehubExceptionFactory;
+
+    @Autowired
+    private EhubMessageUtility ehubMessageUtility;
+
+    @Override
+    public CheckoutsSearchResult search(final AuthInfo authInfo, final String lmsLoanId, final String language) {
+        SearchResultDTO<CheckoutMetadataDTO> searchResultDTO = ehubMessageUtility.getEhubMessage(SearchResultDTO.class, "search",
+                String.valueOf(lmsLoanId), authInfo.getPatron().getLibraryCard());
+        return new CheckoutsSearchResult(searchResultDTO == null ? new SearchResultDTO<>() : searchResultDTO);
+    }
+
+    @Override
+    public Checkout checkout(final AuthInfo authInfo, final Fields fields, final String language) {
+        String lmsRecordId = fields.getRequiredValue("lmsRecordId");
+        String contentProviderAlias = fields.getRequiredValue("contentProviderAlias");
+        String contentProviderRecordId = fields.getRequiredValue("contentProviderRecordId");
+        String issueId = fields.getValue("issueId");
+        String contentProviderFormatId = fields.getRequiredValue("contentProviderFormatId");
+        CheckoutDTO checkoutDTO = ehubMessageUtility.getEhubMessage(CheckoutDTO.class, "checkout", contentProviderAlias, contentProviderRecordId,
+                issueId, contentProviderFormatId, authInfo.getPatron().getLibraryCard());
+        if (checkoutDTO == null) {
+            ContentProviderConsumer contentProviderConsumer = getContentProviderConsumer(contentProviderAlias);
+            throw ehubExceptionFactory.createInternalServerErrorExceptionWithContentProviderNameAndStatus(contentProviderConsumer,
+                    ErrorCauseArgumentType.CREATE_LOAN_FAILED, language);
+        }
+        return new Checkout(checkoutDTO);
+    }
+
+    @Override
+    public Checkout getCheckout(final AuthInfo authInfo, final long readyLoanId, final String language) {
+        CheckoutDTO checkoutDTO = ehubMessageUtility.getEhubMessage(CheckoutDTO.class, "checkout", String.valueOf(readyLoanId),
+                authInfo.getPatron().getLibraryCard());
+        if (checkoutDTO == null) {
+            final ErrorCauseArgument argument = new ErrorCauseArgument(ErrorCauseArgument.Type.READY_LOAN_ID, readyLoanId);
+            throw new NotFoundException(ErrorCause.LOAN_BY_ID_NOT_FOUND, argument);
+        }
+        return new Checkout(checkoutDTO);
+    }
+}
