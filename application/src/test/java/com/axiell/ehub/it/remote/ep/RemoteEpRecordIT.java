@@ -7,14 +7,11 @@ import com.axiell.ehub.it.config.TestDataServiceClientConfig;
 import com.axiell.ehub.it.remote.RemoteRecordITFixture;
 import com.axiell.ehub.test.ITestDataServiceClient;
 import com.axiell.ehub.test.TestDataConstants;
-import com.axiell.ehub.test.config.TestDataRestApiServerConfig;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 
-@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Profile({"default","dev"})
+@SpringBootTest(classes = {EhubApplication.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RemoteEpRecordIT extends RemoteRecordITFixture {
 
     @Getter

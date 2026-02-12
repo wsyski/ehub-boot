@@ -32,10 +32,6 @@
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="MAIN"/>
         </Logger>
-        <Logger name="com.axiell" level="INFO" additivity="false">
-            <AppenderRef ref="CONSOLE"/>
-            <AppenderRef ref="MAIN"/>
-        </Logger>
         <Logger name="org.springframework" level="ERROR" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="MAIN"/>

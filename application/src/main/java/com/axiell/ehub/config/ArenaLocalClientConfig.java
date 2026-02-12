@@ -1,7 +1,6 @@
 package com.axiell.ehub.config;
 
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
-import com.axiell.ehub.controller.provider.json.JsonProvider;
 import com.axiell.ehub.lms.arena.client.ArenaLocalRootResourceFactory;
 import com.axiell.ehub.lms.arena.client.IArenaLocalRootResourceFactory;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
@@ -20,6 +19,4 @@ public class ArenaLocalClientConfig {
     ) {
         return new ArenaLocalRootResourceFactory(authInfoParamConverterProvider, jacksonJsonProvider, loggingFeature);
     }
-
-
 }

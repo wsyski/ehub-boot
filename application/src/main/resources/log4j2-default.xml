@@ -13,19 +13,19 @@
         <Root level="WARN">
             <AppenderRef ref="CONSOLE"/>
         </Root>
-        <Logger name="com.axiell" level="INFO">
+        <Logger name="com.axiell" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <Logger name="org.springframework" level="INFO">
+        <Logger name="org.springframework" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <Logger name="org.hibernate" level="INFO">
+        <Logger name="org.hibernate" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <Logger name="org.apache.cxf" level="DEBUG">
+        <Logger name="org.apache.cxf" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <Logger name="org.apache.wicket" level="INFO">
+        <Logger name="org.apache.wicket" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
     </Loggers>

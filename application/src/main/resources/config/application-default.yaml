@@ -1,3 +1,10 @@
+ehub:
+  authinfo:
+    expirationTimeInSeconds: 86400
+    leewayInSeconds: 3600
+    debug: false
+    validate: true
+
 server:
   port: ${SERVICE_PORT:16518}
   servlet:

@@ -5,6 +5,8 @@ import com.axiell.ehub.controller.external.RootResource;
 import com.axiell.ehub.controller.provider.converter.AuthInfoParamConverterProvider;
 import com.axiell.ehub.controller.provider.mapper.EhubRuntimeExceptionMapper;
 import com.axiell.ehub.controller.provider.mapper.RuntimeExceptionMapper;
+import com.axiell.ehub.test.controller.internal.ITestDataRootResource;
+import com.axiell.ehub.test.controller.internal.TestDataRootResource;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
@@ -17,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class RestApiServerConfig {
@@ -25,6 +28,7 @@ public class RestApiServerConfig {
     public Server restApiServer(
             final Bus bus,
             final IRootResource rootResource,
+            ITestDataRootResource testDataRootResource,
             final AuthInfoParamConverterProvider authInfoParamConverterProvider,
             final EhubRuntimeExceptionMapper ehubRuntimeExceptionMapper,
             final RuntimeExceptionMapper runtimeExceptionMapper,
@@ -35,7 +39,7 @@ public class RestApiServerConfig {
     ) {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setBus(bus);
-        endpoint.setServiceBean(rootResource);
+        endpoint.setServiceBeans(List.of(rootResource, testDataRootResource));
         endpoint.setAddress("/");
         endpoint.setProviders(Arrays.asList(ehubRuntimeExceptionMapper, runtimeExceptionMapper, authInfoParamConverterProvider, jacksonJsonProvider));
         endpoint.setFeatures(Arrays.asList(openApiFeature, metricsFeature, loggingFeature));
@@ -69,6 +73,10 @@ public class RestApiServerConfig {
         return new RootResource();
     }
 
+    @Bean
+    public ITestDataRootResource testDataRootResource() {
+        return new TestDataRootResource();
+    }
 }
 
 

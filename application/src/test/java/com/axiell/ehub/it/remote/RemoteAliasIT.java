@@ -6,7 +6,6 @@ import com.axiell.ehub.it.config.EhubServiceClientConfig;
 import com.axiell.ehub.it.config.TestDataServiceClientConfig;
 import com.axiell.ehub.test.ITestDataServiceClient;
 import com.axiell.ehub.test.TestDataConstants;
-import com.axiell.ehub.test.config.TestDataRestApiServerConfig;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {EhubApplication.class, EhubServiceClientConfig.class, TestDataServiceClientConfig.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RemoteAliasIT extends RemoteITFixture {
     private static final String INVALID_ALIAS = "invalidAlias";
 

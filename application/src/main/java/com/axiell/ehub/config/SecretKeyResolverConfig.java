@@ -6,18 +6,16 @@ import com.axiell.ehub.security.EhubAuthHeaderSecretKeyResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:ehub.properties")
 public class SecretKeyResolverConfig {
-    @Value("${auth.expirationTimeInSeconds}")
+    @Value("${ehub.authinfo.expirationTimeInSeconds}")
     private int expirationTimeInSeconds;
-    @Value("${auth.leewayInSeconds}")
+    @Value("${ehub.authinfo.leewayInSeconds}")
     private int leewayInSeconds;
-    @Value("${auth.debug}")
+    @Value("${ehub.authinfo.debug}")
     private boolean debug;
-    @Value("${auth.validate}")
+    @Value("${ehub.authinfo.validate}")
     private boolean validate;
 
     @Bean

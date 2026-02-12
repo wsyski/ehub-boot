@@ -4,7 +4,6 @@ import com.axiell.ehub.EhubApplication;
 import com.axiell.ehub.it.config.TestDataServiceClientConfig;
 import com.axiell.ehub.test.ITestDataServiceClient;
 import com.axiell.ehub.test.TestDataConstants;
-import com.axiell.ehub.test.config.TestDataRestApiServerConfig;
 import com.axiell.ehub.test.controller.internal.dto.TestDataDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootTest(classes = {EhubApplication.class, TestDataRestApiServerConfig.class, TestDataServiceClientConfig.class}, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {EhubApplication.class, TestDataServiceClientConfig.class}, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TestDataServiceClientIT {
 
     @Autowired

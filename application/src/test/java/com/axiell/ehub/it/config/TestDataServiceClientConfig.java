@@ -1,7 +1,5 @@
 package com.axiell.ehub.it.config;
 
-import com.axiell.ehub.IEhubServiceClient;
-import com.axiell.ehub.IEhubServiceClientFactory;
 import com.axiell.ehub.test.ITestDataServiceClient;
 import com.axiell.ehub.test.ITestDataServiceClientFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +13,6 @@ public class TestDataServiceClientConfig {
     @Bean
     public ITestDataServiceClient testDataServiceClient(@Value("${local.server.port}") int port, ITestDataServiceClientFactory testDataServiceClientFactory) {
 
-        return testDataServiceClientFactory.create("http://localhost:" + port + "/api/test");
+        return testDataServiceClientFactory.create("http://localhost:" + port + "/api");
     }
 }

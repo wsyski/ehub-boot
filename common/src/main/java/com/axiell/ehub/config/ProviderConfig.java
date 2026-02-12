@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:provider.properties")
+@PropertySource("classpath:ehub.properties")
 public class ProviderConfig {
     @Value("${logging.verbose}")
     private boolean verbose;
