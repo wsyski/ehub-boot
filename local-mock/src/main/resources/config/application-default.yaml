@@ -36,6 +36,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        id:
+          db_structure_naming_strategy: legacy
   servlet:
     encoding:
       charset: UTF-8
