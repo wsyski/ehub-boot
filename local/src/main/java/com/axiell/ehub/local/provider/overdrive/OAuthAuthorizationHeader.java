@@ -1,14 +1,12 @@
 package com.axiell.ehub.local.provider.overdrive;
 
-import com.axiell.ehub.common.InternalServerErrorException;
 import com.axiell.ehub.common.consumer.ContentProviderConsumer;
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static com.axiell.ehub.common.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_CLIENT_KEY;
 import static com.axiell.ehub.common.consumer.ContentProviderConsumer.ContentProviderConsumerPropertyKey.OVERDRIVE_CLIENT_SECRET;
-import static com.axiell.ehub.common.util.EhubCharsets.UTF_8;
 
 final class OAuthAuthorizationHeader {
     private static final String AUTHORIZATION_METHOD = "Basic ";
@@ -35,10 +33,6 @@ final class OAuthAuthorizationHeader {
     }
 
     private byte[] makeBinaryCredentials(final String credentials) {
-        try {
-            return credentials.getBytes(UTF_8);
-        } catch (UnsupportedEncodingException e) {
-            throw new InternalServerErrorException("Could not get the bytes of strings in '" + UTF_8 + "' encoding", e);
-        }
+        return credentials.getBytes(StandardCharsets.UTF_8);
     }
 }

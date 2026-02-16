@@ -1,10 +1,6 @@
-/*
- * Copyright (c) 2012 Axiell Group AB.
- */
 package com.axiell.ehub.local.user;
 
 import com.axiell.ehub.common.AbstractTimestampAwarePersistable;
-import com.axiell.ehub.common.InternalServerErrorException;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
@@ -14,10 +10,8 @@ import jakarta.persistence.Transient;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.Validate;
 
-import java.io.UnsupportedEncodingException;
-
 import static com.axiell.ehub.common.security.HmacSha1Function.hmacSha1;
-import static com.axiell.ehub.common.util.EhubCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
 /**
@@ -155,12 +149,8 @@ public class AdminUser extends AbstractTimestampAwarePersistable<Long> {
         final byte[] input;
         final byte[] key;
 
-        try {
-            input = baseString.getBytes(UTF_8);
-            key = name.getBytes(UTF_8);
-        } catch (UnsupportedEncodingException e) {
-            throw new InternalServerErrorException("Could not get the bytes of strings in '" + UTF_8 + "' encoding", e);
-        }
+        input = baseString.getBytes(UTF_8);
+        key = name.getBytes(UTF_8);
 
         byte[] digest = hmacSha1(input, key);
         return encodeBase64String(digest);
