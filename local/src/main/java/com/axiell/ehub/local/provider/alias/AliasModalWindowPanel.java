@@ -1,23 +1,29 @@
 package com.axiell.ehub.local.provider.alias;
 
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalDialog;
+import org.apache.wicket.extensions.ajax.markup.html.modal.theme.DefaultTheme;
 import org.apache.wicket.markup.html.panel.Panel;
 
-class AliasModalWindowPanel extends Panel {
+public class AliasModalWindowPanel extends Panel {
 
-    AliasModalWindowPanel(final String id, final AliasMediator mediator) {
+    public AliasModalWindowPanel(final String id, final AliasMediator mediator) {
         super(id);
         addAliasCreateWindowShowLink(mediator);
-        addAliasCreateModalWindow(mediator);
+        addAliasCreateModalDialog(mediator);
     }
 
-    private void addAliasCreateWindowShowLink(AliasMediator mediator) {
+    private void addAliasCreateWindowShowLink(final AliasMediator mediator) {
         final AliasCreateWindowShowLink showLink = new AliasCreateWindowShowLink("showLink", mediator);
         add(showLink);
     }
 
-    private void addAliasCreateModalWindow(AliasMediator mediator) {
-        final AliasCreateModalWindow modalWindow = new AliasCreateModalWindow("window", mediator);
-        mediator.registerCreateModalWindow(modalWindow);
-        add(modalWindow);
+    private void addAliasCreateModalDialog(final AliasMediator mediator) {
+        final ModalDialog modalDialog = new ModalDialog("window");
+        modalDialog.add(new DefaultTheme());
+        modalDialog.closeOnEscape();
+        modalDialog.closeOnClick();
+        modalDialog.setContent(new AliasCreatePanel(ModalDialog.CONTENT_ID, mediator));
+        mediator.registerCreateModalDialog(modalDialog);
+        add(modalDialog);
     }
 }
