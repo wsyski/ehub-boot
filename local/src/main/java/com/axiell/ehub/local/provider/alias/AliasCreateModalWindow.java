@@ -1,6 +1,7 @@
 package com.axiell.ehub.local.provider.alias;
 
 
+@SuppressWarnings("deprecation")
 class AliasCreateModalWindow extends ModalWindow {
 
     AliasCreateModalWindow(final String id, final AliasMediator mediator) {

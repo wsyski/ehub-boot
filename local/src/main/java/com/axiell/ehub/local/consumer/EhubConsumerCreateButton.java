@@ -24,7 +24,7 @@ final class EhubConsumerCreateButton extends Button {
 
     @Override
     public void onSubmit() {
-        final String secretKey = Base64.getEncoder().encodeToString(RandomStringUtils.random(8, true, true).getBytes(StandardCharsets.UTF_8));
+        final String secretKey = Base64.getEncoder().encodeToString(RandomStringUtils.secure().next(8, true, true).getBytes(StandardCharsets.UTF_8));
         EhubConsumer ehubConsumer = formModel.getObject();
         ehubConsumer.setSecretKey(secretKey);
         ehubConsumer = consumerAdminController.save(ehubConsumer);

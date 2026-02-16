@@ -51,7 +51,7 @@ public class AdminUser extends AbstractTimestampAwarePersistable<Long> {
         Validate.notNull(clearPassword, "The clear password can't be null");
         this.name = name;
         this.clearPassword = clearPassword;
-        this.salt = RandomStringUtils.random(SALT_LENGTH, false, true);
+        this.salt = RandomStringUtils.secure().next(SALT_LENGTH, false, true);
         this.encodedPassword = encodePassword(clearPassword);
     }
 

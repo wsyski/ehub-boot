@@ -7,8 +7,6 @@ import com.axiell.ehub.common.util.TimestampAwareEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.io.Serializable;
@@ -24,11 +22,9 @@ import java.util.Date;
 @EntityListeners({TimestampAwareEntityListener.class})
 public abstract class AbstractTimestampAwarePersistable<P extends Serializable> extends AbstractPersistable<P> implements ITimestampAware<P> {
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_DATETIME", nullable = false, updatable = false)
     private Date createdDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "MODIFY_DATETIME", nullable = false)
     private Date modifiedDate;
 

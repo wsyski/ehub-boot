@@ -14,8 +14,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+
 
 import java.io.Serializable;
 import java.util.Date;
@@ -97,7 +96,6 @@ public class ContentProviderLoanMetadata implements Serializable {
      *
      * @return the expiration date of the loan at the {@link ContentProvider}
      */
-    @Temporal(TemporalType.DATE)
     @Column(name = "EXPIRATION_DATE", nullable = false)
     public Date getExpirationDate() {
         return DateFactory.create(expirationDate);

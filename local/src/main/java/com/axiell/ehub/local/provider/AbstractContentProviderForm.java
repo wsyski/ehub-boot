@@ -49,7 +49,7 @@ abstract class AbstractContentProviderForm extends StatelessForm<ContentProvider
     @Override
     protected void onError() {
         // before updating, call the interception method for clients
-        beforeUpdateFormComponentModels();
+        onBeforeUpdateFormComponentModels();
         // Update model using form data
         updateFormComponentModels();
         super.onError();

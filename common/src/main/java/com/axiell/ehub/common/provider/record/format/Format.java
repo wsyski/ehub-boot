@@ -21,7 +21,7 @@ public class Format implements Serializable {
 
     public Format(final String formatId, final String name, final String description, final ContentDisposition contentDisposition, final Set<String> platforms,
                   final boolean isLocked) {
-        Validate.notNull(platforms);
+        Validate.notNull(platforms, "platforms must not be null");
         formatDTO = new FormatDTO(formatId,name,contentDisposition).description(description).platforms(platforms).locked(isLocked);
     }
 

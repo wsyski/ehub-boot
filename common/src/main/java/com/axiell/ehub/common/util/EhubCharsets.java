@@ -1,9 +1,9 @@
 package com.axiell.ehub.common.util;
 
-import org.apache.commons.codec.Charsets;
+import java.nio.charset.StandardCharsets;
 
 public final class EhubCharsets {
-    public static final String UTF_8 = Charsets.UTF_8.name();
+    public static final String UTF_8 = StandardCharsets.UTF_8.name();
 
     private EhubCharsets() {
     }

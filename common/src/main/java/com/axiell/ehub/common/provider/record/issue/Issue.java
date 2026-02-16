@@ -20,7 +20,7 @@ public class Issue implements Serializable {
     }
 
     public Issue(final String id, final String title, final String imageUrl, final List<Format> formats) {
-        Validate.notNull(formats);
+        Validate.notNull(formats, "formats must not be null");
         List<FormatDTO> formatsDTO = formats.stream().map(Format::toDTO).collect(Collectors.toList());
         issueDTO = new IssueDTO(formatsDTO).id(id).title(title).imageUrl(imageUrl);
     }

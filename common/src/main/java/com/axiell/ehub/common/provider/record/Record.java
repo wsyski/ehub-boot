@@ -16,7 +16,7 @@ public class Record implements Serializable {
     private final RecordDTO recordDTO;
 
     public Record(final String id, final List<Issue> issues) {
-        Validate.notNull(issues);
+        Validate.notNull(issues, "issues must not be null");
         List<IssueDTO> issuesDTO = issues.stream().map(Issue::toDTO).collect(Collectors.toList());
         recordDTO = new RecordDTO(id, issuesDTO);
     }

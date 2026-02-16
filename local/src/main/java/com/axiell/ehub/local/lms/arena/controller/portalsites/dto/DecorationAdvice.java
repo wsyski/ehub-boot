@@ -82,7 +82,7 @@ public class DecorationAdvice implements Serializable {
     }
 
     public DecorationAdvice limit(final Integer limit) {
-        Validate.notNull(limit);
+        Validate.notNull(limit, "limit must not be null");
         switch (type) {
             case Reviews:
             case RecordGrouping:

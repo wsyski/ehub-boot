@@ -124,6 +124,7 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
  * @author Matej Knopp
  * @deprecated use {@link ModalDialog} instead
  */
+@Deprecated
 public class ModalWindow extends Panel {
 
     /**

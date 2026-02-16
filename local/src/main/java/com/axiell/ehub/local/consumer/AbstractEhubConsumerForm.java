@@ -60,7 +60,7 @@ abstract class AbstractEhubConsumerForm extends StatelessForm<EhubConsumer> {
     @Override
     protected void onError() {
         // before updating, call the interception method for clients
-        beforeUpdateFormComponentModels();
+        onBeforeUpdateFormComponentModels();
         // Update model using form data
         updateFormComponentModels();
         super.onError();

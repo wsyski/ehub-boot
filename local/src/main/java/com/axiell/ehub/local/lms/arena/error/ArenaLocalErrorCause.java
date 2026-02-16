@@ -2,8 +2,8 @@ package com.axiell.ehub.local.lms.arena.error;
 
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrLookup;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.lookup.StringLookup;
 
 import java.util.Map;
 
@@ -58,13 +58,9 @@ public enum ArenaLocalErrorCause {
     }
 
     public String getMessage(final Map<String, String> arguments) {
-        StrSubstitutor strSubstitutor = new StrSubstitutor(new StrLookup<String>() {
-            @Override
-            public String lookup(final String key) {
-                return arguments.containsKey(key) ? arguments.get(key) : StringUtils.EMPTY;
-            }
-        });
-        return strSubstitutor.replace(message);
+        StringSubstitutor substitutor = new StringSubstitutor((StringLookup) key ->
+                arguments.containsKey(key) ? arguments.get(key) : StringUtils.EMPTY);
+        return substitutor.replace(message);
     }
 
     public ArenaLocalRestApiError toError() {
